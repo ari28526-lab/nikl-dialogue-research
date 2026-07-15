@@ -11,7 +11,7 @@
 |---|---|
 | **이 리포** (`C:\Users\ari30\research\2026_summer_research`) | 코드·문서·설정 (정본) |
 | **D:** (외장하드) | 데이터 전부: `00_RAW`(원본·참조) `10_LAYERS`(분석 레이어·빈도사전) `20_AUDIO`(wav 585만+TextGrid) `30_PHENOMENA`(현상별) `90_ARCHIVE` |
-| **G:** (Google Drive) | Colab 셔틀 (`DATA_2026/prosody_pilot` 등). 1기 검색 코드 참고 사본은 리포 `reference/colab_search/` |
+| **G:** (Google Drive) | Colab 셔틀 (`DATA_2026/prosody_pilot` 등). 1기 검색 코드 참고 사본은 로컬 `reference/colab_search/`에만(추적 제외, 혼동 방지) — 재작성본만 `scripts/`에 커밋 |
 
 모든 데이터 경로는 `config/paths.json` 하나로 관리 (`scripts/python/paths.py`
 로더). 새 스크립트는 반드시 이를 사용.

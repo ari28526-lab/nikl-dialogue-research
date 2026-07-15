@@ -17,7 +17,7 @@ MFA 강제정렬 → 표준 TextGrid → (예정) 운율 주석 → R 통계.
 |---|---|
 | **이 리포** | 코드·문서·설정 (정본). 경로는 [config/paths.json](config/paths.json) 하나로 중앙관리 |
 | **D:** (외장하드) | 데이터 전부 — 원본·분석 레이어·음성(TextGrid 585만) |
-| **G:** (Google Drive) | 1기 Colab 검색 작업 (원본은 [reference/colab_search/](reference/colab_search/)에 참고 사본) |
+| **G:** (Google Drive) | 1기 Colab 검색 작업. 참고 사본은 로컬 `reference/colab_search/`에만 보관(추적 제외) — 재작성본만 `scripts/`에 커밋 |
 
 대용량 데이터·논문 PDF·빈도 규준·API 키·개인 파일럿 산출물은
 `.gitignore`로 제외한다 (private 리포).
@@ -28,6 +28,7 @@ scripts/     파이프라인 코드 (python 22개 + colab + SCRIPTS_INDEX.md)
 config/      paths.json (경로 중앙관리)
 docs/        문서 — 개요·이력·방법론·환경·결정 기록 (docs/README.md 색인)
 phenomena/   현상별 정의 (B단계: ㄴ삽입부터)
-reference/   외부 작업 참고 사본 (colab_search — 읽기 전용)
 data/ outputs/ logs/   로컬 작업 자리 (내용물은 대부분 gitignore)
 ```
+> `reference/colab_search/`(1기 코랩 검색 코드 참고 사본)는 혼동 방지를 위해
+> **로컬 전용**이며 리포에 추적하지 않는다. 재작성한 검색 코드만 `scripts/`에 커밋한다.
