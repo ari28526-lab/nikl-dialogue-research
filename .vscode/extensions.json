@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "openai.chatgpt",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "reditorsupport.r",
+    "reditorsupport.r-syntax",
+    "mechatroner.rainbow-csv",
+    "tomoki1207.pdf"
+  ]
+}
+

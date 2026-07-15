@@ -1,0 +1,55 @@
+# Secrets
+.env
+*.env
+secrets/
+*_api_key*
+*apikey*
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+renv/library/
+
+# Quarto
+*_files/
+.quarto/
+
+# Large/intermediate local outputs
+*.wav
+*.mp3
+*.flac
+*.mp4
+*.zip
+*.7z
+*.tar
+*.gz
+
+# Logs can be large; remove this line if you decide to version logs.
+logs/*.log
+
+# 저작권·재배포권 문제 (2026-07-14 추가)
+00_참고문헌/
+01_frequency_data/
+
+# 로컬 도구·아카이브·파일럿 산출물
+.claude/
+archive/
+work/
+data/01_pilot_samples/
+data/02_intermediate/
+data/03_analysis_ready/
+
+# CSV 중간산출물은 기본 제외 (작은 결과표는 outputs/tables에서 개별 관리)
+*.csv
+!config/**/*.csv
+*.TextGrid
+*.tmp
+*.db
+
