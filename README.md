@@ -1,30 +1,33 @@
-# 000_2026_summer_research
+# nikl-dialogue-research
 
-2026년 여름 언어학 연구를 위한 작업 폴더입니다.
+한국어 일상대화 말뭉치(국립국어원 2020–2025, 발화 510만)의
+**형태음운 변이 × 빈도 효과** 연구 — 코드·문서 저장소.
 
-이 폴더는 다음 작업을 염두에 두고 구성했습니다.
+파이프라인: 형태소 분석(바른) → 의미번호(우리말샘) → 빈도사전 →
+MFA 강제정렬 → 표준 TextGrid → (예정) 운율 주석 → R 통계.
 
-- 모두의 말뭉치 대화 자료 기반 TextGrid 생성
-- Montreal Forced Aligner 기반 forced alignment
-- Praat, TextGrid, 음성/음운 분석
-- 바른 형태소 분석기 기반 한국어 형태소 분석
-- R 기반 통계, brms/Stan, XAI/SHAP, LDA 분석
-- Python 기반 전처리, 자동화, 파일 변환
-- Quarto 기반 분석 보고서 작성
+## 어디서 시작하나
+- **문서 색인** → [docs/README.md](docs/README.md) *(여기서 시작)*
+- 연구 개요 1페이지 → [docs/PROJECT_SUMMARY.md](docs/PROJECT_SUMMARY.md)
+- 자료구축 코드 이해 → [docs/자료구축_코드해설.md](docs/자료구축_코드해설.md)
+- Claude Code 작업 안내 → [CLAUDE.md](CLAUDE.md)
 
-## 처음 열었을 때
+## 3거점 구조 (데이터는 이 리포에 없음)
+| 위치 | 내용 |
+|---|---|
+| **이 리포** | 코드·문서·설정 (정본). 경로는 [config/paths.json](config/paths.json) 하나로 중앙관리 |
+| **D:** (외장하드) | 데이터 전부 — 원본·분석 레이어·음성(TextGrid 585만) |
+| **G:** (Google Drive) | 1기 Colab 검색 작업 (원본은 [reference/colab_search/](reference/colab_search/)에 참고 사본) |
 
-Codex나 VS Code에서 이 폴더를 열면 먼저 `000_START_HERE.md`와 `AGENTS.md`를 확인하세요.
+대용량 데이터·논문 PDF·빈도 규준·API 키·개인 파일럿 산출물은
+`.gitignore`로 제외한다 (private 리포).
 
-Codex에게는 이렇게 말하면 됩니다.
-
-```text
-이 폴더의 AGENTS.md와 docs/environment/PROJECT_START_HERE.md를 먼저 읽고,
-언어학 연구 환경 설정을 기준으로 작업해줘.
+## 폴더
 ```
-
-## 자료 관리
-
-외장하드의 원자료는 이 폴더에 통째로 복사하지 말고 `data/00_external_paths`에 위치만 기록합니다.
-실제 작업은 작은 샘플부터 `data/01_pilot_samples`에 복사해서 시작합니다.
-
+scripts/     파이프라인 코드 (python 22개 + colab + SCRIPTS_INDEX.md)
+config/      paths.json (경로 중앙관리)
+docs/        문서 — 개요·이력·방법론·환경·결정 기록 (docs/README.md 색인)
+phenomena/   현상별 정의 (B단계: ㄴ삽입부터)
+reference/   외부 작업 참고 사본 (colab_search — 읽기 전용)
+data/ outputs/ logs/   로컬 작업 자리 (내용물은 대부분 gitignore)
+```

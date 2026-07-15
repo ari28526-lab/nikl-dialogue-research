@@ -40,7 +40,8 @@ logs/*.log
 
 # 로컬 도구·아카이브·파일럿 산출물
 .claude/
-archive/
+# 루트 로컬 아카이브만 무시 (docs/archive/ 문서는 추적되도록 앞에 / 고정)
+/archive/
 work/
 data/01_pilot_samples/
 data/02_intermediate/

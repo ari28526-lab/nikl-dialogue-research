@@ -1,4 +1,9 @@
-# 프로젝트 시작 메모
+# 프로젝트 시작 메모 (초기 버전 — 대체됨)
+
+> ⚠️ **낡은 문서.** 아래 경로·폴더구조는 초기(Codex·Dropbox 시절) 기준이라
+> 현재와 다르다. 정본은 프로젝트가 `C:\Users\ari30\research\2026_summer_research`로
+> 이전됐고, 시작 안내는 [../README.md](../README.md)(문서 색인)와 루트 `README.md`가
+> 대신한다. 이 문서는 초기 환경 설계 기록으로만 보존.
 
 이 문서는 `C:\Users\ari30\Dropbox\000_2026_summer_research` 폴더를 잊지 않고 다시 사용할 수 있도록 만든 안내서입니다.
 
