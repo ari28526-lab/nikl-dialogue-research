@@ -10,7 +10,7 @@
   "reference_mp": "D:/00_RAW/reference/01_NIKL_MP_v_1_1",
   "reference_ls": "D:/00_RAW/reference/02_NIKL_LS",
   "reference_multilayer": "D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0",
-  "kofren": "C:/Users/ari30/Dropbox/000_2026_summer_research/01_frequency_data/final_word_frequency",
+  "kofren": "C:/Users/ari30/research/2026_summer_research/01_frequency_data/final_word_frequency",
   "gdrive": "G:/내 드라이브/DATA_2026",
   "secrets_bareun": "C:/Users/ari30/Documents/Codex/_secrets/bareun",
   "bareun_venv_python": "C:/Users/ari30/Documents/Codex/2026-07-06/d/work/bareun-smoke/.venv/Scripts/python.exe"

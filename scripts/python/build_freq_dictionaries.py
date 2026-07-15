@@ -30,7 +30,7 @@ MP_WORD = Path(r"D:\00_RAW\reference\01_NIKL_MP_v_1_1\05_ALL_word_freq.csv")
 LS_MORPH = Path(r"D:\00_RAW\reference\02_NIKL_LS\08_ALL_morpheme_freq.csv")
 LS_WORD = Path(r"D:\00_RAW\reference\02_NIKL_LS\07_ALL_word_freq.csv")
 LEXICON = Path(r"D:\00_RAW\reference\00_DICTIONARY\01_NIKL_lexicon_full_v2.csv")
-KOFREN_DIR = Path(r"C:\Users\ari30\Dropbox\000_2026_summer_research\01_frequency_data\final_word_frequency")
+KOFREN_DIR = Path(r"C:\Users\ari30\research\2026_summer_research\01_frequency_data\final_word_frequency")
 ML2025 = Path(r"D:\00_RAW\reference\NIKL_Multi-layered_2025_v1.0\freq\ML2025_morpheme_freq.csv")
 YEARS = ["2020", "2021", "2022", "2023", "2024", "2025"]
 csv.field_size_limit(10_000_000)
