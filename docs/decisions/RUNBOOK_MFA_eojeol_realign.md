@@ -22,11 +22,16 @@ phone 라벨이 **고립형**이 됨. 실측: 발화 `저는 여행 다니는 �
 
 ## 어떻게 (파이프라인, 재사용)
 `.lab`만 형태소→**어절**(form 표층, 어절별 한글만)로 바꾸고 나머지는 기존 파이프라인 재사용.
+**★ lab은 원래 make_labs처럼 wav 옆에 '제자리' 생성(하드링크 없음)** — 하드링크 코퍼스는
+USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이었음).
 스크립트(리포):
-- `scripts/python/realign_eojeol_build_corpus.py` — form→어절 lab + wav 하드링크 → `D:\mfa_eojeol\corpus\{y}`
-- MFA: `mfa align corpus korean_mfa korean_mfa out --num_jobs 4 --no_tokenization --clean --output_format long_textgrid` (모델·사전=1차와 동일 korean_mfa v3.0)
+- `scripts/python/realign_eojeol_build_corpus.py` — form→어절 lab을 **wav 폴더에 제자리** 생성
+  (코퍼스 = `03_wav/individual/{y}` 그대로)
+- MFA: `mfa align D:\20_AUDIO\03_wav\individual\{y} korean_mfa korean_mfa out --num_jobs 4 --no_tokenization --clean --temporary_directory D:\mfa_eojeol\tmp --output_format long_textgrid` (모델·사전=1차와 동일 korean_mfa v3.0)
 - `scripts/python/realign_eojeol_merge_output.py` — MFA출력+기존 형태소경계 → 4-tier → `06_textgrid_eojeol`
-- 러너: `scripts/run_eojeol_realign.ps1` (연도별 build→align→merge, 재개 가능: 연도 `.done` 마커)
+- 러너: `scripts/run_eojeol_realign.ps1` (연도별 lab→align→merge, 재개 가능: 연도 `.done` 마커)
+- ETA: ~3~4일(제자리 lab). 병목=MFA 정렬 자체(줄일 수 없음). 추가 최적화 여지=병합을 MFA
+  DB 직독으로(≈1일 절감, 단 리스크) — 현재는 검증된 long_textgrid 경로 사용.
 
 ## 실행 (밤샘)
 ```powershell
