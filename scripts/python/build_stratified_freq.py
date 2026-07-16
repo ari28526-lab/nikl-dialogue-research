@@ -46,14 +46,18 @@ def load_meta():
 
 
 def load_speakers(ydir: Path):
-    """speaker_id -> (sex, age)"""
+    """speaker_id -> (sex, age). age 정규화: 60대->60대 이상(2020 연도 정합),
+    결측->미상 (docs/decisions/사회변수_코드북.md 기준)."""
     spk = {}
     fp = ydir / "_speakers.csv"
     if fp.exists():
         with open(fp, encoding="utf-8-sig") as f:
             for r in csv.DictReader(f):
-                spk[r["id"]] = (r.get("sex", "") or "미상",
-                                r.get("age", "") or "미상")
+                sex = (r.get("sex", "") or "").strip() or "미상"
+                age = (r.get("age", "") or "").strip() or "미상"
+                if age == "60대":
+                    age = "60대 이상"
+                spk[r["id"]] = (sex, age)
     return spk
 
 

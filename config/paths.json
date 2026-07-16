@@ -6,6 +6,8 @@
   "audio_home": "D:/20_AUDIO",
   "wav": "D:/20_AUDIO/03_wav",
   "textgrid_merged": "D:/20_AUDIO/06_textgrid_merged",
+  "_comment_textgrid": "06_textgrid_merged=형태소 정렬(구, phones 고립형·형태소 길이용). 06_textgrid_eojeol=어절 정렬 4-tier(words 어절/phones 연결발음/morphemes 형태소/utterance) — 음운변이 분석 주 레이어",
+  "textgrid_eojeol": "D:/20_AUDIO/06_textgrid_eojeol",
   "reference_dictionary": "D:/00_RAW/reference/00_DICTIONARY",
   "reference_mp": "D:/00_RAW/reference/01_NIKL_MP_v_1_1",
   "reference_ls": "D:/00_RAW/reference/02_NIKL_LS",
