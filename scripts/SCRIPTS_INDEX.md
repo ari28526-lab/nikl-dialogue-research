@@ -42,6 +42,22 @@
 | import_multilayer_gold.py | gold 레이어 수입 (구문·의미역·조응, 16,439발화) | 실행 완료 |
 | fetch_audio_for_search.py | **검색 결과 → wav+TextGrid 복사/manifest** (A6) | 완료 |
 
+## MFA 정렬 실패분 재정렬 (2020-2025, 2026-07-15)
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| realign_build_corpus.py | 정렬 실패 발화만 코퍼스 구성 (lab 재생성 + wav 하드링크) | 파일럿 검증 |
+| realign_export_quality.py | MFA 작업DB → 품질통계 CSV (사후 필터용, merge 전 실행) | 파일럿 검증 |
+| realign_merge_output.py | 재정렬 원출력 → 표준 3-tier → 06_textgrid_merged (기존 보존) | 검증 |
+| realign_summary.py | 연도별 원래실패/회수/미회수 요약표 | 실행 완료 |
+| realign_residual_build.py | 1차 후 잔여(정상wav 미회수)만 재시도 코퍼스 구성 | 실행 완료 |
+| realign_residual_finalize.py | 잔여 재시도(빔 300/1000) 산출 병합+품질 append | 실행 완료 |
+| run_realign_all.ps1 | 6개년 일괄 실행기(align→품질→병합→요약), 한 줄 실행 | 실행 완료 |
+| check_source_pcm.py | 미회수 발화의 원본 PCM 실측 → 재추출 가능/불가 확정 | 실행 완료 |
+
+절차·명령·최종결과(25,244/26,979=93.6% 회수, 커버리지 99.94%):
+`docs/decisions/RUNBOOK_MFA_realign_2020-2025.md`. 남은 미회수 1,735 중
+1,296은 원본 wav 깨짐(재추출 필요), 405는 난정렬, 34는 빈 lab.
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장
