@@ -11,7 +11,13 @@
 |---|---|
 | **이 리포** (`C:\Users\ari30\research\2026_summer_research`) | 코드·문서·설정 (정본) |
 | **D:** (외장하드) | 데이터 전부: `00_RAW`(원본·참조) `10_LAYERS`(분석 레이어·빈도사전) `20_AUDIO`(wav 585만+TextGrid) `30_PHENOMENA`(현상별) `90_ARCHIVE` |
-| **G:** (Google Drive) | Colab 셔틀 (`DATA_2026/prosody_pilot` 등). 1기 검색 코드 참고 사본은 로컬 `reference/colab_search/`에만(추적 제외, 혼동 방지) — 재작성본만 `scripts/`에 커밋 |
+| **G:** (Google Drive) | **선택적·되도록 미사용** Colab 셔틀 (`DATA_2026/prosody_pilot` 등). 핵심 파이프라인(A단계·MFA·검색)은 전부 로컬(D:)에서 돌며 G: 의존 코드 없음(`P("gdrive")` 호출 0건). 1기 검색 코드 참고 사본은 로컬 `reference/colab_search/`에만(추적 제외, 혼동 방지) — 재작성본만 `scripts/`에 커밋 |
+
+**클라우드 연산 방침**: gdrive는 되도록 안 씀. 클라우드가 필요하면 GitHub
+Codespace를 우선(단 **Codespace는 CPU 전용**, 2025-08 GPU 폐기 / 그리고
+**D: 로컬 외장하드를 못 봄** → 소규모 자립형 파일럿만 데이터 동봉). 운율
+작업(F0·길이·강도, Parselmouth)은 CPU 계산이라 GPU·클라우드 불필요 → **로컬
+우선**. 진짜 GPU가 필요해지면 그때 Colab 등 별도 검토.
 
 모든 데이터 경로는 `config/paths.json` 하나로 관리 (`scripts/python/paths.py`
 로더). 새 스크립트는 반드시 이를 사용.
