@@ -61,6 +61,7 @@ def build_year(year: str) -> None:
     print(f"[{year}] 세션 {nfiles:,}개 — lab 제자리 생성...", flush=True)
     made = skipped = no_wav = empty = 0
     t0 = time.time()
+    last_proc = 0
     for k, fp in enumerate(files, 1):
         with open(fp, encoding="utf-8") as f:
             for row in csv.DictReader(f):
@@ -79,10 +80,11 @@ def build_year(year: str) -> None:
                     continue
                 lab.write_text(text, encoding="utf-8")
                 made += 1
-        # 자주(10세션마다) 속도·남은시간 출력 → 실시간 진행 확인
-        if k % 10 == 0 or k == nfiles:
+        # 발화 1,000개 훑을 때마다 속도·남은시간 출력 (1분 안에 첫 숫자)
+        proc = made + skipped            # 실제로 훑은 발화(신규+기존)
+        if proc - last_proc >= 1000 or k == nfiles:
+            last_proc = proc
             el = time.time() - t0
-            proc = made + skipped        # 실제로 훑은 발화(신규+기존)
             rate = proc / el if el > 0 else 0
             eta_min = (nfiles - k) / (k / el) / 60 if el > 0 and k else 0
             print(f"  {year} {k}/{nfiles}세션 · 신규lab {made:,} · "
