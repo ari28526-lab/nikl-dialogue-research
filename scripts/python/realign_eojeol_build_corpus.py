@@ -15,6 +15,7 @@ import argparse
 import csv
 import re
 import sys
+import time
 from pathlib import Path
 
 WAV_ROOT = Path(r"D:\20_AUDIO\03_wav\individual")
@@ -56,8 +57,10 @@ def build_year(year: str) -> None:
     raw_dir = RAW / YEAR_DIRS[year]
     files = sorted(p for p in raw_dir.glob("*.csv")
                    if not p.name.startswith("_"))
-    print(f"[{year}] 세션 {len(files):,}개 — lab 제자리 생성...", flush=True)
+    nfiles = len(files)
+    print(f"[{year}] 세션 {nfiles:,}개 — lab 제자리 생성...", flush=True)
     made = skipped = no_wav = empty = 0
+    t0 = time.time()
     for k, fp in enumerate(files, 1):
         with open(fp, encoding="utf-8") as f:
             for row in csv.DictReader(f):
@@ -76,8 +79,14 @@ def build_year(year: str) -> None:
                     continue
                 lab.write_text(text, encoding="utf-8")
                 made += 1
-        if k % 500 == 0:
-            print(f"  {k}/{len(files)} (lab {made:,})", flush=True)
+        # 자주(10세션마다) 속도·남은시간 출력 → 실시간 진행 확인
+        if k % 10 == 0 or k == nfiles:
+            el = time.time() - t0
+            proc = made + skipped        # 실제로 훑은 발화(신규+기존)
+            rate = proc / el if el > 0 else 0
+            eta_min = (nfiles - k) / (k / el) / 60 if el > 0 and k else 0
+            print(f"  {year} {k}/{nfiles}세션 · 신규lab {made:,} · "
+                  f"{rate:.0f}발화/s · 이 연도 남은 ~{eta_min:.0f}분", flush=True)
     print(f"[{year}] 완료: lab {made:,} / 건너뜀 {skipped:,} / "
           f"wav없음 {no_wav:,} / 빈form {empty:,}", flush=True)
     print(f"  코퍼스(=wav폴더): {WAV_ROOT / year}", flush=True)
