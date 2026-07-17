@@ -13,6 +13,7 @@ wav 위치(=lab 위치): individual/{year}/{session}/{utt}.wav (2020-2024)
 """
 import argparse
 import csv
+import os
 import re
 import sys
 import time
@@ -41,16 +42,14 @@ def form_to_lab(form: str) -> str:
     return " ".join(toks)
 
 
-def wav_path(year: str, utt: str):
-    """발화 wav 경로 (세션 하위폴더 우선, 없으면 평면=2025)."""
-    sess = utt.split(".")[0]
-    nested = WAV_ROOT / year / sess / f"{utt}.wav"
-    if nested.exists():
-        return nested
-    flat = WAV_ROOT / year / f"{utt}.wav"
-    if flat.exists():
-        return flat
-    return None
+def load_names(d: Path) -> set:
+    """폴더 내 파일명 집합 (폴더 없으면 빈 집합).
+    ★ USB 최적화(2026-07-17): 발화별 exists() 2~3회(각각 USB 왕복)를
+    세션당 scandir 1회로 대체 — 510만 발화 기준 메타데이터 왕복 수백만 회 제거."""
+    try:
+        return {e.name for e in os.scandir(d)}
+    except OSError:
+        return set()
 
 
 def build_year(year: str) -> None:
@@ -62,23 +61,37 @@ def build_year(year: str) -> None:
     made = skipped = no_wav = empty = 0
     t0 = time.time()
     last_proc = 0
+    flat_names = None  # 평면 구조(2025) 연도 루트 목록 — 필요할 때 1회 로드
     for k, fp in enumerate(files, 1):
+        sess_cache = {}  # 세션 → 파일명 집합 (CSV 하나 처리 동안만 유지)
         with open(fp, encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 u = row["utt_id"]
-                wav = wav_path(year, u)
-                if wav is None:
-                    no_wav += 1
-                    continue
-                lab = wav.with_suffix(".lab")
-                if lab.exists():
+                sess = u.split(".")[0]
+                names = sess_cache.get(sess)
+                if names is None:
+                    names = load_names(WAV_ROOT / year / sess)
+                    sess_cache[sess] = names
+                if f"{u}.wav" in names:
+                    wav_dir = WAV_ROOT / year / sess
+                else:  # 평면(2025) 폴백
+                    if flat_names is None:
+                        flat_names = load_names(WAV_ROOT / year)
+                    if f"{u}.wav" in flat_names:
+                        wav_dir = WAV_ROOT / year
+                        names = flat_names
+                    else:
+                        no_wav += 1
+                        continue
+                if f"{u}.lab" in names:
                     skipped += 1
                     continue
                 text = form_to_lab(row.get("form", ""))
                 if not text.strip():
                     empty += 1
                     continue
-                lab.write_text(text, encoding="utf-8")
+                (wav_dir / f"{u}.lab").write_text(text, encoding="utf-8")
+                names.add(f"{u}.lab")
                 made += 1
         # 발화 1,000개 훑을 때마다 속도·남은시간 출력 (1분 안에 첫 숫자)
         proc = made + skipped            # 실제로 훑은 발화(신규+기존)

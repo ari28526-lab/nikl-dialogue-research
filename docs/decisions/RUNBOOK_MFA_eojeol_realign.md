@@ -27,7 +27,7 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
 스크립트(리포):
 - `scripts/python/realign_eojeol_build_corpus.py` — form→어절 lab을 **wav 폴더에 제자리** 생성
   (코퍼스 = `03_wav/individual/{y}` 그대로)
-- MFA: `mfa align D:\20_AUDIO\03_wav\individual\{y} korean_mfa korean_mfa out --num_jobs 4 --no_tokenization --clean --temporary_directory D:\mfa_eojeol\tmp --output_format long_textgrid` (모델·사전=1차와 동일 korean_mfa v3.0)
+- MFA: `mfa align D:\20_AUDIO\03_wav\individual\{y} korean_mfa korean_mfa out --num_jobs 4 --no_tokenization --clean --temporary_directory C:\mfa_tmp --output_format long_textgrid` (모델·사전=1차와 동일 korean_mfa v3.0; **temp는 C: SSD** — 아래 가속 결정 참조)
 - `scripts/python/realign_eojeol_merge_output.py` — MFA출력+기존 형태소경계 → 4-tier → `06_textgrid_eojeol`
 - 러너: `scripts/run_eojeol_realign.ps1` (연도별 lab→align→merge, 재개 가능: 연도 `.done` 마커)
 - ETA: ~3~4일(제자리 lab). 병목=MFA 정렬 자체(줄일 수 없음). 추가 최적화 여지=병합을 MFA
@@ -61,7 +61,26 @@ powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1
   (재활용으로 시간 절약 불가. USB+585만 파일로 인해 전량은 multi-day, 하드웨어 한계.)
 - 근본 가속은 **wav을 빠른 디스크로 이전(~290GB 필요)**뿐 — 별도 판단 대기.
 
+## 가속 결정 (2026-07-17)
+**SSD 구매 안 함**(사용자 결정, 비용) → 무료 가속만 적용 + 병목 실측 후 추가 판단:
+1. **MFA temp → `C:\mfa_tmp`(SSD)**: MFA는 정렬 반복 중 wav이 아니라 temp의
+   특징값(MFCC)·PostgreSQL DB를 계속 읽음 — USB에 두면 그게 병목. wav은 특징
+   추출 때 1회만 읽음. 연도당 temp ~20-35GB, `--clean`으로 연도마다 비워짐.
+   러너에 C: 여유 30GB 가드 추가(부족 시 중단).
+2. **lab 생성 scandir 최적화**: 발화별 `exists()` 2-3회(각 USB 왕복, "12발화/s"의
+   유력 주범) → 세션당 폴더 목록 1회. 510만 발화 기준 메타데이터 왕복 수백만 회 제거.
+3. **Defender 제외 + 절전 해제**: `scripts/setup_mfa_speed_once.ps1` (관리자 1회).
+   D:\20_AUDIO·D:\10_LAYERS·D:\mfa_eojeol·C:\mfa_tmp·miniforge3 제외.
+4. **병목 계측 파일럿**: `scripts/run_pilot_bottleneck.ps1` — 2020 50세션(~5천 발화)
+   복사본(D: 유지)으로 본 배치와 동일 설정 MFA를 돌리며 5초 간격 CPU%·디스크
+   사용률 CSV 기록. **판정 규칙**: 정렬 구간 CPU ≥85% 지속 = CPU 병목(디스크
+   대책 무의미, 남는 카드는 SAT off뿐 — 품질 대가라 비권장) / CPU 낮고 D: 바쁨
+   = I/O 병목(→ C: 분기 청크 스테이징 검토). 발화/s 실측으로 본 배치 ETA 재계산.
+- 검토했으나 보류: SAT(화자적응) off(~절반 절감이나 경계 정밀도 하락 — 길이 연구라
+  비채택), 병합 MFA DB 직독(~1일 절감, 미검증 리스크), C: 스테이징(파일럿 결과 대기).
+
 ## 남은 것
+- [ ] `setup_mfa_speed_once.ps1` 관리자 실행(사용자, 1회) → 파일럿 실행 → 병목 판정.
 - [ ] 배치 실행(사용자, 밤샘, 여러 날) → 커버리지 재확인.
 - [ ] 완료 후 A6(fetch_audio)·검색이 `textgrid_eojeol`을 쓰도록 점검.
 - [ ] METHODS 3.5에 이 교정 반영(1차=형태소 고립형 결함 → 어절 재정렬로 교정).

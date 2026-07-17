@@ -58,6 +58,18 @@
 `docs/decisions/RUNBOOK_MFA_realign_2020-2025.md`. 남은 미회수 1,735 중
 1,296은 원본 wav 깨짐(재추출 필요), 405는 난정렬, 34는 빈 lab.
 
+## 어절 전량 재정렬 — 목적 B: 4-tier (2026-07-16~17)
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화) | 검증 완료 |
+| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 4-tier → 06_textgrid_eojeol | 검증 완료 |
+| run_eojeol_realign.ps1 | 연도별 일괄 러너 (lab→align→merge, .done 재개, **temp=C:\mfa_tmp**+공간 가드) | 실행 대기 |
+| build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
+| run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
+| setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
+
+절차·판정 규칙: `docs/decisions/RUNBOOK_MFA_eojeol_realign.md` (가속 결정 2026-07-17 절 참조).
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장

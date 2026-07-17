@@ -12,7 +12,11 @@ $conda = "C:\Users\ari30\miniforge3\Scripts\conda.exe"
 $pydir = Join-Path $PSScriptRoot "python"
 $wavRoot = "D:\20_AUDIO\03_wav\individual"
 $out     = "D:\mfa_eojeol\out"
-$tmp     = "D:\mfa_eojeol\tmp"
+# ★ temp는 C: SSD (2026-07-17): MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·
+#   PostgreSQL DB를 계속 읽음 → USB(D:)에 두면 그게 병목. wav은 특징 추출 때 1회만 읽음.
+#   연도당 temp ~20-35GB 추정, --clean이라 연도마다 비워짐. C: 여유 30GB 미만이면 중단.
+$tmp     = "C:\mfa_tmp"
+$minTmpFreeGB = 30
 $logDir  = "D:\mfa_eojeol\logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null
 New-Item -ItemType Directory -Force $out    | Out-Null
@@ -36,7 +40,13 @@ foreach ($y in $years) {
     if (Test-Path $doneMark) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
-        Say "$y [2/3] MFA 정렬 (진행바 실시간, num_jobs 4)..."
+        # C: 여유 공간 가드 — temp(C:)가 도중에 차면 연도 전체 재작업이라 미리 중단
+        $freeGB = [math]::Round((Get-PSDrive C).Free / 1GB, 1)
+        if ($freeGB -lt $minTmpFreeGB) {
+            Say "!! C: 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp(C:\mfa_tmp) 부족 위험, 중단. C: 정리 후 재실행."
+            return
+        }
+        Say "$y [2/3] MFA 정렬 (진행바 실시간, num_jobs 4, temp=C: 여유 ${freeGB}GB)..."
         & $conda run -n mfa mfa align (Join-Path $wavRoot $y) korean_mfa korean_mfa (Join-Path $out $y) --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
         if ($LASTEXITCODE -ne 0) { Say "!! $y MFA 실패 (exit $LASTEXITCODE) — 중단"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
