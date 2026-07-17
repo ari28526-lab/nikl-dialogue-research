@@ -16,8 +16,10 @@
 """
 import argparse
 import csv
+import os
 import sys
 import time
+from itertools import groupby
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))  # 형제 모듈 import 보장
@@ -77,26 +79,49 @@ def morpheme_tier(year, session, utt):
         return None
 
 
+def iter_session_tgs(src_year: Path):
+    """(세션명, TextGrid 경로 목록) 생성 — 세션 하위폴더·평면 모두 지원.
+    ★ 2026-07-17 실측: wav 코퍼스가 평면인 연도(2020·2021·2025)는 MFA 출력도
+    평면(루트에 TextGrid 직접) → 기존 '세션 폴더만' 가정이면 세션 0개로 조용히
+    무시됨. 평면이면 파일명에서 세션명 유도(utt.split('.')[0])."""
+    dir_names, tg_names = [], []
+    for e in os.scandir(src_year):
+        if e.is_dir():
+            dir_names.append(e.name)
+        elif e.name.endswith(".TextGrid"):
+            tg_names.append(e.name)
+    if dir_names:  # 세션 하위폴더 구조
+        nsess = len(dir_names)
+        for sname in sorted(dir_names):
+            yield nsess, sname, sorted((src_year / sname).glob("*.TextGrid"))
+    if tg_names:   # 평면 구조
+        tg_names.sort()
+        nsess = len({n.split(".")[0] for n in tg_names})
+        for sname, grp in groupby(tg_names, key=lambda n: n.split(".")[0]):
+            yield nsess, sname, [src_year / n for n in grp]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--year", required=True, choices=sorted(YEAR_DIRS))
+    ap.add_argument("--mfa-out", default=str(MFA_OUT),
+                    help="MFA 원출력 루트 (기본 D:; 러너는 C: SSD를 넘김)")
     args = ap.parse_args()
 
-    src_year = MFA_OUT / args.year
+    src_year = Path(args.mfa_out) / args.year
     if not src_year.exists():
         sys.exit(f"어절 재정렬 출력 없음: {src_year}")
-    sessions = sorted(d.name for d in src_year.iterdir() if d.is_dir())
-    print(f"[{args.year}] 세션 {len(sessions):,}개 form 로드...", flush=True)
-    forms = load_forms(args.year, set(sessions))
+    print(f"[{args.year}] form 로드 (전 세션)...", flush=True)
+    forms = load_forms(args.year, {p.stem for p in
+                                   (RAW / YEAR_DIRS[args.year]).glob("*.csv")})
     print(f"  form {len(forms):,}개", flush=True)
 
     made = skipped = failed = morph_missing = 0
     t0 = time.time()
-    for si, sname in enumerate(sessions, 1):
-        sdir = src_year / sname
+    for si, (nsess, sname, tgs) in enumerate(iter_session_tgs(src_year), 1):
         out_dir = OUT_ROOT / args.year / sname
         out_dir.mkdir(parents=True, exist_ok=True)
-        for tg in sdir.glob("*.TextGrid"):
+        for tg in tgs:
             out_path = out_dir / tg.name
             if out_path.exists():
                 skipped += 1
@@ -119,10 +144,13 @@ def main() -> int:
                 print(f"  !! {tg.name}: {type(e).__name__}: {e}", flush=True)
         if si % 50 == 0:
             rate = made / (time.time() - t0) if made else 0
-            print(f"  세션 {si:,}/{len(sessions):,} (생성 {made:,}, "
+            print(f"  세션 {si:,}/{nsess:,} (생성 {made:,}, "
                   f"형태소없음 {morph_missing:,}, {rate:.0f}/s)", flush=True)
     print(f"완료[{args.year}]: 생성 {made:,} / 건너뜀 {skipped:,} / "
           f"실패 {failed:,} / 형태소tier없음 {morph_missing:,}")
+    if made == 0 and skipped == 0:
+        print(f"!! 처리 0건 — {src_year} 구조 확인 필요", flush=True)
+        return 1
     return 0
 
 

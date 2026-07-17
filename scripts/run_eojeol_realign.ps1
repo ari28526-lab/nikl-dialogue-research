@@ -16,7 +16,13 @@ $envRoot = "C:\Users\ari30\miniforge3\envs\mfa"
 $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
 $wavRoot = "D:\20_AUDIO\03_wav\individual"
-$out     = "D:\mfa_eojeol\out"
+# ★ MFA 중간 출력도 C: SSD (2026-07-17 파일럿 판정: I/O 병목 — D: 90~130% 포화).
+#   USB에는 '필수 I/O'(wav 1회 읽기 + 최종 4-tier 쓰기)만 남기고, 중간 산출
+#   (temp·MFA 원출력 TextGrid 수십만 개)의 쓰기+재읽기를 SSD로. 병합 성공 후 연도별 삭제.
+#   완료 마커는 D:(영구)에 둬서 C: 정리와 무관하게 재개 가능.
+$out     = "C:\mfa_eojeol_out"
+$doneDir = "D:\mfa_eojeol\done"
+New-Item -ItemType Directory -Force $doneDir | Out-Null
 # ★ temp는 C: SSD (2026-07-17): MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·
 #   PostgreSQL DB를 계속 읽음 → USB(D:)에 두면 그게 병목. wav은 특징 추출 때 1회만 읽음.
 #   연도당 temp ~20-35GB 추정, --clean이라 연도마다 비워짐. C: 여유 30GB 미만이면 중단.
@@ -41,7 +47,7 @@ foreach ($y in $years) {
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; return }
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
-    $doneMark = Join-Path $out "$y\.done"
+    $doneMark = Join-Path $doneDir "$y.align_done"
     if (Test-Path $doneMark) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
@@ -58,11 +64,18 @@ foreach ($y in $years) {
         Say "$y MFA 정렬 완료"
     }
 
-    # 3) 4-tier 병합 — 진행줄 실시간
+    # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
+    #    완료 마커 있으면 건너뜀(완료 연도는 C: 원출력이 이미 삭제돼 있음).
+    if (Test-Path (Join-Path $doneDir "$y.merge_done")) {
+        Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
+    }
     Say "$y [3/3] 4-tier 병합 -> 06_textgrid_eojeol (아래 진행줄 실시간)..."
-    & $py (Join-Path $pydir "realign_eojeol_merge_output.py") --year $y
+    & $py (Join-Path $pydir "realign_eojeol_merge_output.py") --year $y --mfa-out $out
     if ($LASTEXITCODE -ne 0) { Say "!! $y 병합 실패 (exit $LASTEXITCODE) — 중단"; return }
 
-    Say "===== $y 완료 ====="
+    # 4) 병합 성공 → C:의 MFA 원출력 삭제(공간 회수). 재개는 D:의 마커·최종본 기준.
+    Remove-Item (Join-Path $out $y) -Recurse -Force -ErrorAction SilentlyContinue
+    New-Item -ItemType File -Force (Join-Path $doneDir "$y.merge_done") | Out-Null
+    Say "===== $y 완료 (C: 중간산출 정리됨) ====="
 }
 Say "전체 완료 - D:\20_AUDIO\06_textgrid_eojeol (4-tier). 기존 06_textgrid_merged 보존."
