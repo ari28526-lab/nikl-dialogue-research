@@ -112,7 +112,27 @@ env 경로(root/Library\bin/Scripts/bin)를 PATH에 프리펜드하도록 수정
   나옴 — 기존 병합은 세션 폴더만 훑어 **3개 연도가 조용히 0건**이 될 뻔.
   평면/세션 모두 지원 + 처리 0건이면 실패 종료로 교정(단위테스트 통과).
 
+## 본실행 1차 실패 (2026-07-17 밤) — 원인 유실, 재발 방지 조치
+- 경과: 2020 lab 생성 9h31m 완료(12:24→21:55, ~29발화/s) → MFA "Loading corpus from
+  source files" 1h52m 만에 exit 1(23:47). 정렬 연산 진입 전. done 마커·출력 0.
+  2020 어절 lab은 전량 확보(재실행 시 스킵 — 재개는 분 단위).
+- 원인 분석(소스 대조): Ctrl+C 아님("Detected ctrl-c" 로그 없음). 코퍼스 파싱 **워커의
+  실제 예외**가 `error_dict`로 수집돼 로딩 말미에 raise됨(acoustic_corpus.py). 단 MFA
+  3.4는 traceback을 **자기 로그 파일이 닫힌 뒤 콘솔(stderr)에만** 출력 + command_history의
+  exception 필드도 빈 값 → **콘솔이 닫히면 원인 복구 불가**(실제로 유실됨).
+- **★백신 발견(중대)**: 이 PC의 실제 백신은 **AhnLab V3 365 Clinic**(활성)이고 Windows
+  Defender는 비활성(수동) — `setup_mfa_speed_once.ps1`의 Defender 제외는 **무효였음**.
+  수백만 소형 파일 I/O마다 V3 실시간 검사가 걸렸고, 게다가 로딩 도중(22:06) V3가 자체
+  업데이트로 필터 드라이버를 재시작함(파일 I/O 오류 유발 가능 — 실패 용의 1순위.
+  용의 2순위: MFA 로딩이 연도 전체를 RAM에 누적하는 구조 + 8GB).
+- 조치: ① 러너 MFA 단계를 stderr 파일 캡처(`D:\mfa_eojeol\logs\mfa_{y}_stderr.log`)로
+  전환 — 실패 traceback 영구 보존, 진행은 1분 하트비트(파일 끝 진행바 요약)로 표시.
+  ② V3 검사 예외 등록은 사용자 액션(아래) — Defender 제외와 같은 6개 경로.
+
 ## 남은 것
+- [ ] **V3 365 Clinic 검사 예외 등록(사용자)**: V3 설정 → 검사 예외(폴더) →
+  `D:\20_AUDIO`, `D:\10_LAYERS`, `D:\mfa_eojeol`, `C:\mfa_tmp`, `C:\mfa_eojeol_out`,
+  `C:\Users\ari30\miniforge3` 추가. (가능하면 배치 중 V3 자동 업데이트도 꺼두기.)
 - [ ] `setup_mfa_speed_once.ps1` 관리자 실행(사용자, 1회) → 파일럿 실행 → 병목 판정.
 - [ ] 배치 실행(사용자, 밤샘, 여러 날) → 커버리지 재확인.
 - [ ] 완료 후 A6(fetch_audio)·검색이 `textgrid_eojeol`을 쓰도록 점검.

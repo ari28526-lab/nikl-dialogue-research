@@ -2,7 +2,8 @@
 #   words(어절)+phones(연결 실제 발음, 교정)+morphemes(형태소 경계)+utterance
 # lab은 wav 옆에 제자리 생성(하드링크 없음). 기존 06_textgrid_merged는 읽기전용 보존.
 # 결과: D:\20_AUDIO\06_textgrid_eojeol
-# ★모든 단계 출력을 화면에 그대로 흘림(Tee 버퍼링 제거) → lab 속도·ETA, MFA 진행바 실시간 확인.
+# ★lab·병합 단계는 화면 실시간. MFA 단계는 stderr를 파일로 캡처(실패 traceback 보존)
+#   + 1분 하트비트로 진행바 요약 표시 (2026-07-18: 7/17 실패 원인 유실 사고 후 전환).
 # 실행: powershell -ExecutionPolicy Bypass -File C:\Users\ari30\research\2026_summer_research\scripts\run_eojeol_realign.ps1
 # 주의: 도는 동안 D:를 읽는 다른 작업 금지(경합).
 
@@ -57,9 +58,37 @@ foreach ($y in $years) {
             Say "!! C: 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp(C:\mfa_tmp) 부족 위험, 중단. C: 정리 후 재실행."
             return
         }
-        Say "$y [2/3] MFA 정렬 (진행바 실시간, num_jobs 4, temp=C: 여유 ${freeGB}GB)..."
-        & $mfa align (Join-Path $wavRoot $y) korean_mfa korean_mfa (Join-Path $out $y) --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
-        if ($LASTEXITCODE -ne 0) { Say "!! $y MFA 실패 (exit $LASTEXITCODE) — 중단"; return }
+        # ★ stderr를 파일로 캡처 (2026-07-18): MFA는 진행바·traceback을 전부 stderr로 쓰고,
+        #   에러 traceback은 자기 로그 파일이 닫힌 '뒤' 출력되는 구조라 콘솔이 닫히면 유실됨
+        #   (7/17 2020 실패 원인 유실 사고). 파일로 받되, 1분마다 파일 끝(=현재 진행바)을
+        #   요약해 콘솔에 하트비트로 찍음 — 실시간성 유지 + 실패 원인 영구 보존.
+        Say "$y [2/3] MFA 정렬 (num_jobs 4, temp=C: 여유 ${freeGB}GB, 진행=1분 하트비트)..."
+        $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
+        if (Test-Path $errFile) { Remove-Item $errFile -Force }
+        $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
+                   (Join-Path $out $y), '--num_jobs', '4', '--no_tokenization', '--clean',
+                   '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
+        $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
+             -RedirectStandardError $errFile
+        while (-not $p.HasExited) {
+            Start-Sleep -Seconds 60
+            $tail = ""
+            try {
+                $fs = [IO.File]::Open($errFile, 'Open', 'Read', 'ReadWrite')
+                $n = [Math]::Min(400, $fs.Length)
+                if ($n -gt 0) {
+                    [void]$fs.Seek(-$n, 'End')
+                    $buf = New-Object byte[] $n
+                    [void]$fs.Read($buf, 0, $n)
+                    $seg = [Text.Encoding]::UTF8.GetString($buf) -split "[`r`n]" |
+                           Where-Object { $_ -match '\S' }
+                    if ($seg) { $tail = ($seg[-1] -replace '\e\[[0-9;]*m', '').Trim() }
+                }
+                $fs.Close()
+            } catch {}
+            Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
+        }
+        if ($p.ExitCode -ne 0) { Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
         Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
