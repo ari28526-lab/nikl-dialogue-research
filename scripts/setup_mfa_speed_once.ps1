@@ -15,6 +15,7 @@ $paths = @(
     "D:\10_LAYERS",
     "D:\mfa_eojeol",
     "C:\mfa_tmp",
+    "C:\mfa_eojeol_out",
     "C:\Users\ari30\miniforge3"
 )
 foreach ($p in $paths) {

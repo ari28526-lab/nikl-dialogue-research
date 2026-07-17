@@ -61,7 +61,9 @@ foreach ($y in $years) {
         & $mfa align (Join-Path $wavRoot $y) korean_mfa korean_mfa (Join-Path $out $y) --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
         if ($LASTEXITCODE -ne 0) { Say "!! $y MFA 실패 (exit $LASTEXITCODE) — 중단"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
-        Say "$y MFA 정렬 완료"
+        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
+        Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
+        Say "$y MFA 정렬 완료 (temp 정리됨)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
