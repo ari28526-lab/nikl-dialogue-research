@@ -6,7 +6,9 @@
 ## 원칙: "진실은 GitHub 하나"
 - 코드·문서의 정본은 GitHub 리포 (`ari28526-lab/nikl-dialogue-research`)
 - 각 기기에는 복사본(clone)을 두고 **git으로만** 동기화
-- ❌ 리포 폴더를 Dropbox/Google Drive 동기화 폴더 안에 두지 말 것 (git과 충돌)
+- ❌ 리포 폴더를 Dropbox/Google Drive/**OneDrive** 동기화 폴더 안에 두지 말 것 (git과 충돌)
+  - OneDrive 주의: Windows는 "문서"를 `...\OneDrive\문서`로 리디렉션해 두는 경우가 많음.
+    탐색기의 "문서"가 여기라면 **그 안에 리포를 두지 말 것** (A5 참조)
 - 데이터(D: 외장하드)는 본 PC 전용 — 다른 기기에서는 **문서·논의 작업만**
 
 ## A. 새 기기 1회 설정 (약 10분)
@@ -25,10 +27,19 @@
    git config --global user.name "ari28526-lab"
    git config --global user.email "ari28526@gmail.com"
    ```
-5. **폴더 위치 확인**: `문서(Documents)\nikl-dialogue-research`에 생김.
-   확인: 같은 창에서 `explorer nikl-dialogue-research` (탐색기로 열림)
-   또는 `(Resolve-Path nikl-dialogue-research).Path` (전체 경로 출력)
-6. **Claude 앱**에서 프로젝트 폴더로 그 경로 지정
+5. **폴더 위치 확인**: 아래를 그대로 붙여넣어 **전체 경로를 출력**해 둘 것.
+   (새 창을 열었어도 동작함 — 상대 경로에 의존하지 않음)
+   ```powershell
+   $repo = "$HOME\Documents\nikl-dialogue-research"
+   $repo; git -C $repo status   # 경로 출력 + 정상 clone 확인
+   explorer $repo               # 탐색기로 열어보기(선택)
+   ```
+   ⚠️ **탐색기의 "문서"에서 눈으로 찾지 말 것.** OneDrive 리디렉션이 걸린 PC는
+   `~\Documents`(clone이 실제로 받아지는 로컬 폴더)와 탐색기의 "문서"
+   (`~\OneDrive\문서`)가 **서로 다른 폴더**임. 리포가 안 보인다고 clone이
+   실패한 게 아니며, **OneDrive\문서 쪽으로 옮기지 말 것** (위 원칙 위반).
+   위에서 출력된 경로가 정답이고, `~\Documents`는 동기화 대상이 아니라 안전함.
+6. **Claude 앱**에서 프로젝트 폴더로 **5에서 출력된 그 경로** 지정
 
 ## B. 일상 루틴 (매번, Claude에게 말로 시키면 됨)
 
