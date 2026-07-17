@@ -7,7 +7,9 @@
 # 주의: 도는 동안 D:를 읽는 다른 작업 금지(경합).
 
 $py     = "python"
-$conda  = "C:\Users\ari30\miniforge3\Scripts\conda.exe"
+# ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
+#   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨.
+$mfa    = "C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe"
 $pydir  = Join-Path $PSScriptRoot "python"
 $corpus = "D:\mfa_eojeol\pilot\corpus"
 $out    = "D:\mfa_eojeol\pilot\out"
@@ -25,6 +27,7 @@ Say "[1/3] 파일럿 코퍼스 구성 (2020, 50세션)..."
 if ($LASTEXITCODE -ne 0) { Say "!! 코퍼스 구성 실패 — 중단"; return }
 $nutt = (Get-ChildItem $corpus -Recurse -Filter *.lab | Measure-Object).Count
 Say "코퍼스 발화(lab) 수: $nutt"
+if ($nutt -eq 0) { Say "!! 코퍼스가 비어 있음 — MFA 돌리지 않고 중단"; return }
 
 # 2) 샘플러 시작 (5초 간격, CIM — 한글 Windows 카운터명 문제 회피)
 Say "[2/3] 성능 샘플러 시작 → $csv"
@@ -52,7 +55,7 @@ $sampler = Start-Job -ScriptBlock {
 # 3) MFA 정렬 (본 배치와 동일 설정) + 시간 측정
 Say "[3/3] MFA 파일럿 정렬 시작 (num_jobs 4, temp=C:)..."
 $sw = [System.Diagnostics.Stopwatch]::StartNew()
-& $conda run -n mfa mfa align $corpus korean_mfa korean_mfa $out --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
+& $mfa align $corpus korean_mfa korean_mfa $out --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
 $mfaExit = $LASTEXITCODE
 $sw.Stop()
 

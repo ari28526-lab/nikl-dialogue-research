@@ -53,13 +53,20 @@ def main() -> int:
         if not rows:
             continue
         sess = rows[0]["utt_id"].split(".")[0]
+        # 실측(2026-07-17): 2020은 세션 하위폴더 없는 '평면' 구조 → 양쪽 지원.
+        # 세션 폴더가 있으면 목록 1회, 없으면 연도 루트에서 발화별 존재 확인(파일럿 규모라 허용).
         src_dir = WAV_ROOT / args.year / sess
         names = load_names(src_dir)
+        flat_dir = WAV_ROOT / args.year
         dst_dir = PILOT / sess
         dst_dir.mkdir(exist_ok=True)
         for row in rows:
             u = row["utt_id"]
-            if f"{u}.wav" not in names:
+            if f"{u}.wav" in names:
+                src = src_dir / f"{u}.wav"
+            elif (flat_dir / f"{u}.wav").exists():
+                src = flat_dir / f"{u}.wav"
+            else:
                 no_wav += 1
                 continue
             text = form_to_lab(row.get("form", ""))
@@ -68,15 +75,19 @@ def main() -> int:
                 continue
             dst = dst_dir / f"{u}.wav"
             if not dst.exists():
-                shutil.copy2(src_dir / f"{u}.wav", dst)
+                shutil.copy2(src, dst)
             dst.with_suffix(".lab").write_text(text, encoding="utf-8")
             copied += 1
         el = time.time() - t0
         print(f"  {k}/{len(files)}세션 · 발화 {copied:,} · "
               f"{copied/el if el else 0:.0f}발화/s", flush=True)
-    ready.write_text(f"utts={copied}\n", encoding="utf-8")
     print(f"[pilot] 완료: 발화 {copied:,} / wav없음 {no_wav:,} / "
           f"빈form {empty:,} → {PILOT}", flush=True)
+    if copied == 0:
+        print("[pilot] !! 발화 0건 — .ready 안 씀, 실패 처리 (wav 경로 확인 필요)",
+              flush=True)
+        return 1
+    ready.write_text(f"utts={copied}\n", encoding="utf-8")
     return 0
 
 

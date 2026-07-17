@@ -8,7 +8,9 @@
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $py    = "python"
-$conda = "C:\Users\ari30\miniforge3\Scripts\conda.exe"
+# ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
+#   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨(파일럿).
+$mfa   = "C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe"
 $pydir = Join-Path $PSScriptRoot "python"
 $wavRoot = "D:\20_AUDIO\03_wav\individual"
 $out     = "D:\mfa_eojeol\out"
@@ -47,7 +49,7 @@ foreach ($y in $years) {
             return
         }
         Say "$y [2/3] MFA 정렬 (진행바 실시간, num_jobs 4, temp=C: 여유 ${freeGB}GB)..."
-        & $conda run -n mfa mfa align (Join-Path $wavRoot $y) korean_mfa korean_mfa (Join-Path $out $y) --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
+        & $mfa align (Join-Path $wavRoot $y) korean_mfa korean_mfa (Join-Path $out $y) --num_jobs 4 --no_tokenization --clean --temporary_directory $tmp --output_format long_textgrid
         if ($LASTEXITCODE -ne 0) { Say "!! $y MFA 실패 (exit $LASTEXITCODE) — 중단"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
         Say "$y MFA 정렬 완료"
