@@ -1,4 +1,4 @@
-# MFA 배치 가속 1회 설정 (2026-07-17) — ★관리자 PowerShell에서 실행★
+﻿# MFA 배치 가속 1회 설정 (2026-07-17) — ★관리자 PowerShell에서 실행★
 #   (시작 → "PowerShell" 우클릭 → 관리자 권한으로 실행 → 이 파일 실행)
 # 1) Windows Defender 실시간 검사 제외: 수백만 개 소형 파일(.wav/.lab/TextGrid)마다
 #    검사가 걸리면 USB I/O가 배로 느려짐. 데이터·temp·MFA env만 제외 (시스템 전체 아님).

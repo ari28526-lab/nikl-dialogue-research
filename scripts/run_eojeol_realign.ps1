@@ -1,4 +1,4 @@
-# 어절(語節) 전량 재정렬 배치 — 목적 B: 4-tier TextGrid. ★실시간 출력판★
+﻿# 어절(語節) 전량 재정렬 배치 — 목적 B: 4-tier TextGrid. ★실시간 출력판★
 #   words(어절)+phones(연결 실제 발음, 교정)+morphemes(형태소 경계)+utterance
 # lab은 wav 옆에 제자리 생성(하드링크 없음). 기존 06_textgrid_merged는 읽기전용 보존.
 # 결과: D:\20_AUDIO\06_textgrid_eojeol
@@ -10,7 +10,10 @@
 $py    = "python"
 # ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
 #   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨(파일럿).
+#   단 OpenFST 등 서드파티 실행파일(fstcompile)을 PATH에서 찾으므로 env 경로를 얹는다.
 $mfa   = "C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe"
+$envRoot = "C:\Users\ari30\miniforge3\envs\mfa"
+$env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
 $wavRoot = "D:\20_AUDIO\03_wav\individual"
 $out     = "D:\mfa_eojeol\out"

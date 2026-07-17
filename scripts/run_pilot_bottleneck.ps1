@@ -1,4 +1,4 @@
-# 병목 계측 파일럿 (2026-07-17) — 본 배치 전 "CPU vs USB I/O 병목" 확정용.
+﻿# 병목 계측 파일럿 (2026-07-17) — 본 배치 전 "CPU vs USB I/O 병목" 확정용.
 #   1) 소표본 코퍼스(D:\mfa_eojeol\pilot\corpus, 기본 2020 50세션) 구성
 #   2) 5초 간격 CPU%·디스크(C:/D:) 사용률 샘플러를 백그라운드로 켠 채
 #   3) MFA 정렬(temp=C:\mfa_tmp, 본 배치와 동일 설정) 실행·시간 측정
@@ -9,7 +9,10 @@
 $py     = "python"
 # ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
 #   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨.
+#   단 OpenFST 등 서드파티 실행파일(fstcompile)을 PATH에서 찾으므로 env 경로를 얹는다.
 $mfa    = "C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe"
+$envRoot = "C:\Users\ari30\miniforge3\envs\mfa"
+$env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir  = Join-Path $PSScriptRoot "python"
 $corpus = "D:\mfa_eojeol\pilot\corpus"
 $out    = "D:\mfa_eojeol\pilot\out"
