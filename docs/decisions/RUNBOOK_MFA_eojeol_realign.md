@@ -129,6 +129,24 @@ env 경로(root/Library\bin/Scripts/bin)를 PATH에 프리펜드하도록 수정
   전환 — 실패 traceback 영구 보존, 진행은 1분 하트비트(파일 끝 진행바 요약)로 표시.
   ② V3 검사 예외 등록은 사용자 액션(아래) — Defender 제외와 같은 6개 경로.
 
+## 본실행 2차 실패 (2026-07-18 13:46) — 원인 확정: 0바이트 wav
+stderr 캡처(1차 실패 조치)가 작동해 원인 즉시 확보:
+`soundfile.LibsndfileError: SDRW2000000521.1.1.175.wav Format not recognised`
+— 실물 확인 **0바이트**(2026-01-10 PCM→wav 변환 산물). MFA 3.4는 로딩 워커가
+soundfile로 못 여는 wav를 만나면 그 파일만 건너뛰지 않고 **로딩 말미에 전체
+raise**(파싱은 끝까지 진행 후 실패 — 5.5h 낭비 구조). 1차(7/17) 실패도 동일
+원인으로 추정(당시 traceback 유실).
+- V3 제외 효과 실측: lab 스킵 패스 9.5h→12분, MFA 로딩 파싱 5.5h에 완주
+  (전날은 1h52m 시점 중단).
+- 조치: ① `quarantine_bad_wavs.py` 신설 — 연도 wav 전수 크기 스캔(<44B 불량),
+  `D:\mfa_eojeol\quarantine\{y}\`로 이동(짝 lab 동반, CSV 기록, 복원 가능).
+  기본 dry-run, `--apply` 이동. 크기는 scandir 열거로 얻어 추가 I/O 없음.
+  ② 러너 ExitCode 함정 수정(PS5.1 `-NoNewWindow -PassThru`는 핸들 미참조 시
+  ExitCode 빈 값 → `$null=$p.Handle`+`WaitForExit()`). ③ 격리 후 재실행 —
+  같은 유형 재발 시 stderr 로그가 파일명을 지목하므로 개별 격리로 대응.
+- 주의: 격리된 발화는 TextGrid 미생성(기존에도 커버리지 99.44%였음 — 전수
+  아님). 2021~2025도 각 연도 MFA 전에 동일 스캔 필요(러너 진입 전 1회 권장).
+
 ## 기기 이전 결정 (2026-07-18) — 외장 SSD + 상위 기기로 이전 예정
 사용자 결정: 외장 SSD(1TB, USB 10Gbps급)를 구매해 **다른 노트북(삼성,
 i5-1240P 12코어/16스레드, 16GB RAM, 내장 238GB)**에서 남은 배치를 잇는다.

@@ -63,7 +63,8 @@
 |---|---|---|
 | realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화) | 검증 완료 |
 | realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 4-tier → 06_textgrid_eojeol | 검증 완료 |
-| run_eojeol_realign.ps1 | 연도별 일괄 러너 (lab→align→merge, .done 재개, **temp=C:\mfa_tmp**+공간 가드) | 실행 대기 |
+| run_eojeol_realign.ps1 | 연도별 일괄 러너 (lab→align→merge, .done 재개, **temp=C:\mfa_tmp**+공간 가드, MFA stderr 파일 캡처+1분 하트비트) | 실행 중 |
+| quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — MFA 로딩 전체 실패 방지. dry-run 기본, --apply 이동(짝 lab 동반, CSV 기록) | 검증 완료 |
 | build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
 | run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |

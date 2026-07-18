@@ -70,6 +70,7 @@ foreach ($y in $years) {
                    '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
         $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
              -RedirectStandardError $errFile
+        $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
         while (-not $p.HasExited) {
             Start-Sleep -Seconds 60
             $tail = ""
@@ -88,6 +89,7 @@ foreach ($y in $years) {
             } catch {}
             Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
         }
+        $p.WaitForExit()
         if ($p.ExitCode -ne 0) { Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
