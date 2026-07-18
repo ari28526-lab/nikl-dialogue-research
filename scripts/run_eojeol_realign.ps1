@@ -68,35 +68,52 @@ foreach ($y in $years) {
         #   에러 traceback은 자기 로그 파일이 닫힌 '뒤' 출력되는 구조라 콘솔이 닫히면 유실됨
         #   (7/17 2020 실패 원인 유실 사고). 파일로 받되, 1분마다 파일 끝(=현재 진행바)을
         #   요약해 콘솔에 하트비트로 찍음 — 실시간성 유지 + 실패 원인 영구 보존.
-        Say "$y [2/3] MFA 정렬 (num_jobs 4, temp=C: 여유 ${freeGB}GB, 진행=1분 하트비트)..."
+        # ★ 이어가기 (2026-07-18): 같은 연도 재시도 시 temp DB가 남아 있으면 1차는
+        #   --clean 없이 실행 → MFA가 끝난 단계(코퍼스 로딩 5.5h, MFCC 등)를 재사용.
+        #   실패하면 temp 비우고 --clean 전체 재실행(2차 폴백 — 어중간한 DB 방어).
+        #   lab을 바꾼 적 없는 동일-연도 재시도에만 안전(연도 첫 시도는 항상 --clean).
         $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
-        if (Test-Path $errFile) { Remove-Item $errFile -Force }
-        $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
-                   (Join-Path $out $y), '--num_jobs', '4', '--no_tokenization', '--clean',
-                   '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
-        $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
-             -RedirectStandardError $errFile
-        $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
-        while (-not $p.HasExited) {
-            Start-Sleep -Seconds 60
-            $tail = ""
-            try {
-                $fs = [IO.File]::Open($errFile, 'Open', 'Read', 'ReadWrite')
-                $n = [Math]::Min(400, $fs.Length)
-                if ($n -gt 0) {
-                    [void]$fs.Seek(-$n, 'End')
-                    $buf = New-Object byte[] $n
-                    [void]$fs.Read($buf, 0, $n)
-                    $seg = [Text.Encoding]::UTF8.GetString($buf) -split "[`r`n]" |
-                           Where-Object { $_ -match '\S' }
-                    if ($seg) { $tail = ($seg[-1] -replace '\e\[[0-9;]*m', '').Trim() }
-                }
-                $fs.Close()
-            } catch {}
-            Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
+        $tmpYear = Join-Path $tmp $y
+        $tries = @(); if (Test-Path $tmpYear) { $tries += $false }; $tries += $true
+        $ok = $false
+        foreach ($doClean in $tries) {
+            $mode = if ($doClean) { "--clean 전체" } else { "이어가기(temp 재사용)" }
+            Say "$y [2/3] MFA 정렬 — $mode (num_jobs 4, temp=C: 여유 ${freeGB}GB, 진행=1분 하트비트)..."
+            if (Test-Path $errFile) { Move-Item $errFile "$errFile.prev" -Force }
+            $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
+                       (Join-Path $out $y), '--num_jobs', '4', '--no_tokenization',
+                       '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
+            if ($doClean) { $aArgs += '--clean' }
+            $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
+                 -RedirectStandardError $errFile
+            $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
+            while (-not $p.HasExited) {
+                Start-Sleep -Seconds 60
+                $tail = ""
+                try {
+                    $fs = [IO.File]::Open($errFile, 'Open', 'Read', 'ReadWrite')
+                    $n = [Math]::Min(400, $fs.Length)
+                    if ($n -gt 0) {
+                        [void]$fs.Seek(-$n, 'End')
+                        $buf = New-Object byte[] $n
+                        [void]$fs.Read($buf, 0, $n)
+                        $seg = [Text.Encoding]::UTF8.GetString($buf) -split "[`r`n]" |
+                               Where-Object { $_ -match '\S' }
+                        if ($seg) { $tail = ($seg[-1] -replace '\e\[[0-9;]*m', '').Trim() }
+                    }
+                    $fs.Close()
+                } catch {}
+                Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
+            }
+            $p.WaitForExit()
+            if ($p.ExitCode -eq 0) { $ok = $true; break }
+            Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"
+            if (-not $doClean) {
+                Say "$y 이어가기 실패 → temp 비우고 --clean 전체로 재시도"
+                Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
+            }
         }
-        $p.WaitForExit()
-        if ($p.ExitCode -ne 0) { Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"; return }
+        if (-not $ok) { Say "!! $y MFA 최종 실패 — 중단"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
         Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
