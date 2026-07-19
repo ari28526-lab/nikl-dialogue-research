@@ -67,6 +67,7 @@
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — MFA 로딩 전체 실패 방지. dry-run 기본, --apply 이동(짝 lab 동반, CSV 기록) | 검증 완료 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
 | restructure_wav_sessions.py | 평면 연도 wav/lab → 세션 하위폴더 재구성 (★1화자 사고 근본 해결, dry-run 기본, 멱등) | 합성 검증 완료 |
+| locate_utt.py | 발화 ID → 전 레이어 경로·존재 조회 (현상별 검색·청취 검증용, import 가능) | 6개년 실검증 완료 |
 | build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
 | run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
