@@ -1,18 +1,24 @@
-# HDD(D:) → 외장 SSD 이전 복사 러너 (2026-07-19 작성, 실행 예정 7/20 오후)
+# 데이터 드라이브 간 복사 러너 (2026-07-19 작성; 1차 용도: 7/20 HDD→SSD 이전)
 # 목적: SSD를 데이터 정본으로 승격. robocopy라 끊겨도 재실행하면 이어서 복사됨.
 # 사용: powershell -ExecutionPolicy Bypass -File scripts\copy_hdd_to_ssd.ps1 -Dst E:\
-#   -Dst = 이 기기에서 SSD가 받은 드라이브 문자 (복사 후 새 기기에서 D:로 문자 재부여)
+#   -Src = 원본 드라이브 (기본 D:\) / -Dst = 대상 드라이브
 #   -Tier2 스위치를 주면 원본(00_RAW)·아카이브까지 전부 복사 (용량 확인 후)
-# 복사 순서: 파이프라인 필수분(Tier1) 먼저 → 끝나는 대로 새 기기 작업 시작 가능.
-# ★복사 중 D:를 읽는 다른 작업 금지(경합). V3 검사 예외에 SSD 경로도 추가 권장.
+# ★추후 백업(역방향)에도 같은 스크립트: SSD가 D:가 된 뒤 HDD를 꽂아(예: F:)
+#   `-Src D:\ -Dst F:\` — SSD에서 처리한 산출물을 HDD로 역복사(추가/갱신만,
+#   삭제 미러링 없음 → HDD에만 있는 항목은 보존됨).
+# 복사 순서: 파이프라인 필수분(Tier1) 먼저. 복사 중 원본 드라이브 다른 작업 금지.
+# V3 검사 예외에 SSD 경로도 추가 권장.
 param(
     [Parameter(Mandatory=$true)][string]$Dst,   # 예: E:\
+    [string]$Src = "D:\",
     [switch]$Tier2
 )
 $OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8
 
-$src = "D:\"
+$src = $Src.TrimEnd('\') + '\'
 $Dst = $Dst.TrimEnd('\') + '\'
+if (-not (Test-Path $src)) { Write-Host "!! 원본 드라이브 없음: $src" -ForegroundColor Red; return }
+if ($src -eq $Dst) { Write-Host "!! 원본과 대상이 같음: $src" -ForegroundColor Red; return }
 if (-not (Test-Path $Dst)) { Write-Host "!! 대상 드라이브 없음: $Dst" -ForegroundColor Red; return }
 $logDir = Join-Path $Dst "_migration_logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null

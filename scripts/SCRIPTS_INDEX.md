@@ -22,7 +22,7 @@
 |---|---|---|
 | extract_2025_pcm.py | PCM zip 해제 (재개 지원) | 실행 완료 |
 | pcm_to_wav_2025.py | PCM→WAV 587,174개 (병렬, 재개) | 실행 완료 |
-| make_labs_2025.py | MFA용 .lab 생성 (바른 형태소 분할, S태그 제외) | 실행 완료 |
+| make_labs_2025.py | MFA용 .lab 생성 (바른 형태소 분할, S태그 제외) | ⚠구식 — 형태소 lab 방식 폐기(어절 재정렬로 대체), 재실행 금지 |
 | merge_textgrid_v2.py | **표준 3-tier TextGrid 생성** — MFA 정렬 DB에서 직접 내보내기 (MFA export 교착 우회) | 실행 완료 |
 
 ## 인프라
@@ -40,12 +40,12 @@
 | build_multilayer_freq.py | 다층위 2025 빈도표 3종 (2025년판 규준) | 실행 완료 |
 | validate_with_multilayer.py | 공식 주석 대비 채점 (형태소 F1 0.929, 의미 76.4%) | 실행 완료 |
 | import_multilayer_gold.py | gold 레이어 수입 (구문·의미역·조응, 16,439발화) | 실행 완료 |
-| fetch_audio_for_search.py | **검색 결과 → wav+TextGrid 복사/manifest** (A6) | 완료 |
+| fetch_audio_for_search.py | **검색 결과 → wav+TextGrid 복사/manifest** (A6). 2026-07-19 재작성: locate_utt 일원화, 어절 4-tier 우선(없으면 3-tier 폴백 표기), 격리·ID오류 기록 | 재검증 완료 |
 
 ## MFA 정렬 실패분 재정렬 (2020-2025, 2026-07-15)
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
-| realign_build_corpus.py | 정렬 실패 발화만 코퍼스 구성 (lab 재생성 + wav 하드링크) | 파일럿 검증 |
+| realign_build_corpus.py | 정렬 실패 발화만 코퍼스 구성 (lab 재생성 + wav 하드링크) | ⚠구식 — 어절 전량 재정렬로 대체(잔여분 회수 불필요), 재실행 금지 |
 | realign_export_quality.py | MFA 작업DB → 품질통계 CSV (사후 필터용, merge 전 실행) | 파일럿 검증 |
 | realign_merge_output.py | 재정렬 원출력 → 표준 3-tier → 06_textgrid_merged (기존 보존) | 검증 |
 | realign_summary.py | 연도별 원래실패/회수/미회수 요약표 | 실행 완료 |
