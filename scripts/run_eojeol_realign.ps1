@@ -4,30 +4,38 @@
 # 결과: D:\20_AUDIO\06_textgrid_eojeol
 # ★lab·병합 단계는 화면 실시간. MFA 단계는 stderr를 파일로 캡처(실패 traceback 보존)
 #   + 1분 하트비트로 진행바 요약 표시 (2026-07-18: 7/17 실패 원인 유실 사고 후 전환).
-# 실행: powershell -ExecutionPolicy Bypass -File C:\Users\ari30\research\2026_summer_research\scripts\run_eojeol_realign.ps1
+# 실행: powershell -ExecutionPolicy Bypass -File <리포>\scripts\run_eojeol_realign.ps1
 # 주의: 도는 동안 D:를 읽는 다른 작업 금지(경합).
+# ★전제(2026-07-19): wav 코퍼스는 세션 하위폴더 구조여야 함(세션=화자). 평면이면
+#   MFA가 연도 전체를 화자 1명으로 오인 → 가드가 중단시킴. restructure_wav_sessions.py 먼저.
+#   기기 이식: miniforge는 %USERPROFILE%\miniforge3, 데이터는 D: 문자 기준 — 새 기기에서
+#   SSD에 D: 부여하면 무수정 실행. num_jobs·작업드라이브는 자동 선택.
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $py    = "python"
 # ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
 #   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨(파일럿).
 #   단 OpenFST 등 서드파티 실행파일(fstcompile)을 PATH에서 찾으므로 env 경로를 얹는다.
-$mfa   = "C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe"
-$envRoot = "C:\Users\ari30\miniforge3\envs\mfa"
+# ★ 기기 이식성 (2026-07-19): 경로를 사용자 홈 기준으로 — 새 노트북에서도 무수정 실행.
+$envRoot = Join-Path $env:USERPROFILE "miniforge3\envs\mfa"
+$mfa   = Join-Path $envRoot "Scripts\mfa.exe"
 $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
 $wavRoot = "D:\20_AUDIO\03_wav\individual"
-# ★ MFA 중간 출력도 C: SSD (2026-07-17 파일럿 판정: I/O 병목 — D: 90~130% 포화).
-#   USB에는 '필수 I/O'(wav 1회 읽기 + 최종 4-tier 쓰기)만 남기고, 중간 산출
-#   (temp·MFA 원출력 TextGrid 수십만 개)의 쓰기+재읽기를 SSD로. 병합 성공 후 연도별 삭제.
-#   완료 마커는 D:(영구)에 둬서 C: 정리와 무관하게 재개 가능.
-$out     = "C:\mfa_eojeol_out"
+# ★ 병렬 자동 (2026-07-19): 논리코어 12+(i5-1240P=16) → 8job, 그 외(N200=4) → 4job.
+#   세션=화자 재구성 후에야 유효 — 1화자면 MFA가 어차피 1job으로 강등함.
+$numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
+# ★ 작업 드라이브 자동 (2026-07-19): temp·MFA 원출력을 둘 빠른 디스크 선택.
+#   구 기기: C:(SSD, 여유 ~48GB) → C: 사용 / 새 노트북: C: 여유 ~22GB뿐 → D:(외장 SSD).
+#   판정: C: 여유 40GB 이상이면 C:, 아니면 D:. (구 기기에서 C:가 40GB 밑으로 떨어지면
+#   D:=USB HDD로 넘어가 느려지므로 그땐 C:를 정리할 것.)
+$workDrive = if ((Get-PSDrive C).Free / 1GB -ge 40) { "C:" } else { "D:" }
+$out     = "$workDrive\mfa_eojeol_out"
 $doneDir = "D:\mfa_eojeol\done"
 New-Item -ItemType Directory -Force $doneDir | Out-Null
-# ★ temp는 C: SSD (2026-07-17): MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·
-#   PostgreSQL DB를 계속 읽음 → USB(D:)에 두면 그게 병목. wav은 특징 추출 때 1회만 읽음.
-#   연도당 temp ~20-35GB 추정, --clean이라 연도마다 비워짐. C: 여유 30GB 미만이면 중단.
-$tmp     = "C:\mfa_tmp"
+# temp: MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·DB를 계속 읽음.
+#   연도당 temp ~20-35GB 추정, --clean이라 연도마다 비워짐. 여유 30GB 미만이면 중단.
+$tmp     = "$workDrive\mfa_tmp"
 $minTmpFreeGB = 30
 $logDir  = "D:\mfa_eojeol\logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null
@@ -52,10 +60,21 @@ foreach ($y in $years) {
     if (Test-Path $doneMark) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
-        # C: 여유 공간 가드 — temp(C:)가 도중에 차면 연도 전체 재작업이라 미리 중단
-        $freeGB = [math]::Round((Get-PSDrive C).Free / 1GB, 1)
+        # 작업 드라이브 여유 가드 — temp가 도중에 차면 연도 전체 재작업이라 미리 중단
+        $freeGB = [math]::Round((Get-PSDrive $workDrive.Substring(0,1)).Free / 1GB, 1)
         if ($freeGB -lt $minTmpFreeGB) {
-            Say "!! C: 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp(C:\mfa_tmp) 부족 위험, 중단. C: 정리 후 재실행."
+            Say "!! $workDrive 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp($tmp) 부족 위험, 중단. 정리 후 재실행."
+            return
+        }
+
+        # ★ 평면 구조 가드 (2026-07-19, 1화자 사고 재발 방지): 연도 루트에 wav가 바로
+        #   있으면 = 세션 재구성 안 됨 → MFA가 연도 전체를 화자 1명으로 오인(품질·병렬
+        #   붕괴). 지연 열거라 세션 구조면 즉시 통과, 평면이면 첫 파일에서 걸림.
+        $flatWav = [IO.Directory]::EnumerateFiles((Join-Path $wavRoot $y), "*.wav") |
+                   Select-Object -First 1
+        if ($flatWav) {
+            Say "!! $y 코퍼스가 평면 구조(예: $(Split-Path $flatWav -Leaf)) — 1화자 오인 위험."
+            Say "   먼저 실행: python scripts\python\restructure_wav_sessions.py --root $wavRoot --year $y --apply"
             return
         }
         # 1.5) 깨진 wav 격리 (2026-07-18): 0바이트 wav 1개가 MFA 로딩 '말미'에 전체를
@@ -78,10 +97,10 @@ foreach ($y in $years) {
         $ok = $false
         foreach ($doClean in $tries) {
             $mode = if ($doClean) { "--clean 전체" } else { "이어가기(temp 재사용)" }
-            Say "$y [2/3] MFA 정렬 — $mode (num_jobs 4, temp=C: 여유 ${freeGB}GB, 진행=1분 하트비트)..."
+            Say "$y [2/3] MFA 정렬 — $mode (num_jobs $numJobs, temp=$tmp 여유 ${freeGB}GB, 진행=1분 하트비트)..."
             if (Test-Path $errFile) { Move-Item $errFile "$errFile.prev" -Force }
             $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
-                       (Join-Path $out $y), '--num_jobs', '4', '--no_tokenization',
+                       (Join-Path $out $y), '--num_jobs', "$numJobs", '--no_tokenization',
                        '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
             if ($doClean) { $aArgs += '--clean' }
             $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
