@@ -64,5 +64,20 @@ foreach ($rel in $targets) {
     # /L(목록만)+요약의 'Files : total copied skipped ...'에서 copied=0이면 완전 일치
     Write-Host "[$rel] $($ns.Trim())"
 }
-if ($failed.Count) { Write-Host "`n!! 실패 목록: $($failed -join ', ') — 재실행하면 이어서 복사" -ForegroundColor Red }
-else { Write-Host "`n복사 완료. 다음: python scripts\python\restructure_wav_sessions.py --root ${Dst}20_AUDIO\03_wav\individual --year all --apply" -ForegroundColor Green }
+if ($failed.Count) {
+    Write-Host "`n!! 실패 목록: $($failed -join ', ') — 재실행하면 이어서 복사" -ForegroundColor Red
+    return
+}
+
+# ★ 세션 재구성 자동 연결 (2026-07-19): 복사 성공 시 SSD 쪽 평면 연도(wav/lab)를
+#   세션 폴더로 재구성(1화자 사고 근본 해결 + 탐색기에서 열리는 크기로).
+#   연도별 자동 감지·멱등이라 이미 세션 구조면 할 일 없이 통과. HDD 원본은 안 건드림.
+Write-Host "`n=== 세션 재구성 (SSD, 평면 연도 자동 감지) ===" -ForegroundColor Cyan
+$indiv = Join-Path $Dst "20_AUDIO\03_wav\individual"
+python (Join-Path $PSScriptRoot "python\restructure_wav_sessions.py") --root $indiv --year all --apply
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "!! 재구성 실패 — 위 출력 확인 후 수동 재실행:" -ForegroundColor Red
+    Write-Host "   python scripts\python\restructure_wav_sessions.py --root $indiv --year all --apply"
+} else {
+    Write-Host "`n복사+재구성 완료 — SSD를 안전 제거 후 새 기기로 (RUNBOOK_SSD_migration.md 절차 B)" -ForegroundColor Green
+}

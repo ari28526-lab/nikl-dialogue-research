@@ -7,6 +7,7 @@
 |---|---|
 | [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | 연구 개요 1페이지 (무엇을·왜·자료·1기/2기) |
 | [자료구축_코드해설.md](자료구축_코드해설.md) | **A단계 코드 이해** — 어떤 자료로·어떤 코드로·왜·무슨 역할 |
+| [DATA_LAYOUT.md](DATA_LAYOUT.md) | **데이터 배치도** — D: 전 폴더 구조·규약(세션 하위폴더)·대용량 열람 요령 |
 | [WORK_HISTORY_2026-07.md](WORK_HISTORY_2026-07.md) | 작업 이력 (시간순 · Claude 협업 기록) |
 
 ## 진행 관리
@@ -23,6 +24,8 @@
 | [decisions/STANDARD_textgrid_tiers.md](decisions/STANDARD_textgrid_tiers.md) | TextGrid tier 표준 v2 |
 | [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |
 | [decisions/000_project_folder_structure.md](decisions/000_project_folder_structure.md) | 폴더 구조 결정 |
+| [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
+| [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 
 ## 환경 설정 (environment/)
 기계·도구 셋업 노트(바른·MFA·R·Praat·VS Code 등). 색인은

@@ -32,14 +32,14 @@ Tier1(필수, ~350GB): `10_LAYERS` `20_AUDIO\03_wav` `20_AUDIO\06_textgrid_merge
 ## 절차 A — 구 기기(N200)에서 (7/20 오후 1~2시 시작)
 1. SSD 연결, 탐색기에서 드라이브 문자 확인(예: E:). NTFS 아니면 NTFS로 포맷.
 2. V3 검사 예외에 SSD 드라이브(또는 E:\ 전체) 추가 — HDD 때 교훈.
-3. 복사 (Tier1 반나절~하루, robocopy /MT:16):
+3. 복사+재구성 (Tier1 반나절~하루, robocopy /MT:16 → 성공 시 **세션 재구성 자동 실행**):
    `powershell -ExecutionPolicy Bypass -File scripts\copy_hdd_to_ssd.ps1 -Dst E:\`
    (여유 확인 후 원본까지: `... -Dst E:\ -Tier2`) — 끊기면 같은 명령 재실행(이어짐).
-4. 세션 재구성 (SSD에서, 이동=rename이라 수 분~수십 분):
-   `python scripts\python\restructure_wav_sessions.py --root E:\20_AUDIO\03_wav\individual --year all` (dry-run 집계 확인)
+4. 마지막 재구성 출력에서 각 연도 "루트 잔여 0" 확인. 2020 기준 참조값:
+   wav 870,158(원 870,162 − 0바이트 격리 4), 세션 ~2,232. 수동 재실행이 필요하면:
    `python scripts\python\restructure_wav_sessions.py --root E:\20_AUDIO\03_wav\individual --year all --apply`
-   출력에서 각 연도 "루트 잔여 0" 확인. 2020 기준 참조값: wav 870,158
-   (원 870,162 − 0바이트 격리 4), 세션 ~2,232.
+   전체 배치 규약·열람 요령은 `docs/DATA_LAYOUT.md` 참조 (00_RAW는 불변 —
+   재구성 대상 아님, 원본 PCM은 연도별 폴더라 이미 열람 가능).
 5. 안전 제거로 SSD 분리. HDD는 이후 백업 전용(쓰기 금지 원칙).
 
 ## 절차 B — 새 기기(i5-1240P 노트북)에서
