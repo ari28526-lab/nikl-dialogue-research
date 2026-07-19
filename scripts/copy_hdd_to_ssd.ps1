@@ -33,9 +33,10 @@ $tier1 = @(
     "mfa_eojeol"                     # done 마커·로그·격리(quarantine)
 )
 # Tier2: 원본·아카이브·현상 (SSD 용량 여유 시 — 안 옮겨도 HDD가 백업으로 보존)
-$tier2 = @("00_RAW", "20_AUDIO\05_mfa_output", "30_PHENOMENA", "90_ARCHIVE")
+# ※변수명 주의: PS는 대소문자 무구분 — 스위치 $Tier2와 겹치지 않게 $tier2Dirs (7/20 버그 수정)
+$tier2Dirs = @("00_RAW", "20_AUDIO\05_mfa_output", "30_PHENOMENA", "90_ARCHIVE")
 
-$targets = $tier1; if ($Tier2) { $targets += $tier2 }
+$targets = $tier1; if ($Tier2) { $targets += $tier2Dirs }
 $failed = @()
 foreach ($rel in $targets) {
     $s = Join-Path $src $rel
