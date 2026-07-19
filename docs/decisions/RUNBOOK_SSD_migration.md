@@ -29,15 +29,25 @@ Tier1(필수, ~350GB): `10_LAYERS` `20_AUDIO\03_wav` `20_AUDIO\06_textgrid_merge
 (`Documents\MFA\pretrained_models`)도 동봉. Tier2(선택, `-Tier2`): `00_RAW`
 `05_mfa_output` `30_PHENOMENA` `90_ARCHIVE` — 안 옮기면 HDD가 백업으로 보존.
 
+## 절차 A-0 — HDD 사전 정리 (7/19, 복사 전날 — 사용자 방침: "HDD를 최종 상태로
+## 깔끔히 만들고 그대로 복사")
+- [x] `03_wav\merged` 빈 폴더(구식 잔재) 삭제 (7/19).
+- [ ] **세션 재구성을 HDD에서 실행** (같은 볼륨 rename만 — 데이터 재기록 없음):
+  2022(소형)로 실데이터 파일럿 → 검증 → 나머지 연도(`--year all`, 멱등이라 완료
+  연도 자동 통과). 진행: Claude가 백그라운드 실행·감시. PC는 켜둘 것.
+  완료 기준: 평면 4개년(2020·2021·2022·2025) 모두 "루트 잔여 0".
+- 참고: `D:\mfa_realign`(구 잔여분 재정렬 작업물)은 어절 전량 재정렬로 사실상
+  대체된 중간물 — SSD 복사 대상 아님(HDD에만 남음). 삭제는 사용자 판단.
+
 ## 절차 A — 구 기기(N200)에서 (7/20 오후 1~2시 시작)
 1. SSD 연결, 탐색기에서 드라이브 문자 확인(예: E:). NTFS 아니면 NTFS로 포맷.
 2. V3 검사 예외에 SSD 드라이브(또는 E:\ 전체) 추가 — HDD 때 교훈.
-3. 복사+재구성 (Tier1 반나절~하루, robocopy /MT:16 → 성공 시 **세션 재구성 자동 실행**):
+3. 복사 (Tier1 반나절~하루, robocopy /MT:16; 재구성은 A-0에서 이미 끝났으므로
+   순수 복사 — 말미의 자동 재구성 단계는 멱등 안전망으로 몇 초 만에 통과):
    `powershell -ExecutionPolicy Bypass -File scripts\copy_hdd_to_ssd.ps1 -Dst E:\`
    (여유 확인 후 원본까지: `... -Dst E:\ -Tier2`) — 끊기면 같은 명령 재실행(이어짐).
-4. 마지막 재구성 출력에서 각 연도 "루트 잔여 0" 확인. 2020 기준 참조값:
-   wav 870,158(원 870,162 − 0바이트 격리 4), 세션 ~2,232. 수동 재실행이 필요하면:
-   `python scripts\python\restructure_wav_sessions.py --root E:\20_AUDIO\03_wav\individual --year all --apply`
+4. 복사 후 검증 출력(파일 수 대조)과 재구성 안전망 출력("루트에 wav/lab 없음")
+   확인. 2020 기준 참조값: wav 870,158(원 870,162 − 0바이트 격리 4), 세션 ~2,232.
    전체 배치 규약·열람 요령은 `docs/DATA_LAYOUT.md` 참조 (00_RAW는 불변 —
    재구성 대상 아님, 원본 PCM은 연도별 폴더라 이미 열람 가능).
 5. 안전 제거로 SSD 분리. HDD는 이후 백업 전용(쓰기 금지 원칙).
