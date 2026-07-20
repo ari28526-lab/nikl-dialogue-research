@@ -36,7 +36,9 @@ Codespace를 우선(단 **Codespace는 CPU 전용**, 2025-08 GPU 폐기 / 그리
 4. 모든 절차·수치·결정은 **문서에 기록** — 방법론은
    `docs/decisions/METHODS_bareun_dialogue_reanalysis.md` (논문 인용 수준)
 5. 파일 인코딩 utf-8; Windows 콘솔 cp949 대비
-   `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` 패턴 사용
+   `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` 패턴 사용.
+   **`.ps1`은 반드시 UTF-8 BOM 포함** — PS5.1은 BOM 없으면 ANSI로 읽어
+   한글 주석이 다음 줄을 삼킴(7/20 dialogue_json 줄 증발 사고, 실증됨)
 6. 비밀(API 키)·대용량·저작권물(논문 PDF, KoFREN)은 커밋 금지 (.gitignore 확인)
 7. MFA 실행 중 등 D: 배치가 돌 때는 D:를 읽는 다른 작업 금지 (경합)
 

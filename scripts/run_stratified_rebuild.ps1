@@ -1,4 +1,4 @@
-# A5 층화 빈도 재생성 배치 (age_norm 반영: 60대->60대 이상 통합).
+﻿# A5 층화 빈도 재생성 배치 (age_norm 반영: 60대->60대 이상 통합).
 # 밤샘용. 연도별 count -> merge. 재개 가능(완료 연도 partial 있으면 건너뜀).
 # 실행: 리포 루트에서  powershell -ExecutionPolicy Bypass -File scripts\run_stratified_rebuild.ps1
 # 주의: 도는 동안 D:를 읽는 다른 작업 금지(경합).

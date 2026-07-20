@@ -1,4 +1,4 @@
-# 데이터 드라이브 간 복사 러너 (2026-07-19 작성; 1차 용도: 7/20 HDD→SSD 이전)
+﻿# 데이터 드라이브 간 복사 러너 (2026-07-19 작성; 1차 용도: 7/20 HDD→SSD 이전)
 # 목적: SSD를 데이터 정본으로 승격. robocopy라 끊겨도 재실행하면 이어서 복사됨.
 # 사용: powershell -ExecutionPolicy Bypass -File scripts\copy_hdd_to_ssd.ps1 -Dst E:\
 #   -Src = 원본 드라이브 (기본 D:\) / -Dst = 대상 드라이브
