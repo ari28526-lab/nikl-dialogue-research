@@ -41,7 +41,21 @@ $targets = $tier1; if ($Tier2) { $targets += $tier2Dirs }
 $failed = @()
 foreach ($rel in $targets) {
     $s = Join-Path $src $rel
-    if (-not (Test-Path $s)) { Write-Host "[$rel] 원본 없음 — 건너뜀" -ForegroundColor Yellow; continue }
+    if (-not (Test-Path $s)) {
+        # ★ 7/20 사고 교정: USB 순간 끊김으로 03_wav가 '조용히' 건너뛰어짐 —
+        #   재시도 1회 후에도 없으면 Tier1(필수)은 실패로 기록(침묵 누락 금지).
+        Start-Sleep -Seconds 10
+        if (-not (Test-Path $s)) {
+            if ($tier1 -contains $rel) {
+                Write-Host "[$rel] !! 필수(Tier1) 원본 접근 불가: $s — 실패 처리" -ForegroundColor Red
+                $failed += $rel
+            } else {
+                Write-Host "[$rel] 원본 없음 — 건너뜀" -ForegroundColor Yellow
+            }
+            continue
+        }
+        Write-Host "[$rel] 원본이 재시도 후 접근됨 (USB 순간 끊김 추정) — 계속" -ForegroundColor Yellow
+    }
     $d = Join-Path $Dst $rel
     $log = Join-Path $logDir ("robocopy_" + ($rel -replace '[\\/]', '_') + "_$stamp.log")
     Write-Host "`n=== [$rel] 복사 시작 $(Get-Date -Format 'HH:mm:ss') ===" -ForegroundColor Cyan
