@@ -45,6 +45,19 @@ $log = Join-Path $logDir ("eojeol_realign_" + (Get-Date -Format "yyyyMMdd_HHmmss
 function Say($m) { $l = "[$(Get-Date -Format 'MM-dd HH:mm:ss')] $m"; Write-Host $l -ForegroundColor Cyan; Add-Content $log $l -Encoding UTF8 }
 
 $years = @('2020','2021','2022','2023','2024','2025')
+
+# ★ 드라이브 엉킴 가드 (2026-07-20, 사용자 지시): HDD(백업)와 SSD(정본)가 동시에
+#   꽂혀 있어도 파이프라인이 HDD를 잘못 잡지 않게 — D:는 반드시 라벨 DATA_SSD(SSD).
+#   이전 완료 후 SSD=D:, HDD=H:(백업 전용)로 문자 고정. 의도적으로 HDD에서 돌릴
+#   일이 생기면 아래 $expectLabel만 바꿀 것.
+$expectLabel = 'DATA_SSD'
+$dLabel = (Get-Volume -DriveLetter D -ErrorAction SilentlyContinue).FileSystemLabel
+if ($dLabel -ne $expectLabel) {
+    Say "!! D: 볼륨 라벨이 '$expectLabel'이 아님(현재: '$dLabel') — HDD를 D:로 오인했을 수 있어 중단."
+    Say "   SSD에 D: 문자를 부여했는지 확인 (RUNBOOK_SSD_migration 절차 참조)."
+    return
+}
+
 Say "어절 재정렬 시작 (실시간 출력). 진행줄이 화면에 바로 뜹니다."
 
 foreach ($y in $years) {

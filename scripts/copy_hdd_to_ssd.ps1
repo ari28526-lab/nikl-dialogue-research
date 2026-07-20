@@ -27,6 +27,7 @@ $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 # Tier1: 어절 재정렬 파이프라인 + 분석에 필수
 $tier1 = @(
     "10_LAYERS",                     # 바른 원출력 CSV·빈도사전·gold 등
+    "00_RAW\dialogue_json",          # 모두의말뭉치 전사 JSON 원본 (사용자 지시 7/20 — SSD에도 동봉)
     "20_AUDIO\03_wav",               # wav 585만 + 어절 lab (최대 항목, ~290GB)
     "20_AUDIO\06_textgrid_merged",   # 기존 3-tier (병합의 형태소 출처, 읽기전용)
     "20_AUDIO\06_textgrid_eojeol",   # 어절 4-tier (있는 만큼)
