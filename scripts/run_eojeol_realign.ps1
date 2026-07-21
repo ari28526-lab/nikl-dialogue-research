@@ -162,7 +162,14 @@ foreach ($y in $years) {
                 Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
             }
         }
-        if (-not $ok) { Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — 중단, 사람 확인 필요"; return }
+        if (-not $ok) {
+            # ★ 실패해도 temp는 회수 (2026-07-21): 이전엔 실패 종료 시 정리 없이 return해서
+            #   찌꺼기가 작업드라이브에 쌓이고, 그게 여유공간을 깎아 다음 실행 때 워크드라이브
+            #   선택(C:↔D:)이 예기치 않게 바뀌는 부작용이 있었음(실측: 여유 40GB 문턱 아래로).
+            Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
+            Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp 정리 후 중단, 사람 확인 필요"
+            return
+        }
         New-Item -ItemType File -Force $doneMark | Out-Null
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
         Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
