@@ -30,14 +30,17 @@ $tier1 = @(
     "00_RAW\dialogue_json",          # 모두의말뭉치 전사 JSON 원본 (사용자 지시 7/20 — SSD에도 동봉)
     "20_AUDIO\03_wav",               # wav 585만 + 어절 lab (최대 항목, ~290GB)
     "20_AUDIO\06_textgrid_merged",   # 기존 3-tier (병합의 형태소 출처, 읽기전용)
-    "20_AUDIO\06_textgrid_eojeol",   # 어절 4-tier (있는 만큼)
     "mfa_eojeol"                     # done 마커·로그·격리(quarantine)
 )
+# ★어절 재정렬 산출물 (2026-07-20): 재정렬이 아직 한 번도 완주 못 해 D:에 폴더
+#   자체가 없는 게 정상(재정렬 성공분마다 채워짐) → 필수 항목이 아니라 "있으면
+#   복사"로 분리. Tier1에 넣으면 미존재를 실패로 오판(7/20 실제 발생).
+$optional = @("20_AUDIO\06_textgrid_eojeol")
 # Tier2: 원본·아카이브·현상 (SSD 용량 여유 시 — 안 옮겨도 HDD가 백업으로 보존)
 # ※변수명 주의: PS는 대소문자 무구분 — 스위치 $Tier2와 겹치지 않게 $tier2Dirs (7/20 버그 수정)
 $tier2Dirs = @("00_RAW", "20_AUDIO\05_mfa_output", "30_PHENOMENA", "90_ARCHIVE")
 
-$targets = $tier1; if ($Tier2) { $targets += $tier2Dirs }
+$targets = $tier1 + $optional; if ($Tier2) { $targets += $tier2Dirs }
 $failed = @()
 foreach ($rel in $targets) {
     $s = Join-Path $src $rel
