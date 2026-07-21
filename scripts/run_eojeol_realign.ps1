@@ -119,6 +119,15 @@ foreach ($y in $years) {
             $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
                  -RedirectStandardError $errFile
             $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
+            # ★ 교착(hang) 자동 감지·복구 (2026-07-21): stderr 텍스트가 안 바뀌는 것만으론
+            #   판단 불가(품질분석 단계는 일하면서도 몇 분씩 새 줄이 안 뜸 — 실측 오판 사례).
+            #   대신 mfa/python 프로세스의 누적 CPU 시간을 감시 — 진짜 교착이면 CPU가 전혀
+            #   안 늘어남(실측: 2020 품질분석 단계가 15초간 CPU 변화 0으로 확인됨). CPU가
+            #   $stallMinutes분 동안 단 1초도 안 늘면 강제종료 → 이어가기/재시도로 자동 복구.
+            #   (참고: analyze_alignments 자체는 아래 align.py 패치로 이제 호출 안 되지만,
+            #   앞으로 다른 미지의 hang에도 같은 방식으로 자동 대응하기 위한 일반 안전망.)
+            $stallMinutes = 15
+            $lastCpu = -1; $lastCpuChange = Get-Date; $watchdogKilled = $false
             while (-not $p.HasExited) {
                 Start-Sleep -Seconds 60
                 $tail = ""
@@ -136,16 +145,24 @@ foreach ($y in $years) {
                     $fs.Close()
                 } catch {}
                 Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
+                $curCpu = (Get-Process mfa,python -ErrorAction SilentlyContinue | Measure-Object CPU -Sum).Sum
+                if ($curCpu -ne $lastCpu) { $lastCpu = $curCpu; $lastCpuChange = Get-Date }
+                elseif (((Get-Date) - $lastCpuChange).TotalMinutes -ge $stallMinutes) {
+                    Say "!! $y MFA CPU ${stallMinutes}분간 무변화 — 교착 추정, 강제종료 후 자동 재시도"
+                    try { $p.Kill() } catch {}
+                    $watchdogKilled = $true
+                }
             }
             $p.WaitForExit()
-            if ($p.ExitCode -eq 0) { $ok = $true; break }
-            Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"
+            if (-not $watchdogKilled -and $p.ExitCode -eq 0) { $ok = $true; break }
+            if ($watchdogKilled) { Say "!! $y MFA 교착으로 강제종료됨 — traceback 없음(정상, hang은 예외를 안 남김)" }
+            else { Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile" }
             if (-not $doClean) {
                 Say "$y 이어가기 실패 → temp 비우고 --clean 전체로 재시도"
                 Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
             }
         }
-        if (-not $ok) { Say "!! $y MFA 최종 실패 — 중단"; return }
+        if (-not $ok) { Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — 중단, 사람 확인 필요"; return }
         New-Item -ItemType File -Force $doneMark | Out-Null
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
         Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
