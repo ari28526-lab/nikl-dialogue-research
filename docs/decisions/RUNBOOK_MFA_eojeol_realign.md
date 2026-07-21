@@ -180,6 +180,46 @@ CPU 0·디스크 idle·로그 무갱신이 1.5시간+ 지속(job별 상세 로�
   있는지 확인 ③의심되면 `C:\mfa_tmp\{year}\alignment\log\*.job.log`류 개별
   워커 로그의 최종 타임스탬프 대조(집계 로그보다 신뢰도 높음).
 
+## ★2020 MFA 정렬 완주 + 병합 버그 발견·수정 (2026-07-21, SSD+C:workDrive)
+analyze_alignments 제거 패치 적용 후 2020 재실행: 로딩 14분 → 정렬 준비
+72분 → 그래프 컴파일 6분 → **실제 정렬(Viterbi) 57분 완주**(869,132/869,733,
+오류 601건=0.07%, WinError 1314 심볼릭링크 권한 경고는 무해·정렬에 영향
+없음) → alignments 수집 → **export까지 전부 통과, MFA align 최초 완주**.
+- **병합(3/3) 단계에서 신규 버그 발견**: `realign_eojeol_merge_output.py`의
+  `load_forms` 호출이 세션 CSV를 모을 때 `_`로 시작하는 파일을 안 걸러서
+  `_speakers.csv`(화자 메타데이터: id/age/sex/...— form 컬럼 없음)를 세션
+  파일로 오인 → `KeyError: 'form'`. **6개년 전부에 `_speakers.csv` 존재
+  확인** — 미수정 시 2021~2025 병합도 전부 같은 지점에서 실패했을 구조적
+  버그. 조치: glob에 `if not p.name.startswith("_")` 필터 추가(다른
+  스크립트들의 기존 관례와 통일). 실데이터 재검증 통과(870,437 form 로드,
+  세션당 ~200/s로 TextGrid 생성).
+
+## 사전 점검 (2026-07-21, 2020 완주 직후 — 남은 2021-2025 리스크 선제 확인)
+`_speakers.csv` 사고 계기로 나머지 연도에서 재발할 만한 것들을 미리 훑음:
+- **다른 CSV glob 코드 전수 감사**: 리포 내 `RAW.glob("*.csv")` 유형 호출
+  13곳 전수 확인 — `realign_eojeol_merge_output.py` 외 **전부 이미
+  `if not p.name.startswith("_")` 필터 보유**(build_pilot_corpus·
+  build_freq_dictionaries·merge_textgrid_v2·retrofit_textgrid_2020_2024·
+  validate_with_multilayer 등). 딱 이 파일 하나만 예외였고 이제 수정 완료
+  — 동일 유형 재발 없음 확정.
+- **WinError 1314(심볼릭링크 권한) 무해 확인**: MFA 소스
+  (`alignment/multiprocessing.py` symlink_to 호출부)에 이미
+  `except OSError: shutil.copyfile(...)` 폴백이 있어 실패해도 파일 복사로
+  대체됨 — 데이터 손실 아님, 조치 불필요(매년 반복돼도 무시 가능).
+- **연도별 규모 격차 확인**(wav 실측, 세션 재구성 후):
+  2020 870,158 · **2021 1,416,216(2020의 1.63배, 최대)** · 2022 878,157 ·
+  2023 677,397 · 2024 728,281 · 2025 587,174 (합 515만대 — 문서상 "585만"과
+  약간 차이, 계수 기준 차이로 추정·중요하지 않음). **2021은 로딩·정렬 시간이
+  2020(로딩 14분+정렬 57분) 대비 비례해 더 걸릴 것으로 예상**(로딩 ~23분,
+  정렬 ~1.5h 안팎 추산) — 실패 아니니 오래 걸려도 정상. temp 용량은 C: 여유
+  50GB 기준 여유(연도당 정리되므로 누적 없음, 2021도 30GB 미만 하강 없이
+  안전할 것으로 추산).
+- **★2020 최초 완주 확정**: MFA align 869,132/869,733 성공(오류 601=0.07%),
+  병합 생성 869,132 / 건너뜀 0 / 실패 0 / 형태소tier없음 2. 목적지
+  `D:\20_AUDIO\06_textgrid_eojeol\2020`에 TextGrid 869,132개 실물 확인,
+  표본 파일 4-tier(words/phones/morphemes/utterance) 구조 정상. 어절 전량
+  재정렬 파이프라인이 처음으로 연도 하나를 끝까지 완주(2020~2025 중 1/6).
+
 ## 새 기기 셋업 시 필수 반영 사항 (2026-07-21 추가)
 새 미니PC/노트북에 MFA를 새로 설치할 때 반드시 아래를 재적용:
 1. `command_line/align.py`의 `align_corpus_cli`·`align_corpus_hf_cli` 두 곳

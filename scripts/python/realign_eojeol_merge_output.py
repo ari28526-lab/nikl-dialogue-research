@@ -113,7 +113,8 @@ def main() -> int:
         sys.exit(f"어절 재정렬 출력 없음: {src_year}")
     print(f"[{args.year}] form 로드 (전 세션)...", flush=True)
     forms = load_forms(args.year, {p.stem for p in
-                                   (RAW / YEAR_DIRS[args.year]).glob("*.csv")})
+                                   (RAW / YEAR_DIRS[args.year]).glob("*.csv")
+                                   if not p.name.startswith("_")})
     print(f"  form {len(forms):,}개", flush=True)
 
     made = skipped = failed = morph_missing = 0

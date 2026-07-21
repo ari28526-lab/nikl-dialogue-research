@@ -62,7 +62,7 @@
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
 | realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화) | 검증 완료 |
-| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 4-tier → 06_textgrid_eojeol | 검증 완료 |
+| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 4-tier → 06_textgrid_eojeol | 2026-07-21: `_speakers.csv`(화자 메타, form 없음) 오인 KeyError 수정 — glob에 `_`제외 필터 추가(6개년 전부 해당 파일 존재, 안 고쳤으면 전 연도 실패) |
 | run_eojeol_realign.ps1 | 연도별 일괄 러너 (lab→align→merge, .done 재개, **temp=C:\mfa_tmp**+공간 가드, MFA stderr 파일 캡처+1분 하트비트) | 실행 중 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — MFA 로딩 전체 실패 방지. dry-run 기본, --apply 이동(짝 lab 동반, CSV 기록) | 검증 완료 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
