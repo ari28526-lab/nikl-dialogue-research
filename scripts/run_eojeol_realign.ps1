@@ -25,21 +25,27 @@ $wavRoot = "D:\20_AUDIO\03_wav\individual"
 # ★ 병렬 자동 (2026-07-19): 논리코어 12+(i5-1240P=16) → 8job, 그 외(N200=4) → 4job.
 #   세션=화자 재구성 후에야 유효 — 1화자면 MFA가 어차피 1job으로 강등함.
 $numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
-# ★ 작업 드라이브 자동 (2026-07-19): temp·MFA 원출력을 둘 빠른 디스크 선택.
-#   구 기기: C:(SSD, 여유 ~48GB) → C: 사용 / 새 노트북: C: 여유 ~22GB뿐 → D:(외장 SSD).
-#   판정: C: 여유 40GB 이상이면 C:, 아니면 D:. (구 기기에서 C:가 40GB 밑으로 떨어지면
-#   D:=USB HDD로 넘어가 느려지므로 그땐 C:를 정리할 것.)
-$workDrive = if ((Get-PSDrive C).Free / 1GB -ge 40) { "C:" } else { "D:" }
-$out     = "$workDrive\mfa_eojeol_out"
+# ★ 작업 드라이브 자동 — 연도별 재평가 (2026-07-19 도입, 2026-07-22 연도별로 전환):
+#   원래 스크립트 시작 시 1회만 정했으나, 연도별 규모 격차가 커서(2021이 2020의
+#   1.63배) 실행 도중 C: 여유가 40GB 밑으로 떨어지는 사례 발생 → 전역 1회 결정이면
+#   그 뒤 연도부터 자동으로 D:로 넘어가되, **이미 특정 드라이브에 만들어진 temp가
+#   있으면(중단 후 재개) 그 드라이브를 최우선 사용** — 안 그러면 완주한 정렬 계산
+#   (연도당 최대 3시간+)이 든 temp를 못 찾고 새로 --clean 시작해버림(2021 실측 사고).
+#   판정 순서: ① C:\mfa_tmp\{연도} 있으면 C: ② D:\mfa_tmp\{연도} 있으면 D:
+#   ③ 신규 연도는 C: 여유 40GB 이상이면 C:, 아니면 D:.
+function Get-WorkDrive($year) {
+    if (Test-Path "C:\mfa_tmp\$year") { return "C:" }
+    if (Test-Path "D:\mfa_tmp\$year") { return "D:" }
+    if ((Get-PSDrive C).Free / 1GB -ge 40) { return "C:" }
+    return "D:"
+}
 $doneDir = "D:\mfa_eojeol\done"
 New-Item -ItemType Directory -Force $doneDir | Out-Null
 # temp: MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·DB를 계속 읽음.
-#   연도당 temp ~20-35GB 추정, --clean이라 연도마다 비워짐. 여유 30GB 미만이면 중단.
-$tmp     = "$workDrive\mfa_tmp"
+#   연도당 temp ~15-35GB(2021 실측 33GB), --clean이라 연도마다 비워짐. 여유 30GB 미만이면 중단.
 $minTmpFreeGB = 30
 $logDir  = "D:\mfa_eojeol\logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null
-New-Item -ItemType Directory -Force $out    | Out-Null
 $log = Join-Path $logDir ("eojeol_realign_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
 
 function Say($m) { $l = "[$(Get-Date -Format 'MM-dd HH:mm:ss')] $m"; Write-Host $l -ForegroundColor Cyan; Add-Content $log $l -Encoding UTF8 }
@@ -67,6 +73,13 @@ foreach ($y in $years) {
     Say "$y [1/3] lab 생성 (아래 진행줄 실시간)..."
     & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") --year $y
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; return }
+
+    # 연도별 작업 드라이브 결정(기존 temp 우선 — 위 Get-WorkDrive 참조). align이
+    # 이미 끝난 연도라도 아래 병합(3/3) 단계에 $out이 필요하므로 if/else 밖에서 계산.
+    $workDrive = Get-WorkDrive $y
+    $out = "$workDrive\mfa_eojeol_out"
+    $tmp = "$workDrive\mfa_tmp"
+    New-Item -ItemType Directory -Force $out | Out-Null
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
@@ -119,15 +132,19 @@ foreach ($y in $years) {
             $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
                  -RedirectStandardError $errFile
             $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
-            # ★ 교착(hang) 자동 감지·복구 (2026-07-21): stderr 텍스트가 안 바뀌는 것만으론
-            #   판단 불가(품질분석 단계는 일하면서도 몇 분씩 새 줄이 안 뜸 — 실측 오판 사례).
-            #   대신 mfa/python 프로세스의 누적 CPU 시간을 감시 — 진짜 교착이면 CPU가 전혀
-            #   안 늘어남(실측: 2020 품질분석 단계가 15초간 CPU 변화 0으로 확인됨). CPU가
-            #   $stallMinutes분 동안 단 1초도 안 늘면 강제종료 → 이어가기/재시도로 자동 복구.
-            #   (참고: analyze_alignments 자체는 아래 align.py 패치로 이제 호출 안 되지만,
-            #   앞으로 다른 미지의 hang에도 같은 방식으로 자동 대응하기 위한 일반 안전망.)
+            # ★ 교착(hang) 자동 감지·복구 (2026-07-21 도입, 2026-07-22 오판 수정):
+            #   stderr 텍스트 무변화만으론 판단 불가(정상 단계도 몇 분씩 새 줄 없음 — 실측
+            #   오판 사례). 1차로 "CPU 완전 무변화"를 썼으나 이것도 실패: 2021에서 export
+            #   워커 스레드가 예외로 죽어 메인 스레드가 영원히 대기하는 진짜 교착인데도,
+            #   다른 스레드의 미세한 폴링 활동 때문에 60초마다 CPU가 1~2초씩 계속 늘어
+            #   "무변화" 조건이 한 번도 안 걸리고 4.5시간 그대로 방치됨(실측).
+            #   → **누적 증가량 기준**으로 교체: 최근 $stallMinutes분 동안 늘어난 CPU
+            #   시간이 ${stallMinCpuSec}초 미만이면 교착으로 판정(정상 작업은 스레드
+            #   여러 개가 몇 분 새 최소 이 정도는 반드시 씀 — 노이즈 수준을 크게 웃돎).
             $stallMinutes = 15
-            $lastCpu = -1; $lastCpuChange = Get-Date; $watchdogKilled = $false
+            $stallMinCpuSec = 10
+            $cpuHistory = New-Object System.Collections.Generic.List[object]
+            $watchdogKilled = $false
             while (-not $p.HasExited) {
                 Start-Sleep -Seconds 60
                 $tail = ""
@@ -145,10 +162,15 @@ foreach ($y in $years) {
                     $fs.Close()
                 } catch {}
                 Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
+                $now = Get-Date
                 $curCpu = (Get-Process mfa,python -ErrorAction SilentlyContinue | Measure-Object CPU -Sum).Sum
-                if ($curCpu -ne $lastCpu) { $lastCpu = $curCpu; $lastCpuChange = Get-Date }
-                elseif (((Get-Date) - $lastCpuChange).TotalMinutes -ge $stallMinutes) {
-                    Say "!! $y MFA CPU ${stallMinutes}분간 무변화 — 교착 추정, 강제종료 후 자동 재시도"
+                $cpuHistory.Add([PSCustomObject]@{ Time = $now; Cpu = $curCpu })
+                while ($cpuHistory.Count -gt 0 -and ($now - $cpuHistory[0].Time).TotalMinutes -gt ($stallMinutes + 2)) {
+                    $cpuHistory.RemoveAt(0)
+                }
+                $old = $cpuHistory | Where-Object { ($now - $_.Time).TotalMinutes -ge $stallMinutes } | Select-Object -First 1
+                if ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) {
+                    Say "!! $y MFA 최근 ${stallMinutes}분간 CPU 증가 ${stallMinCpuSec}초 미만 — 교착 추정, 강제종료 후 자동 재시도"
                     try { $p.Kill() } catch {}
                     $watchdogKilled = $true
                 }
