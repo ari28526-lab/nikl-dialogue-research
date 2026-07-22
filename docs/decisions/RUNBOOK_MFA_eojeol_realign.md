@@ -246,14 +246,35 @@ analyze_alignments 제거 패치 적용 후 2020 재실행: 로딩 14분 → 정
   C:\mfa_tmp\2021(완주된 정렬 DB 포함, 33.3GB)을 D:\mfa_tmp\2021로 이동해
   재계산 3시간+ 손실 방지.
 
+## 추가 예방 점검 (2026-07-22, 사용자 요청 — 재발 가능한 버그 선제 확인)
+같은 유형(대용량 IN 쿼리, 워커 스레드가 예외로 죽어 메인이 무한 대기)이
+다른 데도 있는지 MFA 전체 소스 훑음:
+- **`.in_(` 전수 검색**(70곳+): 우리 파이프라인(`mfa align`, --subset 미사용)이
+  실제로 타는 코드 중 코퍼스 크기에 비례해 커지는 건 `construct_textgrid_output`
+  뿐(이미 수정). 나머지는 ①서브쿼리(파라미터 안 씀, 안전) ②사전/음소타입 등
+  **크기 고정** 목록(어휘·enum, 안전) ③`--subset`·화자분리·전사 등 우리가 안 쓰는
+  기능 전용 코드(도달 안 함) — 추가 조치 불필요.
+- **export 워커 구조 강화**: `ExportTextGridProcessWorker.run()` 전체를
+  try/finally로 감싸 **어떤 예외로 죽어도 `finished_processing`이 반드시
+  찍히게** 함 — 특정 버그(output_path) 하나만 막는 대증치료가 아니라 "이
+  워커가 죽으면 메인이 무한 대기"라는 구조적 약점 자체를 제거. 코퍼스 로딩
+  워커(`corpus/multiprocessing.py`)는 원래부터 이 패턴이라 안전했음(대조 확인).
+- `collect_alignments`(2021에서 2082초 걸린 벌크 삽입)는 별개의 공용 실행기
+  `run_kaldi_function`을 씀 — 여러 기능이 공유하는 더 성숙한 코드경로라
+  자체 조사는 낮은 우선순위로 보류(이미 2021 규모에서 실제로 성공 확인됨).
+
 ## 새 기기 셋업 시 필수 반영 사항 (2026-07-21 추가)
 새 미니PC/노트북에 MFA를 새로 설치할 때 반드시 아래를 재적용:
 1. `command_line/align.py`의 `align_corpus_cli`·`align_corpus_hf_cli` 두 곳
    에서 `aligner.analyze_alignments()` 호출을 제거(위 패치, 이유 상동).
-2. `alignment/multiprocessing.py`의 export 워커 `run()`에서
-   `for output_path in construct_textgrid_output(...)` 직전에
-   `output_path = None` 초기화 추가(2026-07-22 패치, 이유 상동 섹션 참조).
-   순정 설치 직후엔 둘 다 diff 0 상태이므로 **매번 수동 재적용 필요** — 자동화
+2. `alignment/multiprocessing.py`의 `ExportTextGridProcessWorker.run()` —
+   `output_path = None` 초기화 + **전체를 try/finally로 감싸
+   `finished_processing.set()`을 finally에서 보장**(2026-07-22 패치 2건,
+   이유 상동 섹션 참조).
+3. `textgrid.py`의 `construct_textgrid_output`을 청크 래퍼로 분리
+   (`_construct_textgrid_output_impl`로 원본 로직 이동, 50,000개씩 처리) —
+   SQLite "too many SQL variables" 방지.
+   순정 설치 직후엔 셋 다 diff 0 상태이므로 **매번 수동 재적용 필요** — 자동화
    스크립트 미작성(코드 몇 줄이라 저비용, 필요시 요청).
 
 ## 기기 이전 결정 (2026-07-18) — 외장 SSD + 상위 기기로 이전 예정
