@@ -69,6 +69,14 @@ Say "어절 재정렬 시작 (실시간 출력). 진행줄이 화면에 바로 �
 foreach ($y in $years) {
     Say "===== $y 시작 ====="
 
+    # ★ 완료 연도 즉시 건너뜀 (2026-07-22): 재시작이 잦아 완료 연도마다 lab 재확인
+    #   (30~60초)이 누적되던 것을 제거 — 두 마커 다 있으면 lab·wav스캔조차 안 하고 바로 통과.
+    if ((Test-Path (Join-Path $doneDir "$y.align_done")) -and
+        (Test-Path (Join-Path $doneDir "$y.merge_done"))) {
+        Say "$y 이미 전부 완료 — 즉시 건너뜀"
+        continue
+    }
+
     # 1) 어절 lab 제자리 생성 — 파이썬이 10세션마다 '발화/s·남은분' 실시간 출력
     Say "$y [1/3] lab 생성 (아래 진행줄 실시간)..."
     & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") --year $y
@@ -176,9 +184,21 @@ foreach ($y in $years) {
                 }
             }
             $p.WaitForExit()
-            if (-not $watchdogKilled -and $p.ExitCode -eq 0) { $ok = $true; break }
-            if ($watchdogKilled) { Say "!! $y MFA 교착으로 강제종료됨 — traceback 없음(정상, hang은 예외를 안 남김)" }
-            else { Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile" }
+            # ★ 거짓 성공 방지 (2026-07-22): MFA는 export 단계에서 배치 전체가 실패해도
+            # (output_errors.txt로만 기록) exit 0을 반환함 — 2021 실측(too many SQL
+            # variables로 137만 건 전부 실패했는데 exit 0이라 "성공"으로 오판, temp
+            # 삭제로 3.26h짜리 완주 정렬까지 날아감). exit 0이어도 실제 TextGrid가
+            # 하나도 없으면 성공으로 인정하지 않음(temp 보존 → 재시도 시 이어가기 가능).
+            if (-not $watchdogKilled -and $p.ExitCode -eq 0) {
+                $anyTg = [IO.Directory]::EnumerateFiles((Join-Path $out $y), "*.TextGrid",
+                         [IO.SearchOption]::AllDirectories) | Select-Object -First 1
+                if ($anyTg) { $ok = $true; break }
+                Say "!! $y MFA exit 0이나 TextGrid 출력 0건 — 거짓 성공으로 판단, temp 보존 후 재시도"
+            } elseif ($watchdogKilled) {
+                Say "!! $y MFA 교착으로 강제종료됨 — traceback 없음(정상, hang은 예외를 안 남김)"
+            } else {
+                Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"
+            }
             if (-not $doClean) {
                 Say "$y 이어가기 실패 → temp 비우고 --clean 전체로 재시도"
                 Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
