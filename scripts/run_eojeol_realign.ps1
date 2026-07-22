@@ -177,6 +177,14 @@ foreach ($y in $years) {
                     $cpuHistory.RemoveAt(0)
                 }
                 $old = $cpuHistory | Where-Object { ($now - $_.Time).TotalMinutes -ge $stallMinutes } | Select-Object -First 1
+                # ★ 완주 직후 오살 방지 (2026-07-23 실사고): MFA가 "Done!"까지 찍고 막판
+                #   정리(파일 flush·DB 종료 등) 중 CPU가 잠깐 낮아진 순간을 교착으로
+                #   오판해 강제종료 — 2021 137만 건 전량 정상 export 완료 직후였음
+                #   (temp만 날아감, 실제 출력은 무사했지만 위험한 우연). "Done!"류
+                #   완주 신호가 보이면 죽이지 않고 자연 종료를 더 기다림.
+                if ($tail -match 'Done!|Everything took') {
+                    continue
+                }
                 if ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) {
                     Say "!! $y MFA 최근 ${stallMinutes}분간 CPU 증가 ${stallMinCpuSec}초 미만 — 교착 추정, 강제종료 후 자동 재시도"
                     try { $p.Kill() } catch {}
