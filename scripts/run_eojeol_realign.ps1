@@ -187,7 +187,11 @@ foreach ($y in $years) {
                 #   오판해 강제종료 — 2021 137만 건 전량 정상 export 완료 직후였음
                 #   (temp만 날아감, 실제 출력은 무사했지만 위험한 우연). "Done!"류
                 #   완주 신호가 보이면 죽이지 않고 자연 종료를 더 기다림.
-                if ($tail -match 'Done!|Everything took') {
+                # ★ G2P 오살 방지 (2026-07-23): 'Generating pronunciations'는 사전·
+                #   FST 빌드/헬퍼 단계라 mfa·python CPU가 거의 안 오름 → 교착으로 오판돼
+                #   완주 중인 정렬을 죽이고 --clean 루프에 빠지는 사고 확인. 이 단계에선
+                #   죽이지 않고 자연 진행을 기다림(g2p 추가 후 새로 생긴 구간).
+                if ($tail -match 'Done!|Everything took|Generating pronunciations') {
                     continue
                 }
                 if ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) {
