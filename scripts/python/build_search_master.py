@@ -34,6 +34,32 @@ csv.field_size_limit(10_000_000)
 MISSING = "미상"
 EOJEOL_SEP = " | "
 
+# 투명성: 산출과 함께 _build_meta.json에 "무슨 도구·자료·규칙으로 만들었나" 기록.
+BUILD_PROVENANCE = {
+    "layer": "05_search_master v1 (예측 발음열)",
+    "표기_규약": "음소=공백 · 음절='_' · 형태소='+' · 어절='|' · 자리표시='∅' · 초성 대문자·종성 소문자",
+    "입력_레이어": {
+        "형태소분석(form/tagged)": {
+            "source": "D:/10_LAYERS/01_bareun_raw",
+            "tool": "바른(Bareun), 바이칼AI 클라우드 API",
+            "client": "bareunpy 2.0.1 / Python 3.13",
+            "run": "2026-07-09~10 (2020-2025 6개년 단일 실행, 동일 서버 모델)",
+            "engine_version": "미고정 — 논문용 버전 문자열 확인 요망(METHODS §2 TODO)",
+            "coverage": "17,156 파일=원본 JSON 전수, 총 5,103,358 발화, 빈 분석 0",
+            "validation": "형태소 F1 0.929 (2024/다층위 2025 gold 대조)",
+        },
+        "문서메타": "D:/10_LAYERS/04_metadata_index/file_meta.csv (category_norm·discourse_mode·topic·relation·date·in_ml2025_gold)",
+        "화자메타": "D:/10_LAYERS/04_metadata_index/speakers_normalized.csv (_norm 컬럼)",
+        "원전사·시간·비고": "D:/00_RAW/dialogue_json (original_form·start·end·note)",
+        "IPA표": "D:/10_LAYERS/03_freq_dictionaries/_roman_mfa_to_ipa.csv (빈도사전 공유)",
+    },
+    "예측발음_규칙": {
+        "적용순서": "격음화→ㅎ탈락→구개음화→연음→중화→겹받침단순화→비음/유음→경음화(+용언 어간+어미 경음화)",
+        "미적용(수의)": "ㄹ비음화·ㄴ삽입·합성어경음화·위치동화 등",
+        "테스트": "predict_pron.py --selftest 30/30 통과",
+    },
+}
+
 # 출력 컬럼(설계 §2 순서). tagged_roman은 --tagged-roman 시 form_roman 뒤 삽입.
 BASE_COLS = [
     "utt_id", "year", "session_id", "utt_seq",
@@ -335,8 +361,14 @@ def summarize(grand, lines, report):
     verdict = "✅ 검증 통과" if (row_ok and eoj_ok) else "★ 검토 필요"
     lines += ["", f"판정: {verdict}"]
     report.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # 투명성 기록: 어떤 도구·자료·규칙으로 만든 CSV인지 산출 옆에 남김.
+    meta = {"generated_at": datetime.now().isoformat(timespec="seconds"),
+            "verdict": verdict, "totals": grand, **BUILD_PROVENANCE}
+    meta_path = P("search_master") / "_build_meta.json"
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2),
+                         encoding="utf-8")
     print("\n".join(lines[-9:]))
-    print(f"\n보고서: {report}")
+    print(f"\n보고서: {report}\n출처 기록: {meta_path}")
     return 0 if (row_ok and eoj_ok) else 1
 
 
