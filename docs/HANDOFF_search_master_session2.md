@@ -79,3 +79,23 @@ python scripts\python\build_search_master.py
 - 스크립트·문서 커밋됨(main). 신규: predict_pron·build_search_master·measure_spn·
   build_g2p_pilot_corpus·stitch_session + run_eojeol_realign.ps1(g2p) + 이 문서.
 - push는 미실행(사용자 지시 대기). claude.ai 프로젝트 지식 최신화하려면 push 필요.
+
+## 7. TextGrid tier 결정 + 온디맨드 enrichment (2026-07-23 세션3)
+
+**결정 (1)**: 전량 `06_textgrid_eojeol`은 표준 4-tier(words/phones/morphemes/
+utterance) 그대로 유지. 어절/형태소 철자 로마자·예측발음 등 파생값은 검색마스터
+CSV(05_search_master)에 이미 있고 utt_id로 조인되므로 585만 tier에 상시 넣지
+않는다. 이유: (a) 검색·집계는 Parquet/DuckDB에서 하지 Praat에서 안 함, (b) 파생값을
+~4일짜리 재정렬 층에 결합하면 규칙 한 번 바뀔 때 전량 재생성, (c) phones tier는 이미
+로마자라 발음 로마자는 이미 있음. 형태소 tier 품사태그 상시 포함은 보류(옵션).
+
+**추가 도구**: `scripts/python/enrich_textgrid_ondemand.py` — 분석 대상 발화
+(`--session`/`--utt`/`--hitlist`)에만 CSV에서 `pron_pred_hangul,pron_pred_roman,
+form_roman,tagged` tier를 phones 아래 얹은 **사본**을 `--out`(기본 C:\enriched_textgrid)에
+생성. 원본 불변. words tier 경계 미러 + 어절수 불일치 시 발화 1구간 `[align≠]` 폴백
+(조용한 오정렬 금지). paths.py 사용. 운율 5번째 tier와 같은 온디맨드 방식.
+
+**상태**: `--selftest` 통과(합성 4케이스: 정렬/폴백/공백/미분할).
+★**검증 대기**: 실제 CSV로 `--session <세션> --dry-run` 1회 돌려 각 컬럼 어절
+구분자 가정(roman=`|`, 한글=공백, tagged=미분할) 확정 — **MFA 등 D: 배치 끝난 뒤**.
+스크립트는 아직 미커밋(사용자 지시 대기).
