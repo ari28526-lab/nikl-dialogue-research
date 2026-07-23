@@ -133,8 +133,13 @@ foreach ($y in $years) {
             $mode = if ($doClean) { "--clean 전체" } else { "이어가기(temp 재사용)" }
             Say "$y [2/3] MFA 정렬 — $mode (num_jobs $numJobs, temp=$tmp 여유 ${freeGB}GB, 진행=1분 하트비트)..."
             if (Test-Path $errFile) { Move-Item $errFile "$errFile.prev" -Force }
+            # G2P 추가 (2026-07-23): korean_mfa 사전에 없는 활용형(것을·다니는 등)이
+            #   phones에서 spn으로 버려지던 문제 해결 — 파일럿 spn 27.5->0%, 것을=[거슬] 확인.
+            #   사전·음향모델과 동일 버전 g2p 모델. align.py em-dash 패치(export 직전 crash)도 수정 완료.
+            #   ※ 2020·2021 재작업하려면 D:\mfa_eojeol\done\*.align_done/*.merge_done 삭제 후 실행.
             $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
                        (Join-Path $out $y), '--num_jobs', "$numJobs", '--no_tokenization',
+                       '--g2p_model_path', 'korean_mfa',
                        '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
             if ($doClean) { $aArgs += '--clean' }
             $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `

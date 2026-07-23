@@ -149,3 +149,21 @@
 ## 미해결 (2026-07-15 기준)
 TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 definition
 검토, 바른 구독 해지. 결정 대기: 2023 재정렬(보류 권고), 산출물 G: 백업(승인 대기).
+
+## 2026-07-23 (오후) — 검색 마스터 v1 파일럿 + MFA G2P 검증 (Claude 세션)
+
+- **검색 마스터 v1 구현·파일럿**: `predict_pron.py`(필수 규칙 G2P, 단위테스트 30/30),
+  `build_search_master.py`(세션 CSV·검증 내장). 2020 3세션·1,297발화 검증 통과.
+- **사용자 결정 확정 반영**: 용언 어간+어미 경음화 ON, ㄹ비음화 OFF(보류), 표기 4단
+  위계(음소 공백/음절 `_`/형태소 `+`/어절 `|`), 자리표시 `∅`, tagged_roman 정본 on
+  (ㄴ삽입 검색용 `[자음]/N… + (I|Y)`).
+- **MFA G2P 파일럿 성공**: g2p korean_mfa 다운로드. `mfa align --g2p_model_path korean_mfa`
+  로 2020 SDRW2000000001(479발화) 재정렬 → **phones spn 27.5%→0.0%**, 것을=[거슬]
+  (k ʌ sʰ ɨ ɭ) 시간정렬 확인. `measure_spn.py`·`build_g2p_pilot_corpus.py`.
+- **align.py 버그 수정**: 7/21 패치 print의 em-dash(—)가 cp949 콘솔서 UnicodeEncodeError
+  로 export 직전 crash → `—`→`--` 2곳 수정. `run_eojeol_realign.ps1`에 `--g2p_model_path
+  korean_mfa` 추가(전량 재정렬 대비).
+- **stitch_session.py**: 원본 연속 녹음 부재 대비 — 발화 클립을 utt_id 순 이어붙여
+  연속 wav+정렬 TextGrid 재구성. 9발화 데모 검증.
+- 다음 세션용 핸드오프: `docs/HANDOFF_search_master_session2.md`. 남은 것: v1 CSV 전량
+  생성(밤샘, HDD 불필요) → MFA G2P 전량 재정렬(~4일). HDD는 7/24 13:00, reference 회수용(독립).
