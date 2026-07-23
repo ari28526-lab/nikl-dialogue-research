@@ -196,7 +196,10 @@ def build_row(u, year, meta, spk, extra, ipa_map, opts, stats):
     if d["align_warn"]:
         stats["align_warn"] += 1
     if opts.get("tagged_roman"):
-        row["tagged_roman"] = "" if d["align_warn"] else tagged_to_roman(tagged)
+        # tagged_roman = 형태소분석(tagged) 자체 구조의 로마자화 → form 정렬과 무관.
+        # align_warn(form-tagged 어절수 불일치) 행도 채운다: 형태소 경계 검색(ㄴ삽입 등)
+        # 커버리지 보존. 그 행은 pron 컬럼과 어절 위치가 1:1 대응 안 함(= align_warn이 표시).
+        row["tagged_roman"] = tagged_to_roman(tagged)
     return row
 
 def tagged_to_roman(tagged):
