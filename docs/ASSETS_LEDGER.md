@@ -76,3 +76,29 @@ GitHub·claude.ai 프로젝트 지식은 구버전 — **커밋·푸시 후 최�
 
 ---
 *이 대장의 갱신 없이 "이전 완료" 같은 상태 선언을 하지 않는다 (CLAUDE.md 규칙 9).*
+
+---
+
+## reference 4종 — 활용처와 D: 확보 계획 (★잊지 말 것, 2026-07-23)
+
+**현재**: 4종 모두 **HDD 유일본** — D:에 없음(preflight [없음]). `config/paths.json`의
+키(`reference_dictionary/mp/ls/multilayer`)는 이미 **D:\00_RAW\reference\ 하위**를
+가리키므로, HDD에서 그 위치로 회수하면 **스크립트 무수정**으로 바로 쓰인다.
+
+| reference | 실제 파일(핵심) | 무엇에 쓰이나 | 쓰는 스크립트 |
+|---|---|---|---|
+| `00_DICTIONARY` (어휘목록 **v2**) | `01_NIKL_lexicon_full_v2.csv` (word_roman_mfa) | 빈도사전의 로마자 폴백·어원(etym)·의미(sense) 조회 | build_freq_dictionaries.py, assign/supplement_sense_layer.py |
+| `01_NIKL_MP_v_1_1` (형태분석 말뭉치) | `05_ALL_word_freq.csv`·`06_ALL_morpheme_freq.csv` | 비교빈도 **freq_MP**(구어/문어) + 로마자 1순위 | build_freq_dictionaries.py |
+| `02_NIKL_LS` (어휘의미 말뭉치) | `07_ALL_word_freq.csv`·`08_ALL_morpheme_freq.csv` | 비교빈도 **freq_LS**(SXLS/전체) + **sense_id 결정** + 로마자 | build_freq_dictionaries.py, decide_sense |
+| `NIKL_Multi-layered_2025_v1.0` | `freq\ML2025_morpheme_freq.csv` | 2025 규준 비교빈도 **freq_ML2025** | build_freq_dictionaries.py, build_multilayer_freq.py, import_multilayer_gold.py |
+
+**언제 필요**: A3 빈도사전 재생성·A단계 검증·검색 마스터의 lexicon 발음 예외층 확장 시.
+**언제 불필요**(회수 전에도 진행 가능): 검색 마스터 v1(예측 발음열)·MFA G2P 재정렬은
+이 4종과 무관 — v1은 이미 D:에 있는 lexicon **v1**(`03_lexicon_1기`)만 쓴다.
+
+**D: 확보 절차(HDD 연결 시, 위 '거점 2'의 robocopy 4줄)**:
+1. HDD 연결(문자 예: E:). D: 배치 안 도는 시간.
+2. robocopy E:\00_RAW\reference\{4종} → D:\00_RAW\reference\{4종} /E  (거점 2 참조)
+3. `python scripts\python\preflight_search_master.py` 재실행 → reference [OK] 확인.
+4. 이 문서 표(거점 1) ✅로 갱신. **HDD 원본은 삭제하지 말 것**(역백업 유지, 유일본 보호).
+- 안전: 회수 후에도 D: 라벨은 DATA_SSD 유지(러너·파이프라인이 HDD 오인 방지에 씀).
