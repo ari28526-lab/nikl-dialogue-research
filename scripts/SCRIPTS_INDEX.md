@@ -74,6 +74,15 @@
 
 절차·판정 규칙: `docs/decisions/RUNBOOK_MFA_eojeol_realign.md` (가속 결정 2026-07-17 절 참조).
 
+## 검색 마스터 레이어 — 05_search_master (2026-07-23 설계, DESIGN_search_master_layer.md)
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| download_gdrive_enriched_1gi.py | 1기 enriched CSV(Drive 4.96GB) → `D:\90_ARCHIVE\1기_enriched\` 백업 (gdown 이어받기, 크기 검증) | 작성 완료·실행 대기 |
+| build_search_master.py | 발화 마스터 CSV 생성 (bareun+JSON+메타 결합, 세션별, 체크포인트) | 예정 |
+| predict_pron.py | 철자열·예측 발음열 생성 모듈 (lexicon 사전발음 + 필수 경계규칙) | 예정 |
+| build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 예정 |
+| extract_actual_pron.py | 4-tier phones → v2 실발음 레이어 (G2P 재정렬 후) | 예정 |
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장

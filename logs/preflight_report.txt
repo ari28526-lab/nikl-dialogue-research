@@ -1,0 +1,69 @@
+
+============================================================
+0. 환경
+============================================================
+  리포 루트: C:\Users\ari30\research\2026_summer_research
+  Python: 3.13.14
+
+============================================================
+1. paths.json 경로 실재 여부
+============================================================
+  [OK  ] dialogue_json          D:/00_RAW/dialogue_json
+  [OK  ] layers                 D:/10_LAYERS
+  [OK  ] audio_home             D:/20_AUDIO
+  [OK  ] wav                    D:/20_AUDIO/03_wav
+  [OK  ] textgrid_merged        D:/20_AUDIO/06_textgrid_merged
+  [OK  ] textgrid_eojeol        D:/20_AUDIO/06_textgrid_eojeol
+  [OK  ] search_master          D:/10_LAYERS/05_search_master
+  [없음] actual_pron            D:/10_LAYERS/06_actual_pron
+  [OK  ] lexicon_full           D:/00_RAW/reference/03_lexicon_1기/01_NIKL_lexicon_full.csv
+  [OK  ] enriched_1gi           D:/90_ARCHIVE/1기_enriched/01_nikl_dialogue_enriched.csv
+  [없음] reference_dictionary   D:/00_RAW/reference/00_DICTIONARY
+  [없음] reference_mp           D:/00_RAW/reference/01_NIKL_MP_v_1_1
+  [없음] reference_ls           D:/00_RAW/reference/02_NIKL_LS
+  [없음] reference_multilayer   D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0
+  [OK  ] kofren                 C:/Users/ari30/research/2026_summer_research/01_frequency_data/final_word_frequency
+  [OK  ] gdrive                 G:/내 드라이브/DATA_2026
+  [OK  ] secrets_bareun         C:/Users/ari30/Documents/Codex/_secrets/bareun
+  [OK  ] bareun_venv_python     C:/Users/ari30/Documents/Codex/2026-07-06/d/work/bareun-smoke/.venv/Scripts/python.exe
+
+  ── 해석 ──
+  · actual_pron: 신규 출력 폴더 — 스크립트가 만들므로 정상
+  · reference_dictionary: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
+  · reference_mp: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
+  · reference_ls: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
+  · reference_multilayer: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
+
+============================================================
+2. 파일럿 입력 자료
+============================================================
+  [OK] 01_bareun_raw: 연도 폴더 6개 — ['NIKL_DIALOGUE_2020_v1.4', 'NIKL_DIALOGUE_2021_v1.1', 'NIKL_DIALOGUE_2022_v1.0_JSON', 'NIKL_DIALOGUE_2023_v1.1', 'NIKL_DIALOGUE_2024_v1.0', 'NIKL_DIALOGUE_2025_v1.0']
+       2020 세션 CSV 2232개 (참조값 2,231)
+  [OK] bareun 표본(SDRW2000000001.csv): 필수 컬럼 5종 확인 (전체 5컬럼)
+  [OK] file_meta.csv: 필수 컬럼 4종 확인 (전체 12컬럼)
+  [OK] file_meta.csv (정규화 컬럼): 필수 컬럼 2종 확인 (전체 12컬럼)
+  [OK] speakers_normalized.csv: 필수 컬럼 6종 확인 (전체 17컬럼)
+  [OK] dialogue_json 표본(SARW2500000001.json): 발화 필드 확인 ['original_form', 'start', 'end', 'note']
+  [OK] lexicon v1 (발음): 필수 컬럼 7종 확인 (전체 27컬럼)
+  [OK] IPA 변환표 존재 (빈도사전과 공유): D:\10_LAYERS\03_freq_dictionaries\_roman_mfa_to_ipa.csv
+
+============================================================
+3. 출력 대상·디스크
+============================================================
+  [OK] 출력 폴더 쓰기 가능: D:\10_LAYERS\05_search_master
+  [OK] D:\ 여유 351.5GB (전량 생성 시 ~수 GB + Parquet)
+
+============================================================
+판정
+============================================================
+  ✅ 파일럿 진행 가능 — 차단 요소 없음
+
+  ── 조치 목록 ──
+  · reference_dictionary:
+      HDD 연결 후: robocopy "E:/00_RAW/reference/00_DICTIONARY" "D:/00_RAW/reference/00_DICTIONARY" /E  (E:는 HDD 문자)
+  · reference_mp:
+      HDD 연결 후: robocopy "E:/00_RAW/reference/01_NIKL_MP_v_1_1" "D:/00_RAW/reference/01_NIKL_MP_v_1_1" /E  (E:는 HDD 문자)
+  · reference_ls:
+      HDD 연결 후: robocopy "E:/00_RAW/reference/02_NIKL_LS" "D:/00_RAW/reference/02_NIKL_LS" /E  (E:는 HDD 문자)
+  · reference_multilayer:
+      HDD 연결 후: robocopy "E:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0" "D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0" /E  (E:는 HDD 문자)

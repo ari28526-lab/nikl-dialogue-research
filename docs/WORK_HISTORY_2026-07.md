@@ -120,6 +120,23 @@
   MFA 실발음 이원 구축, 1기 CSV를 SSD로 백업 예정. 2022~2025 재정렬은 보류
   (G2P 파일럿 검증 후 진행 방향 재결정)
 
+## 7/23 — 검색 마스터 설계 확정 + ★reference 미이전 발견(체계 교정)
+- **검색 마스터 레이어 설계 확정** (`DESIGN_search_master_layer.md`): 발화 1행
+  CSV에 사회변수+형태소+철자열+예측발음열, 어절 정렬(` | `), roman_mfa 체계,
+  세션 CSV+연도/전체 Parquet. 결정 4건(사용자) + A3 빈도사전 정합 검토
+  (IPA 변환표=정본 토큰집합, 로마자 3종 혼재 실측→정규화 방침)
+- **1기 산출물 실측 대조**: Drive enriched CSV(4.96GB, 표본 3k 분석) —
+  original_form(form과 31.2% 상이)·start/end·note가 기존 레이어에 누락이었음
+  → 마스터에 추가. 어휘목록 v1(Dropbox→D: 복사, 130만 행) 발음 100% 보유
+  확인 → 예측발음 조회부 원천으로 채택
+- **★reference 4종(사전 v2·MP·LS·다층위) SSD 미이전 발견** — 7/20 이전이
+  Tier1 우선이었는데 '전량 이전'으로 인식 불일치, 문서도 이를 소리내어
+  알리지 않음. HDD 유일본 상태. → **예방 체계 수립**: `ASSETS_LEDGER.md`
+  (실측 기반 자산 정본) 신설, CLAUDE.md 규칙 8~10 추가(전량 기본·실측 선언·
+  한줄명령 금지), `preflight_search_master.py` 신설(파일럿 차단 요소 없음 판정)
+- G: 연결 실측 확인 → 1기 CSV 백업은 robocopy 한 줄로 (gdown 불필요)
+- 다음: 새 세션에서 파일럿 (`HANDOFF_pilot_search_master.md` 참조)
+
 ## 핵심 수치 총괄
 | 항목 | 값 |
 |---|---|
