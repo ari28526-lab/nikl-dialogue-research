@@ -126,3 +126,27 @@ form_roman,tagged` tier를 phones 아래 얹은 **사본**을 `--out`(기본 C:\
    → 권장: 비파괴로 사전 열 별도 병기(규칙-사전 불일치 자체가 관찰값) 후 검토.
 
 **상태**: 코드 미착수. MFA 종료 후 착수 예정.
+
+## 9. MFA 워치독 G2P 오살 사고 + 재시작 + 자동감시 (2026-07-23 세션3)
+
+**사고**: g2p 추가로 새로 생긴 `Generating pronunciations` 단계는 mfa/python CPU가
+거의 안 올라(사전·FST 빌드/헬퍼), 워치독의 "15분간 CPU 증가 <10초 = 교착" 판정에
+오판됨 → 4시간+ 진행 중이던 2020을 강제종료하고 temp 비운 뒤 `--clean` 재시작하는
+낭비 루프. (2020: 15:12 시작 → 19:27 오살)
+
+**수정**: `run_eojeol_realign.ps1` 워치독 예외에 `Generating pronunciations` 추가
+(commit 0416a3f). **근거**: 2021이 워치독 켜진 채 19h(68,463초) 완주한 stderr 확인 —
+MFCC/CMVN/graph 컴파일/정렬/export 등 다른 단계는 오살 이력 없음. 문제는 g2p
+단계 하나뿐으로 확정, 다른 예외 불필요(과잉 예외는 진짜 교착 놓칠 위험).
+
+**재시작 전 실측**: C: 51GB / D: 347GB 여유(큰 연도는 C:<40GB 시 자동 D: 전환).
+모델 g2p·acoustic·dict 모두 존재. done 마커 empty(6개년 g2p 재정렬). 스테일 temp는
+`C:\mfa_tmp\2020`뿐(재시작 시 삭제).
+
+**재시작 절차**: MFA 창 Ctrl+C → `Remove-Item C:\mfa_tmp\2020 -Recurse -Force` →
+`run_eojeol_realign.ps1` 재실행.
+
+**자동감시**: 스케줄 태스크(2시간 간격)가 새 세션으로 power-cube에 접속해
+`D:\mfa_eojeol\logs`(최근 러너 로그·stderr)·`done` 마커·C:/D: 여유를 점검하고,
+루프/실패/hang/디스크부족/연도완료/전체완료 시 사용자에게 알림. 데스크톱 앱(브리지)
+연결 시에만 동작.
