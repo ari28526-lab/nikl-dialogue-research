@@ -118,6 +118,7 @@ def main() -> int:
     print(f"  form {len(forms):,}개", flush=True)
 
     made = skipped = failed = morph_missing = 0
+    failed_files: list = []   # ★ P0-2 (2026-07-24): 실패 파일명 보존 → 재시도 근거
     t0 = time.time()
     for si, (nsess, sname, tgs) in enumerate(iter_session_tgs(src_year), 1):
         out_dir = OUT_ROOT / args.year / sname
@@ -133,6 +134,7 @@ def main() -> int:
                 phones = tiers.get("phones", [])    # 연결 발음
                 if dur is None or not words or not phones:
                     failed += 1
+                    failed_files.append(tg.name)
                     continue
                 morphs = morpheme_tier(args.year, sname, tg.stem)
                 if morphs is None:
@@ -142,6 +144,7 @@ def main() -> int:
                 made += 1
             except Exception as e:
                 failed += 1
+                failed_files.append(tg.name)
                 print(f"  !! {tg.name}: {type(e).__name__}: {e}", flush=True)
         if si % 50 == 0:
             rate = made / (time.time() - t0) if made else 0
@@ -151,6 +154,16 @@ def main() -> int:
           f"실패 {failed:,} / 형태소tier없음 {morph_missing:,}")
     if made == 0 and skipped == 0:
         print(f"!! 처리 0건 — {src_year} 구조 확인 필요", flush=True)
+        return 1
+    # ★ 부분 실패 묵살 금지 (2026-07-24, 외부 리뷰 P0-2): 종전엔 failed>0이어도 exit 0
+    #   → 러너가 MFA 원출력을 삭제하고 merge_done 생성 → 실패분이 재시도 불가능하게
+    #   조용히 소실됐음. 이제 실패 목록을 파일로 남기고 exit 1 → 러너가 중단하므로
+    #   원출력·재시도 기회가 보존된다(재실행 시 기존 출력은 skip, 실패분만 재시도).
+    if failed > 0:
+        flog = Path(r"D:\mfa_eojeol\logs") / f"merge_failed_{args.year}.txt"
+        flog.parent.mkdir(parents=True, exist_ok=True)
+        flog.write_text("\n".join(failed_files) + "\n", encoding="utf-8")
+        print(f"!! 병합 실패 {failed:,}건 — 목록: {flog}. 원출력 보존 위해 실패 종료", flush=True)
         return 1
     return 0
 

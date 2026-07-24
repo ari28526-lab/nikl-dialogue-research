@@ -5,7 +5,8 @@
 - 이전·삭제·대량 변경 후에는 preflight/인벤토리를 재실행하고 이 문서를 갱신한다.
 - "미실측"은 실측 전까지 지우지 않는다. 기억·추정으로 상태를 쓰지 않는다.
 
-최종 실측: **2026-07-23** (`logs/preflight_report.txt` + 이 날 세션의 직접 확인)
+최종 실측: **2026-07-24** (reference 4종 회수분 — `logs/recover_reference_20260724_150205.log`;
+나머지는 2026-07-23 `logs/preflight_report.txt` 기준)
 
 ## 거점 1 — 외장 SSD (D:, 정본 데이터)
 
@@ -14,10 +15,10 @@
 | `00_RAW\dialogue_json` (전사 JSON 원본) | ✅ 있음, 발화 필드(original_form·start·end·note) 확인 | preflight 7/23 |
 | `00_RAW\dialogue_audio` (PCM 원본) | ⚠ 미실측 (7/20 이전 시 제외 가능성 — HDD엔 있음) | — |
 | `00_RAW\reference\03_lexicon_1기\01_NIKL_lexicon_full.csv` (어휘목록 **v1**, 발음 컬럼) | ✅ 있음 (Dropbox에서 7/23 복사) | preflight 7/23 |
-| `00_RAW\reference\00_DICTIONARY` (어휘목록 **v2** 등) | ❌ **없음 — HDD 유일본** | preflight 7/23 |
-| `00_RAW\reference\01_NIKL_MP_v_1_1` | ❌ **없음 — HDD 유일본** | preflight 7/23 |
-| `00_RAW\reference\02_NIKL_LS` | ❌ **없음 — HDD 유일본** | preflight 7/23 |
-| `00_RAW\reference\NIKL_Multi-layered_2025_v1.0` | ❌ **없음 — HDD 유일본** | preflight 7/23 |
+| `00_RAW\reference\00_DICTIONARY` (어휘목록 **v2** 등) | ✅ 있음 (HDD H:에서 7/24 회수) | recover_reference 7/24 + preflight [OK] |
+| `00_RAW\reference\01_NIKL_MP_v_1_1` | ✅ 있음 (HDD H:에서 7/24 회수) | recover_reference 7/24 + preflight [OK] |
+| `00_RAW\reference\02_NIKL_LS` | ✅ 있음 (HDD H:에서 7/24 회수) | recover_reference 7/24 + preflight [OK] |
+| `00_RAW\reference\NIKL_Multi-layered_2025_v1.0` | ✅ 있음 (HDD H:에서 7/24 회수) | recover_reference 7/24 + preflight [OK] |
 | `10_LAYERS\01_bareun_raw` (형태소, 6개년) | ✅ 연도폴더 6개·2020 세션 2,232·컬럼 확인 | preflight 7/23 |
 | `10_LAYERS\02_sense_annotated` | ⚠ 미실측 | — |
 | `10_LAYERS\03_freq_dictionaries` (빈도사전 5종) | ✅ IPA표 확인 / 사전 본체 CSV는 미실측 | preflight 7/23(부분) |
@@ -36,7 +37,7 @@
 
 | 자산 | 성격 | 회수 |
 |---|---|---|
-| `00_RAW\reference` 4종 (00_DICTIONARY·MP·LS·다층위) | **유일본** — A단계 재실행·검증 재현에 필수 | 다음 HDD 연결 시 즉시 (명령 아래) |
+| `00_RAW\reference` 4종 (00_DICTIONARY·MP·LS·다층위) | ~~유일본~~ → D: 사본 확보로 이중화 | ✅ 2026-07-24 회수 완료 (`recover_reference_from_hdd.ps1`, HDD 원본 보존) |
 | `90_ARCHIVE` (구판 6-tier TextGrid, 폐기물 보존 등) | 유일본 (재생성 곤란 항목 포함) | 선별 회수 판단 |
 | 그 외 전체 | 7/20 시점 사본 (SSD와 중복) | 역방향 백업으로 유지 |
 
@@ -81,7 +82,8 @@ GitHub·claude.ai 프로젝트 지식은 구버전 — **커밋·푸시 후 최�
 
 ## reference 4종 — 활용처와 D: 확보 계획 (★잊지 말 것, 2026-07-23)
 
-**현재**: 4종 모두 **HDD 유일본** — D:에 없음(preflight [없음]). `config/paths.json`의
+**현재(2026-07-24 갱신)**: ✅ **4종 모두 D: 회수 완료** — preflight 4종 [OK] 실측
+(`recover_reference_from_hdd.ps1`, HDD 원본 보존·역백업 유지). `config/paths.json`의
 키(`reference_dictionary/mp/ls/multilayer`)는 이미 **D:\00_RAW\reference\ 하위**를
 가리키므로, HDD에서 그 위치로 회수하면 **스크립트 무수정**으로 바로 쓰인다.
 

@@ -276,10 +276,28 @@ foreach ($y in $years) {
             Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp($tmpYear) 보존한 채 중단, 사람 확인 필요"
             return
         }
+        # ★ 정렬 산출 수량 관측 (2026-07-24, 관측 모드 — 외부 리뷰 P0-1의 안전한 1단계):
+        #   TextGrid 수 vs lab 수를 기록하고 99% 미만이면 경고만 한다(차단 안 함).
+        #   MFA는 정렬 실패 발화를 export에서 제외할 수 있어 정상 비율의 기준선을
+        #   실측으로 모은 뒤에야 임계값 차단을 넣는 것이 안전하기 때문.
+        try {
+            $tgN  = ([IO.Directory]::EnumerateFiles((Join-Path $out $y), "*.TextGrid",
+                     [IO.SearchOption]::AllDirectories) | Measure-Object).Count
+            $labN = ([IO.Directory]::EnumerateFiles((Join-Path $wavRoot $y), "*.lab",
+                     [IO.SearchOption]::AllDirectories) | Measure-Object).Count
+            $pct = if ($labN -gt 0) { [math]::Round(100 * $tgN / $labN, 2) } else { 0 }
+            Say "$y 정렬 산출 관측: TextGrid $tgN / lab $labN ($pct%)"
+            if ($labN -gt 0 -and $pct -lt 99) {
+                Say "!! $y 주의: 산출 비율 $pct% < 99% — MFA output_errors/unaligned 확인 권장 (차단은 안 함)"
+            }
+        } catch { Say "$y 산출 수량 관측 실패(무시): $($_.Exception.Message)" }
         New-Item -ItemType File -Force $doneMark | Out-Null
-        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단
-        Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
-        Say "$y MFA 정렬 완료 (temp 정리됨)"
+        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단.
+        # ★ 삭제 범위 축소 (2026-07-24, 외부 리뷰 P0-3): mfa_tmp 전체($tmp)가 아니라
+        #   이번 연도($tmpYear)만. 같은 날 도입한 "실패 연도 temp 보존" 정책과 조합되면
+        #   전체 삭제가 보존해 둔 다른 연도의 이어가기 temp까지 지워버리기 때문.
+        Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
+        Say "$y MFA 정렬 완료 (temp $tmpYear 정리됨)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
