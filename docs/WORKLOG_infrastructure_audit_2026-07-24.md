@@ -496,6 +496,7 @@ run 내부 `archive_failed`에 보존했다. v1도 별도 폴더에 그대로 �
 | `d35ec5c` | MFA `-Year` 실행, G2P staging 분리, 기존 4-tier 자동 보존 | 완료 |
 | `c8f4938` | 연도별 실제 화자 5명×2발화 MFA 파일럿·관련 CSV·4-tier/QC·실행서 | 완료 |
 | `3daef12` | 2023 부분 성공 원인 규명, CSV–WAV duration 대응 가드와 v2 파일럿 | 완료 |
+| `1596f92` | 정상 대응 난정렬 자동 확대 beam 회수, 실패 증거 archive, v2 6개년 60/60 완료 기록 | 푸시 예정 |
 
 ## 다음 기록 예정
 
