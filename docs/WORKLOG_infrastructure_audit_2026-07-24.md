@@ -363,7 +363,7 @@ coverage:
 | `c4777f4` | 원본 JSON→Bareun A1→search master 17,156세션 전수 감사 | 완료 |
 | `f0e2582` | 후보 검색·파일 수집·KOINA·수동 판정 층 설계와 2020 파일럿 게이트 | 완료 |
 | `d35ec5c` | MFA `-Year` 실행, G2P staging 분리, 기존 4-tier 자동 보존 | 완료 |
-| `c8f4938` | 연도별 실제 화자 5명×2발화 MFA 파일럿·관련 CSV·4-tier/QC·실행서 | 푸시 전 |
+| `c8f4938` | 연도별 실제 화자 5명×2발화 MFA 파일럿·관련 CSV·4-tier/QC·실행서 | 완료 |
 
 ## 다음 기록 예정
 
