@@ -18,21 +18,18 @@
   [없음] actual_pron            D:/10_LAYERS/06_actual_pron
   [OK  ] lexicon_full           D:/00_RAW/reference/03_lexicon_1기/01_NIKL_lexicon_full.csv
   [OK  ] enriched_1gi           D:/90_ARCHIVE/1기_enriched/01_nikl_dialogue_enriched.csv
-  [없음] reference_dictionary   D:/00_RAW/reference/00_DICTIONARY
-  [없음] reference_mp           D:/00_RAW/reference/01_NIKL_MP_v_1_1
-  [없음] reference_ls           D:/00_RAW/reference/02_NIKL_LS
-  [없음] reference_multilayer   D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0
+  [OK  ] reference_dictionary   D:/00_RAW/reference/00_DICTIONARY
+  [OK  ] reference_mp           D:/00_RAW/reference/01_NIKL_MP_v_1_1
+  [OK  ] reference_ls           D:/00_RAW/reference/02_NIKL_LS
+  [OK  ] reference_multilayer   D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0
   [OK  ] kofren                 C:/Users/ari30/research/2026_summer_research/01_frequency_data/final_word_frequency
-  [OK  ] gdrive                 G:/내 드라이브/DATA_2026
+  [없음] gdrive                 G:/내 드라이브/DATA_2026
   [OK  ] secrets_bareun         C:/Users/ari30/Documents/Codex/_secrets/bareun
   [OK  ] bareun_venv_python     C:/Users/ari30/Documents/Codex/2026-07-06/d/work/bareun-smoke/.venv/Scripts/python.exe
 
   ── 해석 ──
   · actual_pron: 신규 출력 폴더 — 스크립트가 만들므로 정상
-  · reference_dictionary: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
-  · reference_mp: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
-  · reference_ls: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
-  · reference_multilayer: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요
+  · gdrive: G: 미연결 — 방침상 미사용, 무관
 
 ============================================================
 2. 파일럿 입력 자료
@@ -51,19 +48,9 @@
 3. 출력 대상·디스크
 ============================================================
   [OK] 출력 폴더 쓰기 가능: D:\10_LAYERS\05_search_master
-  [OK] D:\ 여유 351.5GB (전량 생성 시 ~수 GB + Parquet)
+  [OK] D:\ 여유 334.4GB (전량 생성 시 ~수 GB + Parquet)
 
 ============================================================
 판정
 ============================================================
   ✅ 파일럿 진행 가능 — 차단 요소 없음
-
-  ── 조치 목록 ──
-  · reference_dictionary:
-      HDD 연결 후: robocopy "E:/00_RAW/reference/00_DICTIONARY" "D:/00_RAW/reference/00_DICTIONARY" /E  (E:는 HDD 문자)
-  · reference_mp:
-      HDD 연결 후: robocopy "E:/00_RAW/reference/01_NIKL_MP_v_1_1" "D:/00_RAW/reference/01_NIKL_MP_v_1_1" /E  (E:는 HDD 문자)
-  · reference_ls:
-      HDD 연결 후: robocopy "E:/00_RAW/reference/02_NIKL_LS" "D:/00_RAW/reference/02_NIKL_LS" /E  (E:는 HDD 문자)
-  · reference_multilayer:
-      HDD 연결 후: robocopy "E:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0" "D:/00_RAW/reference/NIKL_Multi-layered_2025_v1.0" /E  (E:는 HDD 문자)
