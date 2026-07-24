@@ -1,0 +1,68 @@
+﻿# PowerShell 실행기 정적 안전성 회귀 검사. 실제 MFA·데이터 작업은 실행하지 않는다.
+$ErrorActionPreference = 'Stop'
+$root = Split-Path -Parent $PSScriptRoot
+$files = @(
+    (Join-Path $root 'scripts\preflight_eojeol_realign.ps1'),
+    (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
+    (Join-Path $root 'scripts\run_search_master.ps1')
+)
+$failures = New-Object System.Collections.Generic.List[string]
+
+foreach ($path in $files) {
+    $bytes = [IO.File]::ReadAllBytes($path)
+    $hasBom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and
+               $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
+    if (-not $hasBom) { $failures.Add("UTF-8 BOM 없음: $path") }
+
+    $tokens = $null
+    $errors = $null
+    $ast = [Management.Automation.Language.Parser]::ParseFile(
+        $path, [ref]$tokens, [ref]$errors
+    )
+    foreach ($error in $errors) {
+        $failures.Add("구문 오류 ${path}: $($error.Message)")
+    }
+
+    if ((Split-Path $path -Leaf) -eq 'run_eojeol_realign.ps1') {
+        $returns = $ast.FindAll({
+            param($node)
+            $node -is [Management.Automation.Language.ReturnStatementAst]
+        }, $true)
+        foreach ($returnAst in $returns) {
+            $parent = $returnAst.Parent
+            $insideFunction = $false
+            while ($null -ne $parent) {
+                if ($parent -is [Management.Automation.Language.FunctionDefinitionAst]) {
+                    $insideFunction = $true
+                    break
+                }
+                $parent = $parent.Parent
+            }
+            if (-not $insideFunction) {
+                $failures.Add(
+                    "러너 최상위 return은 실패를 exit 0으로 숨길 수 있음: " +
+                    $returnAst.Extent.Text
+                )
+            }
+        }
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'Write-DoneMarker',
+            'Read-DoneMarker',
+            'Remove-SafeYearPath',
+            '산출 비율 $pct% < 99%',
+            'exit 1'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("MFA 러너 필수 안전장치 누락: $required")
+            }
+        }
+    }
+}
+
+if ($failures.Count -gt 0) {
+    $failures | ForEach-Object { Write-Error $_ }
+    exit 1
+}
+Write-Output "PowerShell safety checks PASS ($($files.Count) files)"
+exit 0

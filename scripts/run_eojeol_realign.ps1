@@ -11,8 +11,31 @@
 #   기기 이식: miniforge는 %USERPROFILE%\miniforge3, 데이터는 D: 문자 기준 — 새 기기에서
 #   SSD에 D: 부여하면 무수정 실행. num_jobs·작업드라이브는 자동 선택.
 
+param([switch]$SkipPreflight)
+
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
-$py    = "python"
+$root = Split-Path -Parent $PSScriptRoot
+$configPath = Join-Path $root "config\paths.json"
+try {
+    $cfg = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    function Expand-CfgPath($value) {
+        return [IO.Path]::GetFullPath(
+            [Environment]::ExpandEnvironmentVariables(
+                ([string]$value).Replace('/', '\')
+            )
+        )
+    }
+    $py = Expand-CfgPath $cfg.pipeline_python
+    $wavRoot = Join-Path (Expand-CfgPath $cfg.wav) "individual"
+    $stateRoot = Expand-CfgPath $cfg.mfa_state
+    $tmpPrimary = Expand-CfgPath $cfg.mfa_temp_primary
+    $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
+    $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
+    $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
+} catch {
+    Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
+    exit 1
+}
 # ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
 #   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨(파일럿).
 #   단 OpenFST 등 서드파티 실행파일(fstcompile)을 PATH에서 찾으므로 env 경로를 얹는다.
@@ -21,7 +44,14 @@ $envRoot = Join-Path $env:USERPROFILE "miniforge3\envs\mfa"
 $mfa   = Join-Path $envRoot "Scripts\mfa.exe"
 $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
-$wavRoot = "D:\20_AUDIO\03_wav\individual"
+if (-not (Test-Path -LiteralPath $py)) {
+    Write-Error "pipeline_python 없음: $py"
+    exit 1
+}
+if (-not (Test-Path -LiteralPath $mfa)) {
+    Write-Error "mfa.exe 없음: $mfa"
+    exit 1
+}
 # ★ 병렬 자동 (2026-07-19): 논리코어 12+(i5-1240P=16) → 8job, 그 외(N200=4) → 4job.
 #   세션=화자 재구성 후에야 유효 — 1화자면 MFA가 어차피 1job으로 강등함.
 $numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
@@ -33,42 +63,87 @@ $numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
 #   (연도당 최대 3시간+)이 든 temp를 못 찾고 새로 --clean 시작해버림(2021 실측 사고).
 #   판정 순서: ① C:\mfa_tmp\{연도} 있으면 C: ② D:\mfa_tmp\{연도} 있으면 D:
 #   ③ 신규 연도는 C: 여유 40GB 이상이면 C:, 아니면 D:.
-function Get-WorkDrive($year) {
-    if (Test-Path "C:\mfa_tmp\$year") { return "C:" }
-    if (Test-Path "D:\mfa_tmp\$year") { return "D:" }
-    if ((Get-PSDrive C).Free / 1GB -ge 40) { return "C:" }
-    return "D:"
+function Get-WorkPaths($year) {
+    if (Test-Path (Join-Path $tmpPrimary $year)) {
+        return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary }
+    }
+    if (Test-Path (Join-Path $tmpSecondary $year)) {
+        return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary }
+    }
+    $primaryDrive = Split-Path -Qualifier $tmpPrimary
+    $primaryFree = ([IO.DriveInfo]::new($primaryDrive)).AvailableFreeSpace
+    if ($primaryFree / 1GB -ge 40) {
+        return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary }
+    }
+    return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary }
 }
-$doneDir = "D:\mfa_eojeol\done"
+# 어떤 D: 경로도 만들기 전에 SSD 정본 라벨부터 검증한다.
+$expectLabel = 'DATA_SSD'
+$dLabel = $null
+if (Get-Command Get-Volume -ErrorAction SilentlyContinue) {
+    $dLabel = (Get-Volume -DriveLetter D -ErrorAction SilentlyContinue).FileSystemLabel
+}
+if ([string]::IsNullOrEmpty($dLabel)) {
+    $dLabel = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='D:'" -ErrorAction SilentlyContinue).VolumeName
+}
+if ([string]::IsNullOrEmpty($dLabel)) {
+    try { $dLabel = ([IO.DriveInfo]::new('D:\')).VolumeLabel } catch {}
+}
+if ($dLabel -ne $expectLabel) {
+    Write-Error "D: 볼륨 라벨이 '$expectLabel'이 아님(현재 '$dLabel') — 어떤 파일도 만들지 않고 중단"
+    exit 1
+}
+if (-not $SkipPreflight) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+        (Join-Path $PSScriptRoot 'preflight_eojeol_realign.ps1')
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "MFA preflight 실패(exit $LASTEXITCODE). 리포 logs의 최신 preflight 보고서 확인."
+        exit 1
+    }
+}
+$doneDir = Join-Path $stateRoot "done"
 New-Item -ItemType Directory -Force $doneDir | Out-Null
 # temp: MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·DB를 계속 읽음.
 #   연도당 temp ~15-35GB(2021 실측 33GB), --clean이라 연도마다 비워짐. 여유 30GB 미만이면 중단.
 $minTmpFreeGB = 30
-$logDir  = "D:\mfa_eojeol\logs"
+$logDir  = Join-Path $stateRoot "logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null
 $log = Join-Path $logDir ("eojeol_realign_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
 
 function Say($m) { $l = "[$(Get-Date -Format 'MM-dd HH:mm:ss')] $m"; Write-Host $l -ForegroundColor Cyan; Add-Content $log $l -Encoding UTF8 }
+function Read-DoneMarker($path, $year, $stage) {
+    if (-not (Test-Path -LiteralPath $path)) { return $false }
+    try {
+        $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+        return ($data.year -eq $year -and $data.stage -eq $stage -and
+                $data.g2p_model -eq 'korean_mfa')
+    } catch { return $false }
+}
+function Write-DoneMarker($path, $year, $stage, $details) {
+    $tmpMarker = "$path.$PID.partial"
+    $payload = [ordered]@{
+        year = $year
+        stage = $stage
+        g2p_model = 'korean_mfa'
+        completed_at = (Get-Date).ToString('o')
+        git_commit = (& git -C $root rev-parse HEAD 2>$null)
+        details = $details
+    }
+    $payload | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $tmpMarker -Encoding UTF8
+    Move-Item -LiteralPath $tmpMarker -Destination $path -Force
+}
+function Remove-SafeYearPath($path, $allowedRoot) {
+    $resolved = [IO.Path]::GetFullPath($path).TrimEnd('\')
+    $allowed = [IO.Path]::GetFullPath($allowedRoot).TrimEnd('\')
+    if ((Split-Path -Parent $resolved) -ne $allowed) {
+        throw "삭제 경계 위반: $resolved (허용 부모 $allowed)"
+    }
+    if (Test-Path -LiteralPath $resolved) {
+        Remove-Item -LiteralPath $resolved -Recurse -Force
+    }
+}
 
 $years = @('2020','2021','2022','2023','2024','2025')
-
-# ★ 드라이브 엉킴 가드 (2026-07-20, 사용자 지시): HDD(백업)와 SSD(정본)가 동시에
-#   꽂혀 있어도 파이프라인이 HDD를 잘못 잡지 않게 — D:는 반드시 라벨 DATA_SSD(SSD).
-#   이전 완료 후 SSD=D:, HDD=H:(백업 전용)로 문자 고정. 의도적으로 HDD에서 돌릴
-#   일이 생기면 아래 $expectLabel만 바꿀 것.
-$expectLabel = 'DATA_SSD'
-# ★ 라벨 조회 이식성 (2026-07-23): Get-Volume(Storage 모듈)이 없는 셸(예: 원격 브리지)에서도
-#   동작하도록 CIM(Win32_LogicalDisk) 폴백 추가 — 둘 다 D: 라벨을 동일하게 읽음(실측 DATA_SSD).
-#   가드 자체는 불변: 라벨이 'DATA_SSD'가 아니면 여전히 중단(HDD 오인 방지).
-$dLabel = (Get-Volume -DriveLetter D -ErrorAction SilentlyContinue).FileSystemLabel
-if ([string]::IsNullOrEmpty($dLabel)) {
-    $dLabel = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='D:'" -ErrorAction SilentlyContinue).VolumeName
-}
-if ($dLabel -ne $expectLabel) {
-    Say "!! D: 볼륨 라벨이 '$expectLabel'이 아님(현재: '$dLabel') — HDD를 D:로 오인했을 수 있어 중단."
-    Say "   SSD에 D: 문자를 부여했는지 확인 (RUNBOOK_SSD_migration 절차 참조)."
-    return
-}
 
 Say "어절 재정렬 시작 (실시간 출력). 진행줄이 화면에 바로 뜹니다."
 
@@ -77,8 +152,8 @@ foreach ($y in $years) {
 
     # ★ 완료 연도 즉시 건너뜀 (2026-07-22): 재시작이 잦아 완료 연도마다 lab 재확인
     #   (30~60초)이 누적되던 것을 제거 — 두 마커 다 있으면 lab·wav스캔조차 안 하고 바로 통과.
-    if ((Test-Path (Join-Path $doneDir "$y.align_done")) -and
-        (Test-Path (Join-Path $doneDir "$y.merge_done"))) {
+    if ((Read-DoneMarker (Join-Path $doneDir "$y.align_done") $y 'align') -and
+        (Read-DoneMarker (Join-Path $doneDir "$y.merge_done") $y 'merge')) {
         Say "$y 이미 전부 완료 — 즉시 건너뜀"
         continue
     }
@@ -86,25 +161,40 @@ foreach ($y in $years) {
     # 1) 어절 lab 제자리 생성 — 파이썬이 10세션마다 '발화/s·남은분' 실시간 출력
     Say "$y [1/3] lab 생성 (아래 진행줄 실시간)..."
     & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") --year $y
-    if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; return }
+    if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
 
     # 연도별 작업 드라이브 결정(기존 temp 우선 — 위 Get-WorkDrive 참조). align이
     # 이미 끝난 연도라도 아래 병합(3/3) 단계에 $out이 필요하므로 if/else 밖에서 계산.
-    $workDrive = Get-WorkDrive $y
-    $out = "$workDrive\mfa_eojeol_out"
-    $tmp = "$workDrive\mfa_tmp"
+    $workPaths = Get-WorkPaths $y
+    $out = $workPaths.OutRoot
+    $tmp = $workPaths.TempRoot
+    $workDrive = (Split-Path -Qualifier $tmp).TrimEnd('\')
     New-Item -ItemType Directory -Force $out | Out-Null
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
-    if (Test-Path $doneMark) {
+    if (Read-DoneMarker $doneMark $y 'align') {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
+        if ((Test-Path -LiteralPath $doneMark) -and
+            -not (Read-DoneMarker $doneMark $y 'align')) {
+            Say "!! $y align_done이 레거시/손상/비-G2P 마커 — 완료로 인정하지 않음: $doneMark"
+            exit 1
+        }
+        $tmpYear = Join-Path $tmp $y
+        $outYear = Join-Path $out $y
+        if ((Test-Path -LiteralPath $outYear) -and
+            -not (Test-Path -LiteralPath $tmpYear)) {
+            Say "!! $y 마커·temp 없이 MFA 원출력만 존재 — stale/부분 출력 판별 전 실행 금지: $outYear"
+            exit 1
+        }
         # 작업 드라이브 여유 가드 — temp가 도중에 차면 연도 전체 재작업이라 미리 중단
-        $freeGB = [math]::Round((Get-PSDrive $workDrive.Substring(0,1)).Free / 1GB, 1)
+        $freeGB = [math]::Round(
+            ([IO.DriveInfo]::new($workDrive)).AvailableFreeSpace / 1GB, 1
+        )
         if ($freeGB -lt $minTmpFreeGB) {
             Say "!! $workDrive 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp($tmp) 부족 위험, 중단. 정리 후 재실행."
-            return
+            exit 1
         }
 
         # ★ 평면 구조 가드 (2026-07-19, 1화자 사고 재발 방지): 연도 루트에 wav가 바로
@@ -115,13 +205,13 @@ foreach ($y in $years) {
         if ($flatWav) {
             Say "!! $y 코퍼스가 평면 구조(예: $(Split-Path $flatWav -Leaf)) — 1화자 오인 위험."
             Say "   먼저 실행: python scripts\python\restructure_wav_sessions.py --root $wavRoot --year $y --apply"
-            return
+            exit 1
         }
         # 1.5) 깨진 wav 격리 (2026-07-18): 0바이트 wav 1개가 MFA 로딩 '말미'에 전체를
         #   실패시킴(7/17·7/18 두 차례, 각 5h+ 손실). 연도당 ~5분 보험.
         Say "$y [1.5/3] 깨진 wav 스캔·격리 (0바이트 등)..."
         & $py (Join-Path $pydir "quarantine_bad_wavs.py") --year $y --apply
-        if ($LASTEXITCODE -ne 0) { Say "!! $y wav 스캔 실패 (exit $LASTEXITCODE) — 중단"; return }
+        if ($LASTEXITCODE -ne 0) { Say "!! $y wav 스캔 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
 
         # ★ stderr를 파일로 캡처 (2026-07-18): MFA는 진행바·traceback을 전부 stderr로 쓰고,
         #   에러 traceback은 자기 로그 파일이 닫힌 '뒤' 출력되는 구조라 콘솔이 닫히면 유실됨
@@ -132,7 +222,6 @@ foreach ($y in $years) {
         #   실패하면 temp 비우고 --clean 전체 재실행(2차 폴백 — 어중간한 DB 방어).
         #   lab을 바꾼 적 없는 동일-연도 재시도에만 안전(연도 첫 시도는 항상 --clean).
         $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
-        $tmpYear = Join-Path $tmp $y
         $tries = @(); if (Test-Path $tmpYear) { $tries += $false }; $tries += $true
         $ok = $false
         foreach ($doClean in $tries) {
@@ -255,7 +344,7 @@ foreach ($y in $years) {
                 #   수 시간 재계산만 낭비(2021 실측). temp 보존한 채 즉시 중단, 사람 확인.
                 Say "!! $y MFA exit 0이나 TextGrid 출력 0건 — 거짓 성공(export 실패)으로 판단"
                 Say "!! $y temp($tmpYear) 보존한 채 중단 — 원인: $errFile 확인. 조치 후 재실행하면 이어가기됨."
-                return
+                exit 1
             } elseif ($watchdogKilled) {
                 Say "!! $y MFA 교착으로 강제종료됨 — traceback 없음(정상, hang은 예외를 안 남김)"
             } else {
@@ -263,7 +352,8 @@ foreach ($y in $years) {
             }
             if (-not $doClean) {
                 Say "$y 이어가기 실패 → temp 비우고 --clean 전체로 재시도"
-                Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
+                try { Remove-SafeYearPath $tmpYear $tmp }
+                catch { Say "!! temp 안전 삭제 실패: $($_.Exception.Message)"; exit 1 }
             }
         }
         if (-not $ok) {
@@ -274,12 +364,11 @@ foreach ($y in $years) {
             #   7-21 삭제 도입 사유(찌꺼기→드라이브 선택 흔들림)는 7-22 temp-우선 규칙이
             #   이미 해소. 남는 건 실패 연도 1개분(15~35GB)뿐이고 preflight가 리포트함.
             Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp($tmpYear) 보존한 채 중단, 사람 확인 필요"
-            return
+            exit 1
         }
-        # ★ 정렬 산출 수량 관측 (2026-07-24, 관측 모드 — 외부 리뷰 P0-1의 안전한 1단계):
-        #   TextGrid 수 vs lab 수를 기록하고 99% 미만이면 경고만 한다(차단 안 함).
-        #   MFA는 정렬 실패 발화를 export에서 제외할 수 있어 정상 비율의 기준선을
-        #   실측으로 모은 뒤에야 임계값 차단을 넣는 것이 안전하기 때문.
+        # ★ 정렬 산출 수량 검증: 기존 2020·2021 실측 성공률은 99.9%대다.
+        #   99% 미만은 통상적 난정렬 범위를 넘어 부분 export·stale 출력 가능성이
+        #   크므로 완료 마커를 만들지 않는다.
         try {
             $tgN  = ([IO.Directory]::EnumerateFiles((Join-Path $out $y), "*.TextGrid",
                      [IO.SearchOption]::AllDirectories) | Measure-Object).Count
@@ -287,30 +376,50 @@ foreach ($y in $years) {
                      [IO.SearchOption]::AllDirectories) | Measure-Object).Count
             $pct = if ($labN -gt 0) { [math]::Round(100 * $tgN / $labN, 2) } else { 0 }
             Say "$y 정렬 산출 관측: TextGrid $tgN / lab $labN ($pct%)"
-            if ($labN -gt 0 -and $pct -lt 99) {
-                Say "!! $y 주의: 산출 비율 $pct% < 99% — MFA output_errors/unaligned 확인 권장 (차단은 안 함)"
+            if ($labN -le 0) {
+                Say "!! $y lab 0건 — 완료 마커 생성 금지"
+                exit 1
             }
-        } catch { Say "$y 산출 수량 관측 실패(무시): $($_.Exception.Message)" }
-        New-Item -ItemType File -Force $doneMark | Out-Null
+            if ($pct -lt 99) {
+                Say "!! $y 산출 비율 $pct% < 99% — 부분 누락 가능, 완료 마커 생성 금지"
+                exit 1
+            }
+        } catch {
+            Say "!! $y 산출 수량 검증 실패 — 완료 마커 생성 금지: $($_.Exception.Message)"
+            exit 1
+        }
+        Write-DoneMarker $doneMark $y 'align' @{
+            textgrids = $tgN
+            labs = $labN
+            coverage_pct = $pct
+            output_root = $out
+        }
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단.
         # ★ 삭제 범위 축소 (2026-07-24, 외부 리뷰 P0-3): mfa_tmp 전체($tmp)가 아니라
         #   이번 연도($tmpYear)만. 같은 날 도입한 "실패 연도 temp 보존" 정책과 조합되면
         #   전체 삭제가 보존해 둔 다른 연도의 이어가기 temp까지 지워버리기 때문.
-        Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
+        try { Remove-SafeYearPath $tmpYear $tmp }
+        catch { Say "!! 완료 후 temp 안전 삭제 실패(산출·마커는 보존): $($_.Exception.Message)" }
         Say "$y MFA 정렬 완료 (temp $tmpYear 정리됨)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
     #    완료 마커 있으면 건너뜀(완료 연도는 C: 원출력이 이미 삭제돼 있음).
-    if (Test-Path (Join-Path $doneDir "$y.merge_done")) {
+    $mergeMark = Join-Path $doneDir "$y.merge_done"
+    if (Read-DoneMarker $mergeMark $y 'merge') {
         Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
+    }
+    if ((Test-Path -LiteralPath $mergeMark) -and
+        -not (Read-DoneMarker $mergeMark $y 'merge')) {
+        Say "!! $y merge_done이 레거시/손상/비-G2P 마커 — 완료로 인정하지 않음: $mergeMark"
+        exit 1
     }
     # ★ 병합 원출력 드라이브 폴백 (2026-07-24): align 완료 후에는 temp가 지워져 있어,
     #   그 상태에서 재시작하면 Get-WorkDrive가 여유공간 기준으로 새로 정한 드라이브가
     #   MFA 원출력(mfa_eojeol_out)이 실제로 있는 드라이브와 어긋날 수 있음(병합만 남은
     #   재개 시나리오). $out\<연도>가 없으면 반대 드라이브를 확인해 자동 전환.
     if (-not (Test-Path (Join-Path $out $y))) {
-        $altOut = if ($workDrive -eq 'C:') { 'D:\mfa_eojeol_out' } else { 'C:\mfa_eojeol_out' }
+        $altOut = if ($out -eq $outPrimary) { $outSecondary } else { $outPrimary }
         if (Test-Path (Join-Path $altOut $y)) {
             Say "$y 병합 원출력을 $altOut 에서 발견 — 드라이브 자동 전환(원래 추정: $out)"
             $out = $altOut
@@ -318,11 +427,16 @@ foreach ($y in $years) {
     }
     Say "$y [3/3] 4-tier 병합 -> 06_textgrid_eojeol (아래 진행줄 실시간)..."
     & $py (Join-Path $pydir "realign_eojeol_merge_output.py") --year $y --mfa-out $out
-    if ($LASTEXITCODE -ne 0) { Say "!! $y 병합 실패 (exit $LASTEXITCODE) — 중단"; return }
+    if ($LASTEXITCODE -ne 0) { Say "!! $y 병합 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
 
-    # 4) 병합 성공 → C:의 MFA 원출력 삭제(공간 회수). 재개는 D:의 마커·최종본 기준.
-    Remove-Item (Join-Path $out $y) -Recurse -Force -ErrorAction SilentlyContinue
-    New-Item -ItemType File -Force (Join-Path $doneDir "$y.merge_done") | Out-Null
+    # 4) 검증 성공 마커를 먼저 기록한 뒤 MFA 원출력을 정리한다.
+    Write-DoneMarker $mergeMark $y 'merge' @{
+        mfa_output_root = $out
+        final_output_root = (Expand-CfgPath $cfg.textgrid_eojeol)
+    }
+    try { Remove-SafeYearPath (Join-Path $out $y) $out }
+    catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·최종본은 보존): $($_.Exception.Message)" }
     Say "===== $y 완료 (C: 중간산출 정리됨) ====="
 }
 Say "전체 완료 - D:\20_AUDIO\06_textgrid_eojeol (4-tier). 기존 06_textgrid_merged 보존."
+exit 0

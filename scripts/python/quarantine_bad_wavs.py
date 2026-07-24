@@ -16,26 +16,35 @@
 import argparse
 import csv
 import os
-import shutil
 import sys
 import time
+import uuid
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from paths import P  # noqa: E402
+from pipeline_common import atomic_write_json  # noqa: E402
 
-QUARANTINE_ROOT = Path(r"D:\mfa_eojeol\quarantine")
+QUARANTINE_ROOT = P("mfa_state") / "quarantine"
 YEARS = ["2020", "2021", "2022", "2023", "2024", "2025"]
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
-def scan_year(year: str, min_bytes: int, apply: bool) -> int:
-    root = P("wav") / "individual" / year
+def scan_year(
+    year: str,
+    min_bytes: int,
+    apply: bool,
+    *,
+    wav_root: Path | None = None,
+    quarantine_root: Path | None = None,
+) -> int:
+    base_wav = wav_root or (P("wav") / "individual")
+    qroot = quarantine_root or QUARANTINE_ROOT
+    root = base_wav / year
     if not root.is_dir():
-        print(f"[{year}] 폴더 없음: {root} — 건너뜀", flush=True)
-        return 0
-    qdir = QUARANTINE_ROOT / year
+        raise FileNotFoundError(f"[{year}] wav 폴더 없음: {root}")
+    qdir = qroot / year
     bad = []          # (wav Path, size)
     seen = 0
     t0 = time.time()
@@ -47,8 +56,9 @@ def scan_year(year: str, min_bytes: int, apply: bool) -> int:
                 if not e.is_file() or not e.name.endswith(".wav"):
                     continue
                 seen += 1
-                if e.stat().st_size < min_bytes:
-                    bad.append((Path(e.path), e.stat().st_size))
+                size = e.stat().st_size
+                if size < min_bytes:
+                    bad.append((Path(e.path), size))
                 if seen % 200_000 == 0:
                     el = time.time() - t0
                     print(f"  [{year}] {seen:,}개 확인 ({seen/el:,.0f}개/s) · "
@@ -68,15 +78,61 @@ def scan_year(year: str, min_bytes: int, apply: bool) -> int:
     with open(log_path, "a", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
         if new_log:
-            w.writerow(["moved_at", "name", "size_bytes", "orig_path", "lab_moved"])
+            w.writerow([
+                "transaction_id", "moved_at", "name", "size_bytes",
+                "orig_path", "quarantine_path", "lab_moved",
+            ])
         for p, size in bad:
+            transaction_id = uuid.uuid4().hex
+            relative = p.relative_to(root)
+            dest = qdir / relative
+            dest.parent.mkdir(parents=True, exist_ok=True)
             lab = p.with_suffix(".lab")
             lab_moved = lab.exists()
-            shutil.move(str(p), str(qdir / p.name))
-            if lab_moved:
-                shutil.move(str(lab), str(qdir / lab.name))
-            w.writerow([time.strftime("%Y-%m-%d %H:%M:%S"), p.name, size,
-                        str(p), lab_moved])
+            lab_dest = dest.with_suffix(".lab")
+            if dest.exists() or (lab_moved and lab_dest.exists()):
+                raise FileExistsError(
+                    f"격리 대상 충돌 — 자동 덮어쓰기 금지: {dest}"
+                )
+            txn = qdir / "_transactions" / f"{transaction_id}.json"
+            record = {
+                "transaction_id": transaction_id,
+                "status": "planned",
+                "year": year,
+                "size_bytes": size,
+                "wav_source": str(p),
+                "wav_destination": str(dest),
+                "lab_source": str(lab) if lab_moved else None,
+                "lab_destination": str(lab_dest) if lab_moved else None,
+            }
+            atomic_write_json(txn, record)
+            try:
+                os.replace(p, dest)
+                if lab_moved:
+                    os.replace(lab, lab_dest)
+            except Exception as exc:
+                record.update({
+                    "status": "partial_failure",
+                    "error": f"{type(exc).__name__}: {exc}",
+                    "wav_source_exists": p.exists(),
+                    "wav_destination_exists": dest.exists(),
+                    "lab_source_exists": lab.exists() if lab_moved else None,
+                    "lab_destination_exists": (
+                        lab_dest.exists() if lab_moved else None
+                    ),
+                })
+                atomic_write_json(txn, record)
+                raise
+            record.update({"status": "complete", "completed_at": time.strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )})
+            atomic_write_json(txn, record)
+            w.writerow([
+                transaction_id, record["completed_at"], p.name, size,
+                str(p), str(dest), lab_moved,
+            ])
+            f.flush()
+            os.fsync(f.fileno())
     print(f"[{year}] {len(bad)}건 격리 완료 → {qdir} (기록: {log_path})",
           flush=True)
     return len(bad)
@@ -88,13 +144,21 @@ def main() -> int:
     ap.add_argument("--min-bytes", type=int, default=44,
                     help="이 크기 미만이면 불량 (기본 44=WAV 헤더 최소)")
     ap.add_argument("--apply", action="store_true", help="실제 이동 (기본 dry-run)")
+    ap.add_argument("--root", type=Path, help="wav individual 루트(테스트용)")
+    ap.add_argument("--quarantine-root", type=Path,
+                    help="격리 루트(테스트용)")
     args = ap.parse_args()
+    if args.min_bytes < 44:
+        ap.error("--min-bytes는 WAV 최소 헤더 44보다 작게 설정할 수 없습니다.")
     years = YEARS if args.year == "all" else [args.year]
     total = 0
     for y in years:
         if y not in YEARS:
             sys.exit(f"알 수 없는 연도: {y}")
-        total += scan_year(y, args.min_bytes, args.apply)
+        total += scan_year(
+            y, args.min_bytes, args.apply,
+            wav_root=args.root, quarantine_root=args.quarantine_root,
+        )
     print(f"총 불량 {total}건" + ("" if args.apply else " (dry-run)"), flush=True)
     return 0
 

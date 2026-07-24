@@ -33,6 +33,7 @@ renv/library/
 
 # Logs can be large; remove this line if you decide to version logs.
 logs/*.log
+logs/*.json
 
 # 저작권·재배포권 문제 (2026-07-14 추가)
 00_참고문헌/

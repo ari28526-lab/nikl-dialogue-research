@@ -14,14 +14,20 @@ wav 위치(=lab 위치): 연도별 상이(2026-07-17 실측) — 평면(2020·20
 """
 import argparse
 import csv
+import json
 import os
 import re
 import sys
 import time
 from pathlib import Path
 
-WAV_ROOT = Path(r"D:\20_AUDIO\03_wav\individual")
-RAW = Path(r"D:\10_LAYERS\01_bareun_raw")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from paths import P  # noqa: E402
+from pipeline_common import atomic_text_writer, atomic_write_json  # noqa: E402
+
+WAV_ROOT = P("wav") / "individual"
+RAW = P("layers") / "01_bareun_raw"
+STATE_ROOT = P("mfa_state")
 YEAR_DIRS = {
     "2020": "NIKL_DIALOGUE_2020_v1.4", "2021": "NIKL_DIALOGUE_2021_v1.1",
     "2022": "NIKL_DIALOGUE_2022_v1.0_JSON", "2023": "NIKL_DIALOGUE_2023_v1.1",
@@ -43,21 +49,23 @@ def form_to_lab(form: str) -> str:
     return " ".join(toks)
 
 
-def load_names(d: Path) -> set:
-    """폴더 내 파일명 집합 (폴더 없으면 빈 집합).
+def load_entries(d: Path) -> dict[str, int]:
+    """폴더 내 파일명→크기 (폴더 없으면 빈 dict).
     ★ USB 최적화(2026-07-17): 발화별 exists() 2~3회(각각 USB 왕복)를
     세션당 scandir 1회로 대체 — 510만 발화 기준 메타데이터 왕복 수백만 회 제거."""
     try:
-        return {e.name for e in os.scandir(d)}
+        return {e.name: e.stat().st_size for e in os.scandir(d) if e.is_file()}
     except OSError:
-        return set()
+        return {}
 
 
-def build_year(year: str) -> None:
+def build_year(year: str) -> dict:
     raw_dir = RAW / YEAR_DIRS[year]
     files = sorted(p for p in raw_dir.glob("*.csv")
                    if not p.name.startswith("_"))
     nfiles = len(files)
+    if nfiles == 0:
+        raise RuntimeError(f"{year} bareun 세션 CSV 0개: {raw_dir}")
     # ★ 2025 주의(2026-07-17 실측): 2025에는 구판 make_labs_2025의 '형태소' lab이
     # wav 옆에 이미 존재(예: "보 시 게 되 면 은") → 건너뜀 로직이 구판 lab을 그대로
     # 쓰게 되어 교정 대상 버그를 재생산함. 2025만 1회 전량 덮어쓰기(force).
@@ -65,7 +73,17 @@ def build_year(year: str) -> None:
     # 2020-2024의 구판 lab은 별도 폴더(04_00_04_mfa_input_구식)라 제자리 lab은
     # 신판(어절)뿐 — 건너뜀이 안전(2020 실측 확인).
     marker = WAV_ROOT / year / ".eojeol_labs_v2"
-    force = (year == "2025") and not marker.exists()
+    marker_valid = False
+    if marker.exists():
+        try:
+            marker_data = json.loads(marker.read_text(encoding="utf-8-sig"))
+            marker_valid = (
+                marker_data.get("year") == year
+                and marker_data.get("lab_version") == "eojeol_v2"
+            )
+        except (OSError, json.JSONDecodeError, AttributeError):
+            marker_valid = False
+    force = (year == "2025") and not marker_valid
     if force:
         print(f"[{year}] ★구판 형태소 lab 존재 — 전량 어절 lab으로 덮어쓰기(1회)",
               flush=True)
@@ -82,28 +100,34 @@ def build_year(year: str) -> None:
                 sess = u.split(".")[0]
                 names = sess_cache.get(sess)
                 if names is None:
-                    names = load_names(WAV_ROOT / year / sess)
+                    names = load_entries(WAV_ROOT / year / sess)
                     sess_cache[sess] = names
                 if f"{u}.wav" in names:
                     wav_dir = WAV_ROOT / year / sess
                 else:  # 평면(2025) 폴백
                     if flat_names is None:
-                        flat_names = load_names(WAV_ROOT / year)
+                        flat_names = load_entries(WAV_ROOT / year)
                     if f"{u}.wav" in flat_names:
                         wav_dir = WAV_ROOT / year
                         names = flat_names
                     else:
                         no_wav += 1
                         continue
-                if not force and f"{u}.lab" in names:
+                lab_name = f"{u}.lab"
+                # 존재만으로 완료 처리하지 않는다. 0바이트/부분 lab은 다시 쓴다.
+                if not force and names.get(lab_name, 0) > 0:
                     skipped += 1
                     continue
                 text = form_to_lab(row.get("form", ""))
                 if not text.strip():
                     empty += 1
                     continue
-                (wav_dir / f"{u}.lab").write_text(text, encoding="utf-8")
-                names.add(f"{u}.lab")
+                lab_path = wav_dir / lab_name
+                with atomic_text_writer(
+                    lab_path, encoding="utf-8", newline="\n"
+                ) as (stream, _):
+                    stream.write(text)
+                names[lab_name] = len(text.encode("utf-8"))
                 made += 1
         # 발화 1,000개 훑을 때마다 속도·남은시간 출력 (1분 안에 첫 숫자)
         proc = made + skipped            # 실제로 훑은 발화(신규+기존)
@@ -118,8 +142,26 @@ def build_year(year: str) -> None:
           f"wav없음 {no_wav:,} / 빈form {empty:,}", flush=True)
     print(f"  코퍼스(=wav폴더): {WAV_ROOT / year}", flush=True)
     if force:
-        marker.write_text("어절 lab 전량 재작성 완료\n", encoding="utf-8")
+        atomic_write_json(marker, {
+            "year": year,
+            "lab_version": "eojeol_v2",
+            "created": made,
+            "validated_existing": skipped,
+            "wav_missing": no_wav,
+            "empty_form": empty,
+        })
         print(f"  구판 덮어쓰기 완료 마커: {marker}", flush=True)
+    result = {
+        "year": year, "sessions": nfiles, "created": made,
+        "validated_existing": skipped, "wav_missing": no_wav,
+        "empty_form": empty,
+    }
+    atomic_write_json(
+        STATE_ROOT / "logs" / f"lab_build_{year}_latest.json", result
+    )
+    if made + skipped == 0:
+        raise RuntimeError(f"{year} 유효 lab 0건")
+    return result
 
 
 def main() -> int:
