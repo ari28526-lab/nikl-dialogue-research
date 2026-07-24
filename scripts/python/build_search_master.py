@@ -19,12 +19,22 @@ import csv
 import json
 import re
 import sys
+import traceback
 from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from paths import P
 import predict_pron as pp
+from pipeline_common import (
+    archive_copy,
+    atomic_write_json,
+    file_fingerprint,
+    new_run_id,
+    promote_staged,
+    runtime_snapshot,
+    staged_text_writer,
+)
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -32,7 +42,10 @@ if hasattr(sys.stdout, "reconfigure"):
 csv.field_size_limit(10_000_000)
 
 MISSING = "미상"
+NOT_COMPUTED = "미계산"
 EOJEOL_SEP = " | "
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+REQUIRED_BAREUN_COLS = {"utt_id", "speaker_id", "form", "tagged", "n_morphs"}
 
 # 투명성: 산출과 함께 _build_meta.json에 "무슨 도구·자료·규칙으로 만들었나" 기록.
 BUILD_PROVENANCE = {
@@ -150,6 +163,10 @@ def build_row(u, year, meta, spk, extra, ipa_map, opts, stats):
     row.update(utt_id=utt_id, year=year, session_id=session_id,
                utt_seq=utt_seq, form=form, tagged=tagged,
                n_morphs=u.get("n_morphs", ""), n_eojeol=n_eojeol)
+    # v1에서는 대용량 파일 존재 검사를 하지 않는다. 빈 문자열은 실제 결측처럼
+    # 해석될 수 있으므로 계산하지 않았음을 명시한다.
+    for col in ("has_wav", "has_tg_eojeol", "quarantined"):
+        row[col] = NOT_COMPUTED
 
     # 문서 메타 조인
     m = meta.get(session_id)
@@ -222,7 +239,65 @@ def tagged_to_roman(tagged):
 
 def read_bareun(csv_path):
     with open(csv_path, encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        reader = csv.DictReader(f)
+        missing = REQUIRED_BAREUN_COLS - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{csv_path.name} 필수 컬럼 누락: {sorted(missing)}")
+        rows = list(reader)
+    ids = [row.get("utt_id", "") for row in rows]
+    if not rows:
+        raise ValueError(f"{csv_path.name} 발화 0행")
+    if any(not utt_id for utt_id in ids):
+        raise ValueError(f"{csv_path.name} 빈 utt_id 존재")
+    if len(ids) != len(set(ids)):
+        raise ValueError(f"{csv_path.name} 중복 utt_id 존재")
+    return rows
+
+
+def validate_session_csv(path, expected_cols, expected_ids):
+    """완성 CSV의 스키마·행 순서·중복을 검증한다."""
+    result = {
+        "path": str(path), "valid": False, "reasons": [], "rows": 0,
+        "meta_missing": 0, "speaker_missing": 0, "json_missing": 0,
+        "align_warn": 0, "eojeol_mismatch": 0,
+    }
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            header = reader.fieldnames or []
+            if header != expected_cols:
+                result["reasons"].append(
+                    f"header mismatch: expected={expected_cols!r} actual={header!r}"
+                )
+            ids = []
+            for row in reader:
+                ids.append(row.get("utt_id", ""))
+                result["meta_missing"] += row.get("category_norm") == MISSING
+                result["speaker_missing"] += row.get("sex") == MISSING
+                result["json_missing"] += row.get("original_form") == MISSING
+                result["align_warn"] += bool(row.get("align_warn"))
+                try:
+                    n_eojeol = int(row.get("n_eojeol") or 0)
+                except ValueError:
+                    n_eojeol = -1
+                for col in ("form_roman", "pron_pred_roman", "pron_pred_ipa"):
+                    value = row.get(col, "")
+                    if n_eojeol < 0 or (
+                        value and len(value.split(EOJEOL_SEP)) != n_eojeol
+                    ):
+                        result["eojeol_mismatch"] += 1
+                        break
+        result["rows"] = len(ids)
+        if ids != expected_ids:
+            result["reasons"].append("utt_id sequence/count mismatch")
+        if len(ids) != len(set(ids)):
+            result["reasons"].append("duplicate utt_id")
+        if any(not item for item in ids):
+            result["reasons"].append("empty utt_id")
+        result["valid"] = not result["reasons"]
+    except Exception as exc:
+        result["reasons"].append(f"{type(exc).__name__}: {exc}")
+    return result
 
 
 def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
@@ -243,12 +318,37 @@ def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
 
     stats = {"session": session_id, "n_utt": len(utts), "n_row": 0,
              "meta_missing": 0, "speaker_missing": 0, "json_missing": 0,
-             "align_warn": 0, "eojeol_mismatch": 0, "json_found": jp is not None}
+             "align_warn": 0, "eojeol_mismatch": 0, "json_found": jp is not None,
+             "status": "pending", "archive": "", "partial": ""}
 
-    out_dir = P("search_master") / str(year)
+    out_dir = opts["output_root"] / str(year)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{session_id}.csv"
-    with open(out_path, "w", newline="", encoding="utf-8-sig") as f:
+    expected_ids = [u["utt_id"] for u in utts]
+
+    if out_path.exists():
+        existing = validate_session_csv(out_path, cols, expected_ids)
+        if existing["valid"] and not opts["overwrite"]:
+            stats.update(
+                status="validated_existing",
+                n_row=existing["rows"],
+                meta_missing=existing["meta_missing"],
+                speaker_missing=existing["speaker_missing"],
+                json_missing=existing["json_missing"],
+                align_warn=existing["align_warn"],
+                eojeol_mismatch=existing["eojeol_mismatch"],
+            )
+            return stats
+        stats["replace_reason"] = (
+            "overwrite" if opts["overwrite"]
+            else "invalid_existing: " + "; ".join(existing["reasons"])
+        )
+
+    temp_path = None
+    with staged_text_writer(
+        out_path, newline="", encoding="utf-8-sig"
+    ) as (f, temp_path):
+        stats["partial"] = str(temp_path)
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         for u in utts:
@@ -261,6 +361,22 @@ def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
                     break
             w.writerow(row)
             stats["n_row"] += 1
+
+    staged = validate_session_csv(temp_path, cols, expected_ids)
+    if not staged["valid"]:
+        raise RuntimeError(
+            f"{session_id} 임시 CSV 검증 실패({temp_path}): "
+            + "; ".join(staged["reasons"])
+        )
+
+    if out_path.exists():
+        relative = Path(str(year)) / out_path.name
+        archived = archive_copy(out_path, opts["archive_root"], relative)
+        stats["archive"] = str(archived)
+    promote_staged(temp_path, out_path)
+    stats["partial"] = ""
+    stats["status"] = "created"
+    stats["output"] = file_fingerprint(out_path)
     return stats
 
 def year_folders():
@@ -294,10 +410,28 @@ def main():
                     action="store_false",
                     help="tagged_roman 컬럼 제외(기본 포함 — 사용자 확정)")
     ap.add_argument("--coverage", action="store_true",
-                    help="has_wav 등 coverage 컬럼 채움(기본 off)")
+                    help="현재 미구현. 빈 coverage를 실제값으로 오인하지 않도록 실패 처리")
+    ap.add_argument("--output-root", type=Path,
+                    help="격리 파일럿·테스트용 출력 루트(기본 paths.json search_master)")
+    ap.add_argument("--run-id", help="외부 실행기가 부여한 실행 ID")
+    ap.add_argument("--allow-missing-json", action="store_true",
+                    help="JSON 발화·세션 결측이 있어도 완료 허용(기본은 연구 안전상 실패)")
     args = ap.parse_args()
+    if args.coverage:
+        ap.error("--coverage는 아직 구현되지 않았습니다. 빈 값을 실제 결측으로 "
+                 "오인하지 않도록 현재는 실행을 차단합니다.")
 
-    opts = {"tagged_roman": args.tagged_roman, "coverage": args.coverage}
+    run_id = args.run_id or new_run_id("search_master")
+    output_root = (args.output_root or P("search_master")).resolve()
+    opts = {
+        "tagged_roman": args.tagged_roman,
+        "coverage": False,
+        "overwrite": args.overwrite,
+        "output_root": output_root,
+        "archive_root": output_root / "_archive" / run_id,
+        "run_id": run_id,
+        "allow_missing_json": args.allow_missing_json,
+    }
     ipa_path = P("layers") / "03_freq_dictionaries" / "_roman_mfa_to_ipa.csv"
     ipa_map = pp.load_ipa_map(str(ipa_path))
     print("메타데이터 로드(file_meta·speakers_normalized)...", flush=True)
@@ -305,36 +439,41 @@ def main():
     spk = load_speakers()
 
     yfolders = year_folders()
+    if args.year and args.year not in yfolders:
+        ap.error(f"{args.year}: 01_bareun_raw 연도 폴더가 없습니다. "
+                 f"사용 가능: {sorted(yfolders)}")
     years = [args.year] if args.year else sorted(yfolders)
-    log_dir = Path(__file__).resolve().parents[2] / "logs"
+    if not years:
+        ap.error("처리할 연도 폴더가 0개입니다.")
+    log_dir = PROJECT_ROOT / "logs"
     log_dir.mkdir(exist_ok=True)
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    report = log_dir / f"build_search_master_{stamp}.txt"
-    lines = [f"검색 마스터 빌드 — {stamp}",
-             f"옵션: year={args.year} pilot={args.pilot} "
-             f"tagged_roman={args.tagged_roman} coverage={args.coverage}", ""]
+    report = log_dir / f"build_search_master_{run_id}.txt"
+    lines = [f"검색 마스터 빌드 — {run_id}",
+              f"옵션: year={args.year} pilot={args.pilot} "
+             f"tagged_roman={args.tagged_roman} coverage=False "
+             f"overwrite={args.overwrite}",
+             f"출력: {output_root}", ""]
 
     grand = {"n_utt": 0, "n_row": 0, "meta_missing": 0, "speaker_missing": 0,
              "json_missing": 0, "align_warn": 0, "eojeol_mismatch": 0,
-             "sessions": 0, "skipped": 0, "json_missing_sessions": 0}
+             "sessions": 0, "created": 0, "validated_existing": 0,
+             "archived": 0, "json_missing_sessions": 0}
     for year in years:
-        if year not in yfolders:
-            print(f"[건너뜀] {year}: bareun 폴더 없음", flush=True)
-            continue
         json_idx = build_json_index(year)
         files = session_files(yfolders[year], args.sessions)
         if args.pilot:
             files = files[:args.pilot]
+        if not files:
+            raise RuntimeError(f"{year}: 처리 대상 세션 CSV가 0개")
         print(f"[{year}] 대상 세션 {len(files)}개 "
               f"(JSON 인덱스 {len(json_idx)})", flush=True)
         lines.append(f"[{year}] 대상 {len(files)}개")
         for i, bc in enumerate(files, 1):
-            out_path = P("search_master") / str(year) / f"{bc.stem}.csv"
-            if out_path.exists() and not args.overwrite:
-                grand["skipped"] += 1
-                continue
             st = build_session(bc, year, meta, spk, json_idx, ipa_map, opts)
             grand["sessions"] += 1
+            grand[st["status"]] += 1
+            if st.get("archive"):
+                grand["archived"] += 1
             for k in ("n_utt", "n_row", "meta_missing", "speaker_missing",
                       "json_missing", "align_warn", "eojeol_mismatch"):
                 grand[k] += st[k]
@@ -344,15 +483,17 @@ def main():
             note = "" if st["json_found"] else "  ★JSON없음"
             msg = (f"  {i}/{len(files)} {st['session']}: 발화 {st['n_utt']} "
                    f"행 {st['n_row']} 정렬경고 {st['align_warn']} "
-                   f"어절불일치 {st['eojeol_mismatch']}{flag}{note}")
+                   f"어절불일치 {st['eojeol_mismatch']} 상태 {st['status']}"
+                   f"{flag}{note}")
             print(msg, flush=True)
             lines.append(msg)
-    return grand, lines, report
+    return grand, lines, report, opts
 
 
-def summarize(grand, lines, report):
+def summarize(grand, lines, report, opts):
     lines += ["", "── 합계 ──",
-              f"  생성 세션: {grand['sessions']} (건너뜀 {grand['skipped']})",
+              f"  대상 세션: {grand['sessions']} (생성 {grand['created']}, "
+              f"기존 검증 {grand['validated_existing']}, 구판 보존 {grand['archived']})",
               f"  발화(입력): {grand['n_utt']:,}  행(출력): {grand['n_row']:,}",
               f"  메타 결측: {grand['meta_missing']}  화자 결측: "
               f"{grand['speaker_missing']}  JSON 발화결측: {grand['json_missing']}",
@@ -361,20 +502,72 @@ def summarize(grand, lines, report):
               f"어절수 불일치: {grand['eojeol_mismatch']}"]
     row_ok = grand["n_utt"] == grand["n_row"]
     eoj_ok = grand["eojeol_mismatch"] == 0
-    verdict = "✅ 검증 통과" if (row_ok and eoj_ok) else "★ 검토 필요"
+    meta_ok = grand["meta_missing"] == 0
+    json_ok = (
+        opts["allow_missing_json"]
+        or (grand["json_missing"] == 0 and grand["json_missing_sessions"] == 0)
+    )
+    verdict_ok = row_ok and eoj_ok and meta_ok and json_ok
+    verdict = "✅ 검증 통과" if verdict_ok else "❌ 검증 실패"
     lines += ["", f"판정: {verdict}"]
-    report.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report.parent.mkdir(parents=True, exist_ok=True)
+    from pipeline_common import atomic_text_writer
+    with atomic_text_writer(report, encoding="utf-8", newline="\n") as (stream, _):
+        stream.write("\n".join(lines) + "\n")
     # 투명성 기록: 어떤 도구·자료·규칙으로 만든 CSV인지 산출 옆에 남김.
-    meta = {"generated_at": datetime.now().isoformat(timespec="seconds"),
-            "verdict": verdict, "totals": grand, **BUILD_PROVENANCE}
-    meta_path = P("search_master") / "_build_meta.json"
-    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2),
-                         encoding="utf-8")
+    meta = {
+        **runtime_snapshot(PROJECT_ROOT),
+        "run_id": opts["run_id"],
+        "status": "success" if verdict_ok else "validation_failed",
+        "verdict": verdict,
+        "totals": grand,
+        "options": {
+            "tagged_roman": opts["tagged_roman"],
+            "coverage": False,
+            "overwrite": opts["overwrite"],
+            "allow_missing_json": opts["allow_missing_json"],
+        },
+        "resolved_paths": {
+            "output_root": str(opts["output_root"]),
+            "dialogue_json": str(P("dialogue_json")),
+            "layers": str(P("layers")),
+            "ipa_map": str(P("layers") / "03_freq_dictionaries"
+                           / "_roman_mfa_to_ipa.csv"),
+        },
+        **BUILD_PROVENANCE,
+    }
+    meta_path = opts["output_root"] / "_build_meta.json"
+    run_path = opts["output_root"] / "_runs" / f"{opts['run_id']}.json"
+    atomic_write_json(meta_path, meta)
+    atomic_write_json(run_path, meta)
     print("\n".join(lines[-9:]))
-    print(f"\n보고서: {report}\n출처 기록: {meta_path}")
-    return 0 if (row_ok and eoj_ok) else 1
+    print(f"\n보고서: {report}\n출처 기록: {meta_path}\n실행 기록: {run_path}")
+    return 0 if verdict_ok else 1
+
+
+def write_crash_manifest(run_id, exc):
+    payload = {
+        **runtime_snapshot(PROJECT_ROOT),
+        "run_id": run_id,
+        "status": "crashed",
+        "error": f"{type(exc).__name__}: {exc}",
+        "traceback": traceback.format_exc(),
+    }
+    path = PROJECT_ROOT / "logs" / f"build_search_master_{run_id}_crash.json"
+    atomic_write_json(path, payload)
+    return path
 
 
 if __name__ == "__main__":
-    _g, _l, _r = main()
-    raise SystemExit(summarize(_g, _l, _r))
+    _run_id = new_run_id("search_master")
+    # --run-id가 있으면 main 내부에서 이를 사용하지만, 파싱 전 crash도 기록하기
+    # 위해 외부 기본 ID를 하나 확보한다.
+    try:
+        _g, _l, _r, _o = main()
+        raise SystemExit(summarize(_g, _l, _r, _o))
+    except SystemExit:
+        raise
+    except Exception as _exc:
+        _crash = write_crash_manifest(_run_id, _exc)
+        print(f"\n치명 오류: {_exc}\ncrash manifest: {_crash}", file=sys.stderr)
+        raise SystemExit(1)

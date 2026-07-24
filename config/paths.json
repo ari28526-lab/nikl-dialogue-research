@@ -1,6 +1,6 @@
 {
   "_comment": "경로 단일 관리 파일. 폴더 이동/기계 변경 시 여기만 수정. 값은 '현재' 경로 (이행 후 갱신)",
-  "_updated": "2026-07-23",
+  "_updated": "2026-07-24",
   "dialogue_json": "D:/00_RAW/dialogue_json",
   "layers": "D:/10_LAYERS",
   "audio_home": "D:/20_AUDIO",
@@ -8,6 +8,11 @@
   "textgrid_merged": "D:/20_AUDIO/06_textgrid_merged",
   "_comment_textgrid": "06_textgrid_merged=형태소 정렬(구, phones 고립형·형태소 길이용). 06_textgrid_eojeol=어절 정렬 4-tier(words 어절/phones 연결발음/morphemes 형태소/utterance) — 음운변이 분석 주 레이어",
   "textgrid_eojeol": "D:/20_AUDIO/06_textgrid_eojeol",
+  "mfa_state": "D:/mfa_eojeol",
+  "mfa_temp_primary": "C:/mfa_tmp",
+  "mfa_temp_secondary": "D:/mfa_tmp",
+  "mfa_output_primary": "C:/mfa_eojeol_out",
+  "mfa_output_secondary": "D:/mfa_eojeol_out",
   "search_master": "D:/10_LAYERS/05_search_master",
   "actual_pron": "D:/10_LAYERS/06_actual_pron",
   "_comment_lexicon": "lexicon_full=1기 어휘목록(발음 pron_1/pron_2/pron_g2p, 내부 형태경계 morph_dict 포함, 130만 행). Dropbox 00_01_1차_archive/02_DICTIONARY에서 복사 후 사용 (DESIGN_search_master_layer.md)",
@@ -20,5 +25,7 @@
   "kofren": "C:/Users/ari30/research/2026_summer_research/01_frequency_data/final_word_frequency",
   "gdrive": "G:/내 드라이브/DATA_2026",
   "secrets_bareun": "C:/Users/ari30/Documents/Codex/_secrets/bareun",
-  "bareun_venv_python": "C:/Users/ari30/Documents/Codex/2026-07-06/d/work/bareun-smoke/.venv/Scripts/python.exe"
+  "bareun_venv_python": "C:/Users/ari30/Documents/Codex/2026-07-06/d/work/bareun-smoke/.venv/Scripts/python.exe",
+  "_comment_pipeline_python": "MFA·CSV 헬퍼의 재현 가능한 표준라이브러리 실행기. %USERPROFILE%은 paths.py와 PowerShell 러너에서 확장.",
+  "pipeline_python": "%USERPROFILE%/miniforge3/envs/mfa/python.exe"
 }

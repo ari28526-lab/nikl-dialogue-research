@@ -17,6 +17,7 @@
 import csv
 import json
 import shutil
+import subprocess
 import sys
 from itertools import islice
 from pathlib import Path
@@ -24,6 +25,10 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from paths import P, path_values  # noqa: E402
+from pipeline_common import atomic_text_writer  # noqa: E402
+
 REPORT = ROOT / "logs" / "preflight_report.txt"
 LINES = []
 
@@ -85,18 +90,19 @@ def main() -> int:
     if cfg is None:
         return 1
     missing_keys = []
-    for k, v in cfg.items():
-        if k.startswith("_"):
-            continue
-        exists = Path(v).exists()
+    resolved = path_values()
+    for k, path in resolved.items():
+        exists = path.exists()
         mark = "OK  " if exists else "없음"
-        log(f"  [{mark}] {k:22s} {v}")
+        log(f"  [{mark}] {k:22s} {path}")
         if not exists:
             missing_keys.append(k)
     # 없어도 파일럿에 지장 없는 키 (지금 단계 기준)
     later_ok = {"gdrive", "textgrid_eojeol", "actual_pron", "enriched_1gi",
                 "search_master", "reference_dictionary", "reference_mp",
-                "reference_ls", "reference_multilayer"}
+                "reference_ls", "reference_multilayer", "bareun_venv_python",
+                "mfa_temp_primary", "mfa_temp_secondary",
+                "mfa_output_primary", "mfa_output_secondary"}
     blockers = [k for k in missing_keys if k not in later_ok]
     if missing_keys:
         log()
@@ -110,6 +116,11 @@ def main() -> int:
                 log(f"  · {k}: 1기 백업 (다운로드 예정) — 파일럿 무관")
             elif k == "gdrive":
                 log(f"  · {k}: G: 미연결 — 방침상 미사용, 무관")
+            elif k == "bareun_venv_python":
+                log(f"  · {k}: 기존 바른 API venv — 검색 마스터 생성에는 미사용. "
+                    "A1 재분석 전 별도 복구 필요")
+            elif k.startswith(("mfa_temp_", "mfa_output_")):
+                log(f"  · {k}: MFA 실행 때 생성되는 작업 경로 — CSV 파일럿 무관")
             elif k.startswith("reference_"):
                 log(f"  · {k}: ★구 HDD 미이전 추정 — 파일럿엔 무관하나 A단계 재실행에 필요")
                 fixes.append((k, f"HDD 연결 후: robocopy \"E:{Path(cfg[k]).as_posix()[2:]}\" \"{cfg[k]}\" /E  (E:는 HDD 문자)"))
@@ -117,6 +128,23 @@ def main() -> int:
                 log(f"  · {k}: ★파일럿 차단 요소")
     if blockers:
         ok_all = False
+
+    # 검색 마스터 실행기는 시스템 PATH의 모호한 python이 아니라 설정된 실행기를 쓴다.
+    pipeline_python = P("pipeline_python")
+    if pipeline_python.exists():
+        try:
+            proc = subprocess.run(
+                [str(pipeline_python), "--version"],
+                check=True, capture_output=True, text=True, encoding="utf-8",
+            )
+            version = (proc.stdout or proc.stderr).strip()
+            log(f"  [OK] pipeline_python 실행 가능: {pipeline_python} ({version})")
+        except Exception as exc:
+            ok_all = False
+            log(f"  [오류] pipeline_python 실행 실패: {pipeline_python} ({exc})")
+    else:
+        ok_all = False
+        log(f"  [누락] pipeline_python 없음: {pipeline_python}")
 
     # ---------- 2. 파일럿 입력 ----------
     section("2. 파일럿 입력 자료")
@@ -243,7 +271,8 @@ def main() -> int:
             log(f"      {how}")
 
     REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text("\n".join(LINES), encoding="utf-8")
+    with atomic_text_writer(REPORT, encoding="utf-8", newline="\n") as (stream, _):
+        stream.write("\n".join(LINES) + "\n")
     log()
     log(f"보고서 저장: {REPORT}")
     return 0 if ok_all else 1

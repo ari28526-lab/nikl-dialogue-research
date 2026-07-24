@@ -4,6 +4,7 @@
 모든 스크립트가 따라온다. 신규 스크립트는 반드시 이걸 쓸 것.
 """
 import json
+import os
 from pathlib import Path
 
 _CONFIG = Path(__file__).resolve().parents[2] / "config" / "paths.json"
@@ -22,4 +23,15 @@ def P(key: str) -> Path:
     if key not in d or key.startswith("_"):
         raise KeyError(f"paths.json에 '{key}' 없음. 사용 가능: "
                        + ", ".join(k for k in d if not k.startswith("_")))
-    return Path(d[key])
+    value = os.path.expandvars(os.path.expanduser(str(d[key])))
+    return Path(value)
+
+
+def config_path() -> Path:
+    """실제로 읽은 설정 파일 경로."""
+    return _CONFIG
+
+
+def path_values() -> dict[str, Path]:
+    """주석 키를 제외하고 환경변수를 확장한 전체 경로."""
+    return {key: P(key) for key in _load() if not key.startswith("_")}
