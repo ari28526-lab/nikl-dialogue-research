@@ -9,6 +9,7 @@
 | [자료구축_코드해설.md](자료구축_코드해설.md) | **A단계 코드 이해** — 어떤 자료로·어떤 코드로·왜·무슨 역할 |
 | [DATA_LAYOUT.md](DATA_LAYOUT.md) | **데이터 배치도** — D: 전 폴더 구조·규약(세션 하위폴더)·대용량 열람 요령 |
 | [WORK_HISTORY_2026-07.md](WORK_HISTORY_2026-07.md) | 작업 이력 (시간순 · Claude 협업 기록) |
+| [WORKLOG_infrastructure_audit_2026-07-24.md](WORKLOG_infrastructure_audit_2026-07-24.md) | CSV·MFA 인프라 감사의 확인·판단·실행·커밋 작업일지 |
 
 ## 진행 관리
 | 문서 | 무엇 |
@@ -27,6 +28,7 @@
 | [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
 | [decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md](decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md) | 대량 실행 전 실패·시행착오 27건과 수용 기준 |
 | [decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md](decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md) | 원자 출력·구판 보존·MFA/CSV 검증 설계와 연구적 근거 |
+| [decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md](decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md) | 후보 검색→파일 수집→KOINA→수동 판정의 층 분리와 2020 파일럿 게이트 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 
 ## 환경 설정 (environment/)

@@ -223,6 +223,26 @@ coverage:
 
 - `outputs/reports/search_master_audit_20260724.json`
 
+### 4. 후보 추출 인프라와 2020 파일럿 설계
+
+설계 문서:
+
+- `docs/decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md`
+
+확정한 구조:
+
+1. 언어·검색 층, 파일·MFA 분절 층, 연구자의 수동 실현 판정 층을 분리한다.
+2. lexicon 사전 발음은 기존 규칙 기반 예측을 덮어쓰지 않고 출처와 함께 별도
+   열에 둔다.
+3. A2 의미번호로 해소할 수 있는 사전 항목만 의미를 확정하고, 여러 발음은
+   임의로 첫 항목을 고르지 않는다.
+4. coverage는 연도별 파일 목록을 한 번 스캔해 채우고 기존 audio index와
+   교차검증한다.
+5. `align_warn` 행은 발화 단위 후보 검색에는 포함하되 정확한 TextGrid 어절
+   번호 자동 연결에서는 제외하거나 수동 대상으로 보낸다.
+6. MFA 2020 파일럿은 현상 자동 판정이 아니라 파일 대응·4-tier·시간 경계·
+   실패 기록·재개·연구자 구간 찾기 용이성을 검증한다.
+
 ## 다음 기록 예정
 
 - 연도별 Bareun/search master 파일 수와 행 수 재계산
