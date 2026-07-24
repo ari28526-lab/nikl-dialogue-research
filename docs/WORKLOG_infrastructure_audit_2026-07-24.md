@@ -275,7 +275,85 @@ coverage:
   align/merge 완료 마커와 MFA 원출력은 없음. 실행 시 먼저 temp 이어가기를
   시도하고 실패하면 안전한 `--clean` 폴백을 사용한다.
 
-아직 실제 2020 MFA는 시작하지 않았다.
+이 시점에는 2020 전량 MFA를 시작하지 않았다. 아래의 10발화 격리 파일럿은
+전량 실행과 별개다.
+
+### 6. 연도별 10발화·실제 화자 5명 end-to-end 파일럿
+
+사용자 추가 조건:
+
+- 연도별 10발화를 한 화자에서 고르지 않는다.
+- CSV의 실제 `speaker_id` 기준 화자 약 5명을 포함한다.
+- 선택 발화와 관련 CSV도 같은 파일럿 폴더에 모은다.
+
+구현:
+
+1. 정확히 5명의 실제 화자, 화자당 2발화를 선택했다.
+2. 대화 맥락도 퍼지도록 서로 다른 원 세션 5개에서 화자 한 명씩 골랐다.
+3. MFA 코퍼스 하위폴더 이름을 `speaker_id`로 만들어, 세션 폴더와 실제 화자를
+   혼동하지 않게 했다.
+4. 각 연도에 바른 선택행 10개, search master 선택행 10개, 화자 메타 5개를
+   함께 저장했다.
+5. seed+SHA256 순서로 표본을 고정해 재현 가능하게 했다.
+6. 원본 WAV·CSV·형태소 TextGrid는 읽기만 하고 별도 run 폴더에 복사했다.
+7. 미완료 출력은 삭제하지 않고 run 내부 `archive_failed`로 옮긴 뒤 재시도하며,
+   단계별 JSON marker가 일치하는 경우에만 건너뛴다.
+
+추가 코드:
+
+- `scripts/python/build_stratified_mfa_pilot.py`
+- `scripts/python/finalize_stratified_mfa_pilot.py`
+- `scripts/run_stratified_mfa_pilot.ps1`
+- `tests/test_build_stratified_mfa_pilot.py`
+
+실제 입력 구성 결과:
+
+- 2020–2025 각 연도 10발화·5화자·5세션·화자당 2발화
+- 바른 CSV 10행/년, search master CSV 10행/년, 화자 메타 5행/년
+- 총 파일 140개, 약 6.1MB, `.partial` 잔여 0
+- 실행 폴더:
+  `D:\mfa_eojeol\pilots\year10_speaker5\pilot_year10_speaker5_20260724`
+
+첫 2020 실제 시도에서 발견한 시행착오:
+
+- `mfa validate`가 `python-mecab-ko`를 요구하며 실패했다.
+- MFA 3.4의 `validate`에는 본 정렬에서 사용하는 `--no_tokenization` 옵션이
+  없다.
+- 새 토크나이저 의존성을 설치하면 파일럿과 본 정렬의 전처리 경로가 달라지므로
+  설치하지 않았다.
+- 대신 표본 구성기의 WAV 헤더·lab·CSV·형태소 TextGrid 전수 검사와 실행기의
+  화자/발화 수 검사를 입력 QC로 사용한 뒤, 본 경로와 동일한
+  `align --no_tokenization --g2p_model_path korean_mfa`를 실행하도록 수정했다.
+- 실패 로그는 run 폴더의 `logs\2020.validate.log`에 보존했다.
+
+수정 후 2020 실제 결과:
+
+- MFA 보고: `Found 5 speakers across 10 files`
+- G2P MFA 원 TextGrid 10/10
+- 표준 4-tier 10/10
+- WAV 길이·tier·시간 경계·누락 전수 QC 10/10 통과
+- 누락 0, 추가 0, `spn` interval 0
+- MFA align 34.249초
+- 기존 D: 전량 레이어 변경 0
+- 같은 RunId 재실행 시 입력 QC·align·finalize 세 단계가 모두 완료 마커를
+  검증하고 재계산 없이 4.3초에 종료함
+
+자동검증:
+
+- Python 전체 회귀검사 23/23 통과
+- PowerShell 파서·UTF-8 BOM·필수 안전장치 검사 4/4 파일 통과
+- `git diff --check` 통과
+
+상세 실행서:
+
+- `docs/decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md`
+
+참고:
+
+- 동봉한 search master 선택행은 현재 2026-07-23 전량본의 스냅숏이다.
+- lexicon 예외 발음과 coverage는 아직 미반영이므로 최종 교정 CSV로 부르지
+  않는다.
+- MFA phones와 `spn`은 분절 인프라 지표이지 연구 현상의 실현 판정이 아니다.
 
 ## 커밋·푸시 기록
 

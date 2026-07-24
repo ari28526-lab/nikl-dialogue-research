@@ -4,6 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $files = @(
     (Join-Path $root 'scripts\preflight_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
+    (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
@@ -67,6 +68,24 @@ foreach ($path in $files) {
         foreach ($required in @('[string]$Year', 'textgrid_eojeol_staging')) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA preflight 연도/staging 가드 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_stratified_mfa_pilot.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'speaker5',
+            'speaker_id',
+            'DATA_SSD',
+            'verify_mfa_install.py',
+            '--g2p_model_path',
+            'Archive-PartialDirectory',
+            'selection_manifest.csv',
+            'textgrid_4tier',
+            'exit 1'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("층화 MFA 파일럿 안전장치 누락: $required")
             }
         }
     }

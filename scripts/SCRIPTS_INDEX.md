@@ -73,6 +73,9 @@
 | build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
 | run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
+| build_stratified_mfa_pilot.py | 연도별 실제 `speaker_id` 5명×2발화 선택, WAV+어절 lab과 바른/search master/화자 CSV를 독립 run 폴더에 원자 복사 | 6개년 60발화 입력 구성·검증 완료 |
+| finalize_stratified_mfa_pilot.py | 파일럿 MFA 원출력에 기존 형태소 경계를 결합해 4-tier 생성, WAV 길이·tier·누락·`spn` 발화별 전수 QC | 2020 10/10 통과 |
+| run_stratified_mfa_pilot.ps1 | **연도별 10발화·실제 화자 5명 end-to-end 러너** — 입력 QC→G2P align→4-tier→요약, 단계 marker 재개·미완료 출력 보존 | 2020 실제 통과, 2021–2025 실행 대기 |
 
 절차·판정 규칙: `docs/decisions/RUNBOOK_MFA_eojeol_realign.md` (가속 결정 2026-07-17 절 참조).
 
