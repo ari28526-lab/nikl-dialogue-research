@@ -167,3 +167,36 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   연속 wav+정렬 TextGrid 재구성. 9발화 데모 검증.
 - 다음 세션용 핸드오프: `docs/HANDOFF_search_master_session2.md`. 남은 것: v1 CSV 전량
   생성(밤샘, HDD 불필요) → MFA G2P 전량 재정렬(~4일). HDD는 7/24 13:00, reference 회수용(독립).
+
+## 2026-07-24 — 대량 MFA·CSV 전 안전성 감사와 파이프라인 강화
+
+- 사용자 요청에 따라 MFA G2P 전량 재정렬과 검색 마스터 전량 생성은 시작하지
+  않고, 먼저 기존 코드·오류 이력·D:/프로젝트 역할을 전수 감사. 수정 전 핵심
+  코드 11개를 `archive/code_pre_bulk_20260724`에 SHA256 manifest와 함께 보존.
+- 누적 시행착오를 F01–F27로 정리. 과거의 traceback 유실·V3 착오·0바이트
+  WAV·1화자 사고·MFA export/SQLite/거짓 성공·워치독 오살·G2P 부재뿐 아니라
+  이번 감사에서 exit 0, 부분 CSV skip, overwrite 유실, 경로 혼재를 추가 확인.
+- 공통 원자 출력 계층 도입: `.partial` 기록→fsync→스키마·ID·행수 검증→
+  `os.replace`; 기존 정식 파일은 `_archive/<run_id>`에 먼저 보존. Git commit,
+  Python·OS·옵션·경로·합계를 JSON manifest에 기록.
+- MFA 러너를 preflight 기본 실행, JSON marker, 실패 temp 보존, 검증 후 정리,
+  치명 분기 `exit 1`로 강화. MFA 3.4.0 설치본의 필수 수동 패치 7종을
+  AST/소스 hash로 검증하는 `verify_mfa_install.py` 추가. 실제 preflight는
+  모델·패치·세션구조·디스크 포함 FAIL 0/WARN 0.
+- **★메타 ID 충돌 발견·복구**: `file_meta.csv`가 17,156행이라 정상처럼
+  보였으나 2023 JSON 4개의 최상위 `id`가 직전 세션으로 잘못 기입되어 중복 4,
+  실제 메타 누락 4였음. 원본 파일명 stem과 내부 doc/utterance ID는 일치하므로
+  stem을 조인 정본으로 채택하고 잘못된 값은 `source_top_id`에 보존.
+- D: 원본 JSON은 수정하지 않고 구 `file_meta.csv`를
+  `_archive/metadata_fix_top_id_20260724`에 보존한 뒤 17,156행을 원자 재생성.
+  형태분석–메타 ID 집합 17,156개 완전 일치 확인. 누락됐던
+  `SDRW2300000445` 216발화 검색 CSV 파일럿에서 메타/화자/JSON 결측 0,
+  어절 불일치 0으로 통과.
+- 자동 검사: Python unittest 18/18, PowerShell BOM·AST 안전 검사 3/3,
+  MFA 패치 7/7, 예측발음 selftest 30/30 통과. 세부 결과는
+  `outputs/reports/PILOT_pre_bulk_validation_2026-07-24.md`.
+- 중간 커밋과 원격 푸시:
+  `5587604`(기준선), `f49eeef`(CSV 안전화), `69babb4`(MFA 안전화),
+  `d77474a`(메타 복구). 작업 브랜치 `agent/harden-pre-bulk-pipelines`.
+- 다음 게이트: 연도·현상별 층화 MFA/CSV 소표본, G2P phones 청취·내용 타당성,
+  실패·`spn`의 표본 편향 확인. 승인 전 대량 실행 금지.

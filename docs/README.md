@@ -25,6 +25,8 @@
 | [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |
 | [decisions/000_project_folder_structure.md](decisions/000_project_folder_structure.md) | 폴더 구조 결정 |
 | [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
+| [decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md](decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md) | 대량 실행 전 실패·시행착오 27건과 수용 기준 |
+| [decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md](decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md) | 원자 출력·구판 보존·MFA/CSV 검증 설계와 연구적 근거 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 
 ## 환경 설정 (environment/)

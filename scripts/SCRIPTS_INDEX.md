@@ -14,7 +14,7 @@
 | supplement_sense_layer.py | 2차 보완 (접사 어간형 색인·다의어 잠정 부여) | 실행 완료 |
 | build_freq_dictionaries.py | **3차: 빈도사전** 형태소·어절 2종 (연도별, MP/LS/KoFREN 비교, 어원, IPA). count→merge 2단계 | 실행 완료 |
 | build_sense_freq.py | 의미별 빈도표 (02 레이어 기반) | 실행 완료 |
-| build_metadata_index.py | 파일 메타데이터 인덱스 (사용역·주제·화자) | 실행 완료 |
+| build_metadata_index.py | 파일 메타데이터 인덱스 (사용역·주제·화자). 파일 stem을 세션 정본으로 쓰고 내부 ID 교차검증, 원자 교체·구판 아카이브 | 2026-07-24 전수 재생성 완료(17,156행, 원본 최상위 ID 오류 4건 추적 보존) |
 | build_stratified_freq.py | 층화 빈도 (성별×연령×사용역, per-million, 분산도) | 실행 완료 |
 
 ## 2025 음성 파이프라인
@@ -61,10 +61,12 @@
 ## 어절 전량 재정렬 — 목적 B: 4-tier (2026-07-16~17)
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
-| realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화) | 검증 완료 |
-| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 4-tier → 06_textgrid_eojeol | 2026-07-21: `_speakers.csv`(화자 메타, form 없음) 오인 KeyError 수정 — glob에 `_`제외 필터 추가(6개년 전부 해당 파일 존재, 안 고쳤으면 전 연도 실패) |
-| run_eojeol_realign.ps1 | 연도별 일괄 러너 (lab→align→merge, .done 재개, **temp=C:\mfa_tmp**+공간 가드, MFA stderr 파일 캡처+1분 하트비트) | 실행 중 |
-| quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — MFA 로딩 전체 실패 방지. dry-run 기본, --apply 이동(짝 lab 동반, CSV 기록) | 검증 완료 |
+| realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화, lab 원자 기록·구조화 marker) | 합성 회귀검사 통과, 본실행 대기 |
+| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier → 06_textgrid_eojeol. 평면/세션 출력 지원, source/output 개수 일치 검사 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
+| run_eojeol_realign.ps1 | 연도별 일괄 러너 (preflight→lab→align→검증→merge, JSON marker 재개, 실패 temp 보존, 안전한 연도별 정리) | 2026-07-24 preflight 통과, 대량 실행 대기 |
+| preflight_eojeol_realign.ps1 | SSD·공간·모델·세션구조·marker·MFA 설치 패치 7종을 대량 실행 전에 차단 검사 | 2026-07-24 FAIL 0/WARN 0 |
+| verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 수동 패치의 AST/소스 구조와 SHA256 기록 | 7/7 통과 |
+| quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
 | restructure_wav_sessions.py | 평면 연도 wav/lab → 세션 하위폴더 재구성 (★1화자 사고 근본 해결, dry-run 기본, 멱등) | 합성 검증 완료 |
 | locate_utt.py | 발화 ID → 전 레이어 경로·존재 조회 (현상별 검색·청취 검증용, import 가능) | 6개년 실검증 완료 |
@@ -79,7 +81,10 @@
 |---|---|---|
 | download_gdrive_enriched_1gi.py | 1기 enriched CSV(Drive 4.96GB) → `D:\90_ARCHIVE\1기_enriched\` 백업 (gdown 이어받기, 크기 검증) | 작성 완료·실행 대기 |
 | predict_pron.py | 철자열·예측 발음열 생성 (필수 규칙 G2P; 용언경음화 on·ㄹ비음화 off; roman_mfa·IPA·tagged_roman) | 파일럿 검증·테스트 30/30 (2026-07-23) |
-| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+예측발음, 세션별, 검증 내장, 체크포인트) | 파일럿 2020 3세션 통과 — 전량 대기 |
+| preflight_search_master.py | 경로·헤더·실행기·용량과 형태분석/메타 17,156 세션 ID 집합 전수 검사 | 2026-07-24 통과 |
+| run_search_master.ps1 | 고정 Python으로 preflight 후 검색 마스터를 실행하고 실패 코드를 전달 | 검증 완료 |
+| pipeline_common.py | `.partial`→검증→원자 교체, 구판 archive, run ID·fingerprint 공통 유틸 | 합성 회귀검사 통과 |
+| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest | 메타 복구 세션 216발화 통과 — 전량 대기 |
 | measure_spn.py | TextGrid phones tier spn 비율 측정 (G2P 전후 비교) | 완료 (2020 27.5%→G2P 0%) |
 | build_g2p_pilot_corpus.py | MFA G2P 파일럿 격리 코퍼스 (form→lab+wav, 화자별) | 완료 |
 | stitch_session.py | 발화 클립 이어붙이기 → 연속 wav+정렬 TextGrid (원본 연속본 부재 대비) | 검증 완료 |
