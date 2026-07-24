@@ -2,7 +2,10 @@
 
 작성일: 2026-07-24
 대상: NIKL 일상대화 2020–2025
-실행 ID: `pilot_year10_speaker5_20260724`
+현재 실행 ID: `pilot_year10_speaker5_v2_20260724`
+
+> `pilot_year10_speaker5_20260724`(v1)는 2023에서 CSV–WAV 발화 대응 오류를
+> 발견해 중단·보존했다. 재실행하지 않는다.
 
 ## 1. 목적
 
@@ -31,7 +34,7 @@
 `corpus/{연도}/{speaker_id}` 구조로 만들어 MFA도 실제 화자 5명을 인식하게
 한다. 원 세션 ID는 manifest에 별도로 보존한다.
 
-선정은 `speaker5_year10_v1` seed와 SHA256 정렬을 사용한다. 파일시스템 열거
+v2 선정은 `speaker5_year10_v2_duration_guard` seed와 SHA256 정렬을 사용한다. 파일시스템 열거
 순서에 의존하지 않으므로 같은 입력과 seed에서는 같은 발화가 선택된다. 선택
 가능 조건은 다음과 같다.
 
@@ -40,6 +43,8 @@
 - 기존 형태소 TextGrid가 존재함
 - 바른 CSV와 search master에서 같은 `utt_id`를 찾을 수 있음
 - 선택 화자의 `_speakers.csv` 메타데이터가 존재함
+- 세션 전체에서 같은 `utt_id`의 CSV 시간과 WAV 길이가 일관되게 대응함
+- 세션별 일관된 앞뒤 padding을 제거한 발화별 길이 잔차가 0.025초 이하임
 
 이는 모집단 대표성을 추정하는 통계 표본이 아니라 파일 연결과 정렬 인프라를
 시험하는 층화 smoke test다.
@@ -48,7 +53,7 @@
 
 ```text
 D:\mfa_eojeol\pilots\year10_speaker5\
-└─ pilot_year10_speaker5_20260724\
+└─ pilot_year10_speaker5_v2_20260724\
    ├─ selection_manifest.csv
    ├─ selection_manifest.json
    ├─ corpus\{year}\{speaker_id}\          WAV + 어절 lab
@@ -80,10 +85,10 @@ D:\mfa_eojeol\pilots\year10_speaker5\
 PowerShell에서 다음 한 줄을 실행한다.
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\ari30\research\2026_summer_research\scripts\run_stratified_mfa_pilot.ps1" -RunId pilot_year10_speaker5_20260724
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\ari30\research\2026_summer_research\scripts\run_stratified_mfa_pilot.ps1" -RunId pilot_year10_speaker5_v2_20260724 -Seed speaker5_year10_v2_duration_guard
 ```
 
-2020은 2026-07-24 실제 시험에서 이미 통과했다. 같은 명령을 실행하면 완료
+v2 2020은 2026-07-24 실제 시험에서 이미 통과했다. 같은 명령을 실행하면 완료
 마커를 검증한 뒤 2020을 건너뛰고 2021–2025를 계속한다.
 
 중단되거나 한 연도에서 실패하면 같은 명령을 다시 실행한다. 검증된 완료
@@ -127,8 +132,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\ari30\research
 | 발화별 QC 통과 | 10/10 |
 | 누락/추가 TextGrid | 0/0 |
 | `spn` interval | 0 |
-| MFA align 소요 | 34.249초 |
-| 동일 RunId 재실행 | 세 단계 모두 skip, 4.3초 종료 |
+| MFA align 소요 | 33.080초 |
 
 표본 TextGrid의 tier 순서는 정확히 다음과 같다.
 
@@ -153,3 +157,45 @@ utterance
 
 실패하면 화면의 마지막 오류와 `logs\{year}.align.log`,
 `qc\{year}_summary.json`을 함께 확인한다.
+
+## 8. v1 2023 부분 성공과 v2 duration 대응 가드
+
+v1은 2023에서 MFA가 alignment 10개를 계산한 뒤 word/phone alignment를
+9개만 수집·export하고도 exit 0으로 종료했다. 러너의 산출물 수량 가드가
+`TextGrid=9/10`을 검출해 완료 마커와 후속 병합을 차단했다.
+
+누락 발화:
+
+```text
+SDRW2300000130.1.1.235
+```
+
+이 발화는 CSV상 12어절·3.622초인데 같은 ID WAV가 2.333초였다. 같은 화자의
+`SDRW2300000130.1.1.273`은 CSV상 1어절·0.613초인데 WAV가 4.610초였다.
+세션 전체 감사 결과는 다음과 같다.
+
+- CSV: 428행
+- WAV: 436개
+- 같은 ID 길이 차이 0.02초 초과: 363/428
+- WAV에만 있는 ID: `.429`–`.436` 8개
+
+여러 WAV 길이가 바로 앞이나 몇 발화 전 CSV 길이와 일치했다. 과거 음성 분절
+또는 말뭉치 판본 간 발화 번호 대응 오류 가능성이 높으며, beam을 넓혀 해결할
+정렬 난도가 아니다.
+
+v2는 표본 후보 세션마다 전체 발화의 `WAV 길이 - CSV dur` 중앙값을 일관된
+padding으로 추정한다. 2024–2025에는 약 `+0.4초`가 일관되므로 정상 padding으로
+허용한다. 다음 조건을 모두 만족해야 세션과 발화를 선택한다.
+
+- 세션 padding: -0.025–0.5초
+- padding 제거 후 길이 잔차 0.025초 이내인 발화: 세션의 98% 이상
+- 실제 선택 발화의 길이 잔차: 0.025초 이하
+
+v2 60발화의 선택 결과:
+
+- 매년 10발화·5실제화자·5세션
+- 세션 duration 대응률 최저 99.5%
+- 선택 발화 잔차 실패 0
+- 2020 실제 G2P MFA/4-tier/QC 10/10, `spn=0`
+
+v1 폴더와 2023 실패 로그·9개 TextGrid는 원인 증거로 그대로 보존한다.

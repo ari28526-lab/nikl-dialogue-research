@@ -25,6 +25,9 @@ QC_FIELDS = [
     "status",
     "failure_reason",
     "wav_duration_seconds",
+    "csv_duration_seconds",
+    "session_padding_seconds",
+    "wav_csv_duration_residual_seconds",
     "textgrid_duration_seconds",
     "duration_difference_seconds",
     "word_intervals",
@@ -159,6 +162,23 @@ def finalize_year(run_root: Path, year: str) -> int:
             if diff > 0.02:
                 raise RuntimeError(
                     f"WAV/TextGrid 길이 차이 {diff:.6f}s > 0.02s"
+                )
+            csv_dur_text = row.get("csv_duration_seconds", "")
+            padding_text = row.get("session_padding_seconds", "")
+            duration_residual: float | str = ""
+            if csv_dur_text != "" and padding_text != "":
+                csv_dur = float(csv_dur_text)
+                padding = float(padding_text)
+                duration_residual = wav_dur - csv_dur - padding
+                if abs(duration_residual) > 0.025:
+                    raise RuntimeError(
+                        "CSV–WAV 길이 대응 잔차 "
+                        f"{duration_residual:.6f}s > 0.025s"
+                    )
+                qc["csv_duration_seconds"] = round(csv_dur, 6)
+                qc["session_padding_seconds"] = round(padding, 6)
+                qc["wav_csv_duration_residual_seconds"] = round(
+                    duration_residual, 6
                 )
             phone_rows = final_tiers["phones"]
             spn_rows = [

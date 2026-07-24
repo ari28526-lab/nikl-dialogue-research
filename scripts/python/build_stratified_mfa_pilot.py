@@ -21,6 +21,7 @@ import hashlib
 import json
 import os
 import shutil
+import statistics
 import sys
 import wave
 from collections import Counter, defaultdict
@@ -57,6 +58,10 @@ MANIFEST_FIELDS = [
     "n_morphs",
     "lab_text",
     "wav_duration_seconds",
+    "csv_duration_seconds",
+    "wav_csv_duration_delta_seconds",
+    "session_padding_seconds",
+    "session_duration_match_pct",
     "wav_sample_rate",
     "wav_channels",
     "source_wav",
@@ -132,6 +137,88 @@ def locate_wav(wav_year: Path, session_id: str, utt_id: str) -> Path | None:
     return None
 
 
+def audit_session_durations(
+    *,
+    session_id: str,
+    rows: list[dict[str, str]],
+    search_rows: list[dict[str, str]],
+    wav_year: Path,
+    residual_tolerance: float = 0.025,
+    minimum_match_pct: float = 98.0,
+) -> dict[str, object]:
+    """CSV 주석 길이와 같은 ID WAV 길이가 세션 전체에서 대응하는지 검사.
+
+    2024--2025 WAV에는 앞뒤 합계 약 0.4초의 일관된 패딩이 있으므로 단순
+    절대차가 아니라 세션 중앙 패딩에서 벗어난 잔차를 본다. 발화 번호가
+    밀린 세션은 잔차가 발화마다 크게 달라져 대응률 기준을 통과하지 못한다.
+    """
+    search_by_utt = {row.get("utt_id", ""): row for row in search_rows}
+    deltas: list[float] = []
+    inspected: list[tuple[str, float, float]] = []
+    for row in rows:
+        utt_id = (row.get("utt_id") or "").strip()
+        search = search_by_utt.get(utt_id)
+        if search is None:
+            continue
+        try:
+            csv_duration = float(search.get("dur") or "")
+        except (TypeError, ValueError):
+            continue
+        wav_path = locate_wav(wav_year, session_id, utt_id)
+        if wav_path is None:
+            continue
+        try:
+            wav_info = inspect_wav(wav_path)
+        except (OSError, EOFError, wave.Error, ValueError):
+            continue
+        wav_duration = float(wav_info["duration"])
+        delta = wav_duration - csv_duration
+        deltas.append(delta)
+        inspected.append((utt_id, csv_duration, wav_duration))
+    if not deltas:
+        return {
+            "valid": False,
+            "reason": "비교 가능한 CSV–WAV 길이 0건",
+            "inspected": 0,
+            "padding": None,
+            "match_pct": 0.0,
+            "by_utt": {},
+        }
+    padding = statistics.median(deltas)
+    matched = sum(
+        abs(delta - padding) <= residual_tolerance for delta in deltas
+    )
+    match_pct = 100.0 * matched / len(deltas)
+    # 음수 padding은 잘린 WAV, 0.5초 이상은 비정상 생성 정책일 가능성이 높다.
+    padding_plausible = -0.025 <= padding <= 0.5
+    valid = padding_plausible and match_pct >= minimum_match_pct
+    reason = (
+        "통과"
+        if valid
+        else (
+            f"padding={padding:.3f}s, 대응률={match_pct:.2f}% "
+            f"(<{minimum_match_pct:.1f}% 또는 padding 범위 위반)"
+        )
+    )
+    by_utt = {
+        utt_id: {
+            "csv_duration": csv_duration,
+            "wav_duration": wav_duration,
+            "delta": wav_duration - csv_duration,
+            "residual": (wav_duration - csv_duration) - padding,
+        }
+        for utt_id, csv_duration, wav_duration in inspected
+    }
+    return {
+        "valid": valid,
+        "reason": reason,
+        "inspected": len(deltas),
+        "padding": padding,
+        "match_pct": match_pct,
+        "by_utt": by_utt,
+    }
+
+
 def eligible_rows(
     rows: list[dict[str, str]],
     *,
@@ -142,6 +229,7 @@ def eligible_rows(
     morph_year: Path,
     per_speaker: int,
     seed: str,
+    duration_audit: dict[str, object] | None = None,
 ) -> list[dict[str, object]]:
     candidates: list[dict[str, object]] = []
     speaker_rows = [
@@ -168,6 +256,15 @@ def eligible_rows(
             wav_info = inspect_wav(wav_path)
         except (OSError, EOFError, wave.Error, ValueError):
             continue
+        duration_info = (
+            (duration_audit or {}).get("by_utt", {}).get(utt_id)
+            if duration_audit
+            else None
+        )
+        if duration_audit and duration_info is None:
+            continue
+        if duration_info and abs(float(duration_info["residual"])) > 0.025:
+            continue
         item: dict[str, object] = dict(row)
         item.update({
             "year": year,
@@ -177,6 +274,22 @@ def eligible_rows(
             "source_wav": str(wav_path.resolve()),
             "source_morpheme_textgrid": str(morph_path.resolve()),
             "wav_duration_seconds": round(float(wav_info["duration"]), 6),
+            "csv_duration_seconds": (
+                round(float(duration_info["csv_duration"]), 6)
+                if duration_info else ""
+            ),
+            "wav_csv_duration_delta_seconds": (
+                round(float(duration_info["delta"]), 6)
+                if duration_info else ""
+            ),
+            "session_padding_seconds": (
+                round(float(duration_audit["padding"]), 6)
+                if duration_audit else ""
+            ),
+            "session_duration_match_pct": (
+                round(float(duration_audit["match_pct"]), 4)
+                if duration_audit else ""
+            ),
             "wav_sample_rate": int(wav_info["sample_rate"]),
             "wav_channels": int(wav_info["channels"]),
         })
@@ -192,6 +305,7 @@ def select_year(
     raw_dir: Path,
     wav_year: Path,
     morph_year: Path,
+    search_year: Path | None,
     utterances: int,
     speakers: int,
     seed: str,
@@ -220,6 +334,25 @@ def select_year(
             raise RuntimeError(
                 f"{csv_path} 필수 열 누락: {sorted(missing)}"
             )
+        duration_audit = None
+        if search_year is not None:
+            search_path = search_year / csv_path.name
+            if not search_path.is_file():
+                raise RuntimeError(f"검색 마스터 세션 CSV 없음: {search_path}")
+            _, session_search_rows = read_csv(search_path)
+            duration_audit = audit_session_durations(
+                session_id=session_id,
+                rows=rows,
+                search_rows=session_search_rows,
+                wav_year=wav_year,
+            )
+            if not duration_audit["valid"]:
+                print(
+                    f"  [{year}] 자산 대응 불량 세션 제외 {session_id}: "
+                    f"{duration_audit['reason']}",
+                    flush=True,
+                )
+                continue
         speakers_here = sorted(
             {
                 (row.get("speaker_id") or "").strip()
@@ -242,6 +375,7 @@ def select_year(
                 morph_year=morph_year,
                 per_speaker=per_speaker,
                 seed=seed,
+                duration_audit=duration_audit,
             )
             if len(picked) != per_speaker:
                 continue
@@ -345,7 +479,8 @@ def validate_existing(
     except (OSError, json.JSONDecodeError):
         return False
     if (
-        metadata.get("status") != "selection_complete"
+        metadata.get("schema_version") != 2
+        or metadata.get("status") != "selection_complete"
         or metadata.get("utterances_per_year") != utterances
         or metadata.get("speakers_per_year") != speakers
         or metadata.get("selection_seed") != seed
@@ -401,6 +536,7 @@ def build_run(args: argparse.Namespace) -> int:
             raw_dir=raw_dir,
             wav_year=args.wav_root / year,
             morph_year=args.morph_root / year,
+            search_year=args.search_root / year,
             utterances=args.utterances_per_year,
             speakers=args.speakers_per_year,
             seed=args.seed,
@@ -466,7 +602,7 @@ def build_run(args: argparse.Namespace) -> int:
         all_rows,
     )
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "created_at": now_iso(),
         "purpose": "연도별 실제 화자 층화 G2P MFA end-to-end 파일럿",
         "years": years,
@@ -477,6 +613,13 @@ def build_run(args: argparse.Namespace) -> int:
         ),
         "distinct_sessions_per_year": args.speakers_per_year,
         "selection_seed": args.seed,
+        "selection_policy": {
+            "actual_speaker_id": True,
+            "distinct_sessions": True,
+            "session_wav_csv_duration_match_min_pct": 98.0,
+            "utterance_duration_residual_tolerance_seconds": 0.025,
+            "session_padding_allowed_seconds": [-0.025, 0.5],
+        },
         "run_root": str(run_root),
         "source_roots": {
             "bareun": str(args.raw_root.resolve()),

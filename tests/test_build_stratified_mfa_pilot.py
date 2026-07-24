@@ -9,16 +9,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
-from build_stratified_mfa_pilot import select_year  # noqa: E402
+from build_stratified_mfa_pilot import (  # noqa: E402
+    audit_session_durations,
+    select_year,
+)
 
 
-def write_wav(path: Path) -> None:
+def write_wav(path: Path, seconds: float = 0.1) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(path), "wb") as wav:
         wav.setnchannels(1)
         wav.setsampwidth(2)
         wav.setframerate(16_000)
-        wav.writeframes(b"\0\0" * 1_600)
+        wav.writeframes(b"\0\0" * round(16_000 * seconds))
 
 
 def make_session(
@@ -52,6 +55,50 @@ def make_session(
 
 
 class StratifiedPilotSelectionTests(unittest.TestCase):
+    def test_duration_audit_accepts_consistent_padding(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            wav_year = Path(tmp)
+            session = "SESSION"
+            rows = []
+            search = []
+            for index, duration in enumerate((1.0, 1.5, 2.0, 2.5, 3.0), 1):
+                utt = f"{session}.1.1.{index}"
+                rows.append({"utt_id": utt})
+                search.append({"utt_id": utt, "dur": str(duration)})
+                write_wav(
+                    wav_year / session / f"{utt}.wav", seconds=duration + 0.4
+                )
+            result = audit_session_durations(
+                session_id=session,
+                rows=rows,
+                search_rows=search,
+                wav_year=wav_year,
+            )
+            self.assertTrue(result["valid"], result["reason"])
+            self.assertAlmostEqual(result["padding"], 0.4, places=3)
+
+    def test_duration_audit_rejects_permuted_utterance_audio(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            wav_year = Path(tmp)
+            session = "SESSION"
+            rows = []
+            search = []
+            durations = (1.0, 1.5, 2.0, 2.5, 3.0)
+            for index, (csv_dur, wav_dur) in enumerate(
+                zip(durations, reversed(durations)), 1
+            ):
+                utt = f"{session}.1.1.{index}"
+                rows.append({"utt_id": utt})
+                search.append({"utt_id": utt, "dur": str(csv_dur)})
+                write_wav(wav_year / session / f"{utt}.wav", seconds=wav_dur)
+            result = audit_session_durations(
+                session_id=session,
+                rows=rows,
+                search_rows=search,
+                wav_year=wav_year,
+            )
+            self.assertFalse(result["valid"])
+
     def test_selects_five_real_speakers_from_five_sessions(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
@@ -71,6 +118,7 @@ class StratifiedPilotSelectionTests(unittest.TestCase):
                 raw_dir=raw,
                 wav_year=wav,
                 morph_year=morph,
+                search_year=None,
                 utterances=10,
                 speakers=5,
                 seed="test-seed",
@@ -103,6 +151,7 @@ class StratifiedPilotSelectionTests(unittest.TestCase):
                     raw_dir=raw,
                     wav_year=wav,
                     morph_year=morph,
+                    search_year=None,
                     utterances=10,
                     speakers=5,
                     seed="test-seed",
