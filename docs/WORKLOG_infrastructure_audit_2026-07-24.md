@@ -400,17 +400,91 @@ v2 실행 ID:
 pilot_year10_speaker5_v2_20260724
 ```
 
-v2 입력 검증:
+v2 입력 및 최종 검증:
 
 - 2020–2025 각 10발화·5화자·5세션
 - 선택 세션 duration 대응률 최저 99.5%
 - 선택 발화 잔차 실패 0
 - 2024 세션 padding 약 +0.4초, 2025 약 +0.4초로 일관
-- v2 2020 실제 MFA/4-tier/QC 10/10 통과, `spn=0`
+- v2 실제 MFA/4-tier/QC 전 연도 60/60 통과, `spn=0`
 - Python 전체 회귀검사 25/25와 PowerShell 안전검사 4/4 통과
 
 v1 폴더는 삭제·수정하지 않았다. 문제 세션이 얼마나 넓게 분포하는지는 대량
 MFA 개선 전에 6개년 전수 자산 대응 감사로 확장해야 한다.
+
+### 8. v2 정상 대응 발화의 기본 beam 난정렬과 자동 재시도
+
+v2 실행에서도 2023이 9/10에서 중단됐다. 누락 발화는
+`SDRW2300001955.1.1.164`였다.
+
+- CSV 길이: 3.025초
+- WAV 길이: 3.025초
+- 세션 padding: 0초
+- 세션 duration 대응률: 99.5868%
+- 전사: `어 접근하려고 좀 노력을 하고 있습니다.`
+- MFA DB: `alignment_log_likelihood=NULL`
+- 기본 align worker: `Done 1, errors on 1`
+
+따라서 이 사례는 v1의 WAV 매핑 결함과 달리 기본 beam 10/retry_beam 40에서
+정렬되지 않은 난정렬 발화로 분류했다. 같은 2023 표본 10개를 별도
+`retry_probe` 출력에서 beam 100/retry_beam 400으로 실행한 결과 10/10
+TextGrid를 생성했다.
+
+러너 개선:
+
+1. 기본 정렬이 exit 0이어도 TextGrid 수가 부족하면 부분 성공으로 판정한다.
+2. 기본 원출력·temp·로그를 `archive_failed`에 이동해 증거를 보존한다.
+3. duration 대응 검증을 통과한 표본만 beam 100/400으로 1회 자동 재시도한다.
+4. 확대 beam에서도 수량이 부족하면 실패 종료하고 원출력·temp를 보존한다.
+5. 완료 marker에는 `align_mode=default_beam_10_40` 또는
+   `retry_beam_100_400`을 기록한다.
+
+이 분리는 중요하다. 잘못 연결된 WAV는 확대 beam으로 억지 정렬하면 안 되고,
+정상 대응이 확인된 난정렬만 beam 확대 회수 대상이다.
+
+### 9. v2 6개년 완료
+
+개선한 러너로 같은 v2 run을 재개해 2020–2025 전체를 완료했다.
+
+```text
+D:\mfa_eojeol\pilots\year10_speaker5\
+  pilot_year10_speaker5_v2_20260724
+```
+
+최종 결과:
+
+| 연도 | 실제 화자 | 원 세션 | 입력 | QC 통과 | spn | 정렬 |
+|---:|---:|---:|---:|---:|---:|---|
+| 2020 | 5 | 5 | 10 | 10 | 0 | 기본 beam으로 완료한 기존 marker |
+| 2021 | 5 | 5 | 10 | 10 | 0 | 기본 beam으로 완료한 기존 marker |
+| 2022 | 5 | 5 | 10 | 10 | 0 | 기본 beam으로 완료한 기존 marker |
+| 2023 | 5 | 5 | 10 | 10 | 0 | `retry_beam_100_400` |
+| 2024 | 5 | 5 | 10 | 10 | 0 | `default_beam_10_40` |
+| 2025 | 5 | 5 | 10 | 10 | 0 | `default_beam_10_40` |
+
+- 완료 시각: 2026-07-24 22:42:34 KST
+- 전체 판정: `PASSED`
+- 전체 QC: 60/60
+- 전체 `spn` interval: 0
+- 관련 CSV: run 내부 `csv\{year}`
+- 원 MFA 출력: `mfa_raw\{year}`
+- 최종 4-tier: `textgrid_4tier\{year}`
+- 발화별 QC: `qc\{year}_utterance_qc.csv`
+- 사람이 읽는 요약: `RESULTS.md`
+- 기계 판독 요약: `pilot_summary.json`
+
+2020–2022 marker는 자동 `align_mode` 기록 기능을 추가하기 전에 이미 완료되어
+해당 필드가 없다. 그러나 각 연도 원출력 10개와 최종 QC 10/10은 완료 marker와
+최종 요약에서 다시 검증됐다. 재현 근거를 임의로 고쳐 쓰지 않기 위해 기존
+marker는 그대로 보존했다.
+
+2023의 이전 9/10 원출력·temp·로그와 자동 재시도 직전의 기본 beam 실패 자료는
+run 내부 `archive_failed`에 보존했다. v1도 별도 폴더에 그대로 남아 있다.
+
+대량 MFA 전에 이 파일럿에서 확인된 다음 두 게이트를 6개년 전수로 확장해야 한다.
+
+1. 세션별 CSV–WAV 대응률 및 발화별 duration 잔차 전수 감사
+2. MFA exit code와 별개인 기대 입력–TextGrid 수량 비교 및 제한적 확대 beam 회수
 
 ## 커밋·푸시 기록
 

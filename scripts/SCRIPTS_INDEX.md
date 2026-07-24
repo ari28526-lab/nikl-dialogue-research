@@ -75,7 +75,7 @@
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
 | build_stratified_mfa_pilot.py | 연도별 실제 `speaker_id` 5명×2발화 선택, WAV+어절 lab과 바른/search master/화자 CSV를 독립 run 폴더에 원자 복사. v2는 세션별 CSV–WAV 길이 대응률과 일관된 padding을 검사해 발화 번호가 어긋난 음성 세션 제외 | v2 6개년 60발화 입력 구성·검증 완료 |
 | finalize_stratified_mfa_pilot.py | 파일럿 MFA 원출력에 기존 형태소 경계를 결합해 4-tier 생성, WAV–TextGrid 및 CSV–WAV 길이 잔차·tier·누락·`spn` 발화별 전수 QC | v2 2020 10/10 통과 |
-| run_stratified_mfa_pilot.ps1 | **연도별 10발화·실제 화자 5명 end-to-end 러너** — 입력 QC→G2P align→4-tier→요약, 단계 marker 재개·미완료 출력 보존, MFA exit 0의 부분 export도 수량으로 차단 | v1 2023에서 9/10 부분 성공 차단·보존, v2 2020 통과 |
+| run_stratified_mfa_pilot.ps1 | **연도별 10발화·실제 화자 5명 end-to-end 러너** — 입력 QC→G2P align→4-tier→요약, 단계 marker 재개·미완료 출력 보존, MFA exit 0의 부분 export 수량 차단, 정상 대응 난정렬은 기본 결과를 archive한 뒤 beam 100/400 1회 자동 재시도 | v1/v2 2023에서 9/10 차단, v2 자동 확대 beam 회수 후 6개년 60/60 완료 |
 
 절차·판정 규칙: `docs/decisions/RUNBOOK_MFA_eojeol_realign.md` (가속 결정 2026-07-17 절 참조).
 

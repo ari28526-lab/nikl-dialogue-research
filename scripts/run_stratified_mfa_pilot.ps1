@@ -115,6 +115,19 @@ function Archive-PartialDirectory($path, $year, $stage) {
     Move-Item -LiteralPath $path -Destination $archive
     Say "$year 이전 미완료 $stage 보존: $archive"
 }
+function Archive-RunFile($path, $year, $stage) {
+    if (-not (Test-Path -LiteralPath $path)) { return }
+    Assert-RunChild $path
+    $archiveDir = Join-Path $runRoot (
+        'archive_failed\' + (Get-Date -Format 'yyyyMMdd_HHmmss') +
+        "\${stage}\${year}"
+    )
+    Assert-RunChild $archiveDir
+    New-Item -ItemType Directory -Force -Path $archiveDir | Out-Null
+    $archive = Join-Path $archiveDir (Split-Path $path -Leaf)
+    Move-Item -LiteralPath $path -Destination $archive
+    Say "$year 이전 미완료 $stage 로그 보존: $archive"
+}
 function Invoke-MfaLogged($arguments, $logPath) {
     Assert-RunChild $logPath
     & $mfa @arguments 2>&1 |
@@ -244,9 +257,11 @@ foreach ($year in $Years) {
             Write-Error "$year align 마커 내용 불일치: $alignMarker"
             exit 1
         }
-        Archive-PartialDirectory $rawOut $year 'align'
         $alignTemp = Join-Path $tempDir "align_$year"
         $alignLog = Join-Path $logDir "$year.align.log"
+        Archive-PartialDirectory $rawOut $year 'align_orphan_output'
+        Archive-PartialDirectory $alignTemp $year 'align_orphan_temp'
+        Archive-RunFile $alignLog $year 'align_orphan_log'
         $alignArgs = @(
             'align', $corpus, 'korean_mfa', 'korean_mfa', $rawOut,
             '--g2p_model_path', 'korean_mfa',
@@ -264,9 +279,48 @@ foreach ($year in $Years) {
         }
         $rawCount = (Get-ChildItem -LiteralPath $rawOut -Recurse -File `
                      -Filter '*.TextGrid' | Measure-Object).Count
+        $alignMode = 'default_beam_10_40'
         if ($rawCount -ne $expected) {
-            Write-Error "$year MFA 거짓/부분 성공 차단: TextGrid=$rawCount/$expected"
-            exit 1
+            # MFA가 난정렬 발화를 누락하고도 exit 0을 반환할 수 있다. 잘못 매핑된
+            # WAV 세션은 builder duration 가드가 먼저 차단한다. 대응이 검증된
+            # 표본의 정렬만 기존 회수 파이프라인과 같은 확대 beam으로 1회 재시도.
+            Say "$year MFA 부분 성공 감지: TextGrid=$rawCount/$expected"
+            Say "$year 기본 beam 출력·temp·로그 보존 후 beam 100/400 재시도"
+            Archive-PartialDirectory $rawOut $year 'align_default_partial'
+            Archive-PartialDirectory $alignTemp $year 'align_default_temp'
+            Archive-RunFile $alignLog $year 'align_default_log'
+
+            $retryTemp = Join-Path $tempDir "align_retry_beam100_400_$year"
+            $retryLog = Join-Path $logDir "$year.align_retry_beam100_400.log"
+            Archive-PartialDirectory $retryTemp $year 'align_retry_orphan_temp'
+            Archive-RunFile $retryLog $year 'align_retry_orphan_log'
+            $retryArgs = @(
+                'align', $corpus, 'korean_mfa', 'korean_mfa', $rawOut,
+                '--g2p_model_path', 'korean_mfa',
+                '--no_tokenization',
+                '--temporary_directory', $retryTemp,
+                '--num_jobs', "$NumJobs",
+                '--output_format', 'long_textgrid',
+                '--beam', '100',
+                '--retry_beam', '400',
+                '--clean'
+            )
+            $code = Invoke-MfaLogged $retryArgs $retryLog
+            if ($code -ne 0) {
+                Write-Error "$year 확대 beam MFA 실패(exit $code): $retryLog"
+                exit 1
+            }
+            $rawCount = (Get-ChildItem -LiteralPath $rawOut -Recurse -File `
+                         -Filter '*.TextGrid' | Measure-Object).Count
+            $alignMode = 'retry_beam_100_400'
+            $alignLog = $retryLog
+            if ($rawCount -ne $expected) {
+                Write-Error (
+                    "$year 확대 beam 후에도 부분 성공: " +
+                    "TextGrid=$rawCount/$expected. 출력·temp 보존 후 중단"
+                )
+                exit 1
+            }
         }
         Write-Marker $alignMarker $year 'align' @{
             corpus = $corpus
@@ -274,6 +328,7 @@ foreach ($year in $Years) {
             log = $alignLog
             textgrids = $rawCount
             num_jobs = $NumJobs
+            align_mode = $alignMode
         }
     }
 

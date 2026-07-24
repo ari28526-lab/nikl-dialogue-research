@@ -80,6 +80,8 @@ foreach ($path in $files) {
             'verify_mfa_install.py',
             '--g2p_model_path',
             'Archive-PartialDirectory',
+            'align_default_partial',
+            '--retry_beam',
             'selection_manifest.csv',
             'textgrid_4tier',
             'exit 1'
