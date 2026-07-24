@@ -1,6 +1,7 @@
-# 실행 순서 가이드 (제3자용) — 검색 마스터 완성 + 발음 레이어
+# 실행 순서 가이드 (제3자용) — 검색 마스터 감사 + MFA 분절 인프라
 
-작성 2026-07-23. **이 문서만 보고 순서대로 실행**하도록 정리(명령·확인·주의).
+작성 2026-07-23, 2026-07-24 상태 정정. **현재 감사 완료 전에는 이 문서의
+대량 명령을 바로 실행하지 않는다.**
 상세 배경·사고 이력은 `docs/decisions/RUNBOOK_MFA_eojeol_realign.md`.
 
 ## 전제·환경
@@ -19,17 +20,22 @@ python scripts\python\preflight_search_master.py
 → `logs\preflight_report.txt`에 **✅ 파일럿 진행 가능**이면 OK.
 - reference 4종이 `[없음]`인 건 정상(1·3단계와 무관). 그 외 경로는 `[OK]`여야 함.
 
-## 1. v1 검색 마스터 CSV 전량 생성 — 예측 발음열 (약 하룻밤, D: 단독)
-```
-python scripts\python\build_search_master.py
-```
-- 6개년 전량. 출력 `D:\10_LAYERS\05_search_master\{연도}\{세션}.csv`.
-- 진행이 콘솔에 실시간(세션별 줄). 끝에 **판정: ✅ 검증 통과** 확인.
-- **재개**: 중단돼도 같은 명령 다시 실행하면 이미 만든 CSV는 건너뛰고 이어감.
-- **확인**: `logs\build_search_master_*.txt` — 행수=발화수, `어절수 불일치 0`.
+## 1. 기존 v1 search master 감사 — 전량본 보존
+
+- 2026-07-23 전량 생성 완료:
+  `D:\10_LAYERS\05_search_master\{연도}\{세션}.csv`
+  (17,156세션·5,103,356행).
+- 이 전량본은 7/24 메타 수정 전이고 lexicon 예외 발음·coverage가 미반영이므로
+  현재는 감사 대상이다.
+- 감사 결과와 새 스키마가 확정되기 전 `--overwrite` 전량 재생성을 하지 않는다.
+- 재생성할 때는 구판을 실행 ID별 archive에 보존하고 연도별로 나누어 실행한다.
 - ⚠ 도는 동안 MFA·robocopy 등 **D: 읽는 다른 작업 금지**.
 
-## 2. MFA G2P 전량 재정렬 — 실제 발음(v2) 레이어 (약 4일, D: 단독)
+## 2. MFA G2P 재정렬 — 연구자 판정을 위한 분절 인프라 (D: 단독)
+
+phones tier는 음성의 후보 위치를 찾기 위한 대략적 분절·라벨이다. ㄴ 삽입 등
+현상의 최종 실현 여부는 연구자가 음성과 TextGrid를 직접 보고 별도 변수로
+판정한다.
 
 ### 사전 준비(기기당 한 번씩 확인)
 - **D: 볼륨 라벨이 `DATA_SSD`인지** 확인(HDD를 D:로 오인 방지). 러너가 자동 가드.
@@ -41,12 +47,10 @@ python scripts\python\build_search_master.py
   (cp949 콘솔 crash 방지, 2026-07-23). 절차: RUNBOOK '새 기기 셋업' 절.
 
 ### 실행
-2020·2021도 **G2P로 다시** 하려면 완료 마커부터 삭제(안 하면 그 두 해는 건너뜀):
-```
-Remove-Item D:\mfa_eojeol\done\*.align_done, D:\mfa_eojeol\done\*.merge_done -Force
-powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1
-```
-(2022–2025만 새로 하려면 마커 삭제 없이 러너만 실행 — 미완료분만 처리.)
+
+2020부터 **한 연도씩** 파일럿→검증→본실행한다. 기존 완료 마커를 와일드카드로
+직접 삭제하지 않는다. 연도 선택·기존 산출물 archive·재실행 의도를 명시하는
+안전한 실행 인터페이스를 검증한 뒤 사용한다.
 
 ### 러너가 자동으로 하는 것 (사람 개입 불필요)
 - 깨진(0바이트) wav 격리 · 평면 코퍼스 가드(뜨면 아래 조치) · temp C:/D: 자동 선택 ·
@@ -59,8 +63,9 @@ powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1
 - 평면 구조 경고가 뜨면: `python scripts\python\restructure_wav_sessions.py --root D:\20_AUDIO\03_wav\individual --year {연도} --apply` 먼저.
 - 실패 시 원인: `D:\mfa_eojeol\logs\mfa_{연도}_stderr.log`의 traceback.
 - 완료 확인: `python scripts\python\measure_spn.py "D:\20_AUDIO\06_textgrid_eojeol\{연도}"` →
-  spn 비율 매우 낮아야(G2P 전 20~30%대 → 후 0%대).
-- 다음(스크립트 미작성): `extract_actual_pron.py`로 phones→`06_actual_pron`(v2), utt_id로 v1과 조인.
+  `spn`은 정렬용 사전/G2P 커버리지 지표로 기록한다.
+- 다음(스크립트 미작성): phones 라벨·시간정보를 검색용 보조 레이어로 내보내
+  `utt_id`로 CSV와 조인한다. 이 값은 사람의 실현 판정값과 구분한다.
 
 ## 3. reference 4종 회수 (HDD 연결 시, 독립·수 분)
 - HDD 연결(문자 예: E:). **D: 배치 안 도는 시간에.**

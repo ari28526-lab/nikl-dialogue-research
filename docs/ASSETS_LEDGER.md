@@ -24,10 +24,11 @@
 | `10_LAYERS\03_freq_dictionaries` (빈도사전 5종) | ✅ IPA표 확인 / 사전 본체 CSV는 미실측 | preflight 7/23(부분) |
 | `10_LAYERS\04_metadata_index` (file_meta·speakers_normalized) | ✅ 컬럼까지 확인 | preflight 7/23 |
 | `10_LAYERS\06_multilayer_gold` | ⚠ 미실측 | — |
-| `10_LAYERS\05_search_master` / `06_actual_pron` | (신규 출력 예정지 — 없음이 정상) | 설계 7/23 |
+| `10_LAYERS\05_search_master` | ✅ 2026-07-23 전량 17,156세션·5,103,356행. 단, 7/24 메타 수정 전이며 lexicon 예외 발음·coverage 미반영 | `_build_meta.json` + build log 7/23; 7/24 감사 중 |
+| `10_LAYERS\06_actual_pron` | 없음. 명칭이 최종 실현 판정으로 오해될 수 있어 구현 전 재검토 | 7/24 사용자 방법론 확인 |
 | `20_AUDIO\03_wav` (wav+lab, 세션 구조) | ✅ 있음 (내용 전수는 인벤토리 99.44% 기준) | preflight 7/23 |
 | `20_AUDIO\06_textgrid_merged` (3-tier, 읽기전용) | ✅ 있음 | preflight 7/23 |
-| `20_AUDIO\06_textgrid_eojeol` (4-tier) | ✅ 폴더 있음 — 내용은 **2021만 완료**(G2P 미적용 한계) | 7/22 병합 |
+| `20_AUDIO\06_textgrid_eojeol` (4-tier) | ✅ 폴더 있음 — 2020·2021 비G2P 산출물 존재, G2P 전량 완료 연도는 없음 | 7/22–24 기록 대조; 전수 재실측 예정 |
 | `90_ARCHIVE` | ❌ SSD엔 없음 (HDD 보존 방침) | preflight 7/23 |
 | `mfa_eojeol` (마커·로그·격리) | ⚠ 미실측 (7/20 복사 대상 Tier1이었음) | — |
 

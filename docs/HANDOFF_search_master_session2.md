@@ -53,14 +53,11 @@ python scripts\python\build_search_master.py
 
 ### ③ MFA G2P 전량 재정렬 (CSV 끝난 뒤, ~4일)
 - 러너에 `--g2p_model_path korean_mfa` 추가됨(2026-07-23). align.py 패치도 수정됨.
-- **2020·2021을 g2p로 재작업하려면** 완료 마커 삭제 후 실행:
-  ```
-  Remove-Item D:\mfa_eojeol\done\*.align_done, D:\mfa_eojeol\done\*.merge_done -Force
-  powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1
-  ```
-  (2022–2025만 새로 하려면 마커 삭제 불필요 — 러너가 미완료분만 처리.)
-- 완료 후: `extract_actual_pron.py`(미작성) → `06_textgrid_eojeol` phones → **v2 실발음 레이어**
-  (`06_actual_pron`), utt_id로 v1과 조인. 그러면 "예측 vs 실제 발음" 대조 완성.
+- **2020·2021을 G2P로 재작업할 때도** 완료 마커를 와일드카드로 직접 삭제하지
+  않는다. 2026-07-24 이후 안전 가이드에 따라 한 연도씩 파일럿→검증→본실행한다.
+- 완료 후에는 phones 라벨·시간정보를 검색용 보조 레이어로 내보내 `utt_id`로
+  v1과 조인한다. 역사적 경로명 `06_actual_pron`은 구현 전 재검토한다.
+  현상 실현 여부는 연구자가 음성과 TextGrid를 직접 보고 별도 변수로 판정한다.
 
 ### ④ 내일 13:00 HDD 연결 (독립 트랙 — CSV/MFA와 무관)
 - reference 4종(00_DICTIONARY·MP·LS·다층위) robocopy 회수 — `docs/ASSETS_LEDGER.md` 명령.

@@ -1,5 +1,5 @@
 ﻿# 어절(語節) 전량 재정렬 배치 — 목적 B: 4-tier TextGrid. ★실시간 출력판★
-#   words(어절)+phones(연결 실제 발음, 교정)+morphemes(형태소 경계)+utterance
+#   words(어절)+phones(G2P 사전으로 정렬한 대략적 라벨·시간)+morphemes(형태소 경계)+utterance
 # lab은 wav 옆에 제자리 생성(하드링크 없음). 기존 06_textgrid_merged는 읽기전용 보존.
 # 결과: D:\20_AUDIO\06_textgrid_eojeol
 # ★lab·병합 단계는 화면 실시간. MFA 단계는 stderr를 파일로 캡처(실패 traceback 보존)

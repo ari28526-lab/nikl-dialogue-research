@@ -84,12 +84,12 @@
 | preflight_search_master.py | 경로·헤더·실행기·용량과 형태분석/메타 17,156 세션 ID 집합 전수 검사 | 2026-07-24 통과 |
 | run_search_master.ps1 | 고정 Python으로 preflight 후 검색 마스터를 실행하고 실패 코드를 전달 | 검증 완료 |
 | pipeline_common.py | `.partial`→검증→원자 교체, 구판 archive, run ID·fingerprint 공통 유틸 | 합성 회귀검사 통과 |
-| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest | 메타 복구 세션 216발화 통과 — 전량 대기 |
+| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+규칙기반 예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest | 2026-07-23 전량 5,103,356행 생성. 단, 7/24 메타 수정 전 산출물이며 lexicon 예외 발음·coverage 미반영 — 감사·선별 재생성 대기 |
 | measure_spn.py | TextGrid phones tier spn 비율 측정 (G2P 전후 비교) | 완료 (2020 27.5%→G2P 0%) |
 | build_g2p_pilot_corpus.py | MFA G2P 파일럿 격리 코퍼스 (form→lab+wav, 화자별) | 완료 |
 | stitch_session.py | 발화 클립 이어붙이기 → 연속 wav+정렬 TextGrid (원본 연속본 부재 대비) | 검증 완료 |
 | build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 미작성 (전량 CSV 후) |
-| extract_actual_pron.py | 4-tier phones → v2 실발음 레이어 (G2P 재정렬 후) | 미작성 |
+| extract_actual_pron.py | 4-tier phones 라벨·시간을 검색용 보조 레이어로 추출. **사람의 실현 판정값이 아님** | 미작성(경로명 `06_actual_pron`도 오해 방지를 위해 구현 전 재검토) |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

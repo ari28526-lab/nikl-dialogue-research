@@ -2,7 +2,8 @@
 
 한 파일에 다 담는다:
   tier1 words     = 어절            (신규 어절 MFA 정렬)
-  tier2 phones    = 연결 실제 발음   (신규, 교정된 것: 것을→거슬)
+  tier2 phones    = G2P 사전으로 정렬된 대략적 음소 라벨·시간
+                    (신규, 어절 입력 예: 것을→거슬)
   tier3 morphemes = 형태소 경계      (기존 06_textgrid_merged의 words tier 재사용)
   tier4 utterance = form
 입력: D:/mfa_eojeol/out/{year}/{session}/{utt}.TextGrid  (신규 어절 정렬)

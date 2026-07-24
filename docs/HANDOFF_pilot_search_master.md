@@ -25,7 +25,8 @@
   미정의 토큰은 `⟨기호⟩`로 노출. 철자 전용 종성 토큰은 표에 추가 등록.
 - **컬럼**: 추적(utt_id 등)+사회변수(file_meta·speakers_normalized의 `_norm`)+
   텍스트(form·tagged·**original_form·start·end·note** ←원본 JSON)+철자열+
-  예측발음열(한글·roman·IPA). 실발음은 별도 v2 레이어(재정렬 후, 조인).
+  예측발음열(한글·roman·IPA). MFA phones·시간정보는 별도 보조 레이어로
+  두고, 현상 실현 여부는 연구자가 음성과 TextGrid를 보고 별도 판정.
 - **발음 조회부**: lexicon **v1**(`D:\00_RAW\reference\03_lexicon_1기\01_NIKL_lexicon_full.csv`,
   pron_1/pron_2/pron_g2p·morph_dict, 130만 행) 우선 + 형태소·어절 경계 필수
   규칙. 한글 발음→roman_mfa **직접 변환**(lexicon의 서울식 roman은 참조 전용).

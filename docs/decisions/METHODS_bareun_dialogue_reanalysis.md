@@ -212,7 +212,7 @@
 | ✅ (외부) | `freq_MP_*`/`freq_LS_*`/`freq_ML2025_*`/`freq_KoFREN_*` | **규준 코퍼스** 빈도 — 우리 게 아님. 비교·규준용 |
 | ✅ 대체로 | `etym_type`(어종 고유/한자/외래) | 사전 기반, 안정적 |
 | ⚠️ 조건부 | `etym_origin`(한자어 원어) | 자동 재분석(`/?`) 주의 |
-| ⚠️ 조건부 | `roman`/`roman_mfa`/`ipa` | **철자 기반=기저형 표기**(음운규칙 미적용). "실제 발음" 아님(표면형은 MFA TextGrid). IPA는 변환표 의존 |
+| ⚠️ 조건부 | `roman`/`roman_mfa`/`ipa` | **철자 기반=기저형 표기**(음운규칙 미적용). 실현 판정이 아님. MFA TextGrid도 후보 위치 확인용 분절이며 최종 실현은 연구자가 판정. IPA는 변환표 의존 |
 | ⚠️⚠️ **조심** | `sense_freq_dictionary`: 코퍼스 `freq_YYYY`(다의어), `morpheme_freq`의 `sense_id/conf/method`(ls_*·lex_first) | 문맥 없는 MFS 추정. **monosemous/lex_mono만 신뢰**. 뜻별빈도는 `freq_LS_*` 사용 |
 | ✅ (층화는 메타 의존) | `morph_freq_stratified`(층화 per_million)·`morph_dispersion`(분산도 n_docs) | 우리 코퍼스 형태소 카운트 파생. 분산도=순수 문서카운트 완전신뢰. 층화=**우리 코퍼스(NIKL 일상대화) 화자·사용역 메타** 조인(성별/연령/사용역, `미상` 존재, per_million 정규화 필수). **KoFREN과 무관**(KoFREN은 외부 비교컬럼일 뿐). 일상대화·여성·20대가 큼 |
 
