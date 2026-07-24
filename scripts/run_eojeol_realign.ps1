@@ -57,7 +57,13 @@ $years = @('2020','2021','2022','2023','2024','2025')
 #   이전 완료 후 SSD=D:, HDD=H:(백업 전용)로 문자 고정. 의도적으로 HDD에서 돌릴
 #   일이 생기면 아래 $expectLabel만 바꿀 것.
 $expectLabel = 'DATA_SSD'
+# ★ 라벨 조회 이식성 (2026-07-23): Get-Volume(Storage 모듈)이 없는 셸(예: 원격 브리지)에서도
+#   동작하도록 CIM(Win32_LogicalDisk) 폴백 추가 — 둘 다 D: 라벨을 동일하게 읽음(실측 DATA_SSD).
+#   가드 자체는 불변: 라벨이 'DATA_SSD'가 아니면 여전히 중단(HDD 오인 방지).
 $dLabel = (Get-Volume -DriveLetter D -ErrorAction SilentlyContinue).FileSystemLabel
+if ([string]::IsNullOrEmpty($dLabel)) {
+    $dLabel = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='D:'" -ErrorAction SilentlyContinue).VolumeName
+}
 if ($dLabel -ne $expectLabel) {
     Say "!! D: 볼륨 라벨이 '$expectLabel'이 아님(현재: '$dLabel') — HDD를 D:로 오인했을 수 있어 중단."
     Say "   SSD에 D: 문자를 부여했는지 확인 (RUNBOOK_SSD_migration 절차 참조)."
@@ -154,23 +160,35 @@ foreach ($y in $years) {
             #   → **누적 증가량 기준**으로 교체: 최근 $stallMinutes분 동안 늘어난 CPU
             #   시간이 ${stallMinCpuSec}초 미만이면 교착으로 판정(정상 작업은 스레드
             #   여러 개가 몇 분 새 최소 이 정도는 반드시 씀 — 노이즈 수준을 크게 웃돎).
-            $stallMinutes = 15
+            # ★ 교착 감지 재설계 (2026-07-23): CPU 증가량 단독 기준이 g2p 추가로 새로 생긴
+            #   저CPU 프리루드('Generating pronunciations'->'Generating MFCCs')를 교착으로
+            #   오판(실측: 완주 중 MFA를 죽이고 --clean 루프). MFA 자체 진행카운터(N/M) +
+            #   단계 인지로 교체 — 카운터가 조금이라도 늘면 안 죽이고, 저CPU 셋업단계는 봐준다.
+            $stallMinutes = 30
             $stallMinCpuSec = 10
+            $setupStallMin = 45
             $cpuHistory = New-Object System.Collections.Generic.List[object]
+            $setupRe = 'Setting up|Loading corpus|Found \d+ speakers|Initializing multiprocessing|Normalizing text|Generating pronunciations|Generating MFCCs|Compiling training graphs'
+            $alignRe = 'Generating alignments|Collecting|Exporting|Performing.*lignment|Analyzing'
+            $phase = 'setup'
+            $lastCount = -1
+            $lastCountChange = Get-Date
             $watchdogKilled = $false
             while (-not $p.HasExited) {
                 Start-Sleep -Seconds 60
                 $tail = ""
+                $seg = @()
                 try {
                     $fs = [IO.File]::Open($errFile, 'Open', 'Read', 'ReadWrite')
-                    $n = [Math]::Min(400, $fs.Length)
+                    $n = [Math]::Min(3000, $fs.Length)
                     if ($n -gt 0) {
                         [void]$fs.Seek(-$n, 'End')
                         $buf = New-Object byte[] $n
                         [void]$fs.Read($buf, 0, $n)
                         $seg = [Text.Encoding]::UTF8.GetString($buf) -split "[`r`n]" |
+                               ForEach-Object { ($_ -replace '\e\[[0-9;]*m', '').Trim() } |
                                Where-Object { $_ -match '\S' }
-                        if ($seg) { $tail = ($seg[-1] -replace '\e\[[0-9;]*m', '').Trim() }
+                        if ($seg) { $tail = $seg[-1] }
                     }
                     $fs.Close()
                 } catch {}
@@ -182,6 +200,17 @@ foreach ($y in $years) {
                     $cpuHistory.RemoveAt(0)
                 }
                 $old = $cpuHistory | Where-Object { ($now - $_.Time).TotalMinutes -ge $stallMinutes } | Select-Object -First 1
+                # 단계 갱신: 정렬 신호를 먼저 확인해 프리루드->정렬 전이를 확실히 잡음(한 번 align이면 유지)
+                $segText = ($seg -join "`n")
+                if ($segText -match $alignRe) { $phase = 'align' }
+                elseif ($segText -match $setupRe) { $phase = 'setup' }
+                # MFA 진행카운터(N/M) 파싱 — 값이 바뀌면 살아있는 것
+                if ($tail -match '([\d,]+)\s*/\s*[\d,]+') {
+                    $c = [int64](($matches[1]) -replace ',', '')
+                    if ($c -ne $lastCount) { $lastCount = $c; $lastCountChange = $now }
+                }
+                $hasCounter = ($tail -match '[\d,]+\s*/\s*[\d,]+')
+                $frozenMin = [math]::Round(($now - $lastCountChange).TotalMinutes, 1)
                 # ★ 완주 직후 오살 방지 (2026-07-23 실사고): MFA가 "Done!"까지 찍고 막판
                 #   정리(파일 flush·DB 종료 등) 중 CPU가 잠깐 낮아진 순간을 교착으로
                 #   오판해 강제종료 — 2021 137만 건 전량 정상 export 완료 직후였음
@@ -191,11 +220,21 @@ foreach ($y in $years) {
                 #   FST 빌드/헬퍼 단계라 mfa·python CPU가 거의 안 오름 → 교착으로 오판돼
                 #   완주 중인 정렬을 죽이고 --clean 루프에 빠지는 사고 확인. 이 단계에선
                 #   죽이지 않고 자연 진행을 기다림(g2p 추가 후 새로 생긴 구간).
-                if ($tail -match 'Done!|Everything took|Generating pronunciations') {
-                    continue
+                if ($tail -match 'Done!|Everything took') { continue }
+                $kill = $false
+                if ($phase -eq 'align') {
+                    # 정렬/내보내기: 카운터가 $stallMinutes분간 정지 = 교착(2021 export형).
+                    #   바가 아예 없는 구간(예: 일부 export)은 CPU 무증가로 폴백 판정.
+                    if ($hasCounter) {
+                        if ($frozenMin -ge $stallMinutes) { $kill = $true }
+                    } elseif ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) { $kill = $true }
+                } else {
+                    # 셋업/프리루드(코퍼스로딩 최대 5.5h·정규화·g2p·MFCC·그래프): 저CPU가 정상 → 안 죽임.
+                    #   단 카운터가 $setupStallMin분간 같은 값에 붙박이면 진짜 실패로 보고 중단.
+                    if ($hasCounter -and $frozenMin -ge $setupStallMin) { $kill = $true }
                 }
-                if ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) {
-                    Say "!! $y MFA 최근 ${stallMinutes}분간 CPU 증가 ${stallMinCpuSec}초 미만 — 교착 추정, 강제종료 후 자동 재시도"
+                if ($kill) {
+                    Say "!! $y MFA 교착 추정(단계=$phase, 카운터 ${frozenMin}분 정지, 마지막='$tail') — 강제종료 후 자동 재시도"
                     try { $p.Kill() } catch {}
                     $watchdogKilled = $true
                 }
@@ -210,7 +249,13 @@ foreach ($y in $years) {
                 $anyTg = [IO.Directory]::EnumerateFiles((Join-Path $out $y), "*.TextGrid",
                          [IO.SearchOption]::AllDirectories) | Select-Object -First 1
                 if ($anyTg) { $ok = $true; break }
-                Say "!! $y MFA exit 0이나 TextGrid 출력 0건 — 거짓 성공으로 판단, temp 보존 후 재시도"
+                # ★ 거짓 성공 처리 수정 (2026-07-24): 종전엔 이 아래 공통 경로가 temp를 지우고
+                #   --clean 재시도 — 로그 문구("temp 보존")와 달리 실제로는 보존되지 않았음.
+                #   거짓 성공 = 정렬은 완주, export 단계 버그이므로 clean 재시도로는 안 고쳐지고
+                #   수 시간 재계산만 낭비(2021 실측). temp 보존한 채 즉시 중단, 사람 확인.
+                Say "!! $y MFA exit 0이나 TextGrid 출력 0건 — 거짓 성공(export 실패)으로 판단"
+                Say "!! $y temp($tmpYear) 보존한 채 중단 — 원인: $errFile 확인. 조치 후 재실행하면 이어가기됨."
+                return
             } elseif ($watchdogKilled) {
                 Say "!! $y MFA 교착으로 강제종료됨 — traceback 없음(정상, hang은 예외를 안 남김)"
             } else {
@@ -222,11 +267,13 @@ foreach ($y in $years) {
             }
         }
         if (-not $ok) {
-            # ★ 실패해도 temp는 회수 (2026-07-21): 이전엔 실패 종료 시 정리 없이 return해서
-            #   찌꺼기가 작업드라이브에 쌓이고, 그게 여유공간을 깎아 다음 실행 때 워크드라이브
-            #   선택(C:↔D:)이 예기치 않게 바뀌는 부작용이 있었음(실측: 여유 40GB 문턱 아래로).
-            Remove-Item $tmpYear -Recurse -Force -ErrorAction SilentlyContinue
-            Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp 정리 후 중단, 사람 확인 필요"
+            # ★ 최종 실패에도 temp 보존 (2026-07-24, "무조건 이어가기"): 종전(7-21)엔 여기서
+            #   temp를 지워 다음 실행이 코퍼스 로딩(최대 5.5h)부터 재시작했음. 보존해도
+            #   다음 실행이 temp-우선 Get-WorkDrive로 같은 드라이브를 잡고, 이어가기 실패
+            #   시 그때 비우고 --clean 폴백($tries 로직)하므로 어중간한 DB도 방어됨.
+            #   7-21 삭제 도입 사유(찌꺼기→드라이브 선택 흔들림)는 7-22 temp-우선 규칙이
+            #   이미 해소. 남는 건 실패 연도 1개분(15~35GB)뿐이고 preflight가 리포트함.
+            Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp($tmpYear) 보존한 채 중단, 사람 확인 필요"
             return
         }
         New-Item -ItemType File -Force $doneMark | Out-Null
@@ -239,6 +286,17 @@ foreach ($y in $years) {
     #    완료 마커 있으면 건너뜀(완료 연도는 C: 원출력이 이미 삭제돼 있음).
     if (Test-Path (Join-Path $doneDir "$y.merge_done")) {
         Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
+    }
+    # ★ 병합 원출력 드라이브 폴백 (2026-07-24): align 완료 후에는 temp가 지워져 있어,
+    #   그 상태에서 재시작하면 Get-WorkDrive가 여유공간 기준으로 새로 정한 드라이브가
+    #   MFA 원출력(mfa_eojeol_out)이 실제로 있는 드라이브와 어긋날 수 있음(병합만 남은
+    #   재개 시나리오). $out\<연도>가 없으면 반대 드라이브를 확인해 자동 전환.
+    if (-not (Test-Path (Join-Path $out $y))) {
+        $altOut = if ($workDrive -eq 'C:') { 'D:\mfa_eojeol_out' } else { 'C:\mfa_eojeol_out' }
+        if (Test-Path (Join-Path $altOut $y)) {
+            Say "$y 병합 원출력을 $altOut 에서 발견 — 드라이브 자동 전환(원래 추정: $out)"
+            $out = $altOut
+        }
     }
     Say "$y [3/3] 4-tier 병합 -> 06_textgrid_eojeol (아래 진행줄 실시간)..."
     & $py (Join-Path $pydir "realign_eojeol_merge_output.py") --year $y --mfa-out $out
