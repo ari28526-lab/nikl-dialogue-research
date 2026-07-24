@@ -1,0 +1,2031 @@
+{
+  "generated_at": "2026-07-24T21:13:34",
+  "mode": "read_only",
+  "paths": {
+    "source_root": "D:\\10_LAYERS\\01_bareun_raw",
+    "search_root": "D:\\10_LAYERS\\05_search_master",
+    "dialogue_root": "D:\\00_RAW\\dialogue_json",
+    "lexicon": "D:\\00_RAW\\reference\\03_lexicon_1기\\01_NIKL_lexicon_full.csv"
+  },
+  "years": {
+    "2020": {
+      "source_sessions": 2232,
+      "master_sessions": 2232,
+      "json_sessions": 2232,
+      "audited_sessions": 2232,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 870437,
+      "master_rows": 870437,
+      "json_rows": 870675,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 0,
+      "topic_missing_rows": 0,
+      "json_missing_in_source": 238,
+      "source_missing_in_json": 0
+    },
+    "2021": {
+      "source_sessions": 4143,
+      "master_sessions": 4143,
+      "json_sessions": 4143,
+      "audited_sessions": 4143,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 1373920,
+      "master_rows": 1373920,
+      "json_rows": 1416216,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 0,
+      "topic_missing_rows": 0,
+      "json_missing_in_source": 42296,
+      "source_missing_in_json": 0
+    },
+    "2022": {
+      "source_sessions": 2654,
+      "master_sessions": 2654,
+      "json_sessions": 2654,
+      "audited_sessions": 2654,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 866359,
+      "master_rows": 866359,
+      "json_rows": 878157,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 0,
+      "topic_missing_rows": 0,
+      "json_missing_in_source": 11798,
+      "source_missing_in_json": 0
+    },
+    "2023": {
+      "source_sessions": 1973,
+      "master_sessions": 1973,
+      "json_sessions": 1973,
+      "audited_sessions": 1973,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 677262,
+      "master_rows": 677262,
+      "json_rows": 677494,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 1090,
+      "topic_missing_rows": 1090,
+      "json_missing_in_source": 232,
+      "source_missing_in_json": 0
+    },
+    "2024": {
+      "source_sessions": 3227,
+      "master_sessions": 3227,
+      "json_sessions": 3227,
+      "audited_sessions": 3227,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 728257,
+      "master_rows": 728257,
+      "json_rows": 728281,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 0,
+      "topic_missing_rows": 0,
+      "json_missing_in_source": 24,
+      "source_missing_in_json": 0
+    },
+    "2025": {
+      "source_sessions": 2927,
+      "master_sessions": 2927,
+      "json_sessions": 2927,
+      "audited_sessions": 2927,
+      "missing_master_sessions": 0,
+      "extra_master_sessions": 0,
+      "missing_json_sessions": 0,
+      "extra_json_sessions": 0,
+      "source_rows": 587121,
+      "master_rows": 587121,
+      "json_rows": 587174,
+      "source_duplicate_ids": 0,
+      "master_duplicate_ids": 0,
+      "source_master_id_mismatch": 0,
+      "source_master_form_mismatch": 0,
+      "source_master_tagged_mismatch": 0,
+      "meta_missing_rows": 0,
+      "topic_missing_rows": 0,
+      "json_missing_in_source": 53,
+      "source_missing_in_json": 0
+    }
+  },
+  "totals": {
+    "source_sessions": 17156,
+    "master_sessions": 17156,
+    "json_sessions": 17156,
+    "audited_sessions": 17156,
+    "missing_master_sessions": 0,
+    "extra_master_sessions": 0,
+    "missing_json_sessions": 0,
+    "extra_json_sessions": 0,
+    "source_rows": 5103356,
+    "master_rows": 5103356,
+    "json_rows": 5157997,
+    "source_duplicate_ids": 0,
+    "master_duplicate_ids": 0,
+    "source_master_id_mismatch": 0,
+    "source_master_form_mismatch": 0,
+    "source_master_tagged_mismatch": 0,
+    "meta_missing_rows": 1090,
+    "topic_missing_rows": 1090,
+    "json_missing_in_source": 54641,
+    "source_missing_in_json": 0,
+    "json_source_mismatch_sessions": 4386,
+    "source_master_mismatch_sessions": 0,
+    "json_excluded_form_empty": 54641,
+    "json_excluded_original_form_empty": 10201,
+    "json_excluded_original_form_nonempty": 44440
+  },
+  "mismatches": {
+    "missing_master_sessions": [],
+    "extra_master_sessions": [],
+    "source_master_content_sessions": [],
+    "json_source_content_sessions": [
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000031",
+        "json_rows": 452,
+        "source_rows": 451,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000031.1.1.364",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000044",
+        "json_rows": 444,
+        "source_rows": 442,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000044.1.1.120",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000044.1.1.45",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000105",
+        "json_rows": 420,
+        "source_rows": 419,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000105.1.1.165",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000132",
+        "json_rows": 495,
+        "source_rows": 493,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000132.1.1.155",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000132.1.1.61",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000133",
+        "json_rows": 464,
+        "source_rows": 461,
+        "json_missing_in_source_count": 3,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000133.1.1.121",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000133.1.1.124",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000133.1.1.304",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000136",
+        "json_rows": 426,
+        "source_rows": 425,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000136.1.1.235",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000137",
+        "json_rows": 361,
+        "source_rows": 360,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000137.1.1.76",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000151",
+        "json_rows": 549,
+        "source_rows": 548,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000151.1.1.421",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000153",
+        "json_rows": 355,
+        "source_rows": 353,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000153.1.1.11",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000153.1.1.73",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000161",
+        "json_rows": 448,
+        "source_rows": 447,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000161.1.1.415",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000184",
+        "json_rows": 452,
+        "source_rows": 450,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000184.1.1.159",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000184.1.1.293",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000188",
+        "json_rows": 368,
+        "source_rows": 367,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000188.1.1.25",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000192",
+        "json_rows": 420,
+        "source_rows": 418,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000192.1.1.317",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000192.1.1.84",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000246",
+        "json_rows": 461,
+        "source_rows": 460,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000246.1.1.175",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000248",
+        "json_rows": 478,
+        "source_rows": 477,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000248.1.1.70",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000264",
+        "json_rows": 452,
+        "source_rows": 451,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000264.1.1.193",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000269",
+        "json_rows": 326,
+        "source_rows": 325,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000269.1.1.263",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000273",
+        "json_rows": 439,
+        "source_rows": 438,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000273.1.1.213",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000290",
+        "json_rows": 549,
+        "source_rows": 548,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000290.1.1.219",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000296",
+        "json_rows": 509,
+        "source_rows": 508,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000296.1.1.485",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000325",
+        "json_rows": 359,
+        "source_rows": 358,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000325.1.1.80",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000332",
+        "json_rows": 383,
+        "source_rows": 382,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000332.1.1.140",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000347",
+        "json_rows": 461,
+        "source_rows": 460,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000347.1.1.32",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000369",
+        "json_rows": 383,
+        "source_rows": 382,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000369.1.1.297",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000372",
+        "json_rows": 356,
+        "source_rows": 355,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000372.1.1.171",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000376",
+        "json_rows": 420,
+        "source_rows": 419,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000376.1.1.44",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000390",
+        "json_rows": 381,
+        "source_rows": 380,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000390.1.1.162",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000391",
+        "json_rows": 511,
+        "source_rows": 510,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000391.1.1.15",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000466",
+        "json_rows": 248,
+        "source_rows": 247,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000466.1.1.242",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000471",
+        "json_rows": 455,
+        "source_rows": 454,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000471.1.1.151",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000498",
+        "json_rows": 386,
+        "source_rows": 385,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000498.1.1.143",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000530",
+        "json_rows": 332,
+        "source_rows": 331,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000530.1.1.241",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000592",
+        "json_rows": 384,
+        "source_rows": 383,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000592.1.1.22",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000594",
+        "json_rows": 355,
+        "source_rows": 354,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000594.1.1.143",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000608",
+        "json_rows": 411,
+        "source_rows": 410,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000608.1.1.71",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000622",
+        "json_rows": 443,
+        "source_rows": 442,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000622.1.1.34",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000623",
+        "json_rows": 476,
+        "source_rows": 475,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000623.1.1.176",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000630",
+        "json_rows": 251,
+        "source_rows": 250,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000630.1.1.198",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000661",
+        "json_rows": 462,
+        "source_rows": 461,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000661.1.1.203",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000667",
+        "json_rows": 415,
+        "source_rows": 414,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000667.1.1.101",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000679",
+        "json_rows": 252,
+        "source_rows": 251,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000679.1.1.224",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000686",
+        "json_rows": 427,
+        "source_rows": 426,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000686.1.1.66",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000688",
+        "json_rows": 304,
+        "source_rows": 303,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000688.1.1.106",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000689",
+        "json_rows": 460,
+        "source_rows": 458,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000689.1.1.161",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000689.1.1.245",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000692",
+        "json_rows": 567,
+        "source_rows": 563,
+        "json_missing_in_source_count": 4,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000692.1.1.208",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000692.1.1.370",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000692.1.1.395",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000692.1.1.399",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000693",
+        "json_rows": 356,
+        "source_rows": 355,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000693.1.1.183",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000694",
+        "json_rows": 471,
+        "source_rows": 469,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000694.1.1.451",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000694.1.1.46",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000700",
+        "json_rows": 421,
+        "source_rows": 420,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000700.1.1.334",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000703",
+        "json_rows": 449,
+        "source_rows": 448,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000703.1.1.255",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000711",
+        "json_rows": 331,
+        "source_rows": 330,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000711.1.1.68",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000724",
+        "json_rows": 413,
+        "source_rows": 412,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000724.1.1.121",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000728",
+        "json_rows": 360,
+        "source_rows": 359,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000728.1.1.328",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000729",
+        "json_rows": 430,
+        "source_rows": 429,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000729.1.1.96",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000750",
+        "json_rows": 551,
+        "source_rows": 550,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000750.1.1.116",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000780",
+        "json_rows": 439,
+        "source_rows": 438,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000780.1.1.179",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000790",
+        "json_rows": 342,
+        "source_rows": 341,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000790.1.1.334",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000796",
+        "json_rows": 287,
+        "source_rows": 286,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000796.1.1.286",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000801",
+        "json_rows": 411,
+        "source_rows": 409,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000801.1.1.198",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000801.1.1.400",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000811",
+        "json_rows": 214,
+        "source_rows": 213,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000811.1.1.20",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000819",
+        "json_rows": 409,
+        "source_rows": 408,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000819.1.1.147",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000835",
+        "json_rows": 417,
+        "source_rows": 416,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000835.1.1.210",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000836",
+        "json_rows": 369,
+        "source_rows": 368,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000836.1.1.229",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000855",
+        "json_rows": 282,
+        "source_rows": 280,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000855.1.1.47",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000855.1.1.5",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000860",
+        "json_rows": 311,
+        "source_rows": 310,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000860.1.1.5",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000865",
+        "json_rows": 134,
+        "source_rows": 133,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000865.1.1.26",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000867",
+        "json_rows": 459,
+        "source_rows": 458,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000867.1.1.234",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000868",
+        "json_rows": 446,
+        "source_rows": 445,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000868.1.1.379",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000876",
+        "json_rows": 302,
+        "source_rows": 301,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000876.1.1.60",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000891",
+        "json_rows": 485,
+        "source_rows": 484,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000891.1.1.2",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000900",
+        "json_rows": 367,
+        "source_rows": 366,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000900.1.1.322",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000907",
+        "json_rows": 418,
+        "source_rows": 417,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000907.1.1.71",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000925",
+        "json_rows": 308,
+        "source_rows": 307,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000925.1.1.163",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000953",
+        "json_rows": 273,
+        "source_rows": 272,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000953.1.1.188",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000964",
+        "json_rows": 360,
+        "source_rows": 358,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000964.1.1.323",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000964.1.1.89",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000966",
+        "json_rows": 380,
+        "source_rows": 379,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000966.1.1.304",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000977",
+        "json_rows": 460,
+        "source_rows": 459,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000977.1.1.244",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000000978",
+        "json_rows": 409,
+        "source_rows": 407,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000000978.1.1.281",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000000978.1.1.351",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001011",
+        "json_rows": 351,
+        "source_rows": 350,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001011.1.1.162",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001018",
+        "json_rows": 501,
+        "source_rows": 500,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001018.1.1.128",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001021",
+        "json_rows": 412,
+        "source_rows": 411,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001021.1.1.19",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001045",
+        "json_rows": 261,
+        "source_rows": 260,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001045.1.1.147",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001051",
+        "json_rows": 401,
+        "source_rows": 400,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001051.1.1.66",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001069",
+        "json_rows": 431,
+        "source_rows": 430,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001069.1.1.408",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001070",
+        "json_rows": 462,
+        "source_rows": 461,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001070.1.1.60",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001090",
+        "json_rows": 488,
+        "source_rows": 487,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001090.1.1.316",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001109",
+        "json_rows": 443,
+        "source_rows": 442,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001109.1.1.126",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001116",
+        "json_rows": 435,
+        "source_rows": 434,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001116.1.1.423",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001119",
+        "json_rows": 341,
+        "source_rows": 340,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001119.1.1.193",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001122",
+        "json_rows": 419,
+        "source_rows": 418,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001122.1.1.244",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001130",
+        "json_rows": 465,
+        "source_rows": 463,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001130.1.1.306",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000001130.1.1.311",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001139",
+        "json_rows": 549,
+        "source_rows": 548,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001139.1.1.88",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001141",
+        "json_rows": 318,
+        "source_rows": 317,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001141.1.1.34",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001142",
+        "json_rows": 275,
+        "source_rows": 274,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001142.1.1.165",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001147",
+        "json_rows": 356,
+        "source_rows": 355,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001147.1.1.21",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001151",
+        "json_rows": 437,
+        "source_rows": 435,
+        "json_missing_in_source_count": 2,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001151.1.1.124",
+            "form_empty": true,
+            "original_form_empty": false
+          },
+          {
+            "utt_id": "SDRW2000001151.1.1.425",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001166",
+        "json_rows": 521,
+        "source_rows": 520,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001166.1.1.434",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001167",
+        "json_rows": 463,
+        "source_rows": 462,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001167.1.1.365",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001175",
+        "json_rows": 498,
+        "source_rows": 497,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001175.1.1.43",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001185",
+        "json_rows": 243,
+        "source_rows": 242,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001185.1.1.50",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      },
+      {
+        "year": "2020",
+        "session_id": "SDRW2000001199",
+        "json_rows": 439,
+        "source_rows": 438,
+        "json_missing_in_source_count": 1,
+        "source_missing_in_json_count": 0,
+        "json_missing_in_source_examples": [
+          {
+            "utt_id": "SDRW2000001199.1.1.349",
+            "form_empty": true,
+            "original_form_empty": false
+          }
+        ],
+        "source_missing_in_json_examples": []
+      }
+    ],
+    "header_variants": {
+      "variant_1": {
+        "count": 17156,
+        "header": [
+          "utt_id",
+          "year",
+          "session_id",
+          "utt_seq",
+          "has_wav",
+          "has_tg_eojeol",
+          "quarantined",
+          "category_norm",
+          "discourse_mode",
+          "topic",
+          "relation",
+          "date",
+          "in_ml2025_gold",
+          "speaker_id",
+          "sex",
+          "age_norm",
+          "occupation_norm",
+          "education_ord",
+          "birthplace_norm",
+          "current_residence_norm",
+          "form",
+          "tagged",
+          "n_morphs",
+          "n_eojeol",
+          "original_form",
+          "start",
+          "end",
+          "dur",
+          "note",
+          "form_roman",
+          "tagged_roman",
+          "pron_pred_hangul",
+          "pron_pred_roman",
+          "pron_pred_ipa",
+          "align_warn"
+        ]
+      }
+    }
+  },
+  "recovered_meta_sessions": {
+    "SDRW2300000445": {
+      "rows": 216,
+      "meta_missing_rows": 216,
+      "topic_missing_rows": 216,
+      "category_values": {
+        "미상": 216
+      },
+      "topic_values": {
+        "미상": 216
+      }
+    },
+    "SDRW2300000457": {
+      "rows": 196,
+      "meta_missing_rows": 196,
+      "topic_missing_rows": 196,
+      "category_values": {
+        "미상": 196
+      },
+      "topic_values": {
+        "미상": 196
+      }
+    },
+    "SDRW2300000473": {
+      "rows": 295,
+      "meta_missing_rows": 295,
+      "topic_missing_rows": 295,
+      "category_values": {
+        "미상": 295
+      },
+      "topic_values": {
+        "미상": 295
+      }
+    },
+    "SDRW2300001337": {
+      "rows": 383,
+      "meta_missing_rows": 383,
+      "topic_missing_rows": 383,
+      "category_values": {
+        "미상": 383
+      },
+      "topic_values": {
+        "미상": 383
+      }
+    }
+  },
+  "coverage_values": {
+    "has_wav": {
+      "": 5103356
+    },
+    "has_tg_eojeol": {
+      "": 5103356
+    },
+    "quarantined": {
+      "": 5103356
+    }
+  },
+  "lexicon": {
+    "path": "D:\\00_RAW\\reference\\03_lexicon_1기\\01_NIKL_lexicon_full.csv",
+    "header": [
+      "word",
+      "word_stem",
+      "n_syl",
+      "word_roman",
+      "pron_1",
+      "pron_2",
+      "n_pron",
+      "pron_1_roman",
+      "pron_2_roman",
+      "pron_g2p",
+      "pron_g2p_roman",
+      "pos_full",
+      "pos_tag",
+      "sense_no",
+      "word_type",
+      "origin",
+      "origin_lang",
+      "morph_dict",
+      "morph_analysis",
+      "type",
+      "region",
+      "urimal_id",
+      "in_stdict",
+      "freq_MXLS",
+      "freq_NXLS",
+      "freq_SXLS",
+      "freq_total"
+    ],
+    "counts": {
+      "rows": 1296777,
+      "pron_g2p_nonempty": 683336,
+      "preferred_pron_available": 1296777,
+      "g2p_fallback_only": 683336,
+      "pron_1_nonempty": 613441,
+      "morph_dict_nonempty": 820776,
+      "pron_2_nonempty": 41237
+    }
+  },
+  "lexicon_wiring": {
+    "predictor_has_index_helper": true,
+    "predictor_has_lookup_helper": true,
+    "builder_mentions_lexicon_path": false,
+    "builder_builds_lexicon_index": false,
+    "builder_passes_lexicon_to_predictor": false,
+    "master_lexicon_source_columns": []
+  },
+  "verdicts": {
+    "session_sets_match": true,
+    "source_master_rows_match": true,
+    "source_master_content_match": true,
+    "json_source_rows_match": false,
+    "json_source_content_match": false,
+    "recovered_meta_applied_to_full_master": false,
+    "coverage_computed": false,
+    "lexicon_wired_to_builder": false
+  },
+  "detail_limits": {
+    "sessions_per_mismatch_type": 100,
+    "utterance_examples_per_session": 5,
+    "compacted_from_initial_full_detail": true
+  }
+}

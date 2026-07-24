@@ -82,6 +82,7 @@
 | download_gdrive_enriched_1gi.py | 1기 enriched CSV(Drive 4.96GB) → `D:\90_ARCHIVE\1기_enriched\` 백업 (gdown 이어받기, 크기 검증) | 작성 완료·실행 대기 |
 | predict_pron.py | 철자열·예측 발음열 생성 (필수 규칙 G2P; 용언경음화 on·ㄹ비음화 off; roman_mfa·IPA·tagged_roman) | 파일럿 검증·테스트 30/30 (2026-07-23) |
 | preflight_search_master.py | 경로·헤더·실행기·용량과 형태분석/메타 17,156 세션 ID 집합 전수 검사 | 2026-07-24 통과 |
+| audit_search_master.py | 원본 JSON→Bareun A1→기존 search master의 세션·행·ID·form·tagged·메타·coverage·lexicon 배선을 읽기 전용 전수 감사 | 17,156세션·5,103,356행 전수 통과, 보완점 보고(2026-07-24) |
 | run_search_master.ps1 | 고정 Python으로 preflight 후 검색 마스터를 실행하고 실패 코드를 전달 | 검증 완료 |
 | pipeline_common.py | `.partial`→검증→원자 교체, 구판 archive, run ID·fingerprint 공통 유틸 | 합성 회귀검사 통과 |
 | build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+규칙기반 예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest | 2026-07-23 전량 5,103,356행 생성. 단, 7/24 메타 수정 전 산출물이며 lexicon 예외 발음·coverage 미반영 — 감사·선별 재생성 대기 |

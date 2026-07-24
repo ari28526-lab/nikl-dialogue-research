@@ -58,7 +58,7 @@ BUILD_PROVENANCE = {
             "client": "bareunpy 2.0.1 / Python 3.13",
             "run": "2026-07-09~10 (2020-2025 6개년 단일 실행, 동일 서버 모델)",
             "engine_version": "미고정 — 논문용 버전 문자열 확인 요망(METHODS §2 TODO)",
-            "coverage": "17,156 파일=원본 JSON 전수, 총 5,103,358 발화, 빈 분석 0",
+            "coverage": "17,156 파일, form 비어 있지 않은 분석대상 5,103,356 발화, 빈 분석 0",
             "validation": "형태소 F1 0.929 (2024/다층위 2025 gold 대조)",
         },
         "문서메타": "D:/10_LAYERS/04_metadata_index/file_meta.csv (category_norm·discourse_mode·topic·relation·date·in_ml2025_gold)",

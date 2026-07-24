@@ -150,6 +150,79 @@ lexicon 관련 추가 확인:
 - 따라서 “준비 코드가 전혀 없음”이 아니라 “조회 헬퍼는 있으나 전량 빌드에
   배선되지 않음”이 정확한 상태다.
 
+### 3. Search master 전수 감사
+
+추가한 재현 스크립트:
+
+- `scripts/python/audit_search_master.py`
+- 합성 회귀검사: `tests/test_audit_search_master.py`
+
+실행 원칙:
+
+- 원본 JSON, Bareun A1, D: search master를 읽기만 한다.
+- 세션 단위로 스트리밍해 510만 ID를 메모리에 한꺼번에 올리지 않는다.
+- 상세판은 `work/pre_bulk_pilot`에 보존하고, Git에 넣을 보고서는 합계와
+  제한된 예시만 남겨 8.9MB에서 약 59KB로 축약했다.
+
+실행 결과:
+
+- 감사 세션: 17,156/17,156
+- Bareun A1: 5,103,356행
+- search master: 5,103,356행
+- 세션 누락/추가: 0/0
+- ID 순서·값, `form`, `tagged` 불일치: 모두 0
+- 중복 ID: 0
+- 원본 JSON utterance: 5,157,997행
+- `form`이 비어 A1에서 제외된 utterance: 54,641행
+  - `original_form` 비어 있지 않음: 44,440
+  - `original_form`도 비어 있음: 10,201
+  - 영향 세션: 4,386
+
+2행 차이 판정:
+
+- 2024 A1 전수: 728,257
+- `03_freq_dictionaries/_partials/meta_2024.txt`: 728,257
+- `D:\10_LAYERS\_merge_rerun.txt`: 합계 5,103,356
+- search master build log: 합계 5,103,356
+- 과거 문서의 2024 728,259와 총 5,103,358은 기계 산출물로 뒷받침되지 않는다.
+  따라서 search master에서 두 행이 빠진 것이 아니라 과거 서술 수치의 오기로
+  판정하고 활성 문서를 5,103,356으로 정정했다. archive 핸드오프 원문은 당시
+  기록으로 보존했다.
+
+메타데이터:
+
+- 2023년 네 세션의 기존 전량본 1,090행은 `category_norm`과 `topic`이 모두
+  `미상`이다.
+- 수정된 메타데이터로 격리 재생성한 한 세션은 결측 0을 이미 확인했다.
+
+lexicon:
+
+- 1,296,777행 전부 `pron_1` 우선, 없으면 `pron_g2p` 폴백으로 발음 가용
+- `pron_1` 613,441행, `pron_2` 41,237행, `pron_g2p` 683,336행
+- builder에는 아직 미배선, 전량 CSV에 출처 열도 없음
+
+coverage:
+
+- `has_wav`, `has_tg_eojeol`, `quarantined`는 5,103,356행 전부 빈 문자열
+- 현재 강화판 builder는 `미계산`으로 구분하지만 실제 계산은 미구현
+
+어절 매핑 경고:
+
+- `align_warn` 508,153행(9.957%)
+- Bareun token 경계와 `form` 공백 어절 수의 불일치
+- 발화 단위 형태소 포함 검색과 표기 환경 검색은 각각 가능하지만, 경고 행에서
+  형태소를 TextGrid words의 정확한 어절 번호로 자동 대응시키면 안 된다.
+- Bareun protobuf의 `Token.text`에는 `content`, `begin_offset`, `length`가
+  있으나 현재 A1은 span을 저장하지 않았다. 후속 재분석·보완 시 저장한다.
+
+사람이 읽는 상세 판정:
+
+- `outputs/reports/AUDIT_search_master_full_2026-07-24.md`
+
+기계 판독 요약:
+
+- `outputs/reports/search_master_audit_20260724.json`
+
 ## 다음 기록 예정
 
 - 연도별 Bareun/search master 파일 수와 행 수 재계산
