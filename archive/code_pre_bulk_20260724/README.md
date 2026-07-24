@@ -16,6 +16,7 @@ config/paths.json
 scripts/preflight_eojeol_realign.ps1
 scripts/run_eojeol_realign.ps1
 scripts/python/paths.py
+scripts/python/build_metadata_index.py
 scripts/python/realign_eojeol_build_corpus.py
 scripts/python/realign_eojeol_merge_output.py
 scripts/python/preflight_search_master.py

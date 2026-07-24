@@ -99,7 +99,12 @@ def load_file_meta():
     out = {}
     with open(path, encoding="utf-8-sig") as f:
         for r in csv.DictReader(f):
-            out[r["file_id"]] = r
+            file_id = r["file_id"]
+            if not file_id:
+                raise ValueError(f"{path}: 빈 file_id")
+            if file_id in out:
+                raise ValueError(f"{path}: 중복 file_id {file_id}")
+            out[file_id] = r
     return out
 
 

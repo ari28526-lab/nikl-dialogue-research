@@ -1,0 +1,15 @@
+검색 마스터 빌드 — recovered_meta_20260724
+옵션: year=2023 pilot=None tagged_roman=True coverage=False overwrite=False
+출력: C:\Users\ari30\research\2026_summer_research\work\pre_bulk_pilot\search_master
+
+[2023] 대상 1개
+  1/1 SDRW2300000445: 발화 216 행 216 정렬경고 31 어절불일치 0 상태 created
+
+── 합계 ──
+  대상 세션: 1 (생성 1, 기존 검증 0, 구판 보존 0)
+  발화(입력): 216  행(출력): 216
+  메타 결측: 0  화자 결측: 0  JSON 발화결측: 0
+  JSON 없는 세션: 0
+  정렬경고(form-tagged): 31  어절수 불일치: 0
+
+판정: ✅ 검증 통과

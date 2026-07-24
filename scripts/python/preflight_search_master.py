@@ -76,6 +76,36 @@ def check_csv_header(path: Path, required: set, label: str):
         return False
 
 
+def check_session_id_coverage(raw_root: Path, metadata_csv: Path) -> bool:
+    """형태 분석 세션과 문서 메타의 ID 집합이 정확히 같은지 확인한다."""
+    raw_ids = {
+        path.stem
+        for year_dir in raw_root.iterdir()
+        if year_dir.is_dir()
+        for path in year_dir.glob("*.csv")
+        if not path.name.startswith("_")
+    }
+    with open(metadata_csv, encoding="utf-8-sig", newline="") as stream:
+        metadata_ids = [row.get("file_id", "") for row in csv.DictReader(stream)]
+    metadata_set = set(metadata_ids)
+    duplicates = len(metadata_ids) - len(metadata_set)
+    missing = sorted(raw_ids - metadata_set)
+    extra = sorted(metadata_set - raw_ids)
+    if duplicates or missing or extra or "" in metadata_set:
+        log(
+            "  [오류] 세션-메타 ID 불일치: "
+            f"형태분석={len(raw_ids):,}, 메타행={len(metadata_ids):,}, "
+            f"중복={duplicates:,}, 메타누락={len(missing):,}, 메타초과={len(extra):,}"
+        )
+        if missing:
+            log(f"         메타누락 예: {missing[:10]}")
+        if extra:
+            log(f"         메타초과 예: {extra[:10]}")
+        return False
+    log(f"  [OK] 세션-메타 ID 집합 일치: {len(raw_ids):,}개")
+    return True
+
+
 def main() -> int:
     ok_all = True
     fixes = []  # (무엇, 어떻게)
@@ -158,7 +188,7 @@ def main() -> int:
         y2020 = [d for d in ydirs if "2020" in d.name]
         if y2020:
             n = sum(1 for p in y2020[0].glob("*.csv") if not p.name.startswith("_"))
-            log(f"       2020 세션 CSV {n}개 (참조값 2,231)")
+            log(f"       2020 세션 CSV {n:,}개 (고정 참조값 대신 현재 파일 수 사용)")
             sample = next((p for p in sorted(y2020[0].glob("*.csv"))
                            if not p.name.startswith("_")), None)
             if sample:
@@ -179,6 +209,8 @@ def main() -> int:
                                "file_meta.csv")
     check_csv_header(meta / "file_meta.csv", {"category_norm", "discourse_mode"},
                      "file_meta.csv (정규화 컬럼)")
+    if raw.exists() and (meta / "file_meta.csv").exists():
+        ok_all &= check_session_id_coverage(raw, meta / "file_meta.csv")
     ok_all &= check_csv_header(meta / "speakers_normalized.csv",
                                {"year", "id", "sex_norm", "age_norm",
                                 "occupation_norm", "education_ord"},
