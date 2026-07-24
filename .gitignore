@@ -40,8 +40,11 @@ logs/*.log
 
 # 로컬 도구·아카이브·파일럿 산출물
 .claude/
-# 루트 로컬 아카이브만 무시 (docs/archive/ 문서는 추적되도록 앞에 / 고정)
-/archive/
+# 루트 로컬 아카이브는 기본 무시하되, 대량 작업 전 코드 기준선은 재현성을 위해 추적
+/archive/*
+!/archive/README.md
+!/archive/code_pre_bulk_20260724/
+!/archive/code_pre_bulk_20260724/**
 work/
 # 코랩 검색 코드 참고 사본 — 로컬 전용(혼동 방지). 재작성본만 scripts/에 커밋
 /reference/colab_search/
@@ -55,4 +58,3 @@ data/03_analysis_ready/
 *.TextGrid
 *.tmp
 *.db
-
