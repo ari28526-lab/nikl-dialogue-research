@@ -51,10 +51,22 @@ foreach ($path in $files) {
             'Read-DoneMarker',
             'Remove-SafeYearPath',
             '산출 비율 $pct% < 99%',
+            '[string]$Year',
+            'textgrid_eojeol_staging',
+            '--output-root',
+            'promotion_required',
             'exit 1'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA 러너 필수 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'preflight_eojeol_realign.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @('[string]$Year', 'textgrid_eojeol_staging')) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("MFA preflight 연도/staging 가드 누락: $required")
             }
         }
     }

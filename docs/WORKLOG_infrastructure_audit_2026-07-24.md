@@ -243,6 +243,40 @@ coverage:
 6. MFA 2020 파일럿은 현상 자동 판정이 아니라 파일 대응·4-tier·시간 경계·
    실패 기록·재개·연구자 구간 찾기 용이성을 검증한다.
 
+### 5. 연도별 MFA 실행과 기존본 보존 보완
+
+코드 재대조에서 찾은 위험:
+
+- 기존 병합기는 `06_textgrid_eojeol/{연도}`에 유효한 4-tier가 있으면
+  G2P 여부와 무관하게 건너뛴다.
+- 따라서 새 G2P MFA가 성공해도 2020·2021의 기존 비G2P 최종본을 그대로
+  “완료”로 오인할 수 있었다.
+
+개선:
+
+1. `run_eojeol_realign.ps1 -Year 2020`처럼 한 연도만 선택하도록 했다.
+2. preflight도 같은 `-Year`만 검사한다.
+3. 신규 G2P 4-tier의 기본 출력은
+   `D:\20_AUDIO\07_textgrid_eojeol_g2p_staging`으로 분리했다.
+4. 기존 `D:\20_AUDIO\06_textgrid_eojeol`은 자동 덮어쓰기·자동 skip 대상에서
+   분리되어 그대로 보존된다.
+5. 완료 마커는 연도·단계·G2P 모델뿐 아니라 staging 경로까지 일치해야
+   유효한 것으로 인정한다.
+6. staging 전수 검증과 archive 계획 확인 전에는 자동 승격하지 않는다.
+
+검증:
+
+- 전체 Python 회귀검사 21/21 통과
+- PowerShell 정적 안전검사 3/3 파일 통과
+- 4-tier Python 회귀검사 3/3은 위 전체 검사에 포함
+- `config/paths.json` staging 키 파싱 통과
+- `preflight_eojeol_realign.ps1 -Year 2020`: FAIL 0 / WARN 0
+- 확인된 이어가기 상태: 2020은 `C:\mfa_tmp\2020` temp가 남아 있고
+  align/merge 완료 마커와 MFA 원출력은 없음. 실행 시 먼저 temp 이어가기를
+  시도하고 실패하면 안전한 `--clean` 폴백을 사용한다.
+
+아직 실제 2020 MFA는 시작하지 않았다.
+
 ## 다음 기록 예정
 
 - 연도별 Bareun/search master 파일 수와 행 수 재계산

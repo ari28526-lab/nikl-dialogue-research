@@ -49,8 +49,18 @@ phones tier는 음성의 후보 위치를 찾기 위한 대략적 분절·라벨
 ### 실행
 
 2020부터 **한 연도씩** 파일럿→검증→본실행한다. 기존 완료 마커를 와일드카드로
-직접 삭제하지 않는다. 연도 선택·기존 산출물 archive·재실행 의도를 명시하는
-안전한 실행 인터페이스를 검증한 뒤 사용한다.
+직접 삭제하지 않는다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 -Year 2020
+```
+
+- `-Year`는 2020–2025 중 하나만 받는다.
+- 신규 G2P 4-tier는
+  `D:\20_AUDIO\07_textgrid_eojeol_g2p_staging\2020`에 쓴다.
+- 기존 `D:\20_AUDIO\06_textgrid_eojeol\2020`은 자동 덮어쓰기·skip 대상이
+  되지 않고 그대로 보존된다.
+- staging 전수 검증 뒤에만 기존 연도 폴더를 실행 ID archive로 옮기고 승격한다.
 
 ### 러너가 자동으로 하는 것 (사람 개입 불필요)
 - 깨진(0바이트) wav 격리 · 평면 코퍼스 가드(뜨면 아래 조치) · temp C:/D: 자동 선택 ·
@@ -62,7 +72,8 @@ phones tier는 음성의 후보 위치를 찾기 위한 대략적 분절·라벨
 - ⚠ 도는 동안 **D: 다른 작업 금지**.
 - 평면 구조 경고가 뜨면: `python scripts\python\restructure_wav_sessions.py --root D:\20_AUDIO\03_wav\individual --year {연도} --apply` 먼저.
 - 실패 시 원인: `D:\mfa_eojeol\logs\mfa_{연도}_stderr.log`의 traceback.
-- 완료 확인: `python scripts\python\measure_spn.py "D:\20_AUDIO\06_textgrid_eojeol\{연도}"` →
+- 완료 확인:
+  `python scripts\python\measure_spn.py "D:\20_AUDIO\07_textgrid_eojeol_g2p_staging\{연도}"` →
   `spn`은 정렬용 사전/G2P 커버리지 지표로 기록한다.
 - 다음(스크립트 미작성): phones 라벨·시간정보를 검색용 보조 레이어로 내보내
   `utt_id`로 CSV와 조인한다. 이 값은 사람의 실현 판정값과 구분한다.

@@ -62,9 +62,9 @@
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
 | realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화, lab 원자 기록·구조화 marker) | 합성 회귀검사 통과, 본실행 대기 |
-| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier → 06_textgrid_eojeol. 평면/세션 출력 지원, source/output 개수 일치 검사 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
-| run_eojeol_realign.ps1 | 연도별 일괄 러너 (preflight→lab→align→검증→merge, JSON marker 재개, 실패 temp 보존, 안전한 연도별 정리) | 2026-07-24 preflight 통과, 대량 실행 대기 |
-| preflight_eojeol_realign.ps1 | SSD·공간·모델·세션구조·marker·MFA 설치 패치 7종을 대량 실행 전에 차단 검사 | 2026-07-24 FAIL 0/WARN 0 |
+| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
+| run_eojeol_realign.ps1 | `-Year` 한 연도 러너 (preflight→lab→align→검증→staging merge, JSON marker 재개, 실패 temp 보존) | 2020 선택 preflight 통과, 대량 실행 대기 |
+| preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·marker·MFA 설치 패치 7종을 차단 검사 | `-Year 2020` FAIL 0/WARN 0 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 수동 패치의 AST/소스 구조와 SHA256 기록 | 7/7 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |

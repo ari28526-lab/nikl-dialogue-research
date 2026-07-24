@@ -1,10 +1,10 @@
-# 런북: 어절(語節) 전량 재정렬 — phones 연결발음 교정 + 형태소 tier (2026-07-16)
+# 런북: 어절(語節) 전량 재정렬 — 연구자 검토용 분절 + 형태소 tier (2026-07-16)
 
 ## 왜 (문제 진단)
 기존 정렬은 `.lab`을 **형태소 단위**로 넣어(make_labs), MFA가 형태소마다 따로 G2P →
 phone 라벨이 **고립형**이 됨. 실측: 발화 `저는 여행 다니는 것을`의 `것을`이
-`k ʌ t̚ ɨ ɭ`=**[걷을]**로 정렬됨(연음 [거슬] 아님). **형태소 경계를 넘는 음운현상
-(연음·경음화·ㄴ첨가)이 phone 라벨에 안 담김** → 형태음운 변이(특히 ㄴ삽입) 분석 불가.
+`k ʌ t̚ ɨ ɭ`=**[걷을]**로 정렬됨(어절 G2P 입력 [거슬]과 다름). 이 구조는
+형태소 경계 주변의 음성 구간을 연구자가 찾고 검토하기에 부적합했다.
 
 원인: "words tier를 형태소로" 하려고 형태소를 MFA에 그대로 먹였는데, 그러면 분절뿐
 아니라 **발음(음소정보)까지 형태소 고립형**이 됨. 의도는 "어절 연결발음 + 형태소 정보".
@@ -17,8 +17,10 @@ phone 라벨이 **고립형**이 됨. 실측: 발화 `저는 여행 다니는 �
 | phones | G2P 사전으로 정렬된 대략적 음소 라벨·시간(것을→거슬) | 신규 어절 MFA |
 | morphemes | **형태소 경계** | 기존 `06_textgrid_merged` words tier 재사용 |
 | utterance | form | 01_bareun_raw |
-- 결과: `D:\20_AUDIO\06_textgrid_eojeol`. 기존 `06_textgrid_merged`(형태소·구)는 **읽기
-  전용 보존**(morphemes tier 소스 겸 "형태소 길이" 부차 레이어).
+- 신규 결과는 먼저
+  `D:\20_AUDIO\07_textgrid_eojeol_g2p_staging`에 쓴다. 기존 비G2P
+  `06_textgrid_eojeol`과 `06_textgrid_merged`는 **읽기 전용 보존**한다.
+  staging 전수 검증 뒤 기존 연도 폴더를 archive하고 별도 승격한다.
 
 ## 어떻게 (파이프라인, 재사용)
 `.lab`만 형태소→**어절**(form 표층, 어절별 한글만)로 바꾸고 나머지는 기존 파이프라인 재사용.
@@ -28,19 +30,23 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
 - `scripts/python/realign_eojeol_build_corpus.py` — form→어절 lab을 **wav 폴더에 제자리** 생성
   (코퍼스 = `03_wav/individual/{y}` 그대로)
 - MFA: `mfa align D:\20_AUDIO\03_wav\individual\{y} korean_mfa korean_mfa out --num_jobs 4 --no_tokenization --clean --temporary_directory C:\mfa_tmp --output_format long_textgrid` (모델·사전=1차와 동일 korean_mfa v3.0; **temp는 C: SSD** — 아래 가속 결정 참조)
-- `scripts/python/realign_eojeol_merge_output.py` — MFA출력+기존 형태소경계 → 4-tier → `06_textgrid_eojeol`
-- 러너: `scripts/run_eojeol_realign.ps1` (연도별 lab→align→merge, 재개 가능: 연도 `.done` 마커)
+- `scripts/python/realign_eojeol_merge_output.py` — MFA출력+기존 형태소경계 →
+  staging 4-tier
+- 러너: `scripts/run_eojeol_realign.ps1 -Year 2020`
+  (선택 연도 lab→align→검증→staging merge, JSON 완료 마커로 재개)
 - ETA: ~3~4일(제자리 lab). 병목=MFA 정렬 자체(줄일 수 없음). 추가 최적화 여지=병합을 MFA
   DB 직독으로(≈1일 절감, 단 리스크) — 현재는 검증된 long_textgrid 경로 사용.
 
 ## 실행 (밤샘)
 ```powershell
 # 리포 루트에서
-powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1
+powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 -Year 2020
 ```
-- 연도별 순차. 중단 시 재실행하면 완료 연도(.done)·기존 산출 파일 건너뜀.
+- 한 연도씩 실행한다. 중단 시 같은 명령을 재실행하면 검증된 JSON 완료 마커와
+  temp 상태를 확인해 이어간다.
 - 로그: `D:\mfa_eojeol\logs\`. **도는 동안 D: 읽는 다른 작업 금지(경합).**
-- 완료 후: `06_textgrid_eojeol`가 음운변이 분석 주 레이어. paths.json `textgrid_eojeol`.
+- 완료 후에도 신규 파일은 staging에 있으며 기존 `06_textgrid_eojeol`은
+  바뀌지 않는다. 전수 검증·archive·승격은 별도 단계다.
 
 ## 사전검증 (2026-07-16, 통과)
 문법·임포트 OK / form_to_lab 어절 정상(것을 한 토큰) / 기존 형태소경계 파싱 OK.

@@ -5,6 +5,11 @@
 # 실행: powershell -ExecutionPolicy Bypass -File <리포>\scripts\preflight_eojeol_realign.ps1
 # 결과: 콘솔 + 리포 logs\preflight_YYYYMMDD_HHMMSS.log. FAIL 있으면 exit 1.
 
+param(
+    [ValidateSet('2020','2021','2022','2023','2024','2025')]
+    [string]$Year
+)
+
 $ErrorActionPreference = 'Continue'
 $root = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $root "config\paths.json"
@@ -26,13 +31,16 @@ try {
     $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
+    $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
     $py = Expand-CfgPath $cfg.pipeline_python
 } catch {
     Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
     exit 1
 }
 $envRoot = Join-Path $env:USERPROFILE "miniforge3\envs\mfa"
-$years   = @('2020','2021','2022','2023','2024','2025')
+$years = if ($Year) { @($Year) } else {
+    @('2020','2021','2022','2023','2024','2025')
+}
 $pydir   = Join-Path $PSScriptRoot "python"
 
 New-Item -ItemType Directory -Force $logDir | Out-Null
@@ -44,6 +52,8 @@ function WARN($m) { $script:warn++; Out-Line ("  [WARN] " + $m) }
 function FAIL($m) { $script:fail++; Out-Line ("  [FAIL] " + $m) }
 
 Out-Line "== preflight_eojeol_realign $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') =="
+Out-Line "대상 연도: $($years -join ', ')"
+Out-Line "G2P 4-tier staging: $g2pStage"
 
 # [1] 실행파일·python 헬퍼 존재
 Out-Line "[1] 실행파일·헬퍼"
@@ -133,7 +143,21 @@ foreach ($y in $years) {
             try {
                 $markerData = Get-Content -LiteralPath $marker -Raw -Encoding UTF8 |
                               ConvertFrom-Json
-                if ($markerData.year -ne $y -or -not $markerData.stage) {
+                $markerStage = if ($marker -like '*.align_done') { 'align' } else { 'merge' }
+                $markerOK = (
+                    $markerData.year -eq $y -and
+                    $markerData.stage -eq $markerStage -and
+                    $markerData.g2p_model -eq 'korean_mfa'
+                )
+                if ($markerOK -and $markerStage -eq 'merge') {
+                    $recordedStage = [string]$markerData.details.staging_output_root
+                    $markerOK = (
+                        -not [string]::IsNullOrWhiteSpace($recordedStage) -and
+                        [IO.Path]::GetFullPath($recordedStage).TrimEnd('\') -eq
+                        [IO.Path]::GetFullPath($g2pStage).TrimEnd('\')
+                    )
+                }
+                if (-not $markerOK) {
                     FAIL "$y 완료 마커 내용 불일치: $marker"
                 }
             } catch {

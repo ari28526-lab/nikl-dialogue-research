@@ -29,6 +29,7 @@
 | `20_AUDIO\03_wav` (wav+lab, 세션 구조) | ✅ 있음 (내용 전수는 인벤토리 99.44% 기준) | preflight 7/23 |
 | `20_AUDIO\06_textgrid_merged` (3-tier, 읽기전용) | ✅ 있음 | preflight 7/23 |
 | `20_AUDIO\06_textgrid_eojeol` (4-tier) | ✅ 폴더 있음 — 2020·2021 비G2P 산출물 존재, G2P 전량 완료 연도는 없음 | 7/22–24 기록 대조; 전수 재실측 예정 |
+| `20_AUDIO\07_textgrid_eojeol_g2p_staging` | 신규 G2P 4-tier 연도별 검증용 staging — 아직 본실행 산출물 없음 | 7/24 안전 설계; 기존 `06` 자동 보존 |
 | `90_ARCHIVE` | ❌ SSD엔 없음 (HDD 보존 방침) | preflight 7/23 |
 | `mfa_eojeol` (마커·로그·격리) | ⚠ 미실측 (7/20 복사 대상 Tier1이었음) | — |
 

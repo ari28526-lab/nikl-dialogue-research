@@ -9,7 +9,9 @@
 입력: D:/mfa_eojeol/out/{year}/{session}/{utt}.TextGrid  (신규 어절 정렬)
       D:/20_AUDIO/06_textgrid_merged/{year}/{session}/{utt}.TextGrid (기존 형태소, 읽기만)
       01_bareun_raw (form)
-출력: D:/20_AUDIO/06_textgrid_eojeol/{year}/{session}/{utt}.TextGrid  (4-tier)
+출력: --output-root/{year}/{session}/{utt}.TextGrid
+      기본과 전량 러너 모두 기존 비G2P 산출물을 보존하기 위해
+      07_textgrid_eojeol_g2p_staging을 사용한다.
   ※ 기존 형태소 폴더(06_textgrid_merged)는 읽기 전용 — 절대 안 건드림.
   ※ 형태소 정렬이 없는 발화는 morphemes tier를 빈 채로 두고 표시(morph_missing 집계).
 재개 가능(대상 위치에 이미 있으면 건너뜀).
@@ -39,7 +41,7 @@ from pipeline_common import (  # noqa: E402
 MFA_OUT = P("mfa_output_secondary")
 MORPH_TG = P("textgrid_merged")   # 기존 형태소 경계 소스(불변)
 RAW = P("layers") / "01_bareun_raw"
-OUT_ROOT = P("textgrid_eojeol")
+OUT_ROOT = P("textgrid_eojeol_staging")
 STATE_ROOT = P("mfa_state")
 YEAR_DIRS = {**YEAR_DIRS, "2025": "NIKL_DIALOGUE_2025_v1.0"}
 csv.field_size_limit(10_000_000)
@@ -174,9 +176,15 @@ def main() -> int:
     ap.add_argument("--year", required=True, choices=sorted(YEAR_DIRS))
     ap.add_argument("--mfa-out", default=str(MFA_OUT),
                     help="MFA 원출력 루트 (기본 D:; 러너는 C: SSD를 넘김)")
+    ap.add_argument(
+        "--output-root",
+        default=str(OUT_ROOT),
+        help="4-tier 출력 루트. 전량 러너는 기존본과 분리된 G2P staging을 넘김",
+    )
     ap.add_argument("--run-id", help="외부 실행 ID")
     args = ap.parse_args()
     run_id = args.run_id or new_run_id(f"merge_{args.year}")
+    output_root = Path(args.output_root).resolve()
 
     src_year = Path(args.mfa_out) / args.year
     if not src_year.exists():
@@ -193,7 +201,7 @@ def main() -> int:
     archive_root = STATE_ROOT / "archive_invalid_merge" / run_id / args.year
     t0 = time.time()
     for si, (nsess, sname, tgs) in enumerate(iter_session_tgs(src_year), 1):
-        out_dir = OUT_ROOT / args.year / sname
+        out_dir = output_root / args.year / sname
         out_dir.mkdir(parents=True, exist_ok=True)
         for tg in tgs:
             source_total += 1
@@ -249,7 +257,7 @@ def main() -> int:
         "run_id": run_id,
         "year": args.year,
         "mfa_output": str(src_year),
-        "final_output": str(OUT_ROOT / args.year),
+        "final_output": str(output_root / args.year),
         "source_textgrids": source_total,
         "created": made,
         "validated_existing": skipped,

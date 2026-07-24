@@ -1,7 +1,8 @@
 ﻿# 어절(語節) 전량 재정렬 배치 — 목적 B: 4-tier TextGrid. ★실시간 출력판★
 #   words(어절)+phones(G2P 사전으로 정렬한 대략적 라벨·시간)+morphemes(형태소 경계)+utterance
 # lab은 wav 옆에 제자리 생성(하드링크 없음). 기존 06_textgrid_merged는 읽기전용 보존.
-# 결과: D:\20_AUDIO\06_textgrid_eojeol
+# 신규 결과: D:\20_AUDIO\07_textgrid_eojeol_g2p_staging
+# 기존 D:\20_AUDIO\06_textgrid_eojeol은 검증·archive·승격 전까지 그대로 보존.
 # ★lab·병합 단계는 화면 실시간. MFA 단계는 stderr를 파일로 캡처(실패 traceback 보존)
 #   + 1분 하트비트로 진행바 요약 표시 (2026-07-18: 7/17 실패 원인 유실 사고 후 전환).
 # 실행: powershell -ExecutionPolicy Bypass -File <리포>\scripts\run_eojeol_realign.ps1
@@ -11,7 +12,11 @@
 #   기기 이식: miniforge는 %USERPROFILE%\miniforge3, 데이터는 D: 문자 기준 — 새 기기에서
 #   SSD에 D: 부여하면 무수정 실행. num_jobs·작업드라이브는 자동 선택.
 
-param([switch]$SkipPreflight)
+param(
+    [ValidateSet('2020','2021','2022','2023','2024','2025')]
+    [string]$Year,
+    [switch]$SkipPreflight
+)
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $root = Split-Path -Parent $PSScriptRoot
@@ -32,6 +37,7 @@ try {
     $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
+    $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
 } catch {
     Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
     exit 1
@@ -94,8 +100,12 @@ if ($dLabel -ne $expectLabel) {
     exit 1
 }
 if (-not $SkipPreflight) {
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+    $preflightArgs = @(
+        '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
         (Join-Path $PSScriptRoot 'preflight_eojeol_realign.ps1')
+    )
+    if ($Year) { $preflightArgs += @('-Year', $Year) }
+    & powershell.exe @preflightArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Error "MFA preflight 실패(exit $LASTEXITCODE). 리포 logs의 최신 preflight 보고서 확인."
         exit 1
@@ -115,8 +125,17 @@ function Read-DoneMarker($path, $year, $stage) {
     if (-not (Test-Path -LiteralPath $path)) { return $false }
     try {
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
-        return ($data.year -eq $year -and $data.stage -eq $stage -and
-                $data.g2p_model -eq 'korean_mfa')
+        $valid = ($data.year -eq $year -and $data.stage -eq $stage -and
+                  $data.g2p_model -eq 'korean_mfa')
+        if ($valid -and $stage -eq 'merge') {
+            $recordedStage = [string]$data.details.staging_output_root
+            $valid = (
+                -not [string]::IsNullOrWhiteSpace($recordedStage) -and
+                [IO.Path]::GetFullPath($recordedStage).TrimEnd('\') -eq
+                [IO.Path]::GetFullPath($g2pStage).TrimEnd('\')
+            )
+        }
+        return $valid
     } catch { return $false }
 }
 function Write-DoneMarker($path, $year, $stage, $details) {
@@ -143,9 +162,14 @@ function Remove-SafeYearPath($path, $allowedRoot) {
     }
 }
 
-$years = @('2020','2021','2022','2023','2024','2025')
+$years = if ($Year) { @($Year) } else {
+    @('2020','2021','2022','2023','2024','2025')
+}
+$runId = "eojeol_g2p_" + ($years -join '-') + "_" + `
+         (Get-Date -Format "yyyyMMdd_HHmmss")
 
-Say "어절 재정렬 시작 (실시간 출력). 진행줄이 화면에 바로 뜹니다."
+Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
+Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
 
 foreach ($y in $years) {
     Say "===== $y 시작 ====="
@@ -231,7 +255,8 @@ foreach ($y in $years) {
             # G2P 추가 (2026-07-23): korean_mfa 사전에 없는 활용형(것을·다니는 등)이
             #   phones에서 spn으로 버려지던 문제 해결 — 파일럿 spn 27.5->0%, 것을=[거슬] 확인.
             #   사전·음향모델과 동일 버전 g2p 모델. align.py em-dash 패치(export 직전 crash)도 수정 완료.
-            #   ※ 2020·2021 재작업하려면 D:\mfa_eojeol\done\*.align_done/*.merge_done 삭제 후 실행.
+            #   완료 마커는 G2P 모델·연도·단계·staging 경로까지 검증하므로
+            #   와일드카드로 직접 삭제하지 않는다.
             $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
                        (Join-Path $out $y), '--num_jobs', "$numJobs", '--no_tokenization',
                        '--g2p_model_path', 'korean_mfa',
@@ -425,18 +450,22 @@ foreach ($y in $years) {
             $out = $altOut
         }
     }
-    Say "$y [3/3] 4-tier 병합 -> 06_textgrid_eojeol (아래 진행줄 실시간)..."
-    & $py (Join-Path $pydir "realign_eojeol_merge_output.py") --year $y --mfa-out $out
+    Say "$y [3/3] 4-tier 병합 -> G2P staging (아래 진행줄 실시간)..."
+    & $py (Join-Path $pydir "realign_eojeol_merge_output.py") `
+        --year $y --mfa-out $out --output-root $g2pStage --run-id $runId
     if ($LASTEXITCODE -ne 0) { Say "!! $y 병합 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
 
     # 4) 검증 성공 마커를 먼저 기록한 뒤 MFA 원출력을 정리한다.
     Write-DoneMarker $mergeMark $y 'merge' @{
         mfa_output_root = $out
-        final_output_root = (Expand-CfgPath $cfg.textgrid_eojeol)
+        staging_output_root = $g2pStage
+        existing_final_root = (Expand-CfgPath $cfg.textgrid_eojeol)
+        promotion_required = $true
     }
     try { Remove-SafeYearPath (Join-Path $out $y) $out }
     catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·최종본은 보존): $($_.Exception.Message)" }
     Say "===== $y 완료 (C: 중간산출 정리됨) ====="
 }
-Say "전체 완료 - D:\20_AUDIO\06_textgrid_eojeol (4-tier). 기존 06_textgrid_merged 보존."
+Say "선택 연도 정렬·병합 완료 - $g2pStage"
+Say "기존 06_textgrid_eojeol은 보존됨. 전수 검증과 archive 계획 확인 전 자동 승격하지 않음."
 exit 0
