@@ -16,7 +16,7 @@ If those files mention paths from an older Codex setup folder, treat them as env
 ## Project Root
 
 ```text
-C:\Users\ari30\Dropbox\000_2026_summer_research
+C:\Users\ari30\research\2026_summer_research
 ```
 
 ## Important Existing Environment
@@ -24,6 +24,9 @@ C:\Users\ari30\Dropbox\000_2026_summer_research
 ```text
 Python:
 C:\Users\ari30\AppData\Local\Programs\Python\Python313\python.exe
+
+Project pipeline Python:
+C:\Users\ari30\miniforge3\envs\mfa\python.exe
 
 R:
 C:\Program Files\R\R-4.6.1\bin\x64\Rscript.exe
@@ -40,6 +43,18 @@ C:\Users\ari30\miniforge3\Scripts\conda.exe
 MFA environment:
 C:\Users\ari30\miniforge3\envs\mfa
 ```
+
+Python verification rule:
+
+- In the user's normal PowerShell, `python`, `py`, and the absolute Python 3.13
+  path are valid.
+- A restricted Codex shell can report `AccessDenied`, `Test-Path=False`, or
+  command-not-found for the AppData Python even when the file exists. Do not
+  diagnose an absent installation from that result alone.
+- Run `scripts\check_python_environment.ps1` with read-only permission when
+  global Python must be verified.
+- Prefer `config/paths.json` key `pipeline_python` for reproducible project
+  helper scripts. Use the MFA conda command for MFA itself.
 
 ## Safety And Data Rules
 
@@ -86,4 +101,3 @@ $env:LANG=''
 4. Save scripts and reproducible notes.
 5. Record important decisions in `docs/decisions`.
 6. Put final user-facing outputs in `outputs`.
-

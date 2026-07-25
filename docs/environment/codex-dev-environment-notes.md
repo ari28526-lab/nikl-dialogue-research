@@ -46,7 +46,15 @@ Codex가 PATH를 못 믿을 때 쓸 안전한 명령:
 ```powershell
 & "C:\Users\ari30\AppData\Local\Programs\Python\Python313\python.exe" --version
 & "C:\Users\ari30\AppData\Local\Programs\Python\Launcher\py.exe" -0p
+& ".\scripts\check_python_environment.ps1"
 ```
+
+> 2026-07-25 확인: 제한된 Codex shell은 AppData 접근 제한 때문에 실제 파일을
+> `Test-Path=False` 또는 실행 불가로 잘못 보일 수 있다. 이 경우 설치 누락으로
+> 결론 내리지 말고 읽기 전용 권한으로 점검 스크립트를 재실행한다. 프로젝트
+> 파이프라인 스크립트의 재현 가능한 기본 실행기는
+> `config/paths.json`의 `pipeline_python`
+> (`C:\Users\ari30\miniforge3\envs\mfa\python.exe`)이다.
 
 프로젝트 실행 시 가장 안전한 방식:
 

@@ -14,6 +14,7 @@
   [OK  ] wav                    D:\20_AUDIO\03_wav
   [OK  ] textgrid_merged        D:\20_AUDIO\06_textgrid_merged
   [OK  ] textgrid_eojeol        D:\20_AUDIO\06_textgrid_eojeol
+  [없음] textgrid_eojeol_staging D:\20_AUDIO\07_textgrid_eojeol_g2p_staging
   [OK  ] mfa_state              D:\mfa_eojeol
   [OK  ] mfa_temp_primary       C:\mfa_tmp
   [없음] mfa_temp_secondary     D:\mfa_tmp
@@ -34,6 +35,7 @@
   [OK  ] pipeline_python        C:\Users\ari30\miniforge3\envs\mfa\python.exe
 
   ── 해석 ──
+  · textgrid_eojeol_staging: ★파일럿 차단 요소
   · mfa_temp_secondary: MFA 실행 때 생성되는 작업 경로 — CSV 파일럿 무관
   · actual_pron: 신규 출력 폴더 — 스크립트가 만들므로 정상
   · gdrive: G: 미연결 — 방침상 미사용, 무관
@@ -57,9 +59,9 @@
 3. 출력 대상·디스크
 ============================================================
   [OK] 출력 폴더 쓰기 가능: D:\10_LAYERS\05_search_master
-  [OK] D:\ 여유 334.4GB (전량 생성 시 ~수 GB + Parquet)
+  [OK] D:\ 여유 333.3GB (전량 생성 시 ~수 GB + Parquet)
 
 ============================================================
 판정
 ============================================================
-  ✅ 파일럿 진행 가능 — 차단 요소 없음
+  ❌ 차단 요소 있음 — 아래 조치 후 재실행

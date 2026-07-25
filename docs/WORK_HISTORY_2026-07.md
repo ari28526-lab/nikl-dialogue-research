@@ -261,3 +261,37 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - Excel 16.0 COM 자동 렌더링은 `Workbooks.Open`에서 실패했다. 검증용으로
   시작된 제목 없는 Excel 프로세스는 종료했으며, 첫 수동 열기에서 화면 배치와
   상대경로 링크를 확인하도록 제한을 기록했다.
+
+## 2026-07-25 — 발음 원천 추적과 음운·형태 환경 검색 설계
+
+- 대표 발화 `SDRW2200000836.1.1.61`을 원본 JSON, search master, Bareun,
+  A2 의미 레이어, 통합 사전 v1/v2, 규칙 발음, MFA 2-tier, 4-tier 및
+  점검용 6-tier까지 역추적했다.
+- 원본 JSON의 `form`과 `original_form`은 모두 `꽃에 모양은 어땠어?`이며
+  별도 발음 전사 필드는 없다. 점검 TextGrid의 `pron_reference`는 JSON
+  전사가 아니라 `predict_pron.py`의 규칙 기반 파생값이다.
+- A2에는 8형태소가 있으나 현재 TextGrid `morphemes`에는
+  `꽃|에|모양|은|어땠어` 5라벨만 있어, 구형 words tier를 현재 Bareun
+  형태소와 1:1 대응하는 것으로 해석할 수 없음을 확인했다.
+- 통합 사전 v2가 `pron_1/pron_2/pron_g2p`와 MFA 로마자·표준사전 대응 열을
+  모두 가진 것을 확인했다. 다만 중복행, 다의 발음, Bareun–사전 품사 불일치,
+  활용형 합성 문제가 있어 단순 CSV 조인이나 최소 의미번호 자동 선택은
+  부적합하다.
+- 발화·어절·형태소·형태경계·파일 인덱스·후보·수동 판정을 분리하고
+  `utt_id/eojeol_idx/morph_idx/boundary_id/candidate_id`로 연결하는 설계를
+  `docs/decisions/DESIGN_pronunciation_environment_search_2026-07-25.md`에
+  기록했다. D: 원자료나 기존 CSV/TextGrid는 변경하지 않았다.
+
+## 2026-07-25 — Python 경로 오진 정정과 환경 점검 고정
+
+- 제한된 Codex shell에서 AppData의 Python 3.13 절대경로가
+  `Test-Path=False`·명령 없음으로 보여 설치가 없다고 잘못 보고했다.
+- 읽기 전용 권한으로 재검증한 결과 전역 Python 3.13.14, py launcher,
+  사용자 PATH, MFA 환경의 pipeline Python 3.13.14가 모두 정상임을 확인했다.
+  설치·PATH 변경은 하지 않았다.
+- `scripts/check_python_environment.ps1`을 추가해 전역 Python, launcher,
+  PATH, `config/paths.json`의 `pipeline_python`을 한 번에 검사하고,
+  `access_denied`를 `missing`과 구분하도록 했다.
+- `AGENTS.md`의 오래된 Dropbox 프로젝트 root를 현재 research root로 고치고,
+  제한된 Codex shell의 거짓 음성을 Python 삭제로 판단하지 않는 규칙과
+  프로젝트 helper의 `pipeline_python` 우선 원칙을 기록했다.

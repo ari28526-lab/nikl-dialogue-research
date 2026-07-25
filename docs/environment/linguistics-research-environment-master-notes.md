@@ -85,13 +85,31 @@ winget install --id Python.Python.3.13 -e --source winget --scope user
 python --version
 py --version
 py -0p
+& ".\scripts\check_python_environment.ps1"
 ```
 
 주의:
 
 - WindowsApps의 0바이트 `python.exe`, `python3.exe` 스텁이 앞에 있으면 실제 Python을 가릴 수 있다.
 - Codex 세션의 PATH가 오래된 경우 전체 경로를 사용한다.
+- Codex의 제한된 파일 샌드박스에서는 AppData의 실제 실행 파일이 있어도
+  `AccessDenied`, `Test-Path=False`, 또는 명령 없음처럼 보일 수 있다. 이 결과만
+  보고 Python이 삭제됐다고 판정하지 않는다. 읽기 전용 권한으로 위 점검
+  스크립트를 다시 실행하거나 프로젝트의 `pipeline_python`을 확인한다.
 - 프로젝트마다 `.venv`를 만든다.
+
+2026-07-25 재검증:
+
+```text
+global Python  Python 3.13.14
+py launcher    -V:3.13 -> Python313\python.exe
+pipeline Python (miniforge mfa)  Python 3.13.14
+user PATH      Python313, Python313\Scripts, Python\Launcher 포함
+```
+
+이날 제한된 Codex shell의 최초 `Test-Path`가 거짓 음성을 냈지만, 권한 있는
+읽기 전용 확인에서는 절대경로·`python`·`py`가 모두 정상 실행됐다. 설치나
+PATH를 다시 고치지 않았다.
 
 ## R / RStudio / Quarto
 

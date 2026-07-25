@@ -29,6 +29,7 @@
 | 스크립트 | 역할 |
 |---|---|
 | paths.py | config/paths.json 로더 (`from paths import P`) |
+| check_python_environment.ps1 | 전역 Python 3.13·py 런처·PATH·프로젝트 `pipeline_python`을 구분 점검하고 샌드박스 접근 거부를 설치 누락과 분리 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 
