@@ -8,7 +8,8 @@
 param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string]$Year,
-    [string]$SearchMasterRoot = ""
+    [string]$SearchMasterRoot = "",
+    [switch]$PreferD
 )
 
 $ErrorActionPreference = 'Continue'
@@ -62,6 +63,11 @@ Out-Line "== preflight_eojeol_realign $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') 
 Out-Line "대상 연도: $($years -join ', ')"
 Out-Line "G2P 4-tier staging: $g2pStage"
 Out-Line "pre-MFA search master: $searchMasterRoot"
+Out-Line ("작업 드라이브 정책: " + $(if ($PreferD) {
+    "PreferD — 신규 MFA temp/output은 D:"
+} else {
+    "자동 — C: 여유 문턱 미달 시 D:"
+}))
 
 # [1] 실행파일·python 헬퍼 존재
 Out-Line "[1] 실행파일·헬퍼"
@@ -107,17 +113,32 @@ if ([string]::IsNullOrEmpty($dLabel)) {
 if ($dLabel -eq 'DATA_SSD') { OK "라벨 DATA_SSD 확인" }
 else { FAIL "D: 라벨이 DATA_SSD 아님(현재 '$dLabel') — HDD 오인 위험, 러너도 중단됨" }
 
-# [4] 여유 공간 (러너 가드: temp 드라이브 최소 30GB, 신규 연도 C: 선택 문턱 40GB)
+# [4] 여유 공간. 신규 연도는 2021 55GB, 나머지 45GB를 시작 문턱으로 쓴다.
+# PreferD에서는 C: 용량으로 D: 실행을 막지 않고, 선택된 D:만 FAIL 판정한다.
 Out-Line "[4] 여유 공간"
+$freeByDrive = @{}
 foreach ($d in 'C','D') {
     try {
         $driveInfo = [IO.DriveInfo]::new("${d}:\")
         if (-not $driveInfo.IsReady) { throw "not ready" }
         $free = [math]::Round($driveInfo.AvailableFreeSpace / 1GB, 1)
+        $freeByDrive[$d] = $free
     } catch { FAIL "드라이브 ${d}: 조회 실패"; continue }
-    if ($free -ge 40) { OK "${d}: ${free}GB" }
-    elseif ($free -ge 30) { WARN "${d}: ${free}GB (30~40GB — temp 배치 빠듯)" }
-    else { WARN "${d}: ${free}GB (30GB 미만 — 이 드라이브는 temp로 못 씀)" }
+    if ($PreferD -and $d -eq 'C') {
+        OK "${d}: ${free}GB (PreferD 신규 작업에는 사용하지 않음)"
+    } elseif (-not $PreferD) {
+        if ($free -ge 45) { OK "${d}: ${free}GB" }
+        elseif ($free -ge 30) { WARN "${d}: ${free}GB (45GB 미만 — 신규 temp 배치 빠듯)" }
+        else { WARN "${d}: ${free}GB (30GB 미만 — 이 드라이브는 temp로 못 씀)" }
+    }
+}
+if ($PreferD -and $freeByDrive.ContainsKey('D')) {
+    $requiredD = if ($years -contains '2021') { 55 } else { 45 }
+    if ([double]$freeByDrive['D'] -ge $requiredD) {
+        OK "PreferD: D: $($freeByDrive['D'])GB >= 시작 문턱 ${requiredD}GB"
+    } else {
+        FAIL "PreferD: D: $($freeByDrive['D'])GB < 시작 문턱 ${requiredD}GB"
+    }
 }
 
 # [5] wav 코퍼스 — 연도별 존재·세션(=화자) 구조. 지연 열거라 첫 항목만 보고 즉시 반환(가벼움).

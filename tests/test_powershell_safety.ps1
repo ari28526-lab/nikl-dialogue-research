@@ -4,6 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $files = @(
     (Join-Path $root 'scripts\preflight_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
+    (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1')
 )
@@ -56,6 +57,8 @@ foreach ($path in $files) {
             'textgrid_eojeol_staging',
             '--output-root',
             'promotion_required',
+            '[switch]$PreferD',
+            'if ($PreferD)',
             'exit 1'
         )) {
             if (-not $text.Contains($required)) {
@@ -65,9 +68,28 @@ foreach ($path in $files) {
     }
     if ((Split-Path $path -Leaf) -eq 'preflight_eojeol_realign.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
-        foreach ($required in @('[string]$Year', 'textgrid_eojeol_staging')) {
+        foreach ($required in @(
+            '[string]$Year',
+            'textgrid_eojeol_staging',
+            '[switch]$PreferD',
+            'PreferD: D:'
+        )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA preflight 연도/staging 가드 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_pre_mfa_bulk_safe.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$PreferD',
+            'if ($PreferD)',
+            "'-PreferD'",
+            'prefer_d = [bool]$PreferD',
+            'run_eojeol_realign.ps1'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("pre-MFA 안전 wrapper D 우선 가드 누락: $required")
             }
         }
     }

@@ -16,6 +16,7 @@ param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string]$Year,
     [string]$SearchMasterRoot = "",
+    [switch]$PreferD,
     [switch]$SkipPreflight
 )
 
@@ -76,6 +77,24 @@ $numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
 #   판정 순서: ① 검증된 temp가 있는 드라이브 ② 신규 연도는 연도별 예상 peak를
 #   감당할 때만 C:, 아니면 D:. 최대 연도 2021은 C: 55GB, 나머지는 45GB를 요구.
 function Get-WorkPaths($year) {
+    $required = if ($year -eq '2021') { 55 } else { 45 }
+    # 무인 대량 작업에서는 OS/Dropbox가 함께 쓰는 C:의 2~3GB 잔여 여유를
+    # 감수하지 않는다. -PreferD면 신규 연도는 D:에서 시작한다. 단, 동일한
+    # 입력계약으로 검증된 resume temp가 이미 있으면 수시간 계산을 버리지 않도록
+    # 그 temp의 원래 드라이브를 유지한다(계약 불일치 temp는 아래에서 먼저 archive).
+    if ($PreferD) {
+        if (Test-Path (Join-Path $tmpSecondary $year)) {
+            return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 10 }
+        }
+        if (Test-Path (Join-Path $tmpPrimary $year)) {
+            return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary; MinFreeGB = 10 }
+        }
+        return @{
+            TempRoot = $tmpSecondary
+            OutRoot = $outSecondary
+            MinFreeGB = $required
+        }
+    }
     if (Test-Path (Join-Path $tmpPrimary $year)) {
         return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary; MinFreeGB = 10 }
     }
@@ -84,7 +103,6 @@ function Get-WorkPaths($year) {
     }
     $primaryDrive = Split-Path -Qualifier $tmpPrimary
     $primaryFree = ([IO.DriveInfo]::new($primaryDrive)).AvailableFreeSpace
-    $required = if ($year -eq '2021') { 55 } else { 45 }
     if ($primaryFree / 1GB -ge $required) {
         return @{
             TempRoot = $tmpPrimary
@@ -92,7 +110,7 @@ function Get-WorkPaths($year) {
             MinFreeGB = $required
         }
     }
-    return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 45 }
+    return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = $required }
 }
 # 어떤 D: 경로도 만들기 전에 SSD 정본 라벨부터 검증한다.
 $expectLabel = 'DATA_SSD'
@@ -117,6 +135,7 @@ if (-not $SkipPreflight) {
     )
     if ($Year) { $preflightArgs += @('-Year', $Year) }
     $preflightArgs += @('-SearchMasterRoot', $searchMasterRoot)
+    if ($PreferD) { $preflightArgs += '-PreferD' }
     & powershell.exe @preflightArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Error "MFA preflight 실패(exit $LASTEXITCODE). 리포 logs의 최신 preflight 보고서 확인."
@@ -240,6 +259,11 @@ $runId = "eojeol_g2p_" + ($years -join '-') + "_" + `
 Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
 Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
 Say "pre-MFA search master 입력: $searchMasterRoot"
+Say ("작업 드라이브 정책: " + $(if ($PreferD) {
+    "D: 우선(신규 temp/output); 검증된 resume temp만 원래 드라이브 유지"
+} else {
+    "자동(C: 여유 문턱 충족 시 C:, 아니면 D:)"
+}))
 
 foreach ($y in $years) {
     Say "===== $y 시작 ====="
@@ -543,7 +567,7 @@ foreach ($y in $years) {
             input_contract_id = $inputContractId
             search_master_root = $searchMasterRoot
         }
-        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단.
+        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 여유 가드에 걸려 헛중단.
         # ★ 삭제 범위 축소 (2026-07-24, 외부 리뷰 P0-3): mfa_tmp 전체($tmp)가 아니라
         #   이번 연도($tmpYear)만. 같은 날 도입한 "실패 연도 temp 보존" 정책과 조합되면
         #   전체 삭제가 보존해 둔 다른 연도의 이어가기 temp까지 지워버리기 때문.
@@ -554,8 +578,8 @@ foreach ($y in $years) {
         Say "$y MFA 정렬 완료 (temp $tmpYear 정리됨)"
     }
 
-    # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
-    #    완료 마커 있으면 건너뜀(완료 연도는 C: 원출력이 이미 삭제돼 있음).
+    # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 선택된 작업 드라이브에 있음.
+    #    완료 마커가 있으면 건너뜀(완료 연도는 해당 원출력이 이미 삭제돼 있음).
     $mergeMark = Join-Path $doneDir "$y.merge_done"
     if (Read-DoneMarker $mergeMark $y 'merge' $inputContractId) {
         Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
@@ -592,7 +616,7 @@ foreach ($y in $years) {
     }
     try { Remove-SafeYearPath (Join-Path $out $y) $out }
     catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·최종본은 보존): $($_.Exception.Message)" }
-    Say "===== $y 완료 (C: 중간산출 정리됨) ====="
+    Say "===== $y 완료 ($out 중간산출 정리됨) ====="
 }
 Say "선택 연도 정렬·병합 완료 - $g2pStage"
 Say "기존 06_textgrid_eojeol은 보존됨. 전수 검증과 archive 계획 확인 전 자동 승격하지 않음."

@@ -1,4 +1,4 @@
-# 검증된 pre-MFA 언어층을 버전 고정한 뒤 연도별 MFA를 순차 실행한다.
+﻿# 검증된 pre-MFA 언어층을 버전 고정한 뒤 연도별 MFA를 순차 실행한다.
 #
 # 안전 원칙:
 # - 기존 05_search_master와 06_textgrid_eojeol을 덮어쓰지 않는다.
@@ -13,6 +13,7 @@ param(
     [string]$RunId = 'pre_mfa_v1_20260725',
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [switch]$PreferD,
     [switch]$SkipSearchMasterBuild
 )
 
@@ -89,6 +90,7 @@ if (Test-Path -LiteralPath $lockPath) {
     pid = $PID
     run_id = $RunId
     years = $Years
+    prefer_d = [bool]$PreferD
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -104,6 +106,11 @@ try {
     Write-Host "연도: $($Years -join ', ')"
     Write-Host "새 pre-MFA CSV: $preMfaRoot"
     Write-Host "기존 정본 CSV/TextGrid는 덮어쓰지 않음"
+    Write-Host ("작업 드라이브: " + $(if ($PreferD) {
+        "D: 우선(신규 MFA temp/output)"
+    } else {
+        "자동 선택"
+    }))
 
     $metaPath = Join-Path $preMfaRoot '_build_meta.json'
     $reuseFrozenMaster = $false
@@ -143,9 +150,14 @@ try {
 
     foreach ($year in $Years) {
         Write-Host "===== $year MFA 게이트 시작 =====" -ForegroundColor Cyan
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
-            (Join-Path $PSScriptRoot 'run_eojeol_realign.ps1') `
-            -Year $year -SearchMasterRoot $preMfaRoot
+        $realignArgs = @(
+            '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+            (Join-Path $PSScriptRoot 'run_eojeol_realign.ps1'),
+            '-Year', $year,
+            '-SearchMasterRoot', $preMfaRoot
+        )
+        if ($PreferD) { $realignArgs += '-PreferD' }
+        & powershell.exe @realignArgs
         if ($LASTEXITCODE -ne 0) {
             throw "$year MFA/병합 실패(exit $LASTEXITCODE); 다음 연도는 실행하지 않음"
         }
@@ -163,6 +175,7 @@ try {
         status = $status
         years_requested = $Years
         years_completed = @($completed)
+        prefer_d = [bool]$PreferD
         failed_reason = $failure
         pre_mfa_root = $preMfaRoot
         transcript = $transcript

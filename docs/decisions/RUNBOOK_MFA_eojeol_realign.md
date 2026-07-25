@@ -47,7 +47,8 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
 
 ```powershell
 # 리포 루트에서
-powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 -Year 2020
+powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 `
+  -Year 2020 -PreferD
 ```
 - 한 연도씩 실행한다. 중단 시 같은 명령을 재실행하면 검증된 JSON 완료 마커와
   temp 상태를 확인해 이어간다.

@@ -372,3 +372,27 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   TextGrid 길이 불일치 차단, 기존 출력 보호를 추가했다. 대표 발화
   `SDRW2200000836.1.1.61` 앞뒤 2개씩 총 5발화를 연결해 WAV/TextGrid
   10.89초 일치와 발화별 환산 좌표를 확인했다.
+
+## 2026-07-25 — 대량 MFA D: 우선 용량 정책
+
+- 대량 실행 직전 용량을 재확인했다. C: 47.5GB는 일반 연도 시작 문턱
+  45GB보다 2.5GB만 많아 Windows·Dropbox 변동을 감당할 무인 실행 여유로는
+  부족하다고 판정했다. D:는 `DATA_SSD`, 여유 333.3GB였다.
+- 기존 search master는 4.19GB이고, 기존 TextGrid 각 5,000개 표본은 평균
+  3.03KB(2020)·4.38KB(2021)였다. 510만 발화 신규 staging과 연도별 temp
+  peak를 합쳐도 D: 추가량은 보수적으로 약 100GB 이내로 보아 200GB 이상
+  완충 공간을 확보했다.
+- `run_pre_mfa_bulk_safe.ps1`, `run_eojeol_realign.ps1`,
+  `preflight_eojeol_realign.ps1`에 `-PreferD`를 연결했다. 신규 MFA temp와
+  원출력은 D:에서 시작하고, 2021 55GB/그 밖 45GB 미만이면 실행 전에
+  차단한다.
+- 동일 입력계약으로 이미 계산된 resume temp는 무조건 다른 드라이브로 옮기지
+  않는다. MFA DB의 절대경로 의존 가능성과 수시간 재계산을 피하기 위해 원래
+  드라이브에서만 이어가며, 계약이 없거나 다른 temp는 기존 원칙대로 삭제하지
+  않고 `archive_stale_temp`에 보존한다.
+- 실제 `-PreferD -Year 2021` preflight에서
+  `D: 333.3GB >= 55GB`를 확인했다. 2020 파일럿 search master를 일부러
+  지정했으므로 2021 입력 coverage는 FAIL했고, 이를 전량 통과로 기록하지
+  않았다.
+- PowerShell BOM·AST·필수 D 우선 전달 검사 5/5와 Python unittest 41/41을
+  통과했다. 정식 무인 명령은 기존 RunId에 `-PreferD`를 붙인다.

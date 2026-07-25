@@ -32,7 +32,7 @@ lab을 재사용할 수 있어, 지금 바로 MFA만 시작하는 것은 안전�
 - MFA 3.4.0 프로젝트 패치 7종 통과
 - `korean_mfa` acoustic/dictionary/G2P 모델 존재
 - D: 볼륨 라벨 `DATA_SSD`
-- C: 여유 47.8GB, D: 여유 333.3GB
+- C: 여유 47.5GB, D: 여유 333.3GB(13:10 재확인)
 - 6개년 모두 세션 하위폴더 구조
 - 신규 G2P staging에는 아직 연도별 정식 출력 없음
 - 2020에 계약 정보가 없는 구 temp 0.68GB가 남아 있음
@@ -74,7 +74,7 @@ co_speaker_ids
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   "C:\Users\ari30\research\2026_summer_research\scripts\run_pre_mfa_bulk_safe.ps1" `
-  -RunId "pre_mfa_v1_20260725"
+  -RunId "pre_mfa_v1_20260725" -PreferD
 ```
 
 기본 순서는 2020→2021→2022→2023→2024→2025다. 2020 전량이 첫 확대
@@ -89,7 +89,7 @@ RunId를 쓴다.
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   "C:\Users\ari30\research\2026_summer_research\scripts\run_pre_mfa_bulk_safe.ps1" `
-  -RunId "pre_mfa_v1_20260725" -Years 2020
+  -RunId "pre_mfa_v1_20260725" -Years 2020 -PreferD
 ```
 
 ## 생성 위치
@@ -137,10 +137,30 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 - 4-tier 병합 한 건이라도 실패
 - 같은 이름의 다른 배치가 이미 실행 중
 
-2021은 temp 실측 최대 33.3GB였으므로 C: 신규 작업 문턱을 55GB로 높였다.
-현재 C: 여유에서는 2021이 D: temp/output을 사용한다. 다른 연도도 신규 C:
-작업에는 최소 45GB를 요구하고, 검증된 resume temp는 남은 10GB를 하한으로
+2021은 temp 실측 최대 33.3GB였으므로 신규 작업 문턱을 55GB로 높였다.
+다른 연도는 45GB를 요구하고, 검증된 resume temp는 남은 10GB를 하한으로
 둔다.
+
+현재 C: 47.5GB는 일반 연도 45GB 문턱을 통과하더라도 Windows·Dropbox·임시
+파일을 위한 여유가 2.5GB밖에 남지 않는다. 이틀 무인 실행에는 충분히 보수적이지
+않으므로 정식 명령은 `-PreferD`를 사용한다. 이 옵션은 다음처럼 작동한다.
+
+- 신규 연도의 MFA temp와 MFA 원출력은 D:에 둔다.
+- D:는 2021 포함 실행이면 55GB, 그 밖에는 45GB 미만일 때 preflight에서 FAIL한다.
+- 같은 입력계약으로 검증된 resume temp가 이미 있으면 수시간 계산을 버리지 않도록
+  그 temp의 원래 드라이브에서만 이어간다.
+- 연도 정렬이 끝나면 해당 연도의 temp를, 4-tier 병합이 끝나면 MFA 원출력을
+  정리하므로 여섯 연도의 중간산출이 누적되지 않는다.
+
+용량 추정 근거는 기존 search master 4.19GB, 기존 TextGrid 5,000개 표본의
+평균 3.03–4.38KB, 전량 5,103,356발화다. 새 언어층·4-tier staging과 한 연도
+중간 peak를 보수적으로 합쳐도 D: 추가 사용량은 약 100GB 이내로 예상한다.
+현재 D: 여유 333.3GB에는 200GB 이상의 완충 공간이 있다.
+
+2026-07-25 13:10 실제 `-PreferD -Year 2021` 읽기 전용 점검에서
+`D: 333.3GB >= 55GB`가 통과했다. 사용한 search master는 의도적으로 2020
+파일럿만 있는 부분본이어서 2021 coverage 단계는 FAIL했다. 즉 이 실행은 D:
+정책 검증만을 위한 음성·CSV 비변경 점검이며, 전량 입력 통과를 가장하지 않는다.
 
 ## 오류·병목과 대응
 
@@ -151,7 +171,7 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 | 현재 입력이 한글 0자인데 과거 lab이 남음 | MFA가 stale 문장을 읽지 않도록 구 lab을 삭제 대신 `archive_stale_labs`로 이동 |
 | 새 lab인데 과거 MFA temp 재사용 | SHA256 입력 계약 비교, 불일치 temp 보존 격리 |
 | 부분 export를 성공으로 오인 | exit code와 실제 TextGrid 수를 함께 검사 |
-| 2021 peak가 C:를 채움 | 연도별 공간 문턱, 2021은 현재 D: 사용 |
+| C: 여유 47.5GB가 실행 중 줄어듦 | 정식 명령은 `-PreferD`; 신규 6개년 temp/output 모두 D: |
 | 워커 교착 | 단계·진행카운터·CPU 기반 watchdog, 실패 로그 영구 보존 |
 | 0바이트 WAV가 로딩 말미에 전체 실패 | MFA 전 연도별 스캔·복원 가능한 quarantine |
 | 병합 일부 실패 후 원출력 삭제 | 실패 1건이면 종료, 원 MFA 출력 보존 |
