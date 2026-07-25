@@ -337,3 +337,38 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - Dropbox에 새 `9_review_by_year_minimal_v4_20260725` 묶음과
   `MFA_pilot_review_v4_20260725.xlsx`를 만들었다. 엑셀은 60행, 5개 시트,
   240개 파일 링크, 4개 드롭다운 규칙을 재열기 검증했다.
+
+## 2026-07-25 — 대량 MFA 직전 입력계약·무인 실행 안전장치
+
+- 실환경 6개년 MFA preflight를 다시 실행해 설치 패치 7종, 세 모델, D:
+  `DATA_SSD`, 세션 폴더, C: 47.8GB·D: 333.3GB를 확인했다. 최초 결과는
+  FAIL 0/WARN 0이었다.
+- 기존 전량 러너가 Bareun `form`만 lab에 써 숫자·기호를 제거할 수 있고,
+  C:\mfa_tmp\2020의 0.68GB 중간 DB에는 어떤 입력으로 만들었는지 계약이
+  없음을 발견했다. 이 상태의 즉시 재개는 금지했다.
+- `realign_eojeol_build_corpus.py`를 새 pre-MFA search master의
+  `pron_reference_form` 기반으로 바꿨다. build meta SHA256·세션 coverage·
+  source field를 입력 계약으로 묶고, 첫 실행은 기존 nonzero lab도 실제
+  내용을 읽어 전수 비교한다.
+- 현재 reference에서 한글이 0자인데 구 lab이 남아 있으면 stale 전사를
+  MFA가 재사용하지 않도록 `archive_stale_labs/<contract>/...`로 복원 가능하게
+  옮긴다.
+- 숫자 `1`이 원전사 `일`로 안전하게 회복된 합성 사례에서 구 lab을 원자
+  재작성하고, 같은 계약 재실행은 marker로 재개하는 회귀검사를 추가했다.
+- 3세션 pilot search master를 전량 입력처럼 넘긴 실험은
+  `search=3/source=2232` coverage FAIL로 정확히 차단됐다.
+- `run_eojeol_realign.ps1`은 다른 입력의 temp를 삭제하지 않고
+  `archive_stale_temp`로 옮기며, 완료 marker에도 input contract를 요구한다.
+  2021은 C: 55GB, 다른 신규 연도는 45GB 문턱을 적용한다.
+- `run_pre_mfa_bulk_safe.ps1`을 추가했다. versioned pre-MFA CSV staging을
+  전량 생성한 뒤 2020부터 연도별로 실행하고, 실패 시 다음 연도를 중단한다.
+  PID lock·transcript·요약 JSON을 남기며 기존 CSV/TextGrid를 자동 승격하지
+  않는다.
+- 이어붙이기는 전량 정렬 입력이 아니라 후보 추출 뒤의 온디맨드 검토 산출물로
+  유지한다. 연결 시간은 원 세션 시간이 아니므로 발화별 offset manifest가
+  필요하다는 점을 새 런북에 명시했다.
+- `stitch_session.py`가 실제로 offset manifest를 쓰도록 보완했다. 기본
+  0.05초 경계 무음, `phones_mfa/morphemes_legacy` 명칭, padded review
+  TextGrid 길이 불일치 차단, 기존 출력 보호를 추가했다. 대표 발화
+  `SDRW2200000836.1.1.61` 앞뒤 2개씩 총 5발화를 연결해 WAV/TextGrid
+  10.89초 일치와 발화별 환산 좌표를 확인했다.

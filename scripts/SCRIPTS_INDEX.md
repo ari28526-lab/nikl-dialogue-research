@@ -62,10 +62,11 @@
 ## 어절 전량 재정렬 — 목적 B: 4-tier (2026-07-16~17)
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
-| realign_eojeol_build_corpus.py | form→어절 lab을 wav 폴더에 제자리 생성 (세션당 scandir 1회 최적화, lab 원자 기록·구조화 marker) | 합성 회귀검사 통과, 본실행 대기 |
+| realign_eojeol_build_corpus.py | 검증된 pre-MFA search master의 `pron_reference_form`→어절 lab. 세션 coverage·build meta SHA256 입력계약, 기존 lab 내용 전수 대조, 불일치 원자 재작성, 미해결 숫자 추측 금지 | 숫자 `1` 원전사 회복·stale lab 재작성 회귀검사 통과 |
 | realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
-| run_eojeol_realign.ps1 | `-Year` 한 연도 러너 (preflight→lab→align→검증→staging merge, JSON marker 재개, 실패 temp 보존) | 2020 선택 preflight 통과, 대량 실행 대기 |
-| preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·marker·MFA 설치 패치 7종을 차단 검사 | `-Year 2020` FAIL 0/WARN 0 |
+| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약과 완료 marker를 묶고 다른 계약의 temp는 삭제 대신 archive, 2021 C: 55GB/기타 45GB 문턱, align→검증→staging merge | 안전 wrapper에서 호출 |
+| preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사 | 실환경 MFA 항목 PASS; 3세션 pilot을 전량으로 가장하면 coverage FAIL 확인 |
+| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier 병합. PID lock, 연도 실패 시 중단, 기존 정본 자동 승격 금지, 통합 transcript/summary | 무인 대량 실행 정본, 본실행 대기 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 수동 패치의 AST/소스 구조와 SHA256 기록 | 7/7 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
@@ -92,7 +93,7 @@
 | build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+규칙기반 예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest. 원전사 기반 `pron_reference_*`, 미해결 기호 집계, document별 전체·공동 참여 화자 ID 포함 | 2023 목표 세션 371/371 격리 파일럿 통과, 참여자 연결 오류 0. 기존 전량본은 구판이며 lexicon·coverage 보완 후 archive→재생성 대기 |
 | measure_spn.py | TextGrid phones tier spn 비율 측정 (G2P 전후 비교) | 완료 (2020 27.5%→G2P 0%) |
 | build_g2p_pilot_corpus.py | MFA G2P 파일럿 격리 코퍼스 (form→lab+wav, 화자별) | 완료 |
-| stitch_session.py | 발화 클립 이어붙이기 → 연속 wav+정렬 TextGrid (원본 연속본 부재 대비) | 검증 완료 |
+| stitch_session.py | 후보 주변 발화 클립 온디맨드 이어붙이기. 기본 0.05초 경계 무음, `phones_mfa/morphemes_legacy` 명시, 원 clip↔연결 시간 환산 manifest, padded review TG 입력 차단, 기존 출력 보호 | 합성 2발화·실자료 5발화 검증 |
 | build_stratified_mfa_review_bundle.py | 통과한 층화 MFA run을 연도별 평면 점검 묶음으로 재구성. WAV 사본 좌우 0.05초 무음과 TextGrid 동시 이동으로 가시적 양끝 경계를 보장. 기본 v4는 `words/phones_mfa/morph_analysis/utterance_info` 4-tier이며, 마지막 tier에 발화 ID·철자·철자 로마자·규칙 발음 한글/로마자를 표지로 결합. 원본 읽기 전용, 기존 출력 자동 덮어쓰기 금지 | 6개년 60발화·4-tier·양끝 경계·검색표지 60/60 검증 |
 | build_mfa_pilot_review_workbook.py | 파일럿 INDEX에서 드롭다운·상대경로 파일 링크·연도별 진행률 수식·원본 보존 시트가 있는 연구자 검토 `.xlsx` 생성. 6/7-tier 구 열과 최소 4-tier v4의 `morph_analysis_align_status/utterance_info_schema`를 모두 허용하고, 워크북이 bundle 밖에 있어도 링크 기준 경로를 계산. partial 검증 후 교체, 기존 출력 보호 | v4 60행·240링크 생성·검증 |
 | build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 미작성 (전량 CSV 후) |

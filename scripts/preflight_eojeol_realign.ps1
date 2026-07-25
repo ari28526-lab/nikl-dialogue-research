@@ -7,7 +7,8 @@
 
 param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
-    [string]$Year
+    [string]$Year,
+    [string]$SearchMasterRoot = ""
 )
 
 $ErrorActionPreference = 'Continue'
@@ -23,6 +24,7 @@ try {
         )
     }
     $wavRoot = Join-Path (Expand-CfgPath $cfg.wav) "individual"
+    $layersRoot = Expand-CfgPath $cfg.layers
     $stateRoot = Expand-CfgPath $cfg.mfa_state
     $doneDir = Join-Path $stateRoot "done"
     # D: 라벨 검증 전 잘못 연결된 드라이브에 쓰지 않도록 preflight 보고서는 리포에 둔다.
@@ -33,6 +35,11 @@ try {
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
     $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
     $py = Expand-CfgPath $cfg.pipeline_python
+    if ([string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
+        $searchMasterRoot = Expand-CfgPath $cfg.search_master
+    } else {
+        $searchMasterRoot = [IO.Path]::GetFullPath($SearchMasterRoot)
+    }
 } catch {
     Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
     exit 1
@@ -54,6 +61,7 @@ function FAIL($m) { $script:fail++; Out-Line ("  [FAIL] " + $m) }
 Out-Line "== preflight_eojeol_realign $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') =="
 Out-Line "대상 연도: $($years -join ', ')"
 Out-Line "G2P 4-tier staging: $g2pStage"
+Out-Line "pre-MFA search master: $searchMasterRoot"
 
 # [1] 실행파일·python 헬퍼 존재
 Out-Line "[1] 실행파일·헬퍼"
@@ -126,8 +134,80 @@ foreach ($y in $years) {
     }
 }
 
-# [6] 완료 마커·이어가기 상태 — temp/원출력 위치까지 종합해 연도별 재개 시나리오 판정
-Out-Line "[6] 완료 마커·이어가기 상태"
+# [6] pre-MFA 입력 계약 — 구 search master로 숫자·기호를 지운 lab을 만들지 않음.
+Out-Line "[6] pre-MFA search master 입력 계약"
+$metaPath = Join-Path $searchMasterRoot "_build_meta.json"
+$metaOK = $false
+if (-not (Test-Path -LiteralPath $metaPath)) {
+    FAIL "pre-MFA _build_meta.json 없음: $metaPath"
+} else {
+    try {
+        $meta = Get-Content -LiteralPath $metaPath -Raw -Encoding UTF8 |
+                ConvertFrom-Json
+        if ($meta.status -eq 'success') {
+            $metaOK = $true
+            OK "search master build status=success"
+        } else {
+            FAIL "search master build 미통과(status=$($meta.status)): $metaPath"
+        }
+    } catch {
+        FAIL "search master build meta 손상: $metaPath"
+    }
+}
+foreach ($y in $years) {
+    $yearDir = Join-Path $searchMasterRoot $y
+    if (-not (Test-Path -LiteralPath $yearDir)) {
+        FAIL "$y search master 폴더 없음: $yearDir"
+        continue
+    }
+    $sample = Get-ChildItem -LiteralPath $yearDir -Filter *.csv -File |
+              Where-Object { -not $_.Name.StartsWith('_') } |
+              Select-Object -First 1
+    if (-not $sample) {
+        FAIL "$y search master CSV 0개: $yearDir"
+        continue
+    }
+    $sourceNames = @{
+        '2020' = 'NIKL_DIALOGUE_2020_v1.4'
+        '2021' = 'NIKL_DIALOGUE_2021_v1.1'
+        '2022' = 'NIKL_DIALOGUE_2022_v1.0_JSON'
+        '2023' = 'NIKL_DIALOGUE_2023_v1.1'
+        '2024' = 'NIKL_DIALOGUE_2024_v1.0'
+        '2025' = 'NIKL_DIALOGUE_2025_v1.0'
+    }
+    $sourceYearDir = Join-Path (
+        Join-Path $layersRoot '01_bareun_raw'
+    ) $sourceNames[$y]
+    $searchCount = @(
+        Get-ChildItem -LiteralPath $yearDir -Filter *.csv -File |
+        Where-Object { -not $_.Name.StartsWith('_') }
+    ).Count
+    $sourceCount = @(
+        Get-ChildItem -LiteralPath $sourceYearDir -Filter *.csv -File |
+        Where-Object { -not $_.Name.StartsWith('_') }
+    ).Count
+    if ($sourceCount -le 0 -or $searchCount -ne $sourceCount) {
+        FAIL "$y search master 세션 coverage 불일치: search=$searchCount source=$sourceCount"
+    } else {
+        OK "$y 세션 coverage $searchCount/$sourceCount"
+    }
+    $header = Get-Content -LiteralPath $sample.FullName -Encoding UTF8 -TotalCount 1
+    $required = @(
+        'utt_id','form','pron_reference_form',
+        'pron_reference_source','pron_reference_status'
+    )
+    $missing = @($required | Where-Object {
+        $header -notmatch "(^|,)$([regex]::Escape($_))(,|$)"
+    })
+    if ($missing.Count -gt 0) {
+        FAIL "$y pre-MFA 필수 열 누락($($missing -join ',')): $($sample.FullName)"
+    } else {
+        OK "$y reference-form 입력 열 확인"
+    }
+}
+
+# [7] 완료 마커·이어가기 상태 — temp/원출력 위치까지 종합해 연도별 재개 시나리오 판정
+Out-Line "[7] 완료 마커·이어가기 상태"
 foreach ($y in $years) {
     $a  = Test-Path (Join-Path $doneDir "$y.align_done")
     $m  = Test-Path (Join-Path $doneDir "$y.merge_done")
@@ -147,7 +227,14 @@ foreach ($y in $years) {
                 $markerOK = (
                     $markerData.year -eq $y -and
                     $markerData.stage -eq $markerStage -and
-                    $markerData.g2p_model -eq 'korean_mfa'
+                    $markerData.g2p_model -eq 'korean_mfa' -and
+                    -not [string]::IsNullOrWhiteSpace(
+                        [string]$markerData.details.input_contract_id
+                    ) -and
+                    [IO.Path]::GetFullPath(
+                        [string]$markerData.details.search_master_root
+                    ).TrimEnd('\') -eq
+                    [IO.Path]::GetFullPath($searchMasterRoot).TrimEnd('\')
                 )
                 if ($markerOK -and $markerStage -eq 'merge') {
                     $recordedStage = [string]$markerData.details.staging_output_root
@@ -163,6 +250,26 @@ foreach ($y in $years) {
             } catch {
                 FAIL "$y 레거시/손상 완료 마커(검증 정보 없음): $marker — 자동 완료로 인정하지 않음"
             }
+        }
+    }
+    $contractPath = Join-Path $stateRoot "input_contracts\$y.json"
+    if (($tC -or $tD) -and -not (Test-Path -LiteralPath $contractPath)) {
+        WARN "$y temp는 있으나 입력 계약 기록 없음 — 러너가 stale temp로 보존 격리 후 clean 시작"
+    } elseif (($tC -or $tD) -and (Test-Path -LiteralPath $contractPath)) {
+        try {
+            $tempContract = Get-Content -LiteralPath $contractPath -Raw -Encoding UTF8 |
+                            ConvertFrom-Json
+            $recordedSearch = [IO.Path]::GetFullPath(
+                [string]$tempContract.search_master_root
+            ).TrimEnd('\')
+            if ($recordedSearch -ne
+                [IO.Path]::GetFullPath($searchMasterRoot).TrimEnd('\')) {
+                WARN "$y temp 입력 search master가 현재와 다름 — 러너가 stale temp로 보존 격리"
+            } else {
+                OK "$y temp 입력 계약 경로 일치"
+            }
+        } catch {
+            WARN "$y temp 입력 계약 손상 — 러너가 stale temp로 보존 격리"
         }
     }
     if ($a -and $m) { OK "$y 마커 파일 존재(위 내용 검증도 통과해야 완료) — $st" }

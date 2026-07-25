@@ -38,6 +38,13 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
   DB 직독으로(≈1일 절감, 단 리스크) — 현재는 검증된 long_textgrid 경로 사용.
 
 ## 실행 (밤샘)
+
+> 2026-07-25 현재는 아래 단독 명령보다
+> `RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md`의
+> `run_pre_mfa_bulk_safe.ps1`을 사용한다. 새 실행기는
+> `pron_reference_form`이 포함된 pre-MFA CSV를 먼저 동결하고 lab·temp의
+> 입력 계약을 검증한 뒤 이 연도별 러너를 호출한다.
+
 ```powershell
 # 리포 루트에서
 powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 -Year 2020

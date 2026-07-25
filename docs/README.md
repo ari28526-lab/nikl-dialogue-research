@@ -26,6 +26,7 @@
 | [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |
 | [decisions/000_project_folder_structure.md](decisions/000_project_folder_structure.md) | 폴더 구조 결정 |
 | [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
+| [decisions/RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md](decisions/RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md) | **현재 실행 정본** — pre-MFA CSV 동결·숫자/기호 lab·입력계약·stale temp 보존·무인 MFA 명령 |
 | [decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md](decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md) | 연도별 10발화·실제 화자 5명 MFA 파일럿 실행·QC·시행착오 |
 | [decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md](decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md) | 대량 실행 전 실패·시행착오 27건과 수용 기준 |
 | [decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md](decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md) | 원자 출력·구판 보존·MFA/CSV 검증 설계와 연구적 근거 |

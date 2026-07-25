@@ -15,6 +15,7 @@
 param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string]$Year,
+    [string]$SearchMasterRoot = "",
     [switch]$SkipPreflight
 )
 
@@ -38,6 +39,11 @@ try {
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
     $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    if ([string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
+        $searchMasterRoot = Expand-CfgPath $cfg.search_master
+    } else {
+        $searchMasterRoot = [IO.Path]::GetFullPath($SearchMasterRoot)
+    }
 } catch {
     Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
     exit 1
@@ -67,21 +73,26 @@ $numJobs = if ([Environment]::ProcessorCount -ge 12) { 8 } else { 4 }
 #   그 뒤 연도부터 자동으로 D:로 넘어가되, **이미 특정 드라이브에 만들어진 temp가
 #   있으면(중단 후 재개) 그 드라이브를 최우선 사용** — 안 그러면 완주한 정렬 계산
 #   (연도당 최대 3시간+)이 든 temp를 못 찾고 새로 --clean 시작해버림(2021 실측 사고).
-#   판정 순서: ① C:\mfa_tmp\{연도} 있으면 C: ② D:\mfa_tmp\{연도} 있으면 D:
-#   ③ 신규 연도는 C: 여유 40GB 이상이면 C:, 아니면 D:.
+#   판정 순서: ① 검증된 temp가 있는 드라이브 ② 신규 연도는 연도별 예상 peak를
+#   감당할 때만 C:, 아니면 D:. 최대 연도 2021은 C: 55GB, 나머지는 45GB를 요구.
 function Get-WorkPaths($year) {
     if (Test-Path (Join-Path $tmpPrimary $year)) {
-        return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary }
+        return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary; MinFreeGB = 10 }
     }
     if (Test-Path (Join-Path $tmpSecondary $year)) {
-        return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary }
+        return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 10 }
     }
     $primaryDrive = Split-Path -Qualifier $tmpPrimary
     $primaryFree = ([IO.DriveInfo]::new($primaryDrive)).AvailableFreeSpace
-    if ($primaryFree / 1GB -ge 40) {
-        return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary }
+    $required = if ($year -eq '2021') { 55 } else { 45 }
+    if ($primaryFree / 1GB -ge $required) {
+        return @{
+            TempRoot = $tmpPrimary
+            OutRoot = $outPrimary
+            MinFreeGB = $required
+        }
     }
-    return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary }
+    return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 45 }
 }
 # 어떤 D: 경로도 만들기 전에 SSD 정본 라벨부터 검증한다.
 $expectLabel = 'DATA_SSD'
@@ -105,6 +116,7 @@ if (-not $SkipPreflight) {
         (Join-Path $PSScriptRoot 'preflight_eojeol_realign.ps1')
     )
     if ($Year) { $preflightArgs += @('-Year', $Year) }
+    $preflightArgs += @('-SearchMasterRoot', $searchMasterRoot)
     & powershell.exe @preflightArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Error "MFA preflight 실패(exit $LASTEXITCODE). 리포 logs의 최신 preflight 보고서 확인."
@@ -114,19 +126,29 @@ if (-not $SkipPreflight) {
 $doneDir = Join-Path $stateRoot "done"
 New-Item -ItemType Directory -Force $doneDir | Out-Null
 # temp: MFA는 정렬 반복 중 wav이 아니라 temp의 특징값(MFCC)·DB를 계속 읽음.
-#   연도당 temp ~15-35GB(2021 실측 33GB), --clean이라 연도마다 비워짐. 여유 30GB 미만이면 중단.
-$minTmpFreeGB = 30
+# 연도당 temp ~15-35GB(2021 실측 33GB). Get-WorkPaths가 신규 연도별 peak
+# 문턱을 적용하고, 검증된 resume temp는 남은 10GB를 하한으로 둔다.
 $logDir  = Join-Path $stateRoot "logs"
 New-Item -ItemType Directory -Force $logDir | Out-Null
 $log = Join-Path $logDir ("eojeol_realign_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
 
 function Say($m) { $l = "[$(Get-Date -Format 'MM-dd HH:mm:ss')] $m"; Write-Host $l -ForegroundColor Cyan; Add-Content $log $l -Encoding UTF8 }
-function Read-DoneMarker($path, $year, $stage) {
+function Read-DoneMarker($path, $year, $stage, $inputContractId = "") {
     if (-not (Test-Path -LiteralPath $path)) { return $false }
     try {
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
         $valid = ($data.year -eq $year -and $data.stage -eq $stage -and
                   $data.g2p_model -eq 'korean_mfa')
+        if ($valid -and -not [string]::IsNullOrWhiteSpace($inputContractId)) {
+            $valid = (
+                [string]$data.details.input_contract_id -eq
+                [string]$inputContractId -and
+                [IO.Path]::GetFullPath(
+                    [string]$data.details.search_master_root
+                ).TrimEnd('\') -eq
+                [IO.Path]::GetFullPath($searchMasterRoot).TrimEnd('\')
+            )
+        }
         if ($valid -and $stage -eq 'merge') {
             $recordedStage = [string]$data.details.staging_output_root
             $valid = (
@@ -137,6 +159,53 @@ function Read-DoneMarker($path, $year, $stage) {
         }
         return $valid
     } catch { return $false }
+}
+function Archive-StaleTemp($path, $allowedRoot, $year, $reason) {
+    $resolved = [IO.Path]::GetFullPath($path).TrimEnd('\')
+    $allowed = [IO.Path]::GetFullPath($allowedRoot).TrimEnd('\')
+    if ((Split-Path -Parent $resolved) -ne $allowed) {
+        throw "stale temp 보존 경계 위반: $resolved (허용 부모 $allowed)"
+    }
+    if (-not (Test-Path -LiteralPath $resolved)) { return $null }
+    $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $driveTag = (Split-Path -Qualifier $resolved).Substring(0, 1)
+    $archiveDir = Join-Path $stateRoot (
+        "archive_stale_temp\$stamp\$driveTag"
+    )
+    New-Item -ItemType Directory -Force -Path $archiveDir | Out-Null
+    $destination = Join-Path $archiveDir $year
+    if (Test-Path -LiteralPath $destination) {
+        throw "stale temp archive 충돌: $destination"
+    }
+    Say "$year 입력 계약 불일치 temp를 삭제하지 않고 보존 이동: $resolved -> $destination"
+    Move-Item -LiteralPath $resolved -Destination $destination
+    $record = [ordered]@{
+        year = $year
+        source = $resolved
+        archived = $destination
+        reason = $reason
+        archived_at = (Get-Date).ToString('o')
+    }
+    $record | ConvertTo-Json -Depth 4 |
+        Set-Content -LiteralPath (Join-Path $archiveDir "$year.reason.json") -Encoding UTF8
+    return $destination
+}
+function Write-TempContract(
+    $path, $year, $inputContractId, $tempYear, $status
+) {
+    $dir = Split-Path -Parent $path
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    $partial = "$path.$PID.partial"
+    [ordered]@{
+        year = $year
+        input_contract_id = $inputContractId
+        search_master_root = $searchMasterRoot
+        temp_year = $tempYear
+        status = $status
+        updated_at = (Get-Date).ToString('o')
+    } | ConvertTo-Json -Depth 4 |
+        Set-Content -LiteralPath $partial -Encoding UTF8
+    Move-Item -LiteralPath $partial -Destination $path -Force
 }
 function Write-DoneMarker($path, $year, $stage, $details) {
     $tmpMarker = "$path.$PID.partial"
@@ -170,39 +239,90 @@ $runId = "eojeol_g2p_" + ($years -join '-') + "_" + `
 
 Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
 Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
+Say "pre-MFA search master 입력: $searchMasterRoot"
 
 foreach ($y in $years) {
     Say "===== $y 시작 ====="
 
-    # ★ 완료 연도 즉시 건너뜀 (2026-07-22): 재시작이 잦아 완료 연도마다 lab 재확인
-    #   (30~60초)이 누적되던 것을 제거 — 두 마커 다 있으면 lab·wav스캔조차 안 하고 바로 통과.
-    if ((Read-DoneMarker (Join-Path $doneDir "$y.align_done") $y 'align') -and
-        (Read-DoneMarker (Join-Path $doneDir "$y.merge_done") $y 'merge')) {
-        Say "$y 이미 전부 완료 — 즉시 건너뜀"
-        continue
+    # 1) 검증된 pre-MFA search master의 reference form으로 lab을 만들고
+    #    입력 계약 ID를 얻는다. 계약 marker가 같으면 재실행은 즉시 반환한다.
+    Say "$y [1/3] pre-MFA 입력계약 확인 + lab 생성/내용검증..."
+    & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") `
+        --year $y --search-master-root $searchMasterRoot
+    if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
+    $labReportPath = Join-Path $logDir "lab_build_${y}_latest.json"
+    try {
+        $labReport = Get-Content -LiteralPath $labReportPath -Raw -Encoding UTF8 |
+                     ConvertFrom-Json
+        $inputContractId = [string]$labReport.input_contract_id
+        if ($labReport.status -ne 'passed' -or
+            [string]::IsNullOrWhiteSpace($inputContractId)) {
+            throw "status/input_contract_id 누락"
+        }
+    } catch {
+        Say "!! $y lab 입력계약 보고서 손상: $labReportPath"
+        exit 1
+    }
+    Say "$y 입력 계약: $($inputContractId.Substring(0,12)) / $searchMasterRoot"
+
+    # 기존 temp는 같은 입력계약임이 증명될 때만 재사용한다. 계약이 없거나 다르면
+    # 삭제하지 않고 D:\mfa_eojeol\archive_stale_temp 아래로 보존 이동한다.
+    $tempContractPath = Join-Path $stateRoot "input_contracts\$y.json"
+    $tempContract = $null
+    if (Test-Path -LiteralPath $tempContractPath) {
+        try {
+            $tempContract = Get-Content -LiteralPath $tempContractPath -Raw -Encoding UTF8 |
+                            ConvertFrom-Json
+        } catch {
+            $tempContract = $null
+        }
+    }
+    foreach ($candidate in @(
+        @{ Path = (Join-Path $tmpPrimary $y); Root = $tmpPrimary },
+        @{ Path = (Join-Path $tmpSecondary $y); Root = $tmpSecondary }
+    )) {
+        if (-not (Test-Path -LiteralPath $candidate.Path)) { continue }
+        $trusted = (
+            $null -ne $tempContract -and
+            [string]$tempContract.input_contract_id -eq $inputContractId -and
+            [IO.Path]::GetFullPath([string]$tempContract.temp_year).TrimEnd('\') -eq
+            [IO.Path]::GetFullPath($candidate.Path).TrimEnd('\')
+        )
+        if (-not $trusted) {
+            try {
+                Archive-StaleTemp $candidate.Path $candidate.Root $y `
+                    "missing_or_mismatched_input_contract"
+            } catch {
+                Say "!! $y stale temp 보존 실패: $($_.Exception.Message)"
+                exit 1
+            }
+        }
     }
 
-    # 1) 어절 lab 제자리 생성 — 파이썬이 10세션마다 '발화/s·남은분' 실시간 출력
-    Say "$y [1/3] lab 생성 (아래 진행줄 실시간)..."
-    & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") --year $y
-    if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
+    # 같은 입력 계약으로 정렬·병합까지 완료된 연도만 건너뛴다.
+    if ((Read-DoneMarker (Join-Path $doneDir "$y.align_done") $y 'align' $inputContractId) -and
+        (Read-DoneMarker (Join-Path $doneDir "$y.merge_done") $y 'merge' $inputContractId)) {
+        Say "$y 같은 입력계약으로 이미 전부 완료 — 즉시 건너뜀"
+        continue
+    }
 
     # 연도별 작업 드라이브 결정(기존 temp 우선 — 위 Get-WorkDrive 참조). align이
     # 이미 끝난 연도라도 아래 병합(3/3) 단계에 $out이 필요하므로 if/else 밖에서 계산.
     $workPaths = Get-WorkPaths $y
     $out = $workPaths.OutRoot
     $tmp = $workPaths.TempRoot
+    $minStartFreeGB = [double]$workPaths.MinFreeGB
     $workDrive = (Split-Path -Qualifier $tmp).TrimEnd('\')
     New-Item -ItemType Directory -Force $out | Out-Null
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
-    if (Read-DoneMarker $doneMark $y 'align') {
+    if (Read-DoneMarker $doneMark $y 'align' $inputContractId) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
         if ((Test-Path -LiteralPath $doneMark) -and
-            -not (Read-DoneMarker $doneMark $y 'align')) {
-            Say "!! $y align_done이 레거시/손상/비-G2P 마커 — 완료로 인정하지 않음: $doneMark"
+            -not (Read-DoneMarker $doneMark $y 'align' $inputContractId)) {
+            Say "!! $y align_done이 현재 입력계약과 불일치 — 자동 재사용 금지: $doneMark"
             exit 1
         }
         $tmpYear = Join-Path $tmp $y
@@ -216,8 +336,8 @@ foreach ($y in $years) {
         $freeGB = [math]::Round(
             ([IO.DriveInfo]::new($workDrive)).AvailableFreeSpace / 1GB, 1
         )
-        if ($freeGB -lt $minTmpFreeGB) {
-            Say "!! $workDrive 여유 ${freeGB}GB < ${minTmpFreeGB}GB — temp($tmp) 부족 위험, 중단. 정리 후 재실행."
+        if ($freeGB -lt $minStartFreeGB) {
+            Say "!! $workDrive 여유 ${freeGB}GB < ${minStartFreeGB}GB — temp($tmp) 부족 위험, 중단. 정리 후 재실행."
             exit 1
         }
 
@@ -262,6 +382,8 @@ foreach ($y in $years) {
                        '--g2p_model_path', 'korean_mfa',
                        '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
             if ($doClean) { $aArgs += '--clean' }
+            Write-TempContract $tempContractPath $y $inputContractId `
+                $tmpYear "mfa_running"
             $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
                  -RedirectStandardError $errFile
             $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
@@ -418,6 +540,8 @@ foreach ($y in $years) {
             labs = $labN
             coverage_pct = $pct
             output_root = $out
+            input_contract_id = $inputContractId
+            search_master_root = $searchMasterRoot
         }
         # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 C: 여유 가드에 걸려 헛중단.
         # ★ 삭제 범위 축소 (2026-07-24, 외부 리뷰 P0-3): mfa_tmp 전체($tmp)가 아니라
@@ -425,18 +549,20 @@ foreach ($y in $years) {
         #   전체 삭제가 보존해 둔 다른 연도의 이어가기 temp까지 지워버리기 때문.
         try { Remove-SafeYearPath $tmpYear $tmp }
         catch { Say "!! 완료 후 temp 안전 삭제 실패(산출·마커는 보존): $($_.Exception.Message)" }
+        Write-TempContract $tempContractPath $y $inputContractId `
+            $tmpYear "align_completed_temp_removed"
         Say "$y MFA 정렬 완료 (temp $tmpYear 정리됨)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 C:에 있음(--mfa-out).
     #    완료 마커 있으면 건너뜀(완료 연도는 C: 원출력이 이미 삭제돼 있음).
     $mergeMark = Join-Path $doneDir "$y.merge_done"
-    if (Read-DoneMarker $mergeMark $y 'merge') {
+    if (Read-DoneMarker $mergeMark $y 'merge' $inputContractId) {
         Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
     }
     if ((Test-Path -LiteralPath $mergeMark) -and
-        -not (Read-DoneMarker $mergeMark $y 'merge')) {
-        Say "!! $y merge_done이 레거시/손상/비-G2P 마커 — 완료로 인정하지 않음: $mergeMark"
+        -not (Read-DoneMarker $mergeMark $y 'merge' $inputContractId)) {
+        Say "!! $y merge_done이 현재 입력계약과 불일치 — 자동 재사용 금지: $mergeMark"
         exit 1
     }
     # ★ 병합 원출력 드라이브 폴백 (2026-07-24): align 완료 후에는 temp가 지워져 있어,
@@ -461,6 +587,8 @@ foreach ($y in $years) {
         staging_output_root = $g2pStage
         existing_final_root = (Expand-CfgPath $cfg.textgrid_eojeol)
         promotion_required = $true
+        input_contract_id = $inputContractId
+        search_master_root = $searchMasterRoot
     }
     try { Remove-SafeYearPath (Join-Path $out $y) $out }
     catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·최종본은 보존): $($_.Exception.Message)" }

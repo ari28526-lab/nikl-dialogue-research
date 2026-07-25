@@ -1,0 +1,182 @@
+# 검증된 pre-MFA 언어층을 버전 고정한 뒤 연도별 MFA를 순차 실행한다.
+#
+# 안전 원칙:
+# - 기존 05_search_master와 06_textgrid_eojeol을 덮어쓰지 않는다.
+# - 새 search master는 versioned staging에 생성·검증한다.
+# - pron_reference_form으로 lab을 만들고 기존 lab 내용도 전수 비교한다.
+# - 다른 입력으로 만든 MFA temp는 삭제하지 않고 archive_stale_temp로 이동한다.
+# - 한 연도가 실패하면 다음 연도로 넘어가지 않는다.
+# - KOINA·stitch_session은 후보 추출 뒤 별도 산출물에서 수행한다.
+
+param(
+    [ValidatePattern('^[A-Za-z0-9._-]+$')]
+    [string]$RunId = 'pre_mfa_v1_20260725',
+    [ValidateSet('2020','2021','2022','2023','2024','2025')]
+    [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [switch]$SkipSearchMasterBuild
+)
+
+$ErrorActionPreference = 'Stop'
+$root = Split-Path -Parent $PSScriptRoot
+$configPath = Join-Path $root 'config\paths.json'
+$pythonDir = Join-Path $PSScriptRoot 'python'
+
+function Expand-CfgPath($value) {
+    return [IO.Path]::GetFullPath(
+        [Environment]::ExpandEnvironmentVariables(
+            ([string]$value).Replace('/', '\')
+        )
+    )
+}
+
+try {
+    $cfg = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 |
+           ConvertFrom-Json
+    $py = Expand-CfgPath $cfg.pipeline_python
+    $layers = Expand-CfgPath $cfg.layers
+    $stateRoot = Expand-CfgPath $cfg.mfa_state
+} catch {
+    Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
+    exit 1
+}
+if (-not (Test-Path -LiteralPath $py)) {
+    Write-Error "pipeline_python 없음: $py"
+    exit 1
+}
+
+$preMfaBase = Join-Path $layers '05_search_master_pre_mfa_staging'
+$preMfaRoot = Join-Path $preMfaBase $RunId
+$resolvedBase = [IO.Path]::GetFullPath($preMfaBase).TrimEnd('\')
+$resolvedOutput = [IO.Path]::GetFullPath($preMfaRoot).TrimEnd('\')
+if ((Split-Path -Parent $resolvedOutput) -ne $resolvedBase) {
+    Write-Error "pre-MFA staging 경계 위반: $resolvedOutput"
+    exit 1
+}
+
+$logDir = Join-Path $root 'logs'
+New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+$stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+$transcript = Join-Path $logDir "pre_mfa_bulk_${RunId}_${stamp}.log"
+$summaryPath = Join-Path $logDir "pre_mfa_bulk_${RunId}_latest.json"
+
+$lockDir = Join-Path $stateRoot 'locks'
+New-Item -ItemType Directory -Force -Path $lockDir | Out-Null
+$lockPath = Join-Path $lockDir 'pre_mfa_bulk.lock'
+if (Test-Path -LiteralPath $lockPath) {
+    $live = $false
+    try {
+        $oldLock = Get-Content -LiteralPath $lockPath -Raw -Encoding UTF8 |
+                   ConvertFrom-Json
+        if ($oldLock.pid) {
+            $live = $null -ne (
+                Get-Process -Id ([int]$oldLock.pid) -ErrorAction SilentlyContinue
+            )
+        }
+    } catch {
+        $live = $false
+    }
+    if ($live) {
+        Write-Error "다른 pre-MFA/MFA 배치가 실행 중(pid=$($oldLock.pid)): $lockPath"
+        exit 1
+    }
+    $archiveLockDir = Join-Path $lockDir 'archive_stale'
+    New-Item -ItemType Directory -Force -Path $archiveLockDir | Out-Null
+    Move-Item -LiteralPath $lockPath -Destination (
+        Join-Path $archiveLockDir "pre_mfa_bulk_${stamp}.lock"
+    )
+}
+[ordered]@{
+    pid = $PID
+    run_id = $RunId
+    years = $Years
+    started_at = (Get-Date).ToString('o')
+    pre_mfa_root = $preMfaRoot
+} | ConvertTo-Json -Depth 4 |
+    Set-Content -LiteralPath $lockPath -Encoding UTF8
+
+$completed = New-Object System.Collections.Generic.List[string]
+$status = 'running'
+$failure = $null
+$exitCode = 1
+Start-Transcript -LiteralPath $transcript -Force | Out-Null
+try {
+    Write-Host "pre-MFA/MFA 안전 배치 시작: $RunId" -ForegroundColor Cyan
+    Write-Host "연도: $($Years -join ', ')"
+    Write-Host "새 pre-MFA CSV: $preMfaRoot"
+    Write-Host "기존 정본 CSV/TextGrid는 덮어쓰지 않음"
+
+    $metaPath = Join-Path $preMfaRoot '_build_meta.json'
+    $reuseFrozenMaster = $false
+    if (Test-Path -LiteralPath $metaPath) {
+        try {
+            $existingMeta = Get-Content -LiteralPath $metaPath -Raw -Encoding UTF8 |
+                            ConvertFrom-Json
+            $reuseFrozenMaster = $existingMeta.status -eq 'success'
+        } catch {
+            $reuseFrozenMaster = $false
+        }
+    }
+    if ($reuseFrozenMaster) {
+        Write-Host "동결된 pre-MFA build meta 확인 — CSV를 다시 쓰지 않음: $metaPath"
+    } elseif (-not $SkipSearchMasterBuild) {
+        & $py (Join-Path $pythonDir 'preflight_search_master.py')
+        if ($LASTEXITCODE -ne 0) {
+            throw "search master preflight 실패(exit $LASTEXITCODE)"
+        }
+        & $py (Join-Path $pythonDir 'build_search_master.py') `
+            --output-root $preMfaRoot --run-id $RunId
+        if ($LASTEXITCODE -ne 0) {
+            throw "pre-MFA search master 빌드 실패(exit $LASTEXITCODE)"
+        }
+    } else {
+        throw "-SkipSearchMasterBuild를 지정했지만 통과한 build meta가 없음: $metaPath"
+    }
+
+    if (-not (Test-Path -LiteralPath $metaPath)) {
+        throw "pre-MFA build meta 없음: $metaPath"
+    }
+    $meta = Get-Content -LiteralPath $metaPath -Raw -Encoding UTF8 |
+            ConvertFrom-Json
+    if ($meta.status -ne 'success') {
+        throw "pre-MFA build 미통과(status=$($meta.status)): $metaPath"
+    }
+
+    foreach ($year in $Years) {
+        Write-Host "===== $year MFA 게이트 시작 =====" -ForegroundColor Cyan
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+            (Join-Path $PSScriptRoot 'run_eojeol_realign.ps1') `
+            -Year $year -SearchMasterRoot $preMfaRoot
+        if ($LASTEXITCODE -ne 0) {
+            throw "$year MFA/병합 실패(exit $LASTEXITCODE); 다음 연도는 실행하지 않음"
+        }
+        $completed.Add($year)
+    }
+    $status = 'passed'
+    $exitCode = 0
+} catch {
+    $status = 'failed'
+    $failure = $_.Exception.Message
+    Write-Host "!! 안전 배치 중단: $failure" -ForegroundColor Red
+} finally {
+    [ordered]@{
+        run_id = $RunId
+        status = $status
+        years_requested = $Years
+        years_completed = @($completed)
+        failed_reason = $failure
+        pre_mfa_root = $preMfaRoot
+        transcript = $transcript
+        finished_at = (Get-Date).ToString('o')
+        next_action = if ($status -eq 'passed') {
+            '전수 QC 후에만 정본 승격; 자동 승격 금지'
+        } else {
+            'transcript와 D:\mfa_eojeol\logs의 해당 연도 로그 확인'
+        }
+    } | ConvertTo-Json -Depth 5 |
+        Set-Content -LiteralPath $summaryPath -Encoding UTF8
+    if (Test-Path -LiteralPath $lockPath) {
+        Remove-Item -LiteralPath $lockPath -Force
+    }
+    Stop-Transcript | Out-Null
+}
+exit $exitCode

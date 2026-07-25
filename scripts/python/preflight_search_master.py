@@ -128,7 +128,8 @@ def main() -> int:
         if not exists:
             missing_keys.append(k)
     # 없어도 파일럿에 지장 없는 키 (지금 단계 기준)
-    later_ok = {"gdrive", "textgrid_eojeol", "actual_pron", "enriched_1gi",
+    later_ok = {"gdrive", "textgrid_eojeol", "textgrid_eojeol_staging",
+                "actual_pron", "enriched_1gi",
                 "search_master", "reference_dictionary", "reference_mp",
                 "reference_ls", "reference_multilayer", "bareun_venv_python",
                 "mfa_temp_primary", "mfa_temp_secondary",
@@ -140,8 +141,8 @@ def main() -> int:
         for k in missing_keys:
             if k in ("search_master", "actual_pron"):
                 log(f"  · {k}: 신규 출력 폴더 — 스크립트가 만들므로 정상")
-            elif k in ("textgrid_eojeol",):
-                log(f"  · {k}: 재정렬 산출 (진행 중) — 파일럿 무관")
+            elif k in ("textgrid_eojeol", "textgrid_eojeol_staging"):
+                log(f"  · {k}: MFA 재정렬 산출 폴더 — CSV 생성에는 무관")
             elif k in ("enriched_1gi",):
                 log(f"  · {k}: 1기 백업 (다운로드 예정) — 파일럿 무관")
             elif k == "gdrive":
