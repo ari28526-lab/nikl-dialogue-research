@@ -55,3 +55,68 @@ utt_id로 레이어(10_LAYERS CSV) 조인. 통일 파일을 정본으로 물리 
 
 세부 근거:
 `REVIEW_MFA_pilot_manual_feedback_2026-07-25.md`.
+
+## 2026-07-25 점검 사본 v3 — 검증 후 기본본에서 대체됨
+
+운영 4-tier와 연구자 점검 사본을 구분한다. 운영본의 원시간은 바꾸지 않는다.
+점검 사본은 가시적인 양끝 경계와 provenance를 위해 WAV 좌우에 0.05초 무음을
+추가하고 모든 TextGrid 시간을 +0.05초 이동한다.
+
+점검 tier:
+
+```text
+words
+phones_mfa
+morphemes_legacy
+morph_analysis
+original_form
+pron_reference
+utterance
+```
+
+- `phones_mfa`: MFA/G2P 분절이며 실제 실현이 아님
+- `morphemes_legacy`: 구형 형태소 분절
+- `morph_analysis`: 현재 Bareun 형태소열을 어절 시간에 표시; 형태소 내부
+  음향 경계가 아님
+- 원시간 환산: `source_time = review_time - review_edge_padding_left_seconds`
+- KOINA·candidate·human judgment는 선택 후보에만 이후 추가
+
+60발화 전수에서 7개 tier 모두 좌우 가시적 빈 interval과 0–xmax 연속성을
+통과했다.
+
+v3는 출처를 분리해 비교하는 실험판으로는 유효하지만, Praat 점검 화면에
+발화 수준 정보를 여러 tier로 반복해 기본본이 지나치게 복잡했다. 파일은
+시행착오 기록으로 보존하되 기본 점검 표준으로 사용하지 않는다.
+
+## 2026-07-25 최소 점검 사본 v4 — 현재 기본 표준
+
+기본 점검본은 다음 4-tier로 줄인다.
+
+```text
+words
+phones_mfa
+morph_analysis
+utterance_info
+```
+
+- `utterance_info` 단일 label에 `[UTT]`, `[FORM]`, `[ORTH_R]`,
+  `[RULE_H]`, `[RULE_R]`를 둔다.
+- `original_form` 또는 숫자·기호 보완용 `reference_form`이 form과 다를
+  때만 `[ORIG]`, `[REF_FORM]`, `[REF_ORTH_R]`를 추가한다.
+- 형태소별 철자 로마자, 사전 예외 발음, 의미번호, 음운·형태 경계 검색은
+  CSV/Parquet이 정본이다.
+- `morphemes_legacy`, `candidate`, `pron_dict`, `prosody_koina`,
+  `human_judgment`는 해당 비교·분석이 필요한 사본에만 주입한다.
+- `RULE_H/R`과 `phones_mfa`는 실제 실현 판정값이 아니다.
+
+60발화 전수 검증:
+
+- 4-tier 스키마와 전 tier 좌우 가시적 빈 interval: 60/60
+- 원 WAV 중앙 PCM 보존과 좌우 무음: 60/60
+- 원 `words/phones` 의미 대조: 120/120
+- 발화 검색 표지 `UTT/FORM/ORTH_R/RULE_H/RULE_R`: 각 60/60
+
+전량 운영 TextGrid는 CSV 검색 정본과 중복을 줄이기 위해 장기적으로
+`words/phones_mfa/utterance` 3-tier를 권장한다. 다만 현재 4-tier 전량
+파이프라인과의 호환 검증 전에는 기존 `morphemes`를 삭제하거나 이름만
+일괄 변경하지 않는다.

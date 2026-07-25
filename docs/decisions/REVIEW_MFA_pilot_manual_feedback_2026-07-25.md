@@ -226,3 +226,94 @@ n_co_speakers
 60발화 점검 bundle의 document 화자 수 분포는 1명 2발화, 2명 52발화,
 3명 2발화, 4명 4발화였다. 1명 document 두 발화는 공동 참여자가 없는 것이
 정상이며 결측으로 취급하지 않는다.
+
+## 10. 양끝 가시적 경계 재점검과 v3
+
+사용자 후속 확인에서 경계가 없는 tier가 여전히 보인다고 보고됐다. 구조적
+`0–xmax` coverage와 Praat에서 보이는 빈 interval을 분리해 전수 재검사했다.
+
+- 구 `6_review` 6개: `utterance`는 모두 전체 구간 한 라벨이어서 양끝 빈
+  interval 없음
+- 새 60개 6-tier: 10발화는 유표 정렬이 0에, 3발화는 `xmax`에 붙음
+- 원 라벨 시간을 줄여 빈칸을 만드는 것은 음향 시간을 왜곡하므로 금지
+
+점검 v3은 원본과 원 4-tier를 수정하지 않고 다음을 적용한다.
+
+1. 점검 WAV 사본 좌우에 0.05초 0 진폭 PCM 무음 추가
+2. 모든 TextGrid interval을 +0.05초 이동
+3. 모든 tier의 첫·끝 빈 interval 길이 최소 0.05초 검사
+4. 중앙 PCM frame 원본 완전 일치와 양끝 0값 검사
+5. `source_time = review_time - 0.05`를 발화 CSV에 기록
+
+점검 v3 tier:
+
+```text
+words
+phones_mfa
+morphemes_legacy
+morph_analysis
+original_form
+pron_reference
+utterance
+```
+
+`morph_analysis`는 현재 Bareun 형태소열을 어절 구간에 표시한다. 구
+`morphemes_legacy`와 달리 출처가 분명하지만, 형태소 내부의 음향 경계를
+새로 추정한 것은 아니다.
+
+실자료 60개 결과:
+
+- WAV 형식: 60/60 16 kHz·mono·16-bit PCM
+- 7-tier 스키마: 60/60
+- 모든 tier 왼쪽 0.05초 이상 빈 interval: 60/60
+- 모든 tier 오른쪽 0.05초 이상 빈 interval: 60/60
+- 중앙 PCM 원본 일치: 60/60
+- source 3-tier 의미를 padding 제거 후 재대조: 180/180
+- `morph_analysis` 정렬: all lexical slots 24, labeled slots 28,
+  안전한 발화 전체 fallback 8
+
+fallback은 잘못된 어절 1:1 정렬을 만들지 않고 `tier_warning`에 이유를 남긴다.
+
+## 11. 사용자 재검토에 따른 최소 4-tier v4 확정
+
+7-tier v3는 경계와 provenance 검증에는 성공했지만, 수동 검토 기본 화면에는
+층이 너무 많다는 사용자 지적이 타당하다. 같은 발화 수준 정보를
+`original_form`, `pron_reference`, `utterance` 세 줄에 나누지 않고
+`utterance_info` 한 줄에 표지를 붙여 합쳤다.
+
+최소 v4:
+
+```text
+words
+phones_mfa
+morph_analysis
+utterance_info
+```
+
+`utterance_info`의 기본 검색 표지는 `[UTT]`, `[FORM]`, `[ORTH_R]`,
+`[RULE_H]`, `[RULE_R]`이다. form과 다른 원전사·기준 입력이 있을 때만
+`[ORIG]`, `[REF_FORM]`, `[REF_ORTH_R]`가 추가된다. 철자 기반 로마자와
+규칙 발음 로마자는 Praat에서 발화 단위로 검색할 수 있지만, 형태소별 검색과
+사전 예외 발음의 정본은 발화 CSV와 향후 정규화 Parquet이다.
+
+새 경로에 다시 생성한 60발화 결과:
+
+- 4-tier 정확 일치: 60/60
+- 모든 tier 좌우 빈 경계: 60/60
+- 발화 검색 핵심 표지: 각 60/60
+- 원 `words/phones` 의미 보존: 120/120
+- 형태소 어절 매핑 상태: 24 all-slot, 28 labeled-slot, 8 안전 fallback
+
+v3 7-tier 묶음은 중간 실험 기록으로 보존하며 v4로 덮어쓰지 않았다. 원 D:
+run과 WAV·TextGrid도 수정하지 않았다.
+
+Dropbox 점검 경로:
+
+```text
+work\pilot_review_v2_20260724\9_review_by_year_minimal_v4_20260725
+work\pilot_review_v2_20260724\MFA_pilot_review_v4_20260725.xlsx
+```
+
+첫 엑셀 생성 시 구 6/7-tier용 정렬 상태 열을 필수로 요구해 실패했다. 작성기를
+v4 열과 구 열을 모두 허용하도록 수정하고, 워크북이 bundle 상위 폴더에 있어도
+240개 상대 링크가 실제 파일을 가리키는지 재열기 검증했다.

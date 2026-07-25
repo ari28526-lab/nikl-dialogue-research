@@ -29,8 +29,6 @@ REQUIRED_COLUMNS = (
     "original_form",
     "pron_reference_hangul",
     "pron_reference_source",
-    "original_form_align_status",
-    "pron_reference_align_status",
     "tier_warning",
     "wav_relpath",
     "lab_relpath",
@@ -62,7 +60,7 @@ INPUT_HEADERS = (
     "phones 정렬",
     "morphemes 정렬",
     "처음·끝 경계",
-    "original/pron 표시",
+    "발화 정보 표시",
     "화자·참여자 ID",
     "종합 판정",
     "재검토",
@@ -74,8 +72,8 @@ INPUT_HEADERS = (
     "전체 화자 ID",
     "발음 근거",
     "자동 tier 경고",
-    "original 정렬 상태",
-    "발음 tier 정렬 상태",
+    "형태소 정렬 상태",
+    "TextGrid 정보 스키마",
     "원본 행 번호",
 )
 
@@ -138,6 +136,22 @@ def safe_bundle_path(bundle_root: Path, relative: str) -> Path:
     return candidate
 
 
+def safe_workbook_link_path(
+    workbook_parent: Path,
+    bundle_root: Path,
+    relative: str,
+) -> Path:
+    """Excel 상대 링크를 해석하되 최종 대상이 bundle 안인지 확인한다."""
+    windows_path = PureWindowsPath(relative)
+    if windows_path.is_absolute():
+        raise ValueError(f"절대경로 링크 금지: {relative}")
+    candidate = workbook_parent.joinpath(*windows_path.parts).resolve()
+    root = bundle_root.resolve()
+    if root != candidate and root not in candidate.parents:
+        raise ValueError(f"링크가 bundle 밖으로 벗어남: {relative}")
+    return candidate
+
+
 def validate_bundle_files(bundle_root: Path, rows: Iterable[dict[str, str]]) -> None:
     missing: list[str] = []
     for row in rows:
@@ -175,6 +189,7 @@ def build_workbook(
     rows: list[dict[str, str]],
     index_path: Path,
     bundle_root: Path,
+    output_path: Path | None = None,
 ) -> Workbook:
     wb = Workbook()
     wb.remove(wb.active)
@@ -196,7 +211,13 @@ def build_workbook(
     lists = wb.create_sheet("선택값")
 
     build_guide_sheet(guide, rows, index_path, bundle_root)
-    build_review_sheet(review, rows)
+    link_prefix = ""
+    if output_path is not None:
+        link_prefix = os.path.relpath(
+            bundle_root.resolve(),
+            start=output_path.resolve().parent,
+        )
+    build_review_sheet(review, rows, link_prefix=link_prefix)
     build_summary_sheet(summary, rows)
     build_raw_sheet(raw, source_headers, rows)
     build_lists_sheet(lists)
@@ -212,7 +233,7 @@ def build_guide_sheet(sheet, rows, index_path: Path, bundle_root: Path) -> None:
         ["MFA 파일럿 연구자 검토표", "2020–2025년, 연도별 10개, 총 60개"],
         ["목적", "대량 MFA 전에 음성·전사·TextGrid·형태소·발음 참조·화자 연결을 사람이 확인하고 기록"],
         ["사용 순서", "검토입력 시트에서 WAV와 TextGrid를 열고 노란 입력 열을 드롭다운으로 판정"],
-        ["파일 링크", "이 워크북을 7_review_by_year_20260725 폴더 안에서 열어야 상대경로 링크가 작동"],
+        ["파일 링크", "워크북과 bundle의 상대 위치를 바꾸지 않아야 상대경로 링크가 작동"],
         ["판정 기준", "양호/일치 = 그대로 사용 가능, 수정 필요/불일치 = 대량 작업 전에 원인 분류 필요"],
         ["판단 불가", "현재 자료만으로 판정할 수 없을 때 사용하며 비고에 이유 기록"],
         ["공동 참여자", "co_speaker_ids는 같은 대화 문서의 다른 참여자이며 직접 수신자(addressee) 표지가 아님"],
@@ -240,7 +261,12 @@ def build_guide_sheet(sheet, rows, index_path: Path, bundle_root: Path) -> None:
     add_table(sheet, "GuideTable", f"A1:B{sheet.max_row}")
 
 
-def build_review_sheet(sheet, rows: list[dict[str, str]]) -> None:
+def build_review_sheet(
+    sheet,
+    rows: list[dict[str, str]],
+    *,
+    link_prefix: str = "",
+) -> None:
     sheet.sheet_view.showGridLines = False
     sheet.sheet_properties.tabColor = "70AD47"
     sheet.append(INPUT_HEADERS)
@@ -278,15 +304,22 @@ def build_review_sheet(sheet, rows: list[dict[str, str]]) -> None:
                 row["dialogue_speaker_ids"],
                 row["pron_reference_source"],
                 row["tier_warning"],
-                row["original_form_align_status"],
-                row["pron_reference_align_status"],
+                row.get("morph_analysis_align_status")
+                or row.get("original_form_align_status", ""),
+                row.get("utterance_info_schema")
+                or row.get("pron_reference_align_status", ""),
                 idx + 1,
             ]
         )
         excel_row = idx + 1
         for column_index, field in LINK_COLUMN_SOURCE.items():
             cell = sheet.cell(excel_row, column_index)
-            cell.hyperlink = row[field].replace("\\", "/")
+            target = (
+                PureWindowsPath(link_prefix) / PureWindowsPath(row[field])
+                if link_prefix
+                else PureWindowsPath(row[field])
+            )
+            cell.hyperlink = str(target).replace("\\", "/")
             cell.style = "Hyperlink"
 
     max_row = len(rows) + 1
@@ -555,7 +588,11 @@ def verify_workbook(
             if link is None:
                 raise ValueError(f"파일 링크 누락: {row_number},{column_number}")
             target = link.target
-            if not safe_bundle_path(bundle_root, target).is_file():
+            if not safe_workbook_link_path(
+                path.parent,
+                bundle_root,
+                target,
+            ).is_file():
                 raise ValueError(f"링크 대상 누락: {target}")
             hyperlink_count += 1
     priority_count = sum(
@@ -611,7 +648,13 @@ def main() -> int:
     if partial.exists():
         partial.unlink()
     try:
-        workbook = build_workbook(source_headers, rows, index_path, bundle_root)
+        workbook = build_workbook(
+            source_headers,
+            rows,
+            index_path,
+            bundle_root,
+            output_path=output,
+        )
         workbook.save(partial)
         report = verify_workbook(partial, len(rows), bundle_root)
         os.replace(partial, output)

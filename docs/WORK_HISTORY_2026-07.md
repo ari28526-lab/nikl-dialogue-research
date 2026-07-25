@@ -295,3 +295,45 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - `AGENTS.md`의 오래된 Dropbox 프로젝트 root를 현재 research root로 고치고,
   제한된 Codex shell의 거짓 음성을 Python 삭제로 판단하지 않는 규칙과
   프로젝트 helper의 `pipeline_python` 우선 원칙을 기록했다.
+
+## 2026-07-25 — 점검 TextGrid 양끝 경계·형태소 tier v3
+
+- 구 수동 검토본과 새 60개 점검본을 tier별로 전수 재검사했다. 새 점검본도
+  유표 정렬이 시간축 끝에 붙어 10발화는 왼쪽, 3발화는 오른쪽 가시적 빈
+  경계가 없음을 확인했다.
+- 원 MFA 라벨 시간을 임의로 줄이지 않고, 점검 WAV 사본 좌우에 0.05초 PCM
+  무음을 추가한 뒤 모든 TextGrid 시간을 같은 양만큼 이동하도록 review bundle
+  builder를 보완했다. 원 D: WAV·TextGrid는 변경하지 않았다.
+- `phones`를 `phones_mfa`, 구 형태소 분절을 `morphemes_legacy`로 명시하고,
+  현재 Bareun 형태소열을 어절 구간에 표시하는 `morph_analysis`를 추가했다.
+- 60개 WAV가 16 kHz·mono·16-bit PCM임을 확인하고 중앙 frame 원본 일치,
+  양끝 0값, 7-tier, 전 tier 좌우 0.05초 빈 interval을 전수 검증했다.
+- `morph_analysis`는 24개 all-slot, 28개 labeled-slot 정렬, 복잡 사례 8개는
+  근거 없는 오정렬 대신 발화 전체 fallback과 경고로 처리했다.
+- 발음·검색 설계 문서를 pre-MFA 언어 마스터→MFA→post-MFA 시간 인덱스→
+  KOINA·수동 판정 순서로 바로잡고, enriched lexicon의 무발음 664,596행을
+  legacy G2P와 `urimal_id`로 100% 일의 보완할 수 있음을 기록했다.
+
+## 2026-07-25 — 점검 TextGrid 최소 4-tier v4
+
+- 사용자가 7-tier가 기본 수동 검토에 과도하다고 지적해, 기술적으로 검증된
+  v3는 중간 실험 기록으로 보존하고 기본 점검본을 4-tier로 축소했다.
+- 기본 tier를 `words / phones_mfa / morph_analysis / utterance_info`로
+  확정했다. `utterance_info` 한 label에 발화 ID, form, 철자 로마자, 규칙
+  발음 한글·로마자를 출처 표지와 함께 넣었다.
+- `original_form`과 숫자·기호 보완 reference는 form과 다를 때만 같은 label에
+  추가한다. 형태소별 철자 로마자와 사전 예외 발음은 CSV/Parquet 정본에
+  보존하고 TextGrid tier를 늘리지 않는다.
+- 새 로컬 경로에서 6개년 각 10개, 총 60발화를 재생성했다. 4-tier·좌우
+  0.05초 빈 경계·원 WAV 중앙 PCM·`UTT/FORM/ORTH_R/RULE_H/RULE_R`
+  검색 표지를 전수 통과했다.
+- 원 `words/phones` 120개 tier의 의미를 padding 제거 뒤 재대조했다.
+  형태소 어절 매핑은 all-slot 24, labeled-slot 28, 안전 fallback 8이었다.
+- 원 D: run, 기존 CSV/TextGrid, v3 묶음은 수정하거나 덮어쓰지 않았다.
+- 첫 v4 검토 엑셀 생성은 작성기가 제거된 구식
+  `original_form_align_status/pron_reference_align_status`를 필수로 요구해
+  중단됐다. v4의 `morph_analysis_align_status/utterance_info_schema`를
+  인식하고 워크북 위치에서 bundle까지의 상대 링크를 계산하도록 고쳤다.
+- Dropbox에 새 `9_review_by_year_minimal_v4_20260725` 묶음과
+  `MFA_pilot_review_v4_20260725.xlsx`를 만들었다. 엑셀은 60행, 5개 시트,
+  240개 파일 링크, 4개 드롭다운 규칙을 재열기 검증했다.

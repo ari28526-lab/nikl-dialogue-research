@@ -3,11 +3,11 @@
 원본 run은 읽기만 한다. 출력은 연도별 평면 폴더에 같은 basename의
 WAV, lab, enriched TextGrid, 발화별 CSV를 나란히 둔다.
 
-enriched TextGrid:
-  words / phones / morphemes   원 4-tier의 시간·라벨 보존
-  original_form                원본 JSON 전사(가능하면 어절 구간 정렬)
-  pron_reference              숫자·기호 손실 시 original_form으로 보완한 기준 발음
-  utterance                   정규화 form, 정렬 어절의 시작–끝 범위
+기본 점검 TextGrid:
+  words                        원 어절 시간·라벨 보존
+  phones_mfa                   원 phones 시간·라벨 보존(MFA 분절임을 명시)
+  morph_analysis               현재 Bareun 분석을 어절 구간에 표시
+  utterance_info               form·original·철자 roman·규칙 발음을 한 tier에 표시
 
 pron_reference는 후보 검색·점검용 기준선이며 사전 등재 발음이나 실제 음향
 실현 판정이 아니다. 대화 참여자도 직접 수신자가 아니라 같은 document의
@@ -21,6 +21,7 @@ import json
 import os
 import shutil
 import sys
+import wave
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -40,13 +41,12 @@ if hasattr(sys.stdout, "reconfigure"):
 
 YEARS = ["2020", "2021", "2022", "2023", "2024", "2025"]
 SILENCE = {"", "sil", "sp", "spn", "<eps>", "<unk>"}
+DEFAULT_EDGE_PADDING_SECONDS = 0.05
 REVIEW_TIERS = [
     "words",
-    "phones",
-    "morphemes",
-    "original_form",
-    "pron_reference",
-    "utterance",
+    "phones_mfa",
+    "morph_analysis",
+    "utterance_info",
 ]
 INDEX_FIELDS = [
     "year",
@@ -62,16 +62,26 @@ INDEX_FIELDS = [
     "original_form",
     "pron_pred_hangul_existing",
     "pron_reference_form",
+    "form_roman",
+    "pron_reference_form_roman",
     "pron_reference_hangul",
+    "pron_reference_roman",
     "pron_reference_source",
     "pron_reference_status",
-    "original_form_align_status",
-    "pron_reference_align_status",
+    "morph_analysis_align_status",
+    "utterance_info_schema",
     "tier_warning",
     "wav_relpath",
     "lab_relpath",
     "textgrid_relpath",
     "csv_relpath",
+    "source_wav_duration_seconds",
+    "review_wav_duration_seconds",
+    "review_textgrid_duration_seconds",
+    "review_duration_difference_seconds",
+    "review_edge_padding_left_seconds",
+    "review_edge_padding_right_seconds",
+    "review_time_to_source",
     "review_status",
     "review_note",
 ]
@@ -103,6 +113,88 @@ def esc(text: object) -> str:
     return str(text).replace('"', '""')
 
 
+def write_padded_wav(
+    source: Path,
+    destination: Path,
+    edge_padding_seconds: float,
+) -> dict[str, float | int]:
+    """PCM WAV 사본 앞뒤에 0 진폭 무음을 추가한다.
+
+    원본은 읽기만 하며, padding은 sample frame 정수로 반올림한다. 반환한 실제
+    초 값을 TextGrid 이동에 그대로 사용해 WAV–TextGrid 좌표를 일치시킨다.
+    """
+    if edge_padding_seconds <= 0:
+        raise ValueError("edge padding은 0보다 커야 함")
+    with wave.open(str(source), "rb") as input_wav:
+        params = input_wav.getparams()
+        if params.comptype != "NONE":
+            raise ValueError(f"PCM WAV가 아님: {source} ({params.comptype})")
+        frames = input_wav.readframes(params.nframes)
+    padding_frames = max(1, round(edge_padding_seconds * params.framerate))
+    frame_size = params.nchannels * params.sampwidth
+    silence = b"\x00" * (padding_frames * frame_size)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(destination), "wb") as output_wav:
+        output_wav.setparams(params)
+        output_wav.writeframes(silence)
+        output_wav.writeframes(frames)
+        output_wav.writeframes(silence)
+    actual_padding = padding_frames / params.framerate
+    return {
+        "padding_frames": padding_frames,
+        "padding_seconds": actual_padding,
+        "source_duration_seconds": params.nframes / params.framerate,
+        "review_duration_seconds": (
+            params.nframes + 2 * padding_frames
+        ) / params.framerate,
+    }
+
+
+def verify_padded_wav(
+    source: Path,
+    padded: Path,
+    edge_padding_seconds: float,
+) -> None:
+    """padding WAV의 중앙 frame이 원본과 동일하고 양끝이 0인지 확인한다."""
+    with wave.open(str(source), "rb") as source_wav:
+        source_params = source_wav.getparams()
+        source_frames = source_wav.readframes(source_params.nframes)
+    with wave.open(str(padded), "rb") as padded_wav:
+        padded_params = padded_wav.getparams()
+        padded_frames = padded_wav.readframes(padded_params.nframes)
+    source_format = (
+        source_params.nchannels,
+        source_params.sampwidth,
+        source_params.framerate,
+        source_params.comptype,
+    )
+    padded_format = (
+        padded_params.nchannels,
+        padded_params.sampwidth,
+        padded_params.framerate,
+        padded_params.comptype,
+    )
+    if source_format != padded_format:
+        raise RuntimeError(f"padding WAV 형식 변경: {padded}")
+    padding_frames = max(
+        1, round(edge_padding_seconds * source_params.framerate)
+    )
+    frame_size = source_params.nchannels * source_params.sampwidth
+    padding_bytes = padding_frames * frame_size
+    expected_frames = source_params.nframes + 2 * padding_frames
+    if padded_params.nframes != expected_frames:
+        raise RuntimeError(
+            f"padding WAV frame 수 불일치: {padded_params.nframes}/"
+            f"{expected_frames}"
+        )
+    if padded_frames[:padding_bytes] != b"\x00" * padding_bytes:
+        raise RuntimeError(f"padding WAV 왼쪽 무음 불일치: {padded}")
+    if padded_frames[-padding_bytes:] != b"\x00" * padding_bytes:
+        raise RuntimeError(f"padding WAV 오른쪽 무음 불일치: {padded}")
+    if padded_frames[padding_bytes:-padding_bytes] != source_frames:
+        raise RuntimeError(f"padding WAV 중앙 원본 frame 불일치: {padded}")
+
+
 def labeled_word_span(
     words: list[tuple[float, float, str]], duration: float
 ) -> tuple[float, float, int, int]:
@@ -115,6 +207,43 @@ def labeled_word_span(
         return 0.0, duration, 0, max(0, len(words) - 1)
     first, last = indices[0], indices[-1]
     return float(words[first][0]), float(words[last][1]), first, last
+
+
+def utterance_info_label(
+    *,
+    utt_id: str,
+    form: str,
+    original_form: str,
+    form_roman: str,
+    reference_form: str,
+    reference_form_roman: str,
+    pron_reference_hangul: str,
+    pron_reference_roman: str,
+) -> str:
+    """Praat 검색과 육안 판독을 함께 위한 안정적인 단일-tier 레이블."""
+    fields = [
+        ("UTT", utt_id),
+        ("FORM", form),
+        ("ORTH_R", form_roman),
+    ]
+    if original_form and original_form != form:
+        fields.append(("ORIG", original_form))
+    if reference_form and reference_form != form:
+        fields.extend(
+            [
+                ("REF_FORM", reference_form),
+                ("REF_ORTH_R", reference_form_roman),
+            ]
+        )
+    fields.extend(
+        [
+            ("RULE_H", pron_reference_hangul),
+            ("RULE_R", pron_reference_roman),
+        ]
+    )
+    return " ".join(
+        f"[{name}] {value}" for name, value in fields if str(value).strip()
+    )
 
 
 def split_at(
@@ -182,36 +311,70 @@ def write_review_textgrid(
     source: Path,
     destination: Path,
     *,
+    utt_id: str,
     form: str,
+    tagged: str,
     original_form: str,
-    pron_reference: str,
-) -> tuple[str, str, str]:
-    duration, tiers = parse_mfa_textgrid(source)
-    if duration is None or duration <= 0:
+    form_roman: str,
+    reference_form: str,
+    reference_form_roman: str,
+    pron_reference_hangul: str,
+    pron_reference_roman: str,
+    edge_padding_left_seconds: float,
+    edge_padding_right_seconds: float,
+) -> tuple[str, str]:
+    source_duration, tiers = parse_mfa_textgrid(source)
+    if source_duration is None or source_duration <= 0:
         raise RuntimeError(f"TextGrid duration 누락: {source}")
-    words = tiers.get("words", [])
-    phones = tiers.get("phones", [])
-    morphemes = tiers.get("morphemes", [])
-    if not words or not phones or not morphemes:
-        raise RuntimeError(f"기존 4-tier 핵심 tier 누락: {source}")
+    if edge_padding_left_seconds <= 0 or edge_padding_right_seconds <= 0:
+        raise ValueError("review TextGrid의 좌우 edge padding은 0보다 커야 함")
+    duration = (
+        float(source_duration)
+        + edge_padding_left_seconds
+        + edge_padding_right_seconds
+    )
+
+    def shifted(name: str) -> list[tuple[float, float, str]]:
+        return [
+            (
+                float(begin) + edge_padding_left_seconds,
+                float(end) + edge_padding_left_seconds,
+                label,
+            )
+            for begin, end, label in tiers.get(name, [])
+        ]
+
+    words = shifted("words")
+    phones = shifted("phones")
+    if not words or not phones:
+        raise RuntimeError(f"기존 4-tier words/phones 누락: {source}")
     speech_start, speech_end, _, _ = labeled_word_span(words, float(duration))
+    if speech_start <= 1e-6 and abs(speech_end - duration) <= 1e-6:
+        # 유표 words가 전혀 없는 안전 폴백에서도 edge padding은 보존한다.
+        speech_start = edge_padding_left_seconds
+        speech_end = duration - edge_padding_right_seconds
     cuts = (speech_start, speech_end)
 
-    original_lines, original_status, original_warn = align_text_to_words(
-        "original_form", original_form or form, words, float(duration)
+    morph_lines, morph_status, morph_warn = align_text_to_words(
+        "morph_analysis", tagged, words, float(duration)
     )
-    pron_lines, pron_status, pron_warn = align_text_to_words(
-        "pron_reference", pron_reference, words, float(duration)
+    info_label = utterance_info_label(
+        utt_id=utt_id,
+        form=form,
+        original_form=original_form,
+        form_roman=form_roman,
+        reference_form=reference_form,
+        reference_form_roman=reference_form_roman,
+        pron_reference_hangul=pron_reference_hangul,
+        pron_reference_roman=pron_reference_roman,
     )
     ordered = [
         interval_tier("words", split_at(words, cuts), float(duration)),
-        interval_tier("phones", split_at(phones, cuts), float(duration)),
-        interval_tier("morphemes", split_at(morphemes, cuts), float(duration)),
-        original_lines,
-        pron_lines,
+        interval_tier("phones_mfa", split_at(phones, cuts), float(duration)),
+        morph_lines,
         interval_tier(
-            "utterance",
-            [(speech_start, speech_end, form)],
+            "utterance_info",
+            [(speech_start, speech_end, info_label)],
             float(duration),
         ),
     ]
@@ -244,11 +407,21 @@ def write_review_textgrid(
             raise RuntimeError(f"review tier 시작 coverage 누락: {tier_name}")
         if abs(intervals[-1][1] - float(duration)) > 1e-6:
             raise RuntimeError(f"review tier 끝 coverage 누락: {tier_name}")
+        if intervals[0][2].strip():
+            raise RuntimeError(f"review tier 왼쪽 가시적 빈 경계 없음: {tier_name}")
+        if intervals[-1][2].strip():
+            raise RuntimeError(f"review tier 오른쪽 가시적 빈 경계 없음: {tier_name}")
+        if intervals[0][1] < edge_padding_left_seconds - 1e-6:
+            raise RuntimeError(f"review tier 왼쪽 padding 부족: {tier_name}")
+        if (
+            float(duration) - intervals[-1][0]
+            < edge_padding_right_seconds - 1e-6
+        ):
+            raise RuntimeError(f"review tier 오른쪽 padding 부족: {tier_name}")
         for left, right in zip(intervals, intervals[1:]):
             if abs(left[1] - right[0]) > 1e-6:
                 raise RuntimeError(f"review tier 비연속: {tier_name}")
-    warnings = "; ".join(item for item in (original_warn, pron_warn) if item)
-    return original_status, pron_status, warnings
+    return morph_status, morph_warn
 
 
 def add_prefixed(
@@ -407,6 +580,56 @@ def collapse_adjacent(
     return collapsed
 
 
+def remove_review_padding(
+    intervals: list[tuple[float, float, str]],
+    *,
+    left_padding: float,
+    source_duration: float,
+) -> list[tuple[float, float, str]]:
+    """review 시간축을 원 TextGrid 시간축으로 되돌리고 padding을 제거한다."""
+    source_left = left_padding
+    source_right = left_padding + source_duration
+    restored: list[tuple[float, float, str]] = []
+    for begin, end, label in intervals:
+        clipped_begin = max(float(begin), source_left)
+        clipped_end = min(float(end), source_right)
+        if clipped_end - clipped_begin <= 1e-6:
+            continue
+        restored.append(
+            (
+                clipped_begin - left_padding,
+                clipped_end - left_padding,
+                label,
+            )
+        )
+    return collapse_adjacent(restored)
+
+
+def intervals_semantically_equal(
+    expected: list[tuple[float, float, str]],
+    actual: list[tuple[float, float, str]],
+    *,
+    tolerance: float = 1e-6,
+) -> bool:
+    """TextGrid 6자리 기록과 padding 산술의 미세 오차를 허용해 비교한다."""
+    if len(expected) != len(actual):
+        return False
+    return all(
+        expected_label == actual_label
+        and abs(float(expected_begin) - float(actual_begin)) <= tolerance
+        and abs(float(expected_end) - float(actual_end)) <= tolerance
+        for (
+            expected_begin,
+            expected_end,
+            expected_label,
+        ), (
+            actual_begin,
+            actual_end,
+            actual_label,
+        ) in zip(expected, actual)
+    )
+
+
 def verify_existing_bundle(
     run_root: Path, output_root: Path, project_root: Path
 ) -> dict:
@@ -416,6 +639,9 @@ def verify_existing_bundle(
         raise FileNotFoundError(f"기존 bundle 없음: {output_root}")
     if (output_root / ".INCOMPLETE").exists():
         raise RuntimeError("기존 bundle에 .INCOMPLETE가 있어 완료 검증 불가")
+    report_path = output_root / "BUILD_REPORT.json"
+    report = json.loads(report_path.read_text(encoding="utf-8-sig"))
+    edge_padding = float(report.get("review_edge_padding_seconds") or 0)
     manifest = read_csv(run_root / "selection_manifest.csv")
     index_rows = read_csv(output_root / "INDEX_ALL.csv")
     if len(manifest) != 60 or len(index_rows) != 60:
@@ -437,12 +663,17 @@ def verify_existing_bundle(
         review_lab = output_root / year / f"{utt_id}.lab"
         review_tg = output_root / year / f"{utt_id}.TextGrid"
         review_csv = output_root / year / f"{utt_id}.csv"
-        for source, copied in (
-            (source_wav, review_wav),
-            (source_lab, review_lab),
+        if not review_lab.is_file() or sha256_file(source_lab) != sha256_file(
+            review_lab
         ):
-            if not copied.is_file() or sha256_file(source) != sha256_file(copied):
-                raise RuntimeError(f"복사 해시 불일치: {copied}")
+            raise RuntimeError(f"복사 해시 불일치: {review_lab}")
+        if edge_padding > 0:
+            verify_padded_wav(source_wav, review_wav, edge_padding)
+        elif (
+            not review_wav.is_file()
+            or sha256_file(source_wav) != sha256_file(review_wav)
+        ):
+            raise RuntimeError(f"복사 해시 불일치: {review_wav}")
         source_tg = (
             run_root
             / "textgrid_4tier"
@@ -450,23 +681,56 @@ def verify_existing_bundle(
             / speaker_id
             / f"{utt_id}.TextGrid"
         )
-        _, source_tiers = parse_mfa_textgrid(source_tg)
+        source_duration, source_tiers = parse_mfa_textgrid(source_tg)
         _, review_tiers = parse_mfa_textgrid(review_tg)
-        if list(review_tiers) != REVIEW_TIERS:
+        if source_duration is None:
+            raise RuntimeError(f"원 TextGrid duration 없음: {source_tg}")
+        expected_tiers = report.get("review_tiers") or [
+            "words",
+            "phones",
+            "morphemes",
+            "original_form",
+            "pron_reference",
+            "utterance",
+        ]
+        if list(review_tiers) != expected_tiers:
             raise RuntimeError(f"review tier 불일치: {review_tg}")
-        for tier_name in ("words", "phones", "morphemes"):
-            if collapse_adjacent(source_tiers[tier_name]) != collapse_adjacent(
-                review_tiers[tier_name]
+        tier_pairs = [
+            ("words", "words"),
+            (
+                "phones",
+                "phones_mfa" if "phones_mfa" in review_tiers else "phones",
+            ),
+        ]
+        if "morphemes_legacy" in review_tiers or "morphemes" in review_tiers:
+            tier_pairs.append((
+                "morphemes",
+                "morphemes_legacy"
+                if "morphemes_legacy" in review_tiers
+                else "morphemes",
+            ))
+        for source_tier_name, review_tier_name in tier_pairs:
+            review_intervals = review_tiers[review_tier_name]
+            if edge_padding > 0:
+                comparable_review = remove_review_padding(
+                    review_intervals,
+                    left_padding=edge_padding,
+                    source_duration=float(source_duration),
+                )
+            else:
+                comparable_review = collapse_adjacent(review_intervals)
+            if not intervals_semantically_equal(
+                collapse_adjacent(source_tiers[source_tier_name]),
+                comparable_review,
             ):
                 raise RuntimeError(
-                    f"원 tier 의미 변경 감지: {utt_id}/{tier_name}"
+                    f"원 tier 의미 변경 감지: "
+                    f"{utt_id}/{source_tier_name}->{review_tier_name}"
                 )
         detail = read_csv(review_csv)
         if len(detail) != 1 or detail[0].get("utt_id") != utt_id:
             raise RuntimeError(f"발화별 CSV 불일치: {review_csv}")
 
-    report_path = output_root / "BUILD_REPORT.json"
-    report = json.loads(report_path.read_text(encoding="utf-8-sig"))
     expected_files = int(report.get("files_expected") or 0)
     actual_files = sum(1 for path in output_root.rglob("*") if path.is_file())
     if actual_files != expected_files:
@@ -480,8 +744,9 @@ def verify_existing_bundle(
         or "verified_copy_fallback_staging_retained",
         "verification": {
             "utterances": len(manifest),
-            "wav_lab_sha256_match": len(manifest) * 2,
-            "source_tier_semantic_match": len(manifest) * 3,
+            "wav_padding_or_sha256_match": len(manifest),
+            "lab_sha256_match": len(manifest),
+            "source_tier_semantic_match": len(manifest) * len(tier_pairs),
             "per_utterance_csv_match": len(manifest),
             "files": actual_files,
         },
@@ -491,8 +756,16 @@ def verify_existing_bundle(
     return report
 
 
-def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
+def build_bundle(
+    run_root: Path,
+    output_root: Path,
+    project_root: Path,
+    *,
+    edge_padding_seconds: float,
+) -> dict:
     safe_output_paths(run_root, output_root)
+    if edge_padding_seconds <= 0:
+        raise ValueError("edge padding은 0보다 커야 함")
     if output_root.exists():
         raise FileExistsError(
             f"출력 폴더가 이미 있음(자동 덮어쓰기 금지): {output_root}"
@@ -549,7 +822,11 @@ def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
             dest_lab = year_root / f"{utt_id}.lab"
             dest_tg = year_root / f"{utt_id}.TextGrid"
             dest_csv = year_root / f"{utt_id}.csv"
-            shutil.copy2(source_wav, dest_wav)
+            padding = write_padded_wav(
+                source_wav,
+                dest_wav,
+                edge_padding_seconds,
+            )
             shutil.copy2(source_lab, dest_lab)
 
             form = search_row.get("form") or bareun_row.get("form", "")
@@ -561,13 +838,37 @@ def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
             )
             pron_reference = pron["reference"]["pron_pred_hangul"]
             pron_source = pron["reference_source"]
-            original_status, pron_status, tier_warning = write_review_textgrid(
+            morph_status, tier_warning = write_review_textgrid(
                 source_tg,
                 dest_tg,
+                utt_id=utt_id,
                 form=form,
+                tagged=search_row.get("tagged", ""),
                 original_form=original_form,
-                pron_reference=pron_reference,
+                form_roman=pron["base"]["form_roman"],
+                reference_form=pron["reference_form"],
+                reference_form_roman=pron["reference"]["form_roman"],
+                pron_reference_hangul=pron_reference,
+                pron_reference_roman=pron["reference"]["pron_pred_roman"],
+                edge_padding_left_seconds=float(
+                    padding["padding_seconds"]
+                ),
+                edge_padding_right_seconds=float(
+                    padding["padding_seconds"]
+                ),
             )
+            review_tg_duration, _ = parse_mfa_textgrid(dest_tg)
+            if review_tg_duration is None:
+                raise RuntimeError(f"review TextGrid duration 없음: {dest_tg}")
+            review_duration_difference = abs(
+                float(padding["review_duration_seconds"])
+                - float(review_tg_duration)
+            )
+            if review_duration_difference > 0.02:
+                raise RuntimeError(
+                    f"review WAV–TextGrid 길이 차이 "
+                    f"{review_duration_difference:.6f}s > 0.02s: {utt_id}"
+                )
 
             rel_base = Path(year)
             index_row: dict[str, object] = {
@@ -586,16 +887,44 @@ def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
                     "pron_pred_hangul", ""
                 ),
                 "pron_reference_form": pron["reference_form"],
+                "form_roman": pron["base"]["form_roman"],
+                "pron_reference_form_roman": pron["reference"]["form_roman"],
                 "pron_reference_hangul": pron_reference,
+                "pron_reference_roman": pron["reference"]["pron_pred_roman"],
                 "pron_reference_source": pron_source,
                 "pron_reference_status": pron["reference_status"],
-                "original_form_align_status": original_status,
-                "pron_reference_align_status": pron_status,
+                "morph_analysis_align_status": morph_status,
+                "utterance_info_schema": (
+                    "[UTT][FORM][ORTH_R][ORIG?][REF_FORM?]"
+                    "[REF_ORTH_R?][RULE_H][RULE_R]"
+                ),
                 "tier_warning": tier_warning,
                 "wav_relpath": str(rel_base / dest_wav.name),
                 "lab_relpath": str(rel_base / dest_lab.name),
                 "textgrid_relpath": str(rel_base / dest_tg.name),
                 "csv_relpath": str(rel_base / dest_csv.name),
+                "source_wav_duration_seconds": round(
+                    float(padding["source_duration_seconds"]), 6
+                ),
+                "review_wav_duration_seconds": round(
+                    float(padding["review_duration_seconds"]), 6
+                ),
+                "review_textgrid_duration_seconds": round(
+                    float(review_tg_duration), 6
+                ),
+                "review_duration_difference_seconds": round(
+                    review_duration_difference, 6
+                ),
+                "review_edge_padding_left_seconds": round(
+                    float(padding["padding_seconds"]), 6
+                ),
+                "review_edge_padding_right_seconds": round(
+                    float(padding["padding_seconds"]), 6
+                ),
+                "review_time_to_source": (
+                    "source_time = review_time - "
+                    f"{float(padding['padding_seconds']):.6f}"
+                ),
                 "review_status": "",
                 "review_note": "",
             }
@@ -652,11 +981,10 @@ def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
 TextGrid tier:
 
 1. `words`: MFA 어절 정렬
-2. `phones`: MFA/G2P 대략적 음소 분절
-3. `morphemes`: 기존 형태소 경계
-4. `original_form`: 원본 JSON 전사
-5. `pron_reference`: 숫자·기호 손실 시 원전사로 보완한 기준 발음 힌트
-6. `utterance`: 정규화 form
+2. `phones_mfa`: MFA/G2P 대략적 음소 분절
+3. `morph_analysis`: 현재 Bareun 형태소열을 어절 구간에 표시
+4. `utterance_info`: 발화 ID·form·철자 로마자·규칙 발음 한글/로마자.
+   original_form이나 reference 입력이 form과 다를 때만 같은 label에 추가
 
 `pron_reference`는 사전 등재 발음이나 실제 음향 실현 판정이 아니다. 후보 검색과
 수동 점검을 돕는 기준선이며, 정확한 출처는 발화 CSV의
@@ -668,13 +996,19 @@ TextGrid tier:
 직접 수신자 표지가 없으므로 `co_speaker_ids`를 특정 발화의 수신자로 해석하지
 않는다.
 
-모든 tier는 TextGrid 전체 시간 0–xmax를 구조적으로 덮는다. `utterance`와 추가
-tier는 첫–마지막 정렬 어절 범위 밖을 빈 interval로 두어 앞뒤 padding 경계를
-보이게 한다. 원 `words/phones/morphemes` 라벨과 시간은 변경하지 않는다.
+점검 사본 WAV의 앞뒤에는 각각 0.05초 무음을 추가하고 모든 TextGrid 구간을
+같은 양만큼 이동했다. 따라서 모든 tier에서 눈에 보이는 왼쪽·오른쪽 빈
+interval이 보장된다. 원 WAV와 원 4-tier는 수정하지 않는다. 원시간으로
+되돌릴 때는 발화 CSV의 `review_edge_padding_left_seconds`를 review 시간에서
+뺀다. `words/phones_mfa`의 라벨과 상대적 시간은 원 4-tier의
+`words/phones`에서 변경하지 않았다. `morph_analysis`는 현재 Bareun 결과를
+어절 시간에 맞춰 보여 주는 검색·검토용 tier이며, 형태소 내부의 음향 경계를
+새로 판정한 것이 아니다. 구 `morphemes`와 전체 original/pron 개별 tier는
+CSV에 보존하고 필요한 분석에서만 온디맨드로 주입한다.
 """
         (staging / "README.md").write_text(readme, encoding="utf-8")
         report = {
-            "schema_version": 1,
+            "schema_version": 4,
             "created_at": now_iso(),
             "source_run": str(run_root),
             "output_root": str(output_root),
@@ -695,6 +1029,10 @@ tier는 첫–마지막 정렬 어절 범위 밖을 빈 interval로 두어 앞�
             },
             "files_expected": len(index_rows) * 4 + len(YEARS) + 3,
             "review_tiers": REVIEW_TIERS,
+            "review_edge_padding_seconds": edge_padding_seconds,
+            "review_time_to_source": (
+                "source_time = review_time - review_edge_padding_seconds"
+            ),
             "pronunciation_warning": (
                 "pron_reference is a rule-based reference, not dictionary "
                 "pronunciation or observed realization"
@@ -725,6 +1063,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="기존 output을 D: run과 전수 대조하고 BUILD_REPORT를 갱신",
     )
+    parser.add_argument(
+        "--edge-padding-seconds",
+        type=float,
+        default=DEFAULT_EDGE_PADDING_SECONDS,
+        help="점검 WAV 좌우 무음과 TextGrid 시간 이동(기본 0.05초)",
+    )
     return parser.parse_args()
 
 
@@ -745,6 +1089,7 @@ def main() -> int:
             args.run_root.resolve(),
             args.output_root.resolve(),
             args.project_root.resolve(),
+            edge_padding_seconds=args.edge_padding_seconds,
         )
         print(
             f"점검 묶음 완료: {report['utterances']}발화 / "

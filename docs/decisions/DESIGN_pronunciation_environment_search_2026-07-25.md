@@ -2,7 +2,7 @@
 
 작성일: 2026-07-25
 
-상태: 구현 전 조사·설계안
+상태: 대표 발화 조사 완료, 최소 점검 TextGrid v4 파일럿 구현·검증
 
 대표 점검 발화: `SDRW2200000836.1.1.61`
 
@@ -34,6 +34,59 @@
 | MFA phones | G2P/사전 phone열을 음성에 강제 정렬한 시간 구간 | 위치 탐색·분절 보조 |
 
 최종 실현값은 별도 연구자 판정표에만 기록한다.
+
+### 1.1 처리 순서: pre-MFA와 post-MFA를 섞지 않는다
+
+이 문서에서 말하는 파이프라인 판본과 사전 파일의 과거 `v1/v2` 명칭이
+혼동됐으므로 다음 이름으로 고정한다.
+
+```text
+pre_mfa_linguistic_master
+    ↓
+mfa_alignment
+    ↓
+post_mfa_alignment_index
+    ↓
+review_bundle + KOINA + human_annotation
+```
+
+#### MFA 전: `pre_mfa_linguistic_master`
+
+- `form`, `original_form`, Bareun 형태소, A2 의미번호
+- 형태소·어절 철자 로마자
+- 사전 독립형 발음과 규칙 문맥 예상 발음
+- 음운·형태 경계 환경과 후보 좌표
+- 화자·대화·사회 변수
+- MFA 입력 WAV·lab manifest
+
+사전·규칙 발음은 실제 실현이 아니라 MFA 전에 준비할 수 있는 언어학적
+기준선이다.
+
+#### MFA 실행
+
+- MFA용 작업 WAV·lab
+- `words`, `phones` 시간 정렬
+- 실패·누락·`spn`·duration·재시도 QC
+
+#### MFA 후: `post_mfa_alignment_index`
+
+- `phones_mfa`와 시작·끝 시간
+- TextGrid 스키마와 정렬 상태
+- WAV·TextGrid·CSV 경로 및 파일 coverage
+- `utt_id + eojeol_idx` 조인 결과
+
+MFA 시간정보는 MFA 전에 존재할 수 없다. 또한 post-MFA 결과를 pre-MFA
+언어정보에 덮어쓰지 않고 별도 표로 둔 뒤, 연구용 view에서 조인한다.
+
+#### 수동 검토
+
+- 점검 사본 TextGrid
+- KOINA
+- 후보별 연구자 실현 판정
+
+사전 예외 발음을 MFA 사전에 직접 투입할지는 별도 소표본 A/B 파일럿으로
+결정한다. 우선은 사전 발음을 검색·비교 기준으로 붙이고 기존 G2P MFA를
+교란하지 않는다.
 
 ## 2. 대표 발화의 원천 추적 결과
 
@@ -77,14 +130,42 @@ A2 의미 레이어의 내용어:
 
 ### 2.3 통합 사전
 
-정본 후보:
+두 사전 자료의 혼동을 막기 위해 파일명 대신 다음 역할명으로 부른다.
 
-`D:\00_RAW\reference\00_DICTIONARY\01_NIKL_lexicon_full_v2.csv`
+```text
+lexicon_enriched
+  D:\00_RAW\reference\00_DICTIONARY\01_NIKL_lexicon_full_v2.csv
 
-v2에는 `pron_1`, `pron_2`, `pron_g2p`와 각 MFA 로마자 열, 2023 발음,
-우리말샘·표준국어대사전 대응 코드, 품사군, 의미번호가 함께 있다. v1보다
-조회용 정보가 많으므로 새 색인은 v2를 우선 검증한다. v1은 원천 대조용으로
-보존한다.
+lexicon_legacy_pron
+  D:\00_RAW\reference\03_lexicon_1기\01_NIKL_lexicon_full.csv
+```
+
+2026-07-25 전수 실측:
+
+| 항목 | `lexicon_enriched` | `lexicon_legacy_pron` |
+|---|---:|---:|
+| 행 | 1,165,157 | 1,296,777 |
+| `pron_1` 있음 | 500,561 | 613,441 |
+| `pron_2` 있음 | 38,340 | 41,237 |
+| `pron_g2p` 있음 | **0** | 683,336 |
+| 어떤 발음이든 있음 | 500,561 | 1,296,777 |
+| 발음 전부 없음 | 664,596 | 0 |
+
+`lexicon_enriched`는 MFA 로마자, 2023 발음, 우리말샘·표준국어대사전 대응
+코드, 품사군, 의미번호 등 조회 메타데이터가 더 풍부하지만
+`pron_g2p` 열은 전 행이 비어 있다. 따라서 이 파일만으로 발음 색인을 만들면
+조사·어미를 포함한 664,596행이 빠진다.
+
+`lexicon_enriched`의 발음 없는 664,596행은 모두 `urimal_id`가 있고,
+663,687개 고유 ID 전부가 `lexicon_legacy_pron`의 `pron_g2p` 하나와
+일의적으로 대응했다. 미대응·복수 대응은 0이었다. 권장 색인은 다음과 같다.
+
+1. 행 구조·의미·품사·표준사전 대응은 `lexicon_enriched`
+2. `pron_1`이 있으면 그대로 사용
+3. 없으면 같은 `urimal_id`의 `lexicon_legacy_pron.pron_g2p` 보완
+4. 보완 출처를 `legacy_g2p_by_urimal_id`로 기록
+5. `lexicon_enriched`에 없는 legacy 전용 항목의 포함 여부는 별도 집합 감사 후
+   결정
 
 대표 결과:
 
@@ -92,12 +173,14 @@ v2에는 `pron_1`, `pron_2`, `pron_g2p`와 각 MFA 로마자 열, 2023 발음,
 - `모양`은 의미에 따라 장음 표시가 달라질 수 있다. A2의 의미번호를 먼저
   적용해야 한다.
 - `어떻`은 표제어 `어떻다/VA`의 어간 별칭으로 조회되며 `pron_1=어떠타`다.
-- `에`는 Bareun에서 `JKB`지만 사전에는 주로 `JX`로 보인다.
+- `에/JKB`는 `lexicon_enriched`에 실제로 있다. 과거 `lexicon_legacy_pron`의
+  같은 `urimal_id` 행은 `JX`로 되어 있어 판본 사이 품사 정규화가 일어났다.
 - `었`은 Bareun에서 `EP`지만 사전 행은 `EF`로 보이는 경우가 있다.
 
-즉 `(표층형, Bareun 품사)` 완전일치만 쓰면 조사·어미가 누락된다. 반대로
-품사를 무시하면 동형이의 형태소가 잘못 결합될 수 있다. 검증된 품사 대응표와
-조회 상태가 필요하다.
+따라서 `에`에 대한 초기 “JKB 항목 없음” 판단은 정정한다. 그러나 `었/EP`처럼
+실제 품사 불일치는 남으므로 `(표층형, Bareun 품사)` 완전일치만 쓰면 일부
+조사·어미가 누락된다. 반대로 품사를 무시하면 동형이의 형태소가 잘못 결합될
+수 있다. `urimal_id` 판본 조인과 검증된 품사 대응표를 각각 분리해야 한다.
 
 사전 파일은 의미·빈도원 병합 때문에 동일 항목이 여러 행으로 반복된다.
 CSV를 발화 자료에 직접 조인하면 행 수가 폭증할 수 있으므로, 먼저 발음이 같은
@@ -141,7 +224,7 @@ source                 form_rule_prediction
 3. `morphemes`: `꽃 | 에 | 모양 | 은 | 어땠어`
 4. `utterance`: `꽃에 모양은 어땠어?`
 
-점검용 6-tier에는 `original_form`, `pron_reference`가 추가돼 있다.
+기존 점검용 6-tier에는 `original_form`, `pron_reference`가 추가돼 있다.
 
 문제:
 
@@ -154,6 +237,107 @@ source                 form_rule_prediction
 
 따라서 현재 `morphemes`라는 이름만 보고 A2 `morph_idx`와 1:1 대응한다고
 가정하면 안 된다.
+
+### 2.6 2026-07-25 점검 TextGrid v3 검증
+
+기존 6개 수동 검토본과 새 60개 점검본을 전수 검사했다.
+
+| 점검본 | 왼쪽 가시적 빈 구간 없음 | 오른쪽 가시적 빈 구간 없음 |
+|---|---:|---:|
+| 구 `6_review` 6개 | tier별 다수 | tier별 다수 |
+| 새 60개 6-tier | 10발화 | 3발화 |
+
+모든 tier가 구조적으로 `0–xmax`를 덮더라도, 정렬 라벨이 실제로 0 또는
+`xmax`에 붙으면 Praat에서 앞뒤 빈 구간 경계가 보이지 않는다. 라벨 시간을
+임의로 잘라 빈 interval을 만드는 대신 점검 **사본**에만 다음을 적용했다.
+
+1. 원 WAV를 수정하지 않고 점검 WAV 앞뒤에 각각 0.05초 0 진폭 무음 추가
+2. 모든 TextGrid 구간을 정확히 +0.05초 이동
+3. 새 `xmax = 원 xmax + 0.10초`
+4. 모든 tier의 첫·끝에 최소 0.05초 빈 interval 강제 검사
+5. 원시간 환산은 `source_time = review_time - 0.05`
+
+실자료 60개는 전부 16 kHz, mono, 16-bit PCM이었다. 중앙 PCM frame이 원본과
+완전히 같은지, 양끝이 0인지 전수 검증했다.
+
+점검 v3 tier:
+
+1. `words`
+2. `phones_mfa`
+3. `morphemes_legacy`
+4. `morph_analysis`
+5. `original_form`
+6. `pron_reference`
+7. `utterance`
+
+60개 모든 tier에서 좌우 가시적 빈 구간 60/60, `0–xmax` 연속 coverage
+60/60을 통과했다. `morph_analysis`는 현재 Bareun 형태소열을 **어절 시간**에
+표시하며 형태소 내부의 새 음향 경계를 주장하지 않는다.
+
+대표 발화 v3:
+
+```text
+words:
+  꽃에 | 모양은 | 어땠어
+
+morphemes_legacy:
+  꽃 | 에 | 모양 | 은 | 어땠어
+
+morph_analysis:
+  꽃/NNG+에/JKB
+  모양/NNG+은/JX
+  어떻/VA+었/EP+어/EF+?/SF
+```
+
+이 구성은 구형 시간 분절과 현재 형태소 분석을 동시에 보여 주되 둘을 같은
+것으로 오해하지 않게 한다.
+
+### 2.7 7-tier 검증판에서 최소 4-tier v4로 축소
+
+v3의 7개 tier는 출처 분리와 경계 검증에는 유용했지만, 연구자가 실제로
+Praat에서 검토할 때 같은 발화 수준 문자열이 여러 줄을 차지하고 핵심
+`words`–`phones_mfa` 대응을 가렸다. 기술적으로 통과한 v3는 시행착오와
+provenance 확인용 중간 산출물로 보존하되, 기본 점검본으로 승격하지 않는다.
+
+최종 기본 점검본 v4는 다음 4개 tier만 사용한다.
+
+1. `words`: MFA 어절 정렬
+2. `phones_mfa`: MFA/G2P phone 정렬; 실제 실현 판정값이 아님
+3. `morph_analysis`: 현재 Bareun 형태소열을 어절 시간에 표시
+4. `utterance_info`: 발화 수준 검색·판독 정보
+
+`utterance_info`는 별도 tier를 늘리는 대신 한 label 안에 출처가 드러나는
+고정 표지를 사용한다.
+
+```text
+[UTT] ...
+[FORM] ...
+[ORTH_R] ...
+[ORIG] ...                 # form과 다를 때만
+[REF_FORM] ...             # 숫자·기호 보완 입력이 다를 때만
+[REF_ORTH_R] ...           # 위 경우에만
+[RULE_H] ...
+[RULE_R] ...
+```
+
+따라서 Praat에서도 발화 ID, 철자, 철자 기반 로마자, 규칙 예상 발음 한글·
+로마자를 검색할 수 있다. `RULE_H/R`은 사전 발음이나 실제 실현이 아니라
+규칙 기반 기준선이다. 사전 예외 발음, 형태소별 철자 로마자, 경계별 환경,
+구형 분절은 CSV/Parquet을 정본으로 두고 필요한 후보에만 주입한다.
+
+실자료 60발화 재생성·전수 검증 결과:
+
+- 6개년 각 10발화, 총 60발화
+- 정확히 4-tier: 60/60
+- 모든 tier 좌우 0.05초 이상 빈 interval: 60/60
+- `UTT/FORM/ORTH_R/RULE_H/RULE_R` 표지 존재: 각 60/60
+- 원 `words/phones` 의미를 padding 제거 후 재대조: 120/120
+- 원 WAV 중앙 PCM frame 보존, 좌우 0값: 60/60
+- 형태소 어절 매핑: `all_lexical_slots` 24,
+  `labeled_word_slots` 28, `utterance_fallback` 8
+
+fallback 8건은 잘못된 1:1 대응을 만들지 않고 발화 전체에 `[align≠]`로
+표시하며 `tier_warning`에 토큰 수 불일치를 남긴다.
 
 ## 3. 권장 데이터 구조
 
@@ -340,11 +524,15 @@ pron_1, pron_2, pron_g2p
 
 ### 4.2 조회 우선순위
 
-1. A2 `sense_id` + 표제어 + 호환 품사가 정확히 대응하는 항목
+1. `lexicon_enriched`에서 A2 `sense_id` + 표제어 + 호환 품사가 정확히
+   대응하는 항목
 2. 의미번호가 없어도 후보들의 서로 다른 `pron_1`이 하나인 항목
-3. `pron_1`이 없을 때 `pron_g2p`
-4. 서로 다른 발음이 둘 이상이면 `multiple`
-5. 항목이 없으면 `not_found`
+3. enriched `pron_1`이 없을 때 같은 `urimal_id`의
+   `lexicon_legacy_pron.pron_g2p`
+4. 조사·어미처럼 여러 의미 후보가 있어도 서로 다른 발음이 하나뿐이면
+   `unique_pron_across_senses`
+5. 서로 다른 발음이 둘 이상이면 `multiple`
+6. 항목이 없으면 `not_found`
 
 `pron_2`는 대체 인정형으로 별도 보존한다. 대표 발음을 덮어쓰지 않는다.
 
@@ -400,47 +588,68 @@ applied, blocked_reason
 | 순서 | tier | 내용 | 출처 |
 |---:|---|---|---|
 | 1 | `words` | 표기 어절과 MFA 시간 | 신규 어절 MFA |
-| 2 | `phones` | MFA/G2P phone과 시간 | MFA; 실제 실현 아님 |
-| 3 | `morphs_aligned` 또는 기존 `morphemes` | 검증된 범위의 형태소/구형 분절 | 출처·상태 필수 |
-| 4 | `utterance` | `form` | 원본 JSON/Bareun |
+| 2 | `phones_mfa` | MFA/G2P phone과 시간 | MFA; 실제 실현 아님 |
+| 3 | `utterance` | `form` | 원본 JSON/Bareun |
 
-기존 도구 호환 때문에 당장 `phones` 이름을 바꾸지 않더라도 manifest와 문서에는
-`phones_mfa` 의미라고 명시한다.
+형태소·철자 로마자·사전/규칙 발음 검색의 정본은 CSV/Parquet이다. 전량
+TextGrid 수백만 개에 같은 문자열을 중복하면 파일 크기, 열기 속도, 스키마
+변경 비용이 커지므로 넣지 않는다.
 
-현재 `morphemes` tier는 Bareun 8형태소와 일치하지 않을 수 있다. 다음 중 하나를
-선택해야 한다.
-
-1. 새 정본에서는 검증된 Bareun 형태소 경계를 만들고 `morphs_aligned`로 명명
-2. 구형 경계를 유지할 때 `morphemes_legacy`로 명명
-3. 호환 때문에 이름을 유지하면 파일별 `morph_tier_source`,
-   `morph_tier_map_status`를 manifest에 반드시 기록
+현재 파일럿과 기존 도구가 쓰는 4-tier는 이번 대량 run 중에는 그대로
+보존한다. 다음 정본 승격에서 3-tier로 이행하되, 기존 `phones`는 manifest에
+`phones_mfa` 의미라고 명시하고 기존 `morphemes`는
+`morph_tier_source=morphemes_legacy`로 기록한다. 호환성 검증 전에는 기존
+tier를 삭제하거나 이름만 일괄 변경하지 않는다.
 
 근거 없는 비례 분할로 `어떻/었/어`의 정확한 음향 경계를 만든 것처럼 보이게
 해서는 안 된다. 융합 활용형은 어절 전체 구간과 `contracted_fused` 상태를
 사용한다.
 
 모든 IntervalTier는 `0–xmax`를 빈 interval까지 연속적으로 덮는다. 유표
-발화 앞뒤의 빈 interval을 제거하지 않는다.
+발화 앞뒤의 빈 interval을 제거하지 않는다. 다만 원 발화가 0 또는 `xmax`에
+붙은 운영본에는 근거 없는 빈 시간을 만들지 않는다. 가시적 양끝 경계는 아래
+점검 사본 export에서 보장한다.
 
 ### 6.2 연구자 점검 사본
 
-선택 후보에만 다음 tier를 온디맨드로 추가한다.
+선택 후보의 기본 점검 사본은 다음 4-tier다. 점검 사본 WAV와 TextGrid는
+원본을 수정하지 않고 좌우 0.05초 무음을 더한 시간축을 사용한다.
 
 | tier | 내용 |
 |---|---|
-| `original_form` | 원전사 어절 |
-| `pron_rule` | 어절별 규칙 예상 발음 |
+| `words` | MFA 어절 정렬 |
+| `phones_mfa` | MFA/G2P 대략적 분절임을 이름에 명시 |
+| `morph_analysis` | 현재 Bareun 형태소열을 어절 구간에 표시 |
+| `utterance_info` | ID·form·철자 로마자·규칙 발음 한글/로마자 |
+
+다음 tier는 기본본에 넣지 않고 현상별 분석 사본에만 온디맨드로 추가한다.
+
+| 선택 tier | 내용 |
+|---|---|
+| `morphemes_legacy` | 구형 분절의 출처 비교가 필요한 경우 |
 | `candidate` | 후보 어절 또는 경계와 `candidate_id` |
 | `pron_dict` | 형태소 시간 매핑이 검증된 경우에만 독립형 사전 발음 |
 | `prosody_koina` | KOINA 결과 |
 | `human_judgment` | 연구자 판정; 자동 재생성에서 보호 |
 
-로마자·IPA·사전 대체 발음을 모두 전량 TextGrid에 넣지 않는다. CSV/Parquet을
-정본으로 두고, 현재 검토에 필요한 열만 주입한다.
+형태소별 로마자·IPA·사전 대체 발음을 모두 TextGrid에 넣지 않는다.
+CSV/Parquet을 정본으로 두고, 발화 수준의 철자·규칙 발음 로마자만
+`utterance_info`에 넣는다.
 
 `pron_dict`는 문맥 실제 발음처럼 보이지 않도록 예를 들어
 `꽃{dict:꼳}`처럼 출처가 드러나는 라벨을 사용한다. 다중 발음은
 `[multiple]`을 표시하고 하나를 임의 선택하지 않는다.
+
+점검 CSV에는 다음 시간 provenance를 반드시 둔다.
+
+```text
+source_wav_duration_seconds
+review_wav_duration_seconds
+review_textgrid_duration_seconds
+review_edge_padding_left_seconds
+review_edge_padding_right_seconds
+review_time_to_source
+```
 
 ## 7. 검색 결과와 파일 묶음
 
@@ -466,15 +675,47 @@ TextGrid 스키마·복사 검증 상태를 남긴다. 원본 D: 파일은 읽�
 
 ## 8. 구현 순서와 승격 게이트
 
+### 8.0 현재 상태 판정
+
+#### CSV
+
+기존 전량 search master는 17,156세션·5,103,356행의 ID·form·tagged가 A1과
+완전히 일치하므로 삭제할 대상이 아니다. 그러나 다음이 빠진 **기준선 판본**이다.
+
+- 복구된 2023 네 세션 메타
+- dialogue/co-speaker 열의 전량 반영
+- `pron_reference_*`
+- enriched+legacy 결합 사전 발음
+- WAV/TextGrid/quarantine coverage
+- 정규화된 어절·형태소·경계 표
+
+따라서 “CSV 전량 생성 완료”와 “연구용 최종 CSV 완료”를 구분한다. 기존본을
+archive한 뒤 새 schema를 별도 staging에서 만들어야 한다.
+
+#### MFA
+
+- 층화 파일럿 60발화 MFA 자체는 수량·duration·tier QC를 통과했다.
+- `phones`는 MFA/G2P 분절이며 실제 실현이 아니다.
+- `morphemes`는 현재 Bareun과 1:1이 보장되지 않는 legacy 분절이다.
+- 전량 정본 경로와 파일럿 run 경로가 분리돼 있어 `locate_utt.py`가 파일럿
+  TextGrid를 자동 선택하지 않는다.
+- 점검 v4에서 가시적 edge padding과 최소 4-tier·형태소 표시가 정돈됐다.
+
+#### 원칙
+
+CSV 언어층을 먼저 확정하고 MFA 시간층은 나중에 조인한다. 단, MFA 입력 사전의
+변경은 CSV 사전 발음 열을 만든 것과 별도 실험으로 취급한다.
+
 ### 단계 0: 기준선 동결
 
 - 관련 코드 SHA256과 git commit 기록
 - 현재 search master·TextGrid 판본과 경로 기록
 - 기존 산출물 수정 금지, 새 `run_id` staging 사용
 
-### 단계 1: lexicon v2 색인 파일럿
+### 단계 1: enriched+legacy lexicon 색인 파일럿
 
 - 대표 발화와 수동 선정 예외·다의·조사·어미 표본
+- enriched 664,596 무발음행의 `urimal_id` fallback 전수 검증
 - 중복 제거 전후 행 수
 - sense 정확 일치, 단일 발음, multiple, not_found 분포
 - Bareun–lexicon 품사 대응표 검토
@@ -493,6 +734,8 @@ TextGrid 스키마·복사 검증 상태를 남긴다. 원본 D: 파일은 읽�
 - `words` 유표 구간과 `eojeol_idx` 1:1 대조
 - 형태소 tier의 실제 의미와 원천 검사
 - 모든 tier 0–xmax 연속성
+- 점검 사본 모든 tier 좌우 0.05초 가시적 빈 interval
+- review 시간을 source 시간으로 되돌리는 식 검증
 - WAV/TextGrid duration, stem, speaker, session 일치
 - 후보 tier와 `candidate_id` 왕복 조인
 
@@ -507,8 +750,15 @@ TextGrid 스키마·복사 검증 상태를 남긴다. 원본 D: 파일은 읽�
 
 ### 단계 5: 연도별 확대
 
-한 연도 파일럿 통과 후 해당 연도 전량, 전수 QC 통과 후 다음 연도로 간다.
-부분 성공은 성공으로 승격하지 않는다.
+1. 2020 pre-MFA CSV 새 schema 파일럿
+2. 2020 CSV archive→staging 전량 생성→전수 감사→승격
+3. 2020 MFA 소표본
+4. 2020 MFA 전량→post-MFA alignment index
+5. 한 현상 end-to-end 연구자 판정
+6. 2021부터 같은 게이트 반복
+
+부분 성공은 성공으로 승격하지 않는다. CSV와 MFA는 각각 독립적인 완료 marker와
+보고서를 갖고, 둘이 모두 통과한 연도만 analysis-ready view를 만든다.
 
 ## 9. 과거 오류·시행착오를 반영한 방지책
 
@@ -522,14 +772,29 @@ TextGrid 스키마·복사 검증 상태를 남긴다. 원본 D: 파일은 읽�
 | original_form을 실제 발음 전사로 오해 | 원전사·규칙 발음·사전 발음·실현 판정을 별도 열로 분리 |
 | MFA phones를 실제 판정값으로 오해 | `phones_mfa` 의미와 provenance를 manifest·README에 표시 |
 | `morphemes` tier 이름이 실제 1:1 형태소를 과장 | legacy/verified 상태와 토큰 수 일치 검사 |
+| 0–xmax coverage는 있지만 Praat에서 양끝 경계가 안 보임 | 점검 WAV 사본 좌우 0.05초 무음 + TextGrid 동시 이동 + source 환산식 |
 | D:, 프로젝트, Dropbox 경로 혼재 | `paths.py` 단일 경로 설정 + 실행별 root snapshot |
 | 사전 다의어에서 첫 의미를 임의 선택 | A2 sense 우선, 미해결 multiple 보존 |
 | lexicon 중복 직접 조인으로 행 폭증 위험 | 사전 전용 dedup index 후 many-to-one 검증 |
+| enriched lexicon의 `pron_g2p`가 전부 빈데 단독 사용 가정 | legacy 발음을 `urimal_id`로 보완하고 출처 기록 |
 
-## 10. 구현 전 확정할 결정
+## 10. 확정 사항과 남은 결정
 
-1. 운영 TextGrid의 기존 `morphemes`를 호환 유지할지,
-   `morphemes_legacy`/`morphs_aligned`로 구분할지
+확정:
+
+1. pre-MFA 언어 마스터와 post-MFA 시간 인덱스를 분리한다.
+2. 기본 점검 사본은
+   `words/phones_mfa/morph_analysis/utterance_info` 4-tier를 쓴다.
+3. 점검 WAV/TextGrid 사본은 좌우 0.05초 padding과 원시간 환산식을 기록한다.
+4. enriched 사전의 무발음행은 같은 `urimal_id`의 legacy G2P로 보완한다.
+5. 기존 전량 CSV와 원 MFA/TextGrid는 자동 덮어쓰지 않는다.
+6. 형태소·철자 기반 로마자 검색은 CSV/Parquet 정본에서 보장하고, 점검
+   TextGrid에는 발화 수준 `ORTH_R`와 `RULE_R`만 중복한다.
+
+남은 결정:
+
+1. 전량 운영 TextGrid의 기존 `morphemes` 이름을 호환 유지할지, 다음 전량
+   판본에서 `morphemes_legacy`로 이행할지
 2. Bareun–lexicon 품사 대응표를 어느 범위까지 허용할지
 3. `sense_method=ls_sxls/lex_first` 등 추정 의미를 사전 발음 대표 선택에
    허용할 신뢰도 기준

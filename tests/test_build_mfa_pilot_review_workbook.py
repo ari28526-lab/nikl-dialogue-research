@@ -28,8 +28,8 @@ class MfaPilotReviewWorkbookTests(unittest.TestCase):
             "original_form": "원문",
             "pron_reference_hangul": "발음 참조",
             "pron_reference_source": "form_rule_prediction",
-            "original_form_align_status": "all_lexical_slots",
-            "pron_reference_align_status": "all_lexical_slots",
+            "morph_analysis_align_status": "all_lexical_slots",
+            "utterance_info_schema": "[UTT][FORM][ORTH_R][RULE_H][RULE_R]",
             "tier_warning": "",
             "wav_relpath": f"{year}\\{utt_id}.wav",
             "lab_relpath": f"{year}\\{utt_id}.lab",
@@ -65,6 +65,7 @@ class MfaPilotReviewWorkbookTests(unittest.TestCase):
                 rows,
                 index,
                 bundle,
+                output_path=output,
             )
             workbook.save(output)
             report = verify_workbook(output, len(rows), bundle)
