@@ -166,6 +166,24 @@ utterance
 정식 점검본은 변하지 않았다. 코드는 `id`와 `speaker_id`를 명시적으로 지원하게
 수정한 뒤 60발화 생성에 통과했다.
 
+첫 Dropbox 정식 생성은 249개 파일과 `BUILD_REPORT.json`을 staging에 모두
+쓴 뒤, staging 폴더를 최종 이름으로 원자 변경하는 단계에서 Windows
+`PermissionError(WinError 5)`로 중단됐다. Dropbox가 동기화 중인 디렉터리
+rename을 일시 차단한 것으로 판단했다. D: 원본은 읽기만 했고 완성 staging은
+증거로 보존됐다.
+
+대체 승격은 다음 순서로 구현했다.
+
+1. 최종 폴더에 `.INCOMPLETE` 표지를 먼저 생성
+2. staging의 모든 파일 복사
+3. 상대경로–SHA256 전수 대조
+4. 완전 일치할 때만 `.INCOMPLETE` 제거
+5. 검증된 staging만 정리
+
+복사나 검증이 실패하면 부분 폴더와 `.INCOMPLETE`를 그대로 남겨 완료본으로
+오인하지 않게 한다. 승격 방식은 `BUILD_REPORT.json`의 `promotion_mode`에
+기록한다.
+
 ## 8. 연구적 해석 제한
 
 - `pron_reference`: 원전사 우선 규칙 기반 기준 발음

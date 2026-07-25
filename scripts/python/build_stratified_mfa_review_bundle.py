@@ -19,15 +19,18 @@ import argparse
 import csv
 import json
 import os
-import re
 import shutil
 import sys
-from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from merge_textgrid_v2 import interval_tier  # noqa: E402
-from pipeline_common import atomic_write_json, git_commit, now_iso  # noqa: E402
+from pipeline_common import (  # noqa: E402
+    atomic_write_json,
+    git_commit,
+    now_iso,
+    sha256_file,
+)
 from predict_pron import predict_pron_reference  # noqa: E402
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
 from build_search_master import build_json_index, load_utt_extra  # noqa: E402
@@ -321,6 +324,66 @@ def safe_output_paths(run_root: Path, output_root: Path) -> None:
         raise ValueError(f"출력 경로가 지나치게 넓음: {output_root}")
 
 
+def tree_hashes(root: Path, *, exclude: set[str] | None = None) -> dict[str, str]:
+    exclude = exclude or set()
+    return {
+        str(path.relative_to(root)): sha256_file(path)
+        for path in sorted(root.rglob("*"))
+        if path.is_file() and str(path.relative_to(root)) not in exclude
+    }
+
+
+def promote_staged_directory(
+    staging: Path,
+    output_root: Path,
+    *,
+    force_copy_fallback: bool = False,
+) -> str:
+    """staging 디렉터리를 승격한다.
+
+    Dropbox가 Windows 디렉터리 rename을 일시 차단하면 최종 폴더에
+    ``.INCOMPLETE``를 먼저 만들고 전 파일을 복사·SHA256 대조한다. 검증 전에는
+    완료 표지를 제거하지 않으며, staging은 검증 성공 뒤에만 정리한다.
+    """
+    if output_root.exists():
+        raise FileExistsError(f"승격 대상이 이미 존재함: {output_root}")
+    if not force_copy_fallback:
+        try:
+            staging.replace(output_root)
+            return "atomic_directory_rename"
+        except PermissionError:
+            pass
+
+    output_root.mkdir(parents=False)
+    incomplete = output_root / ".INCOMPLETE"
+    incomplete.write_text(
+        "Dropbox copy fallback 진행 중 — 이 파일이 있으면 미완료\n",
+        encoding="utf-8",
+    )
+    try:
+        for item in staging.iterdir():
+            destination = output_root / item.name
+            if item.is_dir():
+                shutil.copytree(item, destination)
+            else:
+                shutil.copy2(item, destination)
+        source_hashes = tree_hashes(staging)
+        copied_hashes = tree_hashes(
+            output_root, exclude={".INCOMPLETE"}
+        )
+        if source_hashes != copied_hashes:
+            raise RuntimeError(
+                "Dropbox fallback 전 파일 SHA256 대조 실패; "
+                ".INCOMPLETE를 보존하고 중단"
+            )
+        incomplete.unlink()
+        shutil.rmtree(staging)
+        return "verified_copy_fallback"
+    except BaseException:
+        # 부분 출력과 .INCOMPLETE를 보존해 완료본으로 오인하지 않게 한다.
+        raise
+
+
 def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
     safe_output_paths(run_root, output_root)
     if output_root.exists():
@@ -532,7 +595,9 @@ tier는 첫–마지막 정렬 어절 범위 밖을 빈 interval로 두어 앞�
             "status": "passed",
         }
         atomic_write_json(staging / "BUILD_REPORT.json", report)
-        staging.replace(output_root)
+        promotion_mode = promote_staged_directory(staging, output_root)
+        report["promotion_mode"] = promotion_mode
+        atomic_write_json(output_root / "BUILD_REPORT.json", report)
         return report
     except BaseException:
         print(f"실패 staging 보존: {staging}", file=sys.stderr)

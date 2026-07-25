@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from build_stratified_mfa_review_bundle import (  # noqa: E402
     REVIEW_TIERS,
+    promote_staged_directory,
     write_review_textgrid,
 )
 from realign_eojeol_merge_output import write_4tier  # noqa: E402
@@ -69,6 +70,26 @@ class ReviewTextGridTests(unittest.TestCase):
             for intervals in tiers.values():
                 self.assertEqual(intervals[0][0], 0.0)
                 self.assertEqual(intervals[-1][1], 1.0)
+
+    def test_verified_copy_fallback_removes_incomplete_only_after_hash_match(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            staging = root / ".bundle.staging"
+            output = root / "bundle"
+            (staging / "2023").mkdir(parents=True)
+            (staging / "2023" / "sample.txt").write_text(
+                "점검", encoding="utf-8"
+            )
+            mode = promote_staged_directory(
+                staging, output, force_copy_fallback=True
+            )
+            self.assertEqual(mode, "verified_copy_fallback")
+            self.assertFalse(staging.exists())
+            self.assertFalse((output / ".INCOMPLETE").exists())
+            self.assertEqual(
+                (output / "2023" / "sample.txt").read_text(encoding="utf-8"),
+                "점검",
+            )
 
 
 if __name__ == "__main__":

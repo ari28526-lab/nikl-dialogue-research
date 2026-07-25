@@ -238,3 +238,6 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   공동 참여자 ID를 `dialogue_speaker_ids`·`co_speaker_ids`로 추가했다.
   직접 수신자 정보는 원자료에 없으므로 상대 후보로만 해석한다. 2023 목표 세션
   371행에서 연결 오류 0.
+- Dropbox 정식 bundle의 디렉터리 원자 rename이 WinError 5로 차단된 사례를
+  기록하고, `.INCOMPLETE`→전 파일 SHA256 대조→완료 표지 제거의 검증 복사
+  fallback을 추가했다.
