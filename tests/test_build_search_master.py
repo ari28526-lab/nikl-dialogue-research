@@ -145,6 +145,82 @@ class SearchMasterSessionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "필수 컬럼 누락"):
             self.build()
 
+    def test_original_form_resolves_numeric_placeholder_with_provenance(self):
+        result = pp.predict_pron_reference(
+            "무조건 1층으로 된 집",
+            "무조건 일 층으로 된 집",
+            tagged="무조건/MAG 1/SN+층/NNG+으로/JKB 되/VV+ㄴ/ETM 집/NNG",
+        )
+        self.assertIn(pp.PLACEHOLDER, result["base"]["pron_pred_hangul"])
+        self.assertNotIn(
+            pp.PLACEHOLDER, result["reference"]["pron_pred_hangul"]
+        )
+        self.assertIn("일 층으로", result["reference"]["pron_pred_hangul"])
+        self.assertEqual(
+            result["reference_source"],
+            "original_form_placeholder_resolution",
+        )
+        self.assertEqual(result["reference_status"], "resolved_original_form")
+
+    def test_unresolved_numeric_is_not_silently_guessed(self):
+        result = pp.predict_pron_reference("1층", "")
+        self.assertEqual(result["reference_status"], "unresolved_symbol")
+        self.assertEqual(result["reference_unresolved_count"], 1)
+        self.assertEqual(result["reference_form"], "1층")
+
+    def test_dialogue_participants_and_co_speakers_are_document_scoped(self):
+        source = self.root / "dialogue_context.json"
+        source.write_text(
+            json.dumps(
+                {
+                    "document": [
+                        {
+                            "id": "DOC1",
+                            "utterance": [
+                                {
+                                    "id": "U1",
+                                    "speaker_id": "SPK_B",
+                                    "original_form": "안녕",
+                                },
+                                {
+                                    "id": "U2",
+                                    "speaker_id": "SPK_A",
+                                    "original_form": "네",
+                                },
+                                {
+                                    "id": "U3",
+                                    "speaker_id": "SPK_C",
+                                    "original_form": "반가워요",
+                                },
+                            ],
+                        },
+                        {
+                            "id": "DOC2",
+                            "utterance": [
+                                {
+                                    "id": "U4",
+                                    "speaker_id": "SPK_D",
+                                    "original_form": "독백",
+                                }
+                            ],
+                        },
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        context = bsm.load_utt_extra(source)
+        self.assertEqual(
+            context["U2"]["dialogue_speaker_ids"],
+            "SPK_A | SPK_B | SPK_C",
+        )
+        self.assertEqual(context["U2"]["co_speaker_ids"], "SPK_B | SPK_C")
+        self.assertEqual(context["U2"]["n_dialogue_speakers"], 3)
+        self.assertEqual(context["U2"]["n_co_speakers"], 2)
+        self.assertEqual(context["U4"]["dialogue_id"], "DOC2")
+        self.assertEqual(context["U4"]["co_speaker_ids"], "")
+
 
 if __name__ == "__main__":
     unittest.main()

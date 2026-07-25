@@ -35,3 +35,23 @@ utt_id로 레이어(10_LAYERS CSV) 조인. 통일 파일을 정본으로 물리 
 6. [ ] 커버리지 인벤토리 갱신 + METHODS 기록
 
 관련: PLAN_2026-07-09(음성연계), PLAN_KOINA(운율), METHODS 3.5절
+
+## 2026-07-25 층화 MFA 파일럿 보완
+
+이 문서의 2026-07-11 표는 당시 슬림 3-tier+prosody 구상 기록이다. 실제
+층화 MFA 파일럿의 운영 정본은 `words / phones / morphemes / utterance`
+4-tier이며, `prosody`는 KOINA 이후 온디맨드로 추가한다.
+
+사용자 수동 검토에 따라 다음을 보완한다.
+
+- 모든 IntervalTier는 0–xmax를 빈 interval까지 포함해 연속적으로 덮는다.
+- `utterance`의 텍스트는 첫 유표 words 시작–마지막 유표 words 끝에 놓고
+  근거 있는 앞뒤 padding을 빈 interval로 보인다.
+- MFA `words/phones`의 시간·라벨은 이 표시 개선 때문에 바꾸지 않는다.
+- `original_form`과 `pron_reference`는 전량 정본 tier가 아니라 연구자 점검
+  사본에만 온디맨드로 주입한다.
+- `pron_reference`는 원전사 우선 규칙 기반 기준선이며 사전 발음 또는 실제
+  음향 실현값이 아니다.
+
+세부 근거:
+`REVIEW_MFA_pilot_manual_feedback_2026-07-25.md`.

@@ -94,11 +94,25 @@ def validate_4tier(path, expected_dur=None):
 
 
 def write_4tier(path, dur, words, phones, morphemes, form):
+    labeled_words = [
+        (begin, end, label)
+        for begin, end, label in words
+        if str(label).strip()
+    ]
+    utterance_span = (
+        (labeled_words[0][0], labeled_words[-1][1])
+        if labeled_words
+        else (0.0, dur)
+    )
     tiers = [
         interval_tier("words", words, dur),
         interval_tier("phones", phones, dur),
         interval_tier("morphemes", morphemes or [(0.0, dur, "")], dur),
-        interval_tier("utterance", [(0.0, dur, form)], dur),
+        interval_tier(
+            "utterance",
+            [(utterance_span[0], utterance_span[1], form)],
+            dur,
+        ),
     ]
     lines = ['File type = "ooTextFile"', 'Object class = "TextGrid"', "",
              "xmin = 0", f"xmax = {dur:.6f}", "tiers? <exists>",

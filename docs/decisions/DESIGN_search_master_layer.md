@@ -54,6 +54,8 @@ Parquet만 한다(중복 정본 방지 — CSV 내보내기는 필요 시 재생
 | 묶음 | 컬럼 | 출처 |
 |---|---|---|
 | 추적 | `utt_id, year, session_id, utt_seq` | 좌표계 규약 (utt_id에서 유도) |
+| 대화 문맥 | `dialogue_id, dialogue_speaker_ids, n_dialogue_speakers` | 원본 JSON document ID와 그 document의 발화자 집합 |
+| | `co_speaker_ids, n_co_speakers` | 현재 `speaker_id`를 제외한 공동 참여자 ID. 직접 수신자 표지는 아님 |
 | | `has_wav, has_tg_eojeol, quarantined` | coverage 인벤토리 + mfa_eojeol/quarantine |
 | 문서 | `category_norm, discourse_mode, topic, relation, date, in_ml2025_gold` | 04_metadata_index/file_meta.csv |
 | 화자 | `speaker_id, sex, age_norm, occupation_norm, education_ord, birthplace_norm, current_residence_norm` | speakers_normalized.csv (utt의 speaker_id로 조인) |
@@ -66,6 +68,27 @@ Parquet만 한다(중복 정본 방지 — CSV 내보내기는 필요 시 재생
 | 예측발음 | `pron_pred_hangul` — 규칙 적용 후 한글 표면형 (예: 것을→거슬) | 신규 생성 |
 | | `pron_pred_roman` — 위의 roman_mfa 표기 | 신규 생성 |
 | | `pron_pred_ipa` — `_roman_mfa_to_ipa.csv` 변환 | 신규 생성 |
+
+### 숫자·혼합표기 reference 열 — 2026-07-25 수동 검토 반영
+
+기존 form 기반 열은 재현성과 감사 때문에 덮어쓰지 않는다. 숫자·기호가 포함된
+어절 전체가 `∅`가 되어 한글 부분까지 소실되는 경우에만 `original_form`을
+대체 입력으로 시험하고, placeholder 수가 실제로 줄어들 때 다음 열에 채택한다.
+
+| 열 | 내용 |
+|---|---|
+| `pron_reference_form` | reference 계산에 실제 사용한 form 또는 original_form |
+| `pron_reference_form_roman` | 위 입력의 철자 전자 |
+| `pron_reference_hangul` | 위 입력의 규칙 기반 한글 기준 발음 |
+| `pron_reference_roman` | roman_mfa 기준 발음 |
+| `pron_reference_ipa` | IPA 기준 발음 |
+| `pron_reference_source` | `form_rule_prediction` / `original_form_placeholder_resolution` |
+| `pron_reference_status` | `resolved_form` / `resolved_original_form` / `unresolved_symbol` |
+| `pron_reference_n_eojeol` | reference 입력의 어절 수 |
+
+숫자 읽기를 기계적으로 추측하지 않는다. 원전사에도 근거가 없으면
+`unresolved_symbol`로 남긴다. 이 열은 lexicon 사전 발음 층과 실제 실현 판정
+층을 대체하지 않는다.
 
 ### 어절 정렬 규약 (문자열 컬럼 공통) — 2026-07-23 개정(A3 정합 검토 반영)
 - **모든 문자열 컬럼의 어절 수 = n_eojeol** (생성 시 전수 검증).

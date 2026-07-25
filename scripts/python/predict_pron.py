@@ -335,6 +335,61 @@ def predict_pron(form, tagged=None, flags=None, ipa_map=None):
         'align_warn': align_warn,
     }
 
+
+def predict_pron_reference(form, original_form="", tagged=None, flags=None,
+                           ipa_map=None):
+    """검색·검토용 기준 발음과 그 출처를 만든다.
+
+    정규화 form의 숫자·기호가 ``∅``로 소실될 때만 원본 JSON의
+    ``original_form``을 대체 입력으로 시험한다. 원전사 결과가 실제로
+    placeholder를 줄일 때만 채택하며, 숫자 읽기를 임의로 추측하지 않는다.
+
+    ``base``는 기존 form 기반 결과, ``reference``는 출처가 기록된 보완
+    결과다. 두 값을 함께 반환해 구판 열을 보존할 수 있게 한다.
+    """
+    base = predict_pron(
+        form, tagged=tagged, flags=flags, ipa_map=ipa_map
+    )
+    original = (original_form or "").strip()
+    if original in {"미상", "NA", "N/A"}:
+        original = ""
+
+    def unresolved_count(result):
+        return sum(
+            token.strip() == PLACEHOLDER
+            for token in result["pron_pred_hangul"].split()
+        )
+
+    base_unresolved = unresolved_count(base)
+    reference = base
+    reference_form = form
+    source = "form_rule_prediction"
+    if base_unresolved and original:
+        # original_form과 tagged는 어절·형태소 수가 다를 수 있으므로 원전사
+        # 폴백에는 정규화 form용 tagged를 억지로 결합하지 않는다.
+        candidate = predict_pron(
+            original, tagged=None, flags=flags, ipa_map=ipa_map
+        )
+        if unresolved_count(candidate) < base_unresolved:
+            reference = candidate
+            reference_form = original
+            source = "original_form_placeholder_resolution"
+
+    unresolved = unresolved_count(reference)
+    status = "unresolved_symbol" if unresolved else (
+        "resolved_original_form"
+        if source == "original_form_placeholder_resolution"
+        else "resolved_form"
+    )
+    return {
+        "base": base,
+        "reference": reference,
+        "reference_form": reference_form,
+        "reference_source": source,
+        "reference_status": status,
+        "reference_unresolved_count": unresolved,
+    }
+
 # ============================================================
 # 7. lexicon(v1) 조회부 — 형태소별 사전 발음(예외) 층 (기본 off, 규칙 확정 후 결합)
 # ============================================================

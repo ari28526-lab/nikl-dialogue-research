@@ -83,15 +83,16 @@
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
 | download_gdrive_enriched_1gi.py | 1기 enriched CSV(Drive 4.96GB) → `D:\90_ARCHIVE\1기_enriched\` 백업 (gdown 이어받기, 크기 검증) | 작성 완료·실행 대기 |
-| predict_pron.py | 철자열·예측 발음열 생성 (필수 규칙 G2P; 용언경음화 on·ㄹ비음화 off; roman_mfa·IPA·tagged_roman) | 파일럿 검증·테스트 30/30 (2026-07-23) |
+| predict_pron.py | 철자열·예측 발음열 생성. form의 숫자·기호가 `∅`로 소실될 때 원전사가 실제 정보를 회복하는 경우만 출처 추적 reference 생성 | 2023 `1층으로`→원전사 `일 층으로` 회복 파일럿 통과 |
 | preflight_search_master.py | 경로·헤더·실행기·용량과 형태분석/메타 17,156 세션 ID 집합 전수 검사 | 2026-07-24 통과 |
 | audit_search_master.py | 원본 JSON→Bareun A1→기존 search master의 세션·행·ID·form·tagged·메타·coverage·lexicon 배선을 읽기 전용 전수 감사 | 17,156세션·5,103,356행 전수 통과, 보완점 보고(2026-07-24) |
 | run_search_master.ps1 | 고정 Python으로 preflight 후 검색 마스터를 실행하고 실패 코드를 전달 | 검증 완료 |
 | pipeline_common.py | `.partial`→검증→원자 교체, 구판 archive, run ID·fingerprint 공통 유틸 | 합성 회귀검사 통과 |
-| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+규칙기반 예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest | 2026-07-23 전량 5,103,356행 생성. 단, 7/24 메타 수정 전 산출물이며 lexicon 예외 발음·coverage 미반영 — 감사·선별 재생성 대기 |
+| build_search_master.py | 발화 마스터 CSV (bareun+JSON+메타+규칙기반 예측발음). 부분 출력 차단, 기존 CSV 재검증, overwrite archive, run manifest. 원전사 기반 `pron_reference_*`, 미해결 기호 집계, document별 전체·공동 참여 화자 ID 포함 | 2023 목표 세션 371/371 격리 파일럿 통과, 참여자 연결 오류 0. 기존 전량본은 구판이며 lexicon·coverage 보완 후 archive→재생성 대기 |
 | measure_spn.py | TextGrid phones tier spn 비율 측정 (G2P 전후 비교) | 완료 (2020 27.5%→G2P 0%) |
 | build_g2p_pilot_corpus.py | MFA G2P 파일럿 격리 코퍼스 (form→lab+wav, 화자별) | 완료 |
 | stitch_session.py | 발화 클립 이어붙이기 → 연속 wav+정렬 TextGrid (원본 연속본 부재 대비) | 검증 완료 |
+| build_stratified_mfa_review_bundle.py | 통과한 층화 MFA run을 연도별 평면 폴더의 동명 WAV·lab·6-tier 점검 TextGrid·발화 CSV로 재구성. 원본 읽기 전용, 기존 출력 자동 덮어쓰기 금지 | 6개년 60발화 실자료 검증 통과 |
 | build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 미작성 (전량 CSV 후) |
 | extract_actual_pron.py | 4-tier phones 라벨·시간을 검색용 보조 레이어로 추출. **사람의 실현 판정값이 아님** | 미작성(경로명 `06_actual_pron`도 오해 방지를 위해 구현 전 재검토) |
 

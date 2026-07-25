@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from realign_eojeol_merge_output import validate_4tier, write_4tier  # noqa: E402
+from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
 
 
 class FourTierValidationTests(unittest.TestCase):
@@ -54,6 +55,27 @@ class FourTierValidationTests(unittest.TestCase):
                 "국물",
             )
             self.assertFalse(validate_4tier(output, expected_dur=2.0)["valid"])
+
+    def test_writer_adds_outer_empty_intervals_to_utterance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "sample.TextGrid"
+            write_4tier(
+                output,
+                1.0,
+                [(0.2, 0.8, "국물")],
+                [(0.2, 0.5, "k"), (0.5, 0.8, "m")],
+                [(0.2, 0.8, "국물")],
+                "국물",
+            )
+            duration, tiers = parse_mfa_textgrid(output)
+            self.assertEqual(duration, 1.0)
+            self.assertEqual(
+                tiers["utterance"],
+                [(0.0, 0.2, ""), (0.2, 0.8, "국물"), (0.8, 1.0, "")],
+            )
+            for intervals in tiers.values():
+                self.assertEqual(intervals[0][0], 0.0)
+                self.assertEqual(intervals[-1][1], 1.0)
 
 
 if __name__ == "__main__":

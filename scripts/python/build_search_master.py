@@ -64,18 +64,22 @@ BUILD_PROVENANCE = {
         "문서메타": "D:/10_LAYERS/04_metadata_index/file_meta.csv (category_norm·discourse_mode·topic·relation·date·in_ml2025_gold)",
         "화자메타": "D:/10_LAYERS/04_metadata_index/speakers_normalized.csv (_norm 컬럼)",
         "원전사·시간·비고": "D:/00_RAW/dialogue_json (original_form·start·end·note)",
+        "대화참여자": "원본 JSON document별 utterance.speaker_id 집합 (직접 수신자 아님)",
         "IPA표": "D:/10_LAYERS/03_freq_dictionaries/_roman_mfa_to_ipa.csv (빈도사전 공유)",
     },
     "예측발음_규칙": {
         "적용순서": "격음화→ㅎ탈락→구개음화→연음→중화→겹받침단순화→비음/유음→경음화(+용언 어간+어미 경음화)",
         "미적용(수의)": "ㄹ비음화·ㄴ삽입·합성어경음화·위치동화 등",
         "테스트": "predict_pron.py --selftest 30/30 통과",
+        "숫자·기호": "form 결과가 ∅일 때 original_form이 placeholder를 줄이는 경우만 reference에 채택; 그 외 unresolved_symbol",
     },
 }
 
 # 출력 컬럼(설계 §2 순서). tagged_roman은 --tagged-roman 시 form_roman 뒤 삽입.
 BASE_COLS = [
     "utt_id", "year", "session_id", "utt_seq",
+    "dialogue_id", "dialogue_speaker_ids", "n_dialogue_speakers",
+    "co_speaker_ids", "n_co_speakers",
     "has_wav", "has_tg_eojeol", "quarantined",
     "category_norm", "discourse_mode", "topic", "relation", "date",
     "in_ml2025_gold",
@@ -84,6 +88,10 @@ BASE_COLS = [
     "form", "tagged", "n_morphs", "n_eojeol",
     "original_form", "start", "end", "dur", "note",
     "form_roman", "pron_pred_hangul", "pron_pred_roman", "pron_pred_ipa",
+    "pron_reference_form", "pron_reference_form_roman",
+    "pron_reference_hangul", "pron_reference_roman", "pron_reference_ipa",
+    "pron_reference_source", "pron_reference_status",
+    "pron_reference_n_eojeol",
     "align_warn",
 ]
 META_COLS = ["category_norm", "discourse_mode", "topic", "relation", "date",
@@ -137,15 +145,37 @@ def build_json_index(year):
 
 
 def load_utt_extra(json_path):
-    """세션 JSON -> {utt_id: (original_form, start, end, note)}."""
+    """세션 JSON -> 발화별 원전사·시간·document 공동 참여자 문맥."""
     extra = {}
     with open(json_path, encoding="utf-8") as f:
         doc = json.load(f)
     for d in doc.get("document", []):
-        for u in d.get("utterance", []):
-            extra[u.get("id", "")] = (
-                u.get("original_form", ""), u.get("start", ""),
-                u.get("end", ""), u.get("note", ""))
+        utterances = d.get("utterance", [])
+        dialogue_id = d.get("id", "")
+        participants = sorted({
+            str(u.get("speaker_id", "")).strip()
+            for u in utterances
+            if str(u.get("speaker_id", "")).strip()
+        })
+        for u in utterances:
+            utt_id = u.get("id", "")
+            if not utt_id:
+                continue
+            if utt_id in extra:
+                raise ValueError(f"{json_path}: 중복 발화 ID {utt_id}")
+            current = str(u.get("speaker_id", "")).strip()
+            co_speakers = [speaker for speaker in participants if speaker != current]
+            extra[utt_id] = {
+                "original_form": u.get("original_form", ""),
+                "start": u.get("start", ""),
+                "end": u.get("end", ""),
+                "note": u.get("note", ""),
+                "dialogue_id": dialogue_id,
+                "dialogue_speaker_ids": " | ".join(participants),
+                "n_dialogue_speakers": len(participants),
+                "co_speaker_ids": " | ".join(co_speakers),
+                "n_co_speakers": len(co_speakers),
+            }
     return extra
 
 
@@ -199,21 +229,76 @@ def build_row(u, year, meta, spk, extra, ipa_map, opts, stats):
     if ex is None:
         stats["json_missing"] += 1
         row["original_form"] = row["note"] = MISSING
+        for col in (
+            "dialogue_id",
+            "dialogue_speaker_ids",
+            "n_dialogue_speakers",
+            "co_speaker_ids",
+            "n_co_speakers",
+        ):
+            row[col] = MISSING
     else:
-        of, st, en, note = ex
-        row["original_form"], row["start"], row["end"], row["note"] = \
-            of, st, en, note
+        for col in (
+            "original_form",
+            "start",
+            "end",
+            "note",
+            "dialogue_id",
+            "dialogue_speaker_ids",
+            "n_dialogue_speakers",
+            "co_speaker_ids",
+            "n_co_speakers",
+        ):
+            row[col] = ex.get(col, "")
         try:
-            row["dur"] = round(float(en) - float(st), 3)
+            row["dur"] = round(
+                float(row["end"]) - float(row["start"]), 3
+            )
         except (TypeError, ValueError):
             row["dur"] = ""
+        participants = {
+            item.strip()
+            for item in row["dialogue_speaker_ids"].split("|")
+            if item.strip()
+        }
+        co_speakers = {
+            item.strip()
+            for item in row["co_speaker_ids"].split("|")
+            if item.strip()
+        }
+        if (
+            row["speaker_id"] not in participants
+            or row["speaker_id"] in co_speakers
+            or len(participants) != int(row["n_dialogue_speakers"] or 0)
+            or len(co_speakers) != int(row["n_co_speakers"] or 0)
+        ):
+            stats["dialogue_link_error"] += 1
 
-    # 예측 발음
-    d = pp.predict_pron(form, tagged=tagged, ipa_map=ipa_map)
+    # 예측 발음. 기존 form 기반 열은 보존하고, 숫자·기호 때문에 어절 전체가
+    # ∅로 소실될 때 original_form이 더 많은 정보를 제공하면 출처를 명시한
+    # reference 열에만 채택한다. 숫자 읽기를 임의 추측하지 않는다.
+    pron = pp.predict_pron_reference(
+        form,
+        row["original_form"],
+        tagged=tagged,
+        ipa_map=ipa_map,
+    )
+    d = pron["base"]
+    ref = pron["reference"]
     row["form_roman"] = d["form_roman"]
     row["pron_pred_hangul"] = d["pron_pred_hangul"]
     row["pron_pred_roman"] = d["pron_pred_roman"]
     row["pron_pred_ipa"] = d["pron_pred_ipa"]
+    row["pron_reference_form"] = pron["reference_form"]
+    row["pron_reference_form_roman"] = ref["form_roman"]
+    row["pron_reference_hangul"] = ref["pron_pred_hangul"]
+    row["pron_reference_roman"] = ref["pron_pred_roman"]
+    row["pron_reference_ipa"] = ref["pron_pred_ipa"]
+    row["pron_reference_source"] = pron["reference_source"]
+    row["pron_reference_status"] = pron["reference_status"]
+    row["pron_reference_n_eojeol"] = ref["n_eojeol"]
+    if pron["reference_status"] == "unresolved_symbol":
+        stats["pron_reference_unresolved"] += 1
     row["align_warn"] = d["align_warn"]
     if d["align_warn"]:
         stats["align_warn"] += 1
@@ -265,6 +350,8 @@ def validate_session_csv(path, expected_cols, expected_ids):
         "path": str(path), "valid": False, "reasons": [], "rows": 0,
         "meta_missing": 0, "speaker_missing": 0, "json_missing": 0,
         "align_warn": 0, "eojeol_mismatch": 0,
+        "pron_reference_unresolved": 0,
+        "dialogue_link_error": 0,
     }
     try:
         with open(path, encoding="utf-8-sig", newline="") as f:
@@ -281,6 +368,34 @@ def validate_session_csv(path, expected_cols, expected_ids):
                 result["speaker_missing"] += row.get("sex") == MISSING
                 result["json_missing"] += row.get("original_form") == MISSING
                 result["align_warn"] += bool(row.get("align_warn"))
+                result["pron_reference_unresolved"] += (
+                    row.get("pron_reference_status") == "unresolved_symbol"
+                )
+                if row.get("original_form") != MISSING:
+                    participants = {
+                        item.strip()
+                        for item in row.get("dialogue_speaker_ids", "").split("|")
+                        if item.strip()
+                    }
+                    co_speakers = {
+                        item.strip()
+                        for item in row.get("co_speaker_ids", "").split("|")
+                        if item.strip()
+                    }
+                    try:
+                        participant_count = int(
+                            row.get("n_dialogue_speakers") or 0
+                        )
+                        co_count = int(row.get("n_co_speakers") or 0)
+                    except ValueError:
+                        participant_count = co_count = -1
+                    if (
+                        row.get("speaker_id") not in participants
+                        or row.get("speaker_id") in co_speakers
+                        or len(participants) != participant_count
+                        or len(co_speakers) != co_count
+                    ):
+                        result["dialogue_link_error"] += 1
                 try:
                     n_eojeol = int(row.get("n_eojeol") or 0)
                 except ValueError:
@@ -289,6 +404,24 @@ def validate_session_csv(path, expected_cols, expected_ids):
                     value = row.get(col, "")
                     if n_eojeol < 0 or (
                         value and len(value.split(EOJEOL_SEP)) != n_eojeol
+                    ):
+                        result["eojeol_mismatch"] += 1
+                        break
+                try:
+                    reference_n = int(
+                        row.get("pron_reference_n_eojeol") or 0
+                    )
+                except ValueError:
+                    reference_n = -1
+                for col in (
+                    "pron_reference_form_roman",
+                    "pron_reference_roman",
+                    "pron_reference_ipa",
+                ):
+                    value = row.get(col, "")
+                    if reference_n < 0 or (
+                        value
+                        and len(value.split(EOJEOL_SEP)) != reference_n
                     ):
                         result["eojeol_mismatch"] += 1
                         break
@@ -324,6 +457,8 @@ def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
     stats = {"session": session_id, "n_utt": len(utts), "n_row": 0,
              "meta_missing": 0, "speaker_missing": 0, "json_missing": 0,
              "align_warn": 0, "eojeol_mismatch": 0, "json_found": jp is not None,
+             "pron_reference_unresolved": 0,
+             "dialogue_link_error": 0,
              "status": "pending", "archive": "", "partial": ""}
 
     out_dir = opts["output_root"] / str(year)
@@ -342,6 +477,10 @@ def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
                 json_missing=existing["json_missing"],
                 align_warn=existing["align_warn"],
                 eojeol_mismatch=existing["eojeol_mismatch"],
+                pron_reference_unresolved=existing[
+                    "pron_reference_unresolved"
+                ],
+                dialogue_link_error=existing["dialogue_link_error"],
             )
             return stats
         stats["replace_reason"] = (
@@ -362,6 +501,19 @@ def build_session(bareun_csv, year, meta, spk, json_idx, ipa_map, opts):
             ne = row["n_eojeol"]
             for col in ("form_roman", "pron_pred_roman", "pron_pred_ipa"):
                 if row[col] and ne and len(row[col].split(EOJEOL_SEP)) != ne:
+                    stats["eojeol_mismatch"] += 1
+                    break
+            reference_ne = row["pron_reference_n_eojeol"]
+            for col in (
+                "pron_reference_form_roman",
+                "pron_reference_roman",
+                "pron_reference_ipa",
+            ):
+                if (
+                    row[col]
+                    and reference_ne
+                    and len(row[col].split(EOJEOL_SEP)) != reference_ne
+                ):
                     stats["eojeol_mismatch"] += 1
                     break
             w.writerow(row)
@@ -461,6 +613,8 @@ def main():
 
     grand = {"n_utt": 0, "n_row": 0, "meta_missing": 0, "speaker_missing": 0,
              "json_missing": 0, "align_warn": 0, "eojeol_mismatch": 0,
+             "pron_reference_unresolved": 0,
+             "dialogue_link_error": 0,
              "sessions": 0, "created": 0, "validated_existing": 0,
              "archived": 0, "json_missing_sessions": 0}
     for year in years:
@@ -480,7 +634,8 @@ def main():
             if st.get("archive"):
                 grand["archived"] += 1
             for k in ("n_utt", "n_row", "meta_missing", "speaker_missing",
-                      "json_missing", "align_warn", "eojeol_mismatch"):
+                      "json_missing", "align_warn", "eojeol_mismatch",
+                      "pron_reference_unresolved", "dialogue_link_error"):
                 grand[k] += st[k]
             if not st["json_found"]:
                 grand["json_missing_sessions"] += 1
@@ -504,7 +659,10 @@ def summarize(grand, lines, report, opts):
               f"{grand['speaker_missing']}  JSON 발화결측: {grand['json_missing']}",
               f"  JSON 없는 세션: {grand['json_missing_sessions']}",
               f"  정렬경고(form-tagged): {grand['align_warn']}  "
-              f"어절수 불일치: {grand['eojeol_mismatch']}"]
+              f"어절수 불일치: {grand['eojeol_mismatch']}",
+              f"  기준발음 미해결 숫자·기호: "
+              f"{grand['pron_reference_unresolved']}",
+              f"  대화 참여자 연결 오류: {grand['dialogue_link_error']}"]
     row_ok = grand["n_utt"] == grand["n_row"]
     eoj_ok = grand["eojeol_mismatch"] == 0
     meta_ok = grand["meta_missing"] == 0
@@ -512,7 +670,8 @@ def summarize(grand, lines, report, opts):
         opts["allow_missing_json"]
         or (grand["json_missing"] == 0 and grand["json_missing_sessions"] == 0)
     )
-    verdict_ok = row_ok and eoj_ok and meta_ok and json_ok
+    dialogue_ok = grand["dialogue_link_error"] == 0
+    verdict_ok = row_ok and eoj_ok and meta_ok and json_ok and dialogue_ok
     verdict = "✅ 검증 통과" if verdict_ok else "❌ 검증 실패"
     lines += ["", f"판정: {verdict}"]
     report.parent.mkdir(parents=True, exist_ok=True)

@@ -34,12 +34,24 @@ def esc(text: str) -> str:
 def interval_tier(name, intervals, dur):
     """intervals: [(begin, end, text)] -> TextGrid item 텍스트."""
     fixed = []
-    for b, e, t in intervals:
-        e = min(e, dur)
-        if e - b > 1e-6:
-            fixed.append((b, e, t))
-    if fixed and dur - fixed[-1][1] > 1e-6:
-        fixed.append((fixed[-1][1], dur, ""))
+    cursor = 0.0
+    for b, e, t in sorted(intervals, key=lambda row: (row[0], row[1])):
+        b = max(0.0, float(b))
+        e = min(float(e), dur)
+        if e - b <= 1e-6:
+            continue
+        if b < cursor - 1e-6:
+            raise ValueError(
+                f"{name} interval overlap: begin={b:.6f} < cursor={cursor:.6f}"
+            )
+        if b - cursor > 1e-6:
+            fixed.append((cursor, b, ""))
+        fixed.append((b, e, t))
+        cursor = e
+    if not fixed:
+        fixed.append((0.0, dur, ""))
+    elif dur - cursor > 1e-6:
+        fixed.append((cursor, dur, ""))
     lines = [f'        class = "IntervalTier"',
              f'        name = "{name}"',
              f"        xmin = 0",
@@ -54,10 +66,24 @@ def interval_tier(name, intervals, dur):
 
 
 def write_textgrid(path, dur, words, phones, form):
+    labeled_words = [
+        (begin, end, label)
+        for begin, end, label in words
+        if str(label).strip() not in SILENCE_WORDS
+    ]
+    utterance_span = (
+        (labeled_words[0][0], labeled_words[-1][1])
+        if labeled_words
+        else (0.0, dur)
+    )
     tiers = [
         interval_tier("words", words, dur),
         interval_tier("phones", phones, dur),
-        interval_tier("utterance", [(0.0, dur, form)], dur),
+        interval_tier(
+            "utterance",
+            [(utterance_span[0], utterance_span[1], form)],
+            dur,
+        ),
     ]
     lines = ['File type = "ooTextFile"', 'Object class = "TextGrid"', "",
              "xmin = 0", f"xmax = {dur:.6f}", "tiers? <exists>",

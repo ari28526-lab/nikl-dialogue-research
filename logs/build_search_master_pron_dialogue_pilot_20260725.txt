@@ -1,0 +1,17 @@
+검색 마스터 빌드 — pron_dialogue_pilot_20260725
+옵션: year=2023 pilot=None tagged_roman=True coverage=False overwrite=False
+출력: C:\Users\ari30\research\2026_summer_research\work\search_master_pron_dialogue_pilot_20260725
+
+[2023] 대상 1개
+  1/1 SDRW2300000891: 발화 371 행 371 정렬경고 32 어절불일치 0 상태 created
+
+── 합계 ──
+  대상 세션: 1 (생성 1, 기존 검증 0, 구판 보존 0)
+  발화(입력): 371  행(출력): 371
+  메타 결측: 0  화자 결측: 0  JSON 발화결측: 0
+  JSON 없는 세션: 0
+  정렬경고(form-tagged): 32  어절수 불일치: 0
+  기준발음 미해결 숫자·기호: 1
+  대화 참여자 연결 오류: 0
+
+판정: ✅ 검증 통과
