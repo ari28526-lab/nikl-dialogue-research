@@ -240,4 +240,5 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   371행에서 연결 오류 0.
 - Dropbox 정식 bundle의 디렉터리 원자 rename이 WinError 5로 차단된 사례를
   기록하고, `.INCOMPLETE`→전 파일 SHA256 대조→완료 표지 제거의 검증 복사
-  fallback을 추가했다.
+  fallback을 추가했다. 검증 후 staging 디렉터리 정리만 동기화 lock으로
+  실패하는 경우는 완료본을 실패로 되돌리지 않고 비치명 정리 경고로 분리했다.

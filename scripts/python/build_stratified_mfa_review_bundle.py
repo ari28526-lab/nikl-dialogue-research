@@ -377,11 +377,118 @@ def promote_staged_directory(
                 ".INCOMPLETE를 보존하고 중단"
             )
         incomplete.unlink()
-        shutil.rmtree(staging)
-        return "verified_copy_fallback"
+        try:
+            shutil.rmtree(staging)
+            return "verified_copy_fallback"
+        except PermissionError:
+            # Dropbox가 동기화 중인 staging 디렉터리 handle을 잡고 있을 수
+            # 있다. 전 파일 검증과 완료 표지 제거가 끝났으므로 최종 산출은
+            # 유효하며, 빈/중복 staging 정리만 후속 비치명 작업으로 남긴다.
+            return "verified_copy_fallback_staging_retained"
     except BaseException:
         # 부분 출력과 .INCOMPLETE를 보존해 완료본으로 오인하지 않게 한다.
         raise
+
+
+def collapse_adjacent(
+    intervals: list[tuple[float, float, str]],
+) -> list[tuple[float, float, str]]:
+    """경계만 추가해 같은 라벨이 연속된 구간을 원 비교용으로 합친다."""
+    collapsed: list[tuple[float, float, str]] = []
+    for begin, end, label in intervals:
+        if (
+            collapsed
+            and collapsed[-1][2] == label
+            and abs(collapsed[-1][1] - begin) <= 1e-6
+        ):
+            collapsed[-1] = (collapsed[-1][0], end, label)
+        else:
+            collapsed.append((begin, end, label))
+    return collapsed
+
+
+def verify_existing_bundle(
+    run_root: Path, output_root: Path, project_root: Path
+) -> dict:
+    """기존 점검 bundle을 D: 원 run과 다시 대조하고 보고서를 갱신한다."""
+    safe_output_paths(run_root, output_root)
+    if not output_root.is_dir():
+        raise FileNotFoundError(f"기존 bundle 없음: {output_root}")
+    if (output_root / ".INCOMPLETE").exists():
+        raise RuntimeError("기존 bundle에 .INCOMPLETE가 있어 완료 검증 불가")
+    manifest = read_csv(run_root / "selection_manifest.csv")
+    index_rows = read_csv(output_root / "INDEX_ALL.csv")
+    if len(manifest) != 60 or len(index_rows) != 60:
+        raise RuntimeError(
+            f"60발화 수량 불일치: manifest={len(manifest)}, "
+            f"index={len(index_rows)}"
+        )
+    index_ids = {row["utt_id"] for row in index_rows}
+    if index_ids != {row["utt_id"] for row in manifest}:
+        raise RuntimeError("manifest–INDEX utt_id 집합 불일치")
+
+    for item in manifest:
+        year = item["year"]
+        utt_id = item["utt_id"]
+        speaker_id = item["speaker_id"]
+        source_wav = run_root / item["corpus_wav_relpath"]
+        source_lab = run_root / item["corpus_lab_relpath"]
+        review_wav = output_root / year / f"{utt_id}.wav"
+        review_lab = output_root / year / f"{utt_id}.lab"
+        review_tg = output_root / year / f"{utt_id}.TextGrid"
+        review_csv = output_root / year / f"{utt_id}.csv"
+        for source, copied in (
+            (source_wav, review_wav),
+            (source_lab, review_lab),
+        ):
+            if not copied.is_file() or sha256_file(source) != sha256_file(copied):
+                raise RuntimeError(f"복사 해시 불일치: {copied}")
+        source_tg = (
+            run_root
+            / "textgrid_4tier"
+            / year
+            / speaker_id
+            / f"{utt_id}.TextGrid"
+        )
+        _, source_tiers = parse_mfa_textgrid(source_tg)
+        _, review_tiers = parse_mfa_textgrid(review_tg)
+        if list(review_tiers) != REVIEW_TIERS:
+            raise RuntimeError(f"review tier 불일치: {review_tg}")
+        for tier_name in ("words", "phones", "morphemes"):
+            if collapse_adjacent(source_tiers[tier_name]) != collapse_adjacent(
+                review_tiers[tier_name]
+            ):
+                raise RuntimeError(
+                    f"원 tier 의미 변경 감지: {utt_id}/{tier_name}"
+                )
+        detail = read_csv(review_csv)
+        if len(detail) != 1 or detail[0].get("utt_id") != utt_id:
+            raise RuntimeError(f"발화별 CSV 불일치: {review_csv}")
+
+    report_path = output_root / "BUILD_REPORT.json"
+    report = json.loads(report_path.read_text(encoding="utf-8-sig"))
+    expected_files = int(report.get("files_expected") or 0)
+    actual_files = sum(1 for path in output_root.rglob("*") if path.is_file())
+    if actual_files != expected_files:
+        raise RuntimeError(
+            f"bundle 파일 수 불일치: {actual_files}/{expected_files}"
+        )
+    report.update({
+        "verified_at": now_iso(),
+        "verified_git_commit": git_commit(project_root),
+        "promotion_mode": report.get("promotion_mode")
+        or "verified_copy_fallback_staging_retained",
+        "verification": {
+            "utterances": len(manifest),
+            "wav_lab_sha256_match": len(manifest) * 2,
+            "source_tier_semantic_match": len(manifest) * 3,
+            "per_utterance_csv_match": len(manifest),
+            "files": actual_files,
+        },
+        "status": "passed",
+    })
+    atomic_write_json(report_path, report)
+    return report
 
 
 def build_bundle(run_root: Path, output_root: Path, project_root: Path) -> dict:
@@ -613,20 +720,36 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path(__file__).resolve().parents[2],
     )
+    parser.add_argument(
+        "--verify-existing",
+        action="store_true",
+        help="기존 output을 D: run과 전수 대조하고 BUILD_REPORT를 갱신",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    report = build_bundle(
-        args.run_root.resolve(),
-        args.output_root.resolve(),
-        args.project_root.resolve(),
-    )
-    print(
-        f"점검 묶음 완료: {report['utterances']}발화 / "
-        f"{report['output_root']}"
-    )
+    if args.verify_existing:
+        report = verify_existing_bundle(
+            args.run_root.resolve(),
+            args.output_root.resolve(),
+            args.project_root.resolve(),
+        )
+        print(
+            f"기존 점검 묶음 검증 완료: {report['utterances']}발화 / "
+            f"{report['output_root']}"
+        )
+    else:
+        report = build_bundle(
+            args.run_root.resolve(),
+            args.output_root.resolve(),
+            args.project_root.resolve(),
+        )
+        print(
+            f"점검 묶음 완료: {report['utterances']}발화 / "
+            f"{report['output_root']}"
+        )
     return 0
 
 

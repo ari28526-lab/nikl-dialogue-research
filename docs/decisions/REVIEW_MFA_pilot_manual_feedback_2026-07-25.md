@@ -184,6 +184,12 @@ rename을 일시 차단한 것으로 판단했다. D: 원본은 읽기만 했고
 오인하지 않게 한다. 승격 방식은 `BUILD_REPORT.json`의 `promotion_mode`에
 기록한다.
 
+두 번째 Dropbox 시도에서는 전 파일 복사·SHA256 대조와 `.INCOMPLETE` 제거까지
+완료됐으나, 동기화 프로세스가 staging 디렉터리 handle을 잡고 있어 마지막
+`rmtree`만 WinError 32로 실패했다. 이 경우 최종 산출물은 이미 검증됐으므로
+비치명 `verified_copy_fallback_staging_retained`로 처리하고, staging 정리만
+후속 작업으로 남기도록 수정했다.
+
 ## 8. 연구적 해석 제한
 
 - `pron_reference`: 원전사 우선 규칙 기반 기준 발음
