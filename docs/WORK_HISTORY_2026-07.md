@@ -242,3 +242,22 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   기록하고, `.INCOMPLETE`→전 파일 SHA256 대조→완료 표지 제거의 검증 복사
   fallback을 추가했다. 검증 후 staging 디렉터리 정리만 동기화 lock으로
   실패하는 경우는 완료본을 실패로 되돌리지 않고 비치명 정리 경고로 분리했다.
+
+## 2026-07-25 — MFA 파일럿 연구자 검토 Excel
+
+- 사용자가 60개 파일럿을 쉽게 판정할 수 있는 시트를 요청했다.
+- `Spreadsheets` 전용 artifact runtime이 현재 세션에 로드되지 않아 사용자가
+  `openpyxl` 우회를 명시적으로 승인했다. MFA Python 환경에 openpyxl 3.1.5와
+  et-xmlfile 2.0.0을 설치했다.
+- `build_mfa_pilot_review_workbook.py`를 추가했다. 원본 INDEX를 별도 시트로
+  보존하고, 검토입력 드롭다운·WAV/TextGrid/CSV/LAB 상대경로 링크·연도별
+  진행률 수식·두 우선 사례 표시를 생성한다.
+- 필수 열·고유 발화·관련 파일 존재를 먼저 검사하고 `.partial.xlsx`를 다시
+  열어 시트·행·수식·드롭다운·링크를 확인한 뒤에만 최종 파일로 교체한다.
+- 설계와 해석 제한은
+  `docs/decisions/DESIGN_mfa_pilot_review_workbook_2026-07-25.md`에 기록했다.
+- 생성본을 다시 열어 60행·240개 링크·4종 드롭다운·2개 우선 사례·수식을
+  검사하고 프로젝트 보존본과 Dropbox 공식본의 SHA256 일치를 확인했다.
+- Excel 16.0 COM 자동 렌더링은 `Workbooks.Open`에서 실패했다. 검증용으로
+  시작된 제목 없는 Excel 프로세스는 종료했으며, 첫 수동 열기에서 화면 배치와
+  상대경로 링크를 확인하도록 제한을 기록했다.

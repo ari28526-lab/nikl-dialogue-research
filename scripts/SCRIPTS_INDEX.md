@@ -93,6 +93,7 @@
 | build_g2p_pilot_corpus.py | MFA G2P 파일럿 격리 코퍼스 (form→lab+wav, 화자별) | 완료 |
 | stitch_session.py | 발화 클립 이어붙이기 → 연속 wav+정렬 TextGrid (원본 연속본 부재 대비) | 검증 완료 |
 | build_stratified_mfa_review_bundle.py | 통과한 층화 MFA run을 연도별 평면 폴더의 동명 WAV·lab·6-tier 점검 TextGrid·발화 CSV로 재구성. 원본 읽기 전용, 기존 출력 자동 덮어쓰기 금지 | 6개년 60발화 실자료 검증 통과 |
+| build_mfa_pilot_review_workbook.py | 파일럿 INDEX에서 드롭다운·상대경로 파일 링크·연도별 진행률 수식·원본 보존 시트가 있는 연구자 검토 `.xlsx` 생성. partial 검증 후 교체, 기존 출력 보호 | 2026-07-25 생성·검증 |
 | build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 미작성 (전량 CSV 후) |
 | extract_actual_pron.py | 4-tier phones 라벨·시간을 검색용 보조 레이어로 추출. **사람의 실현 판정값이 아님** | 미작성(경로명 `06_actual_pron`도 오해 방지를 위해 구현 전 재검토) |
 
