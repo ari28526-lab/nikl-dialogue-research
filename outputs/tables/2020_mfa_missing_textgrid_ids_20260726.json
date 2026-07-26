@@ -1,0 +1,16 @@
+{
+  "year": "2020",
+  "lab_root": "D:\\20_AUDIO\\03_wav\\individual\\2020",
+  "textgrid_root": "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2020",
+  "lab_ids": 869840,
+  "textgrid_ids": 866196,
+  "lab_without_textgrid": 3644,
+  "textgrid_without_lab": 0,
+  "textgrid_without_lab_examples": [],
+  "duplicate_lab_ids": 0,
+  "duplicate_textgrid_ids": 0,
+  "missing_with_wav": 3644,
+  "missing_without_wav": 0,
+  "status": "success",
+  "output_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\tables\\2020_mfa_missing_textgrid_ids_20260726.csv"
+}

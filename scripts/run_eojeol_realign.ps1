@@ -22,6 +22,41 @@ param(
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $root = Split-Path -Parent $PSScriptRoot
+
+# 실행 중인 다년 배치를 연도 경계에서 안전하게 멈추기 위한 run별 요청.
+# 이미 시작한 연도에는 영향을 주지 않고, 바깥 wrapper가 다음 연도의 이
+# 스크립트를 새 프로세스로 호출할 때만 검사한다. 요청 파일은 run ID에
+# 묶여 있어 다른 실행에는 적용되지 않는다.
+if (-not [string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
+    $runIdHint = Split-Path -Leaf $SearchMasterRoot
+    $pauseRequestPath = Join-Path $root (
+        "work\control\pause_after_year_{0}.json" -f $runIdHint
+    )
+    if (Test-Path -LiteralPath $pauseRequestPath) {
+        try {
+            $pauseRequest = Get-Content -LiteralPath $pauseRequestPath -Raw `
+                -Encoding UTF8 | ConvertFrom-Json
+            if ([string]$pauseRequest.run_id -ne $runIdHint) {
+                throw "run_id 불일치(request=$($pauseRequest.run_id), current=$runIdHint)"
+            }
+            $pauseAfterYear = [int]$pauseRequest.pause_after_year
+            if ($pauseAfterYear -notin @(2020, 2021, 2022, 2023, 2024, 2025)) {
+                throw "pause_after_year 허용 범위 위반: $pauseAfterYear"
+            }
+        } catch {
+            Write-Error "연도 경계 일시정지 요청 해석 실패: $($_.Exception.Message)"
+            exit 74
+        }
+        if ([int]$Year -gt $pauseAfterYear) {
+            Write-Host (
+                "요청에 따라 $pauseAfterYear 완료 뒤 일시정지: " +
+                "$Year 작업은 시작하지 않음 ($pauseRequestPath)"
+            ) -ForegroundColor Yellow
+            exit 75
+        }
+    }
+}
+
 $configPath = Join-Path $root "config\paths.json"
 try {
     $cfg = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json

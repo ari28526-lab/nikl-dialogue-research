@@ -14,13 +14,20 @@ param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
     [switch]$PreferD,
-    [switch]$SkipSearchMasterBuild
+    [switch]$SkipSearchMasterBuild,
+    [ValidateSet('','2020','2021','2022','2023','2024','2025')]
+    [string]$PauseAfterYear = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $root 'config\paths.json'
 $pythonDir = Join-Path $PSScriptRoot 'python'
+
+if ($PauseAfterYear -and -not ($Years -contains $PauseAfterYear)) {
+    Write-Error "-PauseAfterYear $PauseAfterYear 이 -Years 목록에 없음"
+    exit 1
+}
 
 function Expand-CfgPath($value) {
     return [IO.Path]::GetFullPath(
@@ -100,6 +107,8 @@ $completed = New-Object System.Collections.Generic.List[string]
 $status = 'running'
 $failure = $null
 $exitCode = 1
+$pausedAfterYear = $null
+$pausedBeforeYear = $null
 Start-Transcript -LiteralPath $transcript -Force | Out-Null
 try {
     Write-Host "pre-MFA/MFA 안전 배치 시작: $RunId" -ForegroundColor Cyan
@@ -158,13 +167,37 @@ try {
         )
         if ($PreferD) { $realignArgs += '-PreferD' }
         & powershell.exe @realignArgs
-        if ($LASTEXITCODE -ne 0) {
-            throw "$year MFA/병합 실패(exit $LASTEXITCODE); 다음 연도는 실행하지 않음"
+        $yearExitCode = $LASTEXITCODE
+        if ($yearExitCode -eq 75) {
+            $pausedBeforeYear = $year
+            if ($completed.Count -gt 0) {
+                $pausedAfterYear = $completed[$completed.Count - 1]
+            }
+            $status = 'paused'
+            $exitCode = 0
+            Write-Host (
+                "===== 의도적 일시정지: $pausedAfterYear 완료, " +
+                "$pausedBeforeYear 미시작 ====="
+            ) -ForegroundColor Yellow
+            break
+        }
+        if ($yearExitCode -ne 0) {
+            throw "$year MFA/병합 실패(exit $yearExitCode); 다음 연도는 실행하지 않음"
         }
         $completed.Add($year)
+        if ($PauseAfterYear -and $year -eq $PauseAfterYear) {
+            $pausedAfterYear = $year
+            $status = 'paused'
+            $exitCode = 0
+            Write-Host "===== $year 완료 뒤 요청에 따라 일시정지 =====" `
+                -ForegroundColor Yellow
+            break
+        }
     }
-    $status = 'passed'
-    $exitCode = 0
+    if ($status -eq 'running') {
+        $status = 'passed'
+        $exitCode = 0
+    }
 } catch {
     $status = 'failed'
     $failure = $_.Exception.Message
@@ -176,12 +209,17 @@ try {
         years_requested = $Years
         years_completed = @($completed)
         prefer_d = [bool]$PreferD
+        pause_after_year_requested = $PauseAfterYear
+        paused_after_year = $pausedAfterYear
+        paused_before_year = $pausedBeforeYear
         failed_reason = $failure
         pre_mfa_root = $preMfaRoot
         transcript = $transcript
         finished_at = (Get-Date).ToString('o')
         next_action = if ($status -eq 'passed') {
             '전수 QC 후에만 정본 승격; 자동 승격 금지'
+        } elseif ($status -eq 'paused') {
+            '완료 연도 QC·병목 개선 뒤 남은 연도만 명시해 재개'
         } else {
             'transcript와 D:\mfa_eojeol\logs의 해당 연도 로그 확인'
         }

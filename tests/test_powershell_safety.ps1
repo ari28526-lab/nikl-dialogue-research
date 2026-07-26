@@ -59,6 +59,8 @@ foreach ($path in $files) {
             'promotion_required',
             '[switch]$PreferD',
             'if ($PreferD)',
+            'pause_after_year_',
+            'exit 75',
             'exit 1'
         )) {
             if (-not $text.Contains($required)) {
@@ -86,7 +88,11 @@ foreach ($path in $files) {
             'if ($PreferD)',
             "'-PreferD'",
             'prefer_d = [bool]$PreferD',
-            'run_eojeol_realign.ps1'
+            'run_eojeol_realign.ps1',
+            '[string]$PauseAfterYear',
+            "status = 'paused'",
+            'paused_after_year',
+            '$yearExitCode -eq 75'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("pre-MFA 안전 wrapper D 우선 가드 누락: $required")

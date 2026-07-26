@@ -396,3 +396,32 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   않았다.
 - PowerShell BOM·AST·필수 D 우선 전달 검사 5/5와 Python unittest 41/41을
   통과했다. 정식 무인 명령은 기존 RunId에 `-PreferD`를 붙인다.
+
+## 2026-07-25~26 — 2020 pre-MFA·MFA 전 단계 완주와 의도적 일시정지
+
+- `pre_mfa_v1_20260725`로 510만행 pre-MFA CSV를 동결한 뒤 2020
+  lab·MFA·4-tier 병합을 처음부터 끝까지 실행했다.
+- MFA는 lab 869,840개 중 TextGrid 866,196개를 만들었다(99.58%).
+  3,644개는 기본 beam 10과 retry beam 40에서도 난정렬로 남아,
+  전체 재실행이 아니라 residual ID 부분 재시도 대상으로 분리했다.
+- lab−staging 차집합을 전수 계산해 3,644 ID를
+  `outputs/tables/2020_mfa_missing_textgrid_ids_20260726.csv`로 고정했다.
+  반대 차집합·중복 ID는 0이고, 215세션의 3,644건 모두 WAV가 존재한다.
+- MFA export는 00:30~16:27 약 15시간 57분 걸렸다. 4개 batch/worker를
+  의도한 코드에서 실제 export worker는 하나만 생존해 사실상 순차
+  처리됐으며, 2021 전에 고칠 최우선 병목으로 기록했다.
+- 4-tier 병합은 866,196개를 전부 새로 만들고 실패·form 누락·morpheme
+  누락 0으로 끝났다. 독립 전수 열거도 866,196개·0바이트 0이었고,
+  15개 균등 표본의 네 tier 좌우 0→duration 연속 경계가 통과했다.
+- 2020 완료 뒤 run별 emergency pause 요청으로 2021 child를 config 접근
+  전에 exit 75로 차단했다. 2021 temp/output/staging/marker는 모두 없다.
+- 기존 wrapper가 이 정상 pause를 `failed`로 기록한 상태모델 결함을 확인해
+  `-PauseAfterYear`와 `status=paused` 처리를 추가했다.
+- 원자료와 기존 `06_textgrid_eojeol` 정본은 수정·승격하지 않았다.
+  2020 결과는 `07_textgrid_eojeol_g2p_staging\2020`에 있다.
+- 상세 근거·시간·디스크·시행착오는
+  `decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md`, 병목과
+  최소 재실행 설계는
+  `decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`에 정리했다.
+- 수정 후 PowerShell 안전성 검사 5/5와 Python unittest 42/42를 다시
+  통과했다.

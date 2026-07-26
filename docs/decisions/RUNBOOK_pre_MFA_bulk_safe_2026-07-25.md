@@ -92,6 +92,20 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   -RunId "pre_mfa_v1_20260725" -Years 2020 -PreferD
 ```
 
+여러 연도를 요청하되 특정 연도 완료 경계에서 정상 일시정지하려면:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+  "C:\Users\ari30\research\2026_summer_research\scripts\run_pre_mfa_bulk_safe.ps1" `
+  -RunId "새_RUN_ID" -PreferD -PauseAfterYear 2020
+```
+
+`-PauseAfterYear`는 지정 연도의 align·4-tier merge·marker·중간출력 정리를
+모두 끝낸 뒤 멈춘다. summary는 실패가 아니라 `status=paused`,
+`paused_after_year`, `paused_before_year`를 기록한다. 실행 중 새로 멈춰야
+할 때는 run별 emergency pause 요청이 다음 연도의 config·temp 접근 전에
+exit 75를 내고, wrapper가 이를 정상 pause로 해석한다.
+
 ## 생성 위치
 
 새 pre-MFA CSV:
@@ -161,6 +175,28 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 `D: 333.3GB >= 55GB`가 통과했다. 사용한 search master는 의도적으로 2020
 파일럿만 있는 부분본이어서 2021 coverage 단계는 FAIL했다. 즉 이 실행은 D:
 정책 검증만을 위한 음성·CSV 비변경 점검이며, 전량 입력 통과를 가장하지 않는다.
+
+## 2020 전 단계 실측 결과 (2026-07-26)
+
+`pre_mfa_v1_20260725`는 2020 한 연도의 CSV→lab→MFA→4-tier merge를
+완주한 뒤 사용자 요청에 따라 2021 시작 전 일시정지했다.
+
+- pre-MFA CSV: 5,103,356발화·17,156세션, build success
+- usable lab 869,840 / MFA TextGrid 866,196 = 99.58%
+- 기본+retry beam 난정렬 3,644
+- 난정렬 차집합 3,644 ID를 CSV/JSON으로 고정; 215세션, WAV 3,644/3,644
+- 4-tier created 866,196 / failed 0 / form·morpheme 누락 0
+- 독립 전수 열거 866,196, 0바이트 0
+- 네 tier 좌우 경계 표본 15/15 통과
+- 2021 temp/output/staging/marker 모두 없음
+- 기존 `06_textgrid_eojeol` 자동 승격·덮어쓰기 없음
+
+가장 큰 병목은 worker 1개로 사실상 직렬 처리된 TextGrid export 약
+15시간 57분이었다. 2021 전에 queue 종료 경쟁 조건, 영구 heartbeat,
+원 MFA output 보존 정책, 3,644 실패 ID 부분 재시도를 먼저 다룬다.
+
+상세 감사:
+`AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`.
 
 ## 오류·병목과 대응
 

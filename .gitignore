@@ -34,6 +34,7 @@ renv/library/
 # Logs can be large; remove this line if you decide to version logs.
 logs/*.log
 logs/*.json
+logs/build_search_master_*.txt
 
 # 저작권·재배포권 문제 (2026-07-14 추가)
 00_참고문헌/
@@ -56,6 +57,7 @@ data/03_analysis_ready/
 # CSV 중간산출물은 기본 제외 (작은 결과표는 outputs/tables에서 개별 관리)
 *.csv
 !config/**/*.csv
+!outputs/tables/2020_mfa_missing_textgrid_ids_20260726.csv
 *.TextGrid
 *.tmp
 *.db

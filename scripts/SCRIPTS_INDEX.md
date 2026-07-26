@@ -54,6 +54,7 @@
 | realign_residual_finalize.py | 잔여 재시도(빔 300/1000) 산출 병합+품질 append | 실행 완료 |
 | run_realign_all.ps1 | 6개년 일괄 실행기(align→품질→병합→요약), 한 줄 실행 | 실행 완료 |
 | check_source_pcm.py | 미회수 발화의 원본 PCM 실측 → 재추출 가능/불가 확정 | 실행 완료 |
+| build_mfa_missing_textgrid_inventory.py | 연도별 usable lab − 검증된 staging TextGrid 차집합을 발화 ID·세션·lab·WAV 존재 여부 CSV/JSON으로 원자 저장 | 2020 난정렬 3,644건 inventory 생성용 |
 
 절차·명령·최종결과(25,244/26,979=93.6% 회수, 커버리지 99.94%):
 `docs/decisions/RUNBOOK_MFA_realign_2020-2025.md`. 남은 미회수 1,735 중
@@ -64,9 +65,9 @@
 |---|---|---|
 | realign_eojeol_build_corpus.py | 검증된 pre-MFA search master의 `pron_reference_form`→어절 lab. 세션 coverage·build meta SHA256 입력계약, 기존 lab 내용 전수 대조, 불일치 원자 재작성, 미해결 숫자 추측 금지 | 숫자 `1` 원전사 회복·stale lab 재작성 회귀검사 통과 |
 | realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
-| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약과 완료 marker를 묶고 다른 계약의 temp는 삭제 대신 archive. `-PreferD`는 신규 temp/output을 D:로 보내며, 검증된 resume temp만 원래 드라이브 유지. 2021 55GB/기타 45GB 문턱, align→검증→staging merge | 안전 wrapper에서 호출 |
+| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약과 완료 marker를 묶고 다른 계약의 temp는 삭제 대신 archive. `-PreferD`는 신규 temp/output을 D:로 보내며, 검증된 resume temp만 원래 드라이브 유지. 2021 55GB/기타 45GB 문턱, align→검증→staging merge. run별 emergency pause 요청은 다음 연도 config 접근 전에 exit 75 | 안전 wrapper에서 호출 |
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
-| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier 병합. `-PreferD`, PID lock, 연도 실패 시 중단, 기존 정본 자동 승격 금지, 통합 transcript/summary | D: 우선 무인 대량 실행 정본, 본실행 대기 |
+| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier 병합. `-PreferD`, PID lock, 연도 실패 시 중단, 기존 정본 자동 승격 금지, 통합 transcript/summary. `-PauseAfterYear`와 emergency exit 75를 실패가 아닌 `paused`로 기록 | 2020 전 단계 완료·2021 미진입 검증; 병목 개선 뒤 재개 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 수동 패치의 AST/소스 구조와 SHA256 기록 | 7/7 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
