@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "year": "2020",
+  "db_path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_export_queue_pilot_21965_20260726\\tmp\\corpus\\corpus.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_export_queue_pilot_21965_20260726\\merged_db",
+  "elapsed_seconds": 187.398,
+  "counts": {
+    "alignment_missing": 3,
+    "created": 21962,
+    "failed": 0,
+    "form_missing": 0,
+    "source_utterances": 21965,
+    "validated_existing": 0
+  },
+  "alignment_missing_examples": [
+    "SDRW2000000027.1.1.339",
+    "SDRW2000000038.1.1.23",
+    "SDRW2000000045.1.1.220"
+  ],
+  "accounted": 21965,
+  "coverage_pct": 99.9863,
+  "status": "success"
+}

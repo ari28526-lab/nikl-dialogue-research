@@ -34,12 +34,14 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
   staging 4-tier
 - 러너: `scripts/run_eojeol_realign.ps1 -Year 2020`
   (선택 연도 lab→align→검증→staging merge, JSON 완료 마커로 재개)
-- ETA: ~3~4일(제자리 lab). 병목=MFA 정렬 자체(줄일 수 없음). 추가 최적화 여지=병합을 MFA
-  DB 직독으로(≈1일 절감, 단 리스크) — 현재는 검증된 long_textgrid 경로 사용.
+- 2020 전량 실측에서 주 병목은 정렬 자체가 아니라 MFA raw TextGrid export
+  15시간 57분이었다. 2026-07-26 DB 직독 4-tier 경로를 3,330개와
+  21,962개 실자료로 전수 대조해 라벨·시간 불일치 0을 확인했으며, 2021부터
+  `-UseDirectDbExport`를 권장한다. 보수적 long_textgrid 경로도 fallback으로 유지한다.
 
 ## 실행 (밤샘)
 
-> 2026-07-25 현재는 아래 단독 명령보다
+> 2026-07-26 현재는 아래 단독 명령보다
 > `RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md`의
 > `run_pre_mfa_bulk_safe.ps1`을 사용한다. 새 실행기는
 > `pron_reference_form`이 포함된 pre-MFA CSV를 먼저 동결하고 lab·temp의
@@ -48,13 +50,35 @@ USB에서 느려 폐기(원래 정렬이 <3일이던 비결이 제자리 lab이�
 ```powershell
 # 리포 루트에서
 powershell -ExecutionPolicy Bypass -File scripts\run_eojeol_realign.ps1 `
-  -Year 2020 -PreferD
+  -Year 2021 -SearchMasterRoot `
+  "D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725" `
+  -PreferD -UseDirectDbExport
 ```
 - 한 연도씩 실행한다. 중단 시 같은 명령을 재실행하면 검증된 JSON 완료 마커와
   temp 상태를 확인해 이어간다.
 - 로그: `D:\mfa_eojeol\logs\`. **도는 동안 D: 읽는 다른 작업 금지(경합).**
 - 완료 후에도 신규 파일은 staging에 있으며 기존 `06_textgrid_eojeol`은
   바뀌지 않는다. 전수 검증·archive·승격은 별도 단계다.
+- direct 경로의 첫 전량 연도는 alignment DB를 기본 보존한다. QC 전에
+  `-CleanupDirectDbAfterMerge`를 붙이지 않는다.
+
+## 2026-07-26 export 병목 교정과 DB direct 경로 확정
+
+2020에서 네 export worker 중 하나만 살아 866,196개 raw TextGrid 쓰기에
+15시간 57분이 걸린 원인은 큰 queue batch의 feeder 직렬화와 고정 1초
+`finished_adding` 종료 조건의 경쟁이었다. worker를 blocking `get()`으로,
+producer를 worker별 `None` sentinel로 바꿨다.
+
+더 큰 절감은 이미 MFA SQLite에 수집된 word/phone interval을 직접 읽는
+경로다. 이 경로는 기존 `write_4tier`를 그대로 사용하고, partial staging을
+99% coverage·hard failure 0으로 검증한 뒤에만 연도 폴더를 이동한다.
+3,330개 및 21,962개 실자료에서 기존 built-in export+merge와 모든 tier
+라벨·interval 시간이 같았다. 세션별 CSV 로딩과 4 worker 적용 뒤
+21,962개 생성은 73.983초였다.
+
+실패 시 SQLite DB와 partial은 보존되고 다음 연도로 진행하지 않는다.
+상세 근거는
+`AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md`에 있다.
 
 ## 사전검증 (2026-07-16, 통과)
 문법·임포트 OK / form_to_lab 어절 정상(것을 한 토큰) / 기존 형태소경계 파싱 OK.

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-07-26T22:59:43+09:00",
+  "package_root": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner",
+  "apply_requested": true,
+  "state_before": "needs_patch",
+  "file_before": {
+    "path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\command_line\\align.py",
+    "bytes": 12417,
+    "mtime_ns": 1784780069096193600,
+    "sha256": "9ffdd11f44e6d86ed05ddd1c08381c6ea49991b33e3cd71709a77605f4bd8511"
+  }
+}

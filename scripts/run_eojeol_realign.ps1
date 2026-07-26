@@ -17,8 +17,23 @@ param(
     [string]$Year,
     [string]$SearchMasterRoot = "",
     [switch]$PreferD,
+    [switch]$UseDirectDbExport,
+    [switch]$CleanupDirectDbAfterMerge,
+    [switch]$CleanupMfaOutput,
     [switch]$SkipPreflight
 )
+
+if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
+    Write-Error "-CleanupDirectDbAfterMerge는 -UseDirectDbExport와 함께만 사용할 수 있음"
+    exit 1
+}
+if ($UseDirectDbExport -and $CleanupMfaOutput) {
+    Write-Error (
+        "-UseDirectDbExport는 QC용 alignment DB 보존 정책을 사용함. " +
+        "정리가 필요하면 -CleanupDirectDbAfterMerge를 명시할 것"
+    )
+    exit 1
+}
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $root = Split-Path -Parent $PSScriptRoot
@@ -274,6 +289,12 @@ function Write-DoneMarker($path, $year, $stage, $details) {
     $payload | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $tmpMarker -Encoding UTF8
     Move-Item -LiteralPath $tmpMarker -Destination $path -Force
 }
+function Write-JsonLine($path, $payload) {
+    $parent = Split-Path -Parent $path
+    New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    $payload | ConvertTo-Json -Depth 6 -Compress |
+        Add-Content -LiteralPath $path -Encoding UTF8
+}
 function Remove-SafeYearPath($path, $allowedRoot) {
     $resolved = [IO.Path]::GetFullPath($path).TrimEnd('\')
     $allowed = [IO.Path]::GetFullPath($allowedRoot).TrimEnd('\')
@@ -294,6 +315,11 @@ $runId = "eojeol_g2p_" + ($years -join '-') + "_" + `
 Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
 Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
 Say "pre-MFA search master 입력: $searchMasterRoot"
+Say ("TextGrid 생성 경로: " + $(if ($UseDirectDbExport) {
+    "MFA DB -> 4-tier 직접(검증된 고속 경로, raw 2-tier 중복 생성 안 함)"
+} else {
+    "MFA built-in raw export -> 4-tier 병합(보수적 fallback)"
+}))
 Say ("작업 드라이브 정책: " + $(if ($PreferD) {
     "D: 우선(신규 temp/output); 검증된 resume temp만 원래 드라이브 유지"
 } else {
@@ -323,6 +349,11 @@ foreach ($y in $years) {
         exit 1
     }
     Say "$y 입력 계약: $($inputContractId.Substring(0,12)) / $searchMasterRoot"
+    $directPartialRoot = Join-Path $g2pStage (
+        "_partial_direct_db\" + $inputContractId
+    )
+    $directPartialYear = Join-Path $directPartialRoot $y
+    $finalStageYear = Join-Path $g2pStage $y
 
     # 기존 temp는 같은 입력계약임이 증명될 때만 재사용한다. 계약이 없거나 다르면
     # 삭제하지 않고 D:\mfa_eojeol\archive_stale_temp 아래로 보존 이동한다.
@@ -372,6 +403,8 @@ foreach ($y in $years) {
     $tmp = $workPaths.TempRoot
     $minStartFreeGB = [double]$workPaths.MinFreeGB
     $workDrive = (Split-Path -Qualifier $tmp).TrimEnd('\')
+    $tmpYear = Join-Path $tmp $y
+    $outYear = Join-Path $out $y
     New-Item -ItemType Directory -Force $out | Out-Null
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
@@ -384,8 +417,6 @@ foreach ($y in $years) {
             Say "!! $y align_done이 현재 입력계약과 불일치 — 자동 재사용 금지: $doneMark"
             exit 1
         }
-        $tmpYear = Join-Path $tmp $y
-        $outYear = Join-Path $out $y
         if ((Test-Path -LiteralPath $outYear) -and
             -not (Test-Path -LiteralPath $tmpYear)) {
             Say "!! $y 마커·temp 없이 MFA 원출력만 존재 — stale/부분 출력 판별 전 실행 금지: $outYear"
@@ -424,8 +455,11 @@ foreach ($y in $years) {
         #   --clean 없이 실행 → MFA가 끝난 단계(코퍼스 로딩 5.5h, MFCC 등)를 재사용.
         #   실패하면 temp 비우고 --clean 전체 재실행(2차 폴백 — 어중간한 DB 방어).
         #   lab을 바꾼 적 없는 동일-연도 재시도에만 안전(연도 첫 시도는 항상 --clean).
-        $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
-        $tries = @(); if (Test-Path $tmpYear) { $tries += $false }; $tries += $true
+            $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
+            $heartbeatFile = Join-Path $logDir (
+                "mfa_{0}_{1}_heartbeat.jsonl" -f $y, $runId
+            )
+            $tries = @(); if (Test-Path $tmpYear) { $tries += $false }; $tries += $true
         $ok = $false
         foreach ($doClean in $tries) {
             $mode = if ($doClean) { "--clean 전체" } else { "이어가기(temp 재사용)" }
@@ -443,8 +477,24 @@ foreach ($y in $years) {
             if ($doClean) { $aArgs += '--clean' }
             Write-TempContract $tempContractPath $y $inputContractId `
                 $tmpYear "mfa_running"
-            $p = Start-Process -FilePath $mfa -ArgumentList $aArgs -NoNewWindow -PassThru `
-                 -RedirectStandardError $errFile
+            $priorSkipExport = $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT
+            if ($UseDirectDbExport) {
+                $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT = '1'
+            } else {
+                Remove-Item Env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT `
+                    -ErrorAction SilentlyContinue
+            }
+            try {
+                $p = Start-Process -FilePath $mfa -ArgumentList $aArgs `
+                     -NoNewWindow -PassThru -RedirectStandardError $errFile
+            } finally {
+                if ($null -eq $priorSkipExport) {
+                    Remove-Item Env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT `
+                        -ErrorAction SilentlyContinue
+                } else {
+                    $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT = $priorSkipExport
+                }
+            }
             $null = $p.Handle   # PS5.1 함정: 핸들 미참조 시 ExitCode가 빈 값이 됨(성공을 실패로 오판)
             # ★ 교착(hang) 자동 감지·복구 (2026-07-21 도입, 2026-07-22 오판 수정):
             #   stderr 텍스트 무변화만으론 판단 불가(정상 단계도 몇 분씩 새 줄 없음 — 실측
@@ -465,11 +515,21 @@ foreach ($y in $years) {
             $cpuHistory = New-Object System.Collections.Generic.List[object]
             $setupRe = 'Setting up|Loading corpus|Found \d+ speakers|Initializing multiprocessing|Normalizing text|Generating pronunciations|Generating MFCCs|Compiling training graphs'
             $alignRe = 'Generating alignments|Collecting|Exporting|Performing.*lignment|Analyzing'
-            $phase = 'setup'
-            $lastCount = -1
-            $lastCountChange = Get-Date
-            $watchdogKilled = $false
-            while (-not $p.HasExited) {
+                $phase = 'setup'
+                $lastCount = -1
+                $lastCountChange = Get-Date
+                $watchdogKilled = $false
+                Write-JsonLine $heartbeatFile ([ordered]@{
+                    event = 'mfa_process_started'
+                    recorded_at = (Get-Date).ToString('o')
+                    run_id = $runId
+                    year = $y
+                    pid = $p.Id
+                    mode = $mode
+                    temp_year = $tmpYear
+                    output_year = $outYear
+                })
+                while (-not $p.HasExited) {
                 Start-Sleep -Seconds 60
                 $tail = ""
                 $seg = @()
@@ -500,10 +560,10 @@ foreach ($y in $years) {
                 if ($segText -match $alignRe) { $phase = 'align' }
                 elseif ($segText -match $setupRe) { $phase = 'setup' }
                 # MFA 진행카운터(N/M) 파싱 — 값이 바뀌면 살아있는 것
-                if ($tail -match '([\d,]+)\s*/\s*[\d,]+') {
-                    $c = [int64](($matches[1]) -replace ',', '')
-                    if ($c -ne $lastCount) { $lastCount = $c; $lastCountChange = $now }
-                }
+                    if ($tail -match '([\d,]+)\s*/\s*[\d,]+') {
+                        $c = [int64](($matches[1]) -replace ',', '')
+                        if ($c -ne $lastCount) { $lastCount = $c; $lastCountChange = $now }
+                    }
                 $hasCounter = ($tail -match '[\d,]+\s*/\s*[\d,]+')
                 $frozenMin = [math]::Round(($now - $lastCountChange).TotalMinutes, 1)
                 # ★ 완주 직후 오살 방지 (2026-07-23 실사고): MFA가 "Done!"까지 찍고 막판
@@ -515,8 +575,8 @@ foreach ($y in $years) {
                 #   FST 빌드/헬퍼 단계라 mfa·python CPU가 거의 안 오름 → 교착으로 오판돼
                 #   완주 중인 정렬을 죽이고 --clean 루프에 빠지는 사고 확인. 이 단계에선
                 #   죽이지 않고 자연 진행을 기다림(g2p 추가 후 새로 생긴 구간).
-                if ($tail -match 'Done!|Everything took') { continue }
-                $kill = $false
+                    if ($tail -match 'Done!|Everything took') { continue }
+                    $kill = $false
                 if ($phase -eq 'align') {
                     # 정렬/내보내기: 카운터가 $stallMinutes분간 정지 = 교착(2021 export형).
                     #   바가 아예 없는 구간(예: 일부 export)은 CPU 무증가로 폴백 판정.
@@ -526,21 +586,57 @@ foreach ($y in $years) {
                 } else {
                     # 셋업/프리루드(코퍼스로딩 최대 5.5h·정규화·g2p·MFCC·그래프): 저CPU가 정상 → 안 죽임.
                     #   단 카운터가 $setupStallMin분간 같은 값에 붙박이면 진짜 실패로 보고 중단.
-                    if ($hasCounter -and $frozenMin -ge $setupStallMin) { $kill = $true }
-                }
-                if ($kill) {
+                        if ($hasCounter -and $frozenMin -ge $setupStallMin) { $kill = $true }
+                    }
+                    $freeNowGB = $null
+                    try {
+                        $freeNowGB = [math]::Round(
+                            ([IO.DriveInfo]::new($workDrive)).AvailableFreeSpace /
+                            1GB, 2
+                        )
+                    } catch {}
+                    Write-JsonLine $heartbeatFile ([ordered]@{
+                        event = 'heartbeat'
+                        recorded_at = $now.ToString('o')
+                        run_id = $runId
+                        year = $y
+                        pid = $p.Id
+                        phase = $phase
+                        counter_current = $(if ($lastCount -ge 0) {
+                            $lastCount
+                        } else { $null })
+                        counter_frozen_minutes = $frozenMin
+                        cpu_seconds = $curCpu
+                        work_drive_free_gb = $freeNowGB
+                        watchdog_will_kill = $kill
+                        stderr_tail = $tail
+                    })
+                    if ($kill) {
                     Say "!! $y MFA 교착 추정(단계=$phase, 카운터 ${frozenMin}분 정지, 마지막='$tail') — 강제종료 후 자동 재시도"
                     try { $p.Kill() } catch {}
                     $watchdogKilled = $true
                 }
             }
             $p.WaitForExit()
+            Write-JsonLine $heartbeatFile ([ordered]@{
+                event = 'mfa_process_exited'
+                recorded_at = (Get-Date).ToString('o')
+                run_id = $runId
+                year = $y
+                pid = $p.Id
+                exit_code = $p.ExitCode
+                watchdog_killed = $watchdogKilled
+            })
             # ★ 거짓 성공 방지 (2026-07-22): MFA는 export 단계에서 배치 전체가 실패해도
             # (output_errors.txt로만 기록) exit 0을 반환함 — 2021 실측(too many SQL
             # variables로 137만 건 전부 실패했는데 exit 0이라 "성공"으로 오판, temp
             # 삭제로 3.26h짜리 완주 정렬까지 날아감). exit 0이어도 실제 TextGrid가
             # 하나도 없으면 성공으로 인정하지 않음(temp 보존 → 재시도 시 이어가기 가능).
             if (-not $watchdogKilled -and $p.ExitCode -eq 0) {
+                if ($UseDirectDbExport) {
+                    $ok = $true
+                    break
+                }
                 $anyTg = [IO.Directory]::EnumerateFiles((Join-Path $out $y), "*.TextGrid",
                          [IO.SearchOption]::AllDirectories) | Select-Object -First 1
                 if ($anyTg) { $ok = $true; break }
@@ -572,6 +668,97 @@ foreach ($y in $years) {
             Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp($tmpYear) 보존한 채 중단, 사람 확인 필요"
             exit 1
         }
+        if ($UseDirectDbExport) {
+            # Built-in raw TextGrid 수백만 개를 쓴 뒤 다시 읽는 이중 I/O를 피한다.
+            # align()은 word/phone interval을 이미 SQLite에 수집했다. 동일 writer로
+            # 4-tier를 partial staging에 만들고, 전수 검증 뒤 연도 디렉터리 하나를
+            # 원자적으로 최종 staging 위치로 이동한다.
+            $dbPath = Join-Path $tmpYear "$y.db"
+            if (-not (Test-Path -LiteralPath $dbPath)) {
+                Say "!! $y direct-DB용 MFA DB 없음: $dbPath"
+                exit 1
+            }
+            if (Test-Path -LiteralPath $finalStageYear) {
+                Say "!! $y 최종 staging이 marker 없이 이미 존재 — 자동 덮어쓰기 금지: $finalStageYear"
+                exit 1
+            }
+            New-Item -ItemType Directory -Force -Path $directPartialRoot |
+                Out-Null
+            $directReport = Join-Path $logDir (
+                "direct_db_export_{0}_{1}.json" -f $y, $runId
+            )
+            Say "$y [3/3-direct] MFA DB -> partial 4-tier staging..."
+            & $py (Join-Path $pydir "export_mfa_db_4tier.py") `
+                --db $dbPath --year $y `
+                --search-master-root $searchMasterRoot `
+                --output-root $directPartialRoot --report $directReport
+            if ($LASTEXITCODE -ne 0) {
+                Say "!! $y direct-DB 4-tier 실패 — DB와 partial 보존: $directReport"
+                exit 1
+            }
+            try {
+                $directData = Get-Content -LiteralPath $directReport -Raw `
+                    -Encoding UTF8 | ConvertFrom-Json
+                if ($directData.status -ne 'success') {
+                    throw "status=$($directData.status)"
+                }
+                $tgN = [int64]$directData.counts.created +
+                       [int64]$directData.counts.validated_existing
+                $labN = ([IO.Directory]::EnumerateFiles(
+                    (Join-Path $wavRoot $y), "*.lab",
+                    [IO.SearchOption]::AllDirectories
+                ) | Measure-Object).Count
+                $pct = if ($labN -gt 0) {
+                    [math]::Round(100 * $tgN / $labN, 2)
+                } else { 0 }
+                if ($labN -le 0 -or $tgN -le 0 -or $pct -lt 99) {
+                    throw "coverage gate 실패: TextGrid=$tgN lab=$labN pct=$pct"
+                }
+                if (-not (Test-Path -LiteralPath $directPartialYear)) {
+                    throw "partial 연도 디렉터리 없음: $directPartialYear"
+                }
+                Move-Item -LiteralPath $directPartialYear `
+                    -Destination $finalStageYear
+            } catch {
+                Say "!! $y direct-DB 최종 gate/승격 실패 — DB·partial 보존: $($_.Exception.Message)"
+                exit 1
+            }
+            Write-DoneMarker $doneMark $y 'align' @{
+                textgrids = $tgN
+                labs = $labN
+                coverage_pct = $pct
+                export_mode = 'direct_db_4tier'
+                alignment_db = $dbPath
+                input_contract_id = $inputContractId
+                search_master_root = $searchMasterRoot
+            }
+            $mergeMark = Join-Path $doneDir "$y.merge_done"
+            Write-DoneMarker $mergeMark $y 'merge' @{
+                export_mode = 'direct_db_4tier'
+                direct_export_report = $directReport
+                staging_output_root = $g2pStage
+                existing_final_root = (Expand-CfgPath $cfg.textgrid_eojeol)
+                promotion_required = $true
+                raw_mfa_textgrid_duplicated = $false
+                alignment_db_retained = (-not [bool]$CleanupDirectDbAfterMerge)
+                input_contract_id = $inputContractId
+                search_master_root = $searchMasterRoot
+            }
+            if ($CleanupDirectDbAfterMerge) {
+                try { Remove-SafeYearPath $tmpYear $tmp }
+                catch {
+                    Say "!! direct-DB 완료 후 temp 정리 실패(4-tier·marker 보존): $($_.Exception.Message)"
+                }
+                Write-TempContract $tempContractPath $y $inputContractId `
+                    $tmpYear "direct_merge_completed_temp_removed"
+                Say "===== $y direct-DB 완료 (temp 정리, 4-tier $tgN/$labN) ====="
+            } else {
+                Write-TempContract $tempContractPath $y $inputContractId `
+                    $tmpYear "direct_merge_completed_temp_retained_for_qc"
+                Say "===== $y direct-DB 완료 (QC 전 DB 보존: $dbPath, 4-tier $tgN/$labN) ====="
+            }
+            continue
+        }
         # ★ 정렬 산출 수량 검증: 기존 2020·2021 실측 성공률은 99.9%대다.
         #   99% 미만은 통상적 난정렬 범위를 넘어 부분 export·stale 출력 가능성이
         #   크므로 완료 마커를 만들지 않는다.
@@ -602,15 +789,9 @@ foreach ($y in $years) {
             input_contract_id = $inputContractId
             search_master_root = $searchMasterRoot
         }
-        # temp(~26GB/년) 즉시 회수 — 안 지우면 다음 연도의 여유 가드에 걸려 헛중단.
-        # ★ 삭제 범위 축소 (2026-07-24, 외부 리뷰 P0-3): mfa_tmp 전체($tmp)가 아니라
-        #   이번 연도($tmpYear)만. 같은 날 도입한 "실패 연도 temp 보존" 정책과 조합되면
-        #   전체 삭제가 보존해 둔 다른 연도의 이어가기 temp까지 지워버리기 때문.
-        try { Remove-SafeYearPath $tmpYear $tmp }
-        catch { Say "!! 완료 후 temp 안전 삭제 실패(산출·마커는 보존): $($_.Exception.Message)" }
         Write-TempContract $tempContractPath $y $inputContractId `
-            $tmpYear "align_completed_temp_removed"
-        Say "$y MFA 정렬 완료 (temp $tmpYear 정리됨)"
+            $tmpYear "align_completed_temp_retained_until_merge"
+        Say "$y MFA 정렬 완료 (병합·QC 전까지 temp $tmpYear 보존)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 선택된 작업 드라이브에 있음.
@@ -633,6 +814,7 @@ foreach ($y in $years) {
         if (Test-Path (Join-Path $altOut $y)) {
             Say "$y 병합 원출력을 $altOut 에서 발견 — 드라이브 자동 전환(원래 추정: $out)"
             $out = $altOut
+            $outYear = Join-Path $out $y
         }
     }
     Say "$y [3/3] 4-tier 병합 -> G2P staging (아래 진행줄 실시간)..."
@@ -643,15 +825,26 @@ foreach ($y in $years) {
     # 4) 검증 성공 마커를 먼저 기록한 뒤 MFA 원출력을 정리한다.
     Write-DoneMarker $mergeMark $y 'merge' @{
         mfa_output_root = $out
+        mfa_output_retained = (-not [bool]$CleanupMfaOutput)
         staging_output_root = $g2pStage
         existing_final_root = (Expand-CfgPath $cfg.textgrid_eojeol)
         promotion_required = $true
         input_contract_id = $inputContractId
         search_master_root = $searchMasterRoot
     }
-    try { Remove-SafeYearPath (Join-Path $out $y) $out }
-    catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·최종본은 보존): $($_.Exception.Message)" }
-    Say "===== $y 완료 ($out 중간산출 정리됨) ====="
+    # temp DB는 raw MFA 출력과 4-tier 병합이 모두 검증된 뒤에만 정리한다.
+    # 병합 실패 시 위에서 exit 1이므로 이 지점에 오지 않고 temp가 보존된다.
+    try { Remove-SafeYearPath $tmpYear $tmp }
+    catch { Say "!! 병합 후 temp 안전 삭제 실패(산출·마커는 보존): $($_.Exception.Message)" }
+    Write-TempContract $tempContractPath $y $inputContractId `
+        $tmpYear "merge_completed_temp_removed"
+    if ($CleanupMfaOutput) {
+        try { Remove-SafeYearPath $outYear $out }
+        catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·4-tier는 보존): $($_.Exception.Message)" }
+        Say "===== $y 완료 (요청에 따라 raw MFA 원출력 정리됨) ====="
+    } else {
+        Say "===== $y 완료 (raw MFA 원출력 보존: $outYear) ====="
+    }
 }
 Say "선택 연도 정렬·병합 완료 - $g2pStage"
 Say "기존 06_textgrid_eojeol은 보존됨. 전수 검증과 archive 계획 확인 전 자동 승격하지 않음."

@@ -1,0 +1,15 @@
+{
+  "run_id": "export_queue_pilot_21965_builtin_20260726",
+  "year": "2020",
+  "mfa_output": "work\\mfa_export_queue_pilot_21965_20260726\\raw_root\\2020",
+  "final_output": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_export_queue_pilot_21965_20260726\\merged_builtin\\2020",
+  "source_textgrids": 21962,
+  "created": 21962,
+  "validated_existing": 0,
+  "failed": 0,
+  "form_missing": 0,
+  "morpheme_tier_missing": 0,
+  "archived_invalid": 0,
+  "elapsed_seconds": 195.593,
+  "status": "success"
+}

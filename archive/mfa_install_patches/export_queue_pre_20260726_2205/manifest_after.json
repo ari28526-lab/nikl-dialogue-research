@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-07-26T22:04:13+09:00",
+  "package_root": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner",
+  "apply_requested": true,
+  "states_before": {
+    "worker": "needs_patch",
+    "producer": "needs_patch"
+  },
+  "files_before": {
+    "worker": {
+      "path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\alignment\\multiprocessing.py",
+      "bytes": 81511,
+      "mtime_ns": 1784688832005430100,
+      "sha256": "6ac602016e81b8d720ca59698d46ecb92eff6aa62bb06f7a59fa0ac2b1f46071"
+    },
+    "producer": {
+      "path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\alignment\\base.py",
+      "bytes": 51998,
+      "mtime_ns": 1783373161452073000,
+      "sha256": "43f505c80685d818dd283ead46ea1565d2a8976763b95bbe79b78beac104adb4"
+    }
+  },
+  "status": "patched",
+  "patched_files": [
+    "worker",
+    "producer"
+  ],
+  "files_after": {
+    "worker": {
+      "path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\alignment\\multiprocessing.py",
+      "bytes": 81666,
+      "mtime_ns": 1785071053423322100,
+      "sha256": "76fcd2423fbc9fba68581fc1940cf52ca4bb004ef4a3c6a64db786a5dbbe52b3"
+    },
+    "producer": {
+      "path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\alignment\\base.py",
+      "bytes": 52322,
+      "mtime_ns": 1785071053426358300,
+      "sha256": "4d28dce60405b6e84b6c70270fc6c8b767b2d547db97418f7c9481d2fdd81c07"
+    }
+  }
+}

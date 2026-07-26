@@ -33,6 +33,7 @@
 | [decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md](decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md) | 후보 검색→파일 수집→KOINA→수동 판정의 층 분리와 2020 파일럿 게이트 |
 | [decisions/DESIGN_pronunciation_environment_search_2026-07-25.md](decisions/DESIGN_pronunciation_environment_search_2026-07-25.md) | 사전·규칙·MFA 발음 분리, 음운·형태 경계 검색표와 CSV–WAV–TextGrid 연동 설계 |
 | [decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md](decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md) | **2020 전 단계 완료 감사** — 510만행 CSV, 86만 TextGrid, 4-tier 경계, 16시간 export 병목과 2021 전 개선 gate |
+| [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 

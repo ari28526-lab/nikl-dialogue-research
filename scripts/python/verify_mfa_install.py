@@ -36,6 +36,7 @@ def _attribute_calls(tree: ast.AST, name: str) -> list[ast.Call]:
 def inspect_mfa_source(package_root: Path) -> dict:
     files = {
         "align": package_root / "command_line" / "align.py",
+        "base": package_root / "alignment" / "base.py",
         "multiprocessing": package_root / "alignment" / "multiprocessing.py",
         "textgrid": package_root / "textgrid.py",
     }
@@ -81,6 +82,12 @@ def inspect_mfa_source(package_root: Path) -> dict:
         "ok": correct_exports >= 2,
         "detail": f"valid calls={correct_exports}",
     })
+    skip_flag_count = align_text.count("MFA_PROJECT_SKIP_TEXTGRID_EXPORT")
+    result["checks"].append({
+        "name": "project_direct_db_skip_export_flag_available",
+        "ok": skip_flag_count >= 2,
+        "detail": f"flag occurrences={skip_flag_count}",
+    })
 
     mp_text = files["multiprocessing"].read_text(encoding="utf-8")
     for name, marker in (
@@ -93,6 +100,27 @@ def inspect_mfa_source(package_root: Path) -> dict:
             "ok": marker in mp_text,
             "detail": f"marker={marker!r}",
         })
+    result["checks"].append({
+        "name": "export_worker_waits_for_sentinel",
+        "ok": (
+            "file_batch = self.for_write_queue.get()" in mp_text
+            and "if file_batch is None:" in mp_text
+            and "self.for_write_queue.get(timeout=1)" not in mp_text
+        ),
+        "detail": "blocking get + None sentinel; no 1s worker timeout",
+    })
+
+    base_text = files["base"].read_text(encoding="utf-8")
+    result["checks"].append({
+        "name": "export_producer_sends_worker_sentinels",
+        "ok": (
+            "for _ in export_procs:" in base_text
+            and "for_write_queue.put(None)" in base_text
+            and "time.sleep(1)\n                    finished_adding.set()"
+            not in base_text
+        ),
+        "detail": "one None sentinel per export worker; no fixed 1s drain guess",
+    })
 
     tg_text = files["textgrid"].read_text(encoding="utf-8")
     tg_tree = ast.parse(tg_text)

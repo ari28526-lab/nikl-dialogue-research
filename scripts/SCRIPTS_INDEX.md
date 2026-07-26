@@ -64,11 +64,16 @@
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
 | realign_eojeol_build_corpus.py | 검증된 pre-MFA search master의 `pron_reference_form`→어절 lab. 세션 coverage·build meta SHA256 입력계약, 기존 lab 내용 전수 대조, 불일치 원자 재작성, 미해결 숫자 추측 금지 | 숫자 `1` 원전사 회복·stale lab 재작성 회귀검사 통과 |
-| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존 | 합성 TextGrid 회귀검사 통과, 본실행 대기 |
-| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약과 완료 marker를 묶고 다른 계약의 temp는 삭제 대신 archive. `-PreferD`는 신규 temp/output을 D:로 보내며, 검증된 resume temp만 원래 드라이브 유지. 2021 55GB/기타 45GB 문턱, align→검증→staging merge. run별 emergency pause 요청은 다음 연도 config 접근 전에 exit 75 | 안전 wrapper에서 호출 |
+| realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존. 선택적 JSON report | 합성·21,962개 실자료 회귀검사 통과 |
+| export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate | 21,962개 built-in 결과와 라벨·시간 전수 동일; 4 worker 73.983초 |
+| compare_textgrid_tiers.py | 두 TextGrid 트리의 파일집합·tier명·라벨·모든 시간경계를 전수 비교 | 3,330개·21,962개 direct 동등성 검증 |
+| audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사 | 2021–2025 감사 완료 |
+| patch_mfa_export_queue.py | MFA export queue 종료 경쟁을 blocking get+worker별 sentinel로 교정하고 설치 전 소스 archive | 3,330/21,965 실제 MFA 검증 |
+| patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
+| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약·marker·archive·PreferD·heartbeat. `-UseDirectDbExport`는 partial 4-tier를 검증 승격하고 DB를 QC 전 보존 | 2020 보수 경로 완료; 2021 direct 준비 완료 |
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
-| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier 병합. `-PreferD`, PID lock, 연도 실패 시 중단, 기존 정본 자동 승격 금지, 통합 transcript/summary. `-PauseAfterYear`와 emergency exit 75를 실패가 아닌 `paused`로 기록 | 2020 전 단계 완료·2021 미진입 검증; 병목 개선 뒤 재개 |
-| verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 수동 패치의 AST/소스 구조와 SHA256 기록 | 7/7 통과 |
+| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier. `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary | 2020 완료; 2021 direct GO |
+| verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 필수 패치의 AST/소스 구조와 SHA256 기록 | 10/10 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
 | restructure_wav_sessions.py | 평면 연도 wav/lab → 세션 하위폴더 재구성 (★1화자 사고 근본 해결, dry-run 기본, 멱등) | 합성 검증 완료 |

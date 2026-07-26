@@ -74,11 +74,16 @@ co_speaker_ids
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   "C:\Users\ari30\research\2026_summer_research\scripts\run_pre_mfa_bulk_safe.ps1" `
-  -RunId "pre_mfa_v1_20260725" -PreferD
+  -RunId "pre_mfa_v1_20260725" -Years 2021 -PreferD -UseDirectDbExport
 ```
 
-기본 순서는 2020→2021→2022→2023→2024→2025다. 2020 전량이 첫 확대
-게이트다. 한 연도가 실패하면 다음 연도를 실행하지 않는다. 같은 명령을 다시
+2020은 2026-07-26에 첫 확대 게이트를 통과했다. 현재 정식 명령은 2021 한
+연도만 DB 직접 4-tier 경로로 실행한다. 21,962개 실자료에서 기존 경로와
+전수 동등성을 확인했지만, 첫 전량 2021의 QC 전에는
+`-CleanupDirectDbAfterMerge`를 붙이지 않아 alignment DB를 보존한다.
+
+전체 기본 순서는 2020→2021→2022→2023→2024→2025다. 한 연도가 실패하면
+다음 연도를 실행하지 않는다. 같은 명령을 다시
 실행하면 같은 pre-MFA staging과 검증된 marker를 사용해 이어간다. 통과한
 `_build_meta.json`이 있으면 동결 CSV를 다시 빌드하거나 meta 시각을 바꾸지
 않는다. 입력 코드를 바꿔 새 CSV가 필요하면 기존 RunId를 재사용하지 않고 새
@@ -163,8 +168,11 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 - D:는 2021 포함 실행이면 55GB, 그 밖에는 45GB 미만일 때 preflight에서 FAIL한다.
 - 같은 입력계약으로 검증된 resume temp가 이미 있으면 수시간 계산을 버리지 않도록
   그 temp의 원래 드라이브에서만 이어간다.
-- 연도 정렬이 끝나면 해당 연도의 temp를, 4-tier 병합이 끝나면 MFA 원출력을
-  정리하므로 여섯 연도의 중간산출이 누적되지 않는다.
+- 보수적 built-in 경로는 merge 성공 뒤 명시 정책에 따라 원 MFA 출력을
+  정리할 수 있다.
+- 권장 direct 경로는 raw 2-tier 중복 출력을 만들지 않으며 첫 연도의 SQLite
+  alignment DB를 QC 전까지 보존한다. 검증 뒤에만
+  `-CleanupDirectDbAfterMerge`를 명시해 공간을 회수한다.
 
 용량 추정 근거는 기존 search master 4.19GB, 기존 TextGrid 5,000개 표본의
 평균 3.03–4.38KB, 전량 5,103,356발화다. 새 언어층·4-tier staging과 한 연도
@@ -198,6 +206,22 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 상세 감사:
 `AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`.
 
+## 2021 전 병목 개선 판정 (2026-07-26)
+
+MFA export queue의 고정 1초 종료 경쟁을 blocking queue+worker별 sentinel로
+교정했다. 추가로 `-UseDirectDbExport`는 MFA DB의 word/phone interval을 기존
+형태소 경계와 동결 CSV form에 직접 결합해 raw 2-tier 생성→재읽기의 이중 I/O를
+없앤다.
+
+- 3,330개: 기존 경로와 tier/라벨/시간 불일치 0
+- 21,962개: 기존 경로와 tier/라벨/시간 불일치 0
+- 병렬 direct 21,962개 생성: 73.983초
+- 2021 최종 preflight: FAIL 0 / WARN 0, D: 319GB
+- 2021 예상: 약 18–23시간
+
+상세 원인·연도별 입력 감사·archive·복구 정책:
+`AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md`.
+
 ## 오류·병목과 대응
 
 | 위험 | 대응 |
@@ -209,6 +233,8 @@ logs\pre_mfa_bulk_pre_mfa_v1_20260725_latest.json
 | 부분 export를 성공으로 오인 | exit code와 실제 TextGrid 수를 함께 검사 |
 | C: 여유 47.5GB가 실행 중 줄어듦 | 정식 명령은 `-PreferD`; 신규 6개년 temp/output 모두 D: |
 | 워커 교착 | 단계·진행카운터·CPU 기반 watchdog, 실패 로그 영구 보존 |
+| 큰 export batch 직렬화 전에 worker가 종료 | blocking queue + worker별 `None` sentinel |
+| raw 2-tier 수백만 파일을 쓴 뒤 다시 읽음 | 검증된 DB direct 4-tier partial 경로; 첫 전량은 DB 보존 |
 | 0바이트 WAV가 로딩 말미에 전체 실패 | MFA 전 연도별 스캔·복원 가능한 quarantine |
 | 병합 일부 실패 후 원출력 삭제 | 실패 1건이면 종료, 원 MFA 출력 보존 |
 | 실행 중 두 번째 배치 시작 | PID lock |

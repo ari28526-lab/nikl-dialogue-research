@@ -77,7 +77,8 @@ if (Test-Path $py) {
     & $py --version 2>&1 | ForEach-Object { OK "pipeline_python: $py ($_)" }
     if ($LASTEXITCODE -ne 0) { FAIL "pipeline_python 실행 실패(exit $LASTEXITCODE): $py" }
 } else { FAIL "pipeline_python 없음: $py" }
-foreach ($h in 'realign_eojeol_build_corpus.py','quarantine_bad_wavs.py','realign_eojeol_merge_output.py') {
+foreach ($h in 'realign_eojeol_build_corpus.py','quarantine_bad_wavs.py',
+                 'realign_eojeol_merge_output.py','export_mfa_db_4tier.py') {
     if (Test-Path (Join-Path $pydir $h)) { OK $h } else { FAIL "python 헬퍼 없음: $h" }
 }
 if ((Test-Path $py) -and (Test-Path (Join-Path $pydir 'verify_mfa_install.py'))) {

@@ -14,6 +14,8 @@ param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
     [switch]$PreferD,
+    [switch]$UseDirectDbExport,
+    [switch]$CleanupDirectDbAfterMerge,
     [switch]$SkipSearchMasterBuild,
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
@@ -26,6 +28,10 @@ $pythonDir = Join-Path $PSScriptRoot 'python'
 
 if ($PauseAfterYear -and -not ($Years -contains $PauseAfterYear)) {
     Write-Error "-PauseAfterYear $PauseAfterYear 이 -Years 목록에 없음"
+    exit 1
+}
+if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
+    Write-Error "-CleanupDirectDbAfterMerge는 -UseDirectDbExport와 함께만 사용할 수 있음"
     exit 1
 }
 
@@ -98,6 +104,7 @@ if (Test-Path -LiteralPath $lockPath) {
     run_id = $RunId
     years = $Years
     prefer_d = [bool]$PreferD
+    direct_db_export = [bool]$UseDirectDbExport
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -166,6 +173,10 @@ try {
             '-SearchMasterRoot', $preMfaRoot
         )
         if ($PreferD) { $realignArgs += '-PreferD' }
+        if ($UseDirectDbExport) { $realignArgs += '-UseDirectDbExport' }
+        if ($CleanupDirectDbAfterMerge) {
+            $realignArgs += '-CleanupDirectDbAfterMerge'
+        }
         & powershell.exe @realignArgs
         $yearExitCode = $LASTEXITCODE
         if ($yearExitCode -eq 75) {
@@ -209,6 +220,8 @@ try {
         years_requested = $Years
         years_completed = @($completed)
         prefer_d = [bool]$PreferD
+        direct_db_export = [bool]$UseDirectDbExport
+        cleanup_direct_db_after_merge = [bool]$CleanupDirectDbAfterMerge
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear
         paused_before_year = $pausedBeforeYear

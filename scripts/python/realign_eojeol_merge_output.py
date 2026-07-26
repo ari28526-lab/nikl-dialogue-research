@@ -196,6 +196,11 @@ def main() -> int:
         help="4-tier 출력 루트. 전량 러너는 기존본과 분리된 G2P staging을 넘김",
     )
     ap.add_argument("--run-id", help="외부 실행 ID")
+    ap.add_argument(
+        "--report",
+        type=Path,
+        help="병합 보고서 경로(기본: mfa_state/logs). 파일럿은 work/outputs 사용 가능",
+    )
     args = ap.parse_args()
     run_id = args.run_id or new_run_id(f"merge_{args.year}")
     output_root = Path(args.output_root).resolve()
@@ -285,7 +290,9 @@ def main() -> int:
             and made + skipped == source_total
         ) else "failed",
     }
-    report_path = STATE_ROOT / "logs" / f"merge_report_{args.year}_{run_id}.json"
+    report_path = args.report or (
+        STATE_ROOT / "logs" / f"merge_report_{args.year}_{run_id}.json"
+    )
     atomic_write_json(report_path, report)
     print(f"병합 보고서: {report_path}", flush=True)
     if source_total == 0:

@@ -1,0 +1,14 @@
+{
+  "left": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_export_queue_pilot_20260726\\merged_builtin\\2020",
+  "right": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_export_queue_pilot_20260726\\merged_db\\2020",
+  "left_files": 3330,
+  "right_files": 3330,
+  "matched": 3330,
+  "mismatch_count": 0,
+  "missing_right_count": 0,
+  "missing_left_count": 0,
+  "missing_right_examples": [],
+  "missing_left_examples": [],
+  "mismatch_examples": [],
+  "status": "identical"
+}

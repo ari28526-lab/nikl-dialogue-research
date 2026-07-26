@@ -425,3 +425,34 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`에 정리했다.
 - 수정 후 PowerShell 안전성 검사 5/5와 Python unittest 42/42를 다시
   통과했다.
+
+## 2026-07-26 — 남은 연도 감사·MFA export 병목 제거·2021 GO 판정
+
+- 2021–2025의 동결 pre-MFA CSV, WAV, 현재 lab, 과거 source PCM 위험을
+  원자료 비변경으로 감사했다. 2021은 1,373,521 usable lab 중 기존
+  1,335,015개 내용 일치, 38,320개 reference-form 불일치, 186개 누락으로
+  확인했으며 실행기가 원자 재작성·생성하게 했다.
+- 2023 WAV 누락 923, 2025 빈 입력의 stale lab 9, 연도별 PCM 없음/짧음
+  위험을 별도 추적 항목으로 고정했다. 이들은 전량 실행 차단과 사후 난정렬
+  원인 분류를 구분해 다룬다.
+- 2020 raw TextGrid export가 15시간 57분 걸린 근본 원인을
+  `multiprocessing.Queue`의 큰 batch feeder와 고정 1초 종료 신호 사이의
+  경쟁으로 확정했다. blocking get+worker별 sentinel 패치를 만들고 설치
+  전 소스를 SHA256 manifest와 함께 `archive/mfa_install_patches`에 보존했다.
+- MFA가 interval을 SQLite에 모은 뒤 raw 2-tier export를 선택적으로 생략하고
+  곧바로 4-tier를 쓰는 `export_mfa_db_4tier.py`를 추가했다. 기본 MFA 동작은
+  환경변수를 쓰지 않으면 변하지 않는다.
+- 실제 3,330개와 21,965개 MFA 파일럿을 실행했다. 21,962개 성공분을 기존
+  built-in export+merge와 전수 대조해 tier 이름·라벨·모든 시작/끝 시간이
+  완전히 같고 난정렬 3개도 동일함을 확인했다.
+- 세션별 form 로딩과 4 worker를 적용한 direct 출력은 21,962개에
+  73.983초였다. partial staging, 99% coverage/accounting gate, 실패 시
+  DB·partial 보존, QC 전 DB 기본 보존을 연도별 러너와 wrapper에 연결했다.
+- 2021 최종 preflight는 FAIL 0/WARN 0, D: 319GB, 세션 4,143/4,143,
+  MFA 패치 10/10이었다. 예상 18–23시간이라 연구자가 09:00까지 부재한 밤에는
+  전량을 시작하지 않고, 오전에 2021 한 연도만 direct 경로로 시작하도록
+  GO 명령을 기록했다.
+- PowerShell 실행기 5개 파일의 안전성 검사와 Python unittest 50개가 모두
+  통과했다. 상세 근거는
+  `decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md`와
+  `outputs/reports/RECOMMENDATION_2021_MFA_go_no_go_20260726.md`에 있다.
