@@ -5,11 +5,14 @@
 
 - 검색 CSV 행/세션, 화자 메타 결측, 미해결 기호 발음
 - WAV 누락·44바이트 미만 파일
+- CSV dur와 동일 ID WAV header 길이의 세션 단위 대응
 - 현재 lab의 존재/0바이트/예상 내용 일치 여부
+- 예상 usable lab의 형태소 원천 TextGrid 존재 여부
 - 검색 입력에 속하지 않는데 WAV와 함께 남아 MFA가 읽을 수 있는 stale lab
 - 과거 residual 조사에서 확인한 원본 PCM 결함
 
-기본 실행은 파일명/크기만 감사한다. 기존 lab 내용까지 전수 대조하려면
+기본 실행은 WAV header 길이와 형태소 원천 존재까지 감사한다. 기존 lab
+내용까지 전수 대조하려면
 ``--compare-lab-content``를 붙인다. 결과는 JSON으로 원자적으로 기록한다.
 원자료·WAV·lab·MFA marker는 변경하지 않는다.
 """
@@ -20,12 +23,15 @@ import argparse
 import csv
 import json
 import os
+import statistics
 import time
+import wave
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from pipeline_common import atomic_write_json
+from paths import P
 from realign_eojeol_build_corpus import MISSING, form_to_lab
 
 csv.field_size_limit(10_000_000)
@@ -38,7 +44,14 @@ REQUIRED_COLUMNS = {
     "pron_reference_source",
     "pron_reference_status",
     "sex",
+    "dur",
 }
+
+DURATION_RESIDUAL_TOLERANCE_SECONDS = 0.025
+SESSION_DURATION_MATCH_MIN_PCT = 98.0
+SESSION_DURATION_COVERAGE_MIN_PCT = 98.0
+SESSION_PADDING_MIN_SECONDS = -0.025
+SESSION_PADDING_MAX_SECONDS = 0.5
 
 
 def directory_entries(path: Path) -> dict[str, int]:
@@ -87,12 +100,224 @@ def compare_lab(path: Path, expected_text: str) -> tuple[str, str]:
     return path.stem, "mismatch"
 
 
+def wav_duration_seconds(path: Path) -> float:
+    """WAV payload를 읽지 않고 header의 frame/rate로 길이를 구한다."""
+    if path.stat().st_size < 44:
+        raise ValueError("WAV가 44바이트보다 작음")
+    with wave.open(str(path), "rb") as wav_file:
+        frames = wav_file.getnframes()
+        rate = wav_file.getframerate()
+        channels = wav_file.getnchannels()
+        if frames <= 0 or rate <= 0 or channels <= 0:
+            raise ValueError(
+                "잘못된 WAV header: "
+                f"frames={frames} rate={rate} channels={channels}"
+            )
+        return frames / rate
+
+
+def _duration_probe(
+    item: tuple[str, float, Path],
+) -> tuple[str, float, float | None, str | None]:
+    utt_id, csv_duration, path = item
+    try:
+        return utt_id, csv_duration, wav_duration_seconds(path), None
+    except (OSError, EOFError, wave.Error, ValueError) as exc:
+        return (
+            utt_id,
+            csv_duration,
+            None,
+            f"{type(exc).__name__}: {exc}",
+        )
+
+
+def audit_session_durations(
+    *,
+    session: str,
+    rows: list[dict[str, str]],
+    session_dir: Path,
+    entries: dict[str, int],
+    executor: ThreadPoolExecutor | None,
+    residual_tolerance: float = DURATION_RESIDUAL_TOLERANCE_SECONDS,
+    minimum_match_pct: float = SESSION_DURATION_MATCH_MIN_PCT,
+    minimum_coverage_pct: float = SESSION_DURATION_COVERAGE_MIN_PCT,
+) -> dict:
+    """F29형 발화 번호 밀림을 동일 ID CSV–WAV 길이로 검사한다.
+
+    연도별 WAV 생성 과정에서 일관된 앞뒤 padding이 있을 수 있으므로
+    ``wav_duration - csv_duration``의 세션 중앙값을 padding으로 추정하고,
+    개별 발화는 그 중앙값에서 벗어난 잔차로 판정한다. 비교 불가 파일이
+    조용히 제외되지 않도록 전체 CSV 행 대비 header 검사 coverage도 별도
+    hard gate로 둔다.
+    """
+    probes: list[tuple[str, float, Path]] = []
+    issues: list[dict[str, object]] = []
+    counts: Counter = Counter()
+    counts["expected"] = len(rows)
+
+    for row in rows:
+        utt_id = (row.get("utt_id") or "").strip()
+        raw_duration = (row.get("dur") or "").strip()
+        try:
+            csv_duration = float(raw_duration)
+            if csv_duration <= 0:
+                raise ValueError("0 이하")
+        except (TypeError, ValueError):
+            counts["csv_duration_invalid"] += 1
+            issues.append(
+                {
+                    "year": "",
+                    "session": session,
+                    "utt_id": utt_id,
+                    "issue": "csv_duration_invalid",
+                    "detail": raw_duration,
+                }
+            )
+            continue
+
+        wav_name = f"{utt_id}.wav"
+        wav_size = entries.get(wav_name)
+        if wav_size is None:
+            counts["wav_missing"] += 1
+            issues.append(
+                {
+                    "year": "",
+                    "session": session,
+                    "utt_id": utt_id,
+                    "issue": "duration_wav_missing",
+                    "detail": "",
+                }
+            )
+            continue
+        if wav_size < 44:
+            counts["wav_too_small"] += 1
+            issues.append(
+                {
+                    "year": "",
+                    "session": session,
+                    "utt_id": utt_id,
+                    "issue": "duration_wav_too_small",
+                    "detail": str(wav_size),
+                }
+            )
+            continue
+        probes.append((utt_id, csv_duration, session_dir / wav_name))
+
+    mapper = executor.map if executor is not None else map
+    inspected: list[tuple[str, float, float]] = []
+    for utt_id, csv_duration, wav_duration, error in mapper(
+        _duration_probe, probes
+    ):
+        if error is not None or wav_duration is None:
+            counts["wav_header_unreadable"] += 1
+            issues.append(
+                {
+                    "year": "",
+                    "session": session,
+                    "utt_id": utt_id,
+                    "issue": "wav_header_unreadable",
+                    "detail": error or "",
+                }
+            )
+            continue
+        inspected.append((utt_id, csv_duration, wav_duration))
+
+    counts["inspected"] = len(inspected)
+    expected = counts["expected"]
+    coverage_pct = 100.0 * len(inspected) / expected if expected else 0.0
+
+    if inspected:
+        deltas = [
+            wav_duration - csv_duration
+            for _utt_id, csv_duration, wav_duration in inspected
+        ]
+        padding = statistics.median(deltas)
+        matched = 0
+        for utt_id, csv_duration, wav_duration in inspected:
+            delta = wav_duration - csv_duration
+            residual = delta - padding
+            if abs(residual) <= residual_tolerance:
+                matched += 1
+                continue
+            issues.append(
+                {
+                    "year": "",
+                    "session": session,
+                    "utt_id": utt_id,
+                    "issue": "duration_residual_mismatch",
+                    "detail": "",
+                    "csv_duration_seconds": round(csv_duration, 6),
+                    "wav_duration_seconds": round(wav_duration, 6),
+                    "session_padding_seconds": round(padding, 6),
+                    "residual_seconds": round(residual, 6),
+                }
+            )
+        counts["matched"] = matched
+        counts["residual_mismatch"] = len(inspected) - matched
+        match_pct = 100.0 * matched / len(inspected)
+        padding_plausible = (
+            SESSION_PADDING_MIN_SECONDS
+            <= padding
+            <= SESSION_PADDING_MAX_SECONDS
+        )
+    else:
+        padding = None
+        match_pct = 0.0
+        padding_plausible = False
+
+    valid = bool(
+        expected
+        and coverage_pct >= minimum_coverage_pct
+        and match_pct >= minimum_match_pct
+        and padding_plausible
+    )
+    if not valid and not issues:
+        issues.append(
+            {
+                "year": "",
+                "session": session,
+                "utt_id": "",
+                "issue": "duration_session_gate_failed",
+                "detail": (
+                    f"coverage={coverage_pct:.3f}%, "
+                    f"match={match_pct:.3f}%, padding={padding}"
+                ),
+            }
+        )
+    return {
+        "session": session,
+        "valid": valid,
+        "expected": expected,
+        "inspected": len(inspected),
+        "matched": counts["matched"],
+        "coverage_pct": round(coverage_pct, 6),
+        "match_pct": round(match_pct, 6),
+        "padding_seconds": (
+            None if padding is None else round(padding, 6)
+        ),
+        "counts": dict(counts),
+        "issues": issues,
+    }
+
+
+def _distribution(values: list[float]) -> dict[str, float | None]:
+    if not values:
+        return {"min": None, "median": None, "max": None}
+    return {
+        "min": round(min(values), 6),
+        "median": round(statistics.median(values), 6),
+        "max": round(max(values), 6),
+    }
+
+
 def audit_year(
     *,
     year: str,
     search_master_root: Path,
     wav_root: Path,
     compare_lab_content: bool,
+    check_wav_durations: bool = True,
+    morph_textgrid_root: Path | None = None,
     known_pcm: Counter | None = None,
     lab_workers: int = 8,
 ) -> dict:
@@ -109,11 +334,21 @@ def audit_year(
     counts: Counter = Counter()
     examples: dict[str, list[str]] = {}
     risky_sessions: Counter = Counter()
+    issue_inventory: list[dict[str, object]] = []
+    duration_sessions: list[dict] = []
+    morph_source_issues: list[dict[str, object]] = []
     scanned_sessions: set[str] = set()
     started = time.monotonic()
+    morph_year_dir = (
+        morph_textgrid_root / year
+        if morph_textgrid_root is not None
+        else None
+    )
+    if morph_year_dir is not None and not morph_year_dir.is_dir():
+        raise RuntimeError(f"{year} 형태소 TextGrid 폴더 없음: {morph_year_dir}")
     executor = (
         ThreadPoolExecutor(max_workers=max(1, lab_workers))
-        if compare_lab_content
+        if compare_lab_content or check_wav_durations
         else None
     )
 
@@ -165,6 +400,32 @@ def audit_year(
                         risky_sessions[session] += 1
                         _add_example(examples, "wav_too_small", utt_id)
 
+                if check_wav_durations:
+                    duration_result = audit_session_durations(
+                        session=session,
+                        rows=rows,
+                        session_dir=session_dir,
+                        entries=entries,
+                        executor=executor,
+                    )
+                    duration_sessions.append(duration_result)
+                    counts["duration_sessions_checked"] += 1
+                    counts[
+                        "duration_sessions_passed"
+                        if duration_result["valid"]
+                        else "duration_sessions_failed"
+                    ] += 1
+                    for key, value in duration_result["counts"].items():
+                        counts[f"duration_{key}"] += value
+                    for issue in duration_result["issues"]:
+                        issue["year"] = year
+                        issue_inventory.append(issue)
+                        issue_name = str(issue["issue"])
+                        utt_id = str(issue.get("utt_id") or session)
+                        _add_example(examples, issue_name, utt_id)
+                    if not duration_result["valid"]:
+                        risky_sessions[session] += 1
+
                 search_ids: set[str] = set()
                 expected_lab_ids: set[str] = set()
                 lab_checks: list[tuple[Path, str]] = []
@@ -208,6 +469,40 @@ def audit_year(
 
                     expected_lab_ids.add(utt_id)
                     counts["expected_usable_lab"] += 1
+                    if morph_year_dir is not None:
+                        counts["morph_source_checked"] += 1
+                        morph_path = (
+                            morph_year_dir
+                            / session
+                            / f"{utt_id}.TextGrid"
+                        )
+                        try:
+                            morph_size = morph_path.stat().st_size
+                        except OSError:
+                            morph_size = None
+                        morph_issue = None
+                        if morph_size is None:
+                            counts["morph_source_missing"] += 1
+                            morph_issue = "morph_source_missing"
+                        elif morph_size == 0:
+                            counts["morph_source_zero_byte"] += 1
+                            morph_issue = "morph_source_zero_byte"
+                        else:
+                            counts["morph_source_nonzero"] += 1
+                        if morph_issue is not None:
+                            risky_sessions[session] += 1
+                            _add_example(examples, morph_issue, utt_id)
+                            issue = {
+                                "year": year,
+                                "session": session,
+                                "utt_id": utt_id,
+                                "issue": morph_issue,
+                                "detail": "",
+                                "path": str(morph_path),
+                            }
+                            morph_source_issues.append(issue)
+                            issue_inventory.append(issue)
+
                     lab_size = entries.get(f"{utt_id}.lab")
                     if lab_size is None:
                         counts["expected_lab_missing"] += 1
@@ -259,11 +554,24 @@ def audit_year(
             executor.shutdown(wait=True)
 
     elapsed = time.monotonic() - started
+    duration_coverages = [
+        float(item["coverage_pct"]) for item in duration_sessions
+    ]
+    duration_matches = [
+        float(item["match_pct"]) for item in duration_sessions
+    ]
+    duration_paddings = [
+        float(item["padding_seconds"])
+        for item in duration_sessions
+        if item["padding_seconds"] is not None
+    ]
     result = {
         "year": year,
         "status": "audited",
         "read_only": True,
         "compare_lab_content": compare_lab_content,
+        "wav_duration_audit_enabled": check_wav_durations,
+        "morph_source_audit_enabled": morph_year_dir is not None,
         "csv_files": len(csv_files),
         "elapsed_seconds": round(elapsed, 3),
         "counts": dict(sorted(counts.items())),
@@ -273,9 +581,46 @@ def audit_year(
             for session, count in risky_sessions.most_common(30)
         ],
         "examples": examples,
+        "duration_audit": {
+            "policy": {
+                "residual_tolerance_seconds": (
+                    DURATION_RESIDUAL_TOLERANCE_SECONDS
+                ),
+                "session_match_min_pct": SESSION_DURATION_MATCH_MIN_PCT,
+                "session_inspection_coverage_min_pct": (
+                    SESSION_DURATION_COVERAGE_MIN_PCT
+                ),
+                "session_padding_allowed_seconds": [
+                    SESSION_PADDING_MIN_SECONDS,
+                    SESSION_PADDING_MAX_SECONDS,
+                ],
+            },
+            "coverage_pct_distribution": _distribution(
+                duration_coverages
+            ),
+            "match_pct_distribution": _distribution(duration_matches),
+            "padding_seconds_distribution": _distribution(
+                duration_paddings
+            ),
+            "failed_sessions": [
+                {
+                    key: value
+                    for key, value in item.items()
+                    if key != "issues"
+                }
+                for item in duration_sessions
+                if not item["valid"]
+            ],
+        },
+        "morph_source_issues": morph_source_issues,
+        "issue_inventory": issue_inventory,
     }
     result["gates"] = {
         "session_folders_present": counts["session_folder_missing"] == 0,
+        "csv_wav_duration_correspondence": (
+            not check_wav_durations
+            or counts["duration_sessions_failed"] == 0
+        ),
         "no_dangerous_unexpected_labs": (
             counts["lab_not_expected_with_wav"] == 0
         ),
@@ -291,7 +636,15 @@ def audit_year(
             )
         ),
         "no_fatal_tiny_wav": counts["wav_too_small"] == 0,
+        "all_morph_sources_ready": (
+            morph_year_dir is None
+            or (
+                counts["morph_source_missing"] == 0
+                and counts["morph_source_zero_byte"] == 0
+            )
+        ),
     }
+    result["all_gates_pass"] = all(result["gates"].values())
     return result
 
 
@@ -307,7 +660,12 @@ def main() -> int:
     parser.add_argument(
         "--wav-root",
         type=Path,
-        default=Path(r"D:\20_AUDIO\03_wav\individual"),
+        default=P("wav") / "individual",
+    )
+    parser.add_argument(
+        "--morph-textgrid-root",
+        type=Path,
+        default=P("textgrid_merged"),
     )
     parser.add_argument(
         "--source-pcm-check",
@@ -317,6 +675,21 @@ def main() -> int:
         ),
     )
     parser.add_argument("--compare-lab-content", action="store_true")
+    parser.add_argument(
+        "--skip-wav-duration-audit",
+        action="store_true",
+        help="진단용 우회. 정식 preflight에서는 사용하지 않는다.",
+    )
+    parser.add_argument(
+        "--skip-morph-source-audit",
+        action="store_true",
+        help="진단용 우회. 정식 preflight에서는 사용하지 않는다.",
+    )
+    parser.add_argument(
+        "--no-strict",
+        action="store_true",
+        help="보고서만 만들고 gate 실패에도 exit 0을 반환한다.",
+    )
     parser.add_argument("--lab-workers", type=int, default=8)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -339,6 +712,12 @@ def main() -> int:
         "search_master_root": str(args.search_master_root.resolve()),
         "search_master_build_status": meta.get("status"),
         "wav_root": str(args.wav_root.resolve()),
+        "morph_textgrid_root": (
+            None
+            if args.skip_morph_source_audit
+            else str(args.morph_textgrid_root.resolve())
+        ),
+        "strict": not args.no_strict,
         "years": [],
     }
     for year in args.years:
@@ -348,13 +727,25 @@ def main() -> int:
                 search_master_root=args.search_master_root,
                 wav_root=args.wav_root,
                 compare_lab_content=args.compare_lab_content,
+                check_wav_durations=not args.skip_wav_duration_audit,
+                morph_textgrid_root=(
+                    None
+                    if args.skip_morph_source_audit
+                    else args.morph_textgrid_root
+                ),
                 known_pcm=known_pcm.get(year),
                 lab_workers=args.lab_workers,
             )
         )
         atomic_write_json(args.output, report)
+    report["all_years_pass"] = all(
+        item["all_gates_pass"] for item in report["years"]
+    )
+    atomic_write_json(args.output, report)
     print(f"report: {args.output}", flush=True)
-    return 0
+    if args.no_strict or report["all_years_pass"]:
+        return 0
+    return 1
 
 
 if __name__ == "__main__":

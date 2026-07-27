@@ -4,8 +4,10 @@
 재작성하는 이중 I/O를 피하는 것이다. DB의 word/phone interval을 읽어 기존
 형태소 경계와 frozen search master의 form을 한 번에 결합한다.
 
-이 스크립트는 아직 비교 파일럿용 고속 경로다. built-in export+기존 merge와
-전수 tier/시간 동등성이 확인되기 전에는 전량 러너의 기본 경로로 사용하지 않는다.
+정렬/파일 생성의 성공과 연구용 형태소 tier 완비를 분리한다. 형태소 원천이
+없는 발화도 words/phones/utterance와 빈 morphemes 경계를 가진 4-tier로
+보존하되, 보고서의 ``analysis_ready_status``를 차단하고 전수 inventory를
+남긴다. 다음 연도 및 analysis-ready 승격은 독립 QC가 이 상태를 거부한다.
 DB는 SQLite read-only URI로 열고, 기존 형태소 TextGrid도 읽기만 한다.
 """
 
@@ -70,19 +72,34 @@ def export_session(
     word_labels: dict[int, str],
     phone_labels: dict[int, tuple[str, str]],
     forms: dict[str, str],
-) -> dict[str, int]:
+) -> dict[str, object]:
     counts = defaultdict(int)
     missing_alignment_examples: list[str] = []
+    form_missing_examples: list[str] = []
+    morpheme_missing_inventory: list[str] = []
+    failed_examples: list[dict[str, str]] = []
     todo = []
     out_dir = output_root / year / session
     for uid, name, duration in utterances:
         output = out_dir / f"{name}.TextGrid"
         if output.is_file() and validate_4tier(output)["valid"]:
             counts["validated_existing"] += 1
+            # Resume 시 이미 쓴 빈 morphemes tier를 단순 valid로 오인하지 않는다.
+            # 연구 준비도는 원천 tier의 현재 존재·내용으로 다시 계수한다.
+            if not morpheme_tier(year, session, name):
+                counts["morpheme_tier_missing"] += 1
+                morpheme_missing_inventory.append(name)
             continue
         todo.append((uid, name, duration, output))
     if not todo:
-        return dict(counts)
+        result: dict[str, object] = dict(counts)
+        result["alignment_missing_examples"] = missing_alignment_examples
+        result["form_missing_examples"] = form_missing_examples
+        result["morpheme_tier_missing_inventory"] = (
+            morpheme_missing_inventory
+        )
+        result["failed_examples"] = failed_examples
+        return result
 
     ids = [row[0] for row in todo]
     ph = placeholders(len(ids))
@@ -122,10 +139,13 @@ def export_session(
         form = forms.get(name)
         if form is None:
             counts["form_missing"] += 1
+            if len(form_missing_examples) < 100:
+                form_missing_examples.append(name)
             continue
         morphs = morpheme_tier(year, session, name)
-        if morphs is None:
+        if not morphs:
             counts["morpheme_tier_missing"] += 1
+            morpheme_missing_inventory.append(name)
         try:
             write_4tier(
                 output,
@@ -135,12 +155,24 @@ def export_session(
                 morphs,
                 form,
             )
-        except Exception:
+        except Exception as exc:
             counts["failed"] += 1
+            if len(failed_examples) < 100:
+                failed_examples.append(
+                    {
+                        "utt_id": name,
+                        "error": f"{type(exc).__name__}: {exc}",
+                    }
+                )
             continue
         counts["created"] += 1
     result = dict(counts)
     result["alignment_missing_examples"] = missing_alignment_examples
+    result["form_missing_examples"] = form_missing_examples
+    result["morpheme_tier_missing_inventory"] = (
+        morpheme_missing_inventory
+    )
+    result["failed_examples"] = failed_examples
     return result
 
 
@@ -211,6 +243,9 @@ def export_database(
 
     totals = defaultdict(int)
     alignment_missing_examples: list[str] = []
+    form_missing_examples: list[str] = []
+    morpheme_missing_inventory: list[str] = []
+    failed_examples: list[dict[str, str]] = []
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         futures = {
             executor.submit(process_session, item): item[0]
@@ -224,6 +259,16 @@ def export_database(
                     alignment_missing_examples.extend(
                         value[: max(0, 100 - len(alignment_missing_examples))]
                     )
+                elif key == "form_missing_examples":
+                    form_missing_examples.extend(
+                        value[: max(0, 100 - len(form_missing_examples))]
+                    )
+                elif key == "morpheme_tier_missing_inventory":
+                    morpheme_missing_inventory.extend(value)
+                elif key == "failed_examples":
+                    failed_examples.extend(
+                        value[: max(0, 100 - len(failed_examples))]
+                    )
                 else:
                     totals[key] += value
             if index % 50 == 0 or index == len(selected):
@@ -236,11 +281,7 @@ def export_database(
                 )
 
     elapsed = time.monotonic() - started
-    hard_failures = (
-        totals["form_missing"]
-        + totals["morpheme_tier_missing"]
-        + totals["failed"]
-    )
+    hard_failures = totals["form_missing"] + totals["failed"]
     accounted = (
         totals["created"]
         + totals["validated_existing"]
@@ -248,8 +289,17 @@ def export_database(
         + totals["form_missing"]
         + totals["failed"]
     )
+    export_success = bool(
+        totals["source_utterances"] > 0
+        and hard_failures == 0
+        and (
+            totals["created"] + totals["validated_existing"]
+        ) / totals["source_utterances"] >= 0.99
+        and accounted == totals["source_utterances"]
+    )
+    morphology_complete = totals["morpheme_tier_missing"] == 0
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "year": year,
         "db_path": str(db_path.resolve()),
         "search_master_root": str(search_master_root.resolve()),
@@ -257,6 +307,11 @@ def export_database(
         "elapsed_seconds": round(elapsed, 3),
         "counts": dict(sorted(totals.items())),
         "alignment_missing_examples": alignment_missing_examples[:100],
+        "form_missing_examples": form_missing_examples[:100],
+        "morpheme_tier_missing_inventory": sorted(
+            set(morpheme_missing_inventory)
+        ),
+        "failed_examples": failed_examples[:100],
         "accounted": accounted,
         "coverage_pct": round(
             100
@@ -264,15 +319,19 @@ def export_database(
             / totals["source_utterances"],
             4,
         ) if totals["source_utterances"] else 0,
-        "status": (
-            "success"
-            if totals["source_utterances"] > 0
-            and hard_failures == 0
-            and (
-                totals["created"] + totals["validated_existing"]
-            ) / totals["source_utterances"] >= 0.99
-            and accounted == totals["source_utterances"]
-            else "failed"
+        # ``status``는 DB export/파일 구조의 성공 여부다. 형태소 완비는
+        # 별도 analysis-ready gate이므로 빈 tier를 조용히 연구용으로
+        # 승격하지 않는다.
+        "status": "success" if export_success else "failed",
+        "morphology_complete": morphology_complete,
+        "analysis_ready_status": (
+            "ready"
+            if export_success and morphology_complete
+            else (
+                "blocked_morphology"
+                if export_success
+                else "blocked_export_failure"
+            )
         ),
     }
 

@@ -65,9 +65,10 @@
 |---|---|---|
 | realign_eojeol_build_corpus.py | 검증된 pre-MFA search master의 `pron_reference_form`→어절 lab. 세션 coverage·build meta SHA256 입력계약, 기존 lab 내용 전수 대조, 불일치 원자 재작성, 미해결 숫자 추측 금지 | 숫자 `1` 원전사 회복·stale lab 재작성 회귀검사 통과 |
 | realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존. 선택적 JSON report | 합성·21,962개 실자료 회귀검사 통과 |
-| export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate | 21,962개 built-in 결과와 라벨·시간 전수 동일; 4 worker 73.983초 |
+| export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate. 정렬 export 성공과 형태소 analysis-ready를 분리하고 원천 누락 전수 ID·개별 예외를 보고 | 21,962개 built-in 결과와 라벨·시간 전수 동일; 4 worker 73.983초. 2021 원천 누락 1,109건은 파일/DB 보존+analysis-ready 차단 정책 |
 | compare_textgrid_tiers.py | 두 TextGrid 트리의 파일집합·tier명·라벨·모든 시간경계를 전수 비교 | 3,330개·21,962개 direct 동등성 검증 |
-| audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사 | 2021–2025 감사 완료 |
+| audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사. 세션 padding 제거 CSV dur↔WAV header 잔차 0.025초/98% 대응 gate, 예상 usable lab의 형태소 원천 존재, strict exit·발화 inventory 포함 | 2021 형태소 원천 1,373,521건 감사: 누락 1,109건/61세션. duration 전수는 G2P 뒤 대기 |
+| build_mfa_alignment_contract.py | lab 입력계약+acoustic/dictionary/G2P SHA256+MFA/Pynini/Python 판본으로 경로 독립 `alignment_contract_id` 생성 | 내용/경로/계약 변화 합성 회귀시험 통과; 2022 runner 배선 대기 |
 | audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, 정확한 tier 순서, 0–xmax 연속성, interval gap/overlap, 핵심 label, WAV duration을 hard gate로 검사하고 운영본의 가시적 좌우 빈 경계는 별도 진단 | 합성 정상·누락·duration 불일치·tier gap 회귀검사 통과; 2021 완료 후 전수 실행 대기 |
 | preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 연도 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV를 같은 입력계약/수량으로 결합 검증 | 정상 fixture 통과; 계약 불일치·DB/direct 보고서 누락·손상 숫자 fail-closed 회귀검사 통과; 2021 QC 후 2022 gate 실행 대기 |
 | patch_mfa_export_queue.py | MFA export queue 종료 경쟁을 blocking get+worker별 sentinel로 교정하고 설치 전 소스 archive | 3,330/21,965 실제 MFA 검증 |

@@ -536,3 +536,34 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   4-tier TextGrid→재개·전수 QC이며, 실제 commit SHA·검토 파일·심각도·
   파일:행·재현 근거·연구 영향·수정안·시험을 갖춘 Markdown 원문으로
   돌려받도록 했다.
+- 커밋 `ce421db` 대상 외부 리뷰를 336행 원문 그대로
+  `reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md`에 보존하고,
+  finding별 수용·수정·보류 판정을
+  `reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md`에 남겼다.
+  리뷰의 P1 두 건과 모델 fingerprint 부재를 2022 차단 조건으로 수용하되,
+  빈 형태소 tier를 최종 성공으로 조용히 취급하라는 권고는 연구 흐름에 맞게
+  `정렬 export 성공`과 `analysis-ready`를 분리하는 정책으로 수정했다.
+- 현재 설치된 `korean_mfa` acoustic/dictionary/G2P 파일과
+  MFA 3.4.0·Pynini 2.1.7을 읽기 전용 해시해
+  `outputs/reports/MFA_MODEL_FINGERPRINT_baseline_20260727.json`에 고정했다.
+  기존 2020·2021 marker는 소급 변조하지 않고 별도 baseline 증빙으로 연결한다.
+- F29형 발화 번호 밀림을 잡도록 `audit_mfa_year_readiness.py`에 세션 중앙
+  padding 제거 후 잔차 0.025초·대응률/검사 coverage 98% gate를 추가했다.
+  같은 감사에 예상 usable lab의 형태소 원천 TextGrid 존재 전수검사와
+  strict exit 1, 발화별 issue inventory도 추가했다.
+- 2021 형태소 원천 감사의 첫 시도는 일반 search master root를 지정해
+  build meta status 없음으로 fail-closed 됐다. 현재 temp 계약에서 실제
+  `pre_mfa_v1_20260725` staging root를 읽어 재실행했고, 4,143세션
+  1,373,920행을 570.354초에 감사했다. usable 1,373,521건 중
+  원천 TextGrid 누락은 1,109건/61세션이었으며 1,017건은 네 세션에
+  집중됐다.
+- 이 실측으로 기존 direct exporter가 약 20시간 뒤 말단에서 연도 전체를
+  실패시킬 조건을 사전에 확인했다. exporter는 정렬/파일 생성 성공을
+  보존하되 `morphology_complete=false`,
+  `analysis_ready_status=blocked_morphology`와 누락 ID 전수를 남기도록
+  교정했다. partial resume에서도 기존 빈 tier를 누락 0건으로 오인하지 않고,
+  개별 export 예외의 발화 ID·오류도 기록한다. 독립 4-tier QC와 다음 연도
+  gate는 계속 형태소 결측을 거부한다.
+- 새 duration·형태소·strict exit·alignment contract·export resume/예외
+  회귀시험을 포함해 Python unittest 66개와 PowerShell 안전성 검사가
+  통과했다.

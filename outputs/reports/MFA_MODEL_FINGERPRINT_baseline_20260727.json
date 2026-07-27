@@ -1,0 +1,43 @@
+{
+  "schema_version": "mfa_model_fingerprint.v1",
+  "recorded_at": "2026-07-27T12:24:36+09:00",
+  "purpose": "2020-2021 pre_mfa_v1 baseline pronunciation and alignment reproducibility record",
+  "runtime": {
+    "python": "3.13.14",
+    "montreal_forced_aligner": "3.4.0",
+    "pynini": "2.1.7",
+    "mfa_module_path": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Lib\\site-packages\\montreal_forced_aligner\\__init__.py"
+  },
+  "models": {
+    "acoustic": {
+      "name": "korean_mfa",
+      "path": "C:\\Users\\ari30\\Documents\\MFA\\pretrained_models\\acoustic\\korean_mfa.zip",
+      "size_bytes": 61574295,
+      "last_write_time": "2026-02-18T08:31:30.5518504+09:00",
+      "sha256": "46f7a73ab46828c679562b160e0577beecfb4a9a827efe5ab392aee947451a4d"
+    },
+    "dictionary": {
+      "name": "korean_mfa",
+      "path": "C:\\Users\\ari30\\Documents\\MFA\\pretrained_models\\dictionary\\korean_mfa.dict",
+      "size_bytes": 937903,
+      "last_write_time": "2026-02-18T08:31:21.6108543+09:00",
+      "sha256": "75683f4dc2a7dd95295a068206d248a30bd2f4f2231fd4449210c91d1e78150b"
+    },
+    "g2p": {
+      "name": "korean_mfa",
+      "path": "C:\\Users\\ari30\\Documents\\MFA\\pretrained_models\\g2p\\korean_mfa.zip",
+      "size_bytes": 5530577,
+      "last_write_time": "2026-07-23T12:36:35.3444158+09:00",
+      "sha256": "6938db05d83fa92c5c80681bf76fd7dd7af7f3ea8c7d7df1093790c641ad0344"
+    }
+  },
+  "evidence": {
+    "runner_model_names": {
+      "acoustic": "korean_mfa",
+      "dictionary": "korean_mfa",
+      "g2p": "korean_mfa"
+    },
+    "file_observation": "All three model files were hashed read-only while the 2021 run was active; their modification times precede the run.",
+    "limitation": "The current 2020/2021 input contract and done markers do not yet embed these hashes. This report is the separately captured host baseline, not a retroactive rewrite of those contracts."
+  }
+}

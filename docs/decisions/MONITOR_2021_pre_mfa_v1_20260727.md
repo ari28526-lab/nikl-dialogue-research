@@ -62,6 +62,8 @@ direct DB       true
 | 10:34–10:43 | G2P worker 4→3 | worker PID 26540이 먼저 종료했다. heartbeat의 live CPU 합계는 14,050.94→11,343.92초로 내려갔지만, 남은 worker 3개는 10:43 각각 3,320.56–3,324.05초까지 계속 증가했고 주 Python·MFA·wrapper도 생존했다. stderr 오류·traceback 없음 | 317.84GB | 한 partition이 먼저 끝난 정상 진행으로 판정. 현재 `Generating pronunciations`는 watchdog 종료 제외 단계라 재시작하지 않음. 다음 실행에서는 종료 worker의 마지막 CPU를 retired 합계에 보존해 누적치가 역행하지 않도록 수정 |
 | 11:23 | 공통 G2P 사전 도입 시점 결정 | 남은 worker 3개 CPU 각각 5,180.5–5,185.6초, 주 Python·MFA·wrapper 생존, heartbeat 18,300.56초, 오류 0 | 317.84GB | 공통 사전은 채택 후보이나 현재 2021은 중단하지 않음. 완주 DB를 공통 사전 seed·동등성 기준으로 보존 |
 | 11:28 | 공통 발음 자원으로 범위 확대 | 남은 worker 3개 CPU 각각 5,377.0–5,380.1초, heartbeat 18,926.03초, 오류·traceback 0 | 317.84GB | 단순 G2P cache가 아니라 G2P 판본+우리말샘 예외+출처·우선순위를 6개년 공통 release로 설계. 2021은 baseline으로 완주 |
+| 11:42–12:02 | 20분 연속 감시 | worker 3개가 각각 약 5,984–5,987→6,972–6,978 CPU초, heartbeat 20,789.75→23,765.56초. DB는 G2P 반환 전 구조대로 1,140,953,088바이트 유지, 오류·marker 없음 | 317.84GB | 세 worker가 거의 균등하게 계속 계산한 정상 CPU-bound G2P. 무로그·DB 미갱신을 교착으로 오판하지 않고 실행 유지 |
+| 12:24–12:52 | 외부 리뷰 수신·P1 사전감사 | 외부 리뷰 원문 336행 보존, MFA 모델 3종 SHA256 기록. 2021 형태소 원천 감사를 570.354초에 완료: usable 1,373,521건 중 원천 TextGrid 누락 1,109건/61세션 | 317.84GB | 현재 MFA는 worker CPU·heartbeat 계속 증가해 중단하지 않음. 현 exporter의 말단 연도 실패 조건이 실제로 발현될 것을 사전에 확인. 정렬 export 성공과 형태소 analysis-ready를 분리하고 누락 전수 inventory를 남기는 호환 수정·시험 진행 |
 
 ### 10:34 CPU 합계 하락의 의미와 후속 수정
 
@@ -135,15 +137,87 @@ dictionary/G2P model fingerprint를 포함하지 않는다. 새 공통 사전으
 음향모델·phone mapping fingerprint를 추가한다. 세부 설계는
 `DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md`에 기록했다.
 
+### 12:24 외부 리뷰 재검증과 12:52 형태소 원천 전수 감사
+
+외부 도구가 커밋 `ce421dbe8c6b7f5bb50202b69f3ff1785508ba5f`를
+읽기 전용 검토해 P0 0, P1 2, P2 7, P3 8건을 보고했다. 원문과 현재
+프로젝트 판정은 각각 다음에 보존했다.
+
+- `docs/reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md`
+- `docs/reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md`
+
+설치된 MFA 소스를 다시 확인한 결과, 현재 G2P는 전체 함수 반환 뒤
+`Word`·`Pronunciation` bulk insert와 commit을 수행한다
+(`corpus/base.py:2007-2022, 2063-2072, 2115-2135`). 따라서 진행 중인
+2021을 끊지 않는 기존 판정은 유지했다. 동시에 현재 설치본을 읽기 전용으로
+해시해 다음 보고서에 고정했다.
+
+- `outputs/reports/MFA_MODEL_FINGERPRINT_baseline_20260727.json`
+- acoustic SHA256:
+  `46f7a73ab46828c679562b160e0577beecfb4a9a827efe5ab392aee947451a4d`
+- dictionary SHA256:
+  `75683f4dc2a7dd95295a068206d248a30bd2f4f2231fd4449210c91d1e78150b`
+- G2P SHA256:
+  `6938db05d83fa92c5c80681bf76fd7dd7af7f3ea8c7d7df1093790c641ad0344`
+
+첫 형태소 감사 시도는 일반 `05_search_master`를 가리켜 build meta status가
+없다는 이유로 즉시 실패했다. 현재 실행 계약의 실제 root는
+`D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725`다.
+실패 로그를 보존하고 계약 파일에서 읽은 root로 재실행했다. 이는 pre-MFA
+staging을 하드코딩하지 않고 현재 계약에서 유도해야 한다는 운영 교훈이다.
+
+재시도 결과:
+
+```text
+search sessions          4,143
+search rows          1,373,920
+expected usable lab  1,373,521
+lab/WAV/stale gate           PASS
+morph source checked 1,373,521
+morph source nonzero 1,372,412
+morph source missing     1,109
+affected sessions            61
+elapsed                  570.354s
+```
+
+누락의 1,017/1,109건은 네 세션에 집중됐다.
+
+- `SDRW2100003249`: 260
+- `SDRW2100001747`: 258
+- `SDRW2100001872`: 251
+- `SDRW2100002153`: 248
+
+기존 direct exporter는 이 1,109건도 빈 morphemes tier로 파일을 쓴 뒤
+마지막에 `morpheme_tier_missing>0`을 연도 hard failure로 계산했다. 즉
+약 20시간의 정렬·출력이 끝난 뒤 DB와 partial을 보존한 채 실패할 것이
+사전에 확정됐다.
+
+정책은 다음처럼 분리한다.
+
+1. words/phones/utterance 정렬과 4-tier 파일 생성이 구조적으로 성공하면
+   `status=success`로 DB·TextGrid를 보존한다.
+2. 형태소 원천 누락 발화도 0–xmax 경계가 있는 빈 morphemes tier를 가지지만,
+   `morphology_complete=false`,
+   `analysis_ready_status=blocked_morphology`와 전수 ID inventory를 남긴다.
+3. 독립 4-tier QC와 다음 연도 gate는 유표 morphemes가 없는 발화를 거부한다.
+   따라서 빈 tier가 최종 연구용으로 조용히 승격되지는 않는다.
+4. 1,109건은 원천 형태소 정렬 보완 또는 명시적 연구 제외를 결정한 뒤에만
+   analysis-ready로 승격한다.
+
+이 구분은 정렬에 성공한 시간정보를 버리지 않으면서도 형태소 검색 인프라의
+완전성을 과장하지 않는다. 수정 전 파일·현재 실행 DB·partial은 덮어쓰거나
+삭제하지 않는다.
+
 ## 다음 확인 게이트
 
 1. lab builder 종료 코드와 생성·재작성·일치·빈 입력 수량
 2. preflight 재통과와 `[2/3] MFA` 진입
 3. heartbeat의 PID·단계·진행 카운터·CPU 증가
 4. 정렬 종료 뒤 SQLite DB 존재와 direct partial 생성
-5. 99% coverage 및 형태소/form hard failure 0
-6. final staging 이동, align/merge marker, DB 보존
-7. 독립 전수 QC와 2020·2021 병목 비교
+5. 99% export coverage 및 form/파일생성 hard failure 0
+6. 형태소 completeness 별도 판정과 누락 ID inventory
+7. final staging 이동, align/merge marker, DB 보존
+8. 독립 전수 QC와 2020·2021 병목 비교
 
 ## final 승격 뒤 독립 전수 QC
 

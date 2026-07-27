@@ -94,7 +94,7 @@ class ExportMfaDb4TierTests(unittest.TestCase):
             comparison = compare_trees(output, output)
             self.assertEqual(comparison["status"], "identical")
 
-    def test_missing_morpheme_tier_blocks_success(self):
+    def test_missing_morpheme_tier_preserves_export_but_blocks_analysis(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             db = root / "corpus.db"
@@ -115,8 +115,75 @@ class ExportMfaDb4TierTests(unittest.TestCase):
                     search_master_root=search.parent,
                     output_root=root / "out",
                 )
-            self.assertEqual(report["status"], "failed")
+            self.assertEqual(report["status"], "success")
+            self.assertEqual(
+                report["analysis_ready_status"], "blocked_morphology"
+            )
+            self.assertFalse(report["morphology_complete"])
             self.assertEqual(report["counts"]["morpheme_tier_missing"], 1)
+            self.assertEqual(
+                report["morpheme_tier_missing_inventory"], ["S1.1"]
+            )
+
+            # Partial resume에서도 기존 4-tier의 구조 valid만 보고 누락을
+            # 0건으로 오인하지 않는다.
+            with patch(
+                "export_mfa_db_4tier.morpheme_tier",
+                return_value=None,
+            ):
+                resumed = export_database(
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search.parent,
+                    output_root=root / "out",
+                )
+            self.assertEqual(resumed["counts"]["validated_existing"], 1)
+            self.assertEqual(
+                resumed["counts"]["morpheme_tier_missing"], 1
+            )
+            self.assertEqual(
+                resumed["analysis_ready_status"], "blocked_morphology"
+            )
+
+    def test_failed_export_records_utterance_and_exception(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "corpus.db"
+            self.make_db(db)
+            search = root / "search" / "2021"
+            search.mkdir(parents=True)
+            with open(
+                search / "S1.csv",
+                "w",
+                encoding="utf-8",
+                newline="",
+            ) as stream:
+                writer = csv.writer(stream)
+                writer.writerow(["utt_id", "form"])
+                writer.writerow(["S1.1", "가"])
+            with (
+                patch(
+                    "export_mfa_db_4tier.morpheme_tier",
+                    return_value=[(0.0, 0.8, "가")],
+                ),
+                patch(
+                    "export_mfa_db_4tier.write_4tier",
+                    side_effect=RuntimeError("synthetic failure"),
+                ),
+            ):
+                report = export_database(
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search.parent,
+                    output_root=root / "out",
+                )
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual(report["counts"]["failed"], 1)
+            self.assertEqual(report["failed_examples"][0]["utt_id"], "S1.1")
+            self.assertIn(
+                "RuntimeError: synthetic failure",
+                report["failed_examples"][0]["error"],
+            )
 
 
 if __name__ == "__main__":

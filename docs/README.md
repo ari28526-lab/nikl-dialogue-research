@@ -46,6 +46,8 @@
 | 문서 | 무엇 |
 |---|---|
 | [reviews/HANDOFF_external_review_CSV_MFA_20260727.md](reviews/HANDOFF_external_review_CSV_MFA_20260727.md) | 다른 도구에 GitHub 주소와 함께 전달할 전체 CSV·MFA 코드리뷰 범위·제약·피드백 양식 |
+| [reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md](reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md) | 커밋 `ce421db` 대상 외부 리뷰 수신 원문 336행(줄바꿈 정규화 SHA256 기록) |
+| [reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md](reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md) | 외부 finding별 독립 재검증·수용/수정/보류 판정과 2021/2022 적용 순서 |
 
 ## 환경 설정 (environment/)
 기계·도구 셋업 노트(바른·MFA·R·Praat·VS Code 등). 색인은
