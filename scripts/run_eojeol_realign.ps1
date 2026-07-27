@@ -84,12 +84,15 @@ try {
     }
     $py = Expand-CfgPath $cfg.pipeline_python
     $wavRoot = Join-Path (Expand-CfgPath $cfg.wav) "individual"
+    $layersRoot = Expand-CfgPath $cfg.layers
     $stateRoot = Expand-CfgPath $cfg.mfa_state
     $tmpPrimary = Expand-CfgPath $cfg.mfa_temp_primary
     $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
     $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    $morphTextGridRoot = Expand-CfgPath $cfg.textgrid_merged
+    $sourcePcmCheck = Join-Path $layersRoot "05_audio_index\source_pcm_check.csv"
     if ([string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
         $searchMasterRoot = Expand-CfgPath $cfg.search_master
     } else {
@@ -107,6 +110,10 @@ $envRoot = Join-Path $env:USERPROFILE "miniforge3\envs\mfa"
 $mfa   = Join-Path $envRoot "Scripts\mfa.exe"
 $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
+$mfaModelRoot = Join-Path $env:USERPROFILE "Documents\MFA\pretrained_models"
+$acousticModelPath = Join-Path $mfaModelRoot "acoustic\korean_mfa.zip"
+$dictionaryModelPath = Join-Path $mfaModelRoot "dictionary\korean_mfa.dict"
+$g2pModelPath = Join-Path $mfaModelRoot "g2p\korean_mfa.zip"
 if (-not (Test-Path -LiteralPath $py)) {
     Write-Error "pipeline_python 없음: $py"
     exit 1
@@ -114,6 +121,14 @@ if (-not (Test-Path -LiteralPath $py)) {
 if (-not (Test-Path -LiteralPath $mfa)) {
     Write-Error "mfa.exe 없음: $mfa"
     exit 1
+}
+foreach ($modelPath in @(
+    $acousticModelPath, $dictionaryModelPath, $g2pModelPath
+)) {
+    if (-not (Test-Path -LiteralPath $modelPath)) {
+        Write-Error "MFA alignment contract 모델 파일 없음: $modelPath"
+        exit 1
+    }
 }
 # ★ 병렬 자동 (2026-07-19): 논리코어 12+(i5-1240P=16) → 8job, 그 외(N200=4) → 4job.
 #   세션=화자 재구성 후에야 유효 — 1화자면 MFA가 어차피 1job으로 강등함.
@@ -269,6 +284,8 @@ public static class ProjectProcessSnapshot {
         )
         $cpuSeconds = 0.0
         [int64]$workingSetBytes = 0
+        [int64]$privateMemoryBytes = 0
+        [int64]$threadCount = 0
         $cpuByPid = @{}
         foreach ($item in $live) {
             if ($null -ne $item.CPU) {
@@ -277,6 +294,10 @@ public static class ProjectProcessSnapshot {
                 $cpuByPid[[string]$item.Id] = $itemCpu
             }
             $workingSetBytes += [int64]$item.WorkingSet64
+            $privateMemoryBytes += [int64]$item.PrivateMemorySize64
+            try {
+                $threadCount += @($item.Threads).Count
+            } catch {}
         }
         return [PSCustomObject][ordered]@{
             Scope = 'descendant_tree'
@@ -284,15 +305,19 @@ public static class ProjectProcessSnapshot {
             PythonProcessCount = @(
                 $live | Where-Object { $_.ProcessName -match '^python' }
             ).Count
+            ThreadCount = $threadCount
             CpuSeconds = $cpuSeconds
             CpuByPid = $cpuByPid
             WorkingSetBytes = $workingSetBytes
+            PrivateMemoryBytes = $privateMemoryBytes
             ProcessIds = $processIds
         }
     } catch {
         $live = @(Get-Process mfa,python -ErrorAction SilentlyContinue)
         $cpuSeconds = 0.0
         [int64]$workingSetBytes = 0
+        [int64]$privateMemoryBytes = 0
+        [int64]$threadCount = 0
         $cpuByPid = @{}
         foreach ($item in $live) {
             if ($null -ne $item.CPU) {
@@ -301,6 +326,10 @@ public static class ProjectProcessSnapshot {
                 $cpuByPid[[string]$item.Id] = $itemCpu
             }
             $workingSetBytes += [int64]$item.WorkingSet64
+            $privateMemoryBytes += [int64]$item.PrivateMemorySize64
+            try {
+                $threadCount += @($item.Threads).Count
+            } catch {}
         }
         return [PSCustomObject][ordered]@{
             Scope = 'global_fallback'
@@ -308,10 +337,123 @@ public static class ProjectProcessSnapshot {
             PythonProcessCount = @(
                 $live | Where-Object { $_.ProcessName -match '^python' }
             ).Count
+            ThreadCount = $threadCount
             CpuSeconds = $cpuSeconds
             CpuByPid = $cpuByPid
             WorkingSetBytes = $workingSetBytes
+            PrivateMemoryBytes = $privateMemoryBytes
             ProcessIds = @($live.Id | Sort-Object)
+        }
+    }
+}
+
+function Get-SystemMemoryMetrics {
+    if (-not ('ProjectSystemMemory' -as [type])) {
+        $memorySource = @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+
+public sealed class ProjectSystemMemorySnapshot {
+    public long AvailablePhysicalBytes { get; set; }
+    public long CommitUsedBytes { get; set; }
+    public long CommitLimitBytes { get; set; }
+}
+
+public static class ProjectSystemMemory {
+    [StructLayout(LayoutKind.Sequential)]
+    private struct PERFORMANCE_INFORMATION {
+        public uint cb;
+        public UIntPtr CommitTotal;
+        public UIntPtr CommitLimit;
+        public UIntPtr CommitPeak;
+        public UIntPtr PhysicalTotal;
+        public UIntPtr PhysicalAvailable;
+        public UIntPtr SystemCache;
+        public UIntPtr KernelTotal;
+        public UIntPtr KernelPaged;
+        public UIntPtr KernelNonpaged;
+        public UIntPtr PageSize;
+        public uint HandleCount;
+        public uint ProcessCount;
+        public uint ThreadCount;
+    }
+
+    [DllImport("psapi.dll", SetLastError=true)]
+    private static extern bool GetPerformanceInfo(
+        out PERFORMANCE_INFORMATION information,
+        uint size
+    );
+
+    private static long ToBytes(UIntPtr pages, UIntPtr pageSize) {
+        checked {
+            return (long)(pages.ToUInt64() * pageSize.ToUInt64());
+        }
+    }
+
+    public static ProjectSystemMemorySnapshot GetSnapshot() {
+        var information = new PERFORMANCE_INFORMATION();
+        information.cb = (uint)Marshal.SizeOf(
+            typeof(PERFORMANCE_INFORMATION)
+        );
+        if (!GetPerformanceInfo(out information, information.cb)) {
+            throw new Win32Exception(Marshal.GetLastWin32Error());
+        }
+        return new ProjectSystemMemorySnapshot {
+            AvailablePhysicalBytes = ToBytes(
+                information.PhysicalAvailable,
+                information.PageSize
+            ),
+            CommitUsedBytes = ToBytes(
+                information.CommitTotal,
+                information.PageSize
+            ),
+            CommitLimitBytes = ToBytes(
+                information.CommitLimit,
+                information.PageSize
+            )
+        };
+    }
+}
+'@
+        Add-Type -TypeDefinition $memorySource -ErrorAction Stop
+    }
+
+    try {
+        $snapshot = [ProjectSystemMemory]::GetSnapshot()
+        $commitPercent = $null
+        if ([int64]$snapshot.CommitLimitBytes -gt 0) {
+            $commitPercent = [math]::Round(
+                100.0 * [int64]$snapshot.CommitUsedBytes /
+                [int64]$snapshot.CommitLimitBytes,
+                1
+            )
+        }
+        return [PSCustomObject][ordered]@{
+            AvailableMemoryMB = [math]::Round(
+                [int64]$snapshot.AvailablePhysicalBytes / 1MB, 1
+            )
+            CommitUsedGB = [math]::Round(
+                [int64]$snapshot.CommitUsedBytes / 1GB, 2
+            )
+            CommitLimitGB = [math]::Round(
+                [int64]$snapshot.CommitLimitBytes / 1GB, 2
+            )
+            CommitPercent = $commitPercent
+            PressureWarning = (
+                [int64]$snapshot.AvailablePhysicalBytes -lt 1GB -or
+                ($null -ne $commitPercent -and $commitPercent -ge 90)
+            )
+            Available = $true
+        }
+    } catch {
+        return [PSCustomObject][ordered]@{
+            AvailableMemoryMB = $null
+            CommitUsedGB = $null
+            CommitLimitGB = $null
+            CommitPercent = $null
+            PressureWarning = $null
+            Available = $false
         }
     }
 }
@@ -351,6 +493,434 @@ function Update-ProcessTreeCpuAccumulator {
         LiveCpuSeconds = $liveCpuSeconds
         TotalCpuSeconds = $nextRetiredCpuSeconds + $liveCpuSeconds
         CpuByPid = $nextCpuByPid
+    }
+}
+
+# lattice 후처리에는 stderr 진행 카운터가 없으므로 MFA가 쓰는 두 interval CSV의
+# 증분 행 수와 byte 크기를 관측한다. byte 단위 줄바꿈 스캔이라 CSV 내용을
+# 파싱하거나 잠그지 않으며, 쓰는 중인 마지막 행은 다음 heartbeat에서 센다.
+# 이 값 역시 생존·병목 진단용이며 성공 gate는 DB/direct export/QC로 분리한다.
+function Update-IntervalCsvProgress {
+    param(
+        [Parameter(Mandatory=$true)][string]$AlignmentDirectory,
+        [hashtable]$PreviousState = @{}
+    )
+
+    if (-not ('ProjectNewlineScanner' -as [type])) {
+        $newlineScannerSource = @'
+using System;
+using System.IO;
+
+public sealed class ProjectNewlineDelta {
+    public long NewOffset { get; set; }
+    public string Carry { get; set; }
+    public long Newlines { get; set; }
+    public string LastUtteranceId { get; set; }
+    public long UtteranceTransitions { get; set; }
+}
+
+public static class ProjectNewlineScanner {
+    private static string WordUtteranceId(string line) {
+        int start = 0;
+        for (int field = 0; field < 3; field++) {
+            int comma = line.IndexOf(',', start);
+            if (comma < 0) {
+                return null;
+            }
+            start = comma + 1;
+        }
+        int end = line.IndexOf(',', start);
+        if (end < 0 || end <= start) {
+            return null;
+        }
+        string value = line.Substring(start, end - start);
+        long parsed;
+        return long.TryParse(value, out parsed) ? value : null;
+    }
+
+    public static ProjectNewlineDelta Scan(
+        string path,
+        long offset,
+        string carry,
+        string lastUtteranceId,
+        bool trackWordUtterances
+    ) {
+        long newOffset = offset;
+        long newlines = 0;
+        long utteranceTransitions = 0;
+        string pending = carry ?? "";
+        string lastId = lastUtteranceId;
+        byte[] buffer = new byte[65536];
+        using (var stream = new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.ReadWrite | FileShare.Delete
+        )) {
+            stream.Seek(offset, SeekOrigin.Begin);
+            while (true) {
+                int read = stream.Read(buffer, 0, buffer.Length);
+                if (read <= 0) {
+                    break;
+                }
+                newOffset += read;
+                string text = pending +
+                    System.Text.Encoding.UTF8.GetString(buffer, 0, read);
+                int start = 0;
+                while (true) {
+                    int newline = text.IndexOf('\n', start);
+                    if (newline < 0) {
+                        break;
+                    }
+                    int length = newline - start;
+                    if (length > 0 && text[newline - 1] == '\r') {
+                        length -= 1;
+                    }
+                    if (trackWordUtterances) {
+                        string utteranceId = WordUtteranceId(
+                            text.Substring(start, length)
+                        );
+                        if (utteranceId != null &&
+                            !String.Equals(
+                                utteranceId,
+                                lastId,
+                                StringComparison.Ordinal
+                            )) {
+                            utteranceTransitions += 1;
+                            lastId = utteranceId;
+                        }
+                    }
+                    newlines += 1;
+                    start = newline + 1;
+                }
+                pending = start < text.Length
+                    ? text.Substring(start)
+                    : "";
+            }
+        }
+        return new ProjectNewlineDelta {
+            NewOffset = newOffset,
+            Carry = pending,
+            Newlines = newlines,
+            LastUtteranceId = lastId,
+            UtteranceTransitions = utteranceTransitions
+        };
+    }
+}
+'@
+        Add-Type -TypeDefinition $newlineScannerSource -ErrorAction Stop
+    }
+
+    $nextState = @{}
+    $metrics = @{
+        'phone_intervals.csv' = @{ Rows = 0L; Bytes = 0L }
+        'word_intervals.csv' = @{
+            Rows = 0L
+            Bytes = 0L
+            Utterances = 0L
+        }
+    }
+    $latestWriteUtc = $null
+    foreach ($name in @('phone_intervals.csv', 'word_intervals.csv')) {
+        $path = Join-Path $AlignmentDirectory $name
+        [int64]$offset = 0
+        [int64]$newlines = 0
+        [int64]$utterances = 0
+        [string]$carry = ''
+        [string]$lastUtteranceId = ''
+        if ($PreviousState.ContainsKey($name)) {
+            $offset = [int64]$PreviousState[$name].Offset
+            $newlines = [int64]$PreviousState[$name].Newlines
+            $carry = [string]$PreviousState[$name].Carry
+            $lastUtteranceId = [string](
+                $PreviousState[$name].LastUtteranceId
+            )
+            $utterances = [int64]$PreviousState[$name].Utterances
+        }
+        if (-not (Test-Path -LiteralPath $path)) {
+            continue
+        }
+        $file = Get-Item -LiteralPath $path -ErrorAction SilentlyContinue
+        if ($null -eq $file) {
+            continue
+        }
+        if ([int64]$file.Length -lt $offset) {
+            $offset = 0
+            $newlines = 0
+            $utterances = 0
+            $carry = ''
+            $lastUtteranceId = ''
+        }
+        [int64]$newOffset = $offset
+        try {
+            $delta = [ProjectNewlineScanner]::Scan(
+                $path,
+                $offset,
+                $carry,
+                $lastUtteranceId,
+                ($name -eq 'word_intervals.csv')
+            )
+            $newOffset = [int64]$delta.NewOffset
+            $carry = [string]$delta.Carry
+            $newlines += [int64]$delta.Newlines
+            $utterances += [int64]$delta.UtteranceTransitions
+            $lastUtteranceId = [string]$delta.LastUtteranceId
+        } catch {
+            # 공유 읽기가 순간 실패하면 이전 offset부터 다음 heartbeat에 재시도한다.
+        }
+        $nextState[$name] = [PSCustomObject][ordered]@{
+            Offset = $newOffset
+            Carry = $carry
+            Newlines = $newlines
+            LastUtteranceId = $lastUtteranceId
+            Utterances = $utterances
+        }
+        $metrics[$name] = @{
+            Rows = [math]::Max(0L, $newlines - 1L)
+            Bytes = [int64]$file.Length
+            Utterances = $utterances
+        }
+        if ($null -eq $latestWriteUtc -or
+            $file.LastWriteTimeUtc -gt $latestWriteUtc) {
+            $latestWriteUtc = $file.LastWriteTimeUtc
+        }
+    }
+
+    return [PSCustomObject][ordered]@{
+        State = $nextState
+        PhoneRows = [int64]$metrics['phone_intervals.csv'].Rows
+        WordRows = [int64]$metrics['word_intervals.csv'].Rows
+        WordUtterances = [int64](
+            $metrics['word_intervals.csv'].Utterances
+        )
+        PhoneBytes = [int64]$metrics['phone_intervals.csv'].Bytes
+        WordBytes = [int64]$metrics['word_intervals.csv'].Bytes
+        LatestWriteUtc = $(if ($null -ne $latestWriteUtc) {
+            $latestWriteUtc.ToString('o')
+        } else { $null })
+    }
+}
+
+# stderr 진행바가 없는 first-pass/final alignment에서도 실제 발화 처리량을
+# 관측한다. 각 로그를 매번 처음부터 세지 않고, 파일별 마지막 byte offset
+# 이후에 추가된 내용만 읽는다. 끝의 미완성 행은 Carry에 보존해 다음
+# heartbeat에서 이어 붙이므로 쓰는 중인 행을 중복/누락 집계하지 않는다.
+# 이 값은 생존·진행 진단용이며 MFA 성공 판정은 exit/DB/direct QC로 분리한다.
+function Update-AlignmentLogProgress {
+    param(
+        [Parameter(Mandatory=$true)][string]$LogDirectory,
+        [hashtable]$PreviousState = @{}
+    )
+
+    if (-not ('ProjectAlignmentLogScanner' -as [type])) {
+        $alignmentScannerSource = @'
+using System;
+using System.IO;
+using System.Text;
+
+public sealed class ProjectAlignmentLogDelta {
+    public long NewOffset { get; set; }
+    public string Carry { get; set; }
+    public long Processed { get; set; }
+    public long Retried { get; set; }
+    public long ErrorSignals { get; set; }
+}
+
+public static class ProjectAlignmentLogScanner {
+    private static void CountLine(
+        string line,
+        ref long processed,
+        ref long retried,
+        ref long errorSignals
+    ) {
+        if (line.IndexOf(
+                " - DEBUG - Processing ",
+                StringComparison.Ordinal
+            ) >= 0) {
+            processed += 1;
+        } else if (line.IndexOf(
+                " - DEBUG - Retried ",
+                StringComparison.Ordinal
+            ) >= 0) {
+            retried += 1;
+        }
+        if (line.IndexOf(
+                "Traceback",
+                StringComparison.OrdinalIgnoreCase
+            ) >= 0 ||
+            line.IndexOf(
+                " - ERROR - ",
+                StringComparison.OrdinalIgnoreCase
+            ) >= 0 ||
+            line.IndexOf(
+                " - CRITICAL - ",
+                StringComparison.OrdinalIgnoreCase
+            ) >= 0) {
+            errorSignals += 1;
+        }
+    }
+
+    public static ProjectAlignmentLogDelta Scan(
+        string path,
+        long offset,
+        string carry
+    ) {
+        long processed = 0;
+        long retried = 0;
+        long errorSignals = 0;
+        string pending = carry ?? "";
+        long newOffset = offset;
+        byte[] buffer = new byte[65536];
+
+        using (var stream = new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.ReadWrite | FileShare.Delete
+        )) {
+            stream.Seek(offset, SeekOrigin.Begin);
+            while (true) {
+                int read = stream.Read(buffer, 0, buffer.Length);
+                if (read <= 0) {
+                    break;
+                }
+                newOffset += read;
+                string text = pending +
+                    Encoding.UTF8.GetString(buffer, 0, read);
+                int start = 0;
+                while (true) {
+                    int newline = text.IndexOf('\n', start);
+                    if (newline < 0) {
+                        break;
+                    }
+                    int length = newline - start;
+                    if (length > 0 && text[newline - 1] == '\r') {
+                        length -= 1;
+                    }
+                    CountLine(
+                        text.Substring(start, length),
+                        ref processed,
+                        ref retried,
+                        ref errorSignals
+                    );
+                    start = newline + 1;
+                }
+                pending = start < text.Length
+                    ? text.Substring(start)
+                    : "";
+            }
+        }
+
+        return new ProjectAlignmentLogDelta {
+            NewOffset = newOffset,
+            Carry = pending,
+            Processed = processed,
+            Retried = retried,
+            ErrorSignals = errorSignals
+        };
+    }
+}
+'@
+        Add-Type -TypeDefinition $alignmentScannerSource -ErrorAction Stop
+    }
+
+    $nextState = @{}
+    if (-not (Test-Path -LiteralPath $LogDirectory)) {
+        return [PSCustomObject][ordered]@{
+            State = $nextState
+            FileCount = 0
+            LogBytes = 0
+            Processed = 0
+            Retried = 0
+            ErrorSignals = 0
+            JobProcessed = @{}
+            LatestWriteUtc = $null
+        }
+    }
+
+    [int64]$totalBytes = 0
+    [int64]$totalProcessed = 0
+    [int64]$totalRetried = 0
+    [int64]$totalErrorSignals = 0
+    $jobProcessed = @{}
+    $latestWriteUtc = $null
+    $files = @(
+        Get-ChildItem -LiteralPath $LogDirectory -File `
+            -Filter 'align.*.log' -ErrorAction SilentlyContinue |
+            Sort-Object Name
+    )
+    foreach ($file in $files) {
+        $key = [string]$file.Name
+        $prior = $null
+        if ($PreviousState.ContainsKey($key)) {
+            $prior = $PreviousState[$key]
+        }
+        [int64]$offset = 0
+        [int64]$processed = 0
+        [int64]$retried = 0
+        [int64]$errorSignals = 0
+        [string]$carry = ''
+        if ($null -ne $prior) {
+            $offset = [int64]$prior.Offset
+            $processed = [int64]$prior.Processed
+            $retried = [int64]$prior.Retried
+            $errorSignals = [int64]$prior.ErrorSignals
+            $carry = [string]$prior.Carry
+        }
+
+        # --clean/retry 등으로 로그가 교체·축소됐다면 이 파일만 0부터 센다.
+        if ([int64]$file.Length -lt $offset) {
+            $offset = 0
+            $processed = 0
+            $retried = 0
+            $errorSignals = 0
+            $carry = ''
+        }
+
+        [int64]$newOffset = $offset
+        try {
+            $delta = [ProjectAlignmentLogScanner]::Scan(
+                $file.FullName, $offset, $carry
+            )
+            $newOffset = [int64]$delta.NewOffset
+            $carry = [string]$delta.Carry
+            $processed += [int64]$delta.Processed
+            $retried += [int64]$delta.Retried
+            $errorSignals += [int64]$delta.ErrorSignals
+        } catch {
+            # 읽기 공유가 순간 실패해도 이전 누적값을 보존하고 다음 heartbeat에
+            # 같은 offset부터 재시도한다.
+        }
+
+        $nextState[$key] = [PSCustomObject][ordered]@{
+            Offset = $newOffset
+            Carry = $carry
+            Processed = $processed
+            Retried = $retried
+            ErrorSignals = $errorSignals
+        }
+        $jobProcessed[$key] = $processed
+        $totalProcessed += $processed
+        $totalRetried += $retried
+        $totalErrorSignals += $errorSignals
+        $totalBytes += [int64]$file.Length
+        if ($null -eq $latestWriteUtc -or
+            $file.LastWriteTimeUtc -gt $latestWriteUtc) {
+            $latestWriteUtc = $file.LastWriteTimeUtc
+        }
+    }
+
+    return [PSCustomObject][ordered]@{
+        State = $nextState
+        FileCount = $files.Count
+        LogBytes = $totalBytes
+        Processed = $totalProcessed
+        Retried = $totalRetried
+        ErrorSignals = $totalErrorSignals
+        JobProcessed = $jobProcessed
+        LatestWriteUtc = $(if ($null -ne $latestWriteUtc) {
+            $latestWriteUtc.ToString('o')
+        } else { $null })
     }
 }
 
@@ -394,7 +964,10 @@ New-Item -ItemType Directory -Force $logDir | Out-Null
 $log = Join-Path $logDir ("eojeol_realign_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
 
 function Say($m) { $l = "[$(Get-Date -Format 'MM-dd HH:mm:ss')] $m"; Write-Host $l -ForegroundColor Cyan; Add-Content $log $l -Encoding UTF8 }
-function Read-DoneMarker($path, $year, $stage, $inputContractId = "") {
+function Read-DoneMarker(
+    $path, $year, $stage, $inputContractId = "",
+    $alignmentContractId = ""
+) {
     if (-not (Test-Path -LiteralPath $path)) { return $false }
     try {
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -408,6 +981,14 @@ function Read-DoneMarker($path, $year, $stage, $inputContractId = "") {
                     [string]$data.details.search_master_root
                 ).TrimEnd('\') -eq
                 [IO.Path]::GetFullPath($searchMasterRoot).TrimEnd('\')
+            )
+        }
+        if ($valid -and -not [string]::IsNullOrWhiteSpace(
+            $alignmentContractId
+        )) {
+            $valid = (
+                [string]$data.details.alignment_contract_id -eq
+                [string]$alignmentContractId
             )
         }
         if ($valid -and $stage -eq 'merge') {
@@ -452,7 +1033,8 @@ function Archive-StaleTemp($path, $allowedRoot, $year, $reason) {
     return $destination
 }
 function Write-TempContract(
-    $path, $year, $inputContractId, $tempYear, $status
+    $path, $year, $inputContractId, $alignmentContract,
+    $tempYear, $status
 ) {
     $dir = Split-Path -Parent $path
     New-Item -ItemType Directory -Force -Path $dir | Out-Null
@@ -460,6 +1042,10 @@ function Write-TempContract(
     [ordered]@{
         year = $year
         input_contract_id = $inputContractId
+        lab_input_contract_id = $inputContractId
+        alignment_contract_id = $alignmentContract.alignment_contract_id
+        mfa_runtime = $alignmentContract.runtime
+        mfa_models = $alignmentContract.models
         search_master_root = $searchMasterRoot
         temp_year = $tempYear
         status = $status
@@ -468,8 +1054,18 @@ function Write-TempContract(
         Set-Content -LiteralPath $partial -Encoding UTF8
     Move-Item -LiteralPath $partial -Destination $path -Force
 }
-function Write-DoneMarker($path, $year, $stage, $details) {
+function Write-DoneMarker(
+    $path, $year, $stage, $details, $inputContractId,
+    $alignmentContract
+) {
     $tmpMarker = "$path.$PID.partial"
+    $details.input_contract_id = $inputContractId
+    $details.lab_input_contract_id = $inputContractId
+    $details.alignment_contract_id = (
+        $alignmentContract.alignment_contract_id
+    )
+    $details.mfa_runtime = $alignmentContract.runtime
+    $details.mfa_models = $alignmentContract.models
     $payload = [ordered]@{
         year = $year
         stage = $stage
@@ -545,24 +1141,164 @@ foreach ($y in $years) {
         exit 1
     }
     Say "$y 입력 계약: $($inputContractId.Substring(0,12)) / $searchMasterRoot"
+    # lab/CSV 계약과 별도로 모델 파일 내용·MFA/Pynini 판본을 고정한다.
+    # 같은 이름의 korean_mfa 파일이 바뀌면 alignment_contract_id가 달라져
+    # 기존 temp·marker를 재사용하지 않는다.
+    $alignmentContractPath = Join-Path $stateRoot (
+        "alignment_contracts\{0}.json" -f $y
+    )
+    & $py (Join-Path $pydir "build_mfa_alignment_contract.py") `
+        --year $y --lab-input-contract-id $inputContractId `
+        --acoustic-model-path $acousticModelPath `
+        --dictionary-model-path $dictionaryModelPath `
+        --g2p-model-path $g2pModelPath `
+        --output $alignmentContractPath
+    if ($LASTEXITCODE -ne 0) {
+        Say "!! $y MFA alignment contract 생성 실패"
+        exit 1
+    }
+    try {
+        $alignmentContract = Get-Content -LiteralPath `
+            $alignmentContractPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $alignmentContractId = [string](
+            $alignmentContract.alignment_contract_id
+        )
+        if (
+            $alignmentContract.status -ne 'passed' -or
+            [string]$alignmentContract.year -ne $y -or
+            [string]$alignmentContract.lab_input_contract_id -ne
+                $inputContractId -or
+            [string]::IsNullOrWhiteSpace($alignmentContractId)
+        ) {
+            throw "alignment contract identity/status 불일치"
+        }
+    } catch {
+        Say (
+            "!! $y MFA alignment contract 손상: " +
+            "$alignmentContractPath ($($_.Exception.Message))"
+        )
+        exit 1
+    }
+    Say (
+        "$y 정렬 계약: $($alignmentContractId.Substring(0,12)) / " +
+        "acoustic=$($alignmentContract.models.acoustic.sha256.Substring(0,12)) " +
+        "dictionary=$($alignmentContract.models.dictionary.sha256.Substring(0,12)) " +
+        "g2p=$($alignmentContract.models.g2p.sha256.Substring(0,12))"
+    )
+    $existingAlignDone = Read-DoneMarker (
+        Join-Path $doneDir "$y.align_done"
+    ) $y 'align' $inputContractId $alignmentContractId
+    $existingMergeDone = Read-DoneMarker (
+        Join-Path $doneDir "$y.merge_done"
+    ) $y 'merge' $inputContractId $alignmentContractId
+    if ($existingAlignDone -and $existingMergeDone) {
+        Say "$y 같은 입력·정렬 계약으로 이미 전부 완료 — 즉시 건너뜀"
+        continue
+    }
+
+    # 신규 계산에는 analysis-ready를 요구하되, 같은 계약의 수시간짜리 temp를
+    # 재개할 때는 이미 계산된 DB를 버리지 않도록 execution gate를 적용한다.
+    # 후자의 분석 제외·복구 판정은 final 독립 QC에서 다시 강제한다.
+    $tempContractPath = Join-Path $stateRoot "input_contracts\$y.json"
+    $tempContract = $null
+    if (Test-Path -LiteralPath $tempContractPath) {
+        try {
+            $tempContract = Get-Content -LiteralPath $tempContractPath -Raw `
+                -Encoding UTF8 | ConvertFrom-Json
+        } catch {
+            $tempContract = $null
+        }
+    }
+    $trustedResumeTemp = $false
+    foreach ($candidate in @(
+        @{ Path = (Join-Path $tmpPrimary $y); Root = $tmpPrimary },
+        @{ Path = (Join-Path $tmpSecondary $y); Root = $tmpSecondary }
+    )) {
+        if (-not (Test-Path -LiteralPath $candidate.Path)) { continue }
+        if (
+            $null -ne $tempContract -and
+            [string]$tempContract.input_contract_id -eq $inputContractId -and
+            [string]$tempContract.alignment_contract_id -eq
+                $alignmentContractId -and
+            [IO.Path]::GetFullPath(
+                [string]$tempContract.temp_year
+            ).TrimEnd('\') -eq
+                [IO.Path]::GetFullPath($candidate.Path).TrimEnd('\')
+        ) {
+            $trustedResumeTemp = $true
+        }
+    }
+    $integrityGateProfile = if ($trustedResumeTemp) {
+        'execution'
+    } else {
+        'analysis'
+    }
+    # MFA 시작 전에 F29형 CSV–WAV 발화 번호 밀림과 형태소 원천 누락을
+    # 전수 검사한다. 신규 계산은 물리적 전사–구간 불일치와 원음 정상 회수
+    # 후보까지 차단하고, 검증된 resume은 분류 완결성과 실행 무결성을 강제한다.
+    $inputIntegrityReport = Join-Path $root (
+        "outputs\reports\PREFLIGHT_mfa_input_integrity_{0}_{1}.json" -f
+        $y, $runId
+    )
+    & $py (Join-Path $pydir "audit_mfa_year_readiness.py") `
+        --years $y --search-master-root $searchMasterRoot `
+        --wav-root $wavRoot `
+        --morph-textgrid-root $morphTextGridRoot `
+        --source-pcm-check $sourcePcmCheck `
+        --gate-profile $integrityGateProfile --output $inputIntegrityReport
+    if ($LASTEXITCODE -ne 0) {
+        Say (
+            "!! $y MFA 입력 무결성 gate 실패 — 정렬 시작 금지: " +
+            $inputIntegrityReport
+        )
+        exit 1
+    }
+    try {
+        $inputIntegrityData = Get-Content -LiteralPath `
+            $inputIntegrityReport -Raw -Encoding UTF8 | ConvertFrom-Json
+        $integrityYear = @(
+            $inputIntegrityData.years |
+            Where-Object { [string]$_.year -eq $y }
+        )
+        $integrityPassProperty = if (
+            $integrityGateProfile -eq 'analysis'
+        ) {
+            'analysis_ready_gates_pass'
+        } else {
+            'execution_gates_pass'
+        }
+        if (
+            $inputIntegrityData.gate_profile -ne $integrityGateProfile -or
+            -not [bool]$inputIntegrityData.all_years_pass -or
+            $integrityYear.Count -ne 1 -or
+            -not [bool]$integrityYear[0].$integrityPassProperty
+        ) {
+            throw "$integrityGateProfile gate identity/result 불일치"
+        }
+    } catch {
+        Say (
+            "!! $y MFA 입력 무결성 보고서 손상: " +
+            "$inputIntegrityReport ($($_.Exception.Message))"
+        )
+        exit 1
+    }
+    Say (
+        "$y MFA 입력 무결성 통과(profile=$integrityGateProfile): " +
+        "duration failed sessions=" +
+        "$($integrityYear[0].counts.duration_sessions_failed), " +
+        "text-duration impossible=" +
+        "$($integrityYear[0].counts.source_segment_text_duration_impossible), " +
+        "morph missing=$($integrityYear[0].counts.morph_source_missing), " +
+        "unclassified=$($integrityYear[0].counts.morph_source_unclassified)"
+    )
     $directPartialRoot = Join-Path $g2pStage (
-        "_partial_direct_db\" + $inputContractId
+        "_partial_direct_db\" + $alignmentContractId
     )
     $directPartialYear = Join-Path $directPartialRoot $y
     $finalStageYear = Join-Path $g2pStage $y
 
     # 기존 temp는 같은 입력계약임이 증명될 때만 재사용한다. 계약이 없거나 다르면
     # 삭제하지 않고 D:\mfa_eojeol\archive_stale_temp 아래로 보존 이동한다.
-    $tempContractPath = Join-Path $stateRoot "input_contracts\$y.json"
-    $tempContract = $null
-    if (Test-Path -LiteralPath $tempContractPath) {
-        try {
-            $tempContract = Get-Content -LiteralPath $tempContractPath -Raw -Encoding UTF8 |
-                            ConvertFrom-Json
-        } catch {
-            $tempContract = $null
-        }
-    }
     foreach ($candidate in @(
         @{ Path = (Join-Path $tmpPrimary $y); Root = $tmpPrimary },
         @{ Path = (Join-Path $tmpSecondary $y); Root = $tmpSecondary }
@@ -571,6 +1307,8 @@ foreach ($y in $years) {
         $trusted = (
             $null -ne $tempContract -and
             [string]$tempContract.input_contract_id -eq $inputContractId -and
+            [string]$tempContract.alignment_contract_id -eq
+                $alignmentContractId -and
             [IO.Path]::GetFullPath([string]$tempContract.temp_year).TrimEnd('\') -eq
             [IO.Path]::GetFullPath($candidate.Path).TrimEnd('\')
         )
@@ -583,13 +1321,6 @@ foreach ($y in $years) {
                 exit 1
             }
         }
-    }
-
-    # 같은 입력 계약으로 정렬·병합까지 완료된 연도만 건너뛴다.
-    if ((Read-DoneMarker (Join-Path $doneDir "$y.align_done") $y 'align' $inputContractId) -and
-        (Read-DoneMarker (Join-Path $doneDir "$y.merge_done") $y 'merge' $inputContractId)) {
-        Say "$y 같은 입력계약으로 이미 전부 완료 — 즉시 건너뜀"
-        continue
     }
 
     # 연도별 작업 드라이브 결정(기존 temp 우선 — 위 Get-WorkDrive 참조). align이
@@ -605,11 +1336,13 @@ foreach ($y in $years) {
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
-    if (Read-DoneMarker $doneMark $y 'align' $inputContractId) {
+    if (Read-DoneMarker $doneMark $y 'align' $inputContractId `
+            $alignmentContractId) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
     } else {
         if ((Test-Path -LiteralPath $doneMark) -and
-            -not (Read-DoneMarker $doneMark $y 'align' $inputContractId)) {
+            -not (Read-DoneMarker $doneMark $y 'align' $inputContractId `
+                $alignmentContractId)) {
             Say "!! $y align_done이 현재 입력계약과 불일치 — 자동 재사용 금지: $doneMark"
             exit 1
         }
@@ -666,13 +1399,14 @@ foreach ($y in $years) {
             #   사전·음향모델과 동일 버전 g2p 모델. align.py em-dash 패치(export 직전 crash)도 수정 완료.
             #   완료 마커는 G2P 모델·연도·단계·staging 경로까지 검증하므로
             #   와일드카드로 직접 삭제하지 않는다.
-            $aArgs = @('align', (Join-Path $wavRoot $y), 'korean_mfa', 'korean_mfa',
+            $aArgs = @('align', (Join-Path $wavRoot $y),
+                       $dictionaryModelPath, $acousticModelPath,
                        (Join-Path $out $y), '--num_jobs', "$numJobs", '--no_tokenization',
-                       '--g2p_model_path', 'korean_mfa',
+                       '--g2p_model_path', $g2pModelPath,
                        '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
             if ($doClean) { $aArgs += '--clean' }
             Write-TempContract $tempContractPath $y $inputContractId `
-                $tmpYear "mfa_running"
+                $alignmentContract $tmpYear "mfa_running"
             $priorSkipExport = $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT
             if ($UseDirectDbExport) {
                 $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT = '1'
@@ -715,10 +1449,16 @@ foreach ($y in $years) {
                 $lastCount = -1
                 $lastCountChange = Get-Date
                 $watchdogKilled = $false
+                $mfaReportedDone = $false
                 # 종료된 worker의 CPU가 live 합계에서 빠져 watchdog 누적치가
                 # 역행하지 않도록 마지막 값을 retired 합계에 보존한다.
                 $retiredTreeCpuSeconds = 0.0
                 $lastTreeCpuByPid = @{}
+                $alignmentLogState = @{}
+                $alignmentProgress = $null
+                $intervalCsvState = @{}
+                $intervalProgress = $null
+                $systemMemory = $null
                 Write-JsonLine $heartbeatFile ([ordered]@{
                     event = 'mfa_process_started'
                     recorded_at = (Get-Date).ToString('o')
@@ -751,6 +1491,7 @@ foreach ($y in $years) {
                 $now = Get-Date
                 $processMetrics = Get-ProcessTreeMetrics `
                     -RootProcessId $p.Id
+                $systemMemory = Get-SystemMemoryMetrics
                 $cpuState = Update-ProcessTreeCpuAccumulator `
                     -PreviousCpuByPid $lastTreeCpuByPid `
                     -CurrentCpuByPid $processMetrics.CpuByPid `
@@ -768,6 +1509,20 @@ foreach ($y in $years) {
                 $segText = ($seg -join "`n")
                 if ($segText -match $alignRe) { $phase = 'align' }
                 elseif ($segText -match $setupRe) { $phase = 'setup' }
+                if ($phase -eq 'align') {
+                    $alignmentProgress = Update-AlignmentLogProgress `
+                        -LogDirectory (
+                            Join-Path $tmpYear 'alignment\log'
+                        ) `
+                        -PreviousState $alignmentLogState
+                    $alignmentLogState = $alignmentProgress.State
+                    $intervalProgress = Update-IntervalCsvProgress `
+                        -AlignmentDirectory (
+                            Join-Path $tmpYear 'alignment'
+                        ) `
+                        -PreviousState $intervalCsvState
+                    $intervalCsvState = $intervalProgress.State
+                }
                 # MFA 진행카운터(N/M) 파싱 — 값이 바뀌면 살아있는 것
                     if ($tail -match '([\d,]+)\s*/\s*[\d,]+') {
                         $c = [int64](($matches[1]) -replace ',', '')
@@ -784,15 +1539,18 @@ foreach ($y in $years) {
                 #   FST 빌드/헬퍼 단계라 mfa·python CPU가 거의 안 오름 → 교착으로 오판돼
                 #   완주 중인 정렬을 죽이고 --clean 루프에 빠지는 사고 확인. 이 단계에선
                 #   죽이지 않고 자연 진행을 기다림(g2p 추가 후 새로 생긴 구간).
-                    if ($tail -match 'Done!|Everything took') { continue }
+                    if ($segText -match 'Done!|Everything took') {
+                        $mfaReportedDone = $true
+                    }
+                    if ($mfaReportedDone) { $phase = 'finalizing' }
                     $kill = $false
-                if ($phase -eq 'align') {
+                if (-not $mfaReportedDone -and $phase -eq 'align') {
                     # 정렬/내보내기: 카운터가 $stallMinutes분간 정지 = 교착(2021 export형).
                     #   바가 아예 없는 구간(예: 일부 export)은 CPU 무증가로 폴백 판정.
                     if ($hasCounter) {
                         if ($frozenMin -ge $stallMinutes) { $kill = $true }
                     } elseif ($old -and ($curCpu - $old.Cpu) -lt $stallMinCpuSec) { $kill = $true }
-                } else {
+                } elseif (-not $mfaReportedDone) {
                     # 셋업/프리루드(코퍼스로딩 최대 5.5h·정규화·g2p·MFCC·그래프): 저CPU가 정상 → 안 죽임.
                     #   단 카운터가 $setupStallMin분간 같은 값에 붙박이면 진짜 실패로 보고 중단.
                         if ($hasCounter -and $frozenMin -ge $setupStallMin) { $kill = $true }
@@ -825,10 +1583,116 @@ foreach ($y in $years) {
                         tree_process_count = $processMetrics.ProcessCount
                         tree_python_process_count = `
                             $processMetrics.PythonProcessCount
+                        tree_thread_count = $processMetrics.ThreadCount
                         tree_working_set_mb = [math]::Round(
                             $processMetrics.WorkingSetBytes / 1MB, 1
                         )
+                        tree_private_memory_mb = [math]::Round(
+                            $processMetrics.PrivateMemoryBytes / 1MB, 1
+                        )
                         tree_process_ids = @($processMetrics.ProcessIds)
+                        system_memory_available_mb = $(if (
+                            $null -ne $systemMemory
+                        ) {
+                            $systemMemory.AvailableMemoryMB
+                        } else { $null })
+                        system_commit_used_gb = $(if (
+                            $null -ne $systemMemory
+                        ) {
+                            $systemMemory.CommitUsedGB
+                        } else { $null })
+                        system_commit_limit_gb = $(if (
+                            $null -ne $systemMemory
+                        ) {
+                            $systemMemory.CommitLimitGB
+                        } else { $null })
+                        system_commit_percent = $(if (
+                            $null -ne $systemMemory
+                        ) {
+                            $systemMemory.CommitPercent
+                        } else { $null })
+                        memory_pressure_warning = $(if (
+                            $null -ne $systemMemory
+                        ) {
+                            $systemMemory.PressureWarning
+                        } else { $null })
+                        alignment_processed = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.Processed
+                        } else { $null })
+                        alignment_retried = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.Retried
+                        } else { $null })
+                        alignment_error_signals = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.ErrorSignals
+                        } else { $null })
+                        alignment_log_file_count = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.FileCount
+                        } else { 0 })
+                        alignment_log_bytes = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.LogBytes
+                        } else { 0 })
+                        alignment_job_processed = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.JobProcessed
+                        } else { @{} })
+                        alignment_log_latest_write_utc = $(if (
+                            $null -ne $alignmentProgress
+                        ) {
+                            $alignmentProgress.LatestWriteUtc
+                        } else { $null })
+                        interval_phone_rows = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.PhoneRows
+                        } else { 0 })
+                        interval_word_rows = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.WordRows
+                        } else { 0 })
+                        interval_word_utterances = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.WordUtterances
+                        } else { 0 })
+                        interval_word_utterance_pct = $(if (
+                            $null -ne $intervalProgress -and
+                            $null -ne $alignmentProgress -and
+                            [int64]$alignmentProgress.Processed -gt 0
+                        ) {
+                            [math]::Round(
+                                100.0 *
+                                [int64]$intervalProgress.WordUtterances /
+                                [int64]$alignmentProgress.Processed,
+                                2
+                            )
+                        } else { $null })
+                        interval_phone_bytes = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.PhoneBytes
+                        } else { 0 })
+                        interval_word_bytes = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.WordBytes
+                        } else { 0 })
+                        interval_latest_write_utc = $(if (
+                            $null -ne $intervalProgress
+                        ) {
+                            $intervalProgress.LatestWriteUtc
+                        } else { $null })
                         work_drive_free_gb = $freeNowGB
                         watchdog_will_kill = $kill
                         stderr_tail = $tail
@@ -848,6 +1712,41 @@ foreach ($y in $years) {
                 pid = $p.Id
                 exit_code = $p.ExitCode
                 watchdog_killed = $watchdogKilled
+                alignment_processed = $(if (
+                    $null -ne $alignmentProgress
+                ) {
+                    $alignmentProgress.Processed
+                } else { $null })
+                alignment_retried = $(if (
+                    $null -ne $alignmentProgress
+                ) {
+                    $alignmentProgress.Retried
+                } else { $null })
+                alignment_error_signals = $(if (
+                    $null -ne $alignmentProgress
+                ) {
+                    $alignmentProgress.ErrorSignals
+                } else { $null })
+                interval_phone_rows = $(if (
+                    $null -ne $intervalProgress
+                ) {
+                    $intervalProgress.PhoneRows
+                } else { 0 })
+                interval_word_rows = $(if (
+                    $null -ne $intervalProgress
+                ) {
+                    $intervalProgress.WordRows
+                } else { 0 })
+                interval_word_utterances = $(if (
+                    $null -ne $intervalProgress
+                ) {
+                    $intervalProgress.WordUtterances
+                } else { 0 })
+                memory_pressure_warning = $(if (
+                    $null -ne $systemMemory
+                ) {
+                    $systemMemory.PressureWarning
+                } else { $null })
             })
             # ★ 거짓 성공 방지 (2026-07-22): MFA는 export 단계에서 배치 전체가 실패해도
             # (output_errors.txt로만 기록) exit 0을 반환함 — 2021 실측(too many SQL
@@ -953,7 +1852,19 @@ foreach ($y in $years) {
                 alignment_db = $dbPath
                 input_contract_id = $inputContractId
                 search_master_root = $searchMasterRoot
-            }
+                input_integrity_report = $inputIntegrityReport
+                input_integrity_gate_profile = $integrityGateProfile
+                input_integrity_execution_gates_pass = $true
+                input_integrity_analysis_ready_gates_pass = (
+                    [bool]$integrityYear[0].analysis_ready_gates_pass
+                )
+                morph_source_missing = (
+                    [int64]$integrityYear[0].counts.morph_source_missing
+                )
+                morph_source_unclassified = (
+                    [int64]$integrityYear[0].counts.morph_source_unclassified
+                )
+            } $inputContractId $alignmentContract
             $mergeMark = Join-Path $doneDir "$y.merge_done"
             Write-DoneMarker $mergeMark $y 'merge' @{
                 export_mode = 'direct_db_4tier'
@@ -965,18 +1876,32 @@ foreach ($y in $years) {
                 alignment_db_retained = (-not [bool]$CleanupDirectDbAfterMerge)
                 input_contract_id = $inputContractId
                 search_master_root = $searchMasterRoot
-            }
+                input_integrity_report = $inputIntegrityReport
+                input_integrity_gate_profile = $integrityGateProfile
+                input_integrity_execution_gates_pass = $true
+                input_integrity_analysis_ready_gates_pass = (
+                    [bool]$integrityYear[0].analysis_ready_gates_pass
+                )
+                morph_source_missing = (
+                    [int64]$integrityYear[0].counts.morph_source_missing
+                )
+                morph_source_unclassified = (
+                    [int64]$integrityYear[0].counts.morph_source_unclassified
+                )
+            } $inputContractId $alignmentContract
             if ($CleanupDirectDbAfterMerge) {
                 try { Remove-SafeYearPath $tmpYear $tmp }
                 catch {
                     Say "!! direct-DB 완료 후 temp 정리 실패(4-tier·marker 보존): $($_.Exception.Message)"
                 }
                 Write-TempContract $tempContractPath $y $inputContractId `
-                    $tmpYear "direct_merge_completed_temp_removed"
+                    $alignmentContract $tmpYear `
+                    "direct_merge_completed_temp_removed"
                 Say "===== $y direct-DB 완료 (temp 정리, 4-tier $tgN/$labN) ====="
             } else {
                 Write-TempContract $tempContractPath $y $inputContractId `
-                    $tmpYear "direct_merge_completed_temp_retained_for_qc"
+                    $alignmentContract $tmpYear `
+                    "direct_merge_completed_temp_retained_for_qc"
                 Say "===== $y direct-DB 완료 (QC 전 DB 보존: $dbPath, 4-tier $tgN/$labN) ====="
             }
             continue
@@ -1010,20 +1935,31 @@ foreach ($y in $years) {
             output_root = $out
             input_contract_id = $inputContractId
             search_master_root = $searchMasterRoot
-        }
+            input_integrity_report = $inputIntegrityReport
+            input_integrity_execution_gates_pass = $true
+            morph_source_missing = (
+                [int64]$integrityYear[0].counts.morph_source_missing
+            )
+            morph_source_unclassified = (
+                [int64]$integrityYear[0].counts.morph_source_unclassified
+            )
+        } $inputContractId $alignmentContract
         Write-TempContract $tempContractPath $y $inputContractId `
-            $tmpYear "align_completed_temp_retained_until_merge"
+            $alignmentContract $tmpYear `
+            "align_completed_temp_retained_until_merge"
         Say "$y MFA 정렬 완료 (병합·QC 전까지 temp $tmpYear 보존)"
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 선택된 작업 드라이브에 있음.
     #    완료 마커가 있으면 건너뜀(완료 연도는 해당 원출력이 이미 삭제돼 있음).
     $mergeMark = Join-Path $doneDir "$y.merge_done"
-    if (Read-DoneMarker $mergeMark $y 'merge' $inputContractId) {
+    if (Read-DoneMarker $mergeMark $y 'merge' $inputContractId `
+            $alignmentContractId) {
         Say "$y [3/3] 병합 이미 완료 — 건너뜀"; Say "===== $y 완료 ====="; continue
     }
     if ((Test-Path -LiteralPath $mergeMark) -and
-        -not (Read-DoneMarker $mergeMark $y 'merge' $inputContractId)) {
+        -not (Read-DoneMarker $mergeMark $y 'merge' $inputContractId `
+            $alignmentContractId)) {
         Say "!! $y merge_done이 현재 입력계약과 불일치 — 자동 재사용 금지: $mergeMark"
         exit 1
     }
@@ -1053,13 +1989,21 @@ foreach ($y in $years) {
         promotion_required = $true
         input_contract_id = $inputContractId
         search_master_root = $searchMasterRoot
-    }
+        input_integrity_report = $inputIntegrityReport
+        input_integrity_execution_gates_pass = $true
+        morph_source_missing = (
+            [int64]$integrityYear[0].counts.morph_source_missing
+        )
+        morph_source_unclassified = (
+            [int64]$integrityYear[0].counts.morph_source_unclassified
+        )
+    } $inputContractId $alignmentContract
     # temp DB는 raw MFA 출력과 4-tier 병합이 모두 검증된 뒤에만 정리한다.
     # 병합 실패 시 위에서 exit 1이므로 이 지점에 오지 않고 temp가 보존된다.
     try { Remove-SafeYearPath $tmpYear $tmp }
     catch { Say "!! 병합 후 temp 안전 삭제 실패(산출·마커는 보존): $($_.Exception.Message)" }
     Write-TempContract $tempContractPath $y $inputContractId `
-        $tmpYear "merge_completed_temp_removed"
+        $alignmentContract $tmpYear "merge_completed_temp_removed"
     if ($CleanupMfaOutput) {
         try { Remove-SafeYearPath $outYear $out }
         catch { Say "!! 병합 후 MFA 원출력 정리 실패(마커·4-tier는 보존): $($_.Exception.Message)" }

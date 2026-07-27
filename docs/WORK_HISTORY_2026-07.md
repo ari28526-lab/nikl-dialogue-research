@@ -567,3 +567,179 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 새 duration·형태소·strict exit·alignment contract·export resume/예외
   회귀시험을 포함해 Python unittest 66개와 PowerShell 안전성 검사가
   통과했다.
+- 2021 형태소 원천 누락 1,109건을 7월 16일
+  `source_pcm_check.csv`와 `utt_id`로 다시 조인했다. 전부 과거 잔여분과
+  일치했으며 원본짧음 1,091, PCM없음 1, 원본정상 17, 미분류 0이었다.
+  네 세션 1,017건을 포함한 1,092건은 배포 원음 결함으로 음성분석 제외,
+  17건은 새 어절 정렬 뒤 형태소 경계 표적 회수 후보로 분리했다.
+- 이 연결을 사람의 일회성 PowerShell 계산에 의존하지 않도록
+  `classify_mfa_input_issues.py`를 만들었다. 감사 JSON과 과거 PCM 근거 CSV를
+  SHA256으로 고정하고 발화별 action CSV·요약 JSON을 원자적으로 생성한다.
+  두 분류 회귀시험을 통과했고, 실제 1,109행 결과는
+  `outputs/reports/CLASSIFY_morph_source_missing_2021_pre_mfa_v1_20260727.*`
+  에 저장했다.
+- 외부 리뷰의 후속 안전 항목을 현재 2021 실행과 간섭하지 않는 범위에서
+  구현했다. 정규화 메타 헤더 검사 거짓 통과를 막고 fresh/resume의
+  `category_norm` 결측 집계를 통일했으며, search audit는 계획 상태와 자료
+  무결성 gate를 분리해 무결성 실패에 기본 exit 1을 반환한다.
+- 미해결 숫자·기호 발화는 다음 lab build부터 발화 ID·원문·기준 form·실제
+  부분 lab을 계약별 CSV로 원자 기록한다. 정책 자체는 소표본 A/B 전까지
+  한글 부분 유지로 동결했다. 새 기능보다 먼저 만들어진 2021 marker를
+  재사용하더라도 inventory가 없거나 손상됐으면 search CSV만 읽어 복구하고
+  lab/WAV는 건드리지 않는다. 고아 lab hard gate는 기존 구현과 합성시험이
+  이미 있어 중복 구현하지 않았다.
+- `locate_utt.py`의 격리 경로를 `paths.json`과 세션 하위 구조로 고치고 평면
+  레거시를 보존했다. direct marker 직후 crash에서는 marker 삭제·전량 재정렬을
+  안내하지 않고 DB·partial·final staging을 보존한 marker 복구로 안내한다.
+- 다음 실행용 MFA heartbeat는 `Done!` 뒤에도 `phase=finalizing`을 기록하며,
+  다음 연도 QC 보고서는 direct-DB 전용임을 명시한다. readiness audit의
+  source PCM 기본 경로도 `paths.json`으로 통일했다.
+- 2021 MFCC가 주 Python 내부 job worker를 사용해 별도 Python/실행 파일 수와
+  0바이트 `feats.*`만으로 진행 여부를 판정할 수 없음을 설치된 MFA 3.4.0
+  소스와 실측 CPU로 확인했다. 다음 runner의 process-tree heartbeat에
+  `tree_thread_count`를 추가했고 PowerShell 동적 안전성 검사로 현재
+  프로세스 tree의 thread 수가 1 이상 기록되는지 고정했다.
+- 2021 first-pass는 stderr 진행바가 없어 실제 `align.1–4.log`의
+  `Processing` 행을 세어 21:09 46.21%, 21:25 62.45%의 균등 진행을
+  확인했다. 다음 runner에는 파일별 byte offset·미완성 행 carry를 보존하는
+  `alignment_processed`·`alignment_retried`·job별 heartbeat를 추가했다.
+  첫 PowerShell 행 단위 구현은 70.8MB 실자료에서 30초를 넘겨 폐기했고,
+  64KiB C# 증분 스캐너는 첫 스캔 7.5초·후속 1,852건 67ms였다. 로그
+  교체·부분행·job별 누적 회귀시험을 포함한 PowerShell 안전성 검사를
+  통과했으며, 이 계측값은 성공 gate와 분리했다.
+- 위 후속 수정까지 전체 Python unittest **82개**와 PowerShell 실행기 5개
+  정적 안전성 검사가 통과했다. 현재 2021 marker의 Git 판본을 바꾸지 않기
+  위해 HEAD/remote는 `6ef6527`에 유지하고, 후속 변경은 2021 완료·전수 QC
+  뒤 커밋한다.
+- 규칙 발음 P2-03도 현재 환경에서 다시 재현했다. selftest 30/30은 통과하지만
+  `굳히다/닫히다/묻히다→구티다/다티다/무티다`, 겹받침+ㅎ의
+  `앉히다/넓히다/밝히다/읽히다→안히다/널히다/박히다/익히다`가 나왔다.
+  이는 MFA lab이 아니라 검색용 예상 발음층의 판본 오류이므로 현재 정렬은
+  유지하고, 공통 발음 자원 설계에 새 rule version·대조 회귀표·CSV staging
+  재생성 조건으로 기록했다.
+- 형태소 원천 누락 중 처음에 `원본정상`이라 회수 후보로 둔 17건을 동결
+  search CSV의 `dur`·`pron_reference_form`과 다시 대조했다. WAV/CSV 길이는
+  0.301–0.707초인데 한글 전사는 18–52음절로, 발화율 환산값이
+  47.0–119.3음절/s였다. 이는 실제 발음 실현 판정이 아니라 source segment와
+  전사가 물리적으로 대응할 수 없는 자료 무결성 오류다.
+- 분류기를 v2로 올려 관련 61개 세션만 읽고, 최소 10음절이면서
+  40음절/s 이상인 극단값만 `source_segment_text_duration_impossible`로
+  기록하도록 했다. 결과는 PCM 짧음 1,091·PCM 없음 1·segment–전사
+  비대응 17, 총 1,109건 분석 제외·미분류 0으로 갱신했다. 원문은 보고서에
+  복제하지 않고 duration·음절/어절 수·비율·근거만 보존한다.
+- 같은 극단값 검사를 형태소 결측 1,109건에만 한정하지 않고 연도별 readiness의
+  전체 search 행에 적용했다. CSV–WAV 길이가 서로 맞아도 전사–segment 자체가
+  물리적으로 대응할 수 없으면 `source_segment_text_duration_plausible` gate가
+  다음 전량 실행을 차단한다. 보고서에는 원문 없이 ID·duration·음절 수·비율만
+  남기며, 합성 20음절/0.4초 발화가 길이 대응 gate는 통과하지만 이 새 gate에서
+  실패하는 회귀시험을 고정했다.
+- runner는 신규 계산에는 `analysis` profile을 요구해 위 물리 불일치와 형태소
+  회수 후보를 차단한다. 반면 동일 입력·정렬 계약의 기존 temp가 검증되면
+  `execution` profile로 재개해 수시간 계산된 DB 복구를 막지 않는다. 같은
+  계약의 align/merge marker가 모두 있으면 입력 감사를 다시 돌리기 전에 즉시
+  건너뛴다. 두 profile과 실제 판정을 marker에 함께 기록한다.
+- 독립 4-tier 감사는 이 분류 CSV의 SHA256을 기록하고
+  `exclude_source_audio_unusable`만 analysis coverage 분모에서 제외한다.
+  raw coverage·누락·제외 TextGrid 오류는 계속 별도 집계한다. 회수 후보나
+  미분류가 하나라도 남으면 99% coverage와 무관하게 hard fail한다.
+- 다음 연도 gate도 direct report의 `morpheme_tier_missing`을 무조건 0으로
+  요구하지 않고, 독립 감사에 고정된 분류 CSV SHA·분류 수·미해결 0과
+  대조한다. 분류 근거가 없거나 direct 누락 수보다 적으면 fail-closed다.
+- 개수만 같은 다른 발화 분류표가 우연히 통과할 여지를 추가로 막았다.
+  direct report의 `morpheme_tier_missing_inventory`가 누락 수와 정확히
+  일치하고 중복·공백이 없으며, 그 ID 집합 전체가 SHA256으로 동결된 분류표
+  ID 집합에 포함될 때만 2022 선행 gate가 통과한다. 같은 누락 수에 다른
+  발화 ID를 넣은 회귀시험을 추가했고 관련 시험 7개가 통과했다.
+- 공개 `slplab/wav2vec2-xls-r-300m_phone-mfa_korean`을 별도 검토했다.
+  새 딥러닝 학습 없이 추론은 가능하지만 낭독체 학습·MFA 계열 label·CTC
+  후보 시간이라는 한계 때문에 canonical MFA나 연구자 실현 판정을 대체하지
+  않는다. CSV로 추린 ㄴ 삽입 등 표적 발화의 검토 우선순위를 만드는 별도
+  `wav2vec_phone_candidate` 후보층으로만 30–50개 소표본을 검증하고, 격리
+  환경·model revision/SHA256·수동 판정 대비 precision/recall·처리율을
+  통과하기 전에는 설치·전량 적용하지 않는 결정을
+  `NOTE_wav2vec2_phone_candidate_layer_20260727.md`에 기록했다.
+- 사용자는 wav2vec2를 전량 MFA 대체로 쓰지 않고, 향후 CSV 검색으로 표적
+  구간을 추린 뒤 해당 부분에만 소표본으로 적용하는 순서를 채택했다.
+- 21:42 D:는 953.85GB 중 292.85GB(30.7%)가 남아 현재 2021 실행에는
+  충분하지만, 연도별 full temp 누적은 피하기로 했다. 2021 전수 QC와 2022
+  선행 gate까지 통과한 뒤 DB·계약·로그·final 4-tier는 보존하고 재계산
+  가능한 대형 feature/graph/alignment 작업물만 exact manifest dry-run과
+  사용자 승인 후 정리하는 계획을
+  `PLAN_2021_post_QC_storage_cleanup_20260727.md`에 기록했다.
+- 2021 first-pass는 22:08:32에 끝났다. MFCC·final feature와 같은
+  1,372,438건을 모두 처리했고, 재시도 21,885건(1.595%), job 종료 요약의
+  개별 정렬 실패 570건(0.0415%), Python·PowerShell 예외와 traceback 0건이다.
+  실패 570건은 final DB·direct export·TextGrid 누락 inventory와 ID 단위로
+  대조한다. 이후 SQLite 반영을 거쳐 22:12부터 lattice의 phone·word 경계
+  수집 단계로 정상 전환되었으며, 실행 중 temp는 삭제하지 않았다.
+- phone·word 경계 수집 중 파일은 정상 증가했지만 22:18 시스템 available
+  memory가 442–536MB, commit이 19.63–19.65/23.75GB, page input이
+  790–3,011 pages/s로 나타났다. Python working set은 약 2.18–2.22GB였고
+  처리율은 유지됐다. 이를 2022의 interval collect 메모리·paging 병목으로
+  기록하고, 파일 증분과 시스템 메모리 계측을 다음 runner 관측 항목으로
+  추가할 계획이다. 저메모리만으로 실행을 중단하거나 temp를 정리하지 않는다.
+- 다음 runner heartbeat에 process private memory, Windows API 기반 시스템
+  available/commit, interval CSV 행·byte·mtime, word 발화 전환 수와
+  first-pass 대비 참고 진행률을 구현했다. 부분행·append·파일 교체 합성시험과
+  PowerShell 안전성 검사 5개 파일이 통과했다. 2021 실자료의 첫 약 682MB
+  스캔은 8.7초, 3초 증분은 53.6ms였다.
+- 설치된 MFA 3.4.0 소스를 확인한 결과 SQLite interval collect는 발화별
+  결과를 즉시 두 CSV에 스트리밍하고, 완료 뒤 `sqlite3 .import`와
+  `INSERT ... SELECT`를 수행한다. 22:29 word 경계 보유 발화는
+  262,453건으로 first-pass 처리량의 19.12%였고, Python private memory는
+  6.25GB에서 안정됐다. CSV 수집 뒤 DB 적재 구간이 별도로 남음을 시간 예측과
+  완료 판정에 반영했다.
+- 2021 QC 뒤 D: 정리를 정확한 파일 manifest로 준비하기 위해 삭제 기능이
+  없는 `inventory_mfa_storage.py`를 추가했다. 2021 QC·2022 선행 gate·
+  retained DB를 요구하고, SQLite journal/WAL/SHM·미분류 파일·symlink·
+  경로 불일치가 있으면 차단한다. `.ark/.scp`와 interval CSV만 후보로 삼고
+  로그·dictionary·DB·작은 모델/설정은 보존한다. 통과해도 사용자 검토
+  상태일 뿐 apply 기능은 없으며, 합성 차단·보존·무삭제 4개 시험이 통과했다.
+- 2021 MFA는 7월 28일 01:59 종료코드 0으로 끝났다. MFA 자체 시간은
+  62,149.774초였고 first-pass 처리 1,372,438, 재시도 21,885, 최종 개별
+  정렬 실패 570이었다. direct DB 4-tier는 6,360.292초에 1,371,868개를
+  만들고 form 누락·파일 생성 실패 없이 03:45 final staging과 marker를
+  기록했다.
+- post-MFA LAB 재검사는 같은 입력계약의 `lab_reused` 경로였고 LAB 내용을
+  재작성하지 않았다. readiness 전수 감사에서 LAB 1,373,521/1,373,521이
+  동결 CSV와 일치했다. 형태소 원천 누락 1,109건은 PCM 짧음 1,091,
+  PCM 없음 1, segment–전사 물리 불일치 17로 모두 분류했다.
+- 2021 final 4-tier 1,371,868개를 tier 순서·0–xmax 연속 coverage·gap/
+  overlap·핵심 라벨·WAV duration 1ms 기준으로 전수 검사했다. invalid 0,
+  hard failure 0, 분석 가능 coverage 99.9604%였다. 전체 LAB 누락
+  1,653은 source unusable 1,109와 분석 가능 정렬 실패 544로 정확히
+  분리됐고 MFA의 570은 후자 544와 source 제외 중 DB 실패 26의 합이었다.
+- `2021.db` 12,455,149,568바이트를 read-only full
+  `PRAGMA integrity_check`로 4,255.2초 검사해 `ok`를 얻었다. 정렬 성공
+  4,139세션 가운데 결정적으로 뽑은 24세션을 새
+  `verify_mfa_db_4tier_sample.py`로 별도 scratch에 재생성해 final과
+  tier·라벨·모든 시간·SHA256이 24/24 같음을 확인했다.
+- 2020도 같은 감사기로 소급 검사했다. LAB 869,840, final 866,196,
+  invalid 0, source unusable 14, 분석 가능 난정렬 3,630, coverage
+  99.5827%였다. readiness에서는 LAB 내용 100% 일치와 별개로 duration
+  대응 실패 59세션·15,074행을 기록했다. `D:\mfa_tmp\2020`과 DB가 이미
+  없어 integrity와 DB 재추출 검증은 할 수 없었고, 이후 연도 DB 보존
+  정책의 근거로 남겼다.
+- 2020 raw export 약 15시간 57분+merge 1시간 43분과 2021 direct export
+  1시간 46분을 비교해 final 생성 단계가 약 10배, 약 15시간 54분
+  단축됐음을 확정했다. 본 MFA의 G2P·feature·alignment·interval collect와
+  사후 full integrity는 별도 병목으로 계속 관리한다.
+- 2021 독립 QC·marker·계약·direct 보고서·DB·누락 분류를 묶은 2022
+  선행 gate가 20/20 통과했고, 2022 자체 PowerShell preflight도 FAIL 0/
+  WARN 0이었다. 2022는 기술적으로 GO지만 공통 G2P/우리말샘 예외 발음
+  파생사전 파일럿 여부가 남아 방법론 HOLD로 두었고 전량 실행은 시작하지
+  않았다.
+- 저장공간 dry-run 첫 실행은 콘솔 CP949의 긴 대시 출력 오류와 확장자 없는
+  Kaldi `alignment/tree` 미분류를 드러냈다. UTF-8 간결 출력과 exact-path
+  보존 정책·회귀시험을 추가한 뒤 blocker 0으로 재실행했다. 2021 temp
+  43.883GiB 중 재계산 가능한 31.365GiB/63파일만 후보, DB·재현 근거
+  12.519GiB/42파일은 보존으로 분류했다. 실제 삭제·이동은 0건이다.
+- wav2vec2 phone 모델은 CSV·음운형태 환경 검색으로 후보를 좁힌 뒤 해당
+  부분에만 소표본 적용하고 canonical MFA나 연구자의 실현 판정을 대체하지
+  않는다는 결정을 7월 28일 다시 확인했다.
+- 최종 수치·분모·tier 경계·속도·DB 증거·D: dry-run·2022 명령은
+  `outputs/reports/RESULT_2021_pre_mfa_full_pipeline_20260728.md`와
+  `docs/decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md`
+  에 정본으로 기록했다.
+- 최종 후속 변경은 Python unittest 88개, PowerShell 실행기 5개 안전성
+  검사, `git diff --check`, 20260728 QC JSON 10개 파싱을 모두 통과했다.

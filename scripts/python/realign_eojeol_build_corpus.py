@@ -46,6 +46,16 @@ YEAR_DIRS = {
 HANGUL = re.compile(r"[가-힣]+")
 LAB_INPUT_VERSION = "eojeol_v3_pron_reference_form"
 MISSING = {"", "미상", "NA", "N/A"}
+UNRESOLVED_INVENTORY_FIELDS = [
+    "year",
+    "session_id",
+    "utt_id",
+    "form",
+    "pron_reference_form",
+    "pron_reference_source",
+    "pron_reference_status",
+    "lab_text",
+]
 csv.field_size_limit(10_000_000)
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -144,6 +154,99 @@ def append_progress(path: Path | None, payload: dict) -> None:
         handle.flush()
 
 
+def write_unresolved_inventory(path: Path, rows: list[dict]) -> None:
+    """미해결 숫자·기호 발화를 계약별 CSV로 원자적으로 기록한다."""
+    with atomic_text_writer(
+        path, encoding="utf-8-sig", newline=""
+    ) as (stream, _):
+        writer = csv.DictWriter(
+            stream, fieldnames=UNRESOLVED_INVENTORY_FIELDS
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def unresolved_inventory_path(
+    *, year: str, input_contract_id: str
+) -> Path:
+    return (
+        STATE_ROOT
+        / "logs"
+        / (
+            f"lab_build_{year}_"
+            f"{input_contract_id[:12]}_unresolved_symbols.csv"
+        )
+    )
+
+
+def collect_unresolved_rows(
+    search_master_root: Path, year: str
+) -> list[dict[str, str]]:
+    """search CSV만 읽어 미해결 발화와 실제 부분 lab을 다시 만든다."""
+    rows: list[dict[str, str]] = []
+    required = {
+        "utt_id",
+        "form",
+        "pron_reference_form",
+        "pron_reference_source",
+        "pron_reference_status",
+    }
+    for path in sorted((search_master_root / year).glob("*.csv")):
+        if path.name.startswith("_"):
+            continue
+        with path.open(encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            missing = required - set(reader.fieldnames or ())
+            if missing:
+                raise RuntimeError(
+                    f"{path}: pre-MFA 필수 열 누락 {sorted(missing)}"
+                )
+            for row in reader:
+                if row.get("pron_reference_status") != "unresolved_symbol":
+                    continue
+                utt_id = (row.get("utt_id") or "").strip()
+                form = (row.get("form") or "").strip()
+                reference_form = (
+                    row.get("pron_reference_form") or ""
+                ).strip()
+                if reference_form in MISSING:
+                    reference_form = form
+                rows.append(
+                    {
+                        "year": year,
+                        "session_id": utt_id.split(".")[0],
+                        "utt_id": utt_id,
+                        "form": form,
+                        "pron_reference_form": reference_form,
+                        "pron_reference_source": row.get(
+                            "pron_reference_source", ""
+                        ),
+                        "pron_reference_status": "unresolved_symbol",
+                        "lab_text": form_to_lab(reference_form),
+                    }
+                )
+    return rows
+
+
+def unresolved_inventory_valid(path: Path, expected_rows: int) -> bool:
+    try:
+        with path.open(encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            if list(reader.fieldnames or ()) != UNRESOLVED_INVENTORY_FIELDS:
+                return False
+            rows = list(reader)
+    except (OSError, UnicodeError, csv.Error):
+        return False
+    return (
+        len(rows) == expected_rows
+        and all(
+            row.get("utt_id")
+            and row.get("pron_reference_status") == "unresolved_symbol"
+            for row in rows
+        )
+    )
+
+
 def archive_stale_lab(
     lab_path: Path,
     *,
@@ -190,6 +293,28 @@ def build_year(
             and prior.get("input_contract_id")
             == contract["input_contract_id"]
         ):
+            inventory = unresolved_inventory_path(
+                year=year,
+                input_contract_id=contract["input_contract_id"],
+            )
+            expected_unresolved = int(
+                prior.get("pron_reference_unresolved", 0)
+            )
+            if not unresolved_inventory_valid(
+                inventory, expected_unresolved
+            ):
+                unresolved_rows = collect_unresolved_rows(
+                    search_master_root, year
+                )
+                if len(unresolved_rows) != expected_unresolved:
+                    raise RuntimeError(
+                        f"{year} marker/inventory 미해결 수 불일치: "
+                        f"marker={expected_unresolved}, "
+                        f"search={len(unresolved_rows)}"
+                    )
+                write_unresolved_inventory(inventory, unresolved_rows)
+            prior["unresolved_symbol_inventory"] = str(inventory)
+            atomic_write_json(marker, prior)
             print(
                 f"[{year}] lab 입력 계약 완료 marker 확인 — 전수 재검사 건너뜀 "
                 f"({contract['input_contract_id'][:12]})",
@@ -241,6 +366,7 @@ def build_year(
     )
     made = verified = rewritten = no_wav = empty = 0
     reference_changed = unresolved = archived_empty_lab = 0
+    unresolved_rows = []
     rows_seen = 0
     t0 = time.time()
     last_reported_rows = 0
@@ -292,6 +418,21 @@ def build_year(
                 if row.get("pron_reference_status") == "unresolved_symbol":
                     unresolved += 1
                 text = form_to_lab(reference_form)
+                if row.get("pron_reference_status") == "unresolved_symbol":
+                    unresolved_rows.append(
+                        {
+                            "year": year,
+                            "session_id": sess,
+                            "utt_id": u,
+                            "form": form,
+                            "pron_reference_form": reference_form,
+                            "pron_reference_source": row.get(
+                                "pron_reference_source", ""
+                            ),
+                            "pron_reference_status": "unresolved_symbol",
+                            "lab_text": text,
+                        }
+                    )
                 if not text.strip():
                     empty += 1
                     lab_name = f"{u}.lab"
@@ -366,6 +507,11 @@ def build_year(
     print(f"  코퍼스(=wav폴더): {WAV_ROOT / year}", flush=True)
     elapsed_seconds = round(time.time() - t0, 3)
     finished_at = datetime.now().astimezone().isoformat()
+    unresolved_inventory = unresolved_inventory_path(
+        year=year,
+        input_contract_id=contract["input_contract_id"],
+    )
+    write_unresolved_inventory(unresolved_inventory, unresolved_rows)
     result = {
         **contract,
         "status": "passed",
@@ -380,6 +526,7 @@ def build_year(
         "archived_empty_input_lab": archived_empty_lab,
         "reference_form_changed": reference_changed,
         "pron_reference_unresolved": unresolved,
+        "unresolved_symbol_inventory": str(unresolved_inventory),
         "started_at": started_at,
         "finished_at": finished_at,
         "elapsed_seconds": elapsed_seconds,

@@ -212,6 +212,11 @@ def build_row(u, year, meta, spk, extra, ipa_map, opts, stats):
     else:
         for c in META_COLS:
             row[c] = m.get(c, MISSING)
+        # fresh build도 validate_session_csv(resume)와 같은 값 기준으로
+        # category_norm 결측을 센다. 열 자체가 빠진 메타가 '미상'으로
+        # 조용히 채워져 성공하는 fresh/resume 비대칭을 막는다.
+        if row["category_norm"] == MISSING:
+            stats["meta_missing"] += 1
 
     # 화자 메타 조인
     sp = spk.get((str(year), u.get("speaker_id", "")))

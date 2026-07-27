@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 SCRIPT_DIR = Path(__file__).resolve().parents[1] / "scripts" / "python"
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -167,6 +168,56 @@ class AuditSearchMasterTests(unittest.TestCase):
         detail = compact["mismatches"]["json_source_content_sessions"][0]
         self.assertEqual(detail["json_missing_in_source_count"], 2)
         self.assertEqual(len(detail["json_missing_in_source_examples"]), 1)
+
+    def test_integrity_gates_accept_only_documented_empty_form_exclusions(self):
+        report = {
+            "totals": {
+                "missing_json_sessions": 0,
+                "json_missing_in_source": 2,
+                "json_excluded_form_empty": 2,
+                "source_missing_in_json": 0,
+                "meta_missing_rows": 0,
+            },
+            "verdicts": {
+                "session_sets_match": True,
+                "source_master_rows_match": True,
+                "source_master_content_match": True,
+            },
+        }
+        audit.set_integrity_gates(report)
+        self.assertTrue(report["all_integrity_gates_pass"])
+
+        report["totals"]["missing_json_sessions"] = 1
+        audit.set_integrity_gates(report)
+        self.assertFalse(report["all_integrity_gates_pass"])
+        self.assertFalse(
+            report["integrity_gates"]["all_source_sessions_have_json"]
+        )
+
+    def test_main_returns_nonzero_when_integrity_gate_fails(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "audit.json"
+            failed_report = {
+                "verdicts": {},
+                "integrity_gates": {"session_sets_match": False},
+                "all_integrity_gates_pass": False,
+            }
+            with (
+                patch.object(audit, "audit_all", return_value=failed_report),
+                patch(
+                    "sys.argv",
+                    [
+                        "audit_search_master.py",
+                        "--years",
+                        "2021",
+                        "--output",
+                        str(output),
+                    ],
+                ),
+            ):
+                self.assertEqual(audit.main(), 1)
+            saved = json.loads(output.read_text(encoding="utf-8"))
+            self.assertTrue(saved["strict"])
 
 
 if __name__ == "__main__":

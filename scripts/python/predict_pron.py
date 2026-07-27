@@ -397,7 +397,12 @@ VERB_POS = {'VV', 'VA', 'VX', 'VCP', 'VCN', 'XSV', 'XSA'}
 
 def build_lexicon_index(rows):
     """rows(word,pos_tag,sense_no,pron_1) -> {(word,pos): pron_1}.
-    (word,pos) 키, 다의어는 최소 sense_no 채택. 용언/파생접사 '-다' 어간형도 색인."""
+    (word,pos) 키, 다의어는 최소 sense_no 채택. 용언/파생접사 '-다' 어간형도 색인.
+
+    DEPRECATED: 진단용 v1 helper만 보존한다. 최소 의미번호 자동 선택은
+    동형·다의어의 실제 문맥 의미를 보장하지 않으므로 최종 공통 발음 registry나
+    연구용 CSV에 배선하지 않는다.
+    """
     best = {}
     def _put(key, sn, pron):
         cur = best.get(key)

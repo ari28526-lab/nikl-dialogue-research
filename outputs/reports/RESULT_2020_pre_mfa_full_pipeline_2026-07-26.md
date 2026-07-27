@@ -55,3 +55,37 @@
 상세 근거와 최소 재실행 설계:
 
 `docs/decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`
+
+## 2026-07-28 소급 전수 감사
+
+2021과 같은 현재 감사기로 2020 final을 다시 확인했다.
+
+```text
+LAB                               869,840
+source unusable 제외                   14
+분석 가능 LAB                      869,826
+final TextGrid                    866,196
+valid                             866,196
+invalid                                 0
+분석 가능 난정렬                     3,630
+분석 가능 coverage                99.5827%
+```
+
+보고서:
+
+- `outputs/reports/AUDIT_mfa_year_readiness_2020_post_mfa_20260728.json`
+- `outputs/reports/CLASSIFY_morph_source_missing_2020_post_mfa_20260728.csv`
+- `outputs/reports/AUDIT_mfa_4tier_2020_pre_mfa_v1_20260728.json`
+- `outputs/reports/MISSING_mfa_4tier_2020_pre_mfa_v1_20260728.csv`
+
+LAB 내용은 동결 CSV와 869,840/869,840 일치했다. 별도 source duration
+감사에서는 59세션·15,074행의 CSV–WAV 대응 실패와 WAV 없음 544건을
+기록했다. 이는 final 4-tier 구조 오류 0건과 분리한 원천 자료 QC 문제다.
+
+`D:\mfa_tmp\2020`과 `2020.db`는 이미 없어 full DB integrity와 DB 재추출
+검증은 할 수 없었다. 따라서 final은 baseline으로 보존하지만, 2021처럼
+DB까지 갖춘 완전한 재현 증거와 같은 수준으로 간주하지 않는다.
+
+2020·2021 최종 비교:
+
+`docs/decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md`

@@ -1,7 +1,8 @@
 # 2022 개선 MFA 실행안 — 2020·2021 실측 반영
 
 작성 시작: 2026-07-27
-상태: **초안 — 2021 전량 완료·QC 뒤 확정**
+최종 갱신: 2026-07-28
+상태: **2021 전량·2020/2021 QC·2022 기술 gate 완료 — 방법론 결정 대기**
 원칙: 2022 전량은 사용자 확인 전 시작하지 않음
 
 ## 목적
@@ -78,6 +79,7 @@ pron_reference_form lab
 5. 난정렬·source 결함·form/morpheme 누락 수
 6. heartbeat 단계 판별과 watchdog 오판 여부
 7. direct 결과의 tier·양끝 경계·duration 전수검사
+8. 형태소 원천 누락을 배포 원음 결함 제외와 정상 원음 회수 후보로 분류
 
 2021 완료 전에는 이 항목을 추정치로 확정하지 않는다.
 
@@ -103,6 +105,30 @@ live-process CPU 합계가 14,050.94초에서 11,343.92초로 역행하는 현�
 `tree_cpu_seconds`를 따로 기록한다. worker 종료와 PID 재사용을 재현한
 동적 시험을 추가했다. 2022 preflight에서는 첫 heartbeat의 세 필드뿐 아니라,
 worker 수가 줄어든 뒤에도 `tree_cpu_seconds`가 감소하지 않는지 확인한다.
+
+2021 MFCC에서는 별도 `compute-mfcc-feats.exe` 자식이 보이지 않고 주 Python
+하나가 다중 코어 CPU를 사용했으며, `feats.*`도 처리 중 0바이트로 유지됐다.
+설치된 MFA 3.4.0 소스를 대조한 결과 `MfccFunction`이 내부 job worker에서
+10,000발화씩 처리하고 writer를 job 종료 때 닫는 구조였다. 따라서 다음
+heartbeat는 process/Python 수뿐 아니라 전체 descendant **thread 수**도
+기록한다. MFCC의 생존 판정은 0바이트 중간 파일 하나가 아니라 누적 CPU,
+thread 수, 메모리/page read 추세, stderr 오류와 최종 writer close를 함께
+사용한다.
+
+2021 first-pass alignment에서는 stderr 진행바가 없어 기존 heartbeat의
+`counter_current`가 비어 있었지만, `alignment/log/align.1–4.log`의
+`Processing` 행은 job별로 계속 증가했다. 21:09 전수 계수는
+634,233/1,372,438건(46.21%)이고 네 job 편차가 전체 대상의 0.17%p에
+불과했으며 오류 문자열은 0건이었다. 2022 runner에는 로그 전체를 매분 다시
+읽는 방식이 아니라 파일별 마지막 byte offset 이후의 새 행만 읽어
+`alignment_processed`, `alignment_retried`, job별 처리량을 heartbeat에
+누적하는 경량 카운터를 구현했다. 처음 PowerShell 행 단위 구현은 실제
+70.8MB 로그 전수 검사에서 30초를 넘겨 폐기했다. 64KiB C# 증분 스캐너로
+바꾼 뒤 첫 전체 스캔은 7.5초, 5초 뒤 1,852개 추가 발화를 읽은 증분 스캔은
+67ms였고 기존 `rg` 전수 계수와 일치했다. 미완성 마지막 행 carry, 로그
+축소·교체 시 해당 job만 누적 초기화, job별 처리량과 오류 신호를 합성
+회귀시험으로 고정했다. 이 카운터는 진행 관측용이며, 성공 판정은 MFA
+exit·DB·direct report·독립 4-tier 감사로 계속 분리한다.
 
 ## 실행 위치 판단: Colab보다 외장 SSD를 연결한 강한 로컬 컴퓨터
 
@@ -256,6 +282,53 @@ lab이 0개다. 따라서 정렬 이전의 소형파일 쓰기 비용이 2021보
 공간이 충분하더라도 2021 QC와 기록이 끝나기 전에는 2022를 자동 시작하지
 않는다.
 
+## 2021 완료 뒤 2020 소급 QC 명령
+
+2021 MFA와 direct export가 끝난 뒤에만 다음 읽기 전용 감사를 실행한다.
+진행 중인 2021과 외장 SSD I/O를 경쟁시키지 않는다.
+
+입력 CSV–WAV–lab–형태소 원천 감사:
+
+```powershell
+cd "C:\Users\ari30\research\2026_summer_research"
+
+& "C:\Users\ari30\miniforge3\envs\mfa\python.exe" `
+  ".\scripts\python\audit_mfa_year_readiness.py" `
+  --years 2020 `
+  --search-master-root `
+    "D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725" `
+  --wav-root "D:\20_AUDIO\03_wav\individual" `
+  --morph-textgrid-root "D:\20_AUDIO\06_textgrid_merged" `
+  --source-pcm-check "D:\10_LAYERS\05_audio_index\source_pcm_check.csv" `
+  --compare-lab-content `
+  --gate-profile analysis `
+  --output `
+    ".\outputs\reports\AUDIT_mfa_year_readiness_2020_retrospective_20260727.json"
+```
+
+2020 staging 4-tier 독립 감사:
+
+```powershell
+& "C:\Users\ari30\miniforge3\envs\mfa\python.exe" `
+  ".\scripts\python\audit_mfa_4tier_year.py" `
+  --year 2020 `
+  --lab-root "D:\20_AUDIO\03_wav\individual\2020" `
+  --textgrid-root "D:\20_AUDIO\07_textgrid_eojeol_g2p_staging\2020" `
+  --report `
+    ".\outputs\reports\AUDIT_mfa_4tier_2020_retrospective_20260727.json" `
+  --missing-csv `
+    ".\outputs\reports\MISSING_mfa_4tier_2020_retrospective_20260727.csv" `
+  --progress-jsonl `
+    "D:\mfa_eojeol\logs\audit_4tier_2020_retrospective_20260727_heartbeat.jsonl" `
+  --input-contract-id `
+    "fa96caf4a37c556b929febbfa172500b2dfe615cfb554e816b070766bc8b3038" `
+  --workers 4
+```
+
+두 도구의 exit 1은 전량 재실행 명령이 아니라 문제 inventory가 생겼다는
+뜻이다. 보고서의 세션·발화 범위를 먼저 확정한 뒤 부분 보완/제외/재정렬을
+결정한다.
+
 ## 2022 GO/NO-GO
 
 다음이 모두 충족돼야 GO다.
@@ -263,9 +336,15 @@ lab이 0개다. 따라서 정렬 이전의 소형파일 쓰기 비용이 2021보
 - 2021 final 4-tier 전수검증 통과
 - 2021 align/merge marker가 같은 입력계약을 가리킴
 - 2021 누락 inventory와 source/난정렬 분류 저장
+- 2021 형태소 원천 누락의 과거 PCM·동결 CSV duration 근거 조인률 100%,
+  미분류 0
+- PCM 짧음/없음과 보수적 전사–segment 길이 비대응은 명시적 analysis
+  exclusion에 포함하고, raw 누락·근거·분모 제외 수를 모두 별도 기록
 - 2021 DB 보존 또는 검증 후 정리 결정 기록
 - MFA 설치 패치 10/10
 - 2022 세션 coverage 2,654/2,654
+- 2022 전체 search 행에서 `10음절 이상 + 40음절/s 이상`인 극단적
+  전사–segment 불일치 0건 또는 발화별 근거·제외/복구 판정 완료
 - D: `DATA_SSD` 및 실측 기반 여유 공간 통과
 - 2022 temp/output/staging/marker 충돌 없음
 - 다른 MFA·KOINA·Dropbox 대량 복사 없음
@@ -276,23 +355,86 @@ interval gap/overlap, 핵심 label, WAV header duration을 전수 검사한다.
 운영본의 원시간을 바꾸지 않으므로 0.05초 가시적 양끝 빈 경계는 hard gate가
 아니라 tier별 진단값이며, 패딩된 연구자 점검 사본에서 별도로 보장한다.
 
+CSV dur↔WAV header 대응과 별도로, 전사량↔구간 길이의 물리적 개연성도
+readiness에서 전수 진단한다. 최소 10개 한글 음절이면서 40음절/s 이상인
+극단값만 fail-closed로 잡아 일반적인 빠른 발화를 판정하지 않도록 했고,
+보고서에는 연구 자료 원문을 복제하지 않는다.
+
+runner의 gate profile은 계산 상태에 따라 구분한다.
+
+- 신규 2022 temp 없음: `analysis` — 물리 불일치와 형태소 회수 후보까지 차단
+- 같은 입력·정렬 계약의 temp 있음: `execution` — DB를 보존해 재개하되,
+  final 승격 뒤 독립 analysis QC를 반드시 수행
+- 같은 계약의 align/merge marker 모두 있음: 이미 완료된 연도로 즉시 건너뜀
+
+따라서 안전 gate를 강화하면서도 중간 DB 복구 가능성을 잃지 않는다.
+
+### interval collect의 메모리·paging 병목
+
+2021 first-pass 종료 뒤 `Collecting phone and word alignments from alignment
+lattices` 단계에서 `phone_intervals.csv`와 `word_intervals.csv`가 정상적으로
+증가했지만, 22:18 실측 물리 메모리 여유는 442–536MB, commit은
+19.63–19.65/23.75GB, page input은 790–3,011 pages/s였다. 주 Python의
+working set은 약 2.18–2.22GB로 완만히 증가했다. 처리율은 유지됐으므로
+중단 근거는 아니지만, 2020의 interval collect가 1시간 37분이었던 점과 함께
+2022의 중요한 시간·메모리 병목으로 본다.
+
+다음 runner/운영 점검은 이 단계에서 다음을 heartbeat나 별도 관측 보고서에
+남긴다.
+
+- process-tree working set·private bytes뿐 아니라 시스템 available memory,
+  committed/commit limit, pages input/sec
+- `phone_intervals.csv`·`word_intervals.csv`의 bytes·mtime·가능하면 증분 행 수
+- 파일 증가·CPU·heartbeat가 함께 멈출 때만 교착 후보로 판정
+- 단순 저메모리만으로 현재 DB/temp를 폐기하지 않고, 처리율 저하와
+  commit-limit 접근이 함께 나타날 때 사용자에게 중단/재개 선택지를 제시
+- 2022 실행 전 다른 MFA·KOINA·Dropbox 대량 작업과 메모리 점유 앱을 피하고,
+  현재 연도 full resume temp만 유지
+
+이 병목은 CPU job 수를 무조건 늘리면 개선되는 유형이 아니다. N200의 코어 수와
+메모리·paging을 함께 보아 4 jobs를 기준으로 유지하고, 공통 G2P 자원으로 앞단
+8시간대 병목을 줄이는 쪽을 먼저 검증한다.
+
+위 관측 항목은 다음 실행용 runner에 구현했다. `GetPerformanceInfo`를 써서
+로케일에 의존하지 않고 available physical memory와 commit을 읽고,
+process tree는 working set과 private memory를 모두 기록한다. interval CSV는
+64KiB 증분 스캐너로 행 수·byte·mtime을 읽으며, word CSV의 연속
+`utterance_id` 전환을 세어 first-pass 처리량 대비 참고 진행률을 남긴다.
+합성 부분행·append·파일 축소 교체 시험과 PowerShell 안전성 검사 5개 파일이
+통과했다.
+
+2021 실자료에서 발화 전환을 포함한 첫 682MB 스캔은 8.7초, 이후 3초 증분은
+53.6ms였다. runner는 수집 시작 때 작은 파일부터 상태를 누적하므로 정상
+heartbeat의 추가 비용은 후자의 수준이다. 이 수치는 성공 gate나 watchdog
+kill 조건으로 사용하지 않는다.
+
 ### 2021 완료 증거를 2022 preflight에 결합
 
 `preflight_next_year_after_qc.py`를 다음 연도 선행 gate로 추가했다. 콘솔의
 완료 문구나 MFA exit 0만으로는 통과하지 않으며 다음을 서로 대조한다.
 
+이 도구는 retained SQLite DB와 direct export 보고서를 계약 증거로 요구하는
+`direct_db_4tier` 완료 연도 전용이다. built-in 방식으로 끝난 2020에는
+그대로 적용하지 않고 `audit_mfa_4tier_year.py`와 당시 merge 보고서를 이용한
+별도 소급 QC를 적용한다.
+
 - 2021 독립 4-tier 전수 감사 `status=success`, coverage 99% 이상,
   hard failure 0
 - audit·align marker·merge marker·temp contract의 입력계약 ID 일치
 - 세 기록의 동결 pre-MFA search master 경로 일치
-- direct-DB 보고서 성공, form/morpheme/출력 실패 0
+- direct-DB export 성공, form/출력 실패 0
+- `morpheme_tier_missing`은 raw 0건을 강제하는 대신 발화별 분류표와 대조해
+  `원음결함 제외 + 정상원음 보완/명시제외 + 미분류 0`을 강제. 개수만
+  비교하지 않고 direct 누락 inventory의 모든 발화 ID가 SHA256으로 동결된
+  분류표 ID 집합에 실제로 포함되는지도 확인
 - audit·marker·direct 보고서의 lab/TextGrid 수량 일치
 - 2021 SQLite DB가 temp 계약 경로에 실제로 남아 있고 0바이트가 아님
 - audit의 final 연도 폴더와 merge marker의 staging base 일치
 - 누락 발화 CSV가 실제로 존재
 
-계약 불일치, DB 누락, direct 보고서 누락, 손상된 숫자 필드를 합성 fixture로
-재현해 모두 실패 보고서를 남기고 fail-closed임을 확인했다. 이 gate가
+계약 불일치, DB 누락, direct 보고서 누락, 손상된 숫자 필드와 “형태소 누락
+개수는 같지만 발화 ID가 다른” 경우를 합성 fixture로 재현해 모두 실패
+보고서를 남기고 fail-closed임을 확인했다. 이 gate가
 통과한 뒤에만 기존
 `preflight_eojeol_realign.ps1 -Year 2022`로 모델·MFA 패치·SSD 라벨·공간·
 2022 세션 coverage·temp 충돌을 확인한다.
@@ -372,3 +514,44 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
 | 4-tier 출력 | 1시간 43분 별도 merge | 실행 후 입력 | direct 예상 |
 | temp peak | 약 33GB 미만 | 실행 후 입력 | 실측 기반 |
 | 난정렬/누락 | 3,644 | 실행 후 입력 | source 위험과 분리 |
+
+## 2026-07-28 확정 결과
+
+위 문서의 “실행 후 입력”과 20260727 파일명을 사용한 예정 명령은 작성 당시
+계획을 보존한 것이다. 최종 실측과 실제 20260728 보고서는 다음 결정문을
+정본으로 삼는다.
+
+```text
+docs/decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md
+outputs/reports/RESULT_2021_pre_mfa_full_pipeline_20260728.md
+```
+
+핵심 실측:
+
+| 항목 | 2020 | 2021 |
+|---|---:|---:|
+| final 4-tier | 866,196 | 1,371,868 |
+| invalid | 0 | 0 |
+| 분석 가능 정렬 실패 | 3,630 | 544 |
+| 분석 가능 coverage | 99.5827% | 99.9604% |
+| final 생성 후처리 | 약 17시간 40분 | 1시간 46분 |
+| retained DB | 없음 | 11.60GiB |
+
+2021 MFA 본 실행은 62,149.774초, direct export는 6,360.292초였다. 2021
+SQLite full integrity는 4,255.2초가 걸렸으므로 다음 연도 사후 QC 시간에
+별도로 포함한다.
+
+실제 2022 gate:
+
+```text
+outputs/reports/PREFLIGHT_2022_after_2021_QC_20260728.json
+status=passed, checks=20/20
+
+logs/preflight_20260728_070125.log
+FAIL=0, WARN=0
+```
+
+기술적으로는 GO다. 그러나 공통 G2P cache/우리말샘 예외 발음 파생사전을
+먼저 파일럿할지 결정해야 하므로 방법론 상태는 HOLD다. 2022 baseline 실행
+명령은 위 최종 결정문에 QC JSON 세 개를 먼저 읽어 검증하는 형태로
+기록했고, 사용자 확인 전 실행하지 않는다.

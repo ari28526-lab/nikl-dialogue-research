@@ -11,8 +11,9 @@
 param(
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
     [string]$RunId = 'pre_mfa_v1_20260725',
+    [Parameter(Mandatory=$true)]
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
-    [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [string[]]$Years,
     [switch]$PreferD,
     [switch]$UseDirectDbExport,
     [switch]$CleanupDirectDbAfterMerge,
@@ -25,6 +26,15 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $root 'config\paths.json'
 $pythonDir = Join-Path $PSScriptRoot 'python'
+
+if ($Years.Count -ne 1) {
+    Write-Error (
+        "-Years는 한 연도만 허용함. 직전 연도 독립 QC와 누락 분류를 " +
+        "확인한 뒤 다음 연도를 별도 실행할 것: requested=" +
+        ($Years -join ',')
+    )
+    exit 1
+}
 
 if ($PauseAfterYear -and -not ($Years -contains $PauseAfterYear)) {
     Write-Error "-PauseAfterYear $PauseAfterYear 이 -Years 목록에 없음"

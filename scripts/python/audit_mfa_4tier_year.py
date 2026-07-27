@@ -25,10 +25,22 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterator
 
-from pipeline_common import atomic_text_writer, atomic_write_json
+from pipeline_common import (
+    atomic_text_writer,
+    atomic_write_json,
+    file_fingerprint,
+)
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 
 EXPECTED_TIERS = ["words", "phones", "morphemes", "utterance"]
+MORPH_ACTION_EXCLUDE = "exclude_source_audio_unusable"
+MORPH_ACTION_RECOVER = "recover_morpheme_alignment_candidate"
+MORPH_ACTION_REVIEW = "manual_review_unclassified"
+MORPH_ACTIONS = {
+    MORPH_ACTION_EXCLUDE,
+    MORPH_ACTION_RECOVER,
+    MORPH_ACTION_REVIEW,
+}
 
 
 def iter_files(root: Path, suffix: str) -> Iterator[Path]:
@@ -195,6 +207,8 @@ def write_missing_csv(path: Path, rows: list[dict]) -> None:
         "lab_bytes",
         "wav_path",
         "wav_exists",
+        "analysis_eligible",
+        "morph_disposition",
     ]
     with atomic_text_writer(
         path, encoding="utf-8-sig", newline=""
@@ -202,6 +216,48 @@ def write_missing_csv(path: Path, rows: list[dict]) -> None:
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def load_morph_classification(path: Path | None, year: str) -> dict:
+    """형태소 원천 결측 분류표를 읽어 분석 분모와 회수 대상을 고정한다."""
+    result = {
+        "path": None,
+        "fingerprint": None,
+        "by_utt": {},
+        "counts": Counter(),
+    }
+    if path is None:
+        return result
+    path = path.resolve()
+    required = {"year", "utt_id", "recommended_action"}
+    by_utt: dict[str, dict[str, str]] = {}
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        missing = required - set(reader.fieldnames or ())
+        if missing:
+            raise RuntimeError(
+                f"{path}: 형태소 분류 필수 열 누락 {sorted(missing)}"
+            )
+        for row in reader:
+            row_year = (row.get("year") or "").strip()
+            utt_id = (row.get("utt_id") or "").strip()
+            action = (row.get("recommended_action") or "").strip()
+            if row_year != year:
+                raise RuntimeError(
+                    f"{path}: 분류 연도 불일치 {row_year!r} != {year!r}"
+                )
+            if not utt_id or action not in MORPH_ACTIONS:
+                raise RuntimeError(
+                    f"{path}: 잘못된 utt/action {utt_id!r}/{action!r}"
+                )
+            if utt_id in by_utt:
+                raise RuntimeError(f"{path}: 중복 utt_id {utt_id}")
+            by_utt[utt_id] = row
+            result["counts"][action] += 1
+    result["path"] = str(path)
+    result["fingerprint"] = file_fingerprint(path, with_sha256=True)
+    result["by_utt"] = by_utt
+    return result
 
 
 def batched(iterator: Iterator[Path], size: int) -> Iterator[list[Path]]:
@@ -230,6 +286,7 @@ def audit_year(
     visible_edge_seconds: float = 0.05,
     minimum_coverage_pct: float = 99.0,
     check_wav_duration: bool = True,
+    morph_classification_csv: Path | None = None,
 ) -> dict:
     started_at = datetime.now().astimezone().isoformat()
     started = time.monotonic()
@@ -237,6 +294,25 @@ def audit_year(
     textgrid_root = textgrid_root.resolve()
     report_path = report_path.resolve()
     missing_csv_path = missing_csv_path.resolve()
+    morph_classification = load_morph_classification(
+        morph_classification_csv, year
+    )
+    morph_by_utt = morph_classification["by_utt"]
+    excluded_ids = {
+        utt_id
+        for utt_id, row in morph_by_utt.items()
+        if row["recommended_action"] == MORPH_ACTION_EXCLUDE
+    }
+    recovery_ids = {
+        utt_id
+        for utt_id, row in morph_by_utt.items()
+        if row["recommended_action"] == MORPH_ACTION_RECOVER
+    }
+    unclassified_ids = {
+        utt_id
+        for utt_id, row in morph_by_utt.items()
+        if row["recommended_action"] == MORPH_ACTION_REVIEW
+    }
 
     lab_paths: dict[str, Path] = {}
     duplicate_lab_ids: set[str] = set()
@@ -249,6 +325,9 @@ def audit_year(
             lab_paths[utt_id] = path
         if path.stat().st_size <= 0:
             zero_byte_lab_ids.append(utt_id)
+    lab_ids = set(lab_paths)
+    classification_ids_without_lab = set(morph_by_utt) - lab_ids
+    eligible_lab_ids = lab_ids - excluded_ids
 
     append_progress(
         progress_jsonl,
@@ -257,6 +336,9 @@ def audit_year(
             "year": year,
             "input_contract_id": input_contract_id,
             "lab_files": len(lab_paths),
+            "analysis_eligible_labs": len(eligible_lab_ids),
+            "analysis_exclusions": len(excluded_ids & lab_ids),
+            "recovery_candidates": len(recovery_ids & lab_ids),
             "workers": workers,
             "check_wav_duration": check_wav_duration,
         },
@@ -266,10 +348,14 @@ def audit_year(
     duplicate_textgrid_ids: set[str] = set()
     extra_textgrid_ids: list[str] = []
     reason_counts: Counter[str] = Counter()
+    excluded_reason_counts: Counter[str] = Counter()
     reason_examples: dict[str, list[str]] = {}
+    excluded_reason_examples: dict[str, list[str]] = {}
     visible_left = Counter()
     visible_right = Counter()
-    inspected = valid = 0
+    inspected = valid = eligible_inspected = eligible_valid = 0
+    excluded_inspected = excluded_valid = 0
+    valid_textgrid_ids: set[str] = set()
 
     def inspect(path: Path) -> dict:
         relative = path.relative_to(textgrid_root)
@@ -297,10 +383,24 @@ def audit_year(
                 inspected += 1
                 if result["valid"]:
                     valid += 1
+                    valid_textgrid_ids.add(utt_id)
+                is_excluded = utt_id in excluded_ids
+                if is_excluded:
+                    excluded_inspected += 1
+                    if result["valid"]:
+                        excluded_valid += 1
+                    target_counts = excluded_reason_counts
+                    target_examples = excluded_reason_examples
+                else:
+                    eligible_inspected += 1
+                    if result["valid"]:
+                        eligible_valid += 1
+                    target_counts = reason_counts
+                    target_examples = reason_examples
                 for reason in result["reasons"]:
                     reason_key = reason.split(":", 1)[0]
-                    reason_counts[reason_key] += 1
-                    examples = reason_examples.setdefault(reason_key, [])
+                    target_counts[reason_key] += 1
+                    examples = target_examples.setdefault(reason_key, [])
                     if len(examples) < 20:
                         examples.append(f"{utt_id}: {reason}")
                 for tier_name, present in result["visible_left"].items():
@@ -321,6 +421,10 @@ def audit_year(
                         "textgrids_inspected": inspected,
                         "valid_textgrids": valid,
                         "invalid_textgrids": inspected - valid,
+                        "analysis_eligible_inspected": eligible_inspected,
+                        "analysis_eligible_invalid": (
+                            eligible_inspected - eligible_valid
+                        ),
                         "files_per_second": round(inspected / elapsed, 1),
                         "elapsed_seconds": round(elapsed, 1),
                     },
@@ -332,15 +436,18 @@ def audit_year(
                     flush=True,
                 )
 
-    missing_ids = sorted(set(lab_paths) - textgrid_ids)
+    missing_ids = sorted(lab_ids - textgrid_ids)
+    eligible_missing_ids = sorted(eligible_lab_ids - textgrid_ids)
     missing_rows: list[dict] = []
-    missing_without_wav = 0
+    missing_without_wav = eligible_missing_without_wav = 0
     for utt_id in missing_ids:
         lab_path = lab_paths[utt_id]
         wav_path = lab_path.with_suffix(".wav")
         wav_exists = wav_path.is_file()
         if not wav_exists:
             missing_without_wav += 1
+            if utt_id in eligible_lab_ids:
+                eligible_missing_without_wav += 1
         try:
             session_id = str(lab_path.parent.relative_to(lab_root))
         except ValueError:
@@ -355,27 +462,58 @@ def audit_year(
                 "lab_bytes": lab_path.stat().st_size,
                 "wav_path": str(wav_path),
                 "wav_exists": wav_exists,
+                "analysis_eligible": utt_id in eligible_lab_ids,
+                "morph_disposition": (
+                    morph_by_utt.get(utt_id, {}).get(
+                        "recommended_action", ""
+                    )
+                ),
             }
         )
 
     write_missing_csv(missing_csv_path, missing_rows)
     lab_count = len(lab_paths)
-    coverage_pct = (
-        100 * len(textgrid_ids & set(lab_paths)) / lab_count
+    eligible_lab_count = len(eligible_lab_ids)
+    raw_coverage_pct = (
+        100 * len(textgrid_ids & lab_ids) / lab_count
         if lab_count
         else 0.0
     )
+    coverage_pct = (
+        100 * len(textgrid_ids & eligible_lab_ids) / eligible_lab_count
+        if eligible_lab_count
+        else 0.0
+    )
+    recovery_candidate_not_valid = (
+        recovery_ids & lab_ids
+    ) - valid_textgrid_ids
+    eligible_zero_byte_lab_ids = (
+        set(zero_byte_lab_ids) & eligible_lab_ids
+    )
     hard_failure_counts = {
         "duplicate_lab_ids": len(duplicate_lab_ids),
-        "zero_byte_labs": len(zero_byte_lab_ids),
+        "zero_byte_analysis_eligible_labs": len(
+            eligible_zero_byte_lab_ids
+        ),
         "duplicate_textgrid_ids": len(duplicate_textgrid_ids),
         "textgrid_without_lab": len(extra_textgrid_ids),
-        "invalid_textgrids": inspected - valid,
-        "missing_without_wav": missing_without_wav,
+        "invalid_analysis_eligible_textgrids": (
+            eligible_inspected - eligible_valid
+        ),
+        "missing_analysis_eligible_without_wav": (
+            eligible_missing_without_wav
+        ),
+        "classification_ids_without_lab": len(
+            classification_ids_without_lab
+        ),
+        "morph_source_unclassified": len(unclassified_ids & lab_ids),
+        "recovery_candidate_not_valid": len(
+            recovery_candidate_not_valid
+        ),
     }
     status = (
         "success"
-        if lab_count > 0
+        if eligible_lab_count > 0
         and coverage_pct >= minimum_coverage_pct
         and all(value == 0 for value in hard_failure_counts.values())
         else "failed"
@@ -400,25 +538,75 @@ def audit_year(
             "minimum_coverage_pct": minimum_coverage_pct,
             "check_wav_duration": check_wav_duration,
             "expected_tiers": EXPECTED_TIERS,
+            "coverage_denominator": (
+                "lab_ids_minus_exclude_source_audio_unusable"
+            ),
         },
         "counts": {
             "lab_ids": lab_count,
+            "analysis_eligible_lab_ids": eligible_lab_count,
+            "analysis_excluded_lab_ids": len(excluded_ids & lab_ids),
             "textgrid_files_inspected": inspected,
             "textgrid_ids": len(textgrid_ids),
             "valid_textgrids": valid,
             "invalid_textgrids": inspected - valid,
+            "analysis_eligible_textgrids_inspected": eligible_inspected,
+            "valid_analysis_eligible_textgrids": eligible_valid,
+            "invalid_analysis_eligible_textgrids": (
+                eligible_inspected - eligible_valid
+            ),
+            "excluded_textgrids_inspected": excluded_inspected,
+            "valid_excluded_textgrids": excluded_valid,
             "lab_without_textgrid": len(missing_ids),
+            "analysis_eligible_lab_without_textgrid": len(
+                eligible_missing_ids
+            ),
             "textgrid_without_lab": len(extra_textgrid_ids),
             "missing_with_wav": len(missing_ids) - missing_without_wav,
             "missing_without_wav": missing_without_wav,
             "duplicate_lab_ids": len(duplicate_lab_ids),
             "duplicate_textgrid_ids": len(duplicate_textgrid_ids),
             "zero_byte_labs": len(zero_byte_lab_ids),
+            "zero_byte_analysis_eligible_labs": len(
+                eligible_zero_byte_lab_ids
+            ),
+            "morph_source_recovery_candidates": len(
+                recovery_ids & lab_ids
+            ),
+            "recovery_candidate_not_valid": len(
+                recovery_candidate_not_valid
+            ),
+            "morph_source_unclassified": len(unclassified_ids & lab_ids),
+            "classification_ids_without_lab": len(
+                classification_ids_without_lab
+            ),
         },
         "coverage_pct": round(coverage_pct, 4),
+        "raw_coverage_pct": round(raw_coverage_pct, 4),
         "hard_failure_counts": hard_failure_counts,
         "reason_counts": dict(sorted(reason_counts.items())),
         "reason_examples": reason_examples,
+        "excluded_reason_counts": dict(
+            sorted(excluded_reason_counts.items())
+        ),
+        "excluded_reason_examples": excluded_reason_examples,
+        "morphology_classification": {
+            "source_csv": morph_classification["path"],
+            "source_fingerprint": morph_classification["fingerprint"],
+            "counts_by_action": dict(
+                sorted(morph_classification["counts"].items())
+            ),
+            "analysis_exclusion_action": MORPH_ACTION_EXCLUDE,
+            "analysis_exclusion_ids": len(excluded_ids & lab_ids),
+            "recovery_candidate_ids": len(recovery_ids & lab_ids),
+            "recovery_candidate_not_valid": len(
+                recovery_candidate_not_valid
+            ),
+            "unclassified_ids": len(unclassified_ids & lab_ids),
+            "classification_ids_without_lab": len(
+                classification_ids_without_lab
+            ),
+        },
         "visible_edge_diagnostics": {
             tier_name: {
                 "left_blank_at_least_threshold": visible_left[tier_name],
@@ -433,6 +621,15 @@ def audit_year(
             "duplicate_textgrid_ids": sorted(duplicate_textgrid_ids)[:20],
             "textgrid_without_lab": sorted(extra_textgrid_ids)[:20],
             "lab_without_textgrid": missing_ids[:20],
+            "analysis_eligible_lab_without_textgrid": (
+                eligible_missing_ids[:20]
+            ),
+            "recovery_candidate_not_valid": sorted(
+                recovery_candidate_not_valid
+            )[:20],
+            "classification_ids_without_lab": sorted(
+                classification_ids_without_lab
+            )[:20],
         },
     }
     atomic_write_json(report_path, report)
@@ -468,6 +665,14 @@ def main() -> int:
     parser.add_argument("--visible-edge-seconds", type=float, default=0.05)
     parser.add_argument("--minimum-coverage-pct", type=float, default=99.0)
     parser.add_argument("--skip-wav-duration", action="store_true")
+    parser.add_argument(
+        "--morph-classification-csv",
+        type=Path,
+        help=(
+            "형태소 원천 결측 발화별 recommended_action CSV. "
+            "exclude_source_audio_unusable만 분석 분모에서 제외한다."
+        ),
+    )
     args = parser.parse_args()
 
     report = audit_year(
@@ -484,6 +689,7 @@ def main() -> int:
         visible_edge_seconds=args.visible_edge_seconds,
         minimum_coverage_pct=args.minimum_coverage_pct,
         check_wav_duration=not args.skip_wav_duration,
+        morph_classification_csv=args.morph_classification_csv,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "success" else 1

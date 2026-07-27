@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "year": "2020",
+  "input_contract_id": "fa96caf4a37c556b929febbfa172500b2dfe615cfb554e816b070766bc8b3038",
+  "lab_root": "D:\\20_AUDIO\\03_wav\\individual\\2020",
+  "textgrid_root": "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2020",
+  "missing_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\MISSING_mfa_4tier_2020_pre_mfa_v1_20260728.csv",
+  "started_at": "2026-07-28T06:31:08.707529+09:00",
+  "finished_at": "2026-07-28T07:00:07.525718+09:00",
+  "elapsed_seconds": 1738.805,
+  "settings": {
+    "workers": 4,
+    "batch_size": 2000,
+    "tolerance_seconds": 0.001,
+    "visible_edge_seconds": 0.05,
+    "minimum_coverage_pct": 99.0,
+    "check_wav_duration": true,
+    "expected_tiers": [
+      "words",
+      "phones",
+      "morphemes",
+      "utterance"
+    ],
+    "coverage_denominator": "lab_ids_minus_exclude_source_audio_unusable"
+  },
+  "counts": {
+    "lab_ids": 869840,
+    "analysis_eligible_lab_ids": 869826,
+    "analysis_excluded_lab_ids": 14,
+    "textgrid_files_inspected": 866196,
+    "textgrid_ids": 866196,
+    "valid_textgrids": 866196,
+    "invalid_textgrids": 0,
+    "analysis_eligible_textgrids_inspected": 866196,
+    "valid_analysis_eligible_textgrids": 866196,
+    "invalid_analysis_eligible_textgrids": 0,
+    "excluded_textgrids_inspected": 0,
+    "valid_excluded_textgrids": 0,
+    "lab_without_textgrid": 3644,
+    "analysis_eligible_lab_without_textgrid": 3630,
+    "textgrid_without_lab": 0,
+    "missing_with_wav": 3644,
+    "missing_without_wav": 0,
+    "duplicate_lab_ids": 0,
+    "duplicate_textgrid_ids": 0,
+    "zero_byte_labs": 0,
+    "zero_byte_analysis_eligible_labs": 0,
+    "morph_source_recovery_candidates": 0,
+    "recovery_candidate_not_valid": 0,
+    "morph_source_unclassified": 0,
+    "classification_ids_without_lab": 0
+  },
+  "coverage_pct": 99.5827,
+  "raw_coverage_pct": 99.5811,
+  "hard_failure_counts": {
+    "duplicate_lab_ids": 0,
+    "zero_byte_analysis_eligible_labs": 0,
+    "duplicate_textgrid_ids": 0,
+    "textgrid_without_lab": 0,
+    "invalid_analysis_eligible_textgrids": 0,
+    "missing_analysis_eligible_without_wav": 0,
+    "classification_ids_without_lab": 0,
+    "morph_source_unclassified": 0,
+    "recovery_candidate_not_valid": 0
+  },
+  "reason_counts": {},
+  "reason_examples": {},
+  "excluded_reason_counts": {},
+  "excluded_reason_examples": {},
+  "morphology_classification": {
+    "source_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2020_post_mfa_20260728.csv",
+    "source_fingerprint": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2020_post_mfa_20260728.csv",
+      "bytes": 3540,
+      "mtime_ns": 1785187860090693400,
+      "sha256": "ab32da2ce26d964232aa05a1a0ff21fbf56fb15837cda584b6d50ecb6e47fb31"
+    },
+    "counts_by_action": {
+      "exclude_source_audio_unusable": 14
+    },
+    "analysis_exclusion_action": "exclude_source_audio_unusable",
+    "analysis_exclusion_ids": 14,
+    "recovery_candidate_ids": 0,
+    "recovery_candidate_not_valid": 0,
+    "unclassified_ids": 0,
+    "classification_ids_without_lab": 0
+  },
+  "visible_edge_diagnostics": {
+    "words": {
+      "left_blank_at_least_threshold": 608471,
+      "right_blank_at_least_threshold": 667558,
+      "files_inspected": 866196
+    },
+    "phones": {
+      "left_blank_at_least_threshold": 608471,
+      "right_blank_at_least_threshold": 667558,
+      "files_inspected": 866196
+    },
+    "morphemes": {
+      "left_blank_at_least_threshold": 617400,
+      "right_blank_at_least_threshold": 676507,
+      "files_inspected": 866196
+    },
+    "utterance": {
+      "left_blank_at_least_threshold": 608471,
+      "right_blank_at_least_threshold": 667558,
+      "files_inspected": 866196
+    }
+  },
+  "examples": {
+    "duplicate_lab_ids": [],
+    "zero_byte_lab_ids": [],
+    "duplicate_textgrid_ids": [],
+    "textgrid_without_lab": [],
+    "lab_without_textgrid": [
+      "SDRW2000000027.1.1.339",
+      "SDRW2000000038.1.1.23",
+      "SDRW2000000045.1.1.220",
+      "SDRW2000000057.1.1.70",
+      "SDRW2000000064.1.1.359",
+      "SDRW2000000071.1.1.24",
+      "SDRW2000000094.1.1.186",
+      "SDRW2000000101.1.1.373",
+      "SDRW2000000108.1.1.101",
+      "SDRW2000000108.1.1.104",
+      "SDRW2000000108.1.1.107",
+      "SDRW2000000108.1.1.108",
+      "SDRW2000000108.1.1.115",
+      "SDRW2000000108.1.1.117",
+      "SDRW2000000108.1.1.127",
+      "SDRW2000000108.1.1.134",
+      "SDRW2000000108.1.1.140",
+      "SDRW2000000108.1.1.142",
+      "SDRW2000000108.1.1.146",
+      "SDRW2000000108.1.1.153"
+    ],
+    "analysis_eligible_lab_without_textgrid": [
+      "SDRW2000000027.1.1.339",
+      "SDRW2000000038.1.1.23",
+      "SDRW2000000045.1.1.220",
+      "SDRW2000000057.1.1.70",
+      "SDRW2000000064.1.1.359",
+      "SDRW2000000071.1.1.24",
+      "SDRW2000000094.1.1.186",
+      "SDRW2000000101.1.1.373",
+      "SDRW2000000108.1.1.101",
+      "SDRW2000000108.1.1.104",
+      "SDRW2000000108.1.1.107",
+      "SDRW2000000108.1.1.108",
+      "SDRW2000000108.1.1.115",
+      "SDRW2000000108.1.1.117",
+      "SDRW2000000108.1.1.127",
+      "SDRW2000000108.1.1.134",
+      "SDRW2000000108.1.1.140",
+      "SDRW2000000108.1.1.142",
+      "SDRW2000000108.1.1.146",
+      "SDRW2000000108.1.1.153"
+    ],
+    "recovery_candidate_not_valid": [],
+    "classification_ids_without_lab": []
+  }
+}

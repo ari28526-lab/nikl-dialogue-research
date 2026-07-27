@@ -1,4 +1,5 @@
 import json
+import csv
 import sys
 import tempfile
 import unittest
@@ -24,6 +25,26 @@ def make_wav(path: Path, seconds: float = 1.0) -> None:
 
 
 class AuditMfa4TierYearTests(unittest.TestCase):
+    def write_classification(
+        self, path: Path, rows: list[tuple[str, str]]
+    ) -> None:
+        with path.open(
+            "w", encoding="utf-8-sig", newline=""
+        ) as stream:
+            writer = csv.DictWriter(
+                stream,
+                fieldnames=["year", "utt_id", "recommended_action"],
+            )
+            writer.writeheader()
+            for utt_id, action in rows:
+                writer.writerow(
+                    {
+                        "year": "2021",
+                        "utt_id": utt_id,
+                        "recommended_action": action,
+                    }
+                )
+
     def make_utterance(
         self,
         root: Path,
@@ -169,6 +190,81 @@ class AuditMfa4TierYearTests(unittest.TestCase):
             )
             self.assertEqual(report["status"], "failed")
             self.assertEqual(report["reason_counts"]["gap"], 1)
+
+    def test_source_audio_exclusion_is_removed_from_analysis_denominator(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.make_utterance(root, "S1.1")
+            self.make_utterance(
+                root, "S1.2", make_textgrid=False
+            )
+            classification = root / "classification.csv"
+            self.write_classification(
+                classification,
+                [("S1.2", "exclude_source_audio_unusable")],
+            )
+
+            report = audit_year(
+                year="2021",
+                lab_root=root / "labs",
+                textgrid_root=root / "grids",
+                report_path=root / "report.json",
+                missing_csv_path=root / "missing.csv",
+                workers=1,
+                batch_size=1,
+                morph_classification_csv=classification,
+            )
+
+            self.assertEqual(report["status"], "success")
+            self.assertEqual(report["raw_coverage_pct"], 50.0)
+            self.assertEqual(report["coverage_pct"], 100.0)
+            self.assertEqual(
+                report["counts"]["analysis_excluded_lab_ids"], 1
+            )
+            self.assertEqual(
+                report["hard_failure_counts"][
+                    "recovery_candidate_not_valid"
+                ],
+                0,
+            )
+
+    def test_recovery_candidate_stays_hard_blocked_until_valid(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.make_utterance(root, "S1.1")
+            self.make_utterance(
+                root, "S1.2", make_textgrid=False
+            )
+            classification = root / "classification.csv"
+            self.write_classification(
+                classification,
+                [
+                    (
+                        "S1.2",
+                        "recover_morpheme_alignment_candidate",
+                    )
+                ],
+            )
+
+            report = audit_year(
+                year="2021",
+                lab_root=root / "labs",
+                textgrid_root=root / "grids",
+                report_path=root / "report.json",
+                missing_csv_path=root / "missing.csv",
+                workers=1,
+                batch_size=1,
+                minimum_coverage_pct=0,
+                morph_classification_csv=classification,
+            )
+
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual(
+                report["hard_failure_counts"][
+                    "recovery_candidate_not_valid"
+                ],
+                1,
+            )
 
 
 if __name__ == "__main__":

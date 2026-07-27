@@ -233,6 +233,7 @@ Out-Line "[7] 완료 마커·이어가기 상태"
 foreach ($y in $years) {
     $a  = Test-Path (Join-Path $doneDir "$y.align_done")
     $m  = Test-Path (Join-Path $doneDir "$y.merge_done")
+    $alignExportMode = ""
     $tC = Test-Path (Join-Path $tmpPrimary $y)
     $tD = Test-Path (Join-Path $tmpSecondary $y)
     $oC = Test-Path (Join-Path $outPrimary $y)
@@ -266,6 +267,9 @@ foreach ($y in $years) {
                         [IO.Path]::GetFullPath($g2pStage).TrimEnd('\')
                     )
                 }
+                if ($markerOK -and $markerStage -eq 'align') {
+                    $alignExportMode = [string]$markerData.details.export_mode
+                }
                 if (-not $markerOK) {
                     FAIL "$y 완료 마커 내용 불일치: $marker"
                 }
@@ -296,6 +300,25 @@ foreach ($y in $years) {
     }
     if ($a -and $m) { OK "$y 마커 파일 존재(위 내용 검증도 통과해야 완료) — $st" }
     elseif ($tC -and $tD) { WARN "$y temp가 C·D 양쪽에 있음 — 러너는 C:를 우선. 오래된 쪽 수동 확인 필요. $st" }
+    elseif (
+        $a -and -not $m -and
+        $alignExportMode -eq 'direct_db_4tier' -and
+        -not ($oC -or $oD)
+    ) {
+        $directFinalYear = Join-Path $g2pStage $y
+        if (Test-Path -LiteralPath $directFinalYear) {
+            FAIL (
+                "$y direct_db_4tier align marker와 final staging은 있으나 " +
+                "merge marker가 없음 — marker 삭제·재정렬 금지. final staging, " +
+                "direct report, retained DB를 검증해 merge marker만 복구해야 함. $st"
+            )
+        } else {
+            FAIL (
+                "$y direct_db_4tier align marker 뒤 완료 기록이 중단됨 — " +
+                "marker 삭제·재정렬 전에 retained DB와 partial을 보존·점검해야 함. $st"
+            )
+        }
+    }
     elseif ($a -and -not ($oC -or $oD)) { FAIL "$y align_done인데 병합용 MFA 원출력이 어느 드라이브에도 없음 — 마커 삭제 후 재정렬 필요. $st" }
     elseif ((-not $a) -and ($oC -or $oD) -and -not ($tC -or $tD)) { FAIL "$y 정렬 마커·temp 없이 MFA 원출력만 남음 — stale/부분 출력 판별 전 실행 금지. $st" }
     elseif ($tC -or $tD -or $a) { OK "$y 이어가기 가능 상태 — $st" }

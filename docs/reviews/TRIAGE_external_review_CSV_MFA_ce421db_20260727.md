@@ -127,3 +127,34 @@ input contract/marker 안에 해시가 들어 있지는 않으므로, 기존 mar
 
 이렇게 해야 “문제가 생겼으니 전부 다시 실행”과 “결과가 있으니 그냥 통과”라는
 두 극단을 모두 피하고, 연구 자료의 변경 이유와 범위를 재현 가능하게 남길 수 있다.
+
+## 7. 구현 추적
+
+2021 G2P가 진행되는 동안 현재 PowerShell 프로세스와 late-bound direct
+exporter를 바꾸지 않는 범위에서 다음을 구현했다. 현재 실행의 완료 marker가
+다른 코드 판본을 가리키지 않도록 Git HEAD는 `6ef6527`에 고정하고, 아래 후속
+수정은 2021 완료 뒤 전수검증과 함께 커밋한다.
+
+| Finding | 구현 상태 | 구현·검증 |
+|---|---|---|
+| P1-01 | 구현, 2020·2021 실데이터 전수 실행 대기 | `audit_mfa_year_readiness.py`에 세션 중앙 padding 추정, 잔차 `≤0.025초`, 대응률·검사 coverage `≥98%` hard gate와 발화 inventory를 추가했다. 추가로 CSV–WAV 길이가 일치해도 `10음절 이상 + 40음절/s 이상`이면 전사–segment 물리 불일치 analysis gate가 차단하며 원문은 로그에 남기지 않는다. 신규 계산은 analysis profile, 동일 계약 temp 재개는 execution profile을 사용해 DB 복구를 보존한다. 발화 길이를 서로 바꾼 합성 세션과 20음절/0.4초 합성 발화가 각각 해당 gate에서 실패한다. |
+| P1-02 | 구현, 최종 analysis-ready 판정 대기 | usable lab과 기존 형태소 TextGrid를 MFA 전에 전수 대조한다. direct export 성공과 형태소 completeness를 분리하고, 빈 형태소 tier는 경계 구조를 보존하되 `analysis_ready_status=blocked_morphology`로 기록한다. 2021 누락 1,109건은 과거 PCM과 동결 CSV에 100% 조인했다. PCM 결함 1,092건 외에 PCM 정상 17건도 0.30–0.71초에 18–52음절(47.0–119.3음절/s)이라 source segment–전사 비대응으로 확인돼 전부 근거 있는 분석 제외다. 다음 연도 gate는 누락 수만 비교하지 않고 direct 누락 ID 집합이 SHA256 동결 분류표 ID 집합의 부분집합인지 검사하며, 같은 개수의 다른 ID가 들어오면 실패한다. |
+| P2-04 | inventory 구현, A/B 보류 | 다음 lab build부터 미해결 숫자·기호의 ID, 원문, 기준 form, 실제 부분 lab을 입력계약별 UTF-8 CSV에 원자 저장한다. 구 marker 재사용 시 inventory가 없거나 손상됐으면 search CSV만 다시 읽어 복구하고 lab/WAV는 건드리지 않는다. 혼합 어절 전체 제외 대 현행 한글 부분 유지의 정렬 품질 결정은 소표본 A/B 전까지 바꾸지 않는다. |
+| P2-05 | 구현 | 모델 3종·MFA·Pynini·Python fingerprint의 경로 독립 alignment contract를 만들고, temp/done marker 재사용 조건과 다음 연도 runner에 배선했다. 실제 MFA 명령도 이름 재해석 대신 계약에서 해시한 세 모델의 절대 경로를 그대로 사용한다. |
+| P2-06 | 구현 확인 | 동결 CSV에서 예상되지 않지만 WAV와 함께 남은 lab은 `no_dangerous_unexpected_labs` hard gate가 차단한다. 합성 고아 lab 회귀시험이 실패를 고정한다. |
+| P2-07 | 구현 | wrapper는 `-Years`를 필수로 받고 정확히 한 연도만 허용한다. 다음 연도는 직전 direct 연도의 독립 4-tier QC·marker·DB 계약 gate 뒤에만 시작한다. |
+| P2-08 | 구현 | 정규화 메타 헤더 검사 결과를 preflight 전체 결과에 결합했다. `category_norm` 열/값 결측은 fresh 생성과 resume 재검증에서 같은 행 수로 집계되고 최종 build를 실패시킨다. |
+| P2-09 | 구현 | `locate_utt.py`가 `paths.json:mfa_state/quarantine/{year}/{session}`을 우선 조회하고 옛 평면 구조를 폴백한다. 두 구조의 회귀시험을 추가했다. |
+| P3-10 | 구현 | MFA readiness audit는 기본 strict다. search master audit는 사전·coverage 같은 계획 상태와 자료 무결성 게이트를 분리하고, 세션·행·내용·JSON 빈 form 제외정책·정규화 메타 gate 실패에만 기본 exit 1을 반환한다. |
+| P3-11 | 구현 | 다음 실행부터 `Done!` 뒤 watchdog kill만 억제하고 `phase=finalizing` heartbeat는 계속 기록한다. 현재 이미 실행 중인 2021 프로세스에는 소급되지 않는다. |
+| P3-12 | 복구 안내 구현 | direct align marker와 final staging은 있으나 merge marker가 없는 crash 상태를 built-in 원출력 누락으로 오인하지 않는다. preflight는 marker 삭제·전량 재정렬을 금지하고 retained DB·partial·direct report 검증 뒤 marker만 복구하도록 fail-closed 안내한다. |
+| P3-13 | 구현 | direct 개별 예외의 `utt_id`와 오류 한 줄을 `failed_examples`에 제한 수량 기록한다. |
+| P3-14 | 구현 | 최소 의미번호 lexicon helper를 최종 registry/CSV에 사용 금지인 deprecated 진단용 함수로 명시했다. |
+| P3-15 | 현행 유지 | blocking queue+sentinel 설치 패치는 바꾸지 않는다. producer 조기 사망 hang은 현 watchdog이 회수한다는 한계를 운영 기록에 유지한다. |
+| P3-16 | 구현 | 다음 연도 QC 도구와 산출 보고서에 `direct_db_4tier` 전용임을 명시했다. built-in 연도는 이 gate를 통과시키지 않고 별도 QC 분기를 사용한다. |
+| P3-17 | 부분 구현 | readiness 기본 경로를 `paths.json`으로 통일하고, search audit의 `missing_json_sessions`를 strict gate에 포함했다. Bareun engine 판본 확정 등 방법론 선택이 필요한 항목은 별도 release 결정으로 남겼다. |
+
+전체 Python unittest **82개**와 PowerShell 안전성 검사(5개 실행기)가 통과했다.
+P2-03의 `-히-` 규칙 수정은 오류가 확증됐지만, 새 규칙 판본·우리말샘 예외
+발음·공통 발음 registry의 우선순위를 함께 정해야 하므로 현 검색 CSV를
+조용히 덮어쓰지 않고 언어학적 승인 항목으로 남긴다.

@@ -3,17 +3,22 @@
 대량 정렬이 끝났다는 콘솔 문구나 exit code만 신뢰하지 않는다. 독립 4-tier
 전수 감사, align/merge marker, direct export 보고서, 보존 SQLite DB와 temp
 입력계약이 모두 같은 입력계약·검색 마스터를 가리킬 때만 통과한다.
+
+현재 구현은 ``direct_db_4tier`` 완료 연도 전용이다. built-in export로 완료한
+연도는 이 도구에 억지로 맞추지 말고 독립 4-tier 감사와 merge 보고서용 별도
+QC 분기를 사용한다.
 """
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import math
 import os
 from pathlib import Path
 from typing import Any
 
-from pipeline_common import atomic_write_json, now_iso
+from pipeline_common import atomic_write_json, now_iso, sha256_file
 
 
 def _read_json(path: Path) -> tuple[dict[str, Any] | None, str | None]:
@@ -67,6 +72,39 @@ def _as_float(value: Any) -> float | None:
     except (TypeError, ValueError, OverflowError):
         return None
     return converted if math.isfinite(converted) else None
+
+
+def _read_classification_ids(
+    path: Path, expected_year: str
+) -> tuple[set[str] | None, str | None]:
+    """동결 형태소 분류표의 연도·ID 유일성을 검증해 ID 집합을 반환한다."""
+
+    try:
+        with path.open(encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            required = {"year", "utt_id", "recommended_action"}
+            missing = required - set(reader.fieldnames or ())
+            if missing:
+                return None, f"필수 열 누락: {sorted(missing)}"
+            ids: set[str] = set()
+            for line_number, row in enumerate(reader, start=2):
+                year = (row.get("year") or "").strip()
+                utt_id = (row.get("utt_id") or "").strip()
+                action = (row.get("recommended_action") or "").strip()
+                if year != expected_year:
+                    return (
+                        None,
+                        f"{line_number}행 연도 불일치: "
+                        f"{year!r} != {expected_year!r}",
+                    )
+                if not utt_id or not action:
+                    return None, f"{line_number}행 utt_id/action 공백"
+                if utt_id in ids:
+                    return None, f"{line_number}행 중복 utt_id: {utt_id}"
+                ids.add(utt_id)
+    except (OSError, UnicodeError, csv.Error) as exc:
+        return None, f"분류 CSV 읽기 실패: {exc}"
+    return ids, None
 
 
 def validate_next_year_gate(
@@ -278,7 +316,7 @@ def validate_next_year_gate(
     )
     direct_hard_values = [
         _as_nonnegative_int(_nested(direct, "counts", key))
-        for key in ("form_missing", "morpheme_tier_missing", "failed")
+        for key in ("form_missing", "failed")
     ]
     direct_hard_failure = (
         sum(value for value in direct_hard_values if value is not None)
@@ -295,6 +333,151 @@ def validate_next_year_gate(
                        expected_search),
         f"status={_nested(direct, 'status')!r}, "
         f"hard_failure_sum={direct_hard_failure}",
+    )
+    direct_morph_missing = _as_nonnegative_int(
+        _nested(direct, "counts", "morpheme_tier_missing")
+    )
+    morphology = _nested(audit, "morphology_classification")
+    classification_path_value = _nested(
+        morphology, "source_fingerprint", "path"
+    )
+    classification_path = (
+        Path(str(classification_path_value)).resolve(strict=False)
+        if classification_path_value
+        else None
+    )
+    recorded_classification_sha = str(
+        _nested(morphology, "source_fingerprint", "sha256") or ""
+    )
+    classification_sha_matches = False
+    classification_ids: set[str] | None = None
+    classification_ids_error: str | None = "분류 CSV 경로/해시 없음"
+    if (
+        classification_path is not None
+        and classification_path.is_file()
+        and recorded_classification_sha
+    ):
+        try:
+            classification_sha_matches = (
+                sha256_file(classification_path)
+                == recorded_classification_sha
+            )
+        except OSError:
+            classification_sha_matches = False
+        if classification_sha_matches:
+            classification_ids, classification_ids_error = (
+                _read_classification_ids(
+                    classification_path, prior_year
+                )
+            )
+        else:
+            classification_ids_error = "분류 CSV SHA256 불일치"
+    direct_morph_inventory_raw = _nested(
+        direct, "morpheme_tier_missing_inventory"
+    )
+    direct_morph_ids: set[str] | None = None
+    direct_morph_inventory_error: str | None = None
+    if direct_morph_missing == 0:
+        if direct_morph_inventory_raw in (None, []):
+            direct_morph_ids = set()
+        else:
+            direct_morph_inventory_error = (
+                "누락 수는 0이나 누락 inventory가 비어 있지 않음"
+            )
+    elif direct_morph_missing is None:
+        direct_morph_inventory_error = "형태소 누락 수가 유효하지 않음"
+    elif not isinstance(direct_morph_inventory_raw, list):
+        direct_morph_inventory_error = "누락 inventory가 list가 아님"
+    else:
+        normalized_inventory = [
+            value.strip()
+            for value in direct_morph_inventory_raw
+            if isinstance(value, str) and value.strip()
+        ]
+        if len(normalized_inventory) != len(direct_morph_inventory_raw):
+            direct_morph_inventory_error = (
+                "누락 inventory에 공백/비문자 ID가 있음"
+            )
+        elif len(set(normalized_inventory)) != len(normalized_inventory):
+            direct_morph_inventory_error = (
+                "누락 inventory에 중복 ID가 있음"
+            )
+        elif len(normalized_inventory) != direct_morph_missing:
+            direct_morph_inventory_error = (
+                "누락 수와 inventory ID 수가 다름"
+            )
+        else:
+            direct_morph_ids = set(normalized_inventory)
+    classification_needed = (
+        direct_morph_missing is None or direct_morph_missing > 0
+    )
+    direct_ids_classified = bool(
+        direct_morph_ids is not None
+        and classification_ids is not None
+        and direct_morph_ids <= classification_ids
+    )
+    classification_evidence_ok = (
+        not classification_needed
+        or (
+            isinstance(morphology, dict)
+            and classification_sha_matches
+            and classification_ids_error is None
+            and direct_morph_inventory_error is None
+            and direct_ids_classified
+            and _as_nonnegative_int(
+                _nested(morphology, "unclassified_ids")
+            )
+            == 0
+            and _as_nonnegative_int(
+                _nested(morphology, "classification_ids_without_lab")
+            )
+            == 0
+            and _as_nonnegative_int(
+                _nested(morphology, "recovery_candidate_not_valid")
+            )
+            == 0
+        )
+    )
+    add(
+        "morphology_classification_evidence",
+        classification_evidence_ok,
+        "direct_morph_missing="
+        f"{direct_morph_missing}, classification={classification_path}, "
+        f"sha_match={classification_sha_matches}, "
+        f"classification_ids={len(classification_ids) if classification_ids is not None else None}, "
+        f"direct_inventory_ids={len(direct_morph_ids) if direct_morph_ids is not None else None}, "
+        f"classification_error={classification_ids_error!r}, "
+        f"direct_inventory_error={direct_morph_inventory_error!r}",
+    )
+    action_counts = _nested(morphology, "counts_by_action")
+    classified_issue_values = (
+        [_as_nonnegative_int(value) for value in action_counts.values()]
+        if isinstance(action_counts, dict)
+        else []
+    )
+    classified_issue_count = (
+        sum(value for value in classified_issue_values if value is not None)
+        if classified_issue_values
+        and all(value is not None for value in classified_issue_values)
+        else None
+    )
+    morphology_accounted = (
+        direct_morph_missing is not None
+        and (
+            direct_morph_missing == 0
+            or (
+                classified_issue_count is not None
+                and direct_morph_missing <= classified_issue_count
+                and direct_ids_classified
+                and classification_evidence_ok
+            )
+        )
+    )
+    add(
+        "direct_morphology_accounted",
+        morphology_accounted,
+        f"direct_missing={direct_morph_missing}, "
+        f"classified_source_issues={classified_issue_count}",
     )
 
     audit_lab = _as_nonnegative_int(
@@ -340,6 +523,7 @@ def validate_next_year_gate(
               if check["status"] == "failed"]
     report = {
         "schema_version": 1,
+        "supported_export_mode": "direct_db_4tier",
         "status": "passed" if not failed else "failed",
         "checked_at": now_iso(),
         "prior_year": prior_year,
@@ -356,6 +540,11 @@ def validate_next_year_gate(
             ),
             "alignment_db": (
                 str(alignment_db) if alignment_db else None
+            ),
+            "morph_classification_csv": (
+                str(classification_path)
+                if classification_path is not None
+                else None
             ),
         },
         "input_contract_id": (

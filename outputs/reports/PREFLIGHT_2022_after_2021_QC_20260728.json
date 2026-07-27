@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "supported_export_mode": "direct_db_4tier",
+  "status": "passed",
+  "checked_at": "2026-07-28T07:00:47+09:00",
+  "prior_year": "2021",
+  "next_year": "2022",
+  "minimum_coverage_pct": 99.0,
+  "expected_search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "expected_final_year_root": "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2021",
+  "inputs": {
+    "audit_report": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_4tier_2021_pre_mfa_v1_20260728.json",
+    "align_marker": "D:\\mfa_eojeol\\done\\2021.align_done",
+    "merge_marker": "D:\\mfa_eojeol\\done\\2021.merge_done",
+    "temp_contract": "D:\\mfa_eojeol\\input_contracts\\2021.json",
+    "direct_export_report": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_g2p_2021_20260727_082721.json",
+    "alignment_db": "D:\\mfa_tmp\\2021\\2021.db",
+    "morph_classification_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2021_post_mfa_20260728.csv"
+  },
+  "input_contract_id": "ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe",
+  "checks": [
+    {
+      "name": "audit_report_readable",
+      "status": "passed",
+      "detail": "JSON object 읽기 성공"
+    },
+    {
+      "name": "align_marker_readable",
+      "status": "passed",
+      "detail": "JSON object 읽기 성공"
+    },
+    {
+      "name": "merge_marker_readable",
+      "status": "passed",
+      "detail": "JSON object 읽기 성공"
+    },
+    {
+      "name": "temp_contract_readable",
+      "status": "passed",
+      "detail": "JSON object 읽기 성공"
+    },
+    {
+      "name": "audit_identity",
+      "status": "passed",
+      "detail": "year='2021', status='success'"
+    },
+    {
+      "name": "audit_hard_gate",
+      "status": "passed",
+      "detail": "coverage=99.9604%, hard_failure_counts={'duplicate_lab_ids': 0, 'zero_byte_analysis_eligible_labs': 0, 'duplicate_textgrid_ids': 0, 'textgrid_without_lab': 0, 'invalid_analysis_eligible_textgrids': 0, 'missing_analysis_eligible_without_wav': 0, 'classification_ids_without_lab': 0, 'morph_source_unclassified': 0, 'recovery_candidate_not_valid': 0}"
+    },
+    {
+      "name": "audit_final_root",
+      "status": "passed",
+      "detail": "audit='D:\\\\20_AUDIO\\\\07_textgrid_eojeol_g2p_staging\\\\2021', expected='D:\\\\20_AUDIO\\\\07_textgrid_eojeol_g2p_staging\\\\2021'"
+    },
+    {
+      "name": "audit_missing_inventory",
+      "status": "passed",
+      "detail": "missing_csv='C:\\\\Users\\\\ari30\\\\research\\\\2026_summer_research\\\\outputs\\\\reports\\\\MISSING_mfa_4tier_2021_pre_mfa_v1_20260728.csv'"
+    },
+    {
+      "name": "align_marker_identity",
+      "status": "passed",
+      "detail": "직전 연도 align/direct-DB marker 확인"
+    },
+    {
+      "name": "merge_marker_identity",
+      "status": "passed",
+      "detail": "직전 연도 merge/direct-DB marker 확인"
+    },
+    {
+      "name": "input_contract_match",
+      "status": "passed",
+      "detail": "audit/align/merge/temp contract=['ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe', 'ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe', 'ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe', 'ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe']"
+    },
+    {
+      "name": "search_master_match",
+      "status": "passed",
+      "detail": "recorded=['D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725'], expected='D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725'"
+    },
+    {
+      "name": "merge_staging_root",
+      "status": "passed",
+      "detail": "merge staging base가 audit final 연도 폴더의 부모와 일치"
+    },
+    {
+      "name": "alignment_db_retained",
+      "status": "passed",
+      "detail": "db='D:\\\\mfa_tmp\\\\2021\\\\2021.db', retained=True, temp_status='direct_merge_completed_temp_retained_for_qc'"
+    },
+    {
+      "name": "direct_report_readable",
+      "status": "passed",
+      "detail": "JSON object 읽기 성공"
+    },
+    {
+      "name": "direct_report_gate",
+      "status": "passed",
+      "detail": "status='success', hard_failure_sum=0"
+    },
+    {
+      "name": "morphology_classification_evidence",
+      "status": "passed",
+      "detail": "direct_morph_missing=0, classification=C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2021_post_mfa_20260728.csv, sha_match=True, classification_ids=1109, direct_inventory_ids=0, classification_error=None, direct_inventory_error=None"
+    },
+    {
+      "name": "direct_morphology_accounted",
+      "status": "passed",
+      "detail": "direct_missing=0, classified_source_issues=1109"
+    },
+    {
+      "name": "artifact_counts_match",
+      "status": "passed",
+      "detail": "audit(lab=1373521,tg=1371868), marker(lab=1373521,tg=1371868), direct(tg=1371868)"
+    }
+  ],
+  "failed_checks": []
+}

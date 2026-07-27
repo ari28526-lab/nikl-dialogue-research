@@ -352,7 +352,41 @@ def compact_existing_report(
         totals.get("json_missing_in_source", 0) == 0
         and totals.get("source_missing_in_json", 0) == 0
     )
+    set_integrity_gates(report)
     return report
+
+
+def set_integrity_gates(report: dict) -> None:
+    """자동화에 연결할 자료 무결성 게이트와 보완 현황 verdict를 분리한다."""
+    totals = report.get("totals", {})
+    verdicts = report.get("verdicts", {})
+    json_missing = int(totals.get("json_missing_in_source", 0))
+    explained_empty_form = int(
+        totals.get("json_excluded_form_empty", 0)
+    )
+    gates = {
+        "session_sets_match": bool(
+            verdicts.get("session_sets_match", False)
+        ),
+        "all_source_sessions_have_json": (
+            int(totals.get("missing_json_sessions", 0)) == 0
+        ),
+        "source_master_rows_match": bool(
+            verdicts.get("source_master_rows_match", False)
+        ),
+        "source_master_content_match": bool(
+            verdicts.get("source_master_content_match", False)
+        ),
+        "json_source_exclusions_follow_empty_form_policy": (
+            int(totals.get("source_missing_in_json", 0)) == 0
+            and json_missing == explained_empty_form
+        ),
+        "normalized_metadata_complete": (
+            int(totals.get("meta_missing_rows", 0)) == 0
+        ),
+    }
+    report["integrity_gates"] = gates
+    report["all_integrity_gates_pass"] = all(gates.values())
 
 
 def audit_all(
@@ -611,6 +645,7 @@ def audit_all(
             )
         ),
     }
+    set_integrity_gates(report)
     return report
 
 
@@ -653,6 +688,11 @@ def main() -> int:
         type=Path,
         help="초기 상세 JSON을 다시 스캔하지 않고 축약해 --output에 기록",
     )
+    parser.add_argument(
+        "--no-strict",
+        action="store_true",
+        help="자료 무결성 gate 실패에도 보고서를 쓰고 exit 0을 반환한다.",
+    )
     args = parser.parse_args()
     if args.compact_existing:
         with open(args.compact_existing, encoding="utf-8") as stream:
@@ -662,9 +702,12 @@ def main() -> int:
             args.detail_session_limit,
             args.examples_per_session,
         )
+        report["strict"] = not args.no_strict
         atomic_write_json(args.output, report)
         print(f"축약 보고서: {args.output}", flush=True)
-        return 0
+        if args.no_strict or report["all_integrity_gates_pass"]:
+            return 0
+        return 1
     report = audit_all(
         P("layers") / "01_bareun_raw",
         P("search_master"),
@@ -675,13 +718,20 @@ def main() -> int:
         args.detail_session_limit,
         args.examples_per_session,
     )
+    report["strict"] = not args.no_strict
     atomic_write_json(args.output, report)
     print(f"\n보고서: {args.output}", flush=True)
     print(
         json.dumps(report["verdicts"], ensure_ascii=False, indent=2),
         flush=True,
     )
-    return 0
+    print(
+        json.dumps(report["integrity_gates"], ensure_ascii=False, indent=2),
+        flush=True,
+    )
+    if args.no_strict or report["all_integrity_gates_pass"]:
+        return 0
+    return 1
 
 
 if __name__ == "__main__":

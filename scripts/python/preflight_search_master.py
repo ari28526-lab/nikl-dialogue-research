@@ -208,8 +208,11 @@ def main() -> int:
     ok_all &= check_csv_header(meta / "file_meta.csv",
                                {"file_id", "year", "category", "topic"},
                                "file_meta.csv")
-    check_csv_header(meta / "file_meta.csv", {"category_norm", "discourse_mode"},
-                     "file_meta.csv (정규화 컬럼)")
+    ok_all &= check_csv_header(
+        meta / "file_meta.csv",
+        {"category_norm", "discourse_mode"},
+        "file_meta.csv (정규화 컬럼)",
+    )
     if raw.exists() and (meta / "file_meta.csv").exists():
         ok_all &= check_session_id_coverage(raw, meta / "file_meta.csv")
     ok_all &= check_csv_header(meta / "speakers_normalized.csv",

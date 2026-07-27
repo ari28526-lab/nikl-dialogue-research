@@ -1,0 +1,43 @@
+﻿== preflight_eojeol_realign 2026-07-28 07:01:25 ==
+대상 연도: 2022
+G2P 4-tier staging: D:\20_AUDIO\07_textgrid_eojeol_g2p_staging
+pre-MFA search master: D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725
+작업 드라이브 정책: PreferD — 신규 MFA temp/output은 D:
+[1] 실행파일·헬퍼
+  [OK]   mfa.exe: C:\Users\ari30\miniforge3\envs\mfa\Scripts\mfa.exe
+  [OK]   pipeline_python: C:\Users\ari30\miniforge3\envs\mfa\python.exe (Python 3.13.14)
+  [OK]   realign_eojeol_build_corpus.py
+  [OK]   quarantine_bad_wavs.py
+  [OK]   realign_eojeol_merge_output.py
+  [OK]   export_mfa_db_4tier.py
+  [OK] quality_analysis_call_removed: AST call count=0
+  [OK] export_output_format_keyword_valid: valid calls=2
+  [OK] project_direct_db_skip_export_flag_available: flag occurrences=2
+  [OK] export_output_path_initialized: marker='output_path = None'
+  [OK] export_finished_finally_documented: marker='finally:'
+  [OK] export_finished_flag_set: marker='self.finished_processing.set()'
+  [OK] export_worker_waits_for_sentinel: blocking get + None sentinel; no 1s worker timeout
+  [OK] export_producer_sends_worker_sentinels: one None sentinel per export worker; no fixed 1s drain guess
+  [OK] textgrid_chunk_impl_split: wrapper+impl functions
+  [OK] textgrid_chunk_size_safe: chunk_values=[50000]
+  MFA source patch verdict: PASS
+  report: C:\Users\ari30\research\2026_summer_research\logs\mfa_install_20260728_070126.json
+  [OK]   MFA 프로젝트 필수 패치 검증 통과
+[2] korean_mfa 모델 (acoustic/dictionary/g2p)
+  [OK]   acoustic: C:\Users\ari30\Documents\MFA\pretrained_models\acoustic\korean_mfa.zip
+  [OK]   g2p: C:\Users\ari30\Documents\MFA\pretrained_models\g2p\korean_mfa.zip
+  [OK]   dictionary: C:\Users\ari30\Documents\MFA\pretrained_models\dictionary\korean_mfa.dict
+[3] D: 볼륨 라벨
+  [OK]   라벨 DATA_SSD 확인
+[4] 여유 공간
+  [OK]   C: 49.2GB (PreferD 신규 작업에는 사용하지 않음)
+  [OK]   PreferD: D: 264.1GB >= 시작 문턱 45GB
+[5] wav 코퍼스 (연도별 존재·세션 구조)
+  [OK]   2022 세션 구조 확인(예: SDRW2200000001)
+[6] pre-MFA search master 입력 계약
+  [OK]   search master build status=success
+  [OK]   2022 세션 coverage 2654/2654
+  [OK]   2022 reference-form 입력 열 확인
+[7] 완료 마커·이어가기 상태
+  [OK]   2022 신규(처음부터) — align_done=False merge_done=False temp(C=False,D=False) mfa_out(C=False,D=False)
+== 요약: FAIL 0 / WARN 0 — 리포트: C:\Users\ari30\research\2026_summer_research\logs\preflight_20260728_070125.log ==

@@ -1,0 +1,42 @@
+{
+  "schema_version": "mfa_input_issue_classification.v2",
+  "year": "2020",
+  "read_only": true,
+  "audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_year_readiness_2020_post_mfa_20260728.json",
+    "bytes": 5677373,
+    "mtime_ns": 1785187802119833600,
+    "sha256": "56eca839429155a11ba9c9ce3e3a879a6f94376f8437c89f0d411a3b40be7456"
+  },
+  "source_pcm_check": {
+    "path": "D:\\10_LAYERS\\05_audio_index\\source_pcm_check.csv",
+    "bytes": 77837,
+    "mtime_ns": 1784161570172186000,
+    "sha256": "b15b433e2b45679b9efaa15127643114704ab6bf1d12899f344566c117dd51f2"
+  },
+  "counts": {
+    "morph_source_issues": 14,
+    "matched_prior_pcm_evidence": 14,
+    "source_audio_unusable_exclusions": 14,
+    "morpheme_alignment_recovery_candidates": 0,
+    "manual_review_unclassified": 0
+  },
+  "by_source_pcm_category": {
+    "PCM없음": 14
+  },
+  "by_recommended_action": {
+    "exclude_source_audio_unusable": 14
+  },
+  "by_exclusion_reason": {
+    "source_pcm_missing": 14
+  },
+  "text_duration_policy": {
+    "enabled": true,
+    "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+    "minimum_hangul_syllables": 10,
+    "impossible_hangul_syllables_per_second": 40.0,
+    "purpose": "source segment와 전사 길이의 물리적 비대응만 제외; 실제 발음 실현 판정에 사용하지 않음"
+  },
+  "all_issues_classified": true,
+  "output_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2020_post_mfa_20260728.csv"
+}

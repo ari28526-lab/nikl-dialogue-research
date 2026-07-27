@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "year": "2021",
+  "input_contract_id": "ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe",
+  "lab_root": "D:\\20_AUDIO\\03_wav\\individual\\2021",
+  "textgrid_root": "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2021",
+  "missing_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\MISSING_mfa_4tier_2021_pre_mfa_v1_20260728.csv",
+  "started_at": "2026-07-28T04:16:33.486754+09:00",
+  "finished_at": "2026-07-28T04:52:52.137672+09:00",
+  "elapsed_seconds": 2178.632,
+  "settings": {
+    "workers": 4,
+    "batch_size": 2000,
+    "tolerance_seconds": 0.001,
+    "visible_edge_seconds": 0.05,
+    "minimum_coverage_pct": 99.0,
+    "check_wav_duration": true,
+    "expected_tiers": [
+      "words",
+      "phones",
+      "morphemes",
+      "utterance"
+    ],
+    "coverage_denominator": "lab_ids_minus_exclude_source_audio_unusable"
+  },
+  "counts": {
+    "lab_ids": 1373521,
+    "analysis_eligible_lab_ids": 1372412,
+    "analysis_excluded_lab_ids": 1109,
+    "textgrid_files_inspected": 1371868,
+    "textgrid_ids": 1371868,
+    "valid_textgrids": 1371868,
+    "invalid_textgrids": 0,
+    "analysis_eligible_textgrids_inspected": 1371868,
+    "valid_analysis_eligible_textgrids": 1371868,
+    "invalid_analysis_eligible_textgrids": 0,
+    "excluded_textgrids_inspected": 0,
+    "valid_excluded_textgrids": 0,
+    "lab_without_textgrid": 1653,
+    "analysis_eligible_lab_without_textgrid": 544,
+    "textgrid_without_lab": 0,
+    "missing_with_wav": 1653,
+    "missing_without_wav": 0,
+    "duplicate_lab_ids": 0,
+    "duplicate_textgrid_ids": 0,
+    "zero_byte_labs": 0,
+    "zero_byte_analysis_eligible_labs": 0,
+    "morph_source_recovery_candidates": 0,
+    "recovery_candidate_not_valid": 0,
+    "morph_source_unclassified": 0,
+    "classification_ids_without_lab": 0
+  },
+  "coverage_pct": 99.9604,
+  "raw_coverage_pct": 99.8797,
+  "hard_failure_counts": {
+    "duplicate_lab_ids": 0,
+    "zero_byte_analysis_eligible_labs": 0,
+    "duplicate_textgrid_ids": 0,
+    "textgrid_without_lab": 0,
+    "invalid_analysis_eligible_textgrids": 0,
+    "missing_analysis_eligible_without_wav": 0,
+    "classification_ids_without_lab": 0,
+    "morph_source_unclassified": 0,
+    "recovery_candidate_not_valid": 0
+  },
+  "reason_counts": {},
+  "reason_examples": {},
+  "excluded_reason_counts": {},
+  "excluded_reason_examples": {},
+  "morphology_classification": {
+    "source_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2021_post_mfa_20260728.csv",
+    "source_fingerprint": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\CLASSIFY_morph_source_missing_2021_post_mfa_20260728.csv",
+      "bytes": 272840,
+      "mtime_ns": 1785179741773153700,
+      "sha256": "4bacc60ebaec8fe083cdeff68fab03bd2b577cf1dd155382d28440be2cdbde13"
+    },
+    "counts_by_action": {
+      "exclude_source_audio_unusable": 1109
+    },
+    "analysis_exclusion_action": "exclude_source_audio_unusable",
+    "analysis_exclusion_ids": 1109,
+    "recovery_candidate_ids": 0,
+    "recovery_candidate_not_valid": 0,
+    "unclassified_ids": 0,
+    "classification_ids_without_lab": 0
+  },
+  "visible_edge_diagnostics": {
+    "words": {
+      "left_blank_at_least_threshold": 1267866,
+      "right_blank_at_least_threshold": 1339207,
+      "files_inspected": 1371868
+    },
+    "phones": {
+      "left_blank_at_least_threshold": 1267866,
+      "right_blank_at_least_threshold": 1339220,
+      "files_inspected": 1371868
+    },
+    "morphemes": {
+      "left_blank_at_least_threshold": 1268092,
+      "right_blank_at_least_threshold": 1341724,
+      "files_inspected": 1371868
+    },
+    "utterance": {
+      "left_blank_at_least_threshold": 1267866,
+      "right_blank_at_least_threshold": 1339212,
+      "files_inspected": 1371868
+    }
+  },
+  "examples": {
+    "duplicate_lab_ids": [],
+    "zero_byte_lab_ids": [],
+    "duplicate_textgrid_ids": [],
+    "textgrid_without_lab": [],
+    "lab_without_textgrid": [
+      "SDRW2100000001.1.1.131",
+      "SDRW2100000015.1.1.143",
+      "SDRW2100000023.1.1.432",
+      "SDRW2100000023.1.1.434",
+      "SDRW2100000024.1.1.152",
+      "SDRW2100000024.1.1.234",
+      "SDRW2100000024.1.1.236",
+      "SDRW2100000039.1.1.199",
+      "SDRW2100000039.1.1.207",
+      "SDRW2100000040.1.1.21",
+      "SDRW2100000044.1.1.248",
+      "SDRW2100000059.1.1.57",
+      "SDRW2100000068.1.1.208",
+      "SDRW2100000075.1.1.327",
+      "SDRW2100000083.1.1.246",
+      "SDRW2100000089.1.1.86",
+      "SDRW2100000091.1.1.88",
+      "SDRW2100000092.1.1.172",
+      "SDRW2100000097.1.1.210",
+      "SDRW2100000097.1.1.312"
+    ],
+    "analysis_eligible_lab_without_textgrid": [
+      "SDRW2100000001.1.1.131",
+      "SDRW2100000015.1.1.143",
+      "SDRW2100000023.1.1.432",
+      "SDRW2100000023.1.1.434",
+      "SDRW2100000024.1.1.234",
+      "SDRW2100000040.1.1.21",
+      "SDRW2100000044.1.1.248",
+      "SDRW2100000068.1.1.208",
+      "SDRW2100000075.1.1.327",
+      "SDRW2100000083.1.1.246",
+      "SDRW2100000089.1.1.86",
+      "SDRW2100000091.1.1.88",
+      "SDRW2100000092.1.1.172",
+      "SDRW2100000097.1.1.210",
+      "SDRW2100000097.1.1.312",
+      "SDRW2100000112.1.1.46",
+      "SDRW2100000118.1.1.231",
+      "SDRW2100000120.1.1.190",
+      "SDRW2100000136.1.1.221",
+      "SDRW2100000137.1.1.410"
+    ],
+    "recovery_candidate_not_valid": [],
+    "classification_ids_without_lab": []
+  }
+}

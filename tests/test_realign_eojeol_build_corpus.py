@@ -12,6 +12,29 @@ import realign_eojeol_build_corpus as builder  # noqa: E402
 
 
 class EojeolLabInputContractTests(unittest.TestCase):
+    def test_unresolved_inventory_is_atomic_and_machine_readable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "unresolved.csv"
+            rows = [
+                {
+                    "year": "2021",
+                    "session_id": "SDRW2100000001",
+                    "utt_id": "SDRW2100000001.1.1.1",
+                    "form": "3시요",
+                    "pron_reference_form": "3시요",
+                    "pron_reference_source": "form_rule_prediction",
+                    "pron_reference_status": "unresolved_symbol",
+                    "lab_text": "시요",
+                }
+            ]
+
+            builder.write_unresolved_inventory(path, rows)
+
+            with path.open(encoding="utf-8-sig", newline="") as stream:
+                saved = list(csv.DictReader(stream))
+            self.assertEqual(saved, rows)
+            self.assertFalse(Path(f"{path}.partial").exists())
+
     def test_reference_form_rewrites_stale_existing_lab(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -310,6 +333,9 @@ class EojeolLabInputContractTests(unittest.TestCase):
                 builder.STATE_ROOT = state
                 builder.RAW = raw
                 result = builder.build_year("2020", search)
+                inventory = Path(result["unresolved_symbol_inventory"])
+                inventory.unlink()
+                reused = builder.build_year("2020", search)
             finally:
                 builder.WAV_ROOT = old_wav_root
                 builder.STATE_ROOT = old_state_root
@@ -325,6 +351,15 @@ class EojeolLabInputContractTests(unittest.TestCase):
                 "잘못된 재사용",
             )
             self.assertEqual(result["archived_empty_input_lab"], 1)
+            self.assertEqual(reused["pron_reference_unresolved"], 1)
+            self.assertTrue(inventory.is_file())
+            with inventory.open(
+                encoding="utf-8-sig", newline=""
+            ) as stream:
+                inventory_rows = list(csv.DictReader(stream))
+            self.assertEqual(
+                [row["utt_id"] for row in inventory_rows], [utt_id]
+            )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "read_only_sources": true,
+  "generated_at": "2026-07-28T06:06:38+09:00",
+  "elapsed_seconds": 106.628,
+  "year": "2021",
+  "sample_policy": "정렬 interval이 있는 발화 중 세션별 SHA256 최저 1개를 고른 뒤 전역 SHA256 최저 N개",
+  "sample_size_requested": 24,
+  "selection_counts": {
+    "eligible_utterances": 1371868,
+    "eligible_sessions": 4139,
+    "selected_utterances": 24,
+    "selected_sessions": 24
+  },
+  "comparison_counts": {
+    "compared": 24,
+    "tier_equal": 24,
+    "byte_equal": 24,
+    "tier_mismatch": 0,
+    "missing_final": 0,
+    "missing_reexport": 0
+  },
+  "export_counts": {
+    "alignment_missing": 0,
+    "created": 24,
+    "failed": 0,
+    "form_missing": 0
+  },
+  "db": {
+    "path": "D:\\mfa_tmp\\2021\\2021.db",
+    "bytes": 12455149568,
+    "mtime_ns": 1785171508909702500
+  },
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "final_root": "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging",
+  "scratch_root": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\qc\\verify_db_4tier_2021_20260728",
+  "sample_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\VERIFY_db_4tier_sample_2021_20260728.csv",
+    "bytes": 9230,
+    "mtime_ns": 1785186398061853000,
+    "sha256": "45f0149465c1bdbd75de4ed8f7c63436c065b98ffc9e4f3e7d4d52593aa94276"
+  },
+  "selected_utterances": [
+    {
+      "utt_id": "SDRW2100000136.1.1.47",
+      "session": "SDRW2100000136"
+    },
+    {
+      "utt_id": "SDRW2100002907.1.1.133",
+      "session": "SDRW2100002907"
+    },
+    {
+      "utt_id": "SDRW2100001386.1.1.119",
+      "session": "SDRW2100001386"
+    },
+    {
+      "utt_id": "SDRW2100002314.1.1.309",
+      "session": "SDRW2100002314"
+    },
+    {
+      "utt_id": "SDRW2100000187.1.1.205",
+      "session": "SDRW2100000187"
+    },
+    {
+      "utt_id": "SDRW2100003340.1.1.325",
+      "session": "SDRW2100003340"
+    },
+    {
+      "utt_id": "SDRW2100001699.1.1.373",
+      "session": "SDRW2100001699"
+    },
+    {
+      "utt_id": "SDRW2100000963.1.1.291",
+      "session": "SDRW2100000963"
+    },
+    {
+      "utt_id": "SDRW2100003394.1.1.296",
+      "session": "SDRW2100003394"
+    },
+    {
+      "utt_id": "SDRW2100000938.1.1.100",
+      "session": "SDRW2100000938"
+    },
+    {
+      "utt_id": "SDRW2100001982.1.1.37",
+      "session": "SDRW2100001982"
+    },
+    {
+      "utt_id": "SDRW2100001521.1.1.28",
+      "session": "SDRW2100001521"
+    },
+    {
+      "utt_id": "SDRW2100003745.1.1.346",
+      "session": "SDRW2100003745"
+    },
+    {
+      "utt_id": "SDRW2100001709.1.1.71",
+      "session": "SDRW2100001709"
+    },
+    {
+      "utt_id": "SDRW2100001347.1.1.140",
+      "session": "SDRW2100001347"
+    },
+    {
+      "utt_id": "SDRW2100003256.1.1.229",
+      "session": "SDRW2100003256"
+    },
+    {
+      "utt_id": "SDRW2100004166.1.1.17",
+      "session": "SDRW2100004166"
+    },
+    {
+      "utt_id": "SDRW2100000846.1.1.222",
+      "session": "SDRW2100000846"
+    },
+    {
+      "utt_id": "SDRW2100002015.1.1.52",
+      "session": "SDRW2100002015"
+    },
+    {
+      "utt_id": "SDRW2100002320.1.1.151",
+      "session": "SDRW2100002320"
+    },
+    {
+      "utt_id": "SDRW2100000105.1.1.201",
+      "session": "SDRW2100000105"
+    },
+    {
+      "utt_id": "SDRW2100001537.1.1.265",
+      "session": "SDRW2100001537"
+    },
+    {
+      "utt_id": "SDRW2100004119.1.1.205",
+      "session": "SDRW2100004119"
+    },
+    {
+      "utt_id": "SDRW2100004054.1.1.13",
+      "session": "SDRW2100004054"
+    }
+  ]
+}

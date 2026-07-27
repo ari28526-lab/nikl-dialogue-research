@@ -138,6 +138,87 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
                 )
             )
 
+    def test_rejects_physically_impossible_text_duration_without_logging_text(
+        self,
+    ):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            wav_root = root / "wav"
+            year_dir = search / "2021"
+            session_dir = wav_root / "2021" / "S1"
+            year_dir.mkdir(parents=True)
+            session_dir.mkdir(parents=True)
+            fields = [
+                "utt_id",
+                "form",
+                "pron_reference_form",
+                "pron_reference_source",
+                "pron_reference_status",
+                "sex",
+                "dur",
+            ]
+            impossible_text = "가" * 20
+            with open(
+                year_dir / "S1.csv",
+                "w",
+                encoding="utf-8",
+                newline="",
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow(
+                    {
+                        "utt_id": "S1.1",
+                        "form": impossible_text,
+                        "pron_reference_form": impossible_text,
+                        "pron_reference_source": "form",
+                        "pron_reference_status": "resolved_form",
+                        "sex": "여성",
+                        "dur": "0.4",
+                    }
+                )
+            write_wav(session_dir / "S1.1.wav", 0.4)
+            (session_dir / "S1.1.lab").write_text(
+                impossible_text, encoding="utf-8"
+            )
+
+            result = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                known_pcm=None,
+            )
+
+            self.assertTrue(
+                result["gates"]["csv_wav_duration_correspondence"]
+            )
+            self.assertFalse(
+                result["gates"][
+                    "source_segment_text_duration_plausible"
+                ]
+            )
+            self.assertEqual(
+                result["counts"][
+                    "source_segment_text_duration_impossible"
+                ],
+                1,
+            )
+            issue = next(
+                item
+                for item in result["issue_inventory"]
+                if item["issue"]
+                == "source_segment_text_duration_impossible"
+            )
+            self.assertEqual(issue["hangul_syllables"], 20)
+            self.assertEqual(
+                issue["hangul_syllables_per_second"], 50.0
+            )
+            self.assertNotIn(impossible_text, str(issue))
+            self.assertTrue(result["execution_gates_pass"])
+            self.assertFalse(result["analysis_ready_gates_pass"])
+
     def test_morph_source_missing_is_preflight_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -267,6 +348,92 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
                 ],
             ):
                 self.assertEqual(main(), 1)
+
+    def test_known_pcm_evidence_splits_execution_and_analysis_gates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            wav_root = root / "wav"
+            morph_root = root / "morph"
+            year_dir = search / "2021"
+            session_dir = wav_root / "2021" / "S1"
+            (morph_root / "2021").mkdir(parents=True)
+            year_dir.mkdir(parents=True)
+            session_dir.mkdir(parents=True)
+            fields = [
+                "utt_id",
+                "form",
+                "pron_reference_form",
+                "pron_reference_source",
+                "pron_reference_status",
+                "sex",
+                "dur",
+            ]
+            with open(
+                year_dir / "S1.csv",
+                "w",
+                encoding="utf-8",
+                newline="",
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow(
+                    {
+                        "utt_id": "S1.1",
+                        "form": "가",
+                        "pron_reference_form": "가",
+                        "pron_reference_source": "form",
+                        "pron_reference_status": "resolved_form",
+                        "sex": "여성",
+                        "dur": "1.0",
+                    }
+                )
+            write_wav(session_dir / "S1.1.wav", 1.0)
+            (session_dir / "S1.1.lab").write_text("가", encoding="utf-8")
+
+            excluded = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                morph_textgrid_root=morph_root,
+                known_pcm_records={
+                    "S1.1": {
+                        "category": "원본짧음",
+                        "pcm_sec": "0.1",
+                    }
+                },
+            )
+            self.assertFalse(
+                excluded["gates"]["all_morph_sources_ready"]
+            )
+            self.assertTrue(excluded["execution_gates_pass"])
+            self.assertTrue(excluded["analysis_ready_gates_pass"])
+            self.assertEqual(
+                excluded["counts"]["morph_source_excluded_unusable"], 1
+            )
+
+            recoverable = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                morph_textgrid_root=morph_root,
+                known_pcm_records={
+                    "S1.1": {
+                        "category": "원본정상",
+                        "pcm_sec": "1.0",
+                    }
+                },
+            )
+            self.assertTrue(recoverable["execution_gates_pass"])
+            self.assertFalse(recoverable["analysis_ready_gates_pass"])
+            self.assertEqual(
+                recoverable["counts"][
+                    "morph_source_recovery_candidate"
+                ],
+                1,
+            )
 
 
 if __name__ == "__main__":

@@ -38,6 +38,9 @@
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
 | [decisions/MONITOR_2021_pre_mfa_v1_20260727.md](decisions/MONITOR_2021_pre_mfa_v1_20260727.md) | 현재 2021 direct-DB 실행의 lab·MFA 단계·CPU·용량·watchdog 실측 점검대장 |
 | [decisions/PLAN_2022_improved_MFA_after_2020_2021.md](decisions/PLAN_2022_improved_MFA_after_2020_2021.md) | 2020·2021 실측을 반영한 2022 개선 실행안과 GO/NO-GO |
+| [decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md](decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md) | **2020·2021 최종 비교 정본** — 전수 QC·속도·DB 증거·D: dry-run·2022 기술 GO/방법론 HOLD와 승인 후 명령 |
+| [decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md](decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md) | 한국어 wav2vec2 phone 모델을 MFA 대체가 아닌 음향 후보 탐지층으로 검증하는 방법·한계·소표본 gate |
+| [decisions/PLAN_2021_post_QC_storage_cleanup_20260727.md](decisions/PLAN_2021_post_QC_storage_cleanup_20260727.md) | 2021 QC 뒤 DB·계약·최종 결과를 보존하고 재계산 가능한 대형 temp만 dry-run·승인 후 정리하는 용량 정책 |
 | [decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md](decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md) | 2020이 아닌 수정 전 보존 코드·과거 로그를 기준으로 현재 처리시간과 추가 검증 비용을 분리한 분석 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 

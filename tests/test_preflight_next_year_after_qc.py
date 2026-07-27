@@ -1,4 +1,5 @@
 import json
+import hashlib
 import sys
 import tempfile
 import unittest
@@ -123,6 +124,9 @@ class NextYearAfterQcPreflightTests(unittest.TestCase):
             paths = self._fixtures(Path(tmp))
             report = self._run(paths)
             self.assertEqual(report["status"], "passed")
+            self.assertEqual(
+                report["supported_export_mode"], "direct_db_4tier"
+            )
             self.assertEqual(report["failed_checks"], [])
             stored = json.loads(paths["report"].read_text(encoding="utf-8"))
             self.assertEqual(stored["status"], "passed")
@@ -173,6 +177,125 @@ class NextYearAfterQcPreflightTests(unittest.TestCase):
             self.assertIn("direct_report_gate", report["failed_checks"])
             self.assertIn("artifact_counts_match", report["failed_checks"])
             self.assertTrue(paths["report"].is_file())
+
+    def test_unaccounted_direct_morph_gap_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = self._fixtures(Path(tmp))
+            direct = json.loads(
+                paths["direct"].read_text(encoding="utf-8")
+            )
+            direct["counts"]["morpheme_tier_missing"] = 1
+            direct["morpheme_tier_missing_inventory"] = ["S1.1"]
+            paths["direct"].write_text(
+                json.dumps(direct), encoding="utf-8"
+            )
+
+            report = self._run(paths)
+
+            self.assertEqual(report["status"], "failed")
+            self.assertIn(
+                "morphology_classification_evidence",
+                report["failed_checks"],
+            )
+            self.assertIn(
+                "direct_morphology_accounted",
+                report["failed_checks"],
+            )
+
+    def test_classified_exclusion_can_account_for_direct_morph_gap(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = self._fixtures(Path(tmp))
+            classification = Path(tmp) / "classification.csv"
+            classification.write_text(
+                "year,utt_id,recommended_action\n"
+                "2021,S1.1,exclude_source_audio_unusable\n",
+                encoding="utf-8",
+            )
+            classification_sha = hashlib.sha256(
+                classification.read_bytes()
+            ).hexdigest()
+            audit = json.loads(
+                paths["audit"].read_text(encoding="utf-8")
+            )
+            audit["morphology_classification"] = {
+                "source_fingerprint": {
+                    "path": str(classification),
+                    "sha256": classification_sha,
+                },
+                "counts_by_action": {
+                    "exclude_source_audio_unusable": 1,
+                },
+                "recovery_candidate_not_valid": 0,
+                "unclassified_ids": 0,
+                "classification_ids_without_lab": 0,
+            }
+            paths["audit"].write_text(
+                json.dumps(audit), encoding="utf-8"
+            )
+            direct = json.loads(
+                paths["direct"].read_text(encoding="utf-8")
+            )
+            direct["counts"]["morpheme_tier_missing"] = 1
+            direct["morpheme_tier_missing_inventory"] = ["S1.1"]
+            paths["direct"].write_text(
+                json.dumps(direct), encoding="utf-8"
+            )
+
+            report = self._run(paths)
+
+            self.assertEqual(report["status"], "passed")
+            self.assertEqual(report["failed_checks"], [])
+
+    def test_same_morph_count_with_wrong_ids_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = self._fixtures(Path(tmp))
+            classification = Path(tmp) / "classification.csv"
+            classification.write_text(
+                "year,utt_id,recommended_action\n"
+                "2021,S1.1,exclude_source_audio_unusable\n",
+                encoding="utf-8",
+            )
+            classification_sha = hashlib.sha256(
+                classification.read_bytes()
+            ).hexdigest()
+            audit = json.loads(
+                paths["audit"].read_text(encoding="utf-8")
+            )
+            audit["morphology_classification"] = {
+                "source_fingerprint": {
+                    "path": str(classification),
+                    "sha256": classification_sha,
+                },
+                "counts_by_action": {
+                    "exclude_source_audio_unusable": 1,
+                },
+                "recovery_candidate_not_valid": 0,
+                "unclassified_ids": 0,
+                "classification_ids_without_lab": 0,
+            }
+            paths["audit"].write_text(
+                json.dumps(audit), encoding="utf-8"
+            )
+            direct = json.loads(
+                paths["direct"].read_text(encoding="utf-8")
+            )
+            direct["counts"]["morpheme_tier_missing"] = 1
+            direct["morpheme_tier_missing_inventory"] = ["OTHER.1"]
+            paths["direct"].write_text(
+                json.dumps(direct), encoding="utf-8"
+            )
+
+            report = self._run(paths)
+
+            self.assertEqual(report["status"], "failed")
+            self.assertIn(
+                "morphology_classification_evidence",
+                report["failed_checks"],
+            )
+            self.assertIn(
+                "direct_morphology_accounted",
+                report["failed_checks"],
+            )
 
 
 if __name__ == "__main__":

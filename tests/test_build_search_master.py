@@ -145,6 +145,17 @@ class SearchMasterSessionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "필수 컬럼 누락"):
             self.build()
 
+    def test_missing_normalized_metadata_counts_same_on_fresh_and_resume(self):
+        del self.meta["SDRW2000000001"]["category_norm"]
+
+        first = self.build()
+        self.assertEqual(first["status"], "created")
+        self.assertEqual(first["meta_missing"], 2)
+
+        second = self.build()
+        self.assertEqual(second["status"], "validated_existing")
+        self.assertEqual(second["meta_missing"], 2)
+
     def test_original_form_resolves_numeric_placeholder_with_provenance(self):
         result = pp.predict_pron_reference(
             "무조건 1층으로 된 집",

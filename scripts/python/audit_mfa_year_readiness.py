@@ -23,6 +23,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import statistics
 import time
 import wave
@@ -52,6 +53,8 @@ SESSION_DURATION_MATCH_MIN_PCT = 98.0
 SESSION_DURATION_COVERAGE_MIN_PCT = 98.0
 SESSION_PADDING_MIN_SECONDS = -0.025
 SESSION_PADDING_MAX_SECONDS = 0.5
+IMPOSSIBLE_SPEECH_RATE_MIN_SYLLABLES = 10
+IMPOSSIBLE_SPEECH_RATE_PER_SECOND = 40.0
 
 
 def directory_entries(path: Path) -> dict[str, int]:
@@ -80,6 +83,32 @@ def load_known_pcm_risks(path: Path | None) -> dict[str, Counter]:
             category = (row.get("category") or "미분류").strip()
             if year:
                 result[year][category] += 1
+    return result
+
+
+def load_known_pcm_records(
+    path: Path | None,
+) -> dict[str, dict[str, dict[str, str]]]:
+    """과거 원음 실측을 연도·utt_id별로 읽어 누락 사유를 분류한다."""
+    result: dict[str, dict[str, dict[str, str]]] = defaultdict(dict)
+    if path is None or not path.is_file():
+        return result
+    with open(path, encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        required = {"year", "utt_id", "pcm_sec", "category"}
+        missing = required - set(reader.fieldnames or ())
+        if missing:
+            raise RuntimeError(
+                f"{path}: source PCM 필수 열 누락 {sorted(missing)}"
+            )
+        for row in reader:
+            year = (row.get("year") or "").strip()
+            utt_id = (row.get("utt_id") or "").strip()
+            if not year or not utt_id:
+                raise RuntimeError(f"{path}: 빈 year/utt_id")
+            if utt_id in result[year]:
+                raise RuntimeError(f"{path}: 중복 utt_id {utt_id}")
+            result[year][utt_id] = row
     return result
 
 
@@ -319,6 +348,7 @@ def audit_year(
     check_wav_durations: bool = True,
     morph_textgrid_root: Path | None = None,
     known_pcm: Counter | None = None,
+    known_pcm_records: dict[str, dict[str, str]] | None = None,
     lab_workers: int = 8,
 ) -> dict:
     """한 연도를 읽기 전용으로 전수 감사한다."""
@@ -447,6 +477,54 @@ def audit_year(
                     if reference_form != form:
                         counts["reference_form_changed"] += 1
                     expected_text = form_to_lab(reference_form)
+                    try:
+                        csv_duration = float((row.get("dur") or "").strip())
+                    except (TypeError, ValueError):
+                        csv_duration = 0.0
+                    hangul_syllables = len(
+                        re.findall(r"[가-힣]", expected_text)
+                    )
+                    if csv_duration > 0:
+                        counts["text_duration_rows_checked"] += 1
+                        syllables_per_second = (
+                            hangul_syllables / csv_duration
+                        )
+                        if (
+                            hangul_syllables
+                            >= IMPOSSIBLE_SPEECH_RATE_MIN_SYLLABLES
+                            and syllables_per_second
+                            >= IMPOSSIBLE_SPEECH_RATE_PER_SECOND
+                        ):
+                            counts[
+                                "source_segment_text_duration_impossible"
+                            ] += 1
+                            risky_sessions[session] += 1
+                            _add_example(
+                                examples,
+                                "source_segment_text_duration_impossible",
+                                utt_id,
+                            )
+                            issue_inventory.append(
+                                {
+                                    "year": year,
+                                    "session": session,
+                                    "utt_id": utt_id,
+                                    "issue": (
+                                        "source_segment_text_duration_"
+                                        "impossible"
+                                    ),
+                                    "detail": "",
+                                    "csv_duration_seconds": round(
+                                        csv_duration, 6
+                                    ),
+                                    "hangul_syllables": hangul_syllables,
+                                    "hangul_syllables_per_second": round(
+                                        syllables_per_second, 3
+                                    ),
+                                }
+                            )
+                    else:
+                        counts["text_duration_rows_not_computable"] += 1
 
                     if utt_id not in wav_ids:
                         counts["wav_missing"] += 1
@@ -490,6 +568,33 @@ def audit_year(
                         else:
                             counts["morph_source_nonzero"] += 1
                         if morph_issue is not None:
+                            prior_pcm = (known_pcm_records or {}).get(utt_id)
+                            prior_category = (
+                                (prior_pcm.get("category") or "").strip()
+                                if prior_pcm is not None
+                                else ""
+                            )
+                            if prior_category in {"원본짧음", "PCM없음"}:
+                                morph_disposition = (
+                                    "exclude_source_audio_unusable"
+                                )
+                                counts[
+                                    "morph_source_excluded_unusable"
+                                ] += 1
+                            elif prior_category == "원본정상":
+                                morph_disposition = (
+                                    "recover_morpheme_alignment_candidate"
+                                )
+                                counts[
+                                    "morph_source_recovery_candidate"
+                                ] += 1
+                            else:
+                                morph_disposition = (
+                                    "manual_review_unclassified"
+                                )
+                                counts[
+                                    "morph_source_unclassified"
+                                ] += 1
                             risky_sessions[session] += 1
                             _add_example(examples, morph_issue, utt_id)
                             issue = {
@@ -499,6 +604,13 @@ def audit_year(
                                 "issue": morph_issue,
                                 "detail": "",
                                 "path": str(morph_path),
+                                "source_pcm_category": prior_category,
+                                "source_pcm_seconds": (
+                                    (prior_pcm.get("pcm_sec") or "").strip()
+                                    if prior_pcm is not None
+                                    else ""
+                                ),
+                                "morph_disposition": morph_disposition,
                             }
                             morph_source_issues.append(issue)
                             issue_inventory.append(issue)
@@ -612,9 +724,37 @@ def audit_year(
                 if not item["valid"]
             ],
         },
+        "text_duration_audit": {
+            "policy": {
+                "minimum_hangul_syllables": (
+                    IMPOSSIBLE_SPEECH_RATE_MIN_SYLLABLES
+                ),
+                "impossible_hangul_syllables_per_second": (
+                    IMPOSSIBLE_SPEECH_RATE_PER_SECOND
+                ),
+                "logged_fields": [
+                    "utt_id",
+                    "csv_duration_seconds",
+                    "hangul_syllables",
+                    "hangul_syllables_per_second",
+                ],
+                "raw_transcript_logged": False,
+            },
+            "impossible_count": counts[
+                "source_segment_text_duration_impossible"
+            ],
+        },
         "morph_source_issues": morph_source_issues,
         "issue_inventory": issue_inventory,
     }
+    raw_morph_issue_count = (
+        counts["morph_source_missing"]
+        + counts["morph_source_zero_byte"]
+    )
+    classified_morph_issue_count = (
+        counts["morph_source_excluded_unusable"]
+        + counts["morph_source_recovery_candidate"]
+    )
     result["gates"] = {
         "session_folders_present": counts["session_folder_missing"] == 0,
         "csv_wav_duration_correspondence": (
@@ -636,15 +776,58 @@ def audit_year(
             )
         ),
         "no_fatal_tiny_wav": counts["wav_too_small"] == 0,
+        "source_segment_text_duration_plausible": (
+            counts["source_segment_text_duration_impossible"] == 0
+        ),
         "all_morph_sources_ready": (
             morph_year_dir is None
+            or raw_morph_issue_count == 0
+        ),
+        "morph_source_inventory_classified": (
+            morph_year_dir is None
             or (
-                counts["morph_source_missing"] == 0
-                and counts["morph_source_zero_byte"] == 0
+                counts["morph_source_unclassified"] == 0
+                and raw_morph_issue_count
+                == classified_morph_issue_count
+            )
+        ),
+        "analysis_eligible_morphology_ready": (
+            morph_year_dir is None
+            or (
+                counts["morph_source_unclassified"] == 0
+                and counts["morph_source_recovery_candidate"] == 0
+                and raw_morph_issue_count
+                == counts["morph_source_excluded_unusable"]
             )
         ),
     }
-    result["all_gates_pass"] = all(result["gates"].values())
+    execution_gate_names = (
+        "session_folders_present",
+        "csv_wav_duration_correspondence",
+        "no_dangerous_unexpected_labs",
+        "all_expected_labs_ready",
+        "no_fatal_tiny_wav",
+        "morph_source_inventory_classified",
+    )
+    analysis_gate_names = (
+        *execution_gate_names,
+        "source_segment_text_duration_plausible",
+        "analysis_eligible_morphology_ready",
+    )
+    result["execution_gates"] = {
+        name: result["gates"][name] for name in execution_gate_names
+    }
+    result["analysis_ready_gates"] = {
+        name: result["gates"][name] for name in analysis_gate_names
+    }
+    result["execution_gates_pass"] = all(
+        result["execution_gates"].values()
+    )
+    result["analysis_ready_gates_pass"] = all(
+        result["analysis_ready_gates"].values()
+    )
+    # 기존 소비자 호환: all_gates_pass는 더 엄격한 analysis-ready 의미다.
+    result["all_gates_pass"] = result["analysis_ready_gates_pass"]
     return result
 
 
@@ -670,9 +853,7 @@ def main() -> int:
     parser.add_argument(
         "--source-pcm-check",
         type=Path,
-        default=Path(
-            r"D:\10_LAYERS\05_audio_index\source_pcm_check.csv"
-        ),
+        default=P("layers") / "05_audio_index" / "source_pcm_check.csv",
     )
     parser.add_argument("--compare-lab-content", action="store_true")
     parser.add_argument(
@@ -690,6 +871,15 @@ def main() -> int:
         action="store_true",
         help="보고서만 만들고 gate 실패에도 exit 0을 반환한다.",
     )
+    parser.add_argument(
+        "--gate-profile",
+        choices=("analysis", "execution"),
+        default="analysis",
+        help=(
+            "analysis=원음 결함 제외 후 형태소까지 준비, "
+            "execution=모든 형태소 누락 사유 분류 후 MFA 실행 허용"
+        ),
+    )
     parser.add_argument("--lab-workers", type=int, default=8)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -705,6 +895,7 @@ def main() -> int:
         )
 
     known_pcm = load_known_pcm_risks(args.source_pcm_check)
+    known_pcm_by_utt = load_known_pcm_records(args.source_pcm_check)
     report = {
         "schema_version": 1,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
@@ -718,6 +909,7 @@ def main() -> int:
             else str(args.morph_textgrid_root.resolve())
         ),
         "strict": not args.no_strict,
+        "gate_profile": args.gate_profile,
         "years": [],
     }
     for year in args.years:
@@ -734,12 +926,19 @@ def main() -> int:
                     else args.morph_textgrid_root
                 ),
                 known_pcm=known_pcm.get(year),
+                known_pcm_records=known_pcm_by_utt.get(year),
                 lab_workers=args.lab_workers,
             )
         )
         atomic_write_json(args.output, report)
+    selected_key = (
+        "execution_gates_pass"
+        if args.gate_profile == "execution"
+        else "analysis_ready_gates_pass"
+    )
+    report["selected_gate_result_key"] = selected_key
     report["all_years_pass"] = all(
-        item["all_gates_pass"] for item in report["years"]
+        item[selected_key] for item in report["years"]
     )
     atomic_write_json(args.output, report)
     print(f"report: {args.output}", flush=True)

@@ -56,7 +56,11 @@ def locate(utt_id: str) -> dict:
         "textgrid_merged": P("textgrid_merged") / year / session / f"{utt_id}.TextGrid",
         "bareun_csv": P("layers") / "01_bareun_raw" / YEAR_DIRS[year] / f"{session}.csv",
     }
-    q = Path(r"D:\mfa_eojeol\quarantine") / year / f"{utt_id}.wav"
+    q = _with_flat_fallback(
+        P("mfa_state") / "quarantine" / year,
+        session,
+        f"{utt_id}.wav",
+    )
     if q.exists():
         out["quarantine"] = q
     return out
