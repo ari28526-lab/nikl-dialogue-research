@@ -176,9 +176,74 @@ interval gap/overlap, 핵심 label, WAV header duration을 전수 검사한다.
 운영본의 원시간을 바꾸지 않으므로 0.05초 가시적 양끝 빈 경계는 hard gate가
 아니라 tier별 진단값이며, 패딩된 연구자 점검 사본에서 별도로 보장한다.
 
+### 2021 완료 증거를 2022 preflight에 결합
+
+`preflight_next_year_after_qc.py`를 다음 연도 선행 gate로 추가했다. 콘솔의
+완료 문구나 MFA exit 0만으로는 통과하지 않으며 다음을 서로 대조한다.
+
+- 2021 독립 4-tier 전수 감사 `status=success`, coverage 99% 이상,
+  hard failure 0
+- audit·align marker·merge marker·temp contract의 입력계약 ID 일치
+- 세 기록의 동결 pre-MFA search master 경로 일치
+- direct-DB 보고서 성공, form/morpheme/출력 실패 0
+- audit·marker·direct 보고서의 lab/TextGrid 수량 일치
+- 2021 SQLite DB가 temp 계약 경로에 실제로 남아 있고 0바이트가 아님
+- audit의 final 연도 폴더와 merge marker의 staging base 일치
+- 누락 발화 CSV가 실제로 존재
+
+계약 불일치, DB 누락, direct 보고서 누락, 손상된 숫자 필드를 합성 fixture로
+재현해 모두 실패 보고서를 남기고 fail-closed임을 확인했다. 이 gate가
+통과한 뒤에만 기존
+`preflight_eojeol_realign.ps1 -Year 2022`로 모델·MFA 패치·SSD 라벨·공간·
+2022 세션 coverage·temp 충돌을 확인한다.
+
 ## 준비된 실행 명령
 
-아래 명령은 **준비용 기록이며 아직 실행하지 않는다**.
+아래 1·2는 2021 전수 QC 완료 뒤 실행할 읽기 전용 preflight다. 3은
+**사용자 확인 전 실행하지 않는다**.
+
+1. 2021 완료 증거 결합 gate:
+
+```powershell
+cd "C:\Users\ari30\research\2026_summer_research"
+
+& "C:\Users\ari30\miniforge3\envs\mfa\python.exe" `
+  ".\scripts\python\preflight_next_year_after_qc.py" `
+  --prior-year 2021 `
+  --next-year 2022 `
+  --audit-report `
+    ".\outputs\reports\AUDIT_mfa_4tier_2021_pre_mfa_v1_20260727.json" `
+  --align-marker "D:\mfa_eojeol\done\2021.align_done" `
+  --merge-marker "D:\mfa_eojeol\done\2021.merge_done" `
+  --temp-contract "D:\mfa_eojeol\input_contracts\2021.json" `
+  --expected-search-master-root `
+    "D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725" `
+  --expected-final-year-root `
+    "D:\20_AUDIO\07_textgrid_eojeol_g2p_staging\2021" `
+  --report `
+    ".\outputs\reports\PREFLIGHT_2022_after_2021_QC_20260727.json"
+
+if ($LASTEXITCODE -ne 0) {
+  throw "2021 완료 증거 gate 실패 — 2022 실행 금지"
+}
+```
+
+2. 2022 자체 입력·환경 preflight:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+  ".\scripts\preflight_eojeol_realign.ps1" `
+  -Year 2022 `
+  -SearchMasterRoot `
+    "D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725" `
+  -PreferD
+
+if ($LASTEXITCODE -ne 0) {
+  throw "2022 환경·입력 preflight 실패 — 실행 금지"
+}
+```
+
+3. 두 preflight 통과와 사용자 확인 뒤의 실제 한 연도 실행:
 
 ```powershell
 cd "C:\Users\ari30\research\2026_summer_research"

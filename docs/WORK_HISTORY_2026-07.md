@@ -496,3 +496,8 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   분리했다.
 - 새 독립 QC의 정상·누락·WAV duration 불일치·tier gap 테스트를 포함해
   Python unittest 55개와 PowerShell 안전성 검사를 통과했다.
+- 2022를 2021 완료 문구만 보고 시작하지 않도록
+  `preflight_next_year_after_qc.py`를 추가했다. 2021 전수 QC·align/merge
+  marker·direct 보고서·temp 계약·보존 DB·누락 CSV를 입력계약과 수량으로
+  결합 검증한 뒤에만 2022 자체 preflight로 넘어간다. 정상 fixture와 계약
+  불일치·DB/direct 보고서 누락·손상 숫자의 fail-closed 시험 4개를 통과했다.

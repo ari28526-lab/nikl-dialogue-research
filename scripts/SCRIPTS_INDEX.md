@@ -69,6 +69,7 @@
 | compare_textgrid_tiers.py | 두 TextGrid 트리의 파일집합·tier명·라벨·모든 시간경계를 전수 비교 | 3,330개·21,962개 direct 동등성 검증 |
 | audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사 | 2021–2025 감사 완료 |
 | audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, 정확한 tier 순서, 0–xmax 연속성, interval gap/overlap, 핵심 label, WAV duration을 hard gate로 검사하고 운영본의 가시적 좌우 빈 경계는 별도 진단 | 합성 정상·누락·duration 불일치·tier gap 회귀검사 통과; 2021 완료 후 전수 실행 대기 |
+| preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 연도 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV를 같은 입력계약/수량으로 결합 검증 | 정상 fixture 통과; 계약 불일치·DB/direct 보고서 누락·손상 숫자 fail-closed 회귀검사 통과; 2021 QC 후 2022 gate 실행 대기 |
 | patch_mfa_export_queue.py | MFA export queue 종료 경쟁을 blocking get+worker별 sentinel로 교정하고 설치 전 소스 archive | 3,330/21,965 실제 MFA 검증 |
 | patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
 | run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA 입력계약·marker·archive·PreferD·heartbeat. `-UseDirectDbExport`는 partial 4-tier를 검증 승격하고 DB를 QC 전 보존 | 2020 보수 경로 완료; 2021 direct 준비 완료 |
