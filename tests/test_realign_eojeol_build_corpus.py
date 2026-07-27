@@ -67,12 +67,21 @@ class EojeolLabInputContractTests(unittest.TestCase):
             old_wav_root = builder.WAV_ROOT
             old_state_root = builder.STATE_ROOT
             old_raw = builder.RAW
+            progress_path = state / "logs" / "lab_progress.jsonl"
             try:
                 builder.WAV_ROOT = wav_root
                 builder.STATE_ROOT = state
                 builder.RAW = raw
-                result = builder.build_year("2020", search)
-                second = builder.build_year("2020", search)
+                result = builder.build_year(
+                    "2020",
+                    search,
+                    progress_jsonl=progress_path,
+                )
+                second = builder.build_year(
+                    "2020",
+                    search,
+                    progress_jsonl=progress_path,
+                )
             finally:
                 builder.WAV_ROOT = old_wav_root
                 builder.STATE_ROOT = old_state_root
@@ -89,6 +98,25 @@ class EojeolLabInputContractTests(unittest.TestCase):
             self.assertTrue(
                 (state / "done" / "2020.lab_input_done.json").is_file()
             )
+            progress = [
+                json.loads(line)
+                for line in progress_path.read_text(
+                    encoding="utf-8"
+                ).splitlines()
+            ]
+            self.assertEqual(
+                [item["event"] for item in progress],
+                [
+                    "lab_started",
+                    "lab_progress",
+                    "lab_completed",
+                    "lab_reused",
+                ],
+            )
+            self.assertEqual(progress[1]["rows_seen"], 1)
+            self.assertEqual(progress[2]["status"], "passed")
+            self.assertEqual(result["rows_seen"], 1)
+            self.assertGreaterEqual(result["elapsed_seconds"], 0)
 
     def test_rejects_unpassed_search_master(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -129,6 +157,91 @@ class EojeolLabInputContractTests(unittest.TestCase):
                     builder.input_contract(search, "2020")
             finally:
                 builder.RAW = old_raw
+
+    def test_zero_usable_does_not_write_passed_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            raw = root / "raw"
+            wav_root = root / "wav"
+            state = root / "state"
+            session = "SDRW2000000001"
+            utt_id = f"{session}.1.1.1"
+            (search / "2020").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success"}),
+                encoding="utf-8",
+            )
+            with (search / "2020" / f"{session}.csv").open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as handle:
+                writer = csv.DictWriter(
+                    handle,
+                    fieldnames=[
+                        "utt_id",
+                        "form",
+                        "pron_reference_form",
+                        "pron_reference_source",
+                        "pron_reference_status",
+                    ],
+                )
+                writer.writeheader()
+                writer.writerow(
+                    {
+                        "utt_id": utt_id,
+                        "form": "1",
+                        "pron_reference_form": "1",
+                        "pron_reference_source": "form_rule_prediction",
+                        "pron_reference_status": "unresolved_symbol",
+                    }
+                )
+            raw_year = raw / builder.YEAR_DIRS["2020"]
+            raw_year.mkdir(parents=True)
+            (raw_year / f"{session}.csv").write_text(
+                "utt_id,form\n",
+                encoding="utf-8",
+            )
+            wav_dir = wav_root / "2020" / session
+            wav_dir.mkdir(parents=True)
+            (wav_dir / f"{utt_id}.wav").write_bytes(b"RIFF")
+            progress_path = state / "logs" / "lab_progress.jsonl"
+
+            old_wav_root = builder.WAV_ROOT
+            old_state_root = builder.STATE_ROOT
+            old_raw = builder.RAW
+            try:
+                builder.WAV_ROOT = wav_root
+                builder.STATE_ROOT = state
+                builder.RAW = raw
+                with self.assertRaisesRegex(
+                    RuntimeError, "유효 lab 0건"
+                ):
+                    builder.build_year(
+                        "2020",
+                        search,
+                        progress_jsonl=progress_path,
+                    )
+            finally:
+                builder.WAV_ROOT = old_wav_root
+                builder.STATE_ROOT = old_state_root
+                builder.RAW = old_raw
+
+            self.assertFalse(
+                (state / "done" / "2020.lab_input_done.json").exists()
+            )
+            self.assertFalse(
+                (state / "logs" / "lab_build_2020_latest.json").exists()
+            )
+            progress = [
+                json.loads(line)
+                for line in progress_path.read_text(
+                    encoding="utf-8"
+                ).splitlines()
+            ]
+            self.assertEqual(progress[-1]["event"], "lab_failed")
+            self.assertEqual(
+                progress[-1]["reason"], "usable_lab_zero"
+            )
 
     def test_empty_reference_archives_stale_lab_instead_of_reusing_it(self):
         with tempfile.TemporaryDirectory() as tmp:

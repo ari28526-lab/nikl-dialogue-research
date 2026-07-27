@@ -478,8 +478,12 @@ foreach ($y in $years) {
     # 1) 검증된 pre-MFA search master의 reference form으로 lab을 만들고
     #    입력 계약 ID를 얻는다. 계약 marker가 같으면 재실행은 즉시 반환한다.
     Say "$y [1/3] pre-MFA 입력계약 확인 + lab 생성/내용검증..."
+    $labHeartbeatFile = Join-Path $logDir (
+        "lab_{0}_{1}_heartbeat.jsonl" -f $y, $runId
+    )
     & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") `
-        --year $y --search-master-root $searchMasterRoot
+        --year $y --search-master-root $searchMasterRoot `
+        --progress-jsonl $labHeartbeatFile
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
     $labReportPath = Join-Path $logDir "lab_build_${y}_latest.json"
     try {

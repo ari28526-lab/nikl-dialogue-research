@@ -23,6 +23,7 @@ import re
 import shutil
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -126,6 +127,23 @@ def normalized_lab_text(text: str) -> str:
     return " ".join((text or "").split())
 
 
+def append_progress(path: Path | None, payload: dict) -> None:
+    """Append one durable, machine-readable lab-build progress event."""
+    if path is None:
+        return
+    record = {
+        "recorded_at": datetime.now().astimezone().isoformat(),
+        **payload,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            json.dumps(record, ensure_ascii=False, separators=(",", ":"))
+            + "\n"
+        )
+        handle.flush()
+
+
 def archive_stale_lab(
     lab_path: Path,
     *,
@@ -157,6 +175,7 @@ def build_year(
     search_master_root: Path = SEARCH_MASTER,
     *,
     force_verify: bool = False,
+    progress_jsonl: Path | None = None,
 ) -> dict:
     search_master_root = search_master_root.resolve()
     contract = input_contract(search_master_root, year)
@@ -180,6 +199,22 @@ def build_year(
                 STATE_ROOT / "logs" / f"lab_build_{year}_latest.json",
                 prior,
             )
+            append_progress(
+                progress_jsonl,
+                {
+                    "event": "lab_reused",
+                    "year": year,
+                    "input_contract_id": contract["input_contract_id"],
+                    "sessions_total": prior.get("sessions"),
+                    "created": prior.get("created"),
+                    "rewritten_mismatch": prior.get(
+                        "rewritten_mismatch"
+                    ),
+                    "validated_existing": prior.get(
+                        "validated_existing"
+                    ),
+                },
+            )
             return prior
 
     source_dir = search_master_root / year
@@ -193,10 +228,22 @@ def build_year(
         f"[{year}] pre-MFA 세션 {nfiles:,}개 — lab 내용 전수 검증·생성...",
         flush=True,
     )
+    started_at = datetime.now().astimezone().isoformat()
+    append_progress(
+        progress_jsonl,
+        {
+            "event": "lab_started",
+            "year": year,
+            "input_contract_id": contract["input_contract_id"],
+            "sessions_total": nfiles,
+            "force_verify": force_verify,
+        },
+    )
     made = verified = rewritten = no_wav = empty = 0
     reference_changed = unresolved = archived_empty_lab = 0
+    rows_seen = 0
     t0 = time.time()
-    last_proc = 0
+    last_reported_rows = 0
     flat_names = None
     for k, fp in enumerate(files, 1):
         sess_cache = {}  # 세션 → 파일명 집합 (CSV 하나 처리 동안만 유지)
@@ -215,6 +262,7 @@ def build_year(
                     f"{fp}: pre-MFA 필수 열 누락 {sorted(missing)}"
                 )
             for row in reader:
+                rows_seen += 1
                 u = row["utt_id"]
                 sess = u.split(".")[0]
                 names = sess_cache.get(sess)
@@ -279,15 +327,35 @@ def build_year(
                     made += 1
         # 발화 1,000개 훑을 때마다 속도·남은시간 출력 (1분 안에 첫 숫자)
         proc = made + verified + rewritten
-        if proc - last_proc >= 1000 or k == nfiles:
-            last_proc = proc
+        if rows_seen - last_reported_rows >= 1000 or k == nfiles:
+            last_reported_rows = rows_seen
             el = time.time() - t0
-            rate = proc / el if el > 0 else 0
+            rate = rows_seen / el if el > 0 else 0
             eta_min = (nfiles - k) / (k / el) / 60 if el > 0 and k else 0
             print(
                   f"  {year} {k}/{nfiles}세션 · 신규 {made:,} · "
                   f"불일치재작성 {rewritten:,} · 검증 {verified:,} · "
                   f"{rate:.0f}발화/s · 이 연도 남은 ~{eta_min:.0f}분", flush=True)
+            append_progress(
+                progress_jsonl,
+                {
+                    "event": "lab_progress",
+                    "year": year,
+                    "input_contract_id": contract["input_contract_id"],
+                    "sessions_current": k,
+                    "sessions_total": nfiles,
+                    "rows_seen": rows_seen,
+                    "usable_labs_seen": proc,
+                    "created": made,
+                    "rewritten_mismatch": rewritten,
+                    "validated_existing": verified,
+                    "wav_missing": no_wav,
+                    "empty_reference_form": empty,
+                    "rows_per_second": round(rate, 1),
+                    "eta_minutes": round(eta_min, 1),
+                    "elapsed_seconds": round(el, 1),
+                },
+            )
     print(
         f"[{year}] 완료: 신규 {made:,} / 불일치재작성 {rewritten:,} / "
         f"내용일치 {verified:,} / wav없음 {no_wav:,} / 빈입력 {empty:,} / "
@@ -296,11 +364,14 @@ def build_year(
         flush=True,
     )
     print(f"  코퍼스(=wav폴더): {WAV_ROOT / year}", flush=True)
+    elapsed_seconds = round(time.time() - t0, 3)
+    finished_at = datetime.now().astimezone().isoformat()
     result = {
         **contract,
         "status": "passed",
         "year": year,
         "sessions": nfiles,
+        "rows_seen": rows_seen,
         "created": made,
         "rewritten_mismatch": rewritten,
         "validated_existing": verified,
@@ -309,14 +380,52 @@ def build_year(
         "archived_empty_input_lab": archived_empty_lab,
         "reference_form_changed": reference_changed,
         "pron_reference_unresolved": unresolved,
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "elapsed_seconds": elapsed_seconds,
     }
+    if made + verified + rewritten == 0:
+        append_progress(
+            progress_jsonl,
+            {
+                "event": "lab_failed",
+                "year": year,
+                "input_contract_id": contract["input_contract_id"],
+                "sessions_total": nfiles,
+                "rows_seen": rows_seen,
+                "created": made,
+                "rewritten_mismatch": rewritten,
+                "validated_existing": verified,
+                "wav_missing": no_wav,
+                "empty_reference_form": empty,
+                "elapsed_seconds": elapsed_seconds,
+                "status": "failed",
+                "reason": "usable_lab_zero",
+            },
+        )
+        raise RuntimeError(f"{year} 유효 lab 0건")
     marker.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_json(marker, result)
     atomic_write_json(
         STATE_ROOT / "logs" / f"lab_build_{year}_latest.json", result
     )
-    if made + verified + rewritten == 0:
-        raise RuntimeError(f"{year} 유효 lab 0건")
+    append_progress(
+        progress_jsonl,
+        {
+            "event": "lab_completed",
+            "year": year,
+            "input_contract_id": contract["input_contract_id"],
+            "sessions_total": nfiles,
+            "rows_seen": rows_seen,
+            "created": made,
+            "rewritten_mismatch": rewritten,
+            "validated_existing": verified,
+            "wav_missing": no_wav,
+            "empty_reference_form": empty,
+            "elapsed_seconds": elapsed_seconds,
+            "status": "passed",
+        },
+    )
     return result
 
 
@@ -334,6 +443,11 @@ def main() -> int:
         action="store_true",
         help="입력 계약 marker가 같아도 기존 lab을 다시 전수 검증",
     )
+    ap.add_argument(
+        "--progress-jsonl",
+        type=Path,
+        help="시작·진행·완료를 append-only JSONL로 기록할 경로",
+    )
     args = ap.parse_args()
     years = sorted(YEAR_DIRS) if args.year == "all" else [args.year]
     for y in years:
@@ -343,6 +457,7 @@ def main() -> int:
             y,
             args.search_master_root,
             force_verify=args.force_verify,
+            progress_jsonl=args.progress_jsonl,
         )
     return 0
 

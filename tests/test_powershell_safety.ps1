@@ -65,6 +65,8 @@ foreach ($path in $files) {
             'mfa_output_retained',
             'align_completed_temp_retained_until_merge',
             'heartbeat.jsonl',
+            '--progress-jsonl',
+            'lab_{0}_{1}_heartbeat.jsonl',
             'Get-ProcessTreeMetrics',
             'tree_cpu_seconds',
             'metrics_scope',

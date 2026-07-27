@@ -111,8 +111,22 @@ lab이 0개다. 따라서 정렬 이전의 소형파일 쓰기 비용이 2021보
 - 세션·발화 처리율과 ETA를 로그에 즉시 출력
 - lab marker는 입력계약이 정확히 같을 때만 재사용
 
-2021 완료 뒤 실제 SSD 쓰기율을 반영해 ETA를 계산한다. lab 생성이 느리다고
-MFA temp를 삭제하거나 runner를 중복 실행하지 않는다.
+2026-07-27 다음 실행용 빌더에 append-only lab heartbeat를 구현했다.
+연도·입력계약별 파일에 `lab_started`, `lab_progress`, `lab_completed`,
+`lab_reused`를 기록하며, 세션 진도·전체 조회 행·usable lab·신규·재작성·
+검증·WAV 누락·빈 reference·행/초·ETA·경과시간을 보존한다. invalid 행이
+많아도 heartbeat가 멈추지 않도록 기존 usable lab 기준 대신 `rows_seen`
+1,000행 단위로 기록한다. 작은 임시 코퍼스에서 이벤트 순서와 marker 재사용
+경로까지 회귀시험을 통과했다.
+
+이 과정에서 기존 빌더가 usable lab 0건일 때 `passed` marker를 먼저 기록하고
+나중에 예외를 내는 거짓 성공 순서를 발견했다. 성공 marker·최신 보고서는
+0건 gate 통과 뒤에만 쓰도록 순서를 바꾸고, 실패 시 `lab_failed`와
+`reason=usable_lab_zero`를 남긴다. 0건 임시 코퍼스에서 성공 marker와 성공
+보고서가 생성되지 않는 것도 회귀시험으로 고정했다.
+
+2021 완료 뒤 실제 SSD 쓰기율을 반영해 2022 ETA를 계산한다. lab 생성이
+느리다고 MFA temp를 삭제하거나 runner를 중복 실행하지 않는다.
 
 ### known source 위험 15건
 
