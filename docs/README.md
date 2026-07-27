@@ -35,6 +35,9 @@
 | [decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md](decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md) | **2020 전 단계 완료 감사** — 510만행 CSV, 86만 TextGrid, 4-tier 경계, 16시간 export 병목과 2021 전 개선 gate |
 | [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
+| [decisions/MONITOR_2021_pre_mfa_v1_20260727.md](decisions/MONITOR_2021_pre_mfa_v1_20260727.md) | 현재 2021 direct-DB 실행의 lab·MFA 단계·CPU·용량·watchdog 실측 점검대장 |
+| [decisions/PLAN_2022_improved_MFA_after_2020_2021.md](decisions/PLAN_2022_improved_MFA_after_2020_2021.md) | 2020·2021 실측을 반영한 2022 개선 실행안과 GO/NO-GO |
+| [decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md](decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md) | 2020이 아닌 수정 전 보존 코드·과거 로그를 기준으로 현재 처리시간과 추가 검증 비용을 분리한 분석 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
 
 ## 환경 설정 (environment/)

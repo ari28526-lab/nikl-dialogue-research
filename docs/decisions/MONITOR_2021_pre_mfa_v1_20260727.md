@@ -58,6 +58,7 @@ direct DB       true
 | 09:16 | G2P pronunciation | 정규화 약 3.5분 뒤 `Generating pronunciations...`; heartbeat CPU 2,504.5초, RAM 1.77GB | 317.84GB | 정상. 과거 watchdog 오판이 있었던 저출력 G2P 구간이므로 강제종료 금지 |
 | 09:27 | G2P 10분 교차점검 | MFA 보조 Python 4개가 각각 CPU 444–446초 사용, 주 Python 포함 프로세스 트리 CPU 합계가 heartbeat 4,325초와 일치. D: 순간 I/O도 관측 | 317.84GB | 교착 아님. 주 Python 하나만 보는 모니터는 병렬 G2P 진행을 과소평가하므로 2022 모니터에 프로세스 트리 CPU를 반영 |
 | 09:50 | G2P 34분·모니터 개선 | worker 4개 CPU 각각 1,312–1,316초, heartbeat CPU 7,798초, watchdog false. 기존 코드는 모든 `mfa/python`을 합산한다는 사실 확인 | 317.84GB | 현재 실행은 정상 유지. 다음 실행부터 Windows Toolhelp 기반 실제 descendant tree CPU·RAM·PID·Python 수를 heartbeat에 기록하도록 수정하고 동적 회귀시험 통과 |
+| 10:15 | G2P 약 59분 | heartbeat CPU 11,154초, MFA·wrapper 생존, watchdog false, D: 여유 불변 | 317.84GB | 긴 단계이지만 09:50 대비 CPU가 3,356초 증가해 교착 아님. 수정 전 속도와의 비교는 2020이 아니라 보존 코드 `e1075ee`·과거 실패 로그를 기준으로 별도 분석 |
 
 ## 다음 확인 게이트
 
@@ -68,3 +69,34 @@ direct DB       true
 5. 99% coverage 및 형태소/form hard failure 0
 6. final staging 이동, align/merge marker, DB 보존
 7. 독립 전수 QC와 2020·2021 병목 비교
+
+## final 승격 뒤 독립 전수 QC
+
+아래 명령은 final 2021 폴더와 동일 입력계약의 direct 보고서·marker가 생성된
+뒤에만 실행한다. partial 디렉터리를 final로 오인해 감사하지 않는다.
+
+```powershell
+& "C:\Users\ari30\miniforge3\envs\mfa\python.exe" `
+  ".\scripts\python\audit_mfa_4tier_year.py" `
+  --year 2021 `
+  --lab-root "D:\20_AUDIO\03_wav\individual\2021" `
+  --textgrid-root "D:\20_AUDIO\07_textgrid_eojeol_g2p_staging\2021" `
+  --report ".\outputs\reports\AUDIT_mfa_4tier_2021_pre_mfa_v1_20260727.json" `
+  --missing-csv ".\outputs\reports\MISSING_mfa_4tier_2021_pre_mfa_v1_20260727.csv" `
+  --progress-jsonl "D:\mfa_eojeol\logs\audit_4tier_2021_pre_mfa_v1_20260727_heartbeat.jsonl" `
+  --input-contract-id "ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe" `
+  --workers 4
+```
+
+hard gate:
+
+- 정확한 `words/phones/morphemes/utterance` 순서
+- 모든 tier의 0–xmax 연속 coverage와 gap·overlap 0
+- 네 tier 모두 핵심 유표 interval 존재
+- TextGrid xmax와 원 WAV header duration 오차 1ms 이하
+- lab/TextGrid 중복·반대 차집합·0바이트 lab 0
+- lab→TextGrid coverage 99% 이상
+
+운영본은 원 WAV 시간을 보존한다. 0.05초 가시적 좌우 빈 경계는 패딩된
+연구자 점검 사본의 기준이므로 전량 운영본에서는 hard failure가 아니라
+tier별 진단 수량으로 보고한다.

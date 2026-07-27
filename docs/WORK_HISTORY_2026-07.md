@@ -456,3 +456,37 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   통과했다. 상세 근거는
   `decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md`와
   `outputs/reports/RECOMMENDATION_2021_MFA_go_no_go_20260726.md`에 있다.
+
+## 2026-07-27 — 2021 direct 전량 감시와 2022 선행 안전 개선
+
+- `pre_mfa_v1_20260725`의 2021 한 연도를 08:27 시작했다. lab 입력계약
+  단계는 4,143세션, 기존 내용 일치 1,335,015, 불일치 재작성 38,320,
+  신규 186, WAV 누락 0으로 약 14분 40초에 끝나 사전 감사와 일치했다.
+- MFA는 4,143 speakers·1,416,216 files를 인식했다. corpus loading은
+  약 30분이었고, 이후 G2P worker 4개의 CPU가 계속 증가했다. 긴
+  `Generating pronunciations`를 로그 무변화만으로 교착 처리하지 않았으며
+  D: 여유는 317.84GB를 유지했다.
+- 기존 heartbeat가 컴퓨터의 모든 `mfa/python` CPU를 합산해 별도 Python
+  작업이 있으면 교착을 놓칠 수 있음을 발견했다. Windows Toolhelp snapshot으로
+  실제 MFA descendant tree의 CPU·RAM·PID·Python 수만 기록하도록 고치고,
+  현재 MFA의 launcher 1·주 Python 1·worker 4로 동적 회귀검사했다.
+- 다음 실행부터 lab 단계도 append-only JSONL로 시작·진행·완료·marker 재사용,
+  처리 행·속도·ETA를 남긴다. usable lab 0건인데 성공 marker를 먼저 쓰던
+  기존 순서를 발견해 0건 gate 뒤에만 성공 marker를 쓰도록 교정했다.
+- final 4-tier 완료 뒤 사용할 `audit_mfa_4tier_year.py`를 추가했다. lab/WAV와
+  TextGrid ID, tier 순서, 0–xmax 연속성, gap/overlap, 핵심 label, WAV
+  duration, 누락 CSV를 독립 전수 검사한다. 운영본의 원시간과 패딩된 연구자
+  점검 사본의 0.05초 가시 경계를 구분한다.
+- 사용자가 말한 “수정 전보다 느림”의 비교 기준을 2020 run으로 잘못 해석한
+  뒤 바로잡았다. `archive/code_pre_bulk_20260724`의 `e1075ee` 코드와
+  7월 16–24일 로그를 대조해, 수정 전 30–60초 lab 단계는 기존 파일을 내용
+  확인 없이 skip했고 2분 MFA 완료 표시는 병합 실패·거짓 성공 가능 상태였음을
+  문서화했다. 최초 전량 lab은 오히려 9시간 30분, 다른 clean 실행은 약
+  19시간 뒤 watchdog 오살로 끝났다.
+- 수정 전 대비 시간 분석은
+  `decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md`, 현재
+  실행 실측은 `decisions/MONITOR_2021_pre_mfa_v1_20260727.md`, 2022
+  개선 gate는 `decisions/PLAN_2022_improved_MFA_after_2020_2021.md`에
+  분리했다.
+- 새 독립 QC의 정상·누락·WAV duration 불일치·tier gap 테스트를 포함해
+  Python unittest 55개와 PowerShell 안전성 검사를 통과했다.

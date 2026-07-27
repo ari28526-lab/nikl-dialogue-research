@@ -161,6 +161,12 @@ lab이 0개다. 따라서 정렬 이전의 소형파일 쓰기 비용이 2021보
 - 2022 temp/output/staging/marker 충돌 없음
 - 다른 MFA·KOINA·Dropbox 대량 복사 없음
 
+2021부터 `audit_mfa_4tier_year.py`를 final 승격 후 독립 gate로 사용한다.
+lab↔TextGrid ID coverage·중복·누락 inventory, 네 tier 순서, 0–xmax 연속성,
+interval gap/overlap, 핵심 label, WAV header duration을 전수 검사한다.
+운영본의 원시간을 바꾸지 않으므로 0.05초 가시적 양끝 빈 경계는 hard gate가
+아니라 tier별 진단값이며, 패딩된 연구자 점검 사본에서 별도로 보장한다.
+
 ## 준비된 실행 명령
 
 아래 명령은 **준비용 기록이며 아직 실행하지 않는다**.
