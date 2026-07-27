@@ -470,6 +470,12 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   작업이 있으면 교착을 놓칠 수 있음을 발견했다. Windows Toolhelp snapshot으로
   실제 MFA descendant tree의 CPU·RAM·PID·Python 수만 기록하도록 고치고,
   현재 MFA의 launcher 1·주 Python 1·worker 4로 동적 회귀검사했다.
+- 10:34경 G2P worker 하나가 먼저 정상 종료하면서 live CPU 합계가
+  14,050.94초에서 11,343.92초로 내려가는 관측 왜곡을 확인했다. 남은 worker
+  3개의 CPU는 계속 증가하고 stderr 오류는 없었다. 다음 실행용 runner는 종료된
+  worker의 마지막 CPU를 retired 합계에 보존해 `tree_cpu_seconds`가 역행하지
+  않게 했고, live·retired 값을 별도 필드로 기록한다. worker 종료와 PID 재사용
+  수열을 재현한 동적 시험 및 PowerShell 안전성 검사를 통과했다.
 - 다음 실행부터 lab 단계도 append-only JSONL로 시작·진행·완료·marker 재사용,
   처리 행·속도·ETA를 남긴다. usable lab 0건인데 성공 marker를 먼저 쓰던
   기존 순서를 발견해 0건 gate 뒤에만 성공 marker를 쓰도록 교정했다.

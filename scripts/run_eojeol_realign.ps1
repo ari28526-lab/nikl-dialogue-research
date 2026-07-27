@@ -269,9 +269,12 @@ public static class ProjectProcessSnapshot {
         )
         $cpuSeconds = 0.0
         [int64]$workingSetBytes = 0
+        $cpuByPid = @{}
         foreach ($item in $live) {
             if ($null -ne $item.CPU) {
-                $cpuSeconds += [double]$item.CPU
+                $itemCpu = [double]$item.CPU
+                $cpuSeconds += $itemCpu
+                $cpuByPid[[string]$item.Id] = $itemCpu
             }
             $workingSetBytes += [int64]$item.WorkingSet64
         }
@@ -282,6 +285,7 @@ public static class ProjectProcessSnapshot {
                 $live | Where-Object { $_.ProcessName -match '^python' }
             ).Count
             CpuSeconds = $cpuSeconds
+            CpuByPid = $cpuByPid
             WorkingSetBytes = $workingSetBytes
             ProcessIds = $processIds
         }
@@ -289,9 +293,12 @@ public static class ProjectProcessSnapshot {
         $live = @(Get-Process mfa,python -ErrorAction SilentlyContinue)
         $cpuSeconds = 0.0
         [int64]$workingSetBytes = 0
+        $cpuByPid = @{}
         foreach ($item in $live) {
             if ($null -ne $item.CPU) {
-                $cpuSeconds += [double]$item.CPU
+                $itemCpu = [double]$item.CPU
+                $cpuSeconds += $itemCpu
+                $cpuByPid[[string]$item.Id] = $itemCpu
             }
             $workingSetBytes += [int64]$item.WorkingSet64
         }
@@ -302,9 +309,48 @@ public static class ProjectProcessSnapshot {
                 $live | Where-Object { $_.ProcessName -match '^python' }
             ).Count
             CpuSeconds = $cpuSeconds
+            CpuByPid = $cpuByPid
             WorkingSetBytes = $workingSetBytes
             ProcessIds = @($live.Id | Sort-Object)
         }
+    }
+}
+
+function Update-ProcessTreeCpuAccumulator {
+    param(
+        [hashtable]$PreviousCpuByPid = @{},
+        [hashtable]$CurrentCpuByPid = @{},
+        [double]$RetiredCpuSeconds = 0.0
+    )
+
+    $nextRetiredCpuSeconds = $RetiredCpuSeconds
+    $nextCpuByPid = @{}
+    [double]$liveCpuSeconds = 0.0
+
+    foreach ($entry in $CurrentCpuByPid.GetEnumerator()) {
+        $pidKey = [string]$entry.Key
+        $pidCpu = [double]$entry.Value
+        if ($PreviousCpuByPid.ContainsKey($pidKey) -and
+            $pidCpu -lt [double]$PreviousCpuByPid[$pidKey]) {
+            # 같은 PID의 CPU가 감소했다면 heartbeat 사이 PID가 재사용된
+            # 것으로 보고, 이전 process instance의 마지막 CPU를 보존한다.
+            $nextRetiredCpuSeconds += [double]$PreviousCpuByPid[$pidKey]
+        }
+        $nextCpuByPid[$pidKey] = $pidCpu
+        $liveCpuSeconds += $pidCpu
+    }
+    foreach ($pidKey in @($PreviousCpuByPid.Keys)) {
+        if (-not $nextCpuByPid.ContainsKey([string]$pidKey)) {
+            # 종료된 worker가 live 합계에서 사라져도 마지막 CPU를 잃지 않는다.
+            $nextRetiredCpuSeconds += [double]$PreviousCpuByPid[$pidKey]
+        }
+    }
+
+    return [PSCustomObject][ordered]@{
+        RetiredCpuSeconds = $nextRetiredCpuSeconds
+        LiveCpuSeconds = $liveCpuSeconds
+        TotalCpuSeconds = $nextRetiredCpuSeconds + $liveCpuSeconds
+        CpuByPid = $nextCpuByPid
     }
 }
 
@@ -669,6 +715,10 @@ foreach ($y in $years) {
                 $lastCount = -1
                 $lastCountChange = Get-Date
                 $watchdogKilled = $false
+                # 종료된 worker의 CPU가 live 합계에서 빠져 watchdog 누적치가
+                # 역행하지 않도록 마지막 값을 retired 합계에 보존한다.
+                $retiredTreeCpuSeconds = 0.0
+                $lastTreeCpuByPid = @{}
                 Write-JsonLine $heartbeatFile ([ordered]@{
                     event = 'mfa_process_started'
                     recorded_at = (Get-Date).ToString('o')
@@ -701,7 +751,14 @@ foreach ($y in $years) {
                 $now = Get-Date
                 $processMetrics = Get-ProcessTreeMetrics `
                     -RootProcessId $p.Id
-                $curCpu = [double]$processMetrics.CpuSeconds
+                $cpuState = Update-ProcessTreeCpuAccumulator `
+                    -PreviousCpuByPid $lastTreeCpuByPid `
+                    -CurrentCpuByPid $processMetrics.CpuByPid `
+                    -RetiredCpuSeconds $retiredTreeCpuSeconds
+                $retiredTreeCpuSeconds = `
+                    [double]$cpuState.RetiredCpuSeconds
+                $lastTreeCpuByPid = $cpuState.CpuByPid
+                $curCpu = [double]$cpuState.TotalCpuSeconds
                 $cpuHistory.Add([PSCustomObject]@{ Time = $now; Cpu = $curCpu })
                 while ($cpuHistory.Count -gt 0 -and ($now - $cpuHistory[0].Time).TotalMinutes -gt ($stallMinutes + 2)) {
                     $cpuHistory.RemoveAt(0)
@@ -760,6 +817,10 @@ foreach ($y in $years) {
                         counter_frozen_minutes = $frozenMin
                         cpu_seconds = $curCpu
                         tree_cpu_seconds = $curCpu
+                        tree_live_cpu_seconds = `
+                            $cpuState.LiveCpuSeconds
+                        tree_retired_cpu_seconds = `
+                            $retiredTreeCpuSeconds
                         metrics_scope = $processMetrics.Scope
                         tree_process_count = $processMetrics.ProcessCount
                         tree_python_process_count = `

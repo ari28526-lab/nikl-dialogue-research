@@ -69,6 +69,8 @@ foreach ($path in $files) {
             'lab_{0}_{1}_heartbeat.jsonl',
             'Get-ProcessTreeMetrics',
             'tree_cpu_seconds',
+            'tree_live_cpu_seconds',
+            'tree_retired_cpu_seconds',
             'metrics_scope',
             'tree_python_process_count',
             'tree_working_set_mb',
@@ -163,7 +165,16 @@ try {
     if ($null -eq $metricsFunction) {
         throw 'Get-ProcessTreeMetrics AST 없음'
     }
+    $accumulatorFunction = $runnerAst.Find({
+        param($node)
+        $node -is [Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Update-ProcessTreeCpuAccumulator'
+    }, $true)
+    if ($null -eq $accumulatorFunction) {
+        throw 'Update-ProcessTreeCpuAccumulator AST 없음'
+    }
     Invoke-Expression $metricsFunction.Extent.Text
+    Invoke-Expression $accumulatorFunction.Extent.Text
     $treeMetrics = Get-ProcessTreeMetrics -RootProcessId $PID
     if ($treeMetrics.Scope -ne 'descendant_tree') {
         throw "프로세스 트리 조회가 폴백됨: $($treeMetrics.Scope)"
@@ -172,9 +183,35 @@ try {
         $PID -notin @($treeMetrics.ProcessIds)) {
         throw "현재 PowerShell PID가 트리 집계에서 누락됨: $PID"
     }
+    if (-not $treeMetrics.CpuByPid.ContainsKey([string]$PID)) {
+        throw "현재 PowerShell PID별 CPU가 집계에서 누락됨: $PID"
+    }
     if ($treeMetrics.CpuSeconds -lt 0 -or
         $treeMetrics.WorkingSetBytes -le 0) {
         throw '프로세스 트리 CPU/RAM 집계값이 유효하지 않음'
+    }
+
+    $cpuState1 = Update-ProcessTreeCpuAccumulator `
+        -CurrentCpuByPid @{'1'=10.0; '2'=20.0}
+    $cpuState2 = Update-ProcessTreeCpuAccumulator `
+        -PreviousCpuByPid $cpuState1.CpuByPid `
+        -CurrentCpuByPid @{'1'=15.0} `
+        -RetiredCpuSeconds $cpuState1.RetiredCpuSeconds
+    $cpuState3 = Update-ProcessTreeCpuAccumulator `
+        -PreviousCpuByPid $cpuState2.CpuByPid `
+        -CurrentCpuByPid @{'1'=2.0} `
+        -RetiredCpuSeconds $cpuState2.RetiredCpuSeconds
+    $cpuState4 = Update-ProcessTreeCpuAccumulator `
+        -PreviousCpuByPid $cpuState3.CpuByPid `
+        -CurrentCpuByPid @{} `
+        -RetiredCpuSeconds $cpuState3.RetiredCpuSeconds
+    if ($cpuState1.TotalCpuSeconds -ne 30.0 -or
+        $cpuState2.TotalCpuSeconds -ne 35.0 -or
+        $cpuState2.RetiredCpuSeconds -ne 20.0 -or
+        $cpuState3.TotalCpuSeconds -ne 37.0 -or
+        $cpuState3.RetiredCpuSeconds -ne 35.0 -or
+        $cpuState4.TotalCpuSeconds -ne 37.0) {
+        throw '종료/PID 재사용 뒤 프로세스 트리 CPU 누적치가 단조 증가하지 않음'
     }
 } catch {
     $failures.Add(

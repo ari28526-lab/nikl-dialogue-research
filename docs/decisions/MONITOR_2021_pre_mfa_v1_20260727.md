@@ -59,6 +59,27 @@ direct DB       true
 | 09:27 | G2P 10분 교차점검 | MFA 보조 Python 4개가 각각 CPU 444–446초 사용, 주 Python 포함 프로세스 트리 CPU 합계가 heartbeat 4,325초와 일치. D: 순간 I/O도 관측 | 317.84GB | 교착 아님. 주 Python 하나만 보는 모니터는 병렬 G2P 진행을 과소평가하므로 2022 모니터에 프로세스 트리 CPU를 반영 |
 | 09:50 | G2P 34분·모니터 개선 | worker 4개 CPU 각각 1,312–1,316초, heartbeat CPU 7,798초, watchdog false. 기존 코드는 모든 `mfa/python`을 합산한다는 사실 확인 | 317.84GB | 현재 실행은 정상 유지. 다음 실행부터 Windows Toolhelp 기반 실제 descendant tree CPU·RAM·PID·Python 수를 heartbeat에 기록하도록 수정하고 동적 회귀시험 통과 |
 | 10:15 | G2P 약 59분 | heartbeat CPU 11,154초, MFA·wrapper 생존, watchdog false, D: 여유 불변 | 317.84GB | 긴 단계이지만 09:50 대비 CPU가 3,356초 증가해 교착 아님. 수정 전 속도와의 비교는 2020이 아니라 보존 코드 `e1075ee`·과거 실패 로그를 기준으로 별도 분석 |
+| 10:34–10:43 | G2P worker 4→3 | worker PID 26540이 먼저 종료했다. heartbeat의 live CPU 합계는 14,050.94→11,343.92초로 내려갔지만, 남은 worker 3개는 10:43 각각 3,320.56–3,324.05초까지 계속 증가했고 주 Python·MFA·wrapper도 생존했다. stderr 오류·traceback 없음 | 317.84GB | 한 partition이 먼저 끝난 정상 진행으로 판정. 현재 `Generating pronunciations`는 watchdog 종료 제외 단계라 재시작하지 않음. 다음 실행에서는 종료 worker의 마지막 CPU를 retired 합계에 보존해 누적치가 역행하지 않도록 수정 |
+
+### 10:34 CPU 합계 하락의 의미와 후속 수정
+
+현재 실행의 heartbeat는 매 시점 살아 있는 `mfa/python` CPU를 더한다. 따라서
+worker 하나가 정상 종료하면 그 worker가 이미 소비한 CPU 전체가 다음 표본에서
+빠진다. 10:33→10:34의 약 2,707초 하락은 계산량이 되돌아간 것이 아니라 이
+live-only 집계 방식의 관측 왜곡이다.
+
+실행 중인 2021 코드는 이미 메모리에 로드되어 있어 소급 변경하지 않았다. 대신
+다음 실행용 runner에는 PID별 마지막 CPU와 종료된 process의 retired CPU를
+분리하고 다음 세 필드를 기록하도록 했다.
+
+- `tree_live_cpu_seconds`: 현재 살아 있는 MFA 트리 CPU
+- `tree_retired_cpu_seconds`: 종료된 worker의 마지막 CPU 누계
+- `tree_cpu_seconds`: live+retired 단조 증가 누계
+
+작업자 2개 30초→하나 종료 뒤 35초→같은 PID 재사용 뒤 37초→전부 종료 뒤
+37초를 유지하는 동적 회귀시험과 PowerShell 안전성 검사를 통과했다. 이 수정은
+2021의 결과나 프로세스를 바꾸지 않고 2022 이후 진행·교착 진단의 정확도만
+높인다.
 
 ## 다음 확인 게이트
 

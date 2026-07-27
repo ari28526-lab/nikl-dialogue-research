@@ -95,6 +95,15 @@ CPU 합계는 이 실행에서는 우연히 실제 트리 합계와 같았지만
 프로세스에는 소급 적용하지 않으며, 2022 preflight에서 새 필드가 실제 첫
 heartbeat에 나타나는지 확인한다.
 
+2021 G2P에서 보조 worker 하나가 다른 셋보다 먼저 정상 종료하자 기존
+live-process CPU 합계가 14,050.94초에서 11,343.92초로 역행하는 현상도
+관측했다. 계산이 되돌아간 것이 아니라 종료 worker의 누적 CPU가 합계에서
+빠진 것이다. 다음 실행용 runner는 PID별 마지막 CPU를 보존해
+`tree_live_cpu_seconds`, `tree_retired_cpu_seconds`, 둘의 단조 증가 합인
+`tree_cpu_seconds`를 따로 기록한다. worker 종료와 PID 재사용을 재현한
+동적 시험을 추가했다. 2022 preflight에서는 첫 heartbeat의 세 필드뿐 아니라,
+worker 수가 줄어든 뒤에도 `tree_cpu_seconds`가 감소하지 않는지 확인한다.
+
 ## 2022 고유 병목과 대응
 
 ### lab 866,106개 신규 생성
