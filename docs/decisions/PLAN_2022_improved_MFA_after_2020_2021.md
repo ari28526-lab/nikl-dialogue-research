@@ -104,6 +104,38 @@ live-process CPU 합계가 14,050.94초에서 11,343.92초로 역행하는 현�
 동적 시험을 추가했다. 2022 preflight에서는 첫 heartbeat의 세 필드뿐 아니라,
 worker 수가 줄어든 뒤에도 `tree_cpu_seconds`가 감소하지 않는지 확인한다.
 
+## 실행 위치 판단: Colab보다 외장 SSD를 연결한 강한 로컬 컴퓨터
+
+2026-07-27 현재 실행 컴퓨터는 Intel N200, 논리 프로세서 4개이며 MFA도
+`-j 4`를 사용한다. 2021 G2P에서는 남은 worker 3개의 CPU가 계속 증가하고
+D: 사용량은 거의 변하지 않아 이 구간의 주 병목은 저장장치보다 CPU 계산이다.
+현 컴퓨터 안에서 job 수만 늘리는 가속 여지는 거의 없다.
+
+Google Colab hosted runtime은 사용자 컴퓨터에 꽂힌 외장 SSD를 직접 마운트하지
+못한다. 자료를 hosted VM으로 업로드·동기화하지 않는 조건에서는 계산 노드가
+원자료에 접근할 수 없다. Colab local runtime은 외장 SSD를 읽을 수 있지만
+코드는 현재 컴퓨터의 CPU·RAM·디스크에서 실행되므로 Colab 화면만 바뀌고 MFA
+속도는 빨라지지 않는다. 또한 MFA의 공식 가속 축은 `num_jobs`와
+multiprocessing이며, hosted runtime에서 GPU를 선택하는 것만으로 현재
+Kaldi/OpenFST·SQLite 중심 정렬이 자동 GPU 가속되지는 않는다.
+
+공식 근거:
+
+- Colab local runtime은 로컬 하드웨어에서 코드를 실행:
+  <https://research.google.com/colaboratory/local-runtimes.html>
+- Colab hosted 자원은 보장·무제한이 아니며 중단 가능:
+  <https://research.google.com/colaboratory/faq.html>
+- MFA는 `--num_jobs`와 multiprocessing을 실행 가속 옵션으로 제공:
+  <https://montreal-forced-aligner.readthedocs.io/en/v3.3.3/user_guide/data_validation.html>
+
+따라서 2021 실행은 현재 컴퓨터에서 그대로 보존·완료한다. 2022 이후 시간을
+의미 있게 줄이려면 외장 `DATA_SSD`를 성능이 더 높은 로컬 컴퓨터에 물리적으로
+연결하고, 같은 Git commit·MFA 3.4.0 패치 10/10·모델·입력계약으로 소표본
+benchmark를 먼저 한다. 가능하다면 원자료는 외장 SSD에서 읽기 전용으로 두고
+MFA temp/SQLite만 후보 컴퓨터의 빠른 내부 NVMe에 두는 조합도 비교한다.
+전량 이전 판단은 동일 표본의 벽시계 시간, 산출 수량, tier/시간경계 동등성,
+temp peak가 모두 확인된 뒤에 한다.
+
 ## 2022 고유 병목과 대응
 
 ### lab 866,106개 신규 생성

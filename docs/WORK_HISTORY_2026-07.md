@@ -501,3 +501,9 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   marker·direct 보고서·temp 계약·보존 DB·누락 CSV를 입력계약과 수량으로
   결합 검증한 뒤에만 2022 자체 preflight로 넘어간다. 정상 fixture와 계약
   불일치·DB/direct 보고서 누락·손상 숫자의 fail-closed 시험 4개를 통과했다.
+- Colab 가속 가능성을 공식 문서와 실컴퓨터 사양으로 검토했다. 현재 컴퓨터는
+  Intel N200·논리 프로세서 4개이고 MFA도 `-j 4`라 job 수 확대 여지는 거의
+  없다. hosted Colab은 로컬 외장 SSD를 직접 읽지 못하고, local runtime은
+  현 하드웨어에서 실행돼 속도가 같으며 GPU 선택도 MFA를 자동 가속하지 않는다.
+  2022 이후 가속 후보는 `DATA_SSD`를 더 강한 로컬 컴퓨터에 직접 연결하고
+  동일 표본·commit·모델·패치로 벤치마크하는 방식으로 기록했다.
