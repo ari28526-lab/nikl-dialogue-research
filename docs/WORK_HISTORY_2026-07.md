@@ -515,3 +515,24 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   현재 전원 계획은 균형 조정이고 C: 여유는 47.85GB라, 2021 중 설정 변경과
   C: temp 전환은 하지 않는다. Defender 제외도 기존 광범위 스크립트를 바로
   쓰지 않고 generated 경로만 좁게 대상으로 만든 뒤 명시 승인받도록 했다.
+- 11:23–11:28에는 공통 사전의 성격과 현재 2021 중단 여부를 다시 검토했다.
+  설치 MFA 3.4.0 소스상 전체 G2P 함수 반환 뒤에야 새 pronunciation을 DB에
+  bulk insert·commit하므로 현재 실행을 끊어도 부분 G2P를 안전하게 얻지 못한다.
+  현재 입력계약에도 dictionary/G2P/acoustic fingerprint가 없어 새 사전으로
+  같은 temp DB를 resume할 수 없다. 따라서 2021은 baseline으로 완주하되,
+  사용자의 방법론 결정을 반영해 2020–2025 공통 발음 자원을 단순 G2P cache가
+  아니라 G2P 판본·우리말샘 `pron_1/2` 예외·출처·선택정책을 함께 고정하는
+  정본으로 설계하기로 했다.
+- 공통 자원은 출처 보존 registry, search CSV용 발음 index, MFA용 파생
+  dictionary로 분리한다. 현재 동등 cache 정책 A와 사전 예외·변이 포함 정책
+  B를 파일럿하고, B가 채택되면 기존 DB·TextGrid를 baseline archive로 남긴
+  채 2020·2021을 같은 release로 먼저 재정렬한 뒤 2022–2025에 적용한다.
+  상세 설계는
+  `decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md`에
+  남겼다.
+- 다른 도구에 GitHub 주소를 주어 전체 CSV·MFA 코드를 리뷰받을 수 있도록
+  `reviews/HANDOFF_external_review_CSV_MFA_20260727.md`를 만들었다. 리뷰
+  범위는 JSON·Bareun·메타→search master→발음·로마자→lab/WAV→MFA DB→
+  4-tier TextGrid→재개·전수 QC이며, 실제 commit SHA·검토 파일·심각도·
+  파일:행·재현 근거·연구 영향·수정안·시험을 갖춘 Markdown 원문으로
+  돌려받도록 했다.

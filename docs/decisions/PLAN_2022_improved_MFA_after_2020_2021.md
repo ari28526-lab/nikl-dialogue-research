@@ -143,7 +143,7 @@ temp peak가 모두 확인된 뒤에 한다.
 job 수만 늘려 전체 MFA를 몇 배 빠르게 할 수는 없다. 남은 방법은 반복 계산과
 운영체제 오버헤드를 줄이는 것이다.
 
-1. **연도 공통 OOV G2P cache·versioned 확장사전 — 최우선 파일럿**
+1. **2020–2025 공통 발음 자원·versioned MFA 사전 — 최우선 파일럿**
    - 설치된 MFA 3.4.0 소스를 확인하면 `normalize_text()`가 사전에 없는
      **고유 OOV 집합**을 만든 뒤 Pynini G2P worker queue에 넣는다. 같은 단어가
      한 연도 안에서 반복돼도 한 번만 계산하지만, 새 연도 DB에서는 다시
@@ -152,19 +152,24 @@ job 수만 늘려 전체 MFA를 몇 배 빠르게 할 수는 없다. 남은 방�
      먼저 끝난 뒤 셋이 오래 계산했다. 남은 셋이 CPU를 계속 사용하므로
      교착은 아니며, queue 끝의 계산비용이 큰 단어들이 장기 꼬리를 만드는
      것으로 추정한다.
-   - 동결 pre-MFA CSV에서 2022–2025 고유 어절을 모아 기본 `korean_mfa`
-     사전의 OOV만 추출하고, `mfa g2p`를 한 번 실행해 **기본 사전을 수정하지
-     않는 별도 versioned 확장사전**을 만든다. 정렬 때 G2P fallback은 남겨
-     예상 밖 residual OOV를 놓치지 않는다.
+   - 동결 pre-MFA CSV에서 **2020–2025 전체** 고유 어절을 모아 기본
+     `korean_mfa` 사전의 OOV와 사전–G2P 불일치 항목을 추출한다.
+   - G2P 결과만 cache하는 대조 정책 A와, 우리말샘·표준국어대사전 연계
+     `pron_1/2` 예외·대체 발음을 출처와 함께 보존하는 정책 B를 분리해 만든다.
+     두 정책 모두 기본 사전을 직접 덮어쓰지 않는 별도 versioned 파생사전이며,
+     예상 밖 residual OOV용 fallback도 별도 집계한다.
    - 공식 MFA도 `mfa find_oovs` 결과를 `mfa g2p` 입력으로 사용하고 생성
      발음을 기존 사전에 보완하는 절차를 제공한다:
      <https://montreal-forced-aligner.readthedocs.io/en/latest/user_guide/workflows/dictionary_generating.html>
-   - speed cache에는 먼저 현재 inline G2P 결과만 고정한다. 우리말샘 예외
-     발음 반영은 연구상 의도적 변화이므로 같은 단계에서 몰래 섞지 않고,
-     출처·phone mapping·표본 정렬을 별도 검증한 사전 버전에서 수행한다.
+   - 우리말샘 등재 `pron_1/2`, 과거 기계 생성 `pron_g2p`, 현재 G2P를 같은
+     “사전 발음”으로 뭉개지 않는다. 출처·품사·의미·사전 ID·model hash를
+     long-format 정본에 보존하고, search CSV와 MFA `.dict`를 각각 파생한다.
    - GO 조건은 파일럿 OOV 0 또는 설명 가능한 residual, phone set 완전 호환,
-     inline G2P 대비 단어별 발음 동일, TextGrid 수량·tier·시간경계 동등,
-     실제 G2P 단계 시간 감소다.
+     사전·manifest 재생성 hash 동일, TextGrid 수량·tier·시간경계 정상,
+     예외 stress 표본의 연구자 검토, 실제 G2P 단계 시간 감소다.
+   - 정책 B가 채택돼 허용 phone 후보가 달라지면 2020·2021도 같은 공통
+     release로 재정렬하는 것을 기본 권고한다. 기존 결과는 baseline으로
+     archive하고 새 `run_id`와 섞지 않는다.
 
 2. **이미 적용한 direct DB 4-tier 경로 유지**
    - 2020에서 raw export 15시간 57분과 별도 merge 1시간 43분이 걸렸다.
@@ -192,8 +197,12 @@ job 수만 늘려 전체 MFA를 몇 배 빠르게 할 수는 없다. 남은 방�
      부족하다. D: `DATA_SSD` 317.84GB를 계속 사용한다.
 
 따라서 2021은 건드리지 않고 완주한다. 완료 뒤 첫 추가 작업은 2022 전량이
-아니라 공통 OOV 수·연도 간 중복률·길이/문자 이상치를 읽기 전용으로 감사하고,
-소표본에서 inline G2P와 cache 사전을 비교하는 것이다.
+아니라 6개년 공통 vocabulary·연도 간 중복률·길이/문자 이상치·사전 후보
+충돌을 읽기 전용으로 감사하고, 소표본에서 현재 baseline과 공통 발음사전
+정책 A/B를 비교하는 것이다. 정책 B를 채택하면 2020·2021을 먼저 새 release로
+재정렬·전수 QC한 뒤 2022–2025에 같은 사전을 적용한다. 세부 정본·파생물·
+fingerprint 계약은
+`DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md`를 따른다.
 
 ## 2022 고유 병목과 대응
 

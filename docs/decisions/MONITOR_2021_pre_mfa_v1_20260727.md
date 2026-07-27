@@ -60,6 +60,8 @@ direct DB       true
 | 09:50 | G2P 34분·모니터 개선 | worker 4개 CPU 각각 1,312–1,316초, heartbeat CPU 7,798초, watchdog false. 기존 코드는 모든 `mfa/python`을 합산한다는 사실 확인 | 317.84GB | 현재 실행은 정상 유지. 다음 실행부터 Windows Toolhelp 기반 실제 descendant tree CPU·RAM·PID·Python 수를 heartbeat에 기록하도록 수정하고 동적 회귀시험 통과 |
 | 10:15 | G2P 약 59분 | heartbeat CPU 11,154초, MFA·wrapper 생존, watchdog false, D: 여유 불변 | 317.84GB | 긴 단계이지만 09:50 대비 CPU가 3,356초 증가해 교착 아님. 수정 전 속도와의 비교는 2020이 아니라 보존 코드 `e1075ee`·과거 실패 로그를 기준으로 별도 분석 |
 | 10:34–10:43 | G2P worker 4→3 | worker PID 26540이 먼저 종료했다. heartbeat의 live CPU 합계는 14,050.94→11,343.92초로 내려갔지만, 남은 worker 3개는 10:43 각각 3,320.56–3,324.05초까지 계속 증가했고 주 Python·MFA·wrapper도 생존했다. stderr 오류·traceback 없음 | 317.84GB | 한 partition이 먼저 끝난 정상 진행으로 판정. 현재 `Generating pronunciations`는 watchdog 종료 제외 단계라 재시작하지 않음. 다음 실행에서는 종료 worker의 마지막 CPU를 retired 합계에 보존해 누적치가 역행하지 않도록 수정 |
+| 11:23 | 공통 G2P 사전 도입 시점 결정 | 남은 worker 3개 CPU 각각 5,180.5–5,185.6초, 주 Python·MFA·wrapper 생존, heartbeat 18,300.56초, 오류 0 | 317.84GB | 공통 사전은 채택 후보이나 현재 2021은 중단하지 않음. 완주 DB를 공통 사전 seed·동등성 기준으로 보존 |
+| 11:28 | 공통 발음 자원으로 범위 확대 | 남은 worker 3개 CPU 각각 5,377.0–5,380.1초, heartbeat 18,926.03초, 오류·traceback 0 | 317.84GB | 단순 G2P cache가 아니라 G2P 판본+우리말샘 예외+출처·우선순위를 6개년 공통 release로 설계. 2021은 baseline으로 완주 |
 
 ### 10:34 CPU 합계 하락의 의미와 후속 수정
 
@@ -80,6 +82,58 @@ live-only 집계 방식의 관측 왜곡이다.
 37초를 유지하는 동적 회귀시험과 PowerShell 안전성 검사를 통과했다. 이 수정은
 2021의 결과나 프로세스를 바꾸지 않고 2022 이후 진행·교착 진단의 정확도만
 높인다.
+
+### 11:23 공통 G2P 사전과 현재 실행 중단 여부
+
+판정: **공통 사전은 방법론·속도 개선 후보로 채택하되 2021은 중단하지 않는다.**
+
+설치된 MFA 3.4.0 소스를 확인하면 현재 단계는 전체 고유 OOV에 대해
+`gen.generate_dict_pronunciations()`가 반환된 뒤에야 `Word`와
+`Pronunciation`을 DB에 bulk insert하고 commit한다. 따라서 지금 worker를
+종료하면 진행 중인 G2P 결과 대부분을 안전한 사전 산출물로 회수할 수 없다.
+
+또한 현재 `input_contract_id`는 동결 CSV·lab 계약을 중심으로 만들어졌고
+dictionary/G2P model fingerprint를 포함하지 않는다. 새 공통 사전으로
+바꾸면서 `D:\mfa_tmp\2021`을 그대로 resume하면 서로 다른 사전 상태가 한 DB에
+섞일 위험이 있다. 안전하게 바꾸려면 현 temp를 삭제하지 않고 archive한 뒤,
+사전·G2P·음향모델 fingerprint를 포함한 alignment contract로 clean 재시작해야
+한다. 지금 중단은 08:42 이후 corpus loading·normalization·G2P 계산을 버리고
+같은 계산을 다시 하는 선택이다.
+
+완주 뒤에는 2021 DB의 실제 word–pronunciation을 common lexicon v1의 seed와
+검증 기준으로 쓴다. 2020–2025 공통 사전이 현재와 같은 `korean_mfa` G2P의
+동일 top-1 발음을 cache한 것이라면, 2020·2021은 계산 방식만 inline/cache로
+다르고 음운 입력은 동일하므로 전수 동등성 확인 후 재정렬하지 않아도 된다.
+우리말샘 예외처럼 phone이 실제로 달라지는 common lexicon v2는 별도 방법론
+변경이며, 차이 목록·표본 정렬을 본 뒤 2020·2021 재정렬 여부를 결정한다.
+
+### 11:28 사용자 결정 반영: 예외 발음까지 포함한 6개년 공통 자원
+
+사용자는 공통 사전을 단순 속도 cache로 제한하지 않고, G2P 판본과 우리말샘
+예외 발음을 함께 고정한 방법론적 공통 자원으로 진지하게 검토하기를 요청했다.
+또한 필요한 재실행을 회피하지 말라고 명시했다.
+
+이에 따라 앞 절의 “v1 cache 뒤 v2는 나중에 결정”이라는 좁은 구분은 다음
+실행 순서로 구체화한다.
+
+1. 현재 2021은 중단하지 않고 baseline v0로 완주·전수 QC한다.
+2. 2020–2025 공통 vocabulary를 만들고 기본 MFA 사전, 현재 G2P,
+   `lexicon_enriched.pron_1/2`, `lexicon_legacy_pron.pron_g2p`를 출처별로
+   감사한다.
+3. 현재와 phone 후보가 동일한 정책 A와 사전 예외·대체 발음을 포함한 정책 B를
+   별도 manifest·사전으로 A/B 정렬한다.
+4. 정책 B가 채택되면 2020·2021을 새 release로 먼저 재정렬하고 같은 정본으로
+   2022–2025를 처리한다.
+
+현재 2021을 살리는 이유는 재실행을 두려워해서가 아니다. 지금 중단해도 진행
+중 G2P 부분 결과를 안전하게 회수할 수 없고, 완주 DB가 새 공통 사전의 후보
+회수·차이 전수 대조·성능 비교에 필요한 기준선이기 때문이다.
+
+공통 자원은 출처 보존 정본 `pronunciation_registry`, 검색 CSV용
+`pre_mfa_pronunciation_index`, 정렬용 `mfa_alignment_lexicon`으로 분리한다.
+사전 발음과 G2P를 한 열로 덮어쓰지 않으며, alignment contract에 사전·G2P·
+음향모델·phone mapping fingerprint를 추가한다. 세부 설계는
+`DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md`에 기록했다.
 
 ## 다음 확인 게이트
 

@@ -32,6 +32,7 @@
 | [decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md](decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md) | 원자 출력·구판 보존·MFA/CSV 검증 설계와 연구적 근거 |
 | [decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md](decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md) | 후보 검색→파일 수집→KOINA→수동 판정의 층 분리와 2020 파일럿 게이트 |
 | [decisions/DESIGN_pronunciation_environment_search_2026-07-25.md](decisions/DESIGN_pronunciation_environment_search_2026-07-25.md) | 사전·규칙·MFA 발음 분리, 음운·형태 경계 검색표와 CSV–WAV–TextGrid 연동 설계 |
+| [decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md](decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md) | **2020–2025 공통 발음 자원** — G2P 판본·우리말샘 예외·출처·MFA 파생사전·재실행 정책 |
 | [decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md](decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md) | **2020 전 단계 완료 감사** — 510만행 CSV, 86만 TextGrid, 4-tier 경계, 16시간 export 병목과 2021 전 개선 gate |
 | [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
@@ -39,6 +40,12 @@
 | [decisions/PLAN_2022_improved_MFA_after_2020_2021.md](decisions/PLAN_2022_improved_MFA_after_2020_2021.md) | 2020·2021 실측을 반영한 2022 개선 실행안과 GO/NO-GO |
 | [decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md](decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md) | 2020이 아닌 수정 전 보존 코드·과거 로그를 기준으로 현재 처리시간과 추가 검증 비용을 분리한 분석 |
 | [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
+
+## 외부 리뷰 (reviews/)
+
+| 문서 | 무엇 |
+|---|---|
+| [reviews/HANDOFF_external_review_CSV_MFA_20260727.md](reviews/HANDOFF_external_review_CSV_MFA_20260727.md) | 다른 도구에 GitHub 주소와 함께 전달할 전체 CSV·MFA 코드리뷰 범위·제약·피드백 양식 |
 
 ## 환경 설정 (environment/)
 기계·도구 셋업 노트(바른·MFA·R·Praat·VS Code 등). 색인은
