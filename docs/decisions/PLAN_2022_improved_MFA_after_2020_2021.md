@@ -83,9 +83,17 @@ pron_reference_form lab
 
 2021의 G2P 교차점검에서 MFA가 주 Python 외에 보조 Python 4개를 사용하고,
 보조 작업 각각의 CPU가 지속 증가하는 것이 확인되었다. 기존 heartbeat의
-프로세스 트리 합산 CPU는 정상 진행을 반영했지만, 사람이 주 Python 하나만
-점검하면 정체로 오판할 수 있다. 2022 실행 전 모니터링 출력에는 최소한
-`전체 tree CPU`, `활성 worker 수`, `tree RAM`을 함께 표시한다.
+CPU 합계는 이 실행에서는 우연히 실제 트리 합계와 같았지만, 코드를 확인하니
+컴퓨터의 모든 `mfa/python` 프로세스를 합산하고 있었다. 별도 Python 분석이
+병행되면 진짜 MFA 교착을 정상으로 오판할 수 있다.
+
+2026-07-27 다음 실행용 runner를 Windows Toolhelp 프로세스 스냅샷 기반으로
+수정했다. 관리자 권한 없이 `mfa.exe`의 실제 자식·손자만 찾아 heartbeat에
+`tree_cpu_seconds`, tree process/Python 수, tree RAM, PID 목록과 집계 범위를
+남긴다. 현재 2021 실행 트리(launcher 1, 주 Python 1, worker Python 4)로
+동적 검사했고 PowerShell 안전성 회귀시험에도 추가했다. 실행 중인 2021
+프로세스에는 소급 적용하지 않으며, 2022 preflight에서 새 필드가 실제 첫
+heartbeat에 나타나는지 확인한다.
 
 ## 2022 고유 병목과 대응
 

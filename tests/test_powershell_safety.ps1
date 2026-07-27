@@ -65,6 +65,11 @@ foreach ($path in $files) {
             'mfa_output_retained',
             'align_completed_temp_retained_until_merge',
             'heartbeat.jsonl',
+            'Get-ProcessTreeMetrics',
+            'tree_cpu_seconds',
+            'metrics_scope',
+            'tree_python_process_count',
+            'tree_working_set_mb',
             'MFA_PROJECT_SKIP_TEXTGRID_EXPORT',
             'export_mfa_db_4tier.py',
             '_partial_direct_db',
@@ -137,6 +142,42 @@ foreach ($path in $files) {
             }
         }
     }
+}
+
+# runner를 실행하지 않고 해당 함수 AST만 로드해, 관리자 권한 없는 현재
+# PowerShell 프로세스가 실제 descendant tree로 집계되는지 동적 확인한다.
+try {
+    $runnerPath = Join-Path $root 'scripts\run_eojeol_realign.ps1'
+    $runnerTokens = $null
+    $runnerErrors = $null
+    $runnerAst = [Management.Automation.Language.Parser]::ParseFile(
+        $runnerPath, [ref]$runnerTokens, [ref]$runnerErrors
+    )
+    $metricsFunction = $runnerAst.Find({
+        param($node)
+        $node -is [Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Get-ProcessTreeMetrics'
+    }, $true)
+    if ($null -eq $metricsFunction) {
+        throw 'Get-ProcessTreeMetrics AST 없음'
+    }
+    Invoke-Expression $metricsFunction.Extent.Text
+    $treeMetrics = Get-ProcessTreeMetrics -RootProcessId $PID
+    if ($treeMetrics.Scope -ne 'descendant_tree') {
+        throw "프로세스 트리 조회가 폴백됨: $($treeMetrics.Scope)"
+    }
+    if ($treeMetrics.ProcessCount -lt 1 -or
+        $PID -notin @($treeMetrics.ProcessIds)) {
+        throw "현재 PowerShell PID가 트리 집계에서 누락됨: $PID"
+    }
+    if ($treeMetrics.CpuSeconds -lt 0 -or
+        $treeMetrics.WorkingSetBytes -le 0) {
+        throw '프로세스 트리 CPU/RAM 집계값이 유효하지 않음'
+    }
+} catch {
+    $failures.Add(
+        "MFA 프로세스 트리 동적 검사 실패: $($_.Exception.Message)"
+    )
 }
 
 if ($failures.Count -gt 0) {

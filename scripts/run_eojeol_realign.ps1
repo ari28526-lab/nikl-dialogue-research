@@ -162,6 +162,152 @@ function Get-WorkPaths($year) {
     }
     return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = $required }
 }
+
+# MFA의 실제 자식·손자 프로세스만 집계한다. 이전 구현은 컴퓨터에서 실행 중인
+# 모든 mfa/python CPU를 합쳐, 별도 분석 작업이 있으면 교착을 정상 진행으로
+# 오판할 수 있었다. 관리자 권한이 필요한 CIM 대신 Windows Toolhelp snapshot을
+# 사용한다. 스냅샷 조회가 일시 실패하면 기존 전역 집계로 폴백하되
+# metrics_scope에 이를 명시해 사후에 판별 가능하게 한다.
+function Get-ProcessTreeMetrics {
+    param([Parameter(Mandatory=$true)][int]$RootProcessId)
+
+    try {
+        if (-not ('ProjectProcessSnapshot' -as [type])) {
+            $snapshotSource = @'
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+public sealed class ProjectProcessParentInfo {
+    public int ProcessId { get; set; }
+    public int ParentProcessId { get; set; }
+    public string Name { get; set; }
+}
+
+public static class ProjectProcessSnapshot {
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+    private struct PROCESSENTRY32 {
+        public uint dwSize;
+        public uint cntUsage;
+        public uint th32ProcessID;
+        public IntPtr th32DefaultHeapID;
+        public uint th32ModuleID;
+        public uint cntThreads;
+        public uint th32ParentProcessID;
+        public int pcPriClassBase;
+        public uint dwFlags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst=260)]
+        public string szExeFile;
+    }
+
+    [DllImport("kernel32.dll", SetLastError=true)]
+    private static extern IntPtr CreateToolhelp32Snapshot(
+        uint flags, uint processId
+    );
+    [DllImport("kernel32.dll", CharSet=CharSet.Auto, SetLastError=true)]
+    private static extern bool Process32First(
+        IntPtr snapshot, ref PROCESSENTRY32 entry
+    );
+    [DllImport("kernel32.dll", CharSet=CharSet.Auto, SetLastError=true)]
+    private static extern bool Process32Next(
+        IntPtr snapshot, ref PROCESSENTRY32 entry
+    );
+    [DllImport("kernel32.dll", SetLastError=true)]
+    private static extern bool CloseHandle(IntPtr handle);
+
+    public static ProjectProcessParentInfo[] GetProcesses() {
+        var result = new List<ProjectProcessParentInfo>();
+        IntPtr snapshot = CreateToolhelp32Snapshot(2, 0);
+        if (snapshot == new IntPtr(-1)) {
+            throw new System.ComponentModel.Win32Exception(
+                Marshal.GetLastWin32Error()
+            );
+        }
+        try {
+            var entry = new PROCESSENTRY32();
+            entry.dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32));
+            if (Process32First(snapshot, ref entry)) {
+                do {
+                    result.Add(new ProjectProcessParentInfo {
+                        ProcessId = (int)entry.th32ProcessID,
+                        ParentProcessId = (int)entry.th32ParentProcessID,
+                        Name = entry.szExeFile
+                    });
+                    entry.dwSize = (
+                        uint
+                    )Marshal.SizeOf(typeof(PROCESSENTRY32));
+                } while (Process32Next(snapshot, ref entry));
+            }
+        } finally {
+            CloseHandle(snapshot);
+        }
+        return result.ToArray();
+    }
+}
+'@
+            Add-Type -TypeDefinition $snapshotSource -ErrorAction Stop
+        }
+        $inventory = @([ProjectProcessSnapshot]::GetProcesses())
+        $treeIdSet = @{}
+        $treeIdSet[$RootProcessId] = $true
+        $added = $true
+        while ($added) {
+            $added = $false
+            foreach ($item in $inventory) {
+                $itemId = [int]$item.ProcessId
+                $parentId = [int]$item.ParentProcessId
+                if ($itemId -gt 0 -and $treeIdSet.ContainsKey($parentId) -and
+                    -not $treeIdSet.ContainsKey($itemId)) {
+                    $treeIdSet[$itemId] = $true
+                    $added = $true
+                }
+            }
+        }
+        $processIds = @($treeIdSet.Keys | Sort-Object)
+        $live = @(
+            Get-Process -Id $processIds -ErrorAction SilentlyContinue
+        )
+        $cpuSeconds = 0.0
+        [int64]$workingSetBytes = 0
+        foreach ($item in $live) {
+            if ($null -ne $item.CPU) {
+                $cpuSeconds += [double]$item.CPU
+            }
+            $workingSetBytes += [int64]$item.WorkingSet64
+        }
+        return [PSCustomObject][ordered]@{
+            Scope = 'descendant_tree'
+            ProcessCount = $live.Count
+            PythonProcessCount = @(
+                $live | Where-Object { $_.ProcessName -match '^python' }
+            ).Count
+            CpuSeconds = $cpuSeconds
+            WorkingSetBytes = $workingSetBytes
+            ProcessIds = $processIds
+        }
+    } catch {
+        $live = @(Get-Process mfa,python -ErrorAction SilentlyContinue)
+        $cpuSeconds = 0.0
+        [int64]$workingSetBytes = 0
+        foreach ($item in $live) {
+            if ($null -ne $item.CPU) {
+                $cpuSeconds += [double]$item.CPU
+            }
+            $workingSetBytes += [int64]$item.WorkingSet64
+        }
+        return [PSCustomObject][ordered]@{
+            Scope = 'global_fallback'
+            ProcessCount = $live.Count
+            PythonProcessCount = @(
+                $live | Where-Object { $_.ProcessName -match '^python' }
+            ).Count
+            CpuSeconds = $cpuSeconds
+            WorkingSetBytes = $workingSetBytes
+            ProcessIds = @($live.Id | Sort-Object)
+        }
+    }
+}
+
 # 어떤 D: 경로도 만들기 전에 SSD 정본 라벨부터 검증한다.
 $expectLabel = 'DATA_SSD'
 $dLabel = $null
@@ -549,7 +695,9 @@ foreach ($y in $years) {
                 } catch {}
                 Write-Host ("[{0}] {1} MFA 진행: {2}" -f (Get-Date -Format 'HH:mm:ss'), $y, $tail)
                 $now = Get-Date
-                $curCpu = (Get-Process mfa,python -ErrorAction SilentlyContinue | Measure-Object CPU -Sum).Sum
+                $processMetrics = Get-ProcessTreeMetrics `
+                    -RootProcessId $p.Id
+                $curCpu = [double]$processMetrics.CpuSeconds
                 $cpuHistory.Add([PSCustomObject]@{ Time = $now; Cpu = $curCpu })
                 while ($cpuHistory.Count -gt 0 -and ($now - $cpuHistory[0].Time).TotalMinutes -gt ($stallMinutes + 2)) {
                     $cpuHistory.RemoveAt(0)
@@ -607,6 +755,15 @@ foreach ($y in $years) {
                         } else { $null })
                         counter_frozen_minutes = $frozenMin
                         cpu_seconds = $curCpu
+                        tree_cpu_seconds = $curCpu
+                        metrics_scope = $processMetrics.Scope
+                        tree_process_count = $processMetrics.ProcessCount
+                        tree_python_process_count = `
+                            $processMetrics.PythonProcessCount
+                        tree_working_set_mb = [math]::Round(
+                            $processMetrics.WorkingSetBytes / 1MB, 1
+                        )
+                        tree_process_ids = @($processMetrics.ProcessIds)
                         work_drive_free_gb = $freeNowGB
                         watchdog_will_kill = $kill
                         stderr_tail = $tail
