@@ -934,3 +934,11 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `9b66a3b6…b493e`로 고정했다. 상세 주장 범위·전수 gate·논문용 문장은
   `docs/decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md`
   에 기록했다.
+- 구현·방법론 문서를 commit `0c20e41`로 만들고
+  `origin/agent/harden-pre-bulk-pipelines`에 푸시했다. 커밋 전
+  PrepareOnly manifest가 이전 Git 해시를 가리키는 것도 재현성 결함으로
+  보고 해당 준비본을
+  `D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_commit_0c20e41_20260728_133547`
+  에 보존한 뒤 다시 준비했다. 최신 manifest는 full commit
+  `0c20e41621777dba9c6f61e73fd330a5ce667175`, OOV 866,691, 35 shard,
+  output shard 0, lock 없음이다.

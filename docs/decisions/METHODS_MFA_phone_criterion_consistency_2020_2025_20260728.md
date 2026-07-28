@@ -171,5 +171,9 @@ MFA 3.4.0의 `utils.parse_dictionary_file`은 발음확률, 뒤침묵확률,
 
 `D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_method_contract_20260728_132528`
 
-최신 PrepareOnly는 2026-07-28 13:27에 성공했고 G2P output shard는 아직
-0개다.
+코드 커밋·푸시 뒤 runtime provenance까지 맞추기 위해 13:27 준비본은
+`D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_commit_0c20e41_20260728_133547`
+에 추가 보존했다. 최신 PrepareOnly는 2026-07-28 13:36에 성공했고,
+manifest는 코드 commit
+`0c20e41621777dba9c6f61e73fd330a5ce667175`를 기록한다. G2P output
+shard는 아직 0개다.
