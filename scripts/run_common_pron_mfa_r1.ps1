@@ -307,8 +307,10 @@ try {
             continue
         }
         $incomplete = @(
-            $outputPath, $reportPath, $logPath, $shardTempDir
-        ) | Where-Object { Test-Path -LiteralPath $_ }
+            @(
+                $outputPath, $reportPath, $logPath, $shardTempDir
+            ) | Where-Object { Test-Path -LiteralPath $_ }
+        )
         if ($incomplete.Count -gt 0) {
             Archive-Incomplete `
                 @($outputPath, $reportPath, $logPath, $shardTempDir) `

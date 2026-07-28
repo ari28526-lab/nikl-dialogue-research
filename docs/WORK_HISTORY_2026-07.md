@@ -942,3 +942,10 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   에 보존한 뒤 다시 준비했다. 최신 manifest는 full commit
   `0c20e41621777dba9c6f61e73fd330a5ce667175`, OOV 866,691, 35 shard,
   output shard 0, lock 없음이다.
+- 13:38 사용자 PowerShell에서 장시간 실행을 시작했으나 첫 shard 직전,
+  미완료 산출물 검색 결과가 0개일 때 PowerShell StrictMode가 `$null.Count`
+  를 허용하지 않아 즉시 중단됐다. lock 없음, output shard 0, log 0,
+  work item 0을 확인해 G2P 미시작·원천/준비본 무손상을 확정했다.
+  `Where-Object` 결과를 바깥 `@(...)`로 한 번 더 감싸 빈 결과도 명시적
+  0개 배열이 되게 수정하고, 같은 회귀를 막는 PowerShell 정적 검사를
+  추가했다.

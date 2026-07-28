@@ -264,6 +264,12 @@ foreach ($path in $files) {
     }
     if ((Split-Path $path -Leaf) -eq 'run_common_pron_mfa_r1.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        if ($text -notmatch '(?s)\$incomplete\s*=\s*@\(\s*@\(') {
+            $failures.Add(
+                '공통 MFA r1의 빈 incomplete 목록이 StrictMode에서 ' +
+                '$null.Count로 실패할 수 있음'
+            )
+        }
         foreach ($required in @(
             "D:\mfa_common_pron",
             "VolumeLabel -ne 'DATA_SSD'",
