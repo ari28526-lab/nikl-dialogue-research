@@ -395,6 +395,18 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
         self.assertIn(lexicon.JAMO_L, decomposed)
         self.assertIn(lexicon.JAMO_S, decomposed)
 
+    def test_special_review_preserves_ipa_modifier_letters(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "review.csv"
+            path.write_text(
+                "token,model_input,pron_phones_mfa,decision,notes\n"
+                "외곬의,외골ᆺ의,tɕʰ i pʲ,approved,\n",
+                encoding="utf-8-sig",
+            )
+            row = lexicon.read_special_review(path)[0]
+            self.assertEqual(row["pron_phones_mfa"], "tɕʰ i pʲ")
+            self.assertNotEqual(row["pron_phones_mfa"], "tɕh i pj")
+
     def test_restore_jamo_ls_keeps_surface_key_and_requires_review(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -1016,3 +1016,8 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   같은 입력·4건 후보를 다시 만들었다. 현재 verified 표준 shard는
   0/35이며 final dictionary·difference inventory·adoption은 모두
   미생성이다.
+- 16:56 장시간 r2 실행 직전 기존 4행 검토표 비교가 실패했다. 실제
+  G2P 후보는 동일했고 표준 shard는 시작 전이었다. 원인은 검토표
+  reader가 IPA phone에도 NFKC를 적용해 `sʰ→sh`, `tɕʰ→tɕh`,
+  `pʲ→pj`로 내부 비교한 것이었다. IPA 열은 정규화하지 않고 strip만
+  하도록 수정하고 modifier-letter 회귀검사를 추가했다.

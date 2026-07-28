@@ -940,13 +940,25 @@ def read_special_review(path: Path) -> list[dict[str, str]]:
             raise RuntimeError(
                 f"Jamo ㄽ 연구자 검토표 필수 열 누락: {sorted(missing)}"
             )
-        return [
-            {
-                field: clean(row.get(field))
-                for field in SPECIAL_REVIEW_FIELDS
-            }
-            for row in reader
-        ]
+        rows = []
+        for row in reader:
+            # IPA modifier letters such as ʰ and ʲ are meaningful phone
+            # symbols. NFKC would silently collapse them to ASCII h/j, so
+            # normalization is limited to orthographic key columns.
+            rows.append(
+                {
+                    "token": clean(row.get("token")),
+                    "model_input": clean(row.get("model_input")),
+                    "pron_phones_mfa": str(
+                        row.get("pron_phones_mfa") or ""
+                    ).strip(),
+                    "decision": str(
+                        row.get("decision") or ""
+                    ).strip(),
+                    "notes": str(row.get("notes") or "").strip(),
+                }
+            )
+        return rows
 
 
 def restore_jamo_ls_candidates(
