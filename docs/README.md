@@ -38,6 +38,7 @@
 | [decisions/DECISION_common_pronunciation_resource_v2_20260728.md](decisions/DECISION_common_pronunciation_resource_v2_20260728.md) | **공통 발음 자원 v2 정본** — 어절 type/occurrence 분리, 형태소 조건 사전 후보, 수동 A/B 결과, MFA 주 정렬·wav2vec2/KFaligner 보조 역할 |
 | [decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md](decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md) | **6개년 phone 방법론 동일성 정본** — 같은 모델·사전·G2P·입력/tier 기준, 2020 TextGrid+부분 DB·2021 DB 전수 gate, 논문용 주장 범위 |
 | [decisions/RUNBOOK_common_pron_mfa_r1_20260728.md](decisions/RUNBOOK_common_pron_mfa_r1_20260728.md) | **공통 G2P 장시간 실행 정본** — 한 줄 실행, 35 shard 진행 확인·재개, 2020 TextGrid/부분 DB·2021 DB 자동 전수 gate |
+| [decisions/MONITOR_common_pron_mfa_r1_20260728.md](decisions/MONITOR_common_pron_mfa_r1_20260728.md) | 공통 G2P 35 shard와 2020 TextGrid·부분 DB/2021 DB 전수 동등성의 실시간 진행·오류·무손상 점검대장 |
 | [decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md](decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md) | **2020 전 단계 완료 감사** — 510만행 CSV, 86만 TextGrid, 4-tier 경계, 16시간 export 병목과 2021 전 개선 gate |
 | [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
