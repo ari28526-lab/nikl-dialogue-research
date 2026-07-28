@@ -69,3 +69,28 @@ MFA tier·CSV·TextGrid를 바꾸지 않는다.
 상세 결정:
 
 `docs/decisions/PLAN_common_pron_AB_then_year_order_20260728.md`
+
+## A/B 실행기 준비
+
+`scripts/run_common_pron_ab_pilot.ps1`을 추가했다. 기본 파일럿은 연도별 서로
+다른 실제 화자 5명의 stress 1발화와 같은 화자·세션 control 1발화, 총
+60발화이며 정책 A/B 각각 동일한 WAV·lab을 정렬한다.
+
+전체 vocabulary registry는 전수로 만들되, 채택 전 계산 낭비를 막기 위해
+파일럿 G2P는 표본에 필요한 어절·사전 발음에만 한정한다. 정책 A/B 채택 뒤
+같은 계약으로 전체 파생사전을 만든다.
+
+검증:
+
+- Python unittest 96개 통과
+- 신규 A/B 전용 합성시험 5개 통과
+- PowerShell 안전성 검사 7개 파일 통과
+- 실제 한국어 G2P 4단어 smoke test에서 1-best 옵션 필요성 확인
+- Python·PowerShell 구문 및 `git diff --check` 통과
+
+현재 상태는 **실제 A/B 6개년 소표본 실행 대기**이며 자동 정책 채택이나
+2020/2021/2022 전량 실행은 아직 하지 않는다.
+
+실행서:
+
+`docs/decisions/RUNBOOK_common_pron_AB_pilot_20260728.md`

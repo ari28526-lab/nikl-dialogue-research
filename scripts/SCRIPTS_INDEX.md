@@ -33,6 +33,8 @@
 | initialize_common_pron_pilot.ps1 | D: 라벨·여유공간·MFA lock을 검사하고 2020–2025 전체 공통 발음 파일럿 release를 역할별 폴더로 격리 생성. 기존 release 덮어쓰기·원자료 변경·자동 정리 금지 |
 | build_common_pron_vocabulary.py | 동결 `pron_reference_form` 6개년 전수에 MFA lab과 같은 토큰화를 적용해 연도별 출현을 포함한 공통 vocabulary와 SHA256 manifest 생성 |
 | audit_common_pron_sources.py | enriched `pron_1/2`와 legacy `pron_g2p`를 전수 감사해 행·중복·`urimal_id` fallback을 계측하고 등재 발음과 기계 생성값을 분리 |
+| common_pron_ab_pilot.py | 6개년 전체 vocabulary의 exact-word 발음 registry seed→연도별 5화자 stress/control byte-identical A/B corpus→표본 한정 정책 A/B 사전→phone열·경계 비교. 정책 B는 사전 발음을 추가만 하며 자동 채택·canonical 수정 금지 |
+| run_common_pron_ab_pilot.ps1 | 공통 발음 정책 A/B end-to-end 안전 실행기. D: 라벨·공간·bulk lock·MFA 패치를 검사하고 current G2P 1-best/strict 계약, 별도 temp/output, 부분 산출 archive, 4-tier QC, 수동 검토 보고서까지 실행 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 

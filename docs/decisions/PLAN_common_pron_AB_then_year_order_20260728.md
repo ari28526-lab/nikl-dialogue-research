@@ -136,3 +136,19 @@ revision/hash, `trust_remote_code=False`, 원 WAV 읽기 전용을 지킨다.
 정책 B 채택 뒤에는 연도별로 하나씩 실행하고, 각 연도 독립 QC와 보존
 manifest가 끝난 뒤 재계산 가능 temp만 별도 승인으로 정리한다. 여러 연도
 full temp를 동시에 누적하지 않는다.
+
+## 7. 구현 상태
+
+2026-07-28 `common_pron_ab_pilot.py`와
+`run_common_pron_ab_pilot.ps1`을 추가했다.
+
+- 6개년 전수 exact-word registry seed
+- 사전 발음 stress와 같은 화자·세션 control의 결정적 층화
+- 정책 A/B byte-identical WAV·lab
+- MFA 3.4 inline과 같은 G2P 1-best·strict grapheme 계약
+- 정책 B의 합집합 추가와 phone inventory gate
+- 정책별 격리 align·4-tier·QC와 발화별 비교
+- 기존/부분 산출물 덮어쓰기 금지와 run 내부 archive
+
+실제 명령과 연구자 확인 순서는
+`RUNBOOK_common_pron_AB_pilot_20260728.md`에 기록했다.

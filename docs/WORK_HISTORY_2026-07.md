@@ -781,3 +781,20 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   baseline archive로 보존하고 새 run ID로 2020→2021→2022–2025 순서로
   실행한다. 결정과 gate는
   `decisions/PLAN_common_pron_AB_then_year_order_20260728.md`에 기록했다.
+- 공통 발음 A/B 실행을 위해 `common_pron_ab_pilot.py`와
+  `run_common_pron_ab_pilot.ps1`을 구현했다. registry는 6개년 vocabulary
+  전수를 사용하되, 파일럿 G2P는 선택된 60발화에 필요한 어절·사전 발음에만
+  한정해 채택 전 수시간 중복 계산을 피한다.
+- 정책 A는 base+표본 OOV current G2P 1-best, 정책 B는 A에 exact-word
+  `pron_1/2`를 합집합으로 추가한다. MFA 3.4 inline 소스의
+  `num_pronunciations=1`, `strict_graphemes=True`를 재현하고 A/B 입력
+  WAV·lab SHA256 동일, phone inventory 밖 기호 0, 기존 canonical 비변경을
+  gate로 고정했다.
+- 합성 fixture에서 registry 원천 분리, 정책 A 보존·B 변이 추가,
+  release 경계 차단, phone edit distance, A/B WAV·lab SHA256 동일 복사
+  5개 시험이 통과했다. 실제 명령과 수동 검토 순서는
+  `decisions/RUNBOOK_common_pron_AB_pilot_20260728.md`에 기록했다.
+- 전체 Python unittest 96개, PowerShell 안전성 검사 7개 파일,
+  Python/PowerShell 구문과 `git diff --check`가 통과했다. 실제 설치된
+  G2P 4단어 smoke test에서는 기본값이 복수 후보를 낼 수 있음을 확인해,
+  inline MFA 소스와 같은 `--num_pronunciations 1`을 실행기에 명시했다.

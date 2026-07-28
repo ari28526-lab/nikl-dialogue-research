@@ -7,7 +7,8 @@ $files = @(
     (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
-    (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1')
+    (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
+    (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -213,6 +214,30 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 발음 파일럿 초기화 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_common_pron_ab_pilot.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            "D:\mfa_common_pron",
+            "VolumeLabel -ne 'DATA_SSD'",
+            'pre_mfa_bulk.lock',
+            'verify_mfa_install.py',
+            'common_pron_ab_pilot.py',
+            '--num_pronunciations',
+            "'1'",
+            '--strict_graphemes',
+            '--no_tokenization',
+            'policy_A_baseline_cache.dict',
+            'policy_B_attested_variants.dict',
+            'Archive-Incomplete',
+            'comparison_done.json',
+            '아직 정책을 채택하지 않음',
+            '기존 2020/2021 결과와 canonical CSV/TextGrid는 수정하지 않음'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 발음 A/B 러너 안전장치 누락: $required")
             }
         }
     }
