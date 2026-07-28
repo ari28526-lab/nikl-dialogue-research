@@ -301,6 +301,8 @@ if ($null -ne $latestLog) {
 
 $approvalPendingShards = @()
 $unknownMissingShards = @()
+$approvalPendingWords = @()
+$unknownMissingWords = @()
 $repairAttemptRoot = Join-Path $releaseRootFull '_state\no_path_repairs'
 foreach ($attemptFile in @(
     Get-ChildItem -LiteralPath $repairAttemptRoot `
@@ -317,8 +319,10 @@ foreach ($attemptFile in @(
         $index = [int]$match.Groups[1].Value
         if ($attempt.status -eq 'researcher_approval_required') {
             $approvalPendingShards += $index
+            $approvalPendingWords += @($attempt.not_approved_words)
         } elseif ($attempt.status -eq 'unknown_missing_words') {
             $unknownMissingShards += $index
+            $unknownMissingWords += @($attempt.unknown_words)
         }
     } catch {
         $invalidReports += 1
@@ -326,6 +330,8 @@ foreach ($attemptFile in @(
 }
 $approvalPendingShards = @($approvalPendingShards | Sort-Object -Unique)
 $unknownMissingShards = @($unknownMissingShards | Sort-Object -Unique)
+$approvalPendingWords = @($approvalPendingWords | Sort-Object -Unique)
+$unknownMissingWords = @($unknownMissingWords | Sort-Object -Unique)
 
 $final = Read-JsonFile $finalPath
 $difference = Read-JsonFile $differencePath
@@ -376,8 +382,14 @@ $result = [ordered]@{
         approval_pending_shards = (
             $approvalPendingShards -join ','
         )
+        approval_pending_words = (
+            $approvalPendingWords -join ','
+        )
         unknown_missing_shards = (
             $unknownMissingShards -join ','
+        )
+        unknown_missing_words = (
+            $unknownMissingWords -join ','
         )
         observed_generated_words = $generatedWords
         percent = $progressPct

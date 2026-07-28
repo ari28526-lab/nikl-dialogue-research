@@ -365,7 +365,9 @@ foreach ($path in $files) {
             'foreach ($record in @($verifiedReportRecords))',
             'unverified_output_words',
             'approval_pending_shards',
+            'approval_pending_words',
             'unknown_missing_shards',
+            'unknown_missing_words',
             'g2p_review_blocked_not_running',
             'difference_inventory_status'
         )) {
