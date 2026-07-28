@@ -1,0 +1,46 @@
+{
+  "schema_version": "common_pron_mfa_lexicon.v1",
+  "status": "unsupported_graphemes_found",
+  "kind": "g2p_grapheme_coverage_audit",
+  "recorded_at": "2026-07-28T15:04:28+09:00",
+  "input_directory": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r1_20260728\\01_g2p\\input_shards",
+  "g2p_model": {
+    "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_jamo_g2p_v3.2.0.zip",
+    "bytes": 5456781,
+    "mtime_ns": 1785218534614983300,
+    "sha256": "4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff"
+  },
+  "g2p_model_contract": {
+    "architecture": "phonetisaurus",
+    "version": "3.2.0",
+    "unicode_decomposition": true,
+    "grapheme_count": 66,
+    "grapheme_sorted_sha256": "45c3ba191937fbdaae40a1ecb9cc6f89a4ebfe751663fae8a7c2fbad4a15b171",
+    "phone_count": 107,
+    "phone_sorted_sha256": "6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d"
+  },
+  "input_normalization": "NFKD",
+  "counts": {
+    "input_shards": 35,
+    "input_words": 866691,
+    "unsupported_words": 4,
+    "unsupported_unique_graphemes": 1
+  },
+  "unsupported_grapheme_counts": [
+    {
+      "grapheme": "ᆳ",
+      "words": 4
+    }
+  ],
+  "runtime": {
+    "recorded_at": "2026-07-28T15:04:28+09:00",
+    "git_commit": "2f3bebe747ff64a609c671d3185351756ed6b431",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 19928
+  }
+}

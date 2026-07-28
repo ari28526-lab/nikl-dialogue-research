@@ -9,7 +9,9 @@ $files = @(
     (Join-Path $root 'scripts\run_search_master.ps1'),
     (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
     (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1'),
-    (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1')
+    (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1'),
+    (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
+    (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -291,6 +293,52 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA 사전 r1 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'show_common_pron_mfa_status.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'Read-only status dashboard',
+            '[IO.FileShare]::ReadWrite',
+            "status -eq 'success'",
+            'missing',
+            'extras',
+            'spn_words',
+            'phone_outside_acoustic_inventory',
+            '[IO.DriveInfo]::new',
+            'lock_process_alive',
+            'allow_common_dictionary_for_2022'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 MFA 상태판 안전장치 누락: $required")
+            }
+        }
+        if ($text -match (
+            '(?im)^\s*(Remove-Item|Move-Item|Rename-Item|Stop-Process|' +
+            'Start-Process|Set-Content|Add-Content|Out-File|Tee-Object)\b'
+        )) {
+            $failures.Add('공통 MFA 상태판에 쓰기·제어 명령이 포함됨')
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+            'archive_pre_jamo_outputs_to_external.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            "D:는 메인 작업 드라이브",
+            'READ_ONLY_ARCHIVE',
+            'Assert-ExactSource',
+            'archive 원본 allowlist 위반',
+            'robocopy zero-diff plus file-count and byte-count',
+            'if ($diffCode -ne 0)',
+            '2021.db SHA256 불일치',
+            '[switch]$PruneAfterVerify',
+            'Remove-Item -LiteralPath $confirmed -Recurse -Force'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("외장 archive 안전장치 누락: $required")
             }
         }
     }

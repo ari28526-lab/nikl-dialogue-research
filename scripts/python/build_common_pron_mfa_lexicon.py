@@ -24,7 +24,7 @@ import math
 import re
 import unicodedata
 import zipfile
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from pipeline_common import (
@@ -121,6 +121,142 @@ def acoustic_phone_inventory(path: Path) -> set[str]:
         raise RuntimeError("acoustic phone inventory가 비어 있음")
     phones.update({"sil", "spn"})
     return phones
+
+
+def g2p_grapheme_contract(path: Path) -> tuple[set[str], dict[str, object]]:
+    with zipfile.ZipFile(path) as archive:
+        names = [
+            name for name in archive.namelist() if name.endswith("/meta.json")
+        ]
+        if len(names) != 1:
+            raise RuntimeError(f"G2P meta.json 수가 1이 아님: {names}")
+        meta = json.loads(archive.read(names[0]).decode("utf-8"))
+    graphemes = {str(value) for value in meta.get("graphemes", [])}
+    if not graphemes:
+        raise RuntimeError("G2P grapheme inventory가 비어 있음")
+    phones = {str(value) for value in meta.get("phones", [])}
+    if not phones:
+        raise RuntimeError("G2P phone inventory가 비어 있음")
+    return graphemes, {
+        "architecture": str(meta.get("architecture", "unknown")),
+        "version": str(meta.get("version", "unknown")),
+        "unicode_decomposition": bool(
+            meta.get("unicode_decomposition", False)
+        ),
+        "grapheme_count": len(graphemes),
+        "grapheme_sorted_sha256": hashlib.sha256(
+            ("\n".join(sorted(graphemes)) + "\n").encode("utf-8")
+        ).hexdigest(),
+        "phone_count": len(phones),
+        "phone_sorted_sha256": hashlib.sha256(
+            ("\n".join(sorted(phones)) + "\n").encode("utf-8")
+        ).hexdigest(),
+    }
+
+
+def audit_g2p_grapheme_coverage(
+    *,
+    input_directory: Path,
+    g2p_model: Path,
+    input_normalization: str = "model",
+) -> tuple[dict, list[dict[str, object]]]:
+    graphemes, model_contract = g2p_grapheme_contract(g2p_model)
+    if input_normalization == "model":
+        normalization = (
+            "NFKD"
+            if bool(model_contract["unicode_decomposition"])
+            else "none"
+        )
+    elif input_normalization in {"none", "NFKC", "NFKD"}:
+        normalization = input_normalization
+    else:
+        raise ValueError(
+            f"지원하지 않는 G2P 입력 정규화: {input_normalization}"
+        )
+    rows: list[dict[str, object]] = []
+    missing_character_counts: Counter[str] = Counter()
+    total_words = 0
+    shard_paths = sorted(input_directory.glob("oov_*.txt"))
+    if not shard_paths:
+        raise RuntimeError(f"G2P input shard가 없음: {input_directory}")
+    for shard_path in shard_paths:
+        with shard_path.open("r", encoding="utf-8-sig") as stream:
+            for line_number, line in enumerate(stream, 1):
+                token = clean(line)
+                if not token:
+                    continue
+                total_words += 1
+                model_input = (
+                    unicodedata.normalize(normalization, token)
+                    if normalization != "none"
+                    else token
+                )
+                missing = sorted(set(model_input) - graphemes)
+                if not missing:
+                    continue
+                missing_character_counts.update(missing)
+                rows.append(
+                    {
+                        "shard": shard_path.stem,
+                        "line_number": line_number,
+                        "token": token,
+                        "missing_graphemes": "".join(missing),
+                        "missing_codepoints": " ".join(
+                            f"U+{ord(value):04X}" for value in missing
+                        ),
+                    }
+                )
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "status": "passed" if not rows else "unsupported_graphemes_found",
+        "kind": "g2p_grapheme_coverage_audit",
+        "recorded_at": now_iso(),
+        "input_directory": str(input_directory.resolve()),
+        "g2p_model": file_fingerprint(g2p_model, with_sha256=True),
+        "g2p_model_contract": model_contract,
+        "input_normalization": normalization,
+        "counts": {
+            "input_shards": len(shard_paths),
+            "input_words": total_words,
+            "unsupported_words": len(rows),
+            "unsupported_unique_graphemes": len(missing_character_counts),
+        },
+        "unsupported_grapheme_counts": [
+            {"grapheme": value, "words": count}
+            for value, count in sorted(
+                missing_character_counts.items(),
+                key=lambda item: (-item[1], item[0]),
+            )
+        ],
+        "runtime": runtime_snapshot(PROJECT_ROOT),
+    }
+    return report, rows
+
+
+def write_grapheme_audit(
+    *,
+    report: dict,
+    rows: list[dict[str, object]],
+    output_json: Path,
+    output_csv: Path,
+) -> None:
+    atomic_write_json(output_json, report)
+    with atomic_text_writer(
+        output_csv, encoding="utf-8-sig", newline=""
+    ) as (stream, _):
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=(
+                "shard",
+                "line_number",
+                "token",
+                "missing_graphemes",
+                "missing_codepoints",
+            ),
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def phone_inventory_contract(phones: set[str]) -> dict[str, object]:
@@ -715,6 +851,19 @@ def parse_args() -> argparse.Namespace:
         "--acoustic-model", type=Path, required=True
     )
     verify_parser.add_argument("--report", type=Path, required=True)
+
+    audit_parser = sub.add_parser("audit-graphemes")
+    audit_parser.add_argument(
+        "--input-directory", type=Path, required=True
+    )
+    audit_parser.add_argument("--g2p-model", type=Path, required=True)
+    audit_parser.add_argument(
+        "--input-normalization",
+        choices=("model", "none", "NFKC", "NFKD"),
+        default="model",
+    )
+    audit_parser.add_argument("--output-json", type=Path, required=True)
+    audit_parser.add_argument("--output-csv", type=Path, required=True)
     return parser.parse_args()
 
 
@@ -744,7 +893,7 @@ def main() -> int:
             "2020/2021 동등성은 아직 pending",
             flush=True,
         )
-    else:
+    elif args.command == "verify-shard":
         manifest = verify_g2p_shard(
             input_shard=args.input_shard.resolve(),
             output_shard=args.output_shard.resolve(),
@@ -754,6 +903,24 @@ def main() -> int:
         print(
             "[OK] G2P shard: "
             f"{manifest['counts']['output_words']:,} words",
+            flush=True,
+        )
+    else:
+        report, rows = audit_g2p_grapheme_coverage(
+            input_directory=args.input_directory.resolve(),
+            g2p_model=args.g2p_model.resolve(),
+            input_normalization=args.input_normalization,
+        )
+        write_grapheme_audit(
+            report=report,
+            rows=rows,
+            output_json=args.output_json.resolve(),
+            output_csv=args.output_csv.resolve(),
+        )
+        print(
+            "[OK] G2P grapheme audit: "
+            f"{report['counts']['unsupported_words']:,}/"
+            f"{report['counts']['input_words']:,} unsupported words",
             flush=True,
         )
     return 0

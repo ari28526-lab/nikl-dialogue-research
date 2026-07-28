@@ -1,0 +1,44 @@
+{
+  "schema_version": "common_pron_jamo_g2p_derivation.v1",
+  "status": "success",
+  "recorded_at": "2026-07-28T14:42:34+09:00",
+  "purpose": "enable lossless NFKD input for the official Korean Jamo MFA G2P FST without changing its FST, symbols, phones, or graphemes",
+  "source_model": {
+    "path": "C:\\Users\\ari30\\Documents\\MFA\\pretrained_models\\g2p\\korean_jamo_mfa.zip",
+    "bytes": 5504523,
+    "mtime_ns": 1785216473511005600,
+    "sha256": "d866389d2d29f9b8dec6be84132182cd3527a354926479958b9193d26377511f"
+  },
+  "derived_model": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\jamo_g2p_model_pilot\\korean_jamo_mfa_nfkd.zip",
+    "bytes": 5504603,
+    "mtime_ns": 1785217354317858100,
+    "sha256": "29cd4f5b897b132bad113e2c866cebb66ffc1ae6229c646f7fd7c66239b65efa"
+  },
+  "change_contract": {
+    "meta_member": "korean_jamo_mfa/meta.json",
+    "source_unicode_decomposition": null,
+    "derived_unicode_decomposition": true,
+    "unchanged_member_count": 4,
+    "unchanged_members_contract_sha256": "22c23e1fdff2ebb37b347abda10601bc92e950f41c7f7a183a9a6ec3724b095b"
+  },
+  "phone_inventory": {
+    "count": 108,
+    "sorted_sha256": "32c4a6b8d66c8a0a7b2624d4d288792764c19cee633d7a04885d2e3d17fb6e2e"
+  },
+  "grapheme_inventory": {
+    "count": 94,
+    "sorted_sha256": "91293b023bfd34b686366592e7348591b392689c0d0152e4cdd2a99c85e09f15"
+  },
+  "runtime": {
+    "recorded_at": "2026-07-28T14:42:34+09:00",
+    "git_commit": "2f3bebe747ff64a609c671d3185351756ed6b431",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 20988
+  }
+}

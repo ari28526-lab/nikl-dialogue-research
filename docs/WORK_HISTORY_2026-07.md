@@ -949,3 +949,33 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `Where-Object` 결과를 바깥 `@(...)`로 한 번 더 감싸 빈 결과도 명시적
   0개 배열이 되게 수정하고, 같은 회귀를 막는 PowerShell 정적 검사를
   추가했다.
+
+## 2026-07-28 오후 — r1 숨은 `spn` 차단과 최신 Jamo 기준 재설정
+
+- r1 shard 1은 MFA exit 0이었지만 strict 음절 grapheme 누락 때문에
+  25,000개 중 24,966개만 만들었다. shard coverage 검증기가 이를 성공으로
+  승인하지 않고 output·log·temp를 `archive_failed`에 보존한 뒤 중단했다.
+- 구 음절 G2P는 전체 OOV 866,691개 중 5,176개를 처리하지 못했다. 2021
+  DB에서 대표 10개가 실제 phone이 아닌 `spn`이었음을 확인해, 과거
+  2020·2021의 “완료”가 G2P 완전성을 뜻하지 않았음을 기록했다.
+- sunk cost를 배제하고 공식 Hugging Face
+  `MontrealCorpusTools/korean_mfa` commit `0091ffa...`의 acoustic
+  v3.3.0, Jamo G2P v3.2.0, 같은 dictionary를 전 연도 새 기준으로
+  선택했다. acoustic–G2P phone 107개가 동일하다.
+- MFA 내장 `model download --force`는 exit 0인데 파일 SHA가 구버전과
+  같았고, 첫 HF clone은 Windows CRLF 때문에 OpenFST가 `0\r` label을
+  거부했다. LF clone과 version·commit·SHA gate로 둘 다 차단했다.
+- 최신 묶음을 deterministic zip/dictionary로 D:에 동결하고, acoustic
+  표준 load와 Jamo 10단어 10/10 및 directory–zip 출력 SHA 일치를
+  확인했다. 기계 manifest는
+  `outputs/reports/korean_mfa_latest_jamo_bundle_20260728.json`이다.
+- 최신 Jamo의 구 OOV 전수 grapheme 감사에서는 종성 `ᆳ`을 포함한 4개만
+  남았다. 다른 모델 또는 최종 `spn`을 섞지 않고 `ᆳ→ᆯ+ᆺ` Jamo 완전분해
+  뒤 같은 rewriter를 쓰며, 공통사전 missing=0·spn=0 전에는 연도별 MFA를
+  시작하지 않는다.
+- D:를 유일한 메인으로 유지하고 새 E: 외장 HDD는 구 2020·2021
+  TextGrid·DB/temp·실패 clone 약 55.9GiB의 `READ_ONLY_ARCHIVE`로만
+  사용한다. 복사·zero-diff·파일 수·바이트·DB SHA 검증 뒤에만 명시적
+  prune을 허용하는 별도 실행기를 추가했다.
+- 독립 코드 리뷰를 위해 최신 결정문과 severity·재현법·연구 영향·수정 후
+  검증을 강제하는 리뷰 프롬프트를 `docs/reviews`에 마련했다.

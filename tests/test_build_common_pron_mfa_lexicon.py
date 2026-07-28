@@ -118,6 +118,27 @@ def write_acoustic_model(path: Path) -> None:
         )
 
 
+def write_g2p_model(
+    path: Path,
+    *,
+    graphemes: list[str],
+    unicode_decomposition: bool = False,
+) -> None:
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr(
+            "g2p/meta.json",
+            json.dumps(
+                {
+                    "architecture": "phonetisaurus",
+                    "version": "test",
+                    "unicode_decomposition": unicode_decomposition,
+                    "graphemes": graphemes,
+                    "phones": ["a", "k", "p"],
+                }
+            ),
+        )
+
+
 class CommonPronMfaLexiconTests(unittest.TestCase):
     def test_parser_matches_mfa_four_probability_correction_columns(self):
         word, phones, probabilities = lexicon.parse_mfa_dictionary_line(
@@ -296,6 +317,60 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
             )
             self.assertEqual(report["counts"]["missing"], 0)
             self.assertEqual(report["counts"]["output_words"], 2)
+
+    def test_grapheme_audit_finds_words_strict_g2p_would_skip(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            input_directory = root / "input"
+            input_directory.mkdir()
+            (input_directory / "oov_00001.txt").write_text(
+                "가\n갭\n나\n", encoding="utf-8"
+            )
+            g2p_model = root / "g2p.zip"
+            write_g2p_model(
+                g2p_model,
+                graphemes=["가", "나"],
+            )
+            report, rows = lexicon.audit_g2p_grapheme_coverage(
+                input_directory=input_directory,
+                g2p_model=g2p_model,
+            )
+            self.assertEqual(report["status"], "unsupported_graphemes_found")
+            self.assertEqual(report["counts"]["input_words"], 3)
+            self.assertEqual(report["counts"]["unsupported_words"], 1)
+            self.assertEqual(rows[0]["token"], "갭")
+            self.assertEqual(rows[0]["missing_graphemes"], "갭")
+
+    def test_grapheme_audit_supports_explicit_nfkd_jamo_input(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            input_directory = root / "input"
+            input_directory.mkdir()
+            (input_directory / "oov_00001.txt").write_text(
+                "가\n갭\n", encoding="utf-8"
+            )
+            g2p_model = root / "jamo_g2p.zip"
+            decomposed = sorted(
+                set(
+                    "".join(
+                        __import__("unicodedata").normalize("NFKD", value)
+                        for value in ("가", "갭")
+                    )
+                )
+            )
+            write_g2p_model(
+                g2p_model,
+                graphemes=decomposed,
+            )
+            report, rows = lexicon.audit_g2p_grapheme_coverage(
+                input_directory=input_directory,
+                g2p_model=g2p_model,
+                input_normalization="NFKD",
+            )
+            self.assertEqual(report["status"], "passed")
+            self.assertEqual(report["input_normalization"], "NFKD")
+            self.assertEqual(report["counts"]["unsupported_words"], 0)
+            self.assertEqual(rows, [])
 
 
 if __name__ == "__main__":

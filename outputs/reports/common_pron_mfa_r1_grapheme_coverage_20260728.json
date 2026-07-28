@@ -1,0 +1,2658 @@
+{
+  "schema_version": "common_pron_mfa_lexicon.v1",
+  "status": "unsupported_graphemes_found",
+  "kind": "g2p_grapheme_coverage_audit",
+  "recorded_at": "2026-07-28T14:35:05+09:00",
+  "input_directory": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r1_20260728\\01_g2p\\input_shards",
+  "g2p_model": {
+    "path": "C:\\Users\\ari30\\Documents\\MFA\\pretrained_models\\g2p\\korean_mfa.zip",
+    "bytes": 5530577,
+    "mtime_ns": 1784777795344415800,
+    "sha256": "6938db05d83fa92c5c80681bf76fd7dd7af7f3ea8c7d7df1093790c641ad0344"
+  },
+  "g2p_model_contract": {
+    "architecture": "phonetisaurus",
+    "version": "3.0",
+    "unicode_decomposition": false,
+    "grapheme_count": 2112,
+    "grapheme_sorted_sha256": "7cd9d1943090e3d95b7da0f9b4ba27c2b1d2282e07e0f2f7962f3a7e78aeda58",
+    "phone_count": 108,
+    "phone_sorted_sha256": "32c4a6b8d66c8a0a7b2624d4d288792764c19cee633d7a04885d2e3d17fb6e2e"
+  },
+  "input_normalization": "none",
+  "counts": {
+    "input_shards": 35,
+    "input_words": 866691,
+    "unsupported_words": 5176,
+    "unsupported_unique_graphemes": 654
+  },
+  "unsupported_grapheme_counts": [
+    {
+      "grapheme": "랩",
+      "words": 300
+    },
+    {
+      "grapheme": "챗",
+      "words": 182
+    },
+    {
+      "grapheme": "팠",
+      "words": 156
+    },
+    {
+      "grapheme": "텀",
+      "words": 148
+    },
+    {
+      "grapheme": "쭤",
+      "words": 119
+    },
+    {
+      "grapheme": "쓱",
+      "words": 91
+    },
+    {
+      "grapheme": "쪘",
+      "words": 88
+    },
+    {
+      "grapheme": "쿤",
+      "words": 78
+    },
+    {
+      "grapheme": "왓",
+      "words": 76
+    },
+    {
+      "grapheme": "숑",
+      "words": 73
+    },
+    {
+      "grapheme": "겄",
+      "words": 70
+    },
+    {
+      "grapheme": "탭",
+      "words": 66
+    },
+    {
+      "grapheme": "앴",
+      "words": 60
+    },
+    {
+      "grapheme": "맸",
+      "words": 58
+    },
+    {
+      "grapheme": "킵",
+      "words": 54
+    },
+    {
+      "grapheme": "깻",
+      "words": 52
+    },
+    {
+      "grapheme": "큘",
+      "words": 52
+    },
+    {
+      "grapheme": "탤",
+      "words": 50
+    },
+    {
+      "grapheme": "핌",
+      "words": 50
+    },
+    {
+      "grapheme": "쬐",
+      "words": 46
+    },
+    {
+      "grapheme": "듦",
+      "words": 44
+    },
+    {
+      "grapheme": "횐",
+      "words": 44
+    },
+    {
+      "grapheme": "뻣",
+      "words": 43
+    },
+    {
+      "grapheme": "밲",
+      "words": 42
+    },
+    {
+      "grapheme": "뵀",
+      "words": 40
+    },
+    {
+      "grapheme": "팸",
+      "words": 39
+    },
+    {
+      "grapheme": "둣",
+      "words": 38
+    },
+    {
+      "grapheme": "딕",
+      "words": 37
+    },
+    {
+      "grapheme": "줏",
+      "words": 36
+    },
+    {
+      "grapheme": "짼",
+      "words": 36
+    },
+    {
+      "grapheme": "됬",
+      "words": 35
+    },
+    {
+      "grapheme": "숴",
+      "words": 34
+    },
+    {
+      "grapheme": "틋",
+      "words": 34
+    },
+    {
+      "grapheme": "댑",
+      "words": 33
+    },
+    {
+      "grapheme": "숄",
+      "words": 32
+    },
+    {
+      "grapheme": "랏",
+      "words": 31
+    },
+    {
+      "grapheme": "폿",
+      "words": 31
+    },
+    {
+      "grapheme": "샜",
+      "words": 30
+    },
+    {
+      "grapheme": "핬",
+      "words": 30
+    },
+    {
+      "grapheme": "갭",
+      "words": 29
+    },
+    {
+      "grapheme": "윳",
+      "words": 28
+    },
+    {
+      "grapheme": "펍",
+      "words": 28
+    },
+    {
+      "grapheme": "헉",
+      "words": 28
+    },
+    {
+      "grapheme": "껐",
+      "words": 27
+    },
+    {
+      "grapheme": "뎠",
+      "words": 27
+    },
+    {
+      "grapheme": "릏",
+      "words": 27
+    },
+    {
+      "grapheme": "렙",
+      "words": 26
+    },
+    {
+      "grapheme": "캤",
+      "words": 26
+    },
+    {
+      "grapheme": "챘",
+      "words": 25
+    },
+    {
+      "grapheme": "쾃",
+      "words": 25
+    },
+    {
+      "grapheme": "쌉",
+      "words": 24
+    },
+    {
+      "grapheme": "궜",
+      "words": 23
+    },
+    {
+      "grapheme": "탯",
+      "words": 23
+    },
+    {
+      "grapheme": "뜀",
+      "words": 22
+    },
+    {
+      "grapheme": "뮨",
+      "words": 22
+    },
+    {
+      "grapheme": "빕",
+      "words": 22
+    },
+    {
+      "grapheme": "빢",
+      "words": 22
+    },
+    {
+      "grapheme": "빳",
+      "words": 22
+    },
+    {
+      "grapheme": "쟀",
+      "words": 22
+    },
+    {
+      "grapheme": "멫",
+      "words": 21
+    },
+    {
+      "grapheme": "텄",
+      "words": 21
+    },
+    {
+      "grapheme": "갰",
+      "words": 20
+    },
+    {
+      "grapheme": "뗐",
+      "words": 20
+    },
+    {
+      "grapheme": "굣",
+      "words": 19
+    },
+    {
+      "grapheme": "렜",
+      "words": 18
+    },
+    {
+      "grapheme": "뱁",
+      "words": 18
+    },
+    {
+      "grapheme": "깠",
+      "words": 17
+    },
+    {
+      "grapheme": "딲",
+      "words": 17
+    },
+    {
+      "grapheme": "쌂",
+      "words": 17
+    },
+    {
+      "grapheme": "쏴",
+      "words": 17
+    },
+    {
+      "grapheme": "읜",
+      "words": 17
+    },
+    {
+      "grapheme": "퉜",
+      "words": 17
+    },
+    {
+      "grapheme": "룟",
+      "words": 16
+    },
+    {
+      "grapheme": "뷸",
+      "words": 16
+    },
+    {
+      "grapheme": "쉑",
+      "words": 16
+    },
+    {
+      "grapheme": "퀀",
+      "words": 16
+    },
+    {
+      "grapheme": "퀼",
+      "words": 16
+    },
+    {
+      "grapheme": "푠",
+      "words": 16
+    },
+    {
+      "grapheme": "휑",
+      "words": 16
+    },
+    {
+      "grapheme": "랖",
+      "words": 15
+    },
+    {
+      "grapheme": "쉈",
+      "words": 15
+    },
+    {
+      "grapheme": "쏭",
+      "words": 15
+    },
+    {
+      "grapheme": "쫍",
+      "words": 15
+    },
+    {
+      "grapheme": "귈",
+      "words": 14
+    },
+    {
+      "grapheme": "꼿",
+      "words": 14
+    },
+    {
+      "grapheme": "듄",
+      "words": 14
+    },
+    {
+      "grapheme": "뛸",
+      "words": 14
+    },
+    {
+      "grapheme": "뱄",
+      "words": 14
+    },
+    {
+      "grapheme": "쌜",
+      "words": 14
+    },
+    {
+      "grapheme": "덨",
+      "words": 13
+    },
+    {
+      "grapheme": "뎃",
+      "words": 13
+    },
+    {
+      "grapheme": "떄",
+      "words": 13
+    },
+    {
+      "grapheme": "봬",
+      "words": 13
+    },
+    {
+      "grapheme": "빾",
+      "words": 13
+    },
+    {
+      "grapheme": "뻬",
+      "words": 13
+    },
+    {
+      "grapheme": "얍",
+      "words": 13
+    },
+    {
+      "grapheme": "쫘",
+      "words": 13
+    },
+    {
+      "grapheme": "챈",
+      "words": 13
+    },
+    {
+      "grapheme": "툽",
+      "words": 13
+    },
+    {
+      "grapheme": "햅",
+      "words": 13
+    },
+    {
+      "grapheme": "붑",
+      "words": 12
+    },
+    {
+      "grapheme": "샥",
+      "words": 12
+    },
+    {
+      "grapheme": "쎅",
+      "words": 12
+    },
+    {
+      "grapheme": "쨈",
+      "words": 12
+    },
+    {
+      "grapheme": "쩠",
+      "words": 12
+    },
+    {
+      "grapheme": "쮸",
+      "words": 12
+    },
+    {
+      "grapheme": "쿱",
+      "words": 12
+    },
+    {
+      "grapheme": "푀",
+      "words": 12
+    },
+    {
+      "grapheme": "혓",
+      "words": 12
+    },
+    {
+      "grapheme": "곯",
+      "words": 11
+    },
+    {
+      "grapheme": "꼐",
+      "words": 11
+    },
+    {
+      "grapheme": "뽂",
+      "words": 11
+    },
+    {
+      "grapheme": "앳",
+      "words": 11
+    },
+    {
+      "grapheme": "짹",
+      "words": 11
+    },
+    {
+      "grapheme": "튠",
+      "words": 11
+    },
+    {
+      "grapheme": "깄",
+      "words": 10
+    },
+    {
+      "grapheme": "꺄",
+      "words": 10
+    },
+    {
+      "grapheme": "닢",
+      "words": 10
+    },
+    {
+      "grapheme": "썪",
+      "words": 10
+    },
+    {
+      "grapheme": "쎘",
+      "words": 10
+    },
+    {
+      "grapheme": "쓔",
+      "words": 10
+    },
+    {
+      "grapheme": "탰",
+      "words": 10
+    },
+    {
+      "grapheme": "틉",
+      "words": 10
+    },
+    {
+      "grapheme": "횔",
+      "words": 10
+    },
+    {
+      "grapheme": "꽹",
+      "words": 9
+    },
+    {
+      "grapheme": "뎐",
+      "words": 9
+    },
+    {
+      "grapheme": "섕",
+      "words": 9
+    },
+    {
+      "grapheme": "썻",
+      "words": 9
+    },
+    {
+      "grapheme": "얬",
+      "words": 9
+    },
+    {
+      "grapheme": "윔",
+      "words": 9
+    },
+    {
+      "grapheme": "캇",
+      "words": 9
+    },
+    {
+      "grapheme": "캬",
+      "words": 9
+    },
+    {
+      "grapheme": "튄",
+      "words": 9
+    },
+    {
+      "grapheme": "팃",
+      "words": 9
+    },
+    {
+      "grapheme": "겋",
+      "words": 8
+    },
+    {
+      "grapheme": "쌨",
+      "words": 8
+    },
+    {
+      "grapheme": "쎗",
+      "words": 8
+    },
+    {
+      "grapheme": "얏",
+      "words": 8
+    },
+    {
+      "grapheme": "쫒",
+      "words": 8
+    },
+    {
+      "grapheme": "촤",
+      "words": 8
+    },
+    {
+      "grapheme": "츌",
+      "words": 8
+    },
+    {
+      "grapheme": "픕",
+      "words": 8
+    },
+    {
+      "grapheme": "괏",
+      "words": 7
+    },
+    {
+      "grapheme": "띡",
+      "words": 7
+    },
+    {
+      "grapheme": "빰",
+      "words": 7
+    },
+    {
+      "grapheme": "셩",
+      "words": 7
+    },
+    {
+      "grapheme": "슌",
+      "words": 7
+    },
+    {
+      "grapheme": "잌",
+      "words": 7
+    },
+    {
+      "grapheme": "쥴",
+      "words": 7
+    },
+    {
+      "grapheme": "쨉",
+      "words": 7
+    },
+    {
+      "grapheme": "찟",
+      "words": 7
+    },
+    {
+      "grapheme": "캑",
+      "words": 7
+    },
+    {
+      "grapheme": "텟",
+      "words": 7
+    },
+    {
+      "grapheme": "헸",
+      "words": 7
+    },
+    {
+      "grapheme": "끍",
+      "words": 6
+    },
+    {
+      "grapheme": "닻",
+      "words": 6
+    },
+    {
+      "grapheme": "덖",
+      "words": 6
+    },
+    {
+      "grapheme": "뗬",
+      "words": 6
+    },
+    {
+      "grapheme": "뚠",
+      "words": 6
+    },
+    {
+      "grapheme": "륄",
+      "words": 6
+    },
+    {
+      "grapheme": "뫼",
+      "words": 6
+    },
+    {
+      "grapheme": "묫",
+      "words": 6
+    },
+    {
+      "grapheme": "슉",
+      "words": 6
+    },
+    {
+      "grapheme": "쎕",
+      "words": 6
+    },
+    {
+      "grapheme": "옭",
+      "words": 6
+    },
+    {
+      "grapheme": "읎",
+      "words": 6
+    },
+    {
+      "grapheme": "촙",
+      "words": 6
+    },
+    {
+      "grapheme": "츈",
+      "words": 6
+    },
+    {
+      "grapheme": "쿳",
+      "words": 6
+    },
+    {
+      "grapheme": "팼",
+      "words": 6
+    },
+    {
+      "grapheme": "혠",
+      "words": 6
+    },
+    {
+      "grapheme": "휜",
+      "words": 6
+    },
+    {
+      "grapheme": "곕",
+      "words": 5
+    },
+    {
+      "grapheme": "귐",
+      "words": 5
+    },
+    {
+      "grapheme": "뉸",
+      "words": 5
+    },
+    {
+      "grapheme": "됫",
+      "words": 5
+    },
+    {
+      "grapheme": "랸",
+      "words": 5
+    },
+    {
+      "grapheme": "렝",
+      "words": 5
+    },
+    {
+      "grapheme": "롷",
+      "words": 5
+    },
+    {
+      "grapheme": "맀",
+      "words": 5
+    },
+    {
+      "grapheme": "뵌",
+      "words": 5
+    },
+    {
+      "grapheme": "뵐",
+      "words": 5
+    },
+    {
+      "grapheme": "쎼",
+      "words": 5
+    },
+    {
+      "grapheme": "쐰",
+      "words": 5
+    },
+    {
+      "grapheme": "왑",
+      "words": 5
+    },
+    {
+      "grapheme": "욥",
+      "words": 5
+    },
+    {
+      "grapheme": "웻",
+      "words": 5
+    },
+    {
+      "grapheme": "윕",
+      "words": 5
+    },
+    {
+      "grapheme": "줗",
+      "words": 5
+    },
+    {
+      "grapheme": "쨋",
+      "words": 5
+    },
+    {
+      "grapheme": "쯧",
+      "words": 5
+    },
+    {
+      "grapheme": "쿰",
+      "words": 5
+    },
+    {
+      "grapheme": "퀭",
+      "words": 5
+    },
+    {
+      "grapheme": "휭",
+      "words": 5
+    },
+    {
+      "grapheme": "굡",
+      "words": 4
+    },
+    {
+      "grapheme": "깟",
+      "words": 4
+    },
+    {
+      "grapheme": "깰",
+      "words": 4
+    },
+    {
+      "grapheme": "뀜",
+      "words": 4
+    },
+    {
+      "grapheme": "뇬",
+      "words": 4
+    },
+    {
+      "grapheme": "돠",
+      "words": 4
+    },
+    {
+      "grapheme": "뗴",
+      "words": 4
+    },
+    {
+      "grapheme": "뛌",
+      "words": 4
+    },
+    {
+      "grapheme": "띃",
+      "words": 4
+    },
+    {
+      "grapheme": "맟",
+      "words": 4
+    },
+    {
+      "grapheme": "묜",
+      "words": 4
+    },
+    {
+      "grapheme": "뭅",
+      "words": 4
+    },
+    {
+      "grapheme": "붜",
+      "words": 4
+    },
+    {
+      "grapheme": "뺴",
+      "words": 4
+    },
+    {
+      "grapheme": "얜",
+      "words": 4
+    },
+    {
+      "grapheme": "웟",
+      "words": 4
+    },
+    {
+      "grapheme": "읐",
+      "words": 4
+    },
+    {
+      "grapheme": "쟝",
+      "words": 4
+    },
+    {
+      "grapheme": "좍",
+      "words": 4
+    },
+    {
+      "grapheme": "죈",
+      "words": 4
+    },
+    {
+      "grapheme": "쨩",
+      "words": 4
+    },
+    {
+      "grapheme": "쩧",
+      "words": 4
+    },
+    {
+      "grapheme": "칟",
+      "words": 4
+    },
+    {
+      "grapheme": "켁",
+      "words": 4
+    },
+    {
+      "grapheme": "켔",
+      "words": 4
+    },
+    {
+      "grapheme": "큔",
+      "words": 4
+    },
+    {
+      "grapheme": "툇",
+      "words": 4
+    },
+    {
+      "grapheme": "팹",
+      "words": 4
+    },
+    {
+      "grapheme": "폔",
+      "words": 4
+    },
+    {
+      "grapheme": "푭",
+      "words": 4
+    },
+    {
+      "grapheme": "풂",
+      "words": 4
+    },
+    {
+      "grapheme": "퓌",
+      "words": 4
+    },
+    {
+      "grapheme": "헙",
+      "words": 4
+    },
+    {
+      "grapheme": "횃",
+      "words": 4
+    },
+    {
+      "grapheme": "횝",
+      "words": 4
+    },
+    {
+      "grapheme": "걲",
+      "words": 3
+    },
+    {
+      "grapheme": "곬",
+      "words": 3
+    },
+    {
+      "grapheme": "귝",
+      "words": 3
+    },
+    {
+      "grapheme": "꺅",
+      "words": 3
+    },
+    {
+      "grapheme": "꽌",
+      "words": 3
+    },
+    {
+      "grapheme": "넸",
+      "words": 3
+    },
+    {
+      "grapheme": "놘",
+      "words": 3
+    },
+    {
+      "grapheme": "늅",
+      "words": 3
+    },
+    {
+      "grapheme": "늣",
+      "words": 3
+    },
+    {
+      "grapheme": "닸",
+      "words": 3
+    },
+    {
+      "grapheme": "덞",
+      "words": 3
+    },
+    {
+      "grapheme": "돟",
+      "words": 3
+    },
+    {
+      "grapheme": "됀",
+      "words": 3
+    },
+    {
+      "grapheme": "됴",
+      "words": 3
+    },
+    {
+      "grapheme": "뒨",
+      "words": 3
+    },
+    {
+      "grapheme": "땝",
+      "words": 3
+    },
+    {
+      "grapheme": "떙",
+      "words": 3
+    },
+    {
+      "grapheme": "뙈",
+      "words": 3
+    },
+    {
+      "grapheme": "뚸",
+      "words": 3
+    },
+    {
+      "grapheme": "롓",
+      "words": 3
+    },
+    {
+      "grapheme": "륩",
+      "words": 3
+    },
+    {
+      "grapheme": "밨",
+      "words": 3
+    },
+    {
+      "grapheme": "뱈",
+      "words": 3
+    },
+    {
+      "grapheme": "벴",
+      "words": 3
+    },
+    {
+      "grapheme": "붰",
+      "words": 3
+    },
+    {
+      "grapheme": "샙",
+      "words": 3
+    },
+    {
+      "grapheme": "솨",
+      "words": 3
+    },
+    {
+      "grapheme": "쇽",
+      "words": 3
+    },
+    {
+      "grapheme": "싰",
+      "words": 3
+    },
+    {
+      "grapheme": "쐤",
+      "words": 3
+    },
+    {
+      "grapheme": "쐴",
+      "words": 3
+    },
+    {
+      "grapheme": "앝",
+      "words": 3
+    },
+    {
+      "grapheme": "옜",
+      "words": 3
+    },
+    {
+      "grapheme": "옸",
+      "words": 3
+    },
+    {
+      "grapheme": "욀",
+      "words": 3
+    },
+    {
+      "grapheme": "읔",
+      "words": 3
+    },
+    {
+      "grapheme": "잫",
+      "words": 3
+    },
+    {
+      "grapheme": "졍",
+      "words": 3
+    },
+    {
+      "grapheme": "좔",
+      "words": 3
+    },
+    {
+      "grapheme": "짔",
+      "words": 3
+    },
+    {
+      "grapheme": "쨀",
+      "words": 3
+    },
+    {
+      "grapheme": "쨎",
+      "words": 3
+    },
+    {
+      "grapheme": "쬔",
+      "words": 3
+    },
+    {
+      "grapheme": "쯕",
+      "words": 3
+    },
+    {
+      "grapheme": "츱",
+      "words": 3
+    },
+    {
+      "grapheme": "콸",
+      "words": 3
+    },
+    {
+      "grapheme": "틓",
+      "words": 3
+    },
+    {
+      "grapheme": "풉",
+      "words": 3
+    },
+    {
+      "grapheme": "홥",
+      "words": 3
+    },
+    {
+      "grapheme": "휙",
+      "words": 3
+    },
+    {
+      "grapheme": "힉",
+      "words": 3
+    },
+    {
+      "grapheme": "힛",
+      "words": 3
+    },
+    {
+      "grapheme": "겻",
+      "words": 2
+    },
+    {
+      "grapheme": "곔",
+      "words": 2
+    },
+    {
+      "grapheme": "궃",
+      "words": 2
+    },
+    {
+      "grapheme": "깉",
+      "words": 2
+    },
+    {
+      "grapheme": "깸",
+      "words": 2
+    },
+    {
+      "grapheme": "꾕",
+      "words": 2
+    },
+    {
+      "grapheme": "놂",
+      "words": 2
+    },
+    {
+      "grapheme": "뇐",
+      "words": 2
+    },
+    {
+      "grapheme": "뇝",
+      "words": 2
+    },
+    {
+      "grapheme": "뉼",
+      "words": 2
+    },
+    {
+      "grapheme": "늰",
+      "words": 2
+    },
+    {
+      "grapheme": "댱",
+      "words": 2
+    },
+    {
+      "grapheme": "둉",
+      "words": 2
+    },
+    {
+      "grapheme": "땟",
+      "words": 2
+    },
+    {
+      "grapheme": "떱",
+      "words": 2
+    },
+    {
+      "grapheme": "뗍",
+      "words": 2
+    },
+    {
+      "grapheme": "뜁",
+      "words": 2
+    },
+    {
+      "grapheme": "띱",
+      "words": 2
+    },
+    {
+      "grapheme": "렿",
+      "words": 2
+    },
+    {
+      "grapheme": "룝",
+      "words": 2
+    },
+    {
+      "grapheme": "뤃",
+      "words": 2
+    },
+    {
+      "grapheme": "릍",
+      "words": 2
+    },
+    {
+      "grapheme": "맜",
+      "words": 2
+    },
+    {
+      "grapheme": "맽",
+      "words": 2
+    },
+    {
+      "grapheme": "뫄",
+      "words": 2
+    },
+    {
+      "grapheme": "뫘",
+      "words": 2
+    },
+    {
+      "grapheme": "뭏",
+      "words": 2
+    },
+    {
+      "grapheme": "봈",
+      "words": 2
+    },
+    {
+      "grapheme": "뵜",
+      "words": 2
+    },
+    {
+      "grapheme": "뵥",
+      "words": 2
+    },
+    {
+      "grapheme": "뷜",
+      "words": 2
+    },
+    {
+      "grapheme": "븝",
+      "words": 2
+    },
+    {
+      "grapheme": "븟",
+      "words": 2
+    },
+    {
+      "grapheme": "뻉",
+      "words": 2
+    },
+    {
+      "grapheme": "삲",
+      "words": 2
+    },
+    {
+      "grapheme": "셕",
+      "words": 2
+    },
+    {
+      "grapheme": "셥",
+      "words": 2
+    },
+    {
+      "grapheme": "쉭",
+      "words": 2
+    },
+    {
+      "grapheme": "슁",
+      "words": 2
+    },
+    {
+      "grapheme": "슙",
+      "words": 2
+    },
+    {
+      "grapheme": "슽",
+      "words": 2
+    },
+    {
+      "grapheme": "쌋",
+      "words": 2
+    },
+    {
+      "grapheme": "썁",
+      "words": 2
+    },
+    {
+      "grapheme": "썃",
+      "words": 2
+    },
+    {
+      "grapheme": "쏨",
+      "words": 2
+    },
+    {
+      "grapheme": "쏵",
+      "words": 2
+    },
+    {
+      "grapheme": "쐼",
+      "words": 2
+    },
+    {
+      "grapheme": "쑌",
+      "words": 2
+    },
+    {
+      "grapheme": "쓤",
+      "words": 2
+    },
+    {
+      "grapheme": "얐",
+      "words": 2
+    },
+    {
+      "grapheme": "얠",
+      "words": 2
+    },
+    {
+      "grapheme": "왤",
+      "words": 2
+    },
+    {
+      "grapheme": "왱",
+      "words": 2
+    },
+    {
+      "grapheme": "윰",
+      "words": 2
+    },
+    {
+      "grapheme": "윱",
+      "words": 2
+    },
+    {
+      "grapheme": "잍",
+      "words": 2
+    },
+    {
+      "grapheme": "쟌",
+      "words": 2
+    },
+    {
+      "grapheme": "젹",
+      "words": 2
+    },
+    {
+      "grapheme": "졀",
+      "words": 2
+    },
+    {
+      "grapheme": "좃",
+      "words": 2
+    },
+    {
+      "grapheme": "좄",
+      "words": 2
+    },
+    {
+      "grapheme": "죌",
+      "words": 2
+    },
+    {
+      "grapheme": "죙",
+      "words": 2
+    },
+    {
+      "grapheme": "쪌",
+      "words": 2
+    },
+    {
+      "grapheme": "쪗",
+      "words": 2
+    },
+    {
+      "grapheme": "쪾",
+      "words": 2
+    },
+    {
+      "grapheme": "쫴",
+      "words": 2
+    },
+    {
+      "grapheme": "쭸",
+      "words": 2
+    },
+    {
+      "grapheme": "쮜",
+      "words": 2
+    },
+    {
+      "grapheme": "첬",
+      "words": 2
+    },
+    {
+      "grapheme": "쳉",
+      "words": 2
+    },
+    {
+      "grapheme": "쳔",
+      "words": 2
+    },
+    {
+      "grapheme": "촥",
+      "words": 2
+    },
+    {
+      "grapheme": "췻",
+      "words": 2
+    },
+    {
+      "grapheme": "칬",
+      "words": 2
+    },
+    {
+      "grapheme": "캭",
+      "words": 2
+    },
+    {
+      "grapheme": "켬",
+      "words": 2
+    },
+    {
+      "grapheme": "쾡",
+      "words": 2
+    },
+    {
+      "grapheme": "큄",
+      "words": 2
+    },
+    {
+      "grapheme": "큅",
+      "words": 2
+    },
+    {
+      "grapheme": "큭",
+      "words": 2
+    },
+    {
+      "grapheme": "큿",
+      "words": 2
+    },
+    {
+      "grapheme": "킸",
+      "words": 2
+    },
+    {
+      "grapheme": "탸",
+      "words": 2
+    },
+    {
+      "grapheme": "텋",
+      "words": 2
+    },
+    {
+      "grapheme": "퇘",
+      "words": 2
+    },
+    {
+      "grapheme": "퇸",
+      "words": 2
+    },
+    {
+      "grapheme": "튭",
+      "words": 2
+    },
+    {
+      "grapheme": "폽",
+      "words": 2
+    },
+    {
+      "grapheme": "퐝",
+      "words": 2
+    },
+    {
+      "grapheme": "푤",
+      "words": 2
+    },
+    {
+      "grapheme": "풔",
+      "words": 2
+    },
+    {
+      "grapheme": "헀",
+      "words": 2
+    },
+    {
+      "grapheme": "횬",
+      "words": 2
+    },
+    {
+      "grapheme": "횽",
+      "words": 2
+    },
+    {
+      "grapheme": "훵",
+      "words": 2
+    },
+    {
+      "grapheme": "휸",
+      "words": 2
+    },
+    {
+      "grapheme": "흄",
+      "words": 2
+    },
+    {
+      "grapheme": "흽",
+      "words": 2
+    },
+    {
+      "grapheme": "갊",
+      "words": 1
+    },
+    {
+      "grapheme": "갵",
+      "words": 1
+    },
+    {
+      "grapheme": "갼",
+      "words": 1
+    },
+    {
+      "grapheme": "걈",
+      "words": 1
+    },
+    {
+      "grapheme": "걑",
+      "words": 1
+    },
+    {
+      "grapheme": "걜",
+      "words": 1
+    },
+    {
+      "grapheme": "걧",
+      "words": 1
+    },
+    {
+      "grapheme": "걹",
+      "words": 1
+    },
+    {
+      "grapheme": "걺",
+      "words": 1
+    },
+    {
+      "grapheme": "겊",
+      "words": 1
+    },
+    {
+      "grapheme": "곘",
+      "words": 1
+    },
+    {
+      "grapheme": "괍",
+      "words": 1
+    },
+    {
+      "grapheme": "괠",
+      "words": 1
+    },
+    {
+      "grapheme": "괼",
+      "words": 1
+    },
+    {
+      "grapheme": "궉",
+      "words": 1
+    },
+    {
+      "grapheme": "귕",
+      "words": 1
+    },
+    {
+      "grapheme": "긔",
+      "words": 1
+    },
+    {
+      "grapheme": "깆",
+      "words": 1
+    },
+    {
+      "grapheme": "깹",
+      "words": 1
+    },
+    {
+      "grapheme": "꺌",
+      "words": 1
+    },
+    {
+      "grapheme": "껓",
+      "words": 1
+    },
+    {
+      "grapheme": "껕",
+      "words": 1
+    },
+    {
+      "grapheme": "껩",
+      "words": 1
+    },
+    {
+      "grapheme": "껬",
+      "words": 1
+    },
+    {
+      "grapheme": "껶",
+      "words": 1
+    },
+    {
+      "grapheme": "꼇",
+      "words": 1
+    },
+    {
+      "grapheme": "꼍",
+      "words": 1
+    },
+    {
+      "grapheme": "꽜",
+      "words": 1
+    },
+    {
+      "grapheme": "꾐",
+      "words": 1
+    },
+    {
+      "grapheme": "꿸",
+      "words": 1
+    },
+    {
+      "grapheme": "뀄",
+      "words": 1
+    },
+    {
+      "grapheme": "뀝",
+      "words": 1
+    },
+    {
+      "grapheme": "끛",
+      "words": 1
+    },
+    {
+      "grapheme": "낋",
+      "words": 1
+    },
+    {
+      "grapheme": "낏",
+      "words": 1
+    },
+    {
+      "grapheme": "넒",
+      "words": 1
+    },
+    {
+      "grapheme": "놥",
+      "words": 1
+    },
+    {
+      "grapheme": "놩",
+      "words": 1
+    },
+    {
+      "grapheme": "뇟",
+      "words": 1
+    },
+    {
+      "grapheme": "눞",
+      "words": 1
+    },
+    {
+      "grapheme": "눟",
+      "words": 1
+    },
+    {
+      "grapheme": "뉩",
+      "words": 1
+    },
+    {
+      "grapheme": "늇",
+      "words": 1
+    },
+    {
+      "grapheme": "늤",
+      "words": 1
+    },
+    {
+      "grapheme": "닺",
+      "words": 1
+    },
+    {
+      "grapheme": "댠",
+      "words": 1
+    },
+    {
+      "grapheme": "뎆",
+      "words": 1
+    },
+    {
+      "grapheme": "돚",
+      "words": 1
+    },
+    {
+      "grapheme": "됌",
+      "words": 1
+    },
+    {
+      "grapheme": "됏",
+      "words": 1
+    },
+    {
+      "grapheme": "됙",
+      "words": 1
+    },
+    {
+      "grapheme": "둄",
+      "words": 1
+    },
+    {
+      "grapheme": "둤",
+      "words": 1
+    },
+    {
+      "grapheme": "뒬",
+      "words": 1
+    },
+    {
+      "grapheme": "뒴",
+      "words": 1
+    },
+    {
+      "grapheme": "뒵",
+      "words": 1
+    },
+    {
+      "grapheme": "듑",
+      "words": 1
+    },
+    {
+      "grapheme": "땨",
+      "words": 1
+    },
+    {
+      "grapheme": "떔",
+      "words": 1
+    },
+    {
+      "grapheme": "떘",
+      "words": 1
+    },
+    {
+      "grapheme": "떢",
+      "words": 1
+    },
+    {
+      "grapheme": "뗌",
+      "words": 1
+    },
+    {
+      "grapheme": "뗜",
+      "words": 1
+    },
+    {
+      "grapheme": "똣",
+      "words": 1
+    },
+    {
+      "grapheme": "뚥",
+      "words": 1
+    },
+    {
+      "grapheme": "뚬",
+      "words": 1
+    },
+    {
+      "grapheme": "뜅",
+      "words": 1
+    },
+    {
+      "grapheme": "뜜",
+      "words": 1
+    },
+    {
+      "grapheme": "뜷",
+      "words": 1
+    },
+    {
+      "grapheme": "뜹",
+      "words": 1
+    },
+    {
+      "grapheme": "띌",
+      "words": 1
+    },
+    {
+      "grapheme": "띕",
+      "words": 1
+    },
+    {
+      "grapheme": "띰",
+      "words": 1
+    },
+    {
+      "grapheme": "띳",
+      "words": 1
+    },
+    {
+      "grapheme": "띴",
+      "words": 1
+    },
+    {
+      "grapheme": "띻",
+      "words": 1
+    },
+    {
+      "grapheme": "랳",
+      "words": 1
+    },
+    {
+      "grapheme": "럇",
+      "words": 1
+    },
+    {
+      "grapheme": "렚",
+      "words": 1
+    },
+    {
+      "grapheme": "롑",
+      "words": 1
+    },
+    {
+      "grapheme": "롹",
+      "words": 1
+    },
+    {
+      "grapheme": "뢍",
+      "words": 1
+    },
+    {
+      "grapheme": "뢸",
+      "words": 1
+    },
+    {
+      "grapheme": "룀",
+      "words": 1
+    },
+    {
+      "grapheme": "룁",
+      "words": 1
+    },
+    {
+      "grapheme": "룍",
+      "words": 1
+    },
+    {
+      "grapheme": "륀",
+      "words": 1
+    },
+    {
+      "grapheme": "릐",
+      "words": 1
+    },
+    {
+      "grapheme": "맊",
+      "words": 1
+    },
+    {
+      "grapheme": "먾",
+      "words": 1
+    },
+    {
+      "grapheme": "멏",
+      "words": 1
+    },
+    {
+      "grapheme": "뫈",
+      "words": 1
+    },
+    {
+      "grapheme": "뫤",
+      "words": 1
+    },
+    {
+      "grapheme": "묏",
+      "words": 1
+    },
+    {
+      "grapheme": "묙",
+      "words": 1
+    },
+    {
+      "grapheme": "묩",
+      "words": 1
+    },
+    {
+      "grapheme": "뭠",
+      "words": 1
+    },
+    {
+      "grapheme": "뭿",
+      "words": 1
+    },
+    {
+      "grapheme": "뮐",
+      "words": 1
+    },
+    {
+      "grapheme": "믑",
+      "words": 1
+    },
+    {
+      "grapheme": "믾",
+      "words": 1
+    },
+    {
+      "grapheme": "뱇",
+      "words": 1
+    },
+    {
+      "grapheme": "뱌",
+      "words": 1
+    },
+    {
+      "grapheme": "뱝",
+      "words": 1
+    },
+    {
+      "grapheme": "뱡",
+      "words": 1
+    },
+    {
+      "grapheme": "벘",
+      "words": 1
+    },
+    {
+      "grapheme": "벱",
+      "words": 1
+    },
+    {
+      "grapheme": "봘",
+      "words": 1
+    },
+    {
+      "grapheme": "봣",
+      "words": 1
+    },
+    {
+      "grapheme": "봼",
+      "words": 1
+    },
+    {
+      "grapheme": "뵹",
+      "words": 1
+    },
+    {
+      "grapheme": "붂",
+      "words": 1
+    },
+    {
+      "grapheme": "뷘",
+      "words": 1
+    },
+    {
+      "grapheme": "븃",
+      "words": 1
+    },
+    {
+      "grapheme": "븅",
+      "words": 1
+    },
+    {
+      "grapheme": "빝",
+      "words": 1
+    },
+    {
+      "grapheme": "빶",
+      "words": 1
+    },
+    {
+      "grapheme": "뺍",
+      "words": 1
+    },
+    {
+      "grapheme": "뺵",
+      "words": 1
+    },
+    {
+      "grapheme": "뺼",
+      "words": 1
+    },
+    {
+      "grapheme": "뻭",
+      "words": 1
+    },
+    {
+      "grapheme": "뻿",
+      "words": 1
+    },
+    {
+      "grapheme": "뼬",
+      "words": 1
+    },
+    {
+      "grapheme": "뿟",
+      "words": 1
+    },
+    {
+      "grapheme": "뿨",
+      "words": 1
+    },
+    {
+      "grapheme": "삳",
+      "words": 1
+    },
+    {
+      "grapheme": "삻",
+      "words": 1
+    },
+    {
+      "grapheme": "샾",
+      "words": 1
+    },
+    {
+      "grapheme": "섦",
+      "words": 1
+    },
+    {
+      "grapheme": "셒",
+      "words": 1
+    },
+    {
+      "grapheme": "셤",
+      "words": 1
+    },
+    {
+      "grapheme": "솩",
+      "words": 1
+    },
+    {
+      "grapheme": "솼",
+      "words": 1
+    },
+    {
+      "grapheme": "쇨",
+      "words": 1
+    },
+    {
+      "grapheme": "숌",
+      "words": 1
+    },
+    {
+      "grapheme": "숼",
+      "words": 1
+    },
+    {
+      "grapheme": "쉔",
+      "words": 1
+    },
+    {
+      "grapheme": "쉣",
+      "words": 1
+    },
+    {
+      "grapheme": "쉥",
+      "words": 1
+    },
+    {
+      "grapheme": "슀",
+      "words": 1
+    },
+    {
+      "grapheme": "슾",
+      "words": 1
+    },
+    {
+      "grapheme": "슿",
+      "words": 1
+    },
+    {
+      "grapheme": "싕",
+      "words": 1
+    },
+    {
+      "grapheme": "쌥",
+      "words": 1
+    },
+    {
+      "grapheme": "쌱",
+      "words": 1
+    },
+    {
+      "grapheme": "쌸",
+      "words": 1
+    },
+    {
+      "grapheme": "썔",
+      "words": 1
+    },
+    {
+      "grapheme": "썜",
+      "words": 1
+    },
+    {
+      "grapheme": "썡",
+      "words": 1
+    },
+    {
+      "grapheme": "쎙",
+      "words": 1
+    },
+    {
+      "grapheme": "쏩",
+      "words": 1
+    },
+    {
+      "grapheme": "쏸",
+      "words": 1
+    },
+    {
+      "grapheme": "쑀",
+      "words": 1
+    },
+    {
+      "grapheme": "쑉",
+      "words": 1
+    },
+    {
+      "grapheme": "쑙",
+      "words": 1
+    },
+    {
+      "grapheme": "쑛",
+      "words": 1
+    },
+    {
+      "grapheme": "쑢",
+      "words": 1
+    },
+    {
+      "grapheme": "쑴",
+      "words": 1
+    },
+    {
+      "grapheme": "쒜",
+      "words": 1
+    },
+    {
+      "grapheme": "쒱",
+      "words": 1
+    },
+    {
+      "grapheme": "쓕",
+      "words": 1
+    },
+    {
+      "grapheme": "쓜",
+      "words": 1
+    },
+    {
+      "grapheme": "쓩",
+      "words": 1
+    },
+    {
+      "grapheme": "씄",
+      "words": 1
+    },
+    {
+      "grapheme": "씪",
+      "words": 1
+    },
+    {
+      "grapheme": "앏",
+      "words": 1
+    },
+    {
+      "grapheme": "앺",
+      "words": 1
+    },
+    {
+      "grapheme": "얨",
+      "words": 1
+    },
+    {
+      "grapheme": "얩",
+      "words": 1
+    },
+    {
+      "grapheme": "얫",
+      "words": 1
+    },
+    {
+      "grapheme": "얾",
+      "words": 1
+    },
+    {
+      "grapheme": "엏",
+      "words": 1
+    },
+    {
+      "grapheme": "엤",
+      "words": 1
+    },
+    {
+      "grapheme": "엪",
+      "words": 1
+    },
+    {
+      "grapheme": "엶",
+      "words": 1
+    },
+    {
+      "grapheme": "옂",
+      "words": 1
+    },
+    {
+      "grapheme": "옉",
+      "words": 1
+    },
+    {
+      "grapheme": "옶",
+      "words": 1
+    },
+    {
+      "grapheme": "옼",
+      "words": 1
+    },
+    {
+      "grapheme": "옾",
+      "words": 1
+    },
+    {
+      "grapheme": "왝",
+      "words": 1
+    },
+    {
+      "grapheme": "왯",
+      "words": 1
+    },
+    {
+      "grapheme": "욈",
+      "words": 1
+    },
+    {
+      "grapheme": "욉",
+      "words": 1
+    },
+    {
+      "grapheme": "욋",
+      "words": 1
+    },
+    {
+      "grapheme": "욍",
+      "words": 1
+    },
+    {
+      "grapheme": "욧",
+      "words": 1
+    },
+    {
+      "grapheme": "욺",
+      "words": 1
+    },
+    {
+      "grapheme": "웂",
+      "words": 1
+    },
+    {
+      "grapheme": "웝",
+      "words": 1
+    },
+    {
+      "grapheme": "윹",
+      "words": 1
+    },
+    {
+      "grapheme": "읠",
+      "words": 1
+    },
+    {
+      "grapheme": "읩",
+      "words": 1
+    },
+    {
+      "grapheme": "읺",
+      "words": 1
+    },
+    {
+      "grapheme": "잟",
+      "words": 1
+    },
+    {
+      "grapheme": "쟬",
+      "words": 1
+    },
+    {
+      "grapheme": "젰",
+      "words": 1
+    },
+    {
+      "grapheme": "졔",
+      "words": 1
+    },
+    {
+      "grapheme": "좠",
+      "words": 1
+    },
+    {
+      "grapheme": "죕",
+      "words": 1
+    },
+    {
+      "grapheme": "죗",
+      "words": 1
+    },
+    {
+      "grapheme": "줆",
+      "words": 1
+    },
+    {
+      "grapheme": "줫",
+      "words": 1
+    },
+    {
+      "grapheme": "쥰",
+      "words": 1
+    },
+    {
+      "grapheme": "즒",
+      "words": 1
+    },
+    {
+      "grapheme": "즛",
+      "words": 1
+    },
+    {
+      "grapheme": "짦",
+      "words": 1
+    },
+    {
+      "grapheme": "짯",
+      "words": 1
+    },
+    {
+      "grapheme": "짲",
+      "words": 1
+    },
+    {
+      "grapheme": "짳",
+      "words": 1
+    },
+    {
+      "grapheme": "쨰",
+      "words": 1
+    },
+    {
+      "grapheme": "쩄",
+      "words": 1
+    },
+    {
+      "grapheme": "쩖",
+      "words": 1
+    },
+    {
+      "grapheme": "쩟",
+      "words": 1
+    },
+    {
+      "grapheme": "쩬",
+      "words": 1
+    },
+    {
+      "grapheme": "쪠",
+      "words": 1
+    },
+    {
+      "grapheme": "쫔",
+      "words": 1
+    },
+    {
+      "grapheme": "쬘",
+      "words": 1
+    },
+    {
+      "grapheme": "쯥",
+      "words": 1
+    },
+    {
+      "grapheme": "찛",
+      "words": 1
+    },
+    {
+      "grapheme": "찦",
+      "words": 1
+    },
+    {
+      "grapheme": "첢",
+      "words": 1
+    },
+    {
+      "grapheme": "쳬",
+      "words": 1
+    },
+    {
+      "grapheme": "촵",
+      "words": 1
+    },
+    {
+      "grapheme": "쵤",
+      "words": 1
+    },
+    {
+      "grapheme": "췬",
+      "words": 1
+    },
+    {
+      "grapheme": "췸",
+      "words": 1
+    },
+    {
+      "grapheme": "츳",
+      "words": 1
+    },
+    {
+      "grapheme": "칤",
+      "words": 1
+    },
+    {
+      "grapheme": "캍",
+      "words": 1
+    },
+    {
+      "grapheme": "켭",
+      "words": 1
+    },
+    {
+      "grapheme": "쾽",
+      "words": 1
+    },
+    {
+      "grapheme": "쿈",
+      "words": 1
+    },
+    {
+      "grapheme": "쿔",
+      "words": 1
+    },
+    {
+      "grapheme": "쿕",
+      "words": 1
+    },
+    {
+      "grapheme": "퀜",
+      "words": 1
+    },
+    {
+      "grapheme": "킀",
+      "words": 1
+    },
+    {
+      "grapheme": "킾",
+      "words": 1
+    },
+    {
+      "grapheme": "턈",
+      "words": 1
+    },
+    {
+      "grapheme": "텡",
+      "words": 1
+    },
+    {
+      "grapheme": "톺",
+      "words": 1
+    },
+    {
+      "grapheme": "퇬",
+      "words": 1
+    },
+    {
+      "grapheme": "퇵",
+      "words": 1
+    },
+    {
+      "grapheme": "퇼",
+      "words": 1
+    },
+    {
+      "grapheme": "툶",
+      "words": 1
+    },
+    {
+      "grapheme": "툿",
+      "words": 1
+    },
+    {
+      "grapheme": "퉤",
+      "words": 1
+    },
+    {
+      "grapheme": "튑",
+      "words": 1
+    },
+    {
+      "grapheme": "틑",
+      "words": 1
+    },
+    {
+      "grapheme": "틜",
+      "words": 1
+    },
+    {
+      "grapheme": "팄",
+      "words": 1
+    },
+    {
+      "grapheme": "팖",
+      "words": 1
+    },
+    {
+      "grapheme": "팤",
+      "words": 1
+    },
+    {
+      "grapheme": "퍠",
+      "words": 1
+    },
+    {
+      "grapheme": "펏",
+      "words": 1
+    },
+    {
+      "grapheme": "푱",
+      "words": 1
+    },
+    {
+      "grapheme": "퓽",
+      "words": 1
+    },
+    {
+      "grapheme": "픗",
+      "words": 1
+    },
+    {
+      "grapheme": "핗",
+      "words": 1
+    },
+    {
+      "grapheme": "핢",
+      "words": 1
+    },
+    {
+      "grapheme": "핧",
+      "words": 1
+    },
+    {
+      "grapheme": "햔",
+      "words": 1
+    },
+    {
+      "grapheme": "햘",
+      "words": 1
+    },
+    {
+      "grapheme": "헜",
+      "words": 1
+    },
+    {
+      "grapheme": "혭",
+      "words": 1
+    },
+    {
+      "grapheme": "홰",
+      "words": 1
+    },
+    {
+      "grapheme": "홱",
+      "words": 1
+    },
+    {
+      "grapheme": "횩",
+      "words": 1
+    },
+    {
+      "grapheme": "횸",
+      "words": 1
+    },
+    {
+      "grapheme": "훡",
+      "words": 1
+    },
+    {
+      "grapheme": "훽",
+      "words": 1
+    },
+    {
+      "grapheme": "휀",
+      "words": 1
+    },
+    {
+      "grapheme": "휵",
+      "words": 1
+    },
+    {
+      "grapheme": "흿",
+      "words": 1
+    }
+  ],
+  "runtime": {
+    "recorded_at": "2026-07-28T14:35:05+09:00",
+    "git_commit": "2f3bebe747ff64a609c671d3185351756ed6b431",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 17936
+  }
+}
