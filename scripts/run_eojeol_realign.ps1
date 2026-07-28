@@ -22,16 +22,49 @@ param(
     [switch]$CleanupMfaOutput,
     [switch]$SkipPreflight,
     [string]$CommonPronManifest = "",
+    [string]$CommonPronAdoptionContract = "",
     [string]$CommonPronEquivalenceReport = "",
-    [switch]$AllowBaselineCommonPronRerun
+    [switch]$AllowBaselineCommonPronRerun,
+    [switch]$AllowLegacyInlineG2p,
+    [ValidateRange(0, 2147483647)]
+    [int]$BulkWrapperPid = 0
 )
 
 if (
-    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
-    [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    -not $AllowLegacyInlineG2p
 ) {
     Write-Error (
-        "-CommonPronManifest와 -CommonPronEquivalenceReport는 " +
+        "검증된 공통사전 manifest가 기본 필수임. r2 실물·승인 계약이 " +
+        "아직 없으면 MFA를 시작하지 말 것. 과거 재현·진단만 " +
+        "-AllowLegacyInlineG2p로 명시적으로 허용함"
+    )
+    exit 1
+}
+if (
+    $AllowLegacyInlineG2p -and
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest)
+) {
+    Write-Error (
+        "-AllowLegacyInlineG2p와 -CommonPronManifest는 함께 사용할 수 없음"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
+) {
+    Write-Error (
+        "-CommonPronEquivalenceReport는 r1 폐기 gate임. r2는 " +
+        "-CommonPronAdoptionContract를 사용할 것"
+    )
+    exit 1
+}
+if (
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
+    [string]::IsNullOrWhiteSpace($CommonPronAdoptionContract)
+) {
+    Write-Error (
+        "-CommonPronManifest와 -CommonPronAdoptionContract는 " +
         "둘 다 지정하거나 둘 다 생략해야 함"
     )
     exit 1
@@ -127,6 +160,121 @@ try {
     Write-Error "config/paths.json 해석 실패: $($_.Exception.Message)"
     exit 1
 }
+
+# 직접 실행도 bulk wrapper와 같은 lock을 사용한다. wrapper가 호출한
+# 자식만 부모 PID가 소유한 lock을 명시적으로 상속할 수 있다.
+$lockDir = Join-Path $stateRoot 'locks'
+New-Item -ItemType Directory -Force -Path $lockDir | Out-Null
+$lockPath = Join-Path $lockDir 'pre_mfa_bulk.lock'
+$ownsDirectLock = $false
+$lockOwnerPid = 0
+if (Test-Path -LiteralPath $lockPath) {
+    try {
+        $existingLock = Get-Content -LiteralPath $lockPath -Raw `
+            -Encoding UTF8 | ConvertFrom-Json
+        $lockOwnerPid = [int]$existingLock.pid
+        $lockOwnerLive = $lockOwnerPid -gt 0 -and $null -ne (
+            Get-Process -Id $lockOwnerPid -ErrorAction SilentlyContinue
+        )
+    } catch {
+        $lockOwnerLive = $false
+    }
+    if ($BulkWrapperPid -gt 0) {
+        if (
+            -not $lockOwnerLive -or
+            $lockOwnerPid -ne $BulkWrapperPid -or
+            [string]$existingLock.owner_mode -ne 'bulk_wrapper'
+        ) {
+            Write-Error (
+                "bulk wrapper lock 상속 검증 실패: expected_pid=" +
+                "$BulkWrapperPid, observed_pid=$lockOwnerPid"
+            )
+            exit 1
+        }
+    } elseif ($lockOwnerLive) {
+        Write-Error "다른 pre-MFA/MFA 실행 중(pid=$lockOwnerPid): $lockPath"
+        exit 1
+    } else {
+        $archiveLockDir = Join-Path $lockDir 'archive_stale'
+        New-Item -ItemType Directory -Force -Path $archiveLockDir |
+            Out-Null
+        Move-Item -LiteralPath $lockPath -Destination (
+            Join-Path $archiveLockDir (
+                "pre_mfa_direct_{0}.lock" -f (
+                    Get-Date -Format 'yyyyMMdd_HHmmss'
+                )
+            )
+        )
+    }
+} elseif ($BulkWrapperPid -gt 0) {
+    Write-Error "상속할 bulk wrapper lock 없음: $lockPath"
+    exit 1
+}
+
+if ($BulkWrapperPid -eq 0) {
+    $lockTemp = "$lockPath.$PID.partial"
+    [ordered]@{
+        pid = $PID
+        owner_mode = 'direct_runner'
+        year = $Year
+        started_at = (Get-Date).ToString('o')
+        script = $MyInvocation.MyCommand.Path
+    } | ConvertTo-Json -Depth 4 |
+        Set-Content -LiteralPath $lockTemp -Encoding UTF8
+    try {
+        Move-Item -LiteralPath $lockTemp -Destination $lockPath
+        $ownsDirectLock = $true
+    } catch {
+        Write-Error "직접 MFA lock 취득 실패: $($_.Exception.Message)"
+        exit 1
+    }
+}
+
+# 공통 G2P/r2 사전 생성과 D: MFA 정렬은 어느 방향에서도 동시에
+# 실행하지 않는다. 종료된 lock은 경고만 남기고 공통사전 쪽 보존
+# 정책에 맡긴다.
+$liveCommonLocks = @()
+$commonLockDir = Join-Path $commonPronRoot 'locks'
+if (Test-Path -LiteralPath $commonLockDir -PathType Container) {
+    foreach ($commonLockPath in @(
+        Get-ChildItem -LiteralPath $commonLockDir -Filter '*.lock' `
+            -File -ErrorAction SilentlyContinue
+    )) {
+        try {
+            $commonLock = Get-Content -LiteralPath $commonLockPath.FullName `
+                -Raw -Encoding UTF8 | ConvertFrom-Json
+            $commonPid = [int]$commonLock.pid
+            if (
+                $commonPid -gt 0 -and
+                $null -ne (
+                    Get-Process -Id $commonPid -ErrorAction SilentlyContinue
+                )
+            ) {
+                $liveCommonLocks += [ordered]@{
+                    path = $commonLockPath.FullName
+                    pid = $commonPid
+                }
+            }
+        } catch {
+            Write-Warning "해석 불가 공통사전 lock: $($commonLockPath.FullName)"
+        }
+    }
+}
+if ($liveCommonLocks.Count -gt 0) {
+    if ($ownsDirectLock -and (Test-Path -LiteralPath $lockPath)) {
+        Remove-Item -LiteralPath $lockPath -Force
+        $ownsDirectLock = $false
+    }
+    Write-Error (
+        "공통 G2P/r2 생성과 MFA 동시 실행 금지: " +
+        (($liveCommonLocks | ForEach-Object {
+            "$($_.path) (pid=$($_.pid))"
+        }) -join '; ')
+    )
+    exit 1
+}
+
+try {
 # ★ conda run 대신 mfa.exe 직접 호출 (2026-07-17): conda run은 출력을 버퍼링해
 #   진행바가 안 보이고, MFA 에러 시 래퍼가 안 죽고 매달리는 사고 확인됨(파일럿).
 #   단 OpenFST 등 서드파티 실행파일(fstcompile)을 PATH에서 찾으므로 env 경로를 얹는다.
@@ -135,13 +283,26 @@ $envRoot = Join-Path $env:USERPROFILE "miniforge3\envs\mfa"
 $mfa   = Join-Path $envRoot "Scripts\mfa.exe"
 $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $env:Path
 $pydir = Join-Path $PSScriptRoot "python"
-$mfaModelRoot = Join-Path $env:USERPROFILE "Documents\MFA\pretrained_models"
-$acousticModelPath = Join-Path $mfaModelRoot "acoustic\korean_mfa.zip"
-$baseDictionaryModelPath = Join-Path (
-    Join-Path $mfaModelRoot "dictionary"
-) "korean_mfa.dict"
+$frozenBundleContractPath = Join-Path $root (
+    'outputs\reports\korean_mfa_latest_jamo_bundle_20260728.json'
+)
+try {
+    $frozenBundle = Get-Content -LiteralPath $frozenBundleContractPath `
+        -Raw -Encoding UTF8 | ConvertFrom-Json
+    $acousticModelPath = [IO.Path]::GetFullPath(
+        [string]$frozenBundle.outputs.acoustic_model.path
+    )
+    $baseDictionaryModelPath = [IO.Path]::GetFullPath(
+        [string]$frozenBundle.outputs.dictionary.path
+    )
+    $g2pModelPath = [IO.Path]::GetFullPath(
+        [string]$frozenBundle.outputs.g2p_model.path
+    )
+} catch {
+    Write-Error "최신 Jamo 동결 묶음 계약 해석 실패: $($_.Exception.Message)"
+    exit 1
+}
 $dictionaryModelPath = $baseDictionaryModelPath
-$g2pModelPath = Join-Path $mfaModelRoot "g2p\korean_mfa.zip"
 if (-not (Test-Path -LiteralPath $py)) {
     Write-Error "pipeline_python 없음: $py"
     exit 1
@@ -158,6 +319,21 @@ foreach ($modelPath in @(
         exit 1
     }
 }
+$modelPinReportPath = Join-Path $stateRoot (
+    'alignment_contracts\frozen_korean_mfa_model_pin.json'
+)
+New-Item -ItemType Directory -Force `
+    -Path (Split-Path -Parent $modelPinReportPath) | Out-Null
+& $py (Join-Path $pydir 'verify_frozen_mfa_bundle.py') `
+    --contract $frozenBundleContractPath `
+    --acoustic-model $acousticModelPath `
+    --g2p-model $g2pModelPath `
+    --base-dictionary $baseDictionaryModelPath `
+    --output $modelPinReportPath
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "최신 Jamo 동결 모델 SHA pin 검증 실패"
+    exit 1
+}
 $pronunciationMode = 'korean_mfa'
 $dictionaryModelName = 'korean_mfa'
 $g2pModelName = 'korean_mfa'
@@ -165,13 +341,13 @@ $useInlineG2p = $true
 if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
     try {
         $commonManifestPath = [IO.Path]::GetFullPath($CommonPronManifest)
-        $equivalencePath = [IO.Path]::GetFullPath(
-            $CommonPronEquivalenceReport
+        $adoptionPath = [IO.Path]::GetFullPath(
+            $CommonPronAdoptionContract
         )
         $allowedCommonRoot = [IO.Path]::GetFullPath(
             $commonPronRoot
         ).TrimEnd('\') + '\'
-        foreach ($path in @($commonManifestPath, $equivalencePath)) {
+        foreach ($path in @($commonManifestPath, $adoptionPath)) {
             if (
                 -not $path.StartsWith(
                     $allowedCommonRoot,
@@ -190,26 +366,31 @@ if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
         }
         $commonData = Get-Content -Raw -Encoding UTF8 `
             -LiteralPath $commonManifestPath | ConvertFrom-Json
-        $equivalenceData = Get-Content -Raw -Encoding UTF8 `
-            -LiteralPath $equivalencePath | ConvertFrom-Json
+        $adoptionData = Get-Content -Raw -Encoding UTF8 `
+            -LiteralPath $adoptionPath | ConvertFrom-Json
         if (
+            $commonData.schema_version -ne
+                'common_pron_mfa_lexicon.v2' -or
             $commonData.status -ne 'success' -or
+            -not ([string]$commonData.release_id).StartsWith(
+                'common_pron_mfa_r2_'
+            ) -or
             [int]$commonData.dictionary_contract.attested_dictionary_variants_added -ne 0 -or
             [bool]$commonData.dictionary_contract.changes_phone_standard -or
-            $equivalenceData.schema_version -ne
-                'common_pron_mfa_equivalence.v1' -or
-            $equivalenceData.status -ne 'passed' -or
-            $equivalenceData.policy -ne 'no_phone_standard_change' -or
-            $equivalenceData.baseline_2020.status -ne 'passed' -or
-            $equivalenceData.baseline_2020_partial_db_auxiliary.status -ne
-                'passed' -or
-            $equivalenceData.baseline_2021.status -ne 'passed' -or
-            -not [bool]$equivalenceData.gate.requires_2020_pass -or
-            -not [bool]$equivalenceData.gate.requires_2020_partial_db_auxiliary_pass -or
-            -not [bool]$equivalenceData.gate.requires_2021_pass -or
-            -not [bool]$equivalenceData.gate.allow_common_dictionary_for_2022
+            -not [bool]$commonData.dictionary_contract.jamo_ls_surface_key_restoration -or
+            [int]$commonData.counts.g2p_missing -ne 0 -or
+            [int]$commonData.counts.g2p_spn_words -ne 0 -or
+            [int]$commonData.counts.phone_outside_acoustic_inventory -ne 0 -or
+            [int]$commonData.counts.g2p_jamo_ls_rewrite_words -ne 4 -or
+            $adoptionData.schema_version -ne
+                'common_pron_mfa_adoption.v2' -or
+            $adoptionData.status -ne 'passed' -or
+            $adoptionData.policy -ne
+                'latest_jamo_common_dictionary_required' -or
+            -not [bool]$adoptionData.gate.allow_yearly_mfa -or
+            [bool]$adoptionData.gate.legacy_inline_g2p_default
         ) {
-            throw "공통 발음 release 또는 2020/2021 전수 동등성 gate 실패"
+            throw "공통 발음 r2 release 또는 채택 계약 gate 실패"
         }
         $dictionaryModelPath = [IO.Path]::GetFullPath(
             [string]$commonData.outputs.dictionary.path
@@ -243,22 +424,22 @@ if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             $dictionaryHash -ne
                 [string]$commonData.outputs.dictionary.sha256 -or
             $dictionaryHash -ne
-                [string]$equivalenceData.common_release.dictionary.sha256 -or
+                [string]$adoptionData.common_release.dictionary.sha256 -or
             $g2pHash -ne [string]$commonData.inputs.g2p_model.sha256 -or
             $acousticHash -ne
                 [string]$commonData.inputs.acoustic_model.sha256 -or
             $baseDictionaryHash -ne
                 [string]$commonData.inputs.base_dictionary.sha256 -or
             $g2pHash -ne
-                [string]$equivalenceData.method_contract.models.g2p_model.sha256 -or
+                [string]$adoptionData.frozen_model_pin.models.g2p_model.sha256 -or
             $acousticHash -ne
-                [string]$equivalenceData.method_contract.models.acoustic_model.sha256 -or
+                [string]$adoptionData.frozen_model_pin.models.acoustic_model.sha256 -or
             $baseDictionaryHash -ne
-                [string]$equivalenceData.method_contract.models.base_dictionary.sha256 -or
+                [string]$adoptionData.frozen_model_pin.models.dictionary.sha256 -or
             $commonManifestHash -ne
-                [string]$equivalenceData.common_release.manifest.sha256
+                [string]$adoptionData.common_release.manifest.sha256
         ) {
-            throw "공통 사전/G2P/equivalence fingerprint 불일치"
+            throw "공통 사전/동결 모델/채택 계약 fingerprint 불일치"
         }
         $contractSearchRoot = [IO.Path]::GetFullPath(
             [string]$commonData.source_vocabulary_contract.search_master_root
@@ -272,7 +453,7 @@ if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
                 "$contractSearchRoot != $searchMasterRoot"
             )
         }
-        $pronunciationMode = 'common_pron_mfa_r1'
+        $pronunciationMode = 'common_pron_mfa_r2_latest_jamo'
         $dictionaryModelName = [string]$commonData.release_id
         $g2pModelName = 'korean_mfa_precomputed_1best_strict'
         $useInlineG2p = $false
@@ -298,33 +479,19 @@ function Get-WorkPaths($year) {
     # 감수하지 않는다. -PreferD면 신규 연도는 D:에서 시작한다. 단, 동일한
     # 입력계약으로 검증된 resume temp가 이미 있으면 수시간 계산을 버리지 않도록
     # 그 temp의 원래 드라이브를 유지한다(계약 불일치 temp는 아래에서 먼저 archive).
-    if ($PreferD) {
-        if (Test-Path (Join-Path $tmpSecondary $year)) {
-            return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 10 }
-        }
-        if (Test-Path (Join-Path $tmpPrimary $year)) {
-            return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary; MinFreeGB = 10 }
-        }
-        return @{
-            TempRoot = $tmpSecondary
-            OutRoot = $outSecondary
-            MinFreeGB = $required
-        }
+    # r2부터 D:가 유일한 신규 실행 root다. C:는 동일 입력 계약으로
+    # 이미 생성된 temp를 복구할 때만 후보이며, 신규 작업에는 쓰지 않는다.
+    if (Test-Path (Join-Path $tmpSecondary $year)) {
+        return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 10 }
     }
     if (Test-Path (Join-Path $tmpPrimary $year)) {
         return @{ TempRoot = $tmpPrimary; OutRoot = $outPrimary; MinFreeGB = 10 }
     }
-    if (Test-Path (Join-Path $tmpSecondary $year)) {
-        return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = 10 }
-    }
-    $primaryDrive = Split-Path -Qualifier $tmpPrimary
-    $primaryFree = ([IO.DriveInfo]::new($primaryDrive)).AvailableFreeSpace
-    if ($primaryFree / 1GB -ge $required) {
-        return @{
-            TempRoot = $tmpPrimary
-            OutRoot = $outPrimary
-            MinFreeGB = $required
-        }
+    if (-not $PreferD) {
+        Write-Warning (
+            "-PreferD 생략/false는 더 이상 C: 신규 실행을 허용하지 않음; " +
+            "D: 고정 정책을 사용함"
+        )
     }
     return @{ TempRoot = $tmpSecondary; OutRoot = $outSecondary; MinFreeGB = $required }
 }
@@ -1303,14 +1470,27 @@ foreach ($y in $years) {
     $alignmentContractPath = Join-Path $stateRoot (
         "alignment_contracts\{0}.json" -f $y
     )
+    $alignmentContractArgs = @(
+        '--year', $y,
+        '--lab-input-contract-id', $inputContractId,
+        '--acoustic-model-path', $acousticModelPath,
+        '--dictionary-model-path', $dictionaryModelPath,
+        '--g2p-model-path', $g2pModelPath,
+        '--dictionary-model-name', $dictionaryModelName,
+        '--g2p-model-name', $g2pModelName,
+        '--frozen-bundle-contract', $frozenBundleContractPath,
+        '--output', $alignmentContractPath
+    )
+    if ($useInlineG2p) {
+        $alignmentContractArgs += '--allow-legacy-inline-g2p'
+    } else {
+        $alignmentContractArgs += @(
+            '--common-pron-manifest', $commonManifestPath,
+            '--common-pron-adoption-contract', $adoptionPath
+        )
+    }
     & $py (Join-Path $pydir "build_mfa_alignment_contract.py") `
-        --year $y --lab-input-contract-id $inputContractId `
-        --acoustic-model-path $acousticModelPath `
-        --dictionary-model-path $dictionaryModelPath `
-        --g2p-model-path $g2pModelPath `
-        --dictionary-model-name $dictionaryModelName `
-        --g2p-model-name $g2pModelName `
-        --output $alignmentContractPath
+        @alignmentContractArgs
     if ($LASTEXITCODE -ne 0) {
         Say "!! $y MFA alignment contract 생성 실패"
         exit 1
@@ -2174,4 +2354,20 @@ foreach ($y in $years) {
 }
 Say "선택 연도 정렬·병합 완료 - $g2pStage"
 Say "기존 06_textgrid_eojeol은 보존됨. 전수 검증과 archive 계획 확인 전 자동 승격하지 않음."
+} finally {
+    if ($ownsDirectLock -and (Test-Path -LiteralPath $lockPath)) {
+        try {
+            $ownedLock = Get-Content -LiteralPath $lockPath -Raw `
+                -Encoding UTF8 | ConvertFrom-Json
+            if (
+                [int]$ownedLock.pid -eq $PID -and
+                [string]$ownedLock.owner_mode -eq 'direct_runner'
+            ) {
+                Remove-Item -LiteralPath $lockPath -Force
+            }
+        } catch {
+            Write-Warning "직접 MFA lock 해제 실패; 수동 확인 필요: $lockPath"
+        }
+    }
+}
 exit 0

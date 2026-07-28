@@ -38,8 +38,19 @@ from pipeline_common import (
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_VERSION = "common_pron_mfa_lexicon.v1"
+SCHEMA_VERSION = "common_pron_mfa_lexicon.v2"
 MFA_DICTIONARY_PARSE_CONTRACT = "mfa_3_4_optional_probability_columns_v1"
+JAMO_LS = "\u11b3"
+JAMO_L = "\u11af"
+JAMO_S = "\u11ba"
+JAMO_LS_REWRITE_RULE = "NFKD U+11B3 -> U+11AF U+11BA -> NFKC"
+SPECIAL_REVIEW_FIELDS = (
+    "token",
+    "model_input",
+    "pron_phones_mfa",
+    "decision",
+    "notes",
+)
 # MFA 3.4.0 ``utils.parse_dictionary_file``의 실제 판별식과 동일하게
 # 선두 숫자 열을 최대 4개까지 확률/보정값으로 해석한다. 세 번째·네 번째
 # 보정값은 1보다 클 수 있으므로 0–1 범위로 제한하면 안 된다.
@@ -233,6 +244,28 @@ def audit_g2p_grapheme_coverage(
     return report, rows
 
 
+def analyze_g2p_word(
+    token: str,
+    *,
+    graphemes: set[str],
+    unicode_decomposition: bool,
+) -> tuple[str, set[str]]:
+    model_sequence = (
+        unicodedata.normalize("NFKD", token)
+        if unicode_decomposition
+        else token
+    )
+    return model_sequence, set(model_sequence) - graphemes
+
+
+def rewrite_jamo_ls_for_model(token: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", token)
+    if JAMO_LS not in decomposed:
+        raise ValueError(f"U+11B3이 없는 어절은 rewrite 대상이 아님: {token}")
+    rewritten = decomposed.replace(JAMO_LS, JAMO_L + JAMO_S)
+    return unicodedata.normalize("NFKC", rewritten)
+
+
 def write_grapheme_audit(
     *,
     report: dict,
@@ -378,6 +411,20 @@ def canonical_identity(payload: dict) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def normalized_source_contract(path: Path) -> dict[str, object]:
+    text = path.read_text(encoding="utf-8-sig")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return {
+        "path": str(path.resolve()),
+        "normalization": "UTF-8 text with LF newlines",
+        "lines": normalized.count("\n")
+        + (0 if normalized.endswith("\n") else 1),
+        "normalized_utf8_sha256": hashlib.sha256(
+            normalized.encode("utf-8")
+        ).hexdigest(),
+    }
+
+
 def verify_fingerprint(record: dict) -> None:
     path = Path(record["path"])
     if not path.is_file():
@@ -397,9 +444,35 @@ def prepare_paths(release_root: Path) -> dict[str, Path]:
         "logs": release_root / "logs",
         "state": release_root / "_state",
         "work": release_root / "work",
+        "grapheme_audit": release_root
+        / "00_contract"
+        / "grapheme_coverage.csv",
+        "special_mapping": release_root
+        / "01_g2p"
+        / "jamo_ls_mapping.csv",
+        "special_original_input": release_root
+        / "01_g2p"
+        / "jamo_ls_original.txt",
+        "special_model_input": release_root
+        / "01_g2p"
+        / "jamo_ls_model_input.txt",
+        "special_raw_output": release_root
+        / "01_g2p"
+        / "output_shards"
+        / "jamo_ls_raw.dict",
+        "special_restored_output": release_root
+        / "01_g2p"
+        / "output_shards"
+        / "jamo_ls_restored.dict",
+        "special_candidate_report": release_root
+        / "_state"
+        / "jamo_ls_candidate_report.json",
+        "special_review": release_root
+        / "03_review"
+        / "jamo_ls_researcher_review.csv",
         "final_dictionary": release_root
         / "02_mfa_lexicon"
-        / "common_pron_mfa_r1.dict",
+        / "common_pron_mfa_r2.dict",
         "g2p_cache": release_root / "02_mfa_lexicon" / "g2p_cache.csv",
         "final_manifest": release_root
         / "00_contract"
@@ -414,9 +487,37 @@ def verify_prepared(manifest_path: Path) -> dict:
         or manifest.get("status") != "prepared"
     ):
         raise RuntimeError(f"prepare manifest 계약 불일치: {manifest_path}")
+    required_inputs = {
+        "vocabulary",
+        "vocabulary_manifest",
+        "base_dictionary",
+        "g2p_model",
+        "acoustic_model",
+    }
+    if set(manifest.get("inputs", {})) != required_inputs:
+        raise RuntimeError(
+            "prepare manifest 코드 포함 입력계약 불일치: "
+            f"{sorted(manifest.get('inputs', {}))}"
+        )
     for record in manifest["inputs"].values():
         verify_fingerprint(record)
+    expected_code = manifest.get("code_contract", {}).get(
+        "lexicon_builder", {}
+    )
+    actual_code = normalized_source_contract(Path(__file__).resolve())
+    if (
+        expected_code.get("normalized_utf8_sha256")
+        != actual_code["normalized_utf8_sha256"]
+    ):
+        raise RuntimeError("prepare manifest 생성기 코드 계약 불일치")
     verify_fingerprint(manifest["outputs"]["oov_inventory"])
+    verify_fingerprint(manifest["outputs"]["grapheme_audit"])
+    for key in (
+        "jamo_ls_mapping",
+        "jamo_ls_original_input",
+        "jamo_ls_model_input",
+    ):
+        verify_fingerprint(manifest["outputs"][key])
     for record in manifest["outputs"]["input_shards"]:
         verify_fingerprint(record)
     return manifest
@@ -485,10 +586,110 @@ def prepare(
     paths["manifest"].parent.mkdir(parents=True, exist_ok=True)
 
     write_csv(paths["oov_inventory"], OOV_FIELDS, oov_rows)
+    graphemes, g2p_model_contract = g2p_grapheme_contract(g2p_model)
+    standard_rows: list[dict[str, str]] = []
+    special_rows: list[dict[str, str]] = []
+    audit_rows: list[dict[str, str]] = []
+    model_inputs_seen: set[str] = set()
+    for row in oov_rows:
+        token = row["token"]
+        _, missing = analyze_g2p_word(
+            token,
+            graphemes=graphemes,
+            unicode_decomposition=bool(
+                g2p_model_contract["unicode_decomposition"]
+            ),
+        )
+        if not missing:
+            standard_rows.append(row)
+            continue
+        audit_row = {
+            "token": token,
+            "missing_graphemes": "".join(sorted(missing)),
+            "missing_codepoints": " ".join(
+                f"U+{ord(value):04X}" for value in sorted(missing)
+            ),
+            "disposition": "blocked",
+            "model_input": "",
+            "rewrite_rule": "",
+        }
+        if missing == {JAMO_LS}:
+            model_input = rewrite_jamo_ls_for_model(token)
+            _, rewritten_missing = analyze_g2p_word(
+                model_input,
+                graphemes=graphemes,
+                unicode_decomposition=bool(
+                    g2p_model_contract["unicode_decomposition"]
+                ),
+            )
+            if rewritten_missing:
+                raise RuntimeError(
+                    f"U+11B3 rewrite 뒤에도 미지원 grapheme: "
+                    f"{token} {sorted(rewritten_missing)}"
+                )
+            if model_input in model_inputs_seen:
+                raise RuntimeError(
+                    f"U+11B3 model input 충돌: {token} -> {model_input}"
+                )
+            model_inputs_seen.add(model_input)
+            special_rows.append(
+                {
+                    "token": token,
+                    "model_input": model_input,
+                    "rewrite_rule": JAMO_LS_REWRITE_RULE,
+                }
+            )
+            audit_row.update(
+                {
+                    "disposition": "same_model_u11b3_full_decomposition",
+                    "model_input": model_input,
+                    "rewrite_rule": JAMO_LS_REWRITE_RULE,
+                }
+            )
+        audit_rows.append(audit_row)
+    unexpected = [
+        row
+        for row in audit_rows
+        if row["disposition"] == "blocked"
+    ]
+    write_csv(
+        paths["grapheme_audit"],
+        (
+            "token",
+            "missing_graphemes",
+            "missing_codepoints",
+            "disposition",
+            "model_input",
+            "rewrite_rule",
+        ),
+        audit_rows,
+    )
+    if unexpected:
+        raise RuntimeError(
+            "U+11B3 외 미지원 G2P grapheme 발견: "
+            + ", ".join(row["token"] for row in unexpected[:5])
+        )
+    write_csv(
+        paths["special_mapping"],
+        ("token", "model_input", "rewrite_rule"),
+        special_rows,
+    )
+    with atomic_text_writer(
+        paths["special_original_input"], encoding="utf-8", newline="\n"
+    ) as (stream, _):
+        for row in special_rows:
+            stream.write(f"{row['token']}\n")
+    with atomic_text_writer(
+        paths["special_model_input"], encoding="utf-8", newline="\n"
+    ) as (stream, _):
+        for row in special_rows:
+            stream.write(f"{row['model_input']}\n")
     shard_records: list[dict] = []
-    shard_count = math.ceil(len(oov_rows) / shard_size)
+    shard_count = math.ceil(len(standard_rows) / shard_size)
     for index in range(shard_count):
-        shard_rows = oov_rows[index * shard_size : (index + 1) * shard_size]
+        shard_rows = standard_rows[
+            index * shard_size : (index + 1) * shard_size
+        ]
         shard_path = paths["input_shards"] / f"oov_{index + 1:05d}.txt"
         with atomic_text_writer(
             shard_path, encoding="utf-8", newline="\n"
@@ -518,6 +719,11 @@ def prepare(
             acoustic_model, with_sha256=True
         ),
     }
+    code_contract = {
+        "lexicon_builder": normalized_source_contract(
+            Path(__file__).resolve()
+        )
+    }
     identity_payload = {
         "schema_version": SCHEMA_VERSION,
         "policy": "base_dictionary_plus_same_g2p_1best_no_attested_variants",
@@ -529,6 +735,10 @@ def prepare(
             for name, record in input_records.items()
         },
         "shard_size": shard_size,
+        "jamo_ls_rewrite_rule": JAMO_LS_REWRITE_RULE,
+        "builder_code_sha256": code_contract[
+            "lexicon_builder"
+        ]["normalized_utf8_sha256"],
     }
     manifest = {
         "schema_version": SCHEMA_VERSION,
@@ -545,11 +755,19 @@ def prepare(
             "num_pronunciations": 1,
             "strict_graphemes": True,
             "input_unit": "unique_surface_eojeol",
+            "model_contract": g2p_model_contract,
+            "unsupported_grapheme_policy": (
+                "only U+11B3 is rewritten to U+11AF+U+11BA for the same "
+                "frozen Jamo rewriter; every other unsupported grapheme "
+                "blocks prepare"
+            ),
+            "surface_key_restoration_required": True,
         },
         "phone_inventory_contract": phone_inventory_contract(
             phone_inventory
         ),
         "inputs": input_records,
+        "code_contract": code_contract,
         "source_vocabulary_manifest_status": source_manifest["status"],
         "source_vocabulary_contract": {
             "search_master_root": source_manifest.get("source", {}).get(
@@ -566,12 +784,27 @@ def prepare(
             "base_dictionary_rows": len(base_lines),
             "observed_words_in_base_dictionary": len(rows) - len(oov_rows),
             "observed_oov_words": len(oov_rows),
+            "g2p_standard_words": len(standard_rows),
+            "g2p_jamo_ls_rewrite_words": len(special_rows),
+            "g2p_unsupported_other_words": 0,
             "shards": shard_count,
             "shard_size": shard_size,
         },
         "outputs": {
             "oov_inventory": file_fingerprint(
                 paths["oov_inventory"], with_sha256=True
+            ),
+            "grapheme_audit": file_fingerprint(
+                paths["grapheme_audit"], with_sha256=True
+            ),
+            "jamo_ls_mapping": file_fingerprint(
+                paths["special_mapping"], with_sha256=True
+            ),
+            "jamo_ls_original_input": file_fingerprint(
+                paths["special_original_input"], with_sha256=True
+            ),
+            "jamo_ls_model_input": file_fingerprint(
+                paths["special_model_input"], with_sha256=True
             ),
             "input_shards": shard_records,
             "output_shards_directory": str(paths["output_shards"].resolve()),
@@ -668,6 +901,192 @@ def verify_g2p_shard(
     }
 
 
+def read_special_mapping(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    required = {"token", "model_input", "rewrite_rule"}
+    if rows and not required.issubset(rows[0]):
+        raise RuntimeError("Jamo ㄽ mapping 필수 열 누락")
+    tokens = [clean(row.get("token")) for row in rows]
+    model_inputs = [clean(row.get("model_input")) for row in rows]
+    if (
+        len(tokens) != len(set(tokens))
+        or len(model_inputs) != len(set(model_inputs))
+        or any(not value for value in (*tokens, *model_inputs))
+    ):
+        raise RuntimeError("Jamo ㄽ mapping 키가 비었거나 중복됨")
+    for row in rows:
+        if clean(row.get("rewrite_rule")) != JAMO_LS_REWRITE_RULE:
+            raise RuntimeError("Jamo ㄽ mapping rewrite rule 불일치")
+        if rewrite_jamo_ls_for_model(clean(row["token"])) != clean(
+            row["model_input"]
+        ):
+            raise RuntimeError("Jamo ㄽ mapping 재계산 불일치")
+    return [
+        {
+            "token": clean(row["token"]),
+            "model_input": clean(row["model_input"]),
+            "rewrite_rule": clean(row["rewrite_rule"]),
+        }
+        for row in rows
+    ]
+
+
+def read_special_review(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        missing = set(SPECIAL_REVIEW_FIELDS) - set(reader.fieldnames or ())
+        if missing:
+            raise RuntimeError(
+                f"Jamo ㄽ 연구자 검토표 필수 열 누락: {sorted(missing)}"
+            )
+        return [
+            {
+                field: clean(row.get(field))
+                for field in SPECIAL_REVIEW_FIELDS
+            }
+            for row in reader
+        ]
+
+
+def restore_jamo_ls_candidates(
+    *,
+    release_root: Path,
+    acoustic_model: Path,
+) -> dict:
+    paths = prepare_paths(release_root)
+    prepared = verify_prepared(paths["manifest"])
+    mapping = read_special_mapping(paths["special_mapping"])
+    raw = (
+        read_generated_dictionary(paths["special_raw_output"])
+        if mapping
+        else {}
+    )
+    expected_model_inputs = {row["model_input"] for row in mapping}
+    missing = expected_model_inputs - set(raw)
+    extras = set(raw) - expected_model_inputs
+    if missing or extras:
+        raise RuntimeError(
+            f"Jamo ㄽ raw G2P coverage 불일치: missing={len(missing)} "
+            f"extras={len(extras)}"
+        )
+    inventory = acoustic_phone_inventory(acoustic_model)
+    unknown = {
+        phone
+        for phones in raw.values()
+        for phone in phones
+        if phone not in inventory
+    }
+    spn_words = {
+        word for word, phones in raw.items() if "spn" in phones
+    }
+    if unknown or spn_words:
+        raise RuntimeError(
+            f"Jamo ㄽ 후보 phone gate 실패: unknown={sorted(unknown)}, "
+            f"spn={sorted(spn_words)}"
+        )
+    candidates = [
+        {
+            "token": row["token"],
+            "model_input": row["model_input"],
+            "pron_phones_mfa": " ".join(raw[row["model_input"]]),
+            "decision": "pending",
+            "notes": "",
+        }
+        for row in mapping
+    ]
+    if paths["special_restored_output"].exists():
+        existing = read_generated_dictionary(
+            paths["special_restored_output"]
+        )
+        expected = {
+            row["token"]: tuple(row["pron_phones_mfa"].split())
+            for row in candidates
+        }
+        if existing != expected:
+            raise RuntimeError("기존 Jamo ㄽ 표층키 복원 출력 불일치")
+    else:
+        with atomic_text_writer(
+            paths["special_restored_output"],
+            encoding="utf-8",
+            newline="\n",
+        ) as (stream, _):
+            for row in candidates:
+                stream.write(
+                    f"{row['token']}\t{row['pron_phones_mfa']}\n"
+                )
+    paths["special_review"].parent.mkdir(parents=True, exist_ok=True)
+    if paths["special_review"].exists():
+        existing_review = read_special_review(paths["special_review"])
+        candidate_contract = [
+            (
+                row["token"],
+                row["model_input"],
+                row["pron_phones_mfa"],
+            )
+            for row in candidates
+        ]
+        existing_contract = [
+            (
+                row["token"],
+                row["model_input"],
+                row["pron_phones_mfa"],
+            )
+            for row in existing_review
+        ]
+        if existing_contract != candidate_contract:
+            raise RuntimeError("기존 Jamo ㄽ 연구자 검토표 후보가 달라짐")
+    else:
+        write_csv(
+            paths["special_review"],
+            SPECIAL_REVIEW_FIELDS,
+            candidates,
+        )
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "status": "candidate_ready_researcher_review_required",
+        "kind": "jamo_ls_same_model_candidate",
+        "recorded_at": now_iso(),
+        "release_id": release_root.name,
+        "rewrite_rule": JAMO_LS_REWRITE_RULE,
+        "counts": {
+            "mapping_words": len(mapping),
+            "raw_output_words": len(raw),
+            "surface_keys_restored": len(candidates),
+            "missing": 0,
+            "extras": 0,
+            "spn_words": 0,
+            "phone_outside_acoustic_inventory": 0,
+        },
+        "inputs": {
+            "prepare_manifest": file_fingerprint(
+                paths["manifest"], with_sha256=True
+            ),
+            "mapping": file_fingerprint(
+                paths["special_mapping"], with_sha256=True
+            ),
+            "raw_output": file_fingerprint(
+                paths["special_raw_output"], with_sha256=True
+            ),
+            "acoustic_model": file_fingerprint(
+                acoustic_model, with_sha256=True
+            ),
+        },
+        "outputs": {
+            "restored_output": file_fingerprint(
+                paths["special_restored_output"], with_sha256=True
+            ),
+            "researcher_review": file_fingerprint(
+                paths["special_review"], with_sha256=True
+            ),
+        },
+        "prepared_release_contract_id": prepared["release_contract_id"],
+        "runtime": runtime_snapshot(PROJECT_ROOT),
+    }
+    atomic_write_json(paths["special_candidate_report"], report)
+    return report
+
+
 def finalize(*, release_root: Path) -> dict:
     paths = prepare_paths(release_root)
     if paths["final_manifest"].exists():
@@ -702,6 +1121,60 @@ def finalize(*, release_root: Path) -> dict:
             }
         )
         output_records.append(record)
+    special_mapping = read_special_mapping(paths["special_mapping"])
+    special_generated = (
+        read_generated_dictionary(paths["special_restored_output"])
+        if special_mapping
+        else {}
+    )
+    expected_special = {row["token"] for row in special_mapping}
+    if set(special_generated) != expected_special:
+        raise RuntimeError("Jamo ㄽ 표층키 복원 coverage 불일치")
+    special_review = (
+        read_special_review(paths["special_review"])
+        if special_mapping
+        else []
+    )
+    review_by_token = {row["token"]: row for row in special_review}
+    if (
+        len(review_by_token) != len(special_review)
+        or set(review_by_token) != expected_special
+    ):
+        raise RuntimeError("Jamo ㄽ 연구자 검토표 token 집합 불일치")
+    for row in special_mapping:
+        token = row["token"]
+        review = review_by_token[token]
+        phones = " ".join(special_generated[token])
+        if (
+            review["decision"] != "approved"
+            or review["model_input"] != row["model_input"]
+            or review["pron_phones_mfa"] != phones
+        ):
+            raise RuntimeError(
+                f"Jamo ㄽ 연구자 승인 미완료 또는 후보 불일치: {token}"
+            )
+    duplicates = set(generated) & set(special_generated)
+    if duplicates:
+        raise RuntimeError(
+            "표준 shard와 Jamo ㄽ shard 중복: "
+            + ", ".join(sorted(duplicates))
+        )
+    generated.update(special_generated)
+    if special_mapping:
+        output_records.append(
+            {
+                **file_fingerprint(
+                    paths["special_restored_output"], with_sha256=True
+                ),
+                "kind": "jamo_ls_surface_key_restored",
+                "row_count": len(special_generated),
+            }
+        )
+    special_review_record = (
+        file_fingerprint(paths["special_review"], with_sha256=True)
+        if special_mapping
+        else {"status": "not_applicable", "rows": 0}
+    )
     missing = expected_words - set(generated)
     extras = set(generated) - expected_words
     if missing or extras:
@@ -754,7 +1227,11 @@ def finalize(*, release_root: Path) -> dict:
         {
             **oov_by_token[word],
             "pron_phones_mfa": " ".join(generated[word]),
-            "pron_source": "korean_mfa_g2p_1best_strict",
+            "pron_source": (
+                "korean_mfa_jamo_g2p_v3.2.0_1best_u11b3_decomposed"
+                if word in expected_special
+                else "korean_mfa_jamo_g2p_v3.2.0_1best_strict"
+            ),
         }
         for word in sorted(generated)
     )
@@ -789,11 +1266,15 @@ def finalize(*, release_root: Path) -> dict:
             "added_rows": "one unweighted G2P pronunciation per observed OOV",
             "attested_dictionary_variants_added": 0,
             "changes_phone_standard": False,
+            "jamo_ls_surface_key_restoration": True,
+            "jamo_ls_rewrite_rule": JAMO_LS_REWRITE_RULE,
+            "jamo_ls_researcher_review": special_review_record,
         },
         "inputs": prepared["inputs"],
         "counts": {
             **prepared["counts"],
             "g2p_output_words": len(generated),
+            "g2p_jamo_ls_rewrite_words": len(expected_special),
             "g2p_missing": 0,
             "g2p_extras": 0,
             "g2p_spn_words": 0,
@@ -812,9 +1293,13 @@ def finalize(*, release_root: Path) -> dict:
             ),
         },
         "required_before_mfa": {
-            "baseline_2020_textgrid_word_phone_equivalence": "pending",
-            "baseline_2021_db_word_pronunciation_equivalence": "pending",
-            "both_must_pass_before_2022": True,
+            "frozen_latest_jamo_model_pin": (
+                "must_be_reverified_by_adoption_contract"
+            ),
+            "baseline_2020_2021_difference_inventory": "pending",
+            "jamo_ls_four_word_researcher_approval": "passed",
+            "yearly_mfa_adoption_contract": "pending",
+            "legacy_mismatch_zero_is_not_an_adoption_gate": True,
         },
         "runtime": runtime_snapshot(PROJECT_ROOT),
     }
@@ -843,6 +1328,12 @@ def parse_args() -> argparse.Namespace:
 
     finalize_parser = sub.add_parser("finalize")
     finalize_parser.add_argument("--release-root", type=Path, required=True)
+
+    restore_parser = sub.add_parser("restore-jamo-ls")
+    restore_parser.add_argument("--release-root", type=Path, required=True)
+    restore_parser.add_argument(
+        "--acoustic-model", type=Path, required=True
+    )
 
     verify_parser = sub.add_parser("verify-shard")
     verify_parser.add_argument("--input-shard", type=Path, required=True)
@@ -891,6 +1382,17 @@ def main() -> int:
             "[OK] common MFA 사전: "
             f"{manifest['counts']['final_dictionary_words']:,} words; "
             "2020/2021 동등성은 아직 pending",
+            flush=True,
+        )
+    elif args.command == "restore-jamo-ls":
+        manifest = restore_jamo_ls_candidates(
+            release_root=args.release_root.resolve(),
+            acoustic_model=args.acoustic_model.resolve(),
+        )
+        print(
+            "[PENDING] Jamo ㄽ 후보 생성: "
+            f"{manifest['counts']['surface_keys_restored']:,} words; "
+            "researcher review required",
             flush=True,
         )
     elif args.command == "verify-shard":

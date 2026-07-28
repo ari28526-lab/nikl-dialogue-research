@@ -40,17 +40,41 @@ from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_VERSION = "common_pron_mfa_equivalence.v1"
+LEGACY_SCHEMA_VERSION = "common_pron_mfa_equivalence.v1"
+DIFFERENCE_SCHEMA_VERSION = "common_pron_mfa_difference_inventory.v2"
 EXPECTED_TIERS = ["words", "phones", "morphemes", "utterance"]
 MISMATCH_FIELDS = (
     "baseline",
     "reason",
+    "classification",
     "word",
     "baseline_phones",
     "common_phones",
     "occurrences",
     "example_utt_id",
 )
+
+
+def classify_mismatch(
+    row: dict,
+    *,
+    base_dictionary_words: set[str],
+) -> str:
+    baseline_phones = set(str(row.get("baseline_phones", "")).split())
+    common_phones = set(str(row.get("common_phones", "")).split())
+    reason = str(row.get("reason", ""))
+    word = str(row.get("word", ""))
+    if "spn" in baseline_phones and "spn" not in common_phones:
+        return "spn_defect_fixed"
+    if reason in {
+        "word_missing_from_common",
+        "empty_phone_sequence",
+        "tier_schema_or_duration",
+    }:
+        return "coverage_or_structure_difference"
+    if word in base_dictionary_words:
+        return "base_dictionary_word_difference"
+    return "g2p_generated_difference"
 
 
 def iter_textgrids(root: Path):
@@ -557,11 +581,17 @@ def run_audit(
     output_csv: Path,
     workers: int,
     batch_size: int,
+    mode: str = "difference-inventory",
 ) -> dict:
     if output_json.exists() or output_csv.exists():
         raise FileExistsError("기존 동등성 결과 덮어쓰기 금지")
+    if mode not in {"difference-inventory", "strict-equivalence"}:
+        raise ValueError(f"unsupported audit mode: {mode}")
     release, dictionary_path = load_release_manifest(common_manifest)
     _, common = read_mfa_dictionary(dictionary_path)
+    _, base_prons = read_mfa_dictionary(
+        Path(release["inputs"]["base_dictionary"]["path"])
+    )
     vocab_2020 = load_year_vocabulary(vocabulary, "2020")
     vocab_2021 = load_year_vocabulary(vocabulary, "2021")
     result_2020, mismatch_2020 = audit_2020(
@@ -589,18 +619,54 @@ def run_audit(
         + mismatch_2020_partial_db
         + mismatch_2021
     )
+    for row in rows:
+        row["classification"] = classify_mismatch(
+            row,
+            base_dictionary_words=set(base_prons),
+        )
     write_mismatches(output_csv, rows)
-    passed = (
+    legacy_passed = (
         result_2020["status"] == "passed"
         and result_2020_partial_db["status"] == "passed"
         and result_2021["status"] == "passed"
         and not rows
     )
+    counts_2020 = result_2020["counts"]
+    counts_partial = result_2020_partial_db["counts"]
+    counts_2021 = result_2021["counts"]
+    inventory_complete = (
+        counts_2020.get("textgrid_files", 0)
+        == result_2020["expected_valid_textgrids"]
+        and counts_2020.get("file_errors", 0) == 0
+        and counts_2020.get("word_occurrences", 0) > 0
+        and result_2020_partial_db.get("quick_check") == "ok"
+        and result_2020_partial_db.get(
+            "is_expected_partial_database"
+        )
+        and counts_partial.get("partial_db_observed_words", 0) > 0
+        and counts_2021.get("observed_vocabulary_words", 0) > 0
+    )
+    if mode == "strict-equivalence":
+        schema_version = LEGACY_SCHEMA_VERSION
+        status = "passed" if legacy_passed else "failed"
+        policy = "no_phone_standard_change"
+    else:
+        schema_version = DIFFERENCE_SCHEMA_VERSION
+        status = (
+            "differences_inventoried"
+            if inventory_complete
+            else "failed"
+        )
+        policy = "latest_jamo_r2_difference_inventory"
+    classification_counts = Counter(
+        str(row["classification"]) for row in rows
+    )
     report = {
-        "schema_version": SCHEMA_VERSION,
-        "status": "passed" if passed else "failed",
+        "schema_version": schema_version,
+        "status": status,
         "recorded_at": now_iso(),
-        "policy": "no_phone_standard_change",
+        "mode": mode,
+        "policy": policy,
         "method_contract": {
             "claim_scope": (
                 "same phone symbol inventory and pronunciation-generation "
@@ -637,13 +703,17 @@ def run_audit(
         "baseline_2021": result_2021,
         "mismatches": {
             "rows": len(rows),
+            "classifications": dict(
+                sorted(classification_counts.items())
+            ),
             "csv": file_fingerprint(output_csv, with_sha256=True),
         },
         "gate": {
-            "allow_common_dictionary_for_2022": passed,
-            "requires_2020_pass": True,
-            "requires_2020_partial_db_auxiliary_pass": True,
-            "requires_2021_pass": True,
+            "difference_inventory_complete": inventory_complete,
+            "legacy_exact_equivalence": legacy_passed,
+            "allow_yearly_mfa": False,
+            "researcher_approval_required": True,
+            "legacy_mismatch_zero_is_not_an_adoption_gate": True,
         },
         "runtime": runtime_snapshot(PROJECT_ROOT),
     }
@@ -670,6 +740,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-csv", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--batch-size", type=int, default=2000)
+    parser.add_argument(
+        "--mode",
+        choices=("difference-inventory", "strict-equivalence"),
+        default="difference-inventory",
+    )
     return parser.parse_args()
 
 
@@ -687,6 +762,7 @@ def main() -> int:
         output_csv=args.output_csv.resolve(),
         workers=args.workers,
         batch_size=args.batch_size,
+        mode=args.mode,
     )
     print(
         "[{0}] 2020={1}, 2021={2}, mismatch={3:,}".format(
@@ -697,7 +773,14 @@ def main() -> int:
         ),
         flush=True,
     )
-    return 0 if report["status"] == "passed" else 2
+    return (
+        0
+        if report["status"] in {
+            "passed",
+            "differences_inventoried",
+        }
+        else 2
+    )
 
 
 if __name__ == "__main__":

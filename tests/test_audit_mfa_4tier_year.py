@@ -120,6 +120,37 @@ class AuditMfa4TierYearTests(unittest.TestCase):
                 missing_csv.read_text(encoding="utf-8-sig"),
             )
 
+    def test_spn_phone_interval_is_a_hard_failure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _, grid = self.make_utterance(root, "S1.1")
+            write_4tier(
+                grid,
+                1.0,
+                [(0.0, 0.8, "媛")],
+                [(0.0, 0.8, "spn")],
+                [(0.0, 0.8, "媛")],
+                "媛",
+            )
+            report = audit_year(
+                year="2021",
+                lab_root=root / "labs",
+                textgrid_root=root / "grids",
+                report_path=root / "report.json",
+                missing_csv_path=root / "missing.csv",
+                workers=1,
+                batch_size=1,
+            )
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual(
+                report["counts"]["spn_phone_intervals"], 1
+            )
+            self.assertEqual(
+                report["hard_failure_counts"]["spn_phone_intervals"],
+                1,
+            )
+            self.assertEqual(report["reason_counts"]["spn_interval"], 1)
+
     def test_missing_textgrid_is_in_inventory_and_fails_low_coverage(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

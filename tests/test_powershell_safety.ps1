@@ -10,8 +10,10 @@ $files = @(
     (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
     (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1'),
     (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1'),
+    (Join-Path $root 'scripts\run_common_pron_mfa_r2.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
-    (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1')
+    (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
+    (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -122,14 +124,21 @@ foreach ($path in $files) {
             '$CleanupDirectDbAfterMerge -and -not $UseDirectDbExport',
             '$UseDirectDbExport -and $CleanupMfaOutput',
             '[string]$CommonPronManifest',
+            '[string]$CommonPronAdoptionContract',
             '[string]$CommonPronEquivalenceReport',
             '[switch]$AllowBaselineCommonPronRerun',
+            '[switch]$AllowLegacyInlineG2p',
+            '[int]$BulkWrapperPid = 0',
+            "owner_mode = 'direct_runner'",
+            "owner_mode -ne 'bulk_wrapper'",
+            '공통 G2P/r2 생성과 MFA 동시 실행 금지',
+            '$ownsDirectLock',
             '2020·2021은 전수 동등성 baseline으로 보존함',
-            'common_pron_mfa_equivalence.v1',
-            'no_phone_standard_change',
-            'requires_2020_pass',
-            'requires_2020_partial_db_auxiliary_pass',
-            'requires_2021_pass',
+            'common_pron_mfa_adoption.v2',
+            'latest_jamo_common_dictionary_required',
+            'allow_yearly_mfa',
+            'verify_frozen_mfa_bundle.py',
+            'korean_mfa_latest_jamo_bundle_20260728.json',
             '$useInlineG2p = $false',
             'pause_after_year_',
             'exit 75',
@@ -173,9 +182,13 @@ foreach ($path in $files) {
             'direct_db_export = [bool]$UseDirectDbExport',
             '$CleanupDirectDbAfterMerge -and -not $UseDirectDbExport',
             '[string]$CommonPronManifest',
+            '[string]$CommonPronAdoptionContract',
             '[string]$CommonPronEquivalenceReport',
+            '[switch]$AllowLegacyInlineG2p',
             "'-CommonPronManifest'",
-            "'-CommonPronEquivalenceReport'",
+            "'-CommonPronAdoptionContract'",
+            "'-BulkWrapperPid'",
+            "owner_mode = 'bulk_wrapper'",
             'if ($PreferD)',
             "'-PreferD'",
             'prefer_d = [bool]$PreferD',
@@ -296,6 +309,33 @@ foreach ($path in $files) {
             }
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'run_common_pron_mfa_r2.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            "D:\mfa_common_pron",
+            "VolumeLabel -ne 'DATA_SSD'",
+            'pre_mfa_bulk.lock',
+            'verify_frozen_mfa_bundle.py',
+            'korean_mfa_latest_jamo_bundle_20260728.json',
+            'acoustic v3.3.0 + Jamo G2P v3.2.0',
+            '--strict_graphemes',
+            'g2p_unsupported_other_words',
+            'g2p_jamo_ls_rewrite_words',
+            'U+11B3 정확히 4어절',
+            'restore-jamo-ls',
+            'jamo_ls_researcher_review.csv',
+            'r2 사전 실물은 아직 없음',
+            '연도별 MFA 사용 승인은 아님',
+            'Acquire-Lock',
+            'Release-Lock',
+            'MFA/G2P/archive 동시 실행 금지',
+            'exit 76'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 MFA 사전 r2 안전장치 누락: $required")
+            }
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'show_common_pron_mfa_status.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
@@ -308,7 +348,10 @@ foreach ($path in $files) {
             'phone_outside_acoustic_inventory',
             '[IO.DriveInfo]::new',
             'lock_process_alive',
-            'allow_common_dictionary_for_2022'
+            'allow_yearly_mfa',
+            'jamo_ls_candidate_words',
+            '$sessionVerifiedWords',
+            'difference_inventory_status'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA 상태판 안전장치 누락: $required")
@@ -340,6 +383,30 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("외장 archive 안전장치 누락: $required")
             }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+            'archive_pre_jamo_outputs_compressed.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'D:는 메인 작업 드라이브',
+            'compressed archive 원본 allowlist 위반',
+            '7z CRC 전수 검사 실패',
+            'Get-AllDatabaseHashes',
+            'source_pruning_supported = $false',
+            'archive_sha256',
+            'manifest 없는 최종 archive 덮어쓰기 금지'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "압축 외장 archive 안전장치 누락: $required"
+                )
+            }
+        }
+        if ($text -match '(?im)^\s*Remove-Item\b') {
+            $failures.Add('압축 외장 archive에 삭제 명령이 포함됨')
         }
     }
 }

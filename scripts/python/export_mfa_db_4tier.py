@@ -35,6 +35,40 @@ SILENCE_WORDS = {"", "<eps>", "sil", "<unk>"}
 SILENCE_PHONES = {"", "sil", "sp"}
 
 
+def count_spn_pronunciations(
+    connection: sqlite3.Connection,
+) -> int:
+    """Count speech/OOV dictionary candidates that resolve to ``spn``."""
+
+    tables = {
+        str(row[0])
+        for row in connection.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        )
+    }
+    if not {"word", "pronunciation"}.issubset(tables):
+        raise RuntimeError(
+            "MFA DB spn gate requires word and pronunciation tables"
+        )
+    word_columns = {
+        str(row[1])
+        for row in connection.execute("PRAGMA table_info(word)")
+    }
+    if "word_type" not in word_columns:
+        raise RuntimeError("MFA DB spn gate requires word.word_type")
+    return int(
+        connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM word w
+            JOIN pronunciation p ON p.word_id = w.id
+            WHERE w.word_type IN ('speech', 'oov')
+              AND trim(lower(p.pronunciation)) = 'spn'
+            """
+        ).fetchone()[0]
+    )
+
+
 def load_session_forms(
     search_master_root: Path, year: str, session: str
 ) -> dict[str, str]:
@@ -192,6 +226,26 @@ def export_database(
         timeout=120,
     )
     try:
+        spn_pronunciations = count_spn_pronunciations(connection)
+        if spn_pronunciations:
+            return {
+                "schema_version": 2,
+                "year": year,
+                "db_path": str(db_path.resolve()),
+                "search_master_root": str(
+                    search_master_root.resolve()
+                ),
+                "output_root": str(output_root.resolve()),
+                "elapsed_seconds": round(
+                    time.monotonic() - started, 3
+                ),
+                "counts": {
+                    "spn_pronunciations": spn_pronunciations,
+                },
+                "status": "failed",
+                "morphology_complete": False,
+                "analysis_ready_status": "blocked_spn_pronunciations",
+            }
         word_labels = dict(connection.execute("SELECT id, word FROM word"))
         phone_labels = {
             row[0]: (row[1], row[2])
@@ -242,6 +296,7 @@ def export_database(
         return session, len(utterances), result
 
     totals = defaultdict(int)
+    totals["spn_pronunciations"] = spn_pronunciations
     alignment_missing_examples: list[str] = []
     form_missing_examples: list[str] = []
     morpheme_missing_inventory: list[str] = []

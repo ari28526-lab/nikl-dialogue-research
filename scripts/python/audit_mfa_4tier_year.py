@@ -91,6 +91,7 @@ def inspect_textgrid(
     visible_right: dict[str, bool] = {}
     duration = None
     wav_seconds = None
+    spn_intervals = 0
     try:
         duration, tiers = parse_mfa_textgrid(textgrid_path)
         tier_names = list(tiers)
@@ -143,6 +144,14 @@ def inspect_textgrid(
                     )
                     break
                 previous_end = end
+                if (
+                    tier_name == "phones"
+                    and str(_label).strip().lower() == "spn"
+                ):
+                    spn_intervals += 1
+                    reasons.append(
+                        f"spn_interval:phones:{index}:{start}/{end}"
+                    )
 
             first = intervals[0]
             last = intervals[-1]
@@ -194,6 +203,7 @@ def inspect_textgrid(
         "wav_duration": wav_seconds,
         "visible_left": visible_left,
         "visible_right": visible_right,
+        "spn_intervals": spn_intervals,
     }
 
 
@@ -354,6 +364,7 @@ def audit_year(
     visible_left = Counter()
     visible_right = Counter()
     inspected = valid = eligible_inspected = eligible_valid = 0
+    spn_intervals = 0
     excluded_inspected = excluded_valid = 0
     valid_textgrid_ids: set[str] = set()
 
@@ -381,6 +392,7 @@ def audit_year(
                 if utt_id not in lab_paths:
                     extra_textgrid_ids.append(utt_id)
                 inspected += 1
+                spn_intervals += int(result["spn_intervals"])
                 if result["valid"]:
                     valid += 1
                     valid_textgrid_ids.add(utt_id)
@@ -510,6 +522,7 @@ def audit_year(
         "recovery_candidate_not_valid": len(
             recovery_candidate_not_valid
         ),
+        "spn_phone_intervals": spn_intervals,
     }
     status = (
         "success"
@@ -580,6 +593,7 @@ def audit_year(
             "classification_ids_without_lab": len(
                 classification_ids_without_lab
             ),
+            "spn_phone_intervals": spn_intervals,
         },
         "coverage_pct": round(coverage_pct, 4),
         "raw_coverage_pct": round(raw_coverage_pct, 4),

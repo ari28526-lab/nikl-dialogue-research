@@ -73,7 +73,7 @@ def write_vocabulary(path: Path) -> None:
 def write_vocabulary_manifest(vocabulary: Path, manifest: Path) -> None:
     record = file_fingerprint(vocabulary, with_sha256=True)
     search_master = manifest.parent / "search_master"
-    search_master.mkdir()
+    search_master.mkdir(exist_ok=True)
     build_meta_path = search_master / "_build_meta.json"
     build_meta_path.write_text('{"status":"success"}\n', encoding="utf-8")
     build_meta = file_fingerprint(build_meta_path, with_sha256=True)
@@ -166,7 +166,19 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
             "기본\tk i p o n\n",
             encoding="utf-8",
         )
-        g2p_model.write_bytes(b"g2p-model")
+        decomposed = sorted(
+            set(
+                "".join(
+                    __import__("unicodedata").normalize("NFKD", value)
+                    for value in ("가", "나", "다가", "라마")
+                )
+            )
+        )
+        write_g2p_model(
+            g2p_model,
+            graphemes=decomposed,
+            unicode_decomposition=True,
+        )
         write_acoustic_model(acoustic_model)
         return (
             vocabulary,
@@ -241,7 +253,7 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
                 manifest["counts"]["phone_outside_acoustic_inventory"], 0
             )
             dictionary = (
-                values[5] / "02_mfa_lexicon/common_pron_mfa_r1.dict"
+                values[5] / "02_mfa_lexicon/common_pron_mfa_r2.dict"
             ).read_text(encoding="utf-8")
             self.assertTrue(
                 dictionary.startswith(
@@ -371,6 +383,94 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
             self.assertEqual(report["input_normalization"], "NFKD")
             self.assertEqual(report["counts"]["unsupported_words"], 0)
             self.assertEqual(rows, [])
+
+    def test_jamo_ls_rewrite_uses_same_supported_jamo_inventory(self):
+        token = "외곬의"
+        model_input = lexicon.rewrite_jamo_ls_for_model(token)
+        self.assertNotEqual(model_input, token)
+        decomposed = __import__("unicodedata").normalize(
+            "NFKD", model_input
+        )
+        self.assertNotIn(lexicon.JAMO_LS, decomposed)
+        self.assertIn(lexicon.JAMO_L, decomposed)
+        self.assertIn(lexicon.JAMO_S, decomposed)
+
+    def test_restore_jamo_ls_keeps_surface_key_and_requires_review(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            values = self.fixture(root)
+            vocabulary = values[0]
+            with vocabulary.open(
+                "r", encoding="utf-8-sig", newline=""
+            ) as stream:
+                rows = list(csv.DictReader(stream))
+            rows[-1]["token"] = "외곬의"
+            with vocabulary.open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(
+                    stream,
+                    fieldnames=list(lexicon.OOV_FIELDS),
+                    lineterminator="\n",
+                )
+                writer.writeheader()
+                writer.writerows(rows)
+            write_vocabulary_manifest(
+                vocabulary, values[1]
+            )
+            decomposed = sorted(
+                set(
+                    "".join(
+                        __import__("unicodedata").normalize(
+                            "NFKD", value
+                        )
+                        for value in ("가", "나", "다가", "외곬의")
+                    )
+                )
+                - {lexicon.JAMO_LS}
+                | {lexicon.JAMO_L, lexicon.JAMO_S}
+            )
+            write_g2p_model(
+                values[3],
+                graphemes=decomposed,
+                unicode_decomposition=True,
+            )
+            prepared = lexicon.prepare(
+                vocabulary=values[0],
+                vocabulary_manifest=values[1],
+                base_dictionary=values[2],
+                g2p_model=values[3],
+                acoustic_model=values[4],
+                release_root=values[5],
+                shard_size=100,
+            )
+            self.assertEqual(
+                prepared["counts"]["g2p_jamo_ls_rewrite_words"], 1
+            )
+            paths = lexicon.prepare_paths(values[5])
+            mapping = lexicon.read_special_mapping(
+                paths["special_mapping"]
+            )
+            paths["special_raw_output"].write_text(
+                f"{mapping[0]['model_input']}\tr a m a\n",
+                encoding="utf-8",
+            )
+            report = lexicon.restore_jamo_ls_candidates(
+                release_root=values[5],
+                acoustic_model=values[4],
+            )
+            self.assertEqual(
+                report["status"],
+                "candidate_ready_researcher_review_required",
+            )
+            restored = lexicon.read_generated_dictionary(
+                paths["special_restored_output"]
+            )
+            self.assertEqual(set(restored), {"외곬의"})
+            review = lexicon.read_special_review(
+                paths["special_review"]
+            )
+            self.assertEqual(review[0]["decision"], "pending")
 
 
 if __name__ == "__main__":

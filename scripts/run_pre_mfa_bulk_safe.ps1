@@ -19,7 +19,9 @@ param(
     [switch]$CleanupDirectDbAfterMerge,
     [switch]$SkipSearchMasterBuild,
     [string]$CommonPronManifest = '',
+    [string]$CommonPronAdoptionContract = '',
     [string]$CommonPronEquivalenceReport = '',
+    [switch]$AllowLegacyInlineG2p,
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
 )
@@ -47,12 +49,41 @@ if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
     exit 1
 }
 if (
-    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
-    [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
+    -not [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
 ) {
     Write-Error (
-        "-CommonPronManifest와 -CommonPronEquivalenceReport는 " +
+        "-CommonPronEquivalenceReport는 r1 폐기 gate임. " +
+        "-CommonPronAdoptionContract를 사용할 것"
+    )
+    exit 1
+}
+if (
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
+    [string]::IsNullOrWhiteSpace($CommonPronAdoptionContract)
+) {
+    Write-Error (
+        "-CommonPronManifest와 -CommonPronAdoptionContract는 " +
         "둘 다 지정하거나 둘 다 생략해야 함"
+    )
+    exit 1
+}
+if (
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    -not $AllowLegacyInlineG2p
+) {
+    Write-Error (
+        "검증·승인된 공통사전 r2 manifest가 기본 필수임. r2 실물이 " +
+        "아직 없으면 대량 MFA를 시작하지 말 것. 과거 진단만 " +
+        "-AllowLegacyInlineG2p로 명시할 수 있음"
+    )
+    exit 1
+}
+if (
+    $AllowLegacyInlineG2p -and
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest)
+) {
+    Write-Error (
+        "-AllowLegacyInlineG2p와 -CommonPronManifest는 함께 사용할 수 없음"
     )
     exit 1
 }
@@ -123,12 +154,14 @@ if (Test-Path -LiteralPath $lockPath) {
 }
 [ordered]@{
     pid = $PID
+    owner_mode = 'bulk_wrapper'
     run_id = $RunId
     years = $Years
     prefer_d = [bool]$PreferD
     direct_db_export = [bool]$UseDirectDbExport
     common_pron_manifest = $CommonPronManifest
-    common_pron_equivalence_report = $CommonPronEquivalenceReport
+    common_pron_adoption_contract = $CommonPronAdoptionContract
+    legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -194,9 +227,12 @@ try {
             '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
             (Join-Path $PSScriptRoot 'run_eojeol_realign.ps1'),
             '-Year', $year,
-            '-SearchMasterRoot', $preMfaRoot
+            '-SearchMasterRoot', $preMfaRoot,
+            '-BulkWrapperPid', [string]$PID
         )
-        if ($PreferD) { $realignArgs += '-PreferD' }
+        # r2 신규 실행은 D: 고정이다. -PreferD는 과거 호출과의 호환을
+        # 위해 남기되 wrapper에서는 항상 하위 러너에 전달한다.
+        $realignArgs += '-PreferD'
         if ($UseDirectDbExport) { $realignArgs += '-UseDirectDbExport' }
         if ($CleanupDirectDbAfterMerge) {
             $realignArgs += '-CleanupDirectDbAfterMerge'
@@ -204,9 +240,11 @@ try {
         if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             $realignArgs += @(
                 '-CommonPronManifest', $CommonPronManifest,
-                '-CommonPronEquivalenceReport',
-                $CommonPronEquivalenceReport
+                '-CommonPronAdoptionContract',
+                $CommonPronAdoptionContract
             )
+        } elseif ($AllowLegacyInlineG2p) {
+            $realignArgs += '-AllowLegacyInlineG2p'
         }
         & powershell.exe @realignArgs
         $yearExitCode = $LASTEXITCODE
@@ -254,7 +292,8 @@ try {
         direct_db_export = [bool]$UseDirectDbExport
         cleanup_direct_db_after_merge = [bool]$CleanupDirectDbAfterMerge
         common_pron_manifest = $CommonPronManifest
-        common_pron_equivalence_report = $CommonPronEquivalenceReport
+        common_pron_adoption_contract = $CommonPronAdoptionContract
+        legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear
         paused_before_year = $pausedBeforeYear

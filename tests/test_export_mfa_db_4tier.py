@@ -24,7 +24,16 @@ class ExportMfaDb4TierTests(unittest.TestCase):
             CREATE TABLE utterance(
                 id INTEGER PRIMARY KEY, file_id INTEGER, ignored BOOLEAN
             );
-            CREATE TABLE word(id INTEGER PRIMARY KEY, word TEXT);
+            CREATE TABLE word(
+                id INTEGER PRIMARY KEY,
+                word TEXT,
+                word_type TEXT DEFAULT 'speech'
+            );
+            CREATE TABLE pronunciation(
+                id INTEGER PRIMARY KEY,
+                pronunciation TEXT,
+                word_id INTEGER
+            );
             CREATE TABLE phone(
                 id INTEGER PRIMARY KEY, phone TEXT, phone_type TEXT
             );
@@ -42,8 +51,11 @@ class ExportMfaDb4TierTests(unittest.TestCase):
         con.execute("INSERT INTO sound_file VALUES(1, 1, 1.0)")
         con.execute("INSERT INTO utterance VALUES(1, 1, 0)")
         con.executemany(
-            "INSERT INTO word VALUES(?, ?)",
+            "INSERT INTO word(id, word) VALUES(?, ?)",
             [(1, "가"), (2, "<eps>")],
+        )
+        con.execute(
+            "INSERT INTO pronunciation VALUES(1, 'k', 1)"
         )
         con.executemany(
             "INSERT INTO phone VALUES(?, ?, ?)",
@@ -93,6 +105,34 @@ class ExportMfaDb4TierTests(unittest.TestCase):
             self.assertEqual(tiers["phones"][-1], (0.8, 1.0, ""))
             comparison = compare_trees(output, output)
             self.assertEqual(comparison["status"], "identical")
+
+    def test_spn_pronunciation_blocks_export_before_textgrid_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "corpus.db"
+            self.make_db(db)
+            connection = sqlite3.connect(db)
+            connection.execute(
+                "UPDATE pronunciation SET pronunciation='spn'"
+            )
+            connection.commit()
+            connection.close()
+            output = root / "out"
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=root / "search",
+                output_root=output,
+            )
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual(
+                report["counts"]["spn_pronunciations"], 1
+            )
+            self.assertEqual(
+                report["analysis_ready_status"],
+                "blocked_spn_pronunciations",
+            )
+            self.assertFalse(output.exists())
 
     def test_missing_morpheme_tier_preserves_export_but_blocks_analysis(self):
         with tempfile.TemporaryDirectory() as tmp:

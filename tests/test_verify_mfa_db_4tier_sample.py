@@ -27,7 +27,16 @@ class VerifyMfaDb4TierSampleTests(unittest.TestCase):
             CREATE TABLE utterance(
                 id INTEGER PRIMARY KEY, file_id INTEGER, ignored BOOLEAN
             );
-            CREATE TABLE word(id INTEGER PRIMARY KEY, word TEXT);
+            CREATE TABLE word(
+                id INTEGER PRIMARY KEY,
+                word TEXT,
+                word_type TEXT DEFAULT 'speech'
+            );
+            CREATE TABLE pronunciation(
+                id INTEGER PRIMARY KEY,
+                pronunciation TEXT,
+                word_id INTEGER
+            );
             CREATE TABLE phone(
                 id INTEGER PRIMARY KEY, phone TEXT, phone_type TEXT
             );
@@ -55,7 +64,10 @@ class VerifyMfaDb4TierSampleTests(unittest.TestCase):
             "INSERT INTO utterance VALUES(?, ?, 0)",
             [(1, 1), (2, 2)],
         )
-        con.execute("INSERT INTO word VALUES(1, '가')")
+        con.execute("INSERT INTO word(id, word) VALUES(1, '가')")
+        con.execute(
+            "INSERT INTO pronunciation VALUES(1, 'k', 1)"
+        )
         con.execute(
             "INSERT INTO phone VALUES(1, 'k', 'non_silence')"
         )

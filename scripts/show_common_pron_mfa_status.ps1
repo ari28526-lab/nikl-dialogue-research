@@ -9,11 +9,11 @@ hard gate. An output .dict file by itself is never counted as verified.
 [CmdletBinding()]
 param(
     [string]$ReleaseRoot = (
-        'D:\mfa_common_pron\releases\common_pron_mfa_r1_20260728'
+        'D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728'
     ),
 
     [string]$LockPath = (
-        'D:\mfa_common_pron\locks\common_pron_mfa_r1_20260728.lock'
+        'D:\mfa_common_pron\locks\common_pron_mfa_r2_20260728.lock'
     ),
 
     [ValidateRange(0, 3600)]
@@ -78,8 +78,14 @@ $preparePath = Join-Path $releaseRootFull (
 $finalPath = Join-Path $releaseRootFull (
     '00_contract\release_manifest.json'
 )
-$equivalencePath = Join-Path $releaseRootFull (
-    '03_equivalence\common_pron_mfa_equivalence_2020_2021.json'
+$differencePath = Join-Path $releaseRootFull (
+    '03_equivalence\common_pron_mfa_difference_inventory_2020_2021.json'
+)
+$adoptionPath = Join-Path $releaseRootFull (
+    '00_contract\adoption_contract.json'
+)
+$specialCandidatePath = Join-Path $releaseRootFull (
+    '_state\jamo_ls_candidate_report.json'
 )
 $reportDir = Join-Path $releaseRootFull '_state\shard_reports'
 $outputDir = Join-Path $releaseRootFull '01_g2p\output_shards'
@@ -92,8 +98,10 @@ if ($null -eq $prepared -or $prepared.status -ne 'prepared') {
 
 $totalShards = [int]$prepared.counts.shards
 $totalWords = [int64]$prepared.counts.observed_oov_words
+$totalStandardWords = [int64]$prepared.counts.g2p_standard_words
 $verifiedIndices = [Collections.Generic.HashSet[int]]::new()
 $verifiedWords = [int64]0
+$verifiedReportRecords = @()
 $invalidReports = 0
 $reportFiles = @(
     Get-ChildItem -LiteralPath $reportDir -Filter 'oov_*.json' -File `
@@ -123,6 +131,12 @@ foreach ($reportFile in $reportFiles) {
             $index = [int]$match.Groups[1].Value
             [void]$verifiedIndices.Add($index)
             $verifiedWords += [int64]$report.counts.output_words
+            $verifiedReportRecords += [pscustomobject]@{
+                words = [int64]$report.counts.output_words
+                recorded_at = [datetimeoffset]::Parse(
+                    [string]$report.recorded_at
+                )
+            }
         } else {
             $invalidReports += 1
         }
@@ -166,7 +180,24 @@ if ($null -ne $lock) {
     $startedAt = [datetimeoffset]::Parse([string]$lock.acquired_at)
 }
 
-$generatedWords = [int64]($verifiedWords + $currentRows)
+$specialCandidate = Read-JsonFile $specialCandidatePath
+$specialWords = [int64]0
+if (
+    $null -ne $specialCandidate -and
+    $specialCandidate.status -eq
+        'candidate_ready_researcher_review_required' -and
+    [int64]$specialCandidate.counts.missing -eq 0 -and
+    [int64]$specialCandidate.counts.extras -eq 0 -and
+    [int64]$specialCandidate.counts.spn_words -eq 0 -and
+    [int64]$specialCandidate.counts.phone_outside_acoustic_inventory -eq 0
+) {
+    $specialWords = [int64](
+        $specialCandidate.counts.surface_keys_restored
+    )
+}
+$generatedWords = [int64](
+    $specialWords + $verifiedWords + $currentRows
+)
 $progressPct = if ($totalWords -gt 0) {
     [math]::Round(100.0 * $generatedWords / $totalWords, 3)
 } else {
@@ -178,8 +209,23 @@ if ($null -ne $startedAt) {
     $elapsedSeconds = (
         [datetimeoffset]::Now - $startedAt
     ).TotalSeconds
-    if ($elapsedSeconds -gt 0 -and $generatedWords -gt 0) {
-        $rate = [math]::Round($generatedWords / $elapsedSeconds, 2)
+    $sessionVerifiedWords = [int64]((
+        $verifiedReportRecords |
+            Where-Object { $_.recorded_at -ge $startedAt } |
+            Measure-Object -Property words -Sum
+    ).Sum)
+    $sessionCurrentRows = [int64]0
+    if (
+        $null -ne $currentOutputWrite -and
+        [datetimeoffset]::Parse($currentOutputWrite) -ge $startedAt
+    ) {
+        $sessionCurrentRows = [int64]$currentRows
+    }
+    $sessionWords = [int64](
+        $sessionVerifiedWords + $sessionCurrentRows
+    )
+    if ($elapsedSeconds -gt 0 -and $sessionWords -gt 0) {
+        $rate = [math]::Round($sessionWords / $elapsedSeconds, 2)
         if ($rate -gt 0 -and $generatedWords -lt $totalWords) {
             $eta = [datetimeoffset]::Now.AddSeconds(
                 ($totalWords - $generatedWords) / $rate
@@ -209,15 +255,20 @@ if ($null -ne $latestLog) {
 }
 
 $final = Read-JsonFile $finalPath
-$equivalence = Read-JsonFile $equivalencePath
+$difference = Read-JsonFile $differencePath
+$adoption = Read-JsonFile $adoptionPath
 $phase = if (
-    $null -ne $equivalence -and $equivalence.status -eq 'passed'
+    $null -ne $adoption -and
+    $adoption.status -eq 'passed' -and
+    [bool]$adoption.gate.allow_yearly_mfa
 ) {
-    'complete'
+    'yearly_mfa_approved'
 } elseif ($null -ne $final -and $final.status -eq 'success') {
-    'equivalence'
+    'artifact_ready_adoption_pending'
 } elseif ($verifiedIndices.Count -eq $totalShards) {
     'finalizing'
+} elseif ($specialWords -gt 0 -and -not $lockAlive) {
+    'special_review_ready_bulk_not_running'
 } elseif ($lockAlive) {
     'g2p_running'
 } elseif ($null -ne $lock) {
@@ -238,6 +289,8 @@ $result = [ordered]@{
         current_shard = $currentIndex
         current_shard_rows = $currentRows
         total_oov_words = $totalWords
+        total_standard_shard_words = $totalStandardWords
+        jamo_ls_candidate_words = $specialWords
         observed_generated_words = $generatedWords
         percent = $progressPct
         average_words_per_second = $rate
@@ -258,14 +311,19 @@ $result = [ordered]@{
         } else {
             'pending'
         }
-        equivalence_status = if ($null -ne $equivalence) {
-            $equivalence.status
+        difference_inventory_status = if ($null -ne $difference) {
+            $difference.status
         } else {
             'pending'
         }
-        allow_common_dictionary_for_2022 = (
-            $null -ne $equivalence -and
-            [bool]$equivalence.gate.allow_common_dictionary_for_2022
+        adoption_status = if ($null -ne $adoption) {
+            $adoption.status
+        } else {
+            'pending'
+        }
+        allow_yearly_mfa = (
+            $null -ne $adoption -and
+            [bool]$adoption.gate.allow_yearly_mfa
         )
     }
 }
@@ -275,7 +333,7 @@ if ($AsJson) {
     return
 }
 
-Write-Host 'Common MFA pronunciation r1 - read-only dashboard' `
+Write-Host 'Common MFA pronunciation r2 - read-only dashboard' `
     -ForegroundColor Cyan
 Write-Host ('Observed: {0}' -f $result.observed_at)
 Write-Host ('Phase:    {0}' -f $result.phase)

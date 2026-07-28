@@ -979,3 +979,34 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   prune을 허용하는 별도 실행기를 추가했다.
 - 독립 코드 리뷰를 위해 최신 결정문과 severity·재현법·연구 영향·수정 후
   검증을 강제하는 리뷰 프롬프트를 `docs/reviews`에 마련했다.
+
+## 2026-07-28 오후 — 외부 리뷰 반영과 r2 실행 계약
+
+- 외부 리뷰 commit을 가져와 BLOCKER/HIGH를 실제 코드로 반영했다.
+  설치 모델 이름이 아니라 공식 commit `0091ffa...`의 acoustic v3.3.0,
+  Jamo G2P v3.2.0, dictionary 세 실물 SHA를 실행 직전에 검증한다.
+- 구 결과와 mismatch 0을 새 기준 채택 조건으로 삼던 r1 동등성 gate를
+  폐기했다. 구 2020·2021과의 모든 차이를 원인별 inventory로 남긴 뒤
+  연구자가 승인하는 r2 adoption 계약으로 교체했다.
+- 공통사전 인자를 생략하면 inline G2P로 돌아가던 기본 동작을 차단했다.
+  legacy inline은 과거 재현용 명시 옵션만 허용한다. 연도별 DB와 최종
+  TextGrid phone tier 모두 `spn=0`을 완료 조건으로 추가했다.
+- 직접 `run_eojeol_realign.ps1`을 실행해도 bulk lock을 취득하고, 공통
+  G2P lock과 양방향 상호 배제한다. 신규 temp/output은 D:만 사용한다.
+- `ᆳ` 4어절은 같은 Jamo rewriter 입력에만 `ᆳ→ᆯ+ᆺ`을 적용하고 원
+  표층키로 복원한다. 다른 미지원 grapheme는 prepare에서 중단한다.
+  4건 후보는 missing=0·spn=0·inventory 이탈=0을 통과했지만 연구자
+  검토표는 pending이므로 final r2 사전은 아직 없다.
+- 최신 기본사전으로 다시 계산한 실제 수치는 관측 어절 881,237,
+  기본사전 포함 관측어 14,545, OOV 866,692, 표준 G2P 866,688,
+  U+11B3 rewrite 4, 25,000단어 단위 표준 shard 35개다. 구 r1보다
+  OOV가 1개 늘어난 것은 세 동결 파일을 최신 동일 묶음으로 바꾼 데 따른
+  입력 차이이며 manifest에 기록했다.
+- 수백만 작은 파일을 E:에 loose robocopy하던 작업을 중단하고 항목별
+  7z 보존으로 전환했다. 첫 실물 검증에서 7-Zip 옵션 순서 오류를 exit 1로
+  안전 차단한 뒤 수정했다. 실패 clone 52파일·172,573,000바이트는 CRC,
+  내부 파일 수/바이트, archive SHA256
+  `dda0bc70...1a1558a`를 통과했다. D: 원본 삭제는 지원하지 않는다.
+- Python 단위 테스트 145개와 PowerShell 안전성 검사 12개가 모두
+  통과했다. 코드 준비, r2 준비, r2 실물, 연도별 사용 승인을 문서와
+  실행 gate에서 서로 다른 상태로 유지한다.

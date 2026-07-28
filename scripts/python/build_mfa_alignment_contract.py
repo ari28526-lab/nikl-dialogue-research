@@ -19,6 +19,7 @@ from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 from pipeline_common import atomic_write_json, file_fingerprint, now_iso
+from verify_frozen_mfa_bundle import verify_frozen_bundle
 
 SCHEMA_VERSION = "mfa_alignment_contract.v1"
 
@@ -67,12 +68,19 @@ def build_alignment_contract(
     acoustic_model_name: str = "korean_mfa",
     dictionary_model_name: str = "korean_mfa",
     g2p_model_name: str = "korean_mfa",
+    frozen_bundle_contract_path: Path | None = None,
+    common_pron_manifest_path: Path | None = None,
+    common_pron_adoption_path: Path | None = None,
+    allow_legacy_inline_g2p: bool = False,
     runtime: dict[str, str] | None = None,
 ) -> dict:
     if not year.strip():
         raise ValueError("year가 비어 있음")
     if not lab_input_contract_id.strip():
         raise ValueError("lab_input_contract_id가 비어 있음")
+
+    if frozen_bundle_contract_path is None:
+        raise ValueError("frozen_bundle_contract_path is required")
 
     models = {
         "acoustic": model_fingerprint(
@@ -91,12 +99,122 @@ def build_alignment_contract(
             path=g2p_model_path,
         ),
     }
+    frozen_pin = verify_frozen_bundle(
+        contract_path=frozen_bundle_contract_path
+    )
+    if (
+        models["acoustic"]["sha256"]
+        != frozen_pin["models"]["acoustic_model"]["sha256"]
+        or models["g2p"]["sha256"]
+        != frozen_pin["models"]["g2p_model"]["sha256"]
+    ):
+        raise RuntimeError(
+            "alignment acoustic/G2P does not match frozen MFA pin"
+        )
+
+    common_release = None
+    common_adoption = None
+    if common_pron_manifest_path is not None:
+        if common_pron_adoption_path is None:
+            raise RuntimeError(
+                "common pronunciation adoption contract is required"
+            )
+        common_release = json.loads(
+            common_pron_manifest_path.read_text(encoding="utf-8-sig")
+        )
+        common_adoption = json.loads(
+            common_pron_adoption_path.read_text(encoding="utf-8-sig")
+        )
+        counts = common_release.get("counts", {})
+        if (
+            common_release.get("schema_version")
+            != "common_pron_mfa_lexicon.v2"
+            or common_release.get("status") != "success"
+            or not str(common_release.get("release_id", "")).startswith(
+                "common_pron_mfa_r2_"
+            )
+            or counts.get("g2p_missing") != 0
+            or counts.get("g2p_spn_words") != 0
+            or counts.get("phone_outside_acoustic_inventory") != 0
+            or counts.get("g2p_jamo_ls_rewrite_words") != 4
+            or common_release.get("dictionary_contract", {}).get(
+                "jamo_ls_surface_key_restoration"
+            )
+            is not True
+        ):
+            raise RuntimeError("common pronunciation manifest hard gate failed")
+        inputs = common_release.get("inputs", {})
+        if (
+            inputs.get("acoustic_model", {}).get("sha256")
+            != frozen_pin["models"]["acoustic_model"]["sha256"]
+            or inputs.get("g2p_model", {}).get("sha256")
+            != frozen_pin["models"]["g2p_model"]["sha256"]
+            or inputs.get("base_dictionary", {}).get("sha256")
+            != frozen_pin["models"]["dictionary"]["sha256"]
+            or common_release.get("outputs", {})
+            .get("dictionary", {})
+            .get("sha256")
+            != models["dictionary"]["sha256"]
+        ):
+            raise RuntimeError(
+                "common pronunciation release does not match frozen MFA pin"
+            )
+        common_manifest_fingerprint = file_fingerprint(
+            common_pron_manifest_path, with_sha256=True
+        )
+        if (
+            common_adoption.get("schema_version")
+            != "common_pron_mfa_adoption.v2"
+            or common_adoption.get("status") != "passed"
+            or not common_adoption.get("gate", {}).get(
+                "allow_yearly_mfa"
+            )
+            or common_adoption.get("common_release", {})
+            .get("manifest", {})
+            .get("sha256")
+            != common_manifest_fingerprint["sha256"]
+        ):
+            raise RuntimeError(
+                "common pronunciation adoption contract hard gate failed"
+            )
+    elif not allow_legacy_inline_g2p:
+        raise RuntimeError(
+            "common pronunciation manifest is required; legacy inline G2P "
+            "must be explicitly enabled"
+        )
+    elif (
+        models["dictionary"]["sha256"]
+        != frozen_pin["models"]["dictionary"]["sha256"]
+    ):
+        raise RuntimeError(
+            "legacy inline G2P base dictionary does not match frozen MFA pin"
+        )
+
     runtime_record = dict(runtime or runtime_versions())
     identity = {
         "schema_version": SCHEMA_VERSION,
         "year": year,
         "lab_input_contract_id": lab_input_contract_id,
         "runtime": runtime_record,
+        "frozen_model_pin": {
+            "commit": frozen_pin["expected"]["commit"],
+            "contract_sha256": frozen_pin["contract"]["sha256"],
+            "base_dictionary_sha256": frozen_pin["models"]["dictionary"][
+                "sha256"
+            ],
+        },
+        "pronunciation_mode": (
+            "common_pronunciation"
+            if common_release is not None
+            else "legacy_inline_g2p_explicit"
+        ),
+        "common_pron_adoption_sha256": (
+            file_fingerprint(
+                common_pron_adoption_path, with_sha256=True
+            )["sha256"]
+            if common_pron_adoption_path is not None
+            else None
+        ),
         "models": {
             role: {
                 "requested_name": record["requested_name"],
@@ -123,6 +241,26 @@ def build_alignment_contract(
         ).hexdigest(),
         "runtime": runtime_record,
         "models": models,
+        "frozen_model_pin": {
+            "commit": frozen_pin["expected"]["commit"],
+            "contract": frozen_pin["contract"],
+            "models": frozen_pin["models"],
+        },
+        "common_pron_manifest": (
+            file_fingerprint(
+                common_pron_manifest_path, with_sha256=True
+            )
+            if common_pron_manifest_path is not None
+            else None
+        ),
+        "common_pron_adoption_contract": (
+            file_fingerprint(
+                common_pron_adoption_path, with_sha256=True
+            )
+            if common_pron_adoption_path is not None
+            else None
+        ),
+        "pronunciation_mode": identity["pronunciation_mode"],
     }
 
 
@@ -136,6 +274,16 @@ def main() -> int:
     parser.add_argument("--acoustic-model-name", default="korean_mfa")
     parser.add_argument("--dictionary-model-name", default="korean_mfa")
     parser.add_argument("--g2p-model-name", default="korean_mfa")
+    parser.add_argument(
+        "--frozen-bundle-contract", type=Path, required=True
+    )
+    parser.add_argument("--common-pron-manifest", type=Path)
+    parser.add_argument(
+        "--common-pron-adoption-contract", type=Path
+    )
+    parser.add_argument(
+        "--allow-legacy-inline-g2p", action="store_true"
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -148,6 +296,10 @@ def main() -> int:
         acoustic_model_name=args.acoustic_model_name,
         dictionary_model_name=args.dictionary_model_name,
         g2p_model_name=args.g2p_model_name,
+        frozen_bundle_contract_path=args.frozen_bundle_contract,
+        common_pron_manifest_path=args.common_pron_manifest,
+        common_pron_adoption_path=args.common_pron_adoption_contract,
+        allow_legacy_inline_g2p=args.allow_legacy_inline_g2p,
     )
     atomic_write_json(args.output, contract)
     print(

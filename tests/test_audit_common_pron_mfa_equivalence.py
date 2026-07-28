@@ -93,6 +93,30 @@ def make_database(path: Path) -> None:
 
 
 class CommonPronEquivalenceTests(unittest.TestCase):
+    def test_difference_classifies_removed_spn_as_fixed_defect(self):
+        classification = audit.classify_mismatch(
+            {
+                "reason": "pronunciation_set_changed",
+                "word": "예시",
+                "baseline_phones": "spn",
+                "common_phones": "j e s i",
+            },
+            base_dictionary_words=set(),
+        )
+        self.assertEqual(classification, "spn_defect_fixed")
+
+    def test_difference_classifies_generated_word_separately(self):
+        classification = audit.classify_mismatch(
+            {
+                "reason": "phone_sequence_changed",
+                "word": "새말",
+                "baseline_phones": "s e",
+                "common_phones": "s e m a l",
+            },
+            base_dictionary_words={"기본말"},
+        )
+        self.assertEqual(classification, "g2p_generated_difference")
+
     def test_2020_textgrid_phone_sequence_matches_common_candidate(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "u1.TextGrid"

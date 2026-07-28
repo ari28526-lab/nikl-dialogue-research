@@ -1,0 +1,25 @@
+{
+  "schema_version": "compressed_archive_pilot.v1",
+  "status": "passed_after_detected_option_order_failure",
+  "recorded_at": "2026-07-28T16:35:25+09:00",
+  "source": {
+    "path": "D:\\mfa_common_pron\\models\\official_hf_korean_mfa_v3.3.0_20260728",
+    "read_only": true,
+    "files": 52,
+    "bytes": 172573000
+  },
+  "archive": {
+    "path": "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\hf_clone_crlf_failure.7z",
+    "bytes": 131949266,
+    "sha256": "dda0bc706da5567601f7b19b3c8631fcae77359979da63c62a43befab1a1558a",
+    "crc_test_exit": 0,
+    "files": 52,
+    "uncompressed_bytes": 172573000
+  },
+  "first_attempt": {
+    "status": "safely_stopped",
+    "cause": "7-Zip compression options were placed after -- and interpreted as input names",
+    "false_success_prevented": true
+  },
+  "source_pruned": false
+}
