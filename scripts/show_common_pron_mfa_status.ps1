@@ -209,11 +209,15 @@ if ($null -ne $startedAt) {
     $elapsedSeconds = (
         [datetimeoffset]::Now - $startedAt
     ).TotalSeconds
-    $sessionVerifiedWords = [int64]((
-        $verifiedReportRecords |
-            Where-Object { $_.recorded_at -ge $startedAt } |
-            Measure-Object -Property words -Sum
-    ).Sum)
+    # Under StrictMode, selecting .Sum from an empty Measure-Object pipeline
+    # fails before the first shard report exists. Sum explicitly so the
+    # normal 0/N startup state remains observable.
+    $sessionVerifiedWords = [int64]0
+    foreach ($record in @($verifiedReportRecords)) {
+        if ($record.recorded_at -ge $startedAt) {
+            $sessionVerifiedWords += [int64]$record.words
+        }
+    }
     $sessionCurrentRows = [int64]0
     if (
         $null -ne $currentOutputWrite -and

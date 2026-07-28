@@ -351,6 +351,8 @@ foreach ($path in $files) {
             'allow_yearly_mfa',
             'jamo_ls_candidate_words',
             '$sessionVerifiedWords',
+            '$sessionVerifiedWords = [int64]0',
+            'foreach ($record in @($verifiedReportRecords))',
             'difference_inventory_status'
         )) {
             if (-not $text.Contains($required)) {

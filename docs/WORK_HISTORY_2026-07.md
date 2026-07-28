@@ -1021,3 +1021,22 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   reader가 IPA phone에도 NFKC를 적용해 `sʰ→sh`, `tɕʰ→tɕh`,
   `pʲ→pj`로 내부 비교한 것이었다. IPA 열은 정규화하지 않고 strip만
   하도록 수정하고 modifier-letter 회귀검사를 추가했다.
+
+## 2026-07-28 17:08 공통사전 r2 실행 모니터링 시작
+
+- 사용자의 요청으로 공통발음사전 MFA r2 완료까지의 모니터링을 goal로
+  등록했다. 점검 범위는 shard 진행률, 오류·재시도, 처리 속도와 병목,
+  D: 여유 공간, 잠금 생존, shard 검증 보고서, 최종 산출물 gate이다.
+- 17:08 실행 잠금(PID 6668)과 `g2p_oov_00001.log`가 생성되었고,
+  shard 1/35가 실제로 처리되기 시작했다. D: 여유 공간은 263.15 GiB였다.
+- 첫 상태 확인에서 완료 shard가 아직 0개인 정상 초기 상태인데도
+  상태판이 빈 `Measure-Object` 결과의 `.Sum` 속성을 읽어
+  `PropertyNotFoundStrict`로 실패하는 경계조건 오류를 발견했다.
+- 본 G2P 프로세스와 산출물은 건드리지 않고 읽기 전용 상태판만 수정했다.
+  완료 보고서를 명시적으로 순회해 합계를 0부터 누적하도록 바꾸었으며,
+  같은 초기 상태 처리가 제거되지 않도록 PowerShell 안전성 검사에
+  회귀 조건을 추가했다.
+- 수정 직후 상태판은 `phase=g2p_running`, verified shard 0/35,
+  current shard 1, invalid report 0, lock alive, 1,922 standard rows로
+  정상 응답했다. 초기 속도 9.21 words/s와 ETA는 첫 shard 초기화 비용이
+  포함되므로 다음 shard 완료 전에는 방법론적 성능 수치로 사용하지 않는다.

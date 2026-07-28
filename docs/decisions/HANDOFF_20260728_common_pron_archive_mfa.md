@@ -117,3 +117,17 @@
 `ʰ`·`ʲ` modifier가 ASCII `h`·`j`로 바뀐 내부 비교 버그였다. 표준
 35 shard는 시작 전이었고 원본·후보 파일은 보존됐다. IPA phone 열에는
 Unicode 정규화를 하지 않도록 수정하고 회귀검사를 추가했다.
+
+## 17:08 이후 r2 실행 및 상태판 보정
+
+- 현재 실행 release:
+  `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728`
+- 실행 잠금은 2026-07-28 17:08:32에 PID 6668로 취득되었고 shard 1/35
+  계산이 시작되었다.
+- 실행 중인 G2P에는 손대지 않았으며, 읽기 전용 상태판이 verified shard
+  0개 상태에서 `.Sum`을 읽다 실패하던 문제만 보정했다.
+- 17:12 스냅샷은 generated 1,926/866,692(특수 4 포함), invalid report 0,
+  D: free 263.15 GiB, lock process alive였다.
+- 첫 shard 도중의 순간 처리율과 ETA는 초기화 비용과 작은 관측 구간 때문에
+  확정값으로 보지 않는다. 최소 1개, 가능하면 2개 shard 검증 완료 후
+  실측 wall time으로 병목과 남은 시간을 다시 판단한다.
