@@ -16,7 +16,14 @@
   Jamo rewrite 대상 4개로 분리된다.
 - 2026-07-28 16:36의 최초 후보 release는 코드 계약 SHA를 manifest에
   넣기 전 생성됐으므로 생산본으로 이어가지 않는다. 삭제하지 않고
-  `obsolete_precontract`로 보존한 뒤 커밋된 동일 코드로 다시 준비한다.
+  `D:\mfa_common_pron\archive_obsolete\common_pron_mfa_r2_20260728_pre_code_contract_20260728_1644`
+  에 보존했다.
+- commit `7c7e9d73cfad7af036b1922ac2dfa34b2ae7b5a7`로 다시 준비한 현재
+  release 계약 ID는
+  `c6a877ff731e871310870afaffd34dbfed82a78fb43e4032561acfe68517ffcd`,
+  생성기 LF 정규화 SHA256은
+  `6b3fcedc5141c09b667305f9c25d879d21e31e56cf6b0d1d2a661118d03462bc`
+  다.
 - 4어절 후보 phone은 모두 `spn=0`, acoustic inventory 이탈=0,
   표층키 복원 4/4를 통과했으나 연구자 검토표의 `decision`은 아직
   `pending`이다.

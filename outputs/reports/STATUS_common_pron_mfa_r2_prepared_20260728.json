@@ -1,0 +1,53 @@
+{
+  "schema_version": "common_pron_mfa_r2_handoff.v1",
+  "status": "prepared_special_review_pending",
+  "recorded_at": "2026-07-28T16:45:00+09:00",
+  "release_id": "common_pron_mfa_r2_20260728",
+  "state_separation": {
+    "code_ready": true,
+    "input_prepared": true,
+    "special_candidate_ready": true,
+    "final_dictionary_ready": false,
+    "difference_inventory_ready": false,
+    "yearly_mfa_approved": false
+  },
+  "code": {
+    "git_commit": "7c7e9d73cfad7af036b1922ac2dfa34b2ae7b5a7",
+    "builder_normalized_utf8_sha256": "6b3fcedc5141c09b667305f9c25d879d21e31e56cf6b0d1d2a661118d03462bc"
+  },
+  "release_contract_id": "c6a877ff731e871310870afaffd34dbfed82a78fb43e4032561acfe68517ffcd",
+  "counts": {
+    "vocabulary_words": 881237,
+    "observed_oov_words": 866692,
+    "standard_g2p_words": 866688,
+    "standard_shards": 35,
+    "verified_standard_shards": 0,
+    "jamo_ls_rewrite_words": 4,
+    "unsupported_other_words": 0,
+    "special_spn_words": 0,
+    "special_phone_outside_inventory": 0
+  },
+  "artifacts": {
+    "prepare_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\00_contract\\prepare_manifest.json",
+      "bytes": 21004,
+      "sha256": "fbb4d79308ba45627106d33e30455892291d0cef019c8ec0bbdec0916230b8b5"
+    },
+    "frozen_model_pin": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\00_contract\\frozen_model_pin.json",
+      "bytes": 2125,
+      "sha256": "8cf8bc23ff106cc477cb90b91f39e943fbe6f0121fbb6b08e86b157c9435ddd7"
+    },
+    "jamo_ls_candidate_report": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\_state\\jamo_ls_candidate_report.json",
+      "bytes": 2824,
+      "sha256": "77052a18f1953aaf9006f84270a5fc4c16bd946a0769d0bcd84c064a4f2b551c"
+    },
+    "researcher_review": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\03_review\\jamo_ls_researcher_review.csv",
+      "bytes": 350,
+      "sha256": "fefef964a81b351180adca4e0a84efedac8a25abebd3c255e145125282e52ea1",
+      "decision": "pending"
+    }
+  }
+}

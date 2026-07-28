@@ -1010,3 +1010,9 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - Python 단위 테스트 145개와 PowerShell 안전성 검사 12개가 모두
   통과했다. 코드 준비, r2 준비, r2 실물, 연도별 사용 승인을 문서와
   실행 gate에서 서로 다른 상태로 유지한다.
+- 리뷰 반영 코드는 commit `7c7e9d7`로
+  `origin/agent/harden-pre-bulk-pipelines`에 푸시했다. 커밋 전 생성한
+  r2 후보는 `archive_obsolete`에 보존하고, 커밋된 코드 SHA 계약으로
+  같은 입력·4건 후보를 다시 만들었다. 현재 verified 표준 shard는
+  0/35이며 final dictionary·difference inventory·adoption은 모두
+  미생성이다.
