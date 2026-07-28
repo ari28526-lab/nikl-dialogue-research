@@ -232,6 +232,9 @@ foreach ($path in $files) {
             'policy_A_baseline_cache.dict',
             'policy_B_attested_variants.dict',
             'Archive-Incomplete',
+            '$previousErrorActionPreference',
+            "`$ErrorActionPreference = 'Continue'",
+            '$mfaExitCode = $LASTEXITCODE',
             'comparison_done.json',
             '아직 정책을 채택하지 않음',
             '기존 2020/2021 결과와 canonical CSV/TextGrid는 수정하지 않음'

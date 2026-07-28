@@ -38,6 +38,7 @@
 | [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
 | [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
 | [decisions/MONITOR_2021_pre_mfa_v1_20260727.md](decisions/MONITOR_2021_pre_mfa_v1_20260727.md) | 현재 2021 direct-DB 실행의 lab·MFA 단계·CPU·용량·watchdog 실측 점검대장 |
+| [decisions/MONITOR_common_pron_AB_pilot_20260728.md](decisions/MONITOR_common_pron_AB_pilot_20260728.md) | 공통 발음 A/B의 단계·오류·부분 성공·무손상·재개를 기록하는 실시간 점검대장 |
 | [decisions/PLAN_2022_improved_MFA_after_2020_2021.md](decisions/PLAN_2022_improved_MFA_after_2020_2021.md) | 2020·2021 실측을 반영한 2022 개선 실행안과 GO/NO-GO |
 | [decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md](decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md) | **2020·2021 최종 비교 정본** — 전수 QC·속도·DB 증거·D: dry-run·2022 기술 GO/방법론 HOLD와 승인 후 명령 |
 | [decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md](decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md) | 한국어 wav2vec2 phone 모델을 MFA 대체가 아닌 음향 후보 탐지층으로 검증하는 방법·한계·소표본 gate |

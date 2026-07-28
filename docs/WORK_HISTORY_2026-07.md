@@ -798,3 +798,16 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   Python/PowerShell 구문과 `git diff --check`가 통과했다. 실제 설치된
   G2P 4단어 smoke test에서는 기본값이 복수 후보를 낼 수 있음을 확인해,
   inline MFA 소스와 같은 `--num_pronunciations 1`을 실행기에 명시했다.
+- 공통 발음 A/B 최초 실행은 6개년 전체 vocabulary `881,237`개를 사용한
+  registry `199,119`행과 60발화 A/B 입력까지 만든 뒤 표본 G2P에서
+  중단됐다. lexicon과 A/B align은 시작 전이어서 원자료·기존 2020/2021
+  canonical 결과와 TextGrid 부분 산출에는 손상이 없었다.
+- 동일 317개 어절의 G2P를 독립 재현해 `num_jobs=1` 63.93초,
+  `num_jobs=4` 63.16초로 각각 317/317행 성공했다. 원인은 G2P나 병렬도가
+  아니라 Windows PowerShell 5.1이 MFA의 정상 stderr progress를
+  `ErrorRecord`로 바꾸고 전역 `Stop`이 이를 중단한 것이었다.
+- MFA 호출 경계에서만 `Continue`로 낮추고 실제 exit code를 즉시 보존한
+  뒤 preference를 복구하도록 수정했다. PowerShell 7파일·Python 96개·
+  `git diff --check`가 다시 통과했으며, 같은 RunId의 marker/hash 기반
+  재개와 부분 temp archive 방침은
+  `decisions/MONITOR_common_pron_AB_pilot_20260728.md`에 기록했다.

@@ -57,10 +57,21 @@ function Invoke-MfaLogged(
     [string]$RunRoot
 ) {
     Assert-Child $LogPath $RunRoot
-    & $script:mfa @Arguments 2>&1 |
-        Tee-Object -FilePath $LogPath |
-        ForEach-Object { Write-Host $_ }
-    return $LASTEXITCODE
+    # Windows PowerShell 5.1은 네이티브 stderr를 ErrorRecord로 바꾼다.
+    # MFA의 정상 progress도 stderr를 쓰므로 전역 Stop을 그대로 두면
+    # 첫 progress 출력에서 MFA가 강제 중단된다. 네이티브 호출 경계에서만
+    # Continue로 낮추고, 실제 판정은 즉시 보존한 process exit code로 한다.
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & $script:mfa @Arguments 2>&1 |
+            Tee-Object -FilePath $LogPath |
+            ForEach-Object { Write-Host $_ }
+        $mfaExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    return $mfaExitCode
 }
 function Write-Marker(
     [string]$Path,

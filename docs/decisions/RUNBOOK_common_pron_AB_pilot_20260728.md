@@ -119,3 +119,20 @@ comparison\ab_utterance_comparison.csv
 
 wav2vec2 phone 후보는 이 A/B 결과를 고치지 않는다. 후속 소표본에서 별도
 append-only 열 또는 연구자 점검 사본의 별도 tier로만 추가한다.
+
+## 2026-07-28 최초 실행 중단과 수정
+
+최초 실행은 registry와 60발화 A/B 입력을 만든 뒤 표본 어절 G2P의
+`Generating pronunciations...`에서 중단됐다. G2P 317개는 독립 실행에서
+`num_jobs=1`과 `4` 모두 약 64초에 317/317행을 정상 생성했다.
+
+원인은 Windows PowerShell 5.1에서 네이티브 stderr를 `ErrorRecord`로
+바꾸는 동작과 전역 `$ErrorActionPreference='Stop'`의 결합이었다.
+MFA의 정상 progress가 오류로 오인됐다. 실행기는 MFA 호출 경계에서만
+`Continue`를 쓰고 실제 process exit code를 즉시 보존하도록 수정했다.
+
+새 RunId는 필요 없다. 위와 같은 명령을 같은
+`ab_stress_control_20260728_01`로 재실행하면 완료 marker가 있는 단계는
+검증 후 재사용하고, marker 없는 G2P temp는 `archive_failed`에 보존한 뒤
+다시 시작한다. 자세한 실측은
+`MONITOR_common_pron_AB_pilot_20260728.md`에 기록한다.
