@@ -25,6 +25,18 @@ def write_csv(path: Path, fields: list[str], rows: list[dict[str, object]]) -> N
 
 
 class CommonPronAbPilotTests(unittest.TestCase):
+    def test_read_dict_separates_mfa_probability_columns(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "probability.dict"
+            path.write_text(
+                "가\t0.99\t0.3\t1.77\t0.79\tk ɐ\n"
+                "나\tn ɐ\n",
+                encoding="utf-8",
+            )
+            parsed = ab.read_dict(path)
+            self.assertEqual(parsed["가"], {("k", "ɐ")})
+            self.assertEqual(parsed["나"], {("n", "ɐ")})
+
     def test_edit_distance(self) -> None:
         self.assertEqual(ab.edit_distance([], []), 0)
         self.assertEqual(ab.edit_distance(["k", "a"], ["k", "a"]), 0)
@@ -109,7 +121,10 @@ class CommonPronAbPilotTests(unittest.TestCase):
                     }
                 ],
             )
-            base.write_text("가\tk ɐ\n", encoding="utf-8")
+            base.write_text(
+                "가\t0.99\t0.3\t1.77\t0.79\tk ɐ\n",
+                encoding="utf-8",
+            )
             args = argparse.Namespace(
                 release_root=root,
                 output_dir=out,
@@ -142,8 +157,24 @@ class CommonPronAbPilotTests(unittest.TestCase):
                 for row in rows
                 if row["pron_source_type"] == "legacy_machine_g2p"
             )
+            base_row = next(
+                row
+                for row in rows
+                if row["pron_source_type"] == "base_mfa_dictionary"
+            )
+            self.assertEqual(base_row["pron_phones_mfa"], "k ɐ")
             self.assertEqual(attested["selection_status"], "eligible_policy_b_pilot")
             self.assertEqual(legacy_row["selection_status"], "audit_only")
+            manifest = json.loads(
+                (out / "registry_seed_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(manifest["schema_version"], 2)
+            self.assertEqual(
+                manifest["policy"]["base_dictionary_parse_contract"],
+                ab.MFA_DICTIONARY_PARSE_CONTRACT,
+            )
 
     def test_lexicon_b_adds_variant_without_replacing_a(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -156,7 +187,8 @@ class CommonPronAbPilotTests(unittest.TestCase):
             registry_subset = Path(temp) / "registry.csv"
             word_g2p = Path(temp) / "word_g2p.dict"
             pron_g2p = Path(temp) / "pron_g2p.dict"
-            base.write_text("가\tk ɐ\n", encoding="utf-8")
+            base_line = "가\t0.99\t0.3\t1.77\t0.79\tk ɐ"
+            base.write_text(f"{base_line}\n", encoding="utf-8")
             with zipfile.ZipFile(acoustic, "w") as archive:
                 archive.writestr(
                     "korean/meta.json",
@@ -198,6 +230,8 @@ class CommonPronAbPilotTests(unittest.TestCase):
             b_text = (out / "policy_B_attested_variants.dict").read_text(
                 encoding="utf-8"
             )
+            self.assertIn(f"{base_line}\n", a_text)
+            self.assertIn(f"{base_line}\n", b_text)
             self.assertIn("읽다\ti k̚ tʰ ɐ", a_text)
             self.assertIn("읽다\ti k t͈ ɐ", b_text)
             manifest = json.loads(
@@ -206,6 +240,15 @@ class CommonPronAbPilotTests(unittest.TestCase):
                 )
             )
             self.assertEqual(manifest["counts"]["policy_b_added_variants"], 1)
+            self.assertEqual(
+                manifest["counts"]["base_dictionary_rows_preserved"], 1
+            )
+            self.assertEqual(manifest["counts"]["policy_a_rows"], 2)
+            self.assertEqual(manifest["counts"]["policy_b_rows"], 3)
+            self.assertEqual(
+                manifest["dictionary_contract"]["parser"],
+                ab.MFA_DICTIONARY_PARSE_CONTRACT,
+            )
             self.assertEqual(manifest["status"], "needs_manual_review")
 
     def test_sample_copies_byte_identical_ab_inputs(self) -> None:

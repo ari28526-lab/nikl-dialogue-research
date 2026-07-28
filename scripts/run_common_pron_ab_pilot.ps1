@@ -246,27 +246,55 @@ if ($LASTEXITCODE -ne 0) {
     throw "MFA 설치 검증 실패: $patchReport"
 }
 
-# 1. 전수 vocabulary와 사전 exact-word 후보 registry. 이미 성공한 결과는 재사용.
+# 1. 전수 vocabulary와 사전 exact-word 후보 registry. 현재 parser 계약과
+# SHA256이 모두 맞는 성공 결과만 재사용한다.
+$registryReusable = $false
 if (
     (Test-Path -LiteralPath $registry -PathType Leaf) -and
     (Test-Path -LiteralPath $registryManifest -PathType Leaf)
 ) {
     $registryData = Get-Content -Raw -Encoding UTF8 `
         -LiteralPath $registryManifest | ConvertFrom-Json
-    if ($registryData.status -ne 'success') {
+    $registryContract = [string](
+        $registryData.policy.base_dictionary_parse_contract
+    )
+    if (
+        [int]$registryData.schema_version -ne 2 -or
+        $registryContract -ne 'mfa_3_4_optional_probability_columns_v1'
+    ) {
+        Say (
+            "[1/7] 구 registry parser 계약 폐기·보존 " +
+            "(schema=$($registryData.schema_version), " +
+            "contract='$registryContract')"
+        )
+        Archive-Incomplete $sharedRoot $releaseRoot `
+            'dependent_sample_before_dictionary_probability_fix'
+        Archive-Incomplete $resultRoot $releaseRoot `
+            'dependent_results_before_dictionary_probability_fix'
+        Archive-Incomplete $lexiconDir $releaseRoot `
+            'dependent_lexicons_before_dictionary_probability_fix'
+        Archive-Incomplete $registryDir $releaseRoot `
+            'registry_before_dictionary_probability_fix'
+        New-Item -ItemType Directory -Path $registryDir | Out-Null
+    } elseif ($registryData.status -ne 'success') {
         throw "기존 registry manifest가 success가 아님: $registryManifest"
+    } else {
+        $registryHash = (
+            Get-FileHash -Algorithm SHA256 -LiteralPath $registry
+        ).Hash.ToLowerInvariant()
+        if ($registryHash -ne [string]$registryData.outputs.registry.sha256) {
+            throw "기존 registry SHA256 불일치: $registry"
+        }
+        $registryReusable = $true
     }
-    $registryHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $registry).Hash.
-        ToLowerInvariant()
-    if ($registryHash -ne [string]$registryData.outputs.registry.sha256) {
-        throw "기존 registry SHA256 불일치: $registry"
-    }
-    Say "[1/7] 기존 전수 registry 재사용"
 } elseif (
     (Test-Path -LiteralPath $registry) -or
     (Test-Path -LiteralPath $registryManifest)
 ) {
     throw "registry 부분 산출물 존재 — 자동 덮어쓰기 금지: $registryDir"
+}
+if ($registryReusable) {
+    Say "[1/7] 현재 parser 계약의 전수 registry 재사용"
 } else {
     Say "[1/7] 6개년 전수 vocabulary·사전 후보 registry"
     & $py $driver registry `

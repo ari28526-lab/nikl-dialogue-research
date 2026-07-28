@@ -87,3 +87,55 @@ marker 검증으로 한다.
 - 60/60 TextGrid, A/B 입력 SHA256 동일, 4-tier 경계, phone inventory,
   `spn`과 phone 변화 비교가 끝나기 전에는 정책 B를 채택하지 않는다.
 
+## 10:54–11:04 재개와 기본 사전 확률열 오류
+
+로깅 수정 뒤 같은 RunId로 재개했다.
+
+- 이전 G2P temp는
+  `archive_failed\20260728_105423\sample_words_g2p_temp`로 이동했다.
+- 표본 어절 G2P: 317/317, 완료 marker 생성
+- 사전 한글 발음 phone 변환: 24/24 입력 처리, 완료 marker 생성
+- 5단계 파생사전 phone gate에서 숫자 `0.01`–`52.64` 등을 acoustic
+  inventory 밖 phone으로 탐지하고 중단했다.
+
+실제 `korean_mfa.dict`는 단순한 `단어 + phone` 파일이 아니라 다음
+형식이었다.
+
+```text
+단어  발음확률  뒤침묵확률  앞침묵보정  앞비침묵보정  phone...
+```
+
+최초 parser는 선택적 확률 4열을 phone으로 잘못 읽었다. 그 결과 구
+registry의 exact-word 포함 여부와 OOV 집합은 맞았지만,
+`base_mfa_dictionary` 후보의 `pron_phones_mfa`에는 확률 숫자가 섞였다.
+따라서 구 registry와 그 hash를 사용하는 표본·G2P·결과는 새 실행에서
+의존 산출물과 함께 `archive_failed`로 보존한 뒤 재구축한다.
+
+### 수정된 사전 계약
+
+- MFA 3.4의 `parse_dictionary_file`과 같은 선택적 확률열 인식 순서를
+  사용한다.
+- 정책 A와 B 모두 기본 사전 21,009행의 순서·phone·확률 4열을
+  의미적으로 그대로 보존한다.
+- 정책 A의 표본 OOV G2P만 새 무확률 행으로 덧붙인다.
+- 정책 B는 정책 A에 exact-word 우리말샘 변이를 무확률 행으로
+  추가한다. MFA 3.4에서 무확률 행의 발음 가중치는 기본값 1.0이다.
+- 이는 등재 변이의 **사용 가능성 availability** 파일럿이지 발음확률
+  추정이 아니다. 정책 B 채택 뒤 확률 보정은 별도 연구 결정이다.
+
+실제 자료 smoke test:
+
+| 항목 | A | B |
+|---|---:|---:|
+| 기본 사전 보존 행 | 21,009 | 21,009 |
+| 표본 OOV 추가 행 | 190 | 190 |
+| 우리말샘 변이 추가 행 | 0 | 15 |
+| 최종 행 | 21,199 | 21,214 |
+| acoustic inventory 밖 phone | 0 | 0 |
+
+MFA 3.4 자체 parser로 두 파일을 다시 읽어 행 수, 기본 21,009행의
+line-for-line 동일성, 추가 행의 무확률 계약, phone inventory를 모두
+확인했다. `궹장히`는 현재 G2P grapheme 범위에서 phone으로 변환되지 않아
+`attested_pron_g2p_missing` 2행으로 명시적으로 제외했다. 조용한 `spn`
+대체나 정책 B 삽입은 하지 않았다.
+

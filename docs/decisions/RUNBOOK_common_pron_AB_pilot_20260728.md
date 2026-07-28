@@ -136,3 +136,14 @@ MFA의 정상 progress가 오류로 오인됐다. 실행기는 MFA 호출 경계
 검증 후 재사용하고, marker 없는 G2P temp는 `archive_failed`에 보존한 뒤
 다시 시작한다. 자세한 실측은
 `MONITOR_common_pron_AB_pilot_20260728.md`에 기록한다.
+
+같은 재개에서 기본 `korean_mfa.dict`의 선택적 확률 4열을 phone으로
+오인한 두 번째 오류도 phone gate가 차단했다. 현재 parser 계약은 MFA
+3.4와 같이 확률 4열을 분리하고, 정책 A/B 모두 기본 21,009행의 확률과
+phone을 보존한다. 새 G2P·사전 변이는 무확률 행, 즉 MFA 기본 발음
+가중치 1.0으로만 추가한다. 이 A/B는 변이 availability 시험이며
+발음확률 추정 시험이 아니다.
+
+구 schema 1 registry는 재사용하지 않는다. 같은 RunId 재실행 시 구
+registry와 그에 의존한 sample/result/lexicon을 `archive_failed`로
+이동하고 schema 2 registry부터 다시 만든다.

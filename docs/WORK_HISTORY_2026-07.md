@@ -811,3 +811,15 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `git diff --check`가 다시 통과했으며, 같은 RunId의 marker/hash 기반
   재개와 부분 temp archive 방침은
   `decisions/MONITOR_common_pron_AB_pilot_20260728.md`에 기록했다.
+- 로깅 수정 뒤 G2P 317/317과 사전 발음 24/24는 완료됐지만 파생사전
+  phone gate가 기본 `korean_mfa.dict`의 확률 숫자를 phone으로 읽은
+  parser 오류를 차단했다. 실제 기본 사전은 단어 뒤 선택적
+  발음확률·뒤침묵확률·앞침묵/비침묵 보정 4열을 가진다.
+- MFA 3.4 parser 계약을 따라 확률열과 phone을 분리하고, A/B 기본
+  21,009행의 순서·확률·phone을 그대로 보존하도록 수정했다. 실제 표본
+  smoke test에서 A는 OOV 190행을 더한 21,199행, B는 우리말샘 변이
+  15행을 더한 21,214행이었고 phone inventory 밖 기호는 0이었다.
+- 새 변이는 확률을 임의 추정하지 않고 MFA 기본값 1.0인 무확률 행으로
+  추가한다. 따라서 현재 A/B는 변이 availability 파일럿이며 확률 보정은
+  채택 뒤 별도 결정이다. `궹장히`는 phone 변환 실패를 명시적으로
+  기록하고 B에 넣지 않았다.

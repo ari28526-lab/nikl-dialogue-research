@@ -235,6 +235,8 @@ foreach ($path in $files) {
             '$previousErrorActionPreference',
             "`$ErrorActionPreference = 'Continue'",
             '$mfaExitCode = $LASTEXITCODE',
+            'mfa_3_4_optional_probability_columns_v1',
+            'registry_before_dictionary_probability_fix',
             'comparison_done.json',
             '아직 정책을 채택하지 않음',
             '기존 2020/2021 결과와 canonical CSV/TextGrid는 수정하지 않음'

@@ -26,6 +26,7 @@ import re
 import shutil
 import sys
 import time
+import unicodedata
 import wave
 import zipfile
 from collections import Counter, defaultdict
@@ -84,6 +85,11 @@ DEFAULT_ACOUSTIC_MODEL = (
 DEFAULT_YEARS = ("2020", "2021", "2022", "2023", "2024", "2025")
 PLAIN_HANGUL_RE = re.compile(r"^[가-힣]+$")
 SAFE_RUN_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+MFA_PROBABILITY_RE = re.compile(r"\b(\d+\.\d+|1)\b")
+REGISTRY_SCHEMA_VERSION = 2
+MFA_DICTIONARY_PARSE_CONTRACT = (
+    "mfa_3_4_optional_probability_columns_v1"
+)
 REGISTRY_FIELDS = [
     "candidate_id",
     "token",
@@ -194,18 +200,41 @@ def write_csv_atomic(
     return count
 
 
+def parse_mfa_dictionary_line(
+    line: str, *, path: Path, line_number: int
+) -> tuple[str, tuple[str, ...], tuple[str, ...]]:
+    """MFA 3.4의 선택적 확률 4열을 phone과 분리한다."""
+
+    parts = line.strip().split()
+    if not parts:
+        raise RuntimeError(f"빈 MFA 사전 행 {line_number}: {path}")
+    if len(parts) < 2:
+        raise RuntimeError(
+            f"잘못된 MFA 사전 행 {line_number}: {path}"
+        )
+    word = unicodedata.normalize("NFKC", parts.pop(0))
+    probability_columns: list[str] = []
+    for _ in range(4):
+        if not parts or not MFA_PROBABILITY_RE.match(parts[0]):
+            break
+        probability_columns.append(parts.pop(0))
+    if not parts:
+        raise RuntimeError(
+            f"phone이 없는 MFA 사전 행 {line_number}: {path}"
+        )
+    return word, tuple(parts), tuple(probability_columns)
+
+
 def read_dict(path: Path) -> dict[str, set[tuple[str, ...]]]:
     result: dict[str, set[tuple[str, ...]]] = defaultdict(set)
     with path.open("r", encoding="utf-8-sig") as stream:
         for line_number, line in enumerate(stream, 1):
-            parts = line.strip().split()
-            if not parts:
+            if not line.strip():
                 continue
-            if len(parts) < 2:
-                raise RuntimeError(
-                    f"잘못된 MFA 사전 행 {line_number}: {path}"
-                )
-            result[parts[0]].add(tuple(parts[1:]))
+            word, phones, _ = parse_mfa_dictionary_line(
+                line, path=path, line_number=line_number
+            )
+            result[word].add(phones)
     return dict(result)
 
 
@@ -476,7 +505,7 @@ def build_registry(args: argparse.Namespace) -> int:
         stream.write("\n".join(oov_words))
         stream.write("\n")
     manifest = {
-        "schema_version": 1,
+        "schema_version": REGISTRY_SCHEMA_VERSION,
         "kind": "common_pronunciation_registry_seed",
         "status": "success",
         "recorded_at": now_iso(),
@@ -487,6 +516,9 @@ def build_registry(args: argparse.Namespace) -> int:
             "legacy_pron_g2p": "audit_only_not_attested",
             "attested_pilot_eligibility": (
                 "pron_1/2; plain modern Hangul; differs from token"
+            ),
+            "base_dictionary_parse_contract": (
+                MFA_DICTIONARY_PARSE_CONTRACT
             ),
         },
         "inputs": {
@@ -1021,22 +1053,35 @@ def parse_generated_dict(path: Path) -> dict[str, tuple[str, ...]]:
     return {word: next(iter(prons)) for word, prons in raw.items()}
 
 
-def write_mfa_dict(
-    path: Path, mapping: dict[str, set[tuple[str, ...]]]
-) -> int:
-    rows = (
+def write_policy_mfa_dict(
+    path: Path,
+    base_dictionary: Path,
+    additions: dict[str, set[tuple[str, ...]]],
+) -> tuple[int, int]:
+    """기본 사전 행·확률열을 보존하고 새 발음만 무확률 행으로 추가한다."""
+
+    base_lines: list[str] = []
+    with base_dictionary.open("r", encoding="utf-8-sig") as stream:
+        for line_number, line in enumerate(stream, 1):
+            if not line.strip():
+                continue
+            parse_mfa_dictionary_line(
+                line, path=base_dictionary, line_number=line_number
+            )
+            base_lines.append(line.rstrip("\r\n"))
+    addition_rows = [
         (word, phones)
-        for word in sorted(mapping)
-        for phones in sorted(mapping[word])
-    )
-    count = 0
+        for word in sorted(additions)
+        for phones in sorted(additions[word])
+    ]
     with atomic_text_writer(
         path, encoding="utf-8", newline="\n"
     ) as (stream, _):
-        for word, phones in rows:
+        for line in base_lines:
+            stream.write(f"{line}\n")
+        for word, phones in addition_rows:
             stream.write(f"{word}\t{' '.join(phones)}\n")
-            count += 1
-    return count
+    return len(base_lines) + len(addition_rows), len(base_lines)
 
 
 def build_lexicons(args: argparse.Namespace) -> int:
@@ -1065,6 +1110,7 @@ def build_lexicons(args: argparse.Namespace) -> int:
     if not sample_words:
         raise RuntimeError("표본 어절 목록이 비어 있음")
     policy_a = {word: set(prons) for word, prons in base.items()}
+    policy_a_additions: dict[str, set[tuple[str, ...]]] = defaultdict(set)
     g2p_missing: list[str] = []
     for word in sorted(sample_words):
         if word in policy_a:
@@ -1074,7 +1120,11 @@ def build_lexicons(args: argparse.Namespace) -> int:
             pron = ("spn",)
             g2p_missing.append(word)
         policy_a[word] = {pron}
+        policy_a_additions[word].add(pron)
     policy_b = {word: set(prons) for word, prons in policy_a.items()}
+    policy_b_additions = {
+        word: set(prons) for word, prons in policy_a_additions.items()
+    }
 
     subset_rows: list[dict[str, str]] = []
     with args.registry_subset.open(
@@ -1101,6 +1151,7 @@ def build_lexicons(args: argparse.Namespace) -> int:
         else:
             if phones not in policy_b[token]:
                 policy_b[token].add(phones)
+                policy_b_additions.setdefault(token, set()).add(phones)
                 added = True
                 disposition = "policy_b_added"
                 diff_rows.append(
@@ -1143,8 +1194,17 @@ def build_lexicons(args: argparse.Namespace) -> int:
         raise RuntimeError(
             f"acoustic phone inventory 밖 기호: {sorted(all_unknown)}"
         )
-    a_rows = write_mfa_dict(paths["policy_a"], policy_a)
-    b_rows = write_mfa_dict(paths["policy_b"], policy_b)
+    a_rows, base_rows = write_policy_mfa_dict(
+        paths["policy_a"], args.base_dictionary, policy_a_additions
+    )
+    b_rows, policy_b_base_rows = write_policy_mfa_dict(
+        paths["policy_b"], args.base_dictionary, policy_b_additions
+    )
+    if policy_b_base_rows != base_rows:
+        raise RuntimeError(
+            "A/B 기본 사전 행 수 불일치: "
+            f"A={base_rows}, B={policy_b_base_rows}"
+        )
     diff_fields = [
         "token",
         "pron_hangul",
@@ -1166,7 +1226,7 @@ def build_lexicons(args: argparse.Namespace) -> int:
             f"B={b_coverage_missing[:5]}"
         )
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
         "kind": "common_pronunciation_ab_pilot_lexicons",
         "status": "needs_manual_review",
         "recorded_at": now_iso(),
@@ -1182,10 +1242,17 @@ def build_lexicons(args: argparse.Namespace) -> int:
         "counts": {
             "sample_words": len(sample_words),
             "base_dictionary_words": len(base),
+            "base_dictionary_rows_preserved": base_rows,
             "policy_a_words": len(policy_a),
             "policy_a_rows": a_rows,
+            "policy_a_added_rows": sum(
+                len(prons) for prons in policy_a_additions.values()
+            ),
             "policy_b_words": len(policy_b),
             "policy_b_rows": b_rows,
+            "policy_b_added_rows_total": sum(
+                len(prons) for prons in policy_b_additions.values()
+            ),
             "policy_b_added_variants": len(diff_rows),
             "policy_b_changed_tokens": len(
                 {row["token"] for row in diff_rows}
@@ -1201,6 +1268,21 @@ def build_lexicons(args: argparse.Namespace) -> int:
             "num_pronunciations": 1,
             "strict_graphemes": True,
             "reason": "MFA 3.4 inline normalize_text uses the same settings",
+        },
+        "dictionary_contract": {
+            "parser": MFA_DICTIONARY_PARSE_CONTRACT,
+            "base_rows": (
+                "copied semantically with optional pronunciation and "
+                "silence probability columns preserved"
+            ),
+            "added_rows": (
+                "word plus phones without probability columns; MFA 3.4 "
+                "uses its default pronunciation weight 1.0"
+            ),
+            "interpretation": (
+                "policy B is an availability pilot, not calibrated "
+                "pronunciation-probability estimation"
+            ),
         },
         "inputs": {
             "base_dictionary": file_fingerprint(
