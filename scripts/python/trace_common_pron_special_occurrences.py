@@ -19,7 +19,6 @@ from build_common_pron_vocabulary import (  # noqa: E402
     DEFAULT_YEARS,
     source_inventory,
 )
-from build_search_master import load_utt_extra  # noqa: E402
 from paths import P  # noqa: E402
 from pipeline_common import (  # noqa: E402
     atomic_text_writer,
@@ -39,8 +38,13 @@ REQUIRED_COLUMNS = {
     "utt_id",
     "year",
     "session_id",
+    "dialogue_id",
+    "speaker_id",
     "form",
     "original_form",
+    "start",
+    "end",
+    "note",
     "pron_reference_form",
     "pron_reference_hangul",
     "pron_reference_source",
@@ -57,14 +61,22 @@ OUTPUT_FIELDS = [
     "speaker_id",
     "form",
     "original_form",
+    "start",
+    "end",
+    "note",
     "pron_reference_form",
     "pron_reference_hangul",
     "pron_reference_source",
     "pron_reference_status",
     "source_search_master_csv",
     "raw_json_path",
+    "raw_json_form",
     "raw_json_original_form",
     "raw_json_dialogue_id",
+    "raw_json_speaker_id",
+    "raw_json_start",
+    "raw_json_end",
+    "raw_json_note",
     "raw_json_match_status",
 ]
 
@@ -150,6 +162,9 @@ def scan_search_master(
                             "speaker_id": clean(row.get("speaker_id")),
                             "form": clean(row.get("form")),
                             "original_form": clean(row.get("original_form")),
+                            "start": clean(row.get("start")),
+                            "end": clean(row.get("end")),
+                            "note": clean(row.get("note")),
                             "pron_reference_form": clean(
                                 row.get("pron_reference_form")
                             ),
@@ -225,6 +240,30 @@ def locate_raw_json(
     return resolved
 
 
+def load_raw_utterances(path: Path) -> dict[str, dict[str, str]]:
+    with path.open("r", encoding="utf-8") as stream:
+        payload = json.load(stream)
+    rows: dict[str, dict[str, str]] = {}
+    for document in payload.get("document", []):
+        dialogue_id = clean(document.get("id"))
+        for utterance in document.get("utterance", []):
+            utt_id = clean(utterance.get("id"))
+            if not utt_id:
+                continue
+            if utt_id in rows:
+                raise RuntimeError(f"원본 JSON utt_id 중복: {path}, {utt_id}")
+            rows[utt_id] = {
+                "form": clean(utterance.get("form")),
+                "original_form": clean(utterance.get("original_form")),
+                "dialogue_id": dialogue_id,
+                "speaker_id": clean(utterance.get("speaker_id")),
+                "start": clean(utterance.get("start")),
+                "end": clean(utterance.get("end")),
+                "note": clean(utterance.get("note")),
+            }
+    return rows
+
+
 def join_raw_json(
     *,
     matches: list[dict[str, str]],
@@ -244,27 +283,35 @@ def join_raw_json(
     for match in matches:
         path = paths[(match["year"], match["session_id"])]
         if path not in loaded:
-            loaded[path] = load_utt_extra(path)
+            loaded[path] = load_raw_utterances(path)
         raw = loaded[path].get(match["utt_id"])
         if raw is None:
             raise RuntimeError(
                 f"원본 JSON에서 utt_id 누락: {path}, {match['utt_id']}"
             )
-        raw_original = clean(raw.get("original_form"))
-        raw_dialogue = clean(raw.get("dialogue_id"))
         statuses: list[str] = []
-        if raw_original != match["original_form"]:
-            statuses.append("original_form_mismatch")
-        if raw_dialogue != match["dialogue_id"]:
-            statuses.append("dialogue_id_mismatch")
+        comparisons = {
+            "form": "form",
+            "original_form": "original_form",
+            "dialogue_id": "dialogue_id",
+            "speaker_id": "speaker_id",
+        }
+        for raw_key, search_key in comparisons.items():
+            if raw[raw_key] != match[search_key]:
+                statuses.append(f"{raw_key}_mismatch")
         status = "|".join(statuses) if statuses else "exact"
         mismatch_counts[status] += 1
         joined.append(
             {
                 **match,
                 "raw_json_path": str(path),
-                "raw_json_original_form": raw_original,
-                "raw_json_dialogue_id": raw_dialogue,
+                "raw_json_form": raw["form"],
+                "raw_json_original_form": raw["original_form"],
+                "raw_json_dialogue_id": raw["dialogue_id"],
+                "raw_json_speaker_id": raw["speaker_id"],
+                "raw_json_start": raw["start"],
+                "raw_json_end": raw["end"],
+                "raw_json_note": raw["note"],
                 "raw_json_match_status": status,
             }
         )

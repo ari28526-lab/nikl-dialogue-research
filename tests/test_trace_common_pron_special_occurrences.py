@@ -35,6 +35,9 @@ class TraceCommonPronSpecialOccurrencesTests(unittest.TestCase):
                     "speaker_id": "SPK1",
                     "form": "외곬을 읽었다",
                     "original_form": "외곬을 읽었다",
+                    "start": "0.0",
+                    "end": "1.0",
+                    "note": "",
                     "pron_reference_form": "외곬을 읽었다",
                     "pron_reference_hangul": "외골쓸 일걷따",
                     "pron_reference_source": "form",
@@ -55,7 +58,11 @@ class TraceCommonPronSpecialOccurrencesTests(unittest.TestCase):
                                 {
                                     "id": "SDRW2000000001.1.1.1",
                                     "speaker_id": "SPK1",
+                                    "form": "외곬을 읽었다",
                                     "original_form": "외곬을 읽었다",
+                                    "start": 0.0,
+                                    "end": 1.0,
+                                    "note": "",
                                 }
                             ],
                         }
@@ -91,6 +98,11 @@ class TraceCommonPronSpecialOccurrencesTests(unittest.TestCase):
             self.assertEqual(rows[0]["target_token"], "외곬을")
             self.assertEqual(rows[0]["token_position_1based"], "1")
             self.assertEqual(rows[0]["raw_json_match_status"], "exact")
+            self.assertEqual(rows[0]["raw_json_form"], "외곬을 읽었다")
+            self.assertEqual(
+                rows[0]["raw_json_original_form"], "외곬을 읽었다"
+            )
+            self.assertEqual(rows[0]["raw_json_speaker_id"], "SPK1")
             self.assertTrue(rows[0]["raw_json_path"].endswith(".json"))
 
     def test_missing_target_fails_without_outputs(self):
