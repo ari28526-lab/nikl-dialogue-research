@@ -307,8 +307,9 @@ forced-alignment timestamp 회귀와 수정이 이어졌다.
    한 번만 생성한다. 동일 입력·모델은 cache로 재사용한다.
 7. 형태소 조건을 통과한 우리말샘 후보만 별도 `eligible`로 표시한다.
    전 occurrence 감사 전에는 plain-word 전역 변이로 활성화하지 않는다.
-8. 기본사전+OOV G2P를 필수 baseline으로 하고, 안전한 사전 변이만 선택적으로
-   더한 `common_pron_mfa_r1` 파생사전과 manifest를 만든다.
+8. 생산용 `common_pron_mfa_r1`은 기본사전 원문행과 같은 G2P의 OOV
+   1-best만 포함한다. 우리말샘·형태소 조건 후보는 CSV 검색층에만 남기고
+   MFA r1에는 0개 추가한다.
 
 ### 단계 C — MFA 시작 gate
 
@@ -319,17 +320,22 @@ forced-alignment timestamp 회귀와 수정이 이어졌다.
    - 기본사전 행·확률열 무손상
    - 중복·빈 발음·숫자 phone·잘못된 탭 구조 0
    - 입력 CSV/WAV/lab과 사전의 SHA256 manifest 완성
-10. 기존 6개년×10발화·5화자 표본과 형태소 충돌 사례에서 자동 정렬·4-tier
-    경계·`spn`·부분 성공 gate를 다시 통과시킨다. 새 사전 변이가 실제 phone을
-    바꾸는 소수 사례만 사람이 확인한다.
+10. 기존 A/B 60발화와 형태소 충돌 감사는 정책 판단 근거로 보존한다.
+    생산 r1은 새 사전 변이를 넣지 않으므로 같은 소표본을 다시 반복하지 않고,
+    2020 TextGrid·부분 DB와 2021 완성 DB의 전수 동등성 검사를 release
+    gate로 사용한다.
 11. 통과한 release ID를 고정한 뒤 2022부터 연도별 MFA를 시작한다. 각 연도는
     preflight→align→direct DB export→4-tier QC→완료 marker 순서로 실행하고,
     다음 연도는 앞 연도 보고서가 완성된 뒤 시작한다.
 12. 2020·2021은 즉시 전량 재실행하지 않는다. 기존 실행에서 사용한 G2P와
-    `common_pron_mfa_r1`의 관측 token별 phone을 비교한다.
+    `common_pron_mfa_r1`의 관측 token별 phone을 전수 비교한다.
     - phone과 coverage가 동등하면 동등성 manifest를 남기고 기존 결과를 보존한다.
     - 실제 차이가 있으면 영향 발화 inventory를 먼저 만들고, 방법론적 일관성에
       필요한 범위만 재정렬한다.
+
+phone 기준 동일성의 논문용 조작적 정의와 2020 부분 DB의 한계, 6개년
+fingerprint 증거 계획은
+`METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md`를 따른다.
 
 전량 작업 전까지 기존 A/B policy B를 production 정본으로 채택하지 않는다.
 이번 A/B는 exact-word 무가중 availability 실험이며, 형태소 조건 필요성을

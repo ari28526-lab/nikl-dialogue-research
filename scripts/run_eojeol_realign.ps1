@@ -20,9 +20,33 @@ param(
     [switch]$UseDirectDbExport,
     [switch]$CleanupDirectDbAfterMerge,
     [switch]$CleanupMfaOutput,
-    [switch]$SkipPreflight
+    [switch]$SkipPreflight,
+    [string]$CommonPronManifest = "",
+    [string]$CommonPronEquivalenceReport = "",
+    [switch]$AllowBaselineCommonPronRerun
 )
 
+if (
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
+    [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
+) {
+    Write-Error (
+        "-CommonPronManifest와 -CommonPronEquivalenceReport는 " +
+        "둘 다 지정하거나 둘 다 생략해야 함"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    $Year -in @('2020', '2021') -and
+    -not $AllowBaselineCommonPronRerun
+) {
+    Write-Error (
+        "2020·2021은 전수 동등성 baseline으로 보존함. 공통사전 재실행을 " +
+        "의도적으로 결정한 경우에만 -AllowBaselineCommonPronRerun을 지정할 것"
+    )
+    exit 1
+}
 if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
     Write-Error "-CleanupDirectDbAfterMerge는 -UseDirectDbExport와 함께만 사용할 수 있음"
     exit 1
@@ -91,6 +115,7 @@ try {
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
     $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    $commonPronRoot = Expand-CfgPath $cfg.common_pron_home
     $morphTextGridRoot = Expand-CfgPath $cfg.textgrid_merged
     $sourcePcmCheck = Join-Path $layersRoot "05_audio_index\source_pcm_check.csv"
     if ([string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
@@ -112,7 +137,10 @@ $env:Path = "$envRoot;$envRoot\Library\bin;$envRoot\Scripts;$envRoot\bin;" + $en
 $pydir = Join-Path $PSScriptRoot "python"
 $mfaModelRoot = Join-Path $env:USERPROFILE "Documents\MFA\pretrained_models"
 $acousticModelPath = Join-Path $mfaModelRoot "acoustic\korean_mfa.zip"
-$dictionaryModelPath = Join-Path $mfaModelRoot "dictionary\korean_mfa.dict"
+$baseDictionaryModelPath = Join-Path (
+    Join-Path $mfaModelRoot "dictionary"
+) "korean_mfa.dict"
+$dictionaryModelPath = $baseDictionaryModelPath
 $g2pModelPath = Join-Path $mfaModelRoot "g2p\korean_mfa.zip"
 if (-not (Test-Path -LiteralPath $py)) {
     Write-Error "pipeline_python 없음: $py"
@@ -127,6 +155,129 @@ foreach ($modelPath in @(
 )) {
     if (-not (Test-Path -LiteralPath $modelPath)) {
         Write-Error "MFA alignment contract 모델 파일 없음: $modelPath"
+        exit 1
+    }
+}
+$pronunciationMode = 'korean_mfa'
+$dictionaryModelName = 'korean_mfa'
+$g2pModelName = 'korean_mfa'
+$useInlineG2p = $true
+if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
+    try {
+        $commonManifestPath = [IO.Path]::GetFullPath($CommonPronManifest)
+        $equivalencePath = [IO.Path]::GetFullPath(
+            $CommonPronEquivalenceReport
+        )
+        $allowedCommonRoot = [IO.Path]::GetFullPath(
+            $commonPronRoot
+        ).TrimEnd('\') + '\'
+        foreach ($path in @($commonManifestPath, $equivalencePath)) {
+            if (
+                -not $path.StartsWith(
+                    $allowedCommonRoot,
+                    [StringComparison]::OrdinalIgnoreCase
+                ) -and
+                -not $path.StartsWith(
+                    ([IO.Path]::GetFullPath($root).TrimEnd('\') + '\'),
+                    [StringComparison]::OrdinalIgnoreCase
+                )
+            ) {
+                throw "공통 발음 계약 경로가 허용 root 밖임: $path"
+            }
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+                throw "공통 발음 계약 파일 없음: $path"
+            }
+        }
+        $commonData = Get-Content -Raw -Encoding UTF8 `
+            -LiteralPath $commonManifestPath | ConvertFrom-Json
+        $equivalenceData = Get-Content -Raw -Encoding UTF8 `
+            -LiteralPath $equivalencePath | ConvertFrom-Json
+        if (
+            $commonData.status -ne 'success' -or
+            [int]$commonData.dictionary_contract.attested_dictionary_variants_added -ne 0 -or
+            [bool]$commonData.dictionary_contract.changes_phone_standard -or
+            $equivalenceData.schema_version -ne
+                'common_pron_mfa_equivalence.v1' -or
+            $equivalenceData.status -ne 'passed' -or
+            $equivalenceData.policy -ne 'no_phone_standard_change' -or
+            $equivalenceData.baseline_2020.status -ne 'passed' -or
+            $equivalenceData.baseline_2020_partial_db_auxiliary.status -ne
+                'passed' -or
+            $equivalenceData.baseline_2021.status -ne 'passed' -or
+            -not [bool]$equivalenceData.gate.requires_2020_pass -or
+            -not [bool]$equivalenceData.gate.requires_2020_partial_db_auxiliary_pass -or
+            -not [bool]$equivalenceData.gate.requires_2021_pass -or
+            -not [bool]$equivalenceData.gate.allow_common_dictionary_for_2022
+        ) {
+            throw "공통 발음 release 또는 2020/2021 전수 동등성 gate 실패"
+        }
+        $dictionaryModelPath = [IO.Path]::GetFullPath(
+            [string]$commonData.outputs.dictionary.path
+        )
+        if (
+            -not $dictionaryModelPath.StartsWith(
+                $allowedCommonRoot,
+                [StringComparison]::OrdinalIgnoreCase
+            ) -or
+            -not (Test-Path -LiteralPath $dictionaryModelPath -PathType Leaf)
+        ) {
+            throw "공통 MFA 사전 경로 오류: $dictionaryModelPath"
+        }
+        $dictionaryHash = (
+            Get-FileHash -Algorithm SHA256 -LiteralPath $dictionaryModelPath
+        ).Hash.ToLowerInvariant()
+        $g2pHash = (
+            Get-FileHash -Algorithm SHA256 -LiteralPath $g2pModelPath
+        ).Hash.ToLowerInvariant()
+        $acousticHash = (
+            Get-FileHash -Algorithm SHA256 -LiteralPath $acousticModelPath
+        ).Hash.ToLowerInvariant()
+        $baseDictionaryHash = (
+            Get-FileHash -Algorithm SHA256 `
+                -LiteralPath $baseDictionaryModelPath
+        ).Hash.ToLowerInvariant()
+        $commonManifestHash = (
+            Get-FileHash -Algorithm SHA256 -LiteralPath $commonManifestPath
+        ).Hash.ToLowerInvariant()
+        if (
+            $dictionaryHash -ne
+                [string]$commonData.outputs.dictionary.sha256 -or
+            $dictionaryHash -ne
+                [string]$equivalenceData.common_release.dictionary.sha256 -or
+            $g2pHash -ne [string]$commonData.inputs.g2p_model.sha256 -or
+            $acousticHash -ne
+                [string]$commonData.inputs.acoustic_model.sha256 -or
+            $baseDictionaryHash -ne
+                [string]$commonData.inputs.base_dictionary.sha256 -or
+            $g2pHash -ne
+                [string]$equivalenceData.method_contract.models.g2p_model.sha256 -or
+            $acousticHash -ne
+                [string]$equivalenceData.method_contract.models.acoustic_model.sha256 -or
+            $baseDictionaryHash -ne
+                [string]$equivalenceData.method_contract.models.base_dictionary.sha256 -or
+            $commonManifestHash -ne
+                [string]$equivalenceData.common_release.manifest.sha256
+        ) {
+            throw "공통 사전/G2P/equivalence fingerprint 불일치"
+        }
+        $contractSearchRoot = [IO.Path]::GetFullPath(
+            [string]$commonData.source_vocabulary_contract.search_master_root
+        ).TrimEnd('\')
+        if (
+            $contractSearchRoot -ne
+            [IO.Path]::GetFullPath($searchMasterRoot).TrimEnd('\')
+        ) {
+            throw (
+                "공통 vocabulary와 MFA search master root 불일치: " +
+                "$contractSearchRoot != $searchMasterRoot"
+            )
+        }
+        $pronunciationMode = 'common_pron_mfa_r1'
+        $dictionaryModelName = [string]$commonData.release_id
+        $g2pModelName = 'korean_mfa_precomputed_1best_strict'
+        $useInlineG2p = $false
+    } catch {
+        Write-Error "공통 발음 사전 gate 해석 실패: $($_.Exception.Message)"
         exit 1
     }
 }
@@ -972,7 +1123,7 @@ function Read-DoneMarker(
     try {
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
         $valid = ($data.year -eq $year -and $data.stage -eq $stage -and
-                  $data.g2p_model -eq 'korean_mfa')
+                  $data.g2p_model -eq $script:pronunciationMode)
         if ($valid -and -not [string]::IsNullOrWhiteSpace($inputContractId)) {
             $valid = (
                 [string]$data.details.input_contract_id -eq
@@ -1069,7 +1220,7 @@ function Write-DoneMarker(
     $payload = [ordered]@{
         year = $year
         stage = $stage
-        g2p_model = 'korean_mfa'
+        g2p_model = $script:pronunciationMode
         completed_at = (Get-Date).ToString('o')
         git_commit = (& git -C $root rev-parse HEAD 2>$null)
         details = $details
@@ -1097,12 +1248,17 @@ function Remove-SafeYearPath($path, $allowedRoot) {
 $years = if ($Year) { @($Year) } else {
     @('2020','2021','2022','2023','2024','2025')
 }
-$runId = "eojeol_g2p_" + ($years -join '-') + "_" + `
+$runPrefix = if ($useInlineG2p) { 'eojeol_g2p' } else { 'eojeol_commonpron' }
+$runId = $runPrefix + "_" + ($years -join '-') + "_" + `
          (Get-Date -Format "yyyyMMdd_HHmmss")
 
 Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
 Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
 Say "pre-MFA search master 입력: $searchMasterRoot"
+Say (
+    "발음 입력: mode=$pronunciationMode, " +
+    "dictionary=$dictionaryModelPath, inline_g2p=$useInlineG2p"
+)
 Say ("TextGrid 생성 경로: " + $(if ($UseDirectDbExport) {
     "MFA DB -> 4-tier 직접(검증된 고속 경로, raw 2-tier 중복 생성 안 함)"
 } else {
@@ -1152,6 +1308,8 @@ foreach ($y in $years) {
         --acoustic-model-path $acousticModelPath `
         --dictionary-model-path $dictionaryModelPath `
         --g2p-model-path $g2pModelPath `
+        --dictionary-model-name $dictionaryModelName `
+        --g2p-model-name $g2pModelName `
         --output $alignmentContractPath
     if ($LASTEXITCODE -ne 0) {
         Say "!! $y MFA alignment contract 생성 실패"
@@ -1402,8 +1560,10 @@ foreach ($y in $years) {
             $aArgs = @('align', (Join-Path $wavRoot $y),
                        $dictionaryModelPath, $acousticModelPath,
                        (Join-Path $out $y), '--num_jobs', "$numJobs", '--no_tokenization',
-                       '--g2p_model_path', $g2pModelPath,
                        '--temporary_directory', $tmp, '--output_format', 'long_textgrid')
+            if ($useInlineG2p) {
+                $aArgs += @('--g2p_model_path', $g2pModelPath)
+            }
             if ($doClean) { $aArgs += '--clean' }
             Write-TempContract $tempContractPath $y $inputContractId `
                 $alignmentContract $tmpYear "mfa_running"

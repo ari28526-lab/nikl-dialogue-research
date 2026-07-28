@@ -903,3 +903,34 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   수정 전후 동일했고, 구 manifest는
   `archive/common_pron_occurrence_match_pre_counter_rename_20260728`에
   보존했다.
+- 사용자가 “phone 결과가 같음”이 아니라 논문 방법론에서 2020–2025에
+  같은 기준을 썼다고 말할 수 있어야 한다고 명확히 했다. 동일성을 같은
+  phone inventory, MFA/acoustic/G2P 판본, 기본사전/OOV 규칙, 어절
+  정규화와 4-tier 계약으로 조작화했다.
+- 생산 `common_pron_mfa_r1`은 기본 `korean_mfa.dict` 원문 21,009행과
+  동일 `korean_mfa` G2P 1-best/strict의 관측 OOV만 포함하고, 우리말샘
+  변이는 0개로 고정했다. 881,237 고유 어절 중 OOV 866,691개를 25,000개
+  단위 35 shard로 준비했으며 장시간 G2P는 아직 시작하지 않았다.
+- 2020·2021은 즉시 다시 정렬하지 않는다. 2020 최종 4-tier 866,196개
+  word–phone 전수, archive 부분 DB 내부 후보 전수, 2021 완성 DB 관측
+  어절 후보 집합 전수의 세 gate가 mismatch 0일 때만 2022에 공통사전을
+  허용한다. 기본 동작은 2020·2021 공통사전 재실행을 차단하며 의도적
+  override가 있어야 한다.
+- 2020 archive DB는 `quick_check=ok`이나 word/phone interval 0인 부분본임을
+  재확인했다. 다만 2020·2021 DB의 연구 phone은 non-silence 109개+
+  `sil`+`spn`으로 같고, 2021에만 더 있는 `#11/#12`는 FST
+  disambiguation symbol이다. 부분 DB는 보조 증거로만 쓰고 전체 결과는
+  TextGrid 전수로 증명한다.
+- 첫 PrepareOnly에서 MFA 사전의 1보다 큰 침묵 보정값을 phone으로 오인한
+  자체 parser 오류를 새 inventory gate가 차단했다. G2P output은 0개였다.
+  설치된 MFA 3.4.0 `utils.parse_dictionary_file`과 대조해 최대 네 숫자
+  열을 정확히 분리했고, 기본 사전 phone의 acoustic inventory 이탈 0을
+  실측한 뒤 13:27 PrepareOnly를 성공시켰다. 구 준비본은
+  `D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_method_contract_20260728_132528`
+  에 보존했다.
+- 모델 해시는 acoustic
+  `46f7a73a…451a4d`, 기본사전 `75683f4d…78150b`, G2P
+  `6938db05…ad0344`, phone inventory 110개 목록
+  `9b66a3b6…b493e`로 고정했다. 상세 주장 범위·전수 gate·논문용 문장은
+  `docs/decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md`
+  에 기록했다.

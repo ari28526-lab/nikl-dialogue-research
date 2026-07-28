@@ -18,6 +18,8 @@ param(
     [switch]$UseDirectDbExport,
     [switch]$CleanupDirectDbAfterMerge,
     [switch]$SkipSearchMasterBuild,
+    [string]$CommonPronManifest = '',
+    [string]$CommonPronEquivalenceReport = '',
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
 )
@@ -42,6 +44,16 @@ if ($PauseAfterYear -and -not ($Years -contains $PauseAfterYear)) {
 }
 if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
     Write-Error "-CleanupDirectDbAfterMerge는 -UseDirectDbExport와 함께만 사용할 수 있음"
+    exit 1
+}
+if (
+    [string]::IsNullOrWhiteSpace($CommonPronManifest) -ne
+    [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
+) {
+    Write-Error (
+        "-CommonPronManifest와 -CommonPronEquivalenceReport는 " +
+        "둘 다 지정하거나 둘 다 생략해야 함"
+    )
     exit 1
 }
 
@@ -115,6 +127,8 @@ if (Test-Path -LiteralPath $lockPath) {
     years = $Years
     prefer_d = [bool]$PreferD
     direct_db_export = [bool]$UseDirectDbExport
+    common_pron_manifest = $CommonPronManifest
+    common_pron_equivalence_report = $CommonPronEquivalenceReport
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -187,6 +201,13 @@ try {
         if ($CleanupDirectDbAfterMerge) {
             $realignArgs += '-CleanupDirectDbAfterMerge'
         }
+        if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
+            $realignArgs += @(
+                '-CommonPronManifest', $CommonPronManifest,
+                '-CommonPronEquivalenceReport',
+                $CommonPronEquivalenceReport
+            )
+        }
         & powershell.exe @realignArgs
         $yearExitCode = $LASTEXITCODE
         if ($yearExitCode -eq 75) {
@@ -232,6 +253,8 @@ try {
         prefer_d = [bool]$PreferD
         direct_db_export = [bool]$UseDirectDbExport
         cleanup_direct_db_after_merge = [bool]$CleanupDirectDbAfterMerge
+        common_pron_manifest = $CommonPronManifest
+        common_pron_equivalence_report = $CommonPronEquivalenceReport
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear
         paused_before_year = $pausedBeforeYear

@@ -37,6 +37,9 @@
 | run_common_pron_ab_pilot.ps1 | 공통 발음 정책 A/B end-to-end 안전 실행기. D: 라벨·공간·bulk lock·MFA 패치를 검사하고 current G2P 1-best/strict 계약, 별도 temp/output, 부분 산출 archive, 4-tier QC, 수동 검토 보고서까지 실행 |
 | common_pronunciation_contract.py | 공통 발음 자원 v2의 형태소 결합·MFA 활성화 계약. 표면형만 같은 사전 후보를 검색용 `reference_only`로 분리하고 단일형태소 품사 일치·용언 사전형 일치만 occurrence 후보로 허용 |
 | audit_common_pron_occurrence_matches.py | A/B stress 발화의 lab 어절과 search master 형태소를 안전하게 왕복 조인하고, 어절 수 불일치는 유일한 표면형 복원 때만 회수하여 사전 후보의 occurrence 적합성 CSV·manifest 생성 |
+| build_common_pron_mfa_lexicon.py | 6개년 전체 표면 어절 중 기본사전 OOV만 동일 `korean_mfa` G2P 1-best/strict로 shard화·검증·결합. 기본 21,009행 원문 보존, 우리말샘 변이 0, acoustic phone inventory·모델/vocabulary SHA hard gate |
+| audit_common_pron_mfa_equivalence.py | 공통 MFA 사전 채택 전 2020 최종 TextGrid 866,196개 word–phone, 2020 부분 DB 내부 모든 후보, 2021 완성 DB 관측 어절 후보를 전수 비교. 세 기준 mismatch 0일 때만 2022 허용 JSON/CSV 생성 |
+| run_common_pron_mfa_r1.ps1 | 공통 G2P 35개 shard의 장시간 계산·검증·재개와 최종 사전 생성을 수행하고, 즉시 2020·2021 전수 동등성 gate를 연결. D: lock/공간/부분 archive, PrepareOnly 지원 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 

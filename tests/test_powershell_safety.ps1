@@ -8,7 +8,8 @@ $files = @(
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
     (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
-    (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1')
+    (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1'),
+    (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -118,6 +119,16 @@ foreach ($path in $files) {
             'input_integrity_analysis_ready_gates_pass',
             '$CleanupDirectDbAfterMerge -and -not $UseDirectDbExport',
             '$UseDirectDbExport -and $CleanupMfaOutput',
+            '[string]$CommonPronManifest',
+            '[string]$CommonPronEquivalenceReport',
+            '[switch]$AllowBaselineCommonPronRerun',
+            '2020·2021은 전수 동등성 baseline으로 보존함',
+            'common_pron_mfa_equivalence.v1',
+            'no_phone_standard_change',
+            'requires_2020_pass',
+            'requires_2020_partial_db_auxiliary_pass',
+            'requires_2021_pass',
+            '$useInlineG2p = $false',
             'pause_after_year_',
             'exit 75',
             'exit 1'
@@ -159,6 +170,10 @@ foreach ($path in $files) {
             "'-CleanupDirectDbAfterMerge'",
             'direct_db_export = [bool]$UseDirectDbExport',
             '$CleanupDirectDbAfterMerge -and -not $UseDirectDbExport',
+            '[string]$CommonPronManifest',
+            '[string]$CommonPronEquivalenceReport',
+            "'-CommonPronManifest'",
+            "'-CommonPronEquivalenceReport'",
             'if ($PreferD)',
             "'-PreferD'",
             'prefer_d = [bool]$PreferD',
@@ -244,6 +259,32 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 발음 A/B 러너 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_common_pron_mfa_r1.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            "D:\mfa_common_pron",
+            "VolumeLabel -ne 'DATA_SSD'",
+            'pre_mfa_bulk.lock',
+            '정책: 기본사전 보존 + 동일 G2P 1-best만',
+            '--num_pronunciations',
+            "'1'",
+            '--strict_graphemes',
+            'attested_dictionary_variants_added',
+            'phone_outside_acoustic_inventory',
+            'audit_common_pron_mfa_equivalence.py',
+            '2020 TextGrid 866,196개 + 2021 완성 DB',
+            'no_phone_standard_change',
+            'requires_2020_pass',
+            'requires_2020_partial_db_auxiliary_pass',
+            'requires_2021_pass',
+            'allow_common_dictionary_for_2022',
+            'Archive-Incomplete'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 MFA 사전 r1 안전장치 누락: $required")
             }
         }
     }
