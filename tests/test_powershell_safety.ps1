@@ -236,6 +236,7 @@ foreach ($path in $files) {
             "`$ErrorActionPreference = 'Continue'",
             '$mfaExitCode = $LASTEXITCODE',
             'mfa_3_4_optional_probability_columns_v1',
+            "PSObject.Properties[",
             'registry_before_dictionary_probability_fix',
             'comparison_done.json',
             '아직 정책을 채택하지 않음',

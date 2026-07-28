@@ -255,9 +255,13 @@ if (
 ) {
     $registryData = Get-Content -Raw -Encoding UTF8 `
         -LiteralPath $registryManifest | ConvertFrom-Json
-    $registryContract = [string](
-        $registryData.policy.base_dictionary_parse_contract
-    )
+    $registryContract = ''
+    $contractProperty = $registryData.policy.PSObject.Properties[
+        'base_dictionary_parse_contract'
+    ]
+    if ($null -ne $contractProperty) {
+        $registryContract = [string]$contractProperty.Value
+    }
     if (
         [int]$registryData.schema_version -ne 2 -or
         $registryContract -ne 'mfa_3_4_optional_probability_columns_v1'

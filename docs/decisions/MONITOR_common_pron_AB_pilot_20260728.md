@@ -139,3 +139,8 @@ line-for-line 동일성, 추가 행의 무확률 계약, phone inventory를 모�
 `attested_pron_g2p_missing` 2행으로 명시적으로 제외했다. 조용한 `spn`
 대체나 정책 B 삽입은 하지 않았다.
 
+11:06 첫 schema 2 재개 시 구 schema 1 manifest에 새 contract 속성이
+없어 PowerShell StrictMode의 `PropertyNotFoundStrict`가 발생했다.
+archive를 실행하기 전 중단되어 데이터 이동은 0건이었다. 선택 속성을
+`PSObject.Properties[...]`로 존재 확인한 뒤 읽도록 수정했고, 실제 구
+manifest로 `LegacyDetected=True`가 나오는 것을 확인했다.
