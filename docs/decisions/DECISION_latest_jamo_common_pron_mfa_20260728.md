@@ -89,6 +89,34 @@ grapheme가 나오면 중단한다.
 G2P 계산은 병행할 수 있지만, 공통사전 `missing=0`, `spn=0`, acoustic
 inventory 이탈=0 전에는 연도별 MFA 정렬을 시작하지 않는다.
 
+### 2026-07-29 네 후보 예비 검토와 원본 추적 계획
+
+`03_review/jamo_ls_researcher_review.csv`의 실제 네 후보를 읽기 전용으로
+확인했다.
+
+| 표층형 | 완전분해 model input | 현재 같은-model phone | 예비 판정 |
+|---|---|---|---|
+| `외곬수적인` | `외골ᆺ수적인` | `w eː ɡ o ɭ sʰ s u dʑ ʌ ɟ i n` | 원표층·경계 확인 필요 |
+| `외곬을` | `외골ᆺ을` | `w eː ɡ o ɭ sʰ ɨ ɭ` | 제14항의 ㄽ 연음 시 ㅅ 된소리와 대조 필요 |
+| `외곬의` | `외골ᆺ의` | `w eː ɡ o ɭ t̚ ɰ i` | 뒤 ㅅ의 다음 음절 이동이 보이지 않아 승인 불가 |
+| `천구백칤비육` | `천구백칠ᆺ비육` | `tɕʰ ʌ ŋ ɡ u b ɛː k̚ tɕʰ i ɭ t̚ pʲ i j u k̚` | 숫자 표현의 원문 인코딩·전사 확인 필요 |
+
+따라서 이 네 행은 phone inventory 안에 있다는 이유만으로 승인하지 않는다.
+특히 `외곬을/외곬의`는 최신 모델이 미지원한 `ᆳ`을 분포 밖의 완전분해
+입력으로 우회한 결과이므로, 모델 출력 자체가 표준 발음 적합성을
+보증하지 않는다. 기존 외부 리뷰의 수동 4행 override 대안도 폐기하지
+않고, 원전사와 규범 발음을 확인한 뒤 동일 107-phone inventory 안에서
+비교한다.
+
+원본 추적은
+`scripts/python/trace_common_pron_special_occurrences.py`로 수행한다.
+이 도구는 동결 search-master 2020–2025를 공통 vocabulary와 같은
+`form_to_lab`로 한 번만 읽고, 일치 발화의 form·original_form·발음 기준열과
+원본 JSON을 `year/session_id/utt_id`로 재결합한다. 원본과 search-master가
+다르거나 네 target 중 하나라도 찾지 못하면 실패하며 기존 파일을
+덮어쓰지 않는다. G2P 계산과 D: 읽기 경합을 피하기 위해 현재 전수
+shard 계산이 끝난 뒤 실행한다.
+
 ## 구결과 archive와 D: 정리
 
 새 외장 HDD는 `E:\`(NTFS, 약 1.86TB 여유)로 확인했다. 다음 약 55.9GiB는

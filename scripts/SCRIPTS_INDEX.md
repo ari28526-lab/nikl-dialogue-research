@@ -38,6 +38,7 @@
 | common_pronunciation_contract.py | 공통 발음 자원 v2의 형태소 결합·MFA 활성화 계약. 표면형만 같은 사전 후보를 검색용 `reference_only`로 분리하고 단일형태소 품사 일치·용언 사전형 일치만 occurrence 후보로 허용 |
 | audit_common_pron_occurrence_matches.py | A/B stress 발화의 lab 어절과 search master 형태소를 안전하게 왕복 조인하고, 어절 수 불일치는 유일한 표면형 복원 때만 회수하여 사전 후보의 occurrence 적합성 CSV·manifest 생성 |
 | build_common_pron_mfa_lexicon.py | 최신 acoustic v3.3.0·Jamo G2P v3.2.0 기준으로 6개년 OOV를 1-best/strict shard화. U+11B3만 같은 모델 입력에서 ㄹ+ㅅ 완전분해하고 원 표층키를 복원하며 4행 연구자 승인 전 final 차단. 생성기 코드·모델·vocabulary SHA, missing·spn·phone inventory hard gate |
+| trace_common_pron_special_occurrences.py | Jamo ㄽ 등 소수 특수 표층형을 공통 vocabulary와 같은 `form_to_lab`로 동결 search-master 전수에서 한 번만 찾아 발화·화자·form/original/pron_reference와 원본 JSON 경로를 연결. 대상 누락·세션/발화 누락·search-master↔JSON 불일치·기존 출력 덮어쓰기를 hard fail하고 CSV·SHA manifest 생성 |
 | common_pron_no_path_review.py | 동결 Jamo G2P가 exit 0이지만 표층형을 0행으로 누락하는 FST no-path 사례를 관리. 명시적 표준 발음 재철자를 같은 모델에 넣어 phone 후보를 만들고, 연구자 승인 뒤 누락 키만 추가한다. 기존 G2P 행 불변·partial SHA 백업·승인행 snapshot·원자 교체·재검증을 강제 |
 | finalize_common_pron_no_path_method.py | r2 final 직후 승인 보수 manifest·원 partial backup·승인 snapshot·최종 shard SHA를 재검증하고 G2P cache의 해당 행 `pron_source`만 reviewed fallback으로 교정한다. phone·final dictionary는 불변이며 새 production contract ID와 멱등 method supplement를 생성 |
 | audit_common_pron_mfa_equivalence.py | r2와 구 2020 TextGrid·부분 DB·2021 완성 DB를 전수 비교해 차이를 결함수정·구조/coverage·기본사전·G2P 변화로 분류. mismatch 0을 채택 조건으로 쓰지 않고 완전한 difference inventory를 생성 |
