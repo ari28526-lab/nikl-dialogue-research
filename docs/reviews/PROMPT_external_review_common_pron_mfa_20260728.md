@@ -16,7 +16,7 @@ Markdown 파일로 받아 이 프로젝트에 보존한다.
 `agent/harden-pre-bulk-pipelines`
 
 검토 기준 commit:
-`<PUSH_AFTER_REVIEW_CHECKPOINT_COMMIT>`
+`773d2e7a55b572c7098062d3238431c32fb74c6b`
 
 연구 흐름은 다음과 같다.
 
