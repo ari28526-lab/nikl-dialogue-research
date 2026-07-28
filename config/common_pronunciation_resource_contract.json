@@ -1,0 +1,124 @@
+{
+  "contract_version": "common_pron_resource_v2_20260728",
+  "status": "pilot_contract_not_bulk_release",
+  "principles": {
+    "preserve_all_sources": true,
+    "dictionary_pronunciation_is_not_actual_realization": true,
+    "mfa_phones_are_not_actual_realization": true,
+    "wav2vec_phones_are_not_actual_realization": true,
+    "human_annotation_is_separate_and_never_overwritten": true,
+    "raw_and_completed_baseline_outputs_are_read_only": true
+  },
+  "layers": [
+    {
+      "name": "pronunciation_registry",
+      "row_unit": "one_source_pronunciation_candidate",
+      "purpose": "우리말샘·기본 MFA 사전·고정 G2P·규칙 발음의 출처 보존 정본"
+    },
+    {
+      "name": "eojeol_pronunciation_types",
+      "row_unit": "normalized_surface_plus_morph_signature",
+      "purpose": "사전·G2P 발음을 2,784만 occurrence마다 반복하지 않고 재사용"
+    },
+    {
+      "name": "eojeol_occurrences",
+      "row_unit": "utt_id_plus_eojeol_idx",
+      "purpose": "발화 어절을 type_id와 연결하고 문맥 규칙·경계 검색 좌표를 보존"
+    },
+    {
+      "name": "alignment_backend_lexicons",
+      "row_unit": "backend_word_plus_pronunciation",
+      "purpose": "정본에서 선택 정책을 적용해 MFA 또는 실험 backend용 사전을 파생"
+    },
+    {
+      "name": "post_alignment_index",
+      "row_unit": "backend_run_plus_utterance_plus_interval",
+      "purpose": "MFA·실험 정렬기의 시간경계와 원천 fingerprint를 병렬 보존"
+    },
+    {
+      "name": "acoustic_phone_candidates",
+      "row_unit": "model_run_plus_utterance_plus_candidate_interval",
+      "purpose": "선택 발화에만 wav2vec2 phone·CTC 시간을 추가"
+    },
+    {
+      "name": "human_annotations",
+      "row_unit": "research_candidate_plus_annotator",
+      "purpose": "WAV·TextGrid 직접 검토에 따른 실제 실현 판정 정본"
+    }
+  ],
+  "representations": {
+    "orthographic": [
+      "surface_hangul",
+      "surface_roman_search",
+      "morph_signature",
+      "morph_roman_search"
+    ],
+    "pronunciation_reference": [
+      "pron_hangul",
+      "pron_roman_search",
+      "pron_ipa_reference"
+    ],
+    "backend_specific": [
+      "backend_name",
+      "backend_phone_sequence",
+      "phone_mapping_version"
+    ]
+  },
+  "dictionary_matching": {
+    "policy_version": "strict_morph_match_v1",
+    "eligible_occurrence_statuses": [
+      "exact_single_morph_pos",
+      "predicate_dictionary_form_pos"
+    ],
+    "reference_only_statuses": [
+      "surface_only_pos_mismatch",
+      "surface_only_morphologically_composed",
+      "token_group_surface_mismatch",
+      "eojeol_alignment_unresolved",
+      "lexicon_pos_missing",
+      "tagged_parse_error"
+    ],
+    "count_mismatch_recovery": "use_only_one_unique_tagged_group_with_matching_reconstructed_surface",
+    "smallest_sense_number_fallback": false
+  },
+  "mfa_activation": {
+    "primary_backend": true,
+    "preserve_base_dictionary_pronunciations": true,
+    "replace_base_pronunciation": false,
+    "g2p_fallback_required": true,
+    "g2p_scope": "all_observed_surface_word_types_missing_from_base_dictionary",
+    "g2p_num_pronunciations": 1,
+    "g2p_generate_once_per_surface_type": true,
+    "g2p_model_and_input_fingerprint_required": true,
+    "pre_alignment_observed_token_oov_gate": 0,
+    "registry_candidate_default": "reference_only",
+    "global_plain_word_requires_full_occurrence_audit": true,
+    "global_plain_word_requires_zero_incompatible_occurrences": true,
+    "unweighted_added_variants": "availability_pilot_only",
+    "production_probability_policy": "estimate_and_validate_with_mfa_train_dictionary_before_release",
+    "ambiguous_context_specific_variant": "do_not_activate_globally",
+    "targeted_token_decoration": "future_opt_in_pilot_only"
+  },
+  "alignment_backends": {
+    "mfa": {
+      "role": "primary",
+      "status": "installed_and_bulk_hardened",
+      "canonical_textgrid": true
+    },
+    "kfaligner": {
+      "role": "reference_only_alternative",
+      "status": "reviewed_not_planned_no_test",
+      "reconsider_only_if": [
+        "independent_evidence_of_better_korean_alignment_than_mfa",
+        "research_critical_error_class_repeatedly_unrecoverable_with_mfa"
+      ]
+    },
+    "wav2vec2_xls_r_300m_phone_mfa_korean": {
+      "role": "post_alignment_candidate_only",
+      "status": "on_demand_after_research_candidate_search",
+      "full_corpus_inference": false,
+      "overwrite_mfa": false,
+      "overwrite_human_annotation": false
+    }
+  }
+}

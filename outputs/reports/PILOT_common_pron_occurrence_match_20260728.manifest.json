@@ -1,0 +1,60 @@
+{
+  "kind": "common_pronunciation_occurrence_match_audit",
+  "status": "success",
+  "recorded_at": "2026-07-28T12:48:23+09:00",
+  "contract_version": "common_pron_resource_v2_20260728",
+  "morph_match_policy_version": "strict_morph_match_v1",
+  "scope": "stress_sample_only_not_global_activation_evidence",
+  "inputs": {
+    "selection_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728\\05_ab_corpus\\ab_stress_control_20260728_01\\selection_manifest.csv",
+      "bytes": 35360,
+      "mtime_ns": 1785204574471947400,
+      "sha256": "61c86c6ba7e0b2b31700b7cabdfc8300f03e6697e3619cf1f7f7a10d0302f2bb"
+    },
+    "registry_subset": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728\\05_ab_corpus\\ab_stress_control_20260728_01\\stress_registry_subset.csv",
+      "bytes": 22804,
+      "mtime_ns": 1785204576199638700,
+      "sha256": "ad3758a96db06169ec287702dc44552bddb67cdf9a2207ba5469a127c7ee0d77"
+    },
+    "manual_review": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\MANUAL_REVIEW_common_pron_AB_first3_20260728.csv",
+      "bytes": 314,
+      "mtime_ns": 1785209440964280500,
+      "sha256": "242e38824a32c5c260b976a46dbb65513afeca61e5004e6c43346dd5b34d2d17"
+    }
+  },
+  "counts": {
+    "selection_rows": 60,
+    "stress_selection_rows": 30,
+    "registry_candidate_rows": 110,
+    "output_rows": 128,
+    "eojeol_map_status:position_exact": 83,
+    "eojeol_map_status:unique_surface_recovery": 45,
+    "match_status:exact_single_morph_pos": 57,
+    "match_status:predicate_dictionary_form_pos": 16,
+    "match_status:surface_only_morphologically_composed": 33,
+    "match_status:surface_only_pos_mismatch": 22,
+    "occurrence_mfa_status:eligible_occurrence_candidate": 73,
+    "occurrence_mfa_status:reference_only": 55,
+    "utterance:lab_tagged_count_mismatch": 7
+  },
+  "output": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PILOT_common_pron_occurrence_match_20260728.csv",
+    "bytes": 77766,
+    "mtime_ns": 1785210503623944700,
+    "sha256": "c79f7e737c44254a7bd539a3b832dae49ede8b063683930d1591e2e932f49051"
+  },
+  "runtime": {
+    "recorded_at": "2026-07-28T12:48:23+09:00",
+    "git_commit": "71bce017114250e7d6b6f69a514a68e0dc42b8da",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 18684
+  }
+}

@@ -129,6 +129,32 @@ D:\mfa_common_pron\releases\common_pron_pilot_full6y_20260728\
 3. `stress_screened_no_effect`와 control의 경계 차이를 잡음 기준으로 본다.
 4. 수동 판단 뒤 정책 A 유지, B 보완 후 재파일럿, B 채택 중 하나를 결정한다.
 
+## 2026-07-28 수동 검토와 후속 결정
+
+첫 3발화의 사용자 검토 결과:
+
+| token | 판정 | 메모 |
+|---|---|---|
+| 있다 | B가 더 나음 | 경음 phone이 더 적절; `t͈` 해석 필요 |
+| 그것 | 둘 다 무난 | A가 유성음을 조금 더 반영 |
+| 수가 | A가 더 나음 | B의 `수까`가 이 발화에는 부적절 |
+
+후속 형태소 감사에서 `수가`의 사전 후보는 `수가/NNG`, 실제 발화는
+`수/NNB+가/JKS`로 확인됐다. exact-word policy B는 서로 다른 형태소 구조를
+구분하지 못했으므로 production 정책으로 채택하지 않는다. 이는 사전 발음을
+버린다는 뜻이 아니라 다음처럼 역할을 분리한다는 뜻이다.
+
+- 모든 사전 발음과 출처는 공통 registry·검색 CSV에 보존
+- 어절 occurrence의 형태소 구조와 호환되는 후보만 정렬 후보로 분류
+- 같은 plain word의 전 occurrence 감사 전에는 MFA 전역 활성화 금지
+- wav2vec2 phone은 검색 뒤 선택 발화의 별도 보조열로만 추가
+
+30 stress 발화 형태소 감사와 새 계약은 다음을 참조한다.
+
+- `PILOT_common_pron_occurrence_match_20260728.csv`
+- `PILOT_common_pron_occurrence_match_20260728.manifest.json`
+- `docs/decisions/DECISION_common_pronunciation_resource_v2_20260728.md`
+
 ## 검증과 이력
 
 - Python unittest 100개 통과

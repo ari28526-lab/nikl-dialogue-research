@@ -35,6 +35,8 @@
 | audit_common_pron_sources.py | enriched `pron_1/2`와 legacy `pron_g2p`를 전수 감사해 행·중복·`urimal_id` fallback을 계측하고 등재 발음과 기계 생성값을 분리 |
 | common_pron_ab_pilot.py | 6개년 전체 vocabulary의 exact-word 발음 registry seed→연도별 5화자 stress/control byte-identical A/B corpus→표본 한정 정책 A/B 사전→phone열·경계 비교. 정책 B는 사전 발음을 추가만 하며 자동 채택·canonical 수정 금지 |
 | run_common_pron_ab_pilot.ps1 | 공통 발음 정책 A/B end-to-end 안전 실행기. D: 라벨·공간·bulk lock·MFA 패치를 검사하고 current G2P 1-best/strict 계약, 별도 temp/output, 부분 산출 archive, 4-tier QC, 수동 검토 보고서까지 실행 |
+| common_pronunciation_contract.py | 공통 발음 자원 v2의 형태소 결합·MFA 활성화 계약. 표면형만 같은 사전 후보를 검색용 `reference_only`로 분리하고 단일형태소 품사 일치·용언 사전형 일치만 occurrence 후보로 허용 |
+| audit_common_pron_occurrence_matches.py | A/B stress 발화의 lab 어절과 search master 형태소를 안전하게 왕복 조인하고, 어절 수 불일치는 유일한 표면형 복원 때만 회수하여 사전 후보의 occurrence 적합성 CSV·manifest 생성 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 

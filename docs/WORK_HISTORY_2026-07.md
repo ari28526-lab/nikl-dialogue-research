@@ -842,3 +842,64 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   발화, control 경계 잡음, 다음 결정지는
   `outputs/reports/RESULT_common_pron_AB_pilot_20260728.md`에 정본으로
   기록했다.
+- 사용자가 우선 3발화를 직접 검토했다. `있다`는 B가 더 낫고, `그것`은 둘
+  다 무난하되 A가 유성음을 조금 더 반영했으며, `수가`는 A가 더 낫고 B의
+  `수까`가 부적절하다고 판정했다. 판정 원문을
+  `outputs/reports/MANUAL_REVIEW_common_pron_AB_first3_20260728.csv`에
+  보존했다.
+- search master 형태소를 결합해 원인을 확인했다. `있다`는
+  `있/VX+다/EF`, `그것`은 `그것/NP`였지만, `수가`는 사전 표제어
+  `수가/NNG`가 아니라 `수/NNB+가/JKS`였다. 따라서 exact-word만으로
+  우리말샘 후보를 모든 동철 어절에 활성화하는 정책 B는 생산 정책으로
+  기각하고, 사전 후보 자체는 검색용 참고층에 보존하기로 했다.
+- 공통 발음 자원을 `pronunciation_registry`–`eojeol_pronunciation_types`–
+  `eojeol_occurrences`–backend 파생사전으로 분리했다. 2,784만 어절마다 긴
+  발음 문자열을 반복하지 않고 `표면형+형태소 signature` type에 사전·G2P
+  후보를 한 번 저장하고, 발화별 어절은 `type_id`와 문맥·경계만 연결한다.
+  후보 검색 CSV에서는 필요한 발음열을 다시 펼쳐 제공하되 이를 실제 실현
+  판정으로 간주하지 않는다.
+- 30 stress 발화의 사전 후보 110행을 occurrence에 결합한 결과 128행 중
+  엄격 occurrence 후보 73행, 참고 전용 55행이었다. `lab/tagged` 수가
+  달랐던 7발화는 목표 표면형을 복원하는 형태소 그룹이 정확히 하나일 때만
+  45행을 `unique_surface_recovery`로 회수했다. 전 occurrence 감사 전에는
+  어떤 plain-word 사전 후보도 전역 활성화하지 않는다.
+- 위 계약을 `config/common_pronunciation_resource_contract.json`,
+  `scripts/python/common_pronunciation_contract.py`,
+  `scripts/python/audit_common_pron_occurrence_matches.py`와 단위시험으로
+  구현하고, 결과를
+  `outputs/reports/PILOT_common_pron_occurrence_match_20260728.csv` 및
+  manifest에 고정했다. 위치-only 초판은
+  `archive/common_pron_occurrence_match_pre_surface_recovery_20260728`에
+  보존했다.
+- 6개년 동결 CSV의 총 음성 길이는 3,808.128시간으로 실측했다. Intel N200
+  4C/4T·RAM 8GB·CUDA 없음인 현재 기기에서 wav2vec2 phone 전량 추론은
+  현실적이지 않으므로, CSV로 연구 후보를 검색한 뒤 선택 발화에만
+  append-only 보조열로 실행한다. MFA phones나 연구자의 실제 실현 판정을
+  덮어쓰지 않는다.
+- `exphon/kfaligner`의 README와 `align.py`를 검토했다. 설치 뒤 오프라인
+  사용과 한국어 전용 교차검증 가능성은 있으나, HTK/Linux 의존, 공용
+  `./tmp` 삭제, 공유 사전 변경, 반환코드 미검사, OOV silent skip,
+  0–xmax 경계 불일치와 모델 provenance 부족 때문에 현재 MFA를 대체하지
+  않는다. 격리 temp·OOV 0·exit code·phone adapter·경계 QC를 보완한
+  30발화 이하의 `experimental_offline_comparator`로만 검토한다.
+- 최종 역할·승격 기준·기술 비교는
+  `docs/decisions/DECISION_common_pronunciation_resource_v2_20260728.md`를
+  정본으로 삼는다.
+- 사용자 결정에 따라 KFaligner/HTK는 MFA보다 낫다는 근거가 없는 현재
+  설치·보완·A/B 테스트를 진행하지 않고 `reference_only_not_planned`로
+  낮췄다. 앞선 comparator 검토는 기술 감사 이력으로만 보존한다.
+- MFA 생산 baseline은 `기본 korean_mfa 사전 + 관측 OOV의 고정 G2P
+  1-best`로 확정했다. G2P는 `spn` 방지를 위한 필수 coverage 층이며,
+  우리말샘 발음은 형태소 전 occurrence 감사 뒤에만 선택적 복수 후보로
+  추가한다. 전량 MFA 전 lab token OOV 0, G2P 실패·phone inventory·사전
+  무손상·SHA256 manifest를 hard gate로 둔다.
+- 공통 발음 `r1`을 60발화와 6개년×5화자 표본에서 검증한 뒤 신규 전량은
+  2022부터 시작한다. 2020·2021은 기존 G2P phone과 r1의 관측 token별
+  동등성을 먼저 비교하고, 동등하면 보존하며 실제 차이가 있는 범위만
+  재정렬하기로 했다.
+- occurrence 감사 manifest의 `lab/tagged` 어절 수 불일치 7발화가 모두
+  미해결인 것처럼 읽히던 counter 이름을
+  `utterance:lab_tagged_count_mismatch`로 바로잡았다. 결과 CSV SHA256은
+  수정 전후 동일했고, 구 manifest는
+  `archive/common_pron_occurrence_match_pre_counter_rename_20260728`에
+  보존했다.
