@@ -324,6 +324,13 @@ foreach ($path in $files) {
             'U+11B3 정확히 4어절',
             'restore-jamo-ls',
             'jamo_ls_researcher_review.csv',
+            'common_pron_no_path_review.py',
+            'g2p_no_path_researcher_review.csv',
+            'partial 보존·승인 대기',
+            '다음 shard로 계속',
+            '전체 shard 계산은 계속했지만 final은 보류',
+            '미등록 누락어',
+            '기존 모델 출력은 대체하지 않는다',
             'r2 사전 실물은 아직 없음',
             '연도별 MFA 사용 승인은 아님',
             'Acquire-Lock',
@@ -353,6 +360,10 @@ foreach ($path in $files) {
             '$sessionVerifiedWords',
             '$sessionVerifiedWords = [int64]0',
             'foreach ($record in @($verifiedReportRecords))',
+            'unverified_output_words',
+            'approval_pending_shards',
+            'unknown_missing_shards',
+            'g2p_review_blocked_not_running',
             'difference_inventory_status'
         )) {
             if (-not $text.Contains($required)) {

@@ -145,26 +145,43 @@ foreach ($reportFile in $reportFiles) {
     }
 }
 
-$currentIndex = $null
-for ($index = 1; $index -le $totalShards; $index += 1) {
-    if (-not $verifiedIndices.Contains($index)) {
-        $currentIndex = $index
-        break
+$unverifiedOutputRecords = @()
+$unverifiedWords = [int64]0
+foreach ($outputFile in @(
+    Get-ChildItem -LiteralPath $outputDir -Filter 'oov_*.dict' -File `
+        -ErrorAction SilentlyContinue
+)) {
+    $match = [regex]::Match($outputFile.BaseName, '^oov_([0-9]{5})$')
+    if (-not $match.Success) { continue }
+    $index = [int]$match.Groups[1].Value
+    if ($verifiedIndices.Contains($index)) { continue }
+    $rows = [int64](Get-SharedLineCount $outputFile.FullName)
+    $unverifiedWords += $rows
+    $unverifiedOutputRecords += [pscustomobject]@{
+        index = $index
+        path = $outputFile.FullName
+        rows = $rows
+        last_write = $outputFile.LastWriteTime
     }
 }
-
+$currentRecord = @(
+    $unverifiedOutputRecords | Sort-Object last_write -Descending
+) | Select-Object -First 1
+$currentIndex = $null
 $currentOutput = $null
 $currentRows = 0
 $currentOutputWrite = $null
-if ($null -ne $currentIndex) {
-    $currentOutput = Join-Path $outputDir (
-        'oov_{0:D5}.dict' -f $currentIndex
-    )
-    if (Test-Path -LiteralPath $currentOutput -PathType Leaf) {
-        $currentRows = Get-SharedLineCount $currentOutput
-        $currentOutputWrite = (
-            Get-Item -LiteralPath $currentOutput
-        ).LastWriteTime.ToString('o')
+if ($null -ne $currentRecord) {
+    $currentIndex = [int]$currentRecord.index
+    $currentOutput = [string]$currentRecord.path
+    $currentRows = [int64]$currentRecord.rows
+    $currentOutputWrite = $currentRecord.last_write.ToString('o')
+} else {
+    for ($index = 1; $index -le $totalShards; $index += 1) {
+        if (-not $verifiedIndices.Contains($index)) {
+            $currentIndex = $index
+            break
+        }
     }
 }
 
@@ -196,7 +213,7 @@ if (
     )
 }
 $generatedWords = [int64](
-    $specialWords + $verifiedWords + $currentRows
+    $specialWords + $verifiedWords + $unverifiedWords
 )
 $progressPct = if ($totalWords -gt 0) {
     [math]::Round(100.0 * $generatedWords / $totalWords, 3)
@@ -258,6 +275,34 @@ if ($null -ne $latestLog) {
     $latestLogWrite = $latestLog.LastWriteTime.ToString('o')
 }
 
+$approvalPendingShards = @()
+$unknownMissingShards = @()
+$repairAttemptRoot = Join-Path $releaseRootFull '_state\no_path_repairs'
+foreach ($attemptFile in @(
+    Get-ChildItem -LiteralPath $repairAttemptRoot `
+        -Filter 'last_attempt.json' -File -Recurse `
+        -ErrorAction SilentlyContinue
+)) {
+    try {
+        $attempt = Read-JsonFile $attemptFile.FullName
+        $match = [regex]::Match(
+            $attemptFile.Directory.Name,
+            '^oov_([0-9]{5})$'
+        )
+        if ($null -eq $attempt -or -not $match.Success) { continue }
+        $index = [int]$match.Groups[1].Value
+        if ($attempt.status -eq 'researcher_approval_required') {
+            $approvalPendingShards += $index
+        } elseif ($attempt.status -eq 'unknown_missing_words') {
+            $unknownMissingShards += $index
+        }
+    } catch {
+        $invalidReports += 1
+    }
+}
+$approvalPendingShards = @($approvalPendingShards | Sort-Object -Unique)
+$unknownMissingShards = @($unknownMissingShards | Sort-Object -Unique)
+
 $final = Read-JsonFile $finalPath
 $difference = Read-JsonFile $differencePath
 $adoption = Read-JsonFile $adoptionPath
@@ -271,6 +316,14 @@ $phase = if (
     'artifact_ready_adoption_pending'
 } elseif ($verifiedIndices.Count -eq $totalShards) {
     'finalizing'
+} elseif (
+    -not $lockAlive -and
+    (
+        $approvalPendingShards.Count -gt 0 -or
+        $unknownMissingShards.Count -gt 0
+    )
+) {
+    'g2p_review_blocked_not_running'
 } elseif ($specialWords -gt 0 -and -not $lockAlive) {
     'special_review_ready_bulk_not_running'
 } elseif ($lockAlive) {
@@ -295,6 +348,13 @@ $result = [ordered]@{
         total_oov_words = $totalWords
         total_standard_shard_words = $totalStandardWords
         jamo_ls_candidate_words = $specialWords
+        unverified_output_words = $unverifiedWords
+        approval_pending_shards = (
+            $approvalPendingShards -join ','
+        )
+        unknown_missing_shards = (
+            $unknownMissingShards -join ','
+        )
         observed_generated_words = $generatedWords
         percent = $progressPct
         average_words_per_second = $rate

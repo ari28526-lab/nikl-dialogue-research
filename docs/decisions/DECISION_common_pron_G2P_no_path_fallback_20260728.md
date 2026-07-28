@@ -1,0 +1,92 @@
+# 공통발음사전 Jamo G2P no-path 보완 결정
+
+작성일: 2026-07-28
+적용 release:
+`D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728`
+
+## 결론
+
+동결한 `korean_mfa` Jamo G2P v3.2.0이 지원 grapheme로 이루어진
+표층 어절을 입력받고도 FST 경로를 찾지 못해 exit code 0과 함께 그
+어절을 출력에서 누락할 수 있다. 이를 성공이나 `spn`으로 간주하지 않는다.
+
+다음의 제한된 보완만 허용한다.
+
+1. 표층형과 표준 발음 재철자의 대응을 명시적인 후보표에 기록한다.
+2. 재철자를 **같은 동결 Jamo G2P v3.2.0**에 넣어 MFA phone 후보를
+   만든다.
+3. 표층형–재철자–phone의 정확한 한 후보를 연구자가 승인한다.
+4. 직접 모델 출력에서 실제로 누락된 표층 키만 추가한다.
+5. 같은 shard에서 모델이 이미 생성한 모든 행은 byte-level 의미에서
+   발음열을 바꾸지 않는다.
+6. 보완 전 partial shard, 승인 당시 검토행, 입력·출력·모델·코드 SHA와
+   완전성 재검증 결과를 보존한다.
+
+새 후보가 미승인이어도 장시간 계산 전체를 즉시 끝내지는 않는다.
+그 shard의 partial을 보존하고 다음 shard를 계산한다. 다만 모든 미승인
+누락이 해결되기 전에는 final 공통사전과 연도별 MFA adoption을 금지한다.
+
+## 발견 경위
+
+- 2026-07-28 shard 5에서 MFA G2P는 25,000개 입력을 처리한 뒤
+  `Done`과 exit code 0을 반환했다.
+- 독립 완전성 검사는 출력이 24,999행임을 발견하고
+  `missing=1, extras=0`으로 안전 중단했다.
+- 누락 표층형은 Unicode codepoint
+  `U+C74A U+C5B4`, 즉 `읊어`였다.
+- `읊어`만 동결 모델에 다시 입력해도 exit code 0, 출력 0바이트가
+  재현됐다. 일시적 I/O 실패가 아니라 deterministic FST no-path이다.
+- 1–4번 shard 100,000행은 각각 missing=0, extras=0, spn=0,
+  acoustic phone inventory 이탈=0으로 이미 검증됐고 재계산하지 않는다.
+- 5번의 24,999행 출력과 log도 삭제·archive 이동 없이 원 위치에
+  보존했다.
+
+## `읊어` 후보의 근거와 승인 범위
+
+- 국립국어원 공식 답변은 표준 발음을 `읊어[을퍼]`로 제시한다.
+  <https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=312938&searchCondition=&searchKeyword=>
+- 프로젝트의 독립 규칙 예측 열도 `읊어 → 을퍼`로 일치했다.
+- 같은 동결 Jamo G2P에 `을퍼`를 입력한 결과는
+  `ɨ ɭ pʰ ʌ`이며 acoustic v3.3.0 phone inventory 안에 있다.
+- 2026-07-28 사용자는 이 정확한 후보
+  `읊어 → 을퍼 → ɨ ɭ pʰ ʌ`를 명시적으로 승인했다.
+- 이 승인은 다른 `읊-` 활용형이나 다른 no-path 단어에 대한 포괄
+  승인이 아니다.
+
+## 포괄 자동 승인을 하지 않는 이유
+
+전수 vocabulary에서 관측된 `읊-` 계열 30개를 별도 진단했을 때
+동결 모델은 24개 표층형에서 no-path를 보였다. 프로젝트 규칙 예측으로
+만든 재철자 24개는 모두 phone 출력을 얻었지만, 예를 들어
+`읊고 → 읍꼬`의 출력에는 장음 표지가 포함되어 연구 목적에 맞는지 별도
+검토가 필요했다. 따라서 “규칙 예측이 존재한다”는 사실만으로 후보를
+자동 채택하지 않는다.
+
+## 산출물과 감사 경로
+
+- 후보 원장:
+  `config/common_pron_g2p_no_path_exceptions.csv`
+- 생성·검토·보수 코드:
+  `scripts/python/common_pron_no_path_review.py`
+- 실제 연구자 검토표:
+  `03_review\g2p_no_path_researcher_review.csv`
+- `읊어` 승인 기록:
+  `03_review\decisions\eulp-eo_20260728.json`
+- shard별 시도·partial backup·승인행 snapshot·보수 manifest:
+  `_state\no_path_repairs\<shard>\`
+
+실제 D: 경로의 앞부분은 위 release root이다.
+
+## 방법론 문장 초안
+
+> 2020–2025년 공통 어절 사전의 OOV 발음은 동결된 한국어 Jamo G2P
+> v3.2.0의 1-best 출력으로 생성하였다. 모델이 정상 종료했으나 특정
+> 표층형에 대해 유한상태 경로를 산출하지 못한 경우에는, 공식 규범 및
+> 독립 규칙 예측으로 근거가 확인된 표준 발음 재철자를 동일한 동결
+> 모델에 입력해 phone 후보를 생성하였다. 연구자가 표층형–재철자–phone
+> 대응을 승인한 경우에만 누락 키를 추가했으며, 모델이 직접 생성한
+> 기존 발음은 변경하지 않았다. 모든 예외는 입력, 모델, 코드, 원 partial,
+> 승인 snapshot 및 최종 shard SHA와 함께 기록하였다.
+
+이 문장은 r2 final method supplement와 2020–2025 cross-year contract가
+모두 통과한 뒤에만 최종 연구 방법으로 사용한다.

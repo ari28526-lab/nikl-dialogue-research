@@ -9,6 +9,9 @@
   입력에서 U+11AF+U+11BA로 완전분해한다.
 - 4어절의 원 표층키를 복원하고 연구자 검토표 승인이 있기 전에는
   final 사전과 연도별 MFA 사용 승인을 만들지 않는다.
+- exit 0인데도 FST no-path로 표층형이 누락되면, 명시된 표준 발음
+  재철자 후보를 같은 동결 Jamo 모델에 넣어 얻은 phone을 연구자가
+  승인한 뒤에만 누락 키를 추가한다. 기존 모델 출력은 대체하지 않는다.
 - 다른 모델, 우리말샘 변이, spn은 생산 사전에 넣지 않는다.
 #>
 [CmdletBinding()]
@@ -219,12 +222,18 @@ $driver = Join-Path (
 $pinDriver = Join-Path (
     $PSScriptRoot
 ) 'python\verify_frozen_mfa_bundle.py'
+$noPathDriver = Join-Path (
+    $PSScriptRoot
+) 'python\common_pron_no_path_review.py'
+$noPathMapping = Join-Path (
+    $projectRoot
+) 'config\common_pron_g2p_no_path_exceptions.csv'
 $bundleContract = Join-Path (
     $projectRoot
 ) 'outputs\reports\korean_mfa_latest_jamo_bundle_20260728.json'
 foreach ($path in @(
     $sourceVocabulary, $sourceManifest, $py, $mfa, $driver,
-    $pinDriver, $bundleContract
+    $pinDriver, $noPathDriver, $noPathMapping, $bundleContract
 )) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "필수 입력/실행 파일 없음: $path"
@@ -376,8 +385,56 @@ try {
         exit 76
     }
 
+    # 최신 Jamo FST가 exit 0이면서 0행을 내는 알려진 no-path 표층형은
+    # 별도 검토표로 관리한다. 이 단계는 후보만 만들며 자동 승인하지 않는다.
+    $noPathInput = Join-Path (
+        Join-Path $releaseRoot '01_g2p'
+    ) 'known_no_path_respelled.txt'
+    $noPathRaw = Join-Path $outputDir 'known_no_path_respelled_raw.dict'
+    $noPathReviewPath = Join-Path (
+        Join-Path $releaseRoot '03_review'
+    ) 'g2p_no_path_researcher_review.csv'
+    $noPathReviewManifest = Join-Path (
+        Join-Path $releaseRoot '00_contract'
+    ) 'g2p_no_path_review_manifest.json'
+    $noPathLog = Join-Path $logDir 'g2p_known_no_path_respelled.log'
+    $noPathTemp = Join-Path $tempDir 'known_no_path_respelled'
+    & $py $noPathDriver prepare-input `
+        --mapping $noPathMapping `
+        --output $noPathInput
+    if ($LASTEXITCODE -ne 0) {
+        throw "known no-path 재철자 입력 준비 실패"
+    }
+    if (-not (Test-Path -LiteralPath $noPathRaw -PathType Leaf)) {
+        $noPathArguments = @(
+            'g2p', $noPathInput, $g2pModel, $noPathRaw,
+            '--num_pronunciations', '1',
+            '--strict_graphemes',
+            '--temporary_directory', $noPathTemp,
+            '--num_jobs', "$NumJobs",
+            '--clean'
+        )
+        $noPathCode = Invoke-MfaLogged `
+            $noPathArguments $noPathLog $releaseRoot
+        if ($noPathCode -ne 0) {
+            throw "known no-path 재철자 G2P 실패(exit=$noPathCode)"
+        }
+    }
+    & $py $noPathDriver build-review `
+        --mapping $noPathMapping `
+        --raw-dictionary $noPathRaw `
+        --acoustic-model $acousticModel `
+        --review $noPathReviewPath `
+        --manifest $noPathReviewManifest
+    if ($LASTEXITCODE -ne 0) {
+        throw "known no-path 연구자 검토표 생성/검증 실패"
+    }
+    Say "G2P no-path 후보 검토표: $noPathReviewPath"
+
     $shards = @($prepared.outputs.input_shards)
     $completed = 0
+    $approvalPendingShards = [Collections.Generic.List[int]]::new()
+    $unknownMissingShards = [Collections.Generic.List[int]]::new()
     foreach ($shard in $shards) {
         $index = [int]$shard.shard_index
         $inputPath = Join-Path $inputDir ('oov_{0:D5}.txt' -f $index)
@@ -399,6 +456,53 @@ try {
                 --acoustic-model $acousticModel `
                 --report $reportPath
             $valid = $LASTEXITCODE -eq 0
+            if (-not $valid) {
+                $repairAttempt = Join-Path (
+                    Join-Path (
+                        Join-Path $releaseRoot '_state\no_path_repairs'
+                    ) ([IO.Path]::GetFileNameWithoutExtension($outputPath))
+                ) 'last_attempt.json'
+                & $py $noPathDriver repair-shard `
+                    --input-shard $inputPath `
+                    --output-shard $outputPath `
+                    --acoustic-model $acousticModel `
+                    --review $noPathReviewPath `
+                    --release-root $releaseRoot `
+                    --attempt-report $repairAttempt
+                $repairCode = $LASTEXITCODE
+                if ($repairCode -eq 76) {
+                    $approvalPendingShards.Add($index)
+                    Say (
+                        "shard $index partial 보존·승인 대기; " +
+                        "다음 shard로 계속"
+                    )
+                    continue
+                }
+                if ($repairCode -eq 77) {
+                    $unknownMissingShards.Add($index)
+                    Say (
+                        "shard $index partial 보존·미등록 누락어 기록; " +
+                        "다음 shard로 계속: $repairAttempt"
+                    )
+                    continue
+                }
+                if ($repairCode -ne 0) {
+                    throw (
+                        "G2P shard $index no-path 안전 보수 실패" +
+                        "(exit=$repairCode): $repairAttempt"
+                    )
+                }
+                & $py $driver verify-shard `
+                    --input-shard $inputPath `
+                    --output-shard $outputPath `
+                    --acoustic-model $acousticModel `
+                    --report $reportPath
+                $valid = $LASTEXITCODE -eq 0
+                if (-not $valid) {
+                    throw "G2P shard $index 보수 뒤 완전성 검사 실패"
+                }
+                Say "shard $index 승인된 no-path 누락만 보수 완료"
+            }
         }
         if ($valid) {
             $completed += 1
@@ -427,10 +531,66 @@ try {
             --acoustic-model $acousticModel `
             --report $reportPath
         if ($LASTEXITCODE -ne 0) {
-            throw "G2P shard $index 완전성 검사 실패"
+            $repairAttempt = Join-Path (
+                    Join-Path (
+                        Join-Path $releaseRoot '_state\no_path_repairs'
+                    ) ([IO.Path]::GetFileNameWithoutExtension($outputPath))
+            ) 'last_attempt.json'
+            & $py $noPathDriver repair-shard `
+                --input-shard $inputPath `
+                --output-shard $outputPath `
+                --acoustic-model $acousticModel `
+                --review $noPathReviewPath `
+                --release-root $releaseRoot `
+                --attempt-report $repairAttempt
+            $repairCode = $LASTEXITCODE
+            if ($repairCode -eq 76) {
+                $approvalPendingShards.Add($index)
+                Say (
+                    "shard $index partial 보존·승인 대기; " +
+                    "다음 shard로 계속"
+                )
+                continue
+            }
+            if ($repairCode -eq 77) {
+                $unknownMissingShards.Add($index)
+                Say (
+                    "shard $index partial 보존·미등록 누락어 기록; " +
+                    "다음 shard로 계속: $repairAttempt"
+                )
+                continue
+            }
+            if ($repairCode -ne 0) {
+                throw (
+                    "G2P shard $index no-path 안전 보수 실패" +
+                    "(exit=$repairCode): $repairAttempt"
+                )
+            }
+            & $py $driver verify-shard `
+                --input-shard $inputPath `
+                --output-shard $outputPath `
+                --acoustic-model $acousticModel `
+                --report $reportPath
+            if ($LASTEXITCODE -ne 0) {
+                throw "G2P shard $index 보수 뒤 완전성 검사 실패"
+            }
+            Say "shard $index 승인된 no-path 누락만 보수 완료"
         }
         $completed += 1
         Say "shard $index 완료 ($completed/$($shards.Count))"
+    }
+
+    if (
+        $approvalPendingShards.Count -gt 0 -or
+        $unknownMissingShards.Count -gt 0
+    ) {
+        Say (
+            "전체 shard 계산은 계속했지만 final은 보류: 승인 대기=" +
+            "$($approvalPendingShards -join ','); 미등록 누락=" +
+            "$($unknownMissingShards -join ','). 검토 후 같은 명령으로 " +
+            "partial shard만 보수"
+        )
+        exit 76
     }
 
     $review = @(Import-Csv -LiteralPath $reviewPath -Encoding UTF8)

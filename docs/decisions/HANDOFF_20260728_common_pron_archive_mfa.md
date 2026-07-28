@@ -148,3 +148,26 @@ Unicode 정규화를 하지 않도록 수정하고 회귀검사를 추가했다.
 MFA 인자 파서도 `--num_jobs 4`를 인식한다. 더 많은 작업자가 실제 wall
 time을 줄인다는 근거 없이 실행을 중단하거나 shard별 조건을 섞지 않는다.
 기본 모니터링 주기는 30분으로 유지한다.
+
+## 20:52 shard 5 no-path와 새 재개 정책
+
+- verified 표준 shard는 4/35이며 1–4번의 합계 100,000행은 모든 hard
+  gate를 통과했다.
+- shard 5는 MFA exit 0 뒤 24,999/25,000으로 완전성 gate에서 멈췄다.
+  유일한 누락어 `읊어`는 단독 재현에서도 exit 0·0바이트를 내므로
+  deterministic Jamo FST no-path이다.
+- `읊어[을퍼]`는 국립국어원 공식 예시와 프로젝트 규칙 예측이 일치하고,
+  같은 동결 모델의 재철자 phone은 `ɨ ɭ pʰ ʌ`이다. 사용자는 이 정확한
+  후보 하나를 명시 승인했다.
+- 승인은 다음 두 파일에 기록됐다.
+  - `03_review\g2p_no_path_researcher_review.csv`
+  - `03_review\decisions\eulp-eo_20260728.json`
+- runner는 승인된 누락 키만 추가하고 기존 24,999행을 바꾸지 않는다.
+  보수 전 partial, 승인행 snapshot, 보수 manifest와 전후 SHA를
+  `_state\no_path_repairs\oov_00005\`에 남긴다.
+- 이후 새 미승인/미등록 no-path는 해당 partial만 보존하고 다음 shard로
+  계속한다. 모든 35개 계산을 진행할 수 있지만 미해결 행이 있으면 final
+  사전만 차단된다. 따라서 비슷한 단어 하나 때문에 야간 계산 전체가
+  매번 중단되지는 않는다.
+- 상세 결정문:
+  `docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md`

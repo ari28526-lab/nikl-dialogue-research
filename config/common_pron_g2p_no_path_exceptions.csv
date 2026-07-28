@@ -1,0 +1,25 @@
+surface,respelled,rule_id,evidence_source,evidence_detail
+읊어,을퍼,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,공식 예시 읊어[을퍼] 및 search-master form_rule_prediction
+읊을,을플,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊는,음는,standard_pron_rule18_eulph_nasal_v1,국립국어원 표준 발음법 제18항,ㄿ 대표음 ㅂ 뒤 비음화 및 search-master form_rule_prediction
+읊은,을픈,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊고,읍꼬,standard_pron_rule23_eulph_tense_v1,국립국어원 표준 발음법 제23항,ㄿ 대표음 ㅂ 뒤 경음화 및 search-master form_rule_prediction
+읊는다고,음는다고,standard_pron_rule18_eulph_nasal_v1,국립국어원 표준 발음법 제18항,읊는[음는] 규칙 적용
+읊는다는,음는다는,standard_pron_rule18_eulph_nasal_v1,국립국어원 표준 발음법 제18항,읊는[음는] 규칙 적용
+읊는다잖아요,음는다자나요,standard_pron_rule18_eulph_nasal_v1,국립국어원 표준 발음법 제18항,읊는[음는] 규칙과 project form_rule_prediction 적용
+읊어놓고,을퍼노코,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 project form_rule_prediction 적용
+읊어보라고,을퍼보라고,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙 적용
+읊어봐,을퍼봐,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊어서,을퍼서,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊어야,을퍼야,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊어졌다는데,을퍼젿따는데,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊어주겠니,을퍼주겐니,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊어줄까,을퍼줄까,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 규칙과 search-master form_rule_prediction
+읊었는데,을펀는데,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 활용과 project form_rule_prediction
+읊었다는,을펃따는,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 활용과 project form_rule_prediction
+읊었습니다,을펃씀니다,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,읊어[을퍼] 활용과 project form_rule_prediction
+읊으는,을프는,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊으라고,을프라고,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊으려면,을프려면,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊으면서,을프면서,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
+읊으시기도,을프시기도,standard_pron_rule14_eulph_v1,국립국어원 표준 발음법 제14항,겹받침 ㄿ 뒤 모음 시작 어미의 연음
