@@ -43,6 +43,81 @@ class CommonPronAbPilotTests(unittest.TestCase):
         self.assertEqual(ab.edit_distance(["k", "a"], ["k", "n", "a"]), 1)
         self.assertEqual(ab.edit_distance(["k"], ["t"]), 1)
 
+    def test_comparison_design_keeps_screened_no_effect_stress(self) -> None:
+        rows = [
+            {
+                "year": "2020",
+                "utt_id": "effective-2020",
+                "sample_role": "stress",
+                "policy_b_changed_token": "True",
+            },
+            {
+                "year": "2020",
+                "utt_id": "screened-2020",
+                "sample_role": "stress",
+                "policy_b_changed_token": "False",
+            },
+            {
+                "year": "2020",
+                "utt_id": "control-2020",
+                "sample_role": "control",
+                "policy_b_changed_token": "False",
+            },
+            {
+                "year": "2021",
+                "utt_id": "effective-2021",
+                "sample_role": "stress",
+                "policy_b_changed_token": "True",
+            },
+            {
+                "year": "2021",
+                "utt_id": "control-2021",
+                "sample_role": "control",
+                "policy_b_changed_token": "False",
+            },
+        ]
+        stress, controls, screened, by_year = (
+            ab.classify_comparison_rows(rows)
+        )
+        self.assertEqual(len(stress), 3)
+        self.assertEqual(len(controls), 2)
+        self.assertEqual(len(screened), 1)
+        self.assertEqual(by_year, {"2020": 1, "2021": 1})
+
+    def test_comparison_design_requires_effective_stress_each_year(self) -> None:
+        rows = [
+            {
+                "year": "2020",
+                "utt_id": "screened",
+                "sample_role": "stress",
+                "policy_b_changed_token": "False",
+            },
+            {
+                "year": "2020",
+                "utt_id": "control",
+                "sample_role": "control",
+                "policy_b_changed_token": "False",
+            },
+        ]
+        with self.assertRaisesRegex(
+            RuntimeError, "실제 policy B 변경 stress가 없는 연도"
+        ):
+            ab.classify_comparison_rows(rows)
+
+    def test_boundary_delta_summary_keeps_control_noise_reference(self) -> None:
+        summary = ab.boundary_delta_summary(
+            [
+                {"max_same_index_boundary_delta_seconds": 0.0},
+                {"max_same_index_boundary_delta_seconds": 0.01},
+                {"max_same_index_boundary_delta_seconds": 0.07},
+                {"max_same_index_boundary_delta_seconds": ""},
+            ]
+        )
+        self.assertEqual(summary["comparable_utterances"], 3)
+        self.assertEqual(summary["nonzero_utterances"], 2)
+        self.assertEqual(summary["over_20ms_utterances"], 1)
+        self.assertEqual(summary["max_seconds"], 0.07)
+
     def test_release_boundary_blocks_escape(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / "release"

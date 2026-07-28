@@ -823,3 +823,14 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   추가한다. 따라서 현재 A/B는 변이 availability 파일럿이며 확률 보정은
   채택 뒤 별도 결정이다. `궹장히`는 phone 변환 실패를 명시적으로
   기록하고 B에 넣지 않았다.
+- schema 2 재실행에서 A와 B 모두 default beam 60/60, alignment error
+  0, 연도별 10/10, `spn=0`, 4-tier QC를 통과했다. A는 38.165초, B는
+  34.464초였고 확대 beam은 필요 없었다.
+- 사전 원천 기준 stress 30개 중 current phone으로도 실제 B 변이가 남은
+  것은 20개였고 매년 3–4개였다. 나머지 10개는
+  `stress_screened_no_effect`로, control 30개는 별도로 보고하도록 비교
+  gate를 수정했다. 실제 phone열 변화는 `있다`, `그것`, `수가` 3발화,
+  control 변화는 0이었다.
+- phone열이 같은 control에서도 동일-index 경계가 7/30발화, 최대 70ms
+  달라져 별도 MFA 실행의 경험적 잡음 기준으로 기록했다. 경계 변화만으로
+  B를 채택하지 않고 수동 WAV/TextGrid 검토를 유지한다.

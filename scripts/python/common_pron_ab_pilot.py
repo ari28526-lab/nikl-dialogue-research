@@ -141,6 +141,7 @@ COMPARISON_FIELDS = [
     "utt_id",
     "stress_tokens",
     "policy_b_changed_token",
+    "comparison_group",
     "a_phone_count",
     "b_phone_count",
     "phone_edit_distance",
@@ -1362,6 +1363,86 @@ def find_final(root: Path, row: dict[str, str]) -> Path:
     return matches[0]
 
 
+def classify_comparison_rows(
+    rows: list[dict[str, object]],
+) -> tuple[
+    list[dict[str, object]],
+    list[dict[str, object]],
+    list[dict[str, object]],
+    dict[str, int],
+]:
+    stress_rows = [
+        row for row in rows if row["sample_role"] == "stress"
+    ]
+    controls = [
+        row for row in rows if row["sample_role"] == "control"
+    ]
+    effective_stress = [
+        row
+        for row in stress_rows
+        if row["policy_b_changed_token"] == "True"
+    ]
+    screened_no_effect = [
+        row
+        for row in stress_rows
+        if row["policy_b_changed_token"] != "True"
+    ]
+    controls_with_change = [
+        row
+        for row in controls
+        if row["policy_b_changed_token"] == "True"
+    ]
+    if not stress_rows or not controls:
+        raise RuntimeError(
+            f"stress/control 표본이 비어 있음: "
+            f"stress={len(stress_rows)}, control={len(controls)}"
+        )
+    if controls_with_change:
+        examples = [
+            str(row["utt_id"]) for row in controls_with_change[:5]
+        ]
+        raise RuntimeError(
+            "control 발화에 policy B 변경 token 포함: "
+            f"{examples}"
+        )
+    effective_by_year = Counter(
+        str(row["year"]) for row in effective_stress
+    )
+    selected_years = sorted(
+        {str(row["year"]) for row in stress_rows}
+    )
+    missing_years = [
+        year for year in selected_years if not effective_by_year[year]
+    ]
+    if missing_years:
+        raise RuntimeError(
+            "실제 policy B 변경 stress가 없는 연도: "
+            f"{missing_years}"
+        )
+    return (
+        stress_rows,
+        controls,
+        screened_no_effect,
+        dict(sorted(effective_by_year.items())),
+    )
+
+
+def boundary_delta_summary(
+    rows: list[dict[str, object]],
+) -> dict[str, int | float]:
+    values = [
+        float(row["max_same_index_boundary_delta_seconds"])
+        for row in rows
+        if row.get("max_same_index_boundary_delta_seconds") not in ("", None)
+    ]
+    return {
+        "comparable_utterances": len(values),
+        "nonzero_utterances": sum(value > 0 for value in values),
+        "over_20ms_utterances": sum(value > 0.02 for value in values),
+        "max_seconds": max(values, default=0.0),
+    }
+
+
 def compare_results(args: argparse.Namespace) -> int:
     release_root = args.release_root.resolve()
     output_dir = ensure_release_child(args.output_dir.resolve(), release_root)
@@ -1413,13 +1494,19 @@ def compare_results(args: argparse.Namespace) -> int:
                 6,
             )
         lab_tokens = set(clean(row.get("lab_text")).split())
+        has_policy_b_change = bool(lab_tokens & changed_tokens)
+        if row.get("sample_role") == "control":
+            comparison_group = "control"
+        elif has_policy_b_change:
+            comparison_group = "stress_effective"
+        else:
+            comparison_group = "stress_screened_no_effect"
         wav_rel = Path(row["corpus_wav_relpath"])
         rows.append(
             {
                 **{key: row.get(key, "") for key in COMPARISON_FIELDS},
-                "policy_b_changed_token": str(
-                    bool(lab_tokens & changed_tokens)
-                ),
+                "policy_b_changed_token": str(has_policy_b_change),
+                "comparison_group": comparison_group,
                 "a_phone_count": len(a_labels),
                 "b_phone_count": len(b_labels),
                 "phone_edit_distance": edit_distance(a_labels, b_labels),
@@ -1436,14 +1523,19 @@ def compare_results(args: argparse.Namespace) -> int:
             }
         )
     write_csv_atomic(csv_path, COMPARISON_FIELDS, rows)
-    stress_rows = [row for row in rows if row["sample_role"] == "stress"]
-    controls = [row for row in rows if row["sample_role"] == "control"]
-    if any(row["policy_b_changed_token"] != "True" for row in stress_rows):
-        raise RuntimeError(
-            "일부 stress 발화에 실제 policy B 변경 token이 없음"
-        )
+    (
+        stress_rows,
+        controls,
+        screened_no_effect,
+        effective_stress_by_year,
+    ) = classify_comparison_rows(rows)
+    effective_stress = [
+        row
+        for row in stress_rows
+        if row["policy_b_changed_token"] == "True"
+    ]
     summary = {
-        "schema_version": 1,
+        "schema_version": 2,
         "kind": "common_pronunciation_ab_pilot_comparison",
         "status": "needs_manual_review",
         "recorded_at": now_iso(),
@@ -1451,12 +1543,24 @@ def compare_results(args: argparse.Namespace) -> int:
             "utterances": len(rows),
             "stress": len(stress_rows),
             "controls": len(controls),
+            "effective_stress": len(effective_stress),
+            "screened_no_effect_stress": len(screened_no_effect),
+            "controls_with_policy_b_changed_token": 0,
+            "effective_stress_by_year": effective_stress_by_year,
             "phone_sequence_changed": sum(
                 row["phone_sequence_identical"] == "False" for row in rows
             ),
             "stress_phone_sequence_changed": sum(
                 row["phone_sequence_identical"] == "False"
                 for row in stress_rows
+            ),
+            "effective_stress_phone_sequence_changed": sum(
+                row["phone_sequence_identical"] == "False"
+                for row in effective_stress
+            ),
+            "screened_no_effect_phone_sequence_changed": sum(
+                row["phone_sequence_identical"] == "False"
+                for row in screened_no_effect
             ),
             "control_phone_sequence_changed": sum(
                 row["phone_sequence_identical"] == "False"
@@ -1466,9 +1570,24 @@ def compare_results(args: argparse.Namespace) -> int:
                 row["word_labels_identical"] == "False" for row in rows
             ),
         },
+        "same_index_boundary_delta": {
+            "effective_stress": boundary_delta_summary(
+                effective_stress
+            ),
+            "screened_no_effect_stress": boundary_delta_summary(
+                screened_no_effect
+            ),
+            "control": boundary_delta_summary(controls),
+            "warning": (
+                "A/B are separate MFA runs; nonzero control deltas are "
+                "the empirical run-to-run noise reference"
+            ),
+        },
         "interpretation": (
-            "자동 우승 정책 없음. 연구자가 stress와 control의 WAV/TextGrid를 "
-            "검토한 뒤 정책을 결정해야 함"
+            "stress는 사전 원천 기준으로 먼저 뽑았으며, current phone "
+            "encoding 뒤 실제 B 변이가 남은 stress_effective와 A와 "
+            "동일해진 stress_screened_no_effect를 분리한다. 자동 우승 "
+            "정책은 없고 연구자가 WAV/TextGrid를 검토해야 한다."
         ),
         "inputs": {
             "selection_manifest": file_fingerprint(
@@ -1482,12 +1601,25 @@ def compare_results(args: argparse.Namespace) -> int:
         "runtime": runtime_snapshot(PROJECT_ROOT),
     }
     atomic_write_json(json_path, summary)
+    control_boundary = summary["same_index_boundary_delta"]["control"]
+    screened_boundary = summary["same_index_boundary_delta"][
+        "screened_no_effect_stress"
+    ]
     lines = [
         "# 공통 발음사전 A/B MFA 파일럿",
         "",
         f"- 상태: **{summary['status']}**",
         f"- 전체 발화: {len(rows)}",
         f"- stress/control: {len(stress_rows)}/{len(controls)}",
+        f"- 실제 B 변이 stress: {len(effective_stress)}",
+        f"- phone 변환 뒤 무효과 stress: {len(screened_no_effect)}",
+        (
+            "- 연도별 실제 B 변이 stress: "
+            + ", ".join(
+                f"{year}={count}"
+                for year, count in effective_stress_by_year.items()
+            )
+        ),
         "- A: 기존 `korean_mfa.dict` + 표본 OOV의 현재 G2P 1-best",
         "- B: A + exact-word 우리말샘 연계 `pron_1/2` 변이",
         "- A와 B의 WAV·lab은 SHA256이 같은 복사본",
@@ -1503,13 +1635,35 @@ def compare_results(args: argparse.Namespace) -> int:
             "- control phone열 변화: "
             f"{summary['counts']['control_phone_sequence_changed']}발화"
         ),
+        (
+            "- 실제 B 변이 stress 중 phone열 변화: "
+            f"{summary['counts']['effective_stress_phone_sequence_changed']}발화"
+        ),
+        (
+            "- control 동일-index 경계 변화: "
+            f"{control_boundary['nonzero_utterances']}"
+            f"/{control_boundary['comparable_utterances']}"
+            "발화, 최대 "
+            f"{control_boundary['max_seconds']:.3f}초"
+        ),
+        (
+            "- 무효과 stress 동일-index 경계 변화: "
+            f"{screened_boundary['nonzero_utterances']}"
+            f"/{screened_boundary['comparable_utterances']}"
+            "발화, 최대 "
+            f"{screened_boundary['max_seconds']:.3f}초"
+        ),
+        (
+            "- control의 비영 경계 차이는 별도 MFA 실행 사이의 "
+            "경험적 잡음 기준이다."
+        ),
         "",
         "## 연구자 확인",
         "",
-        "1. `ab_utterance_comparison.csv`에서 stress 발화를 먼저 고른다.",
+        "1. `comparison_group=stress_effective` 발화를 먼저 고른다.",
         "2. 같은 발화의 A/B TextGrid와 WAV를 나란히 연다.",
         "3. 사전 예외 발음이 기대 구간의 경계를 개선했는지 확인한다.",
-        "4. control에서 불필요한 경계 이동이나 오정렬이 늘지 않았는지 본다.",
+        "4. `stress_screened_no_effect`와 control의 경계 이동을 잡음 기준으로 본다.",
         "5. 이 결과만으로 실제 음운 실현을 자동 판정하지 않는다.",
         "",
         "wav2vec2 phone 후보는 후속 보조 파일럿에서 별도 열/tier로만 추가하며 "

@@ -144,3 +144,55 @@ line-for-line 동일성, 추가 행의 무확률 계약, phone inventory를 모�
 archive를 실행하기 전 중단되어 데이터 이동은 0건이었다. 선택 속성을
 `PSObject.Properties[...]`로 존재 확인한 뒤 읽도록 수정했고, 실제 구
 manifest로 `LegacyDetected=True`가 나오는 것을 확인했다.
+
+## 11:08–11:13 schema 2 정렬 결과
+
+- 구 registry·sample·A/B corpus·lexicon은 삭제하지 않고
+  `archive_failed\20260728_110830`의 네 역할별 폴더로 이동했다.
+- schema 2 registry: 199,119행, eligible 25,988, OOV 866,691
+- A/B 입력: 6개년 각각 10발화·실제 화자 5명, 합계 60발화
+- 표본 어절 G2P: 317/317
+- 사전 발음 phone 변환 입력: 24/24
+- 파생사전: A 21,199행, B 21,214행, B 고유 추가 변이 15
+- 정책 A: default beam, 60/60, alignment error 0, 38.165초
+- 정책 B: default beam, 60/60, alignment error 0, 34.464초
+- A/B 모두 연도별 10/10, `spn=0`, 4-tier QC 통과
+- 확대 beam 재시도: 필요 없음
+
+## 마지막 비교 gate 수정
+
+최초 비교 gate는 사전 원천 기준 `stress` 30개 모두가 current phone
+encoding 뒤에도 실제 정책 B 추가 token이어야 한다고 가정했다. 실제로는
+우리말샘 표기가 달라도 current G2P phone이 정책 A와 같은 후보가 있어
+30개 중 10개가 no-effect였다.
+
+이것은 정렬 실패가 아니라 사전 표기 후보와 현재 phone 변이 후보 사이의
+screening 결과다. 60발화를 다시 버리지 않고 다음 세 집단으로 분리한다.
+
+| 비교 집단 | 발화 수 | 정의 |
+|---|---:|---|
+| `stress_effective` | 20 | 실제 정책 B 추가 token 포함 |
+| `stress_screened_no_effect` | 10 | 원천 stress이나 phone 변환 뒤 A와 같음 |
+| `control` | 30 | 정책 B 변경 token 없음 |
+
+실제 효과 stress는 모든 연도에 남았다: 2020=3, 2021=3, 2022=4,
+2023=3, 2024=3, 2025=4. control에 B 변경 token이 들어간 경우는 0이다.
+
+자동 phone열 변화는 3발화에만 있었고 모두 `stress_effective`였다.
+
+- 2020 `SDRW2000001214.1.1.95` — `있다`, edit distance 2
+- 2023 `SDRW2300000171.1.1.108` — `그것`, edit distance 2
+- 2024 `SDRW2400002901.1.1.111` — `수가`, edit distance 1
+
+word label은 60/60 동일했다. 다만 phone열이 같은 별도 A/B 실행에서도
+동일-index 경계가 움직였다.
+
+| 집단 | 비영 경계 차이 | 최대 |
+|---|---:|---:|
+| effective stress | 6/20 | 0.060초 |
+| screened no-effect stress | 3/10 | 0.010초 |
+| control | 7/30 | 0.070초 |
+
+따라서 control의 최대 70ms를 경험적 run-to-run 잡음 기준으로 함께
+제시한다. 경계 이동만으로 정책 B 개선을 주장하지 않고 WAV/TextGrid
+수동 검토를 거친다.

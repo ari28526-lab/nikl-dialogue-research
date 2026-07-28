@@ -147,3 +147,16 @@ phone을 보존한다. 새 G2P·사전 변이는 무확률 행, 즉 MFA 기본 �
 구 schema 1 registry는 재사용하지 않는다. 같은 RunId 재실행 시 구
 registry와 그에 의존한 sample/result/lexicon을 `archive_failed`로
 이동하고 schema 2 registry부터 다시 만든다.
+
+비교표의 `sample_role=stress`는 사전 원천 기준 1차 표본이다. current
+phone encoding 뒤에는 다음 `comparison_group`으로 다시 나눈다.
+
+- `stress_effective`: 실제 B 추가 token이 있는 핵심 검토군
+- `stress_screened_no_effect`: phone 변환 뒤 A와 같아진 보조 대조군
+- `control`: B 변경 token이 없는 대조군
+
+매년 `stress_effective`가 1개 이상이어야 하며 control에 B 변경 token이
+있으면 비교를 중단한다. no-effect stress가 있다는 이유만으로 이미
+성공한 정렬을 버리지는 않는다. 또한 별도 A/B 실행의 control에서도
+경계 변동이 생길 수 있으므로 control 최대 차이를 경험적 잡음 기준으로
+같이 보고한다.
