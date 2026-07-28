@@ -131,3 +131,20 @@ Unicode 정규화를 하지 않도록 수정하고 회귀검사를 추가했다.
 - 첫 shard 도중의 순간 처리율과 ETA는 초기화 비용과 작은 관측 구간 때문에
   확정값으로 보지 않는다. 최소 1개, 가능하면 2개 shard 검증 완료 후
   실측 wall time으로 병목과 남은 시간을 다시 판단한다.
+
+## 17:54 첫 shard 실측 결과
+
+- verified standard shard: 1/35
+- shard 1 counts: input=25,000, output=25,000, missing=0, extras=0,
+  `spn_words=0`, acoustic inventory outside=0
+- shard 1 output SHA256:
+  `6e5bb15e13130aee471a8b89711d90e0edf3532469a9489b7527cd6480c44b00`
+- shard 1 실측 G2P 시간: 약 35분 11초, 약 11.84 words/s
+- 17:54 상태: shard 2의 7,889행, 전체 3.795%, invalid report 0,
+  lock alive, D: free 263.15 GiB
+
+첫 shard는 coverage·`spn`·phone inventory hard gate를 모두 통과했다.
+네 논리 코어에서 네 Python 프로세스의 CPU가 지속적으로 증가하고 있고
+MFA 인자 파서도 `--num_jobs 4`를 인식한다. 더 많은 작업자가 실제 wall
+time을 줄인다는 근거 없이 실행을 중단하거나 shard별 조건을 섞지 않는다.
+기본 모니터링 주기는 30분으로 유지한다.

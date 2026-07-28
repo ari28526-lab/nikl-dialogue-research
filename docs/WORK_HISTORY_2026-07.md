@@ -1040,3 +1040,22 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   current shard 1, invalid report 0, lock alive, 1,922 standard rows로
   정상 응답했다. 초기 속도 9.21 words/s와 ETA는 첫 shard 초기화 비용이
   포함되므로 다음 shard 완료 전에는 방법론적 성능 수치로 사용하지 않는다.
+
+## 2026-07-28 17:54 첫 표준 shard 검증
+
+- 안정화 이후 모니터링 주기는 사용자의 판단에 따라 30분으로 조정했다.
+  shard 전환, invalid report, 잠금 소실, 출력 정체가 관측될 때만 추가
+  세부 점검을 한다.
+- shard 1은 17:43:59에 `success`로 검증됐다. 입력 25,000어휘와 출력
+  25,000어휘가 일치하며 missing=0, extras=0, `spn_words=0`,
+  acoustic phone inventory 이탈=0이다.
+- 검증 보고서는 입력 SHA
+  `963ac160...25bed`, 출력 SHA `6e5bb15e...44b00`, 동결 acoustic SHA
+  `94bd6cc5...159c`와 runtime Git `8caff67c...6d7`을 기록한다.
+- shard 1 출력 생성은 17:08:42부터 17:43:53까지 약 35분 11초가
+  걸렸고 실측 처리율은 약 11.84 words/s이다. 17:54에는 shard 2가
+  7,889행까지 진행되어 전체 32,893/866,692(3.795%)였다.
+- 이 PC는 논리 프로세서 4개이며 실행 중 네 Python 프로세스의 CPU가
+  지속적으로 증가했다. `--num_jobs 4`는 CLI 파서에서 인식됨을 확인했고
+  현재 처리 중 CPU 활용도도 높으므로, 진행 중단과 작업자 수 변경의
+  실익이 입증되지 않았다. 동일 실행을 유지한다.
