@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "common_pronunciation_source_audit",
+  "status": "success",
+  "recorded_at": "2026-07-28T09:44:11+09:00",
+  "scope": "full_lexicon_sources_before_registry_build",
+  "sources": {
+    "enriched": {
+      "path": "D:\\00_RAW\\reference\\00_DICTIONARY\\01_NIKL_lexicon_full_v2.csv",
+      "bytes": 386602735,
+      "mtime_ns": 1769431039980681500,
+      "sha256": "234c1841a25f500d58fd3111c4991e9e91a9d4c173eb13b1706ae51aef432371"
+    },
+    "legacy": {
+      "path": "D:\\00_RAW\\reference\\03_lexicon_1기\\01_NIKL_lexicon_full.csv",
+      "bytes": 280816832,
+      "mtime_ns": 1769070016000000000,
+      "sha256": "ad947afd4358e363fee090873a3de946b0f68a8cef889daa16777b9b7e000272"
+    }
+  },
+  "enriched": {
+    "rows": 1165157,
+    "rows_with_urimal_id": 1165157,
+    "rows_without_pron_1_2": 664596,
+    "missing_pron_with_legacy_g2p": 664596,
+    "rows_with_pron_1": 500561,
+    "rows_with_any_attested_candidate": 500561,
+    "rows_with_pron_2": 38340,
+    "duplicate_word_pos_sense_urimal_keys": 10292,
+    "duplicate_key_groups": 10292
+  },
+  "legacy": {
+    "rows": 1296777,
+    "rows_with_urimal_id": 1296777,
+    "rows_with_pron_g2p": 683336,
+    "rows_with_pron_1": 613441,
+    "rows_with_pron_2": 41237,
+    "unique_urimal_ids_with_g2p": 663687,
+    "urimal_g2p_variant_count_distribution": {
+      "1": 663687
+    },
+    "duplicate_word_pos_sense_urimal_keys": 141912,
+    "duplicate_key_groups": 48781
+  },
+  "fallback_linkage": {
+    "enriched_missing_pron_with_legacy_g2p": 664596,
+    "enriched_missing_pron_without_legacy_g2p": 0,
+    "unmatched_enriched_urimal_ids": 0,
+    "legacy_variant_count_distribution_for_fallback_rows": {
+      "1": 664596
+    },
+    "interpretation": "legacy pron_g2p는 기계 생성 보완 후보이며 우리말샘 등재 발음으로 분류하지 않음"
+  },
+  "elapsed_seconds": 48.471,
+  "runtime": {
+    "recorded_at": "2026-07-28T09:44:13+09:00",
+    "git_commit": "14cc43eebfab7246f5bcb29f1a0648e01f911b79",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 13892
+  }
+}

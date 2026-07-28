@@ -30,6 +30,9 @@
 |---|---|
 | paths.py | config/paths.json 로더 (`from paths import P`) |
 | check_python_environment.ps1 | 전역 Python 3.13·py 런처·PATH·프로젝트 `pipeline_python`을 구분 점검하고 샌드박스 접근 거부를 설치 누락과 분리 |
+| initialize_common_pron_pilot.ps1 | D: 라벨·여유공간·MFA lock을 검사하고 2020–2025 전체 공통 발음 파일럿 release를 역할별 폴더로 격리 생성. 기존 release 덮어쓰기·원자료 변경·자동 정리 금지 |
+| build_common_pron_vocabulary.py | 동결 `pron_reference_form` 6개년 전수에 MFA lab과 같은 토큰화를 적용해 연도별 출현을 포함한 공통 vocabulary와 SHA256 manifest 생성 |
+| audit_common_pron_sources.py | enriched `pron_1/2`와 legacy `pron_g2p`를 전수 감사해 행·중복·`urimal_id` fallback을 계측하고 등재 발음과 기계 생성값을 분리 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 

@@ -743,3 +743,28 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   에 정본으로 기록했다.
 - 최종 후속 변경은 Python unittest 88개, PowerShell 실행기 5개 안전성
   검사, `git diff --check`, 20260728 QC JSON 10개 파싱을 모두 통과했다.
+- 7월 28일 오전, 사용자가 공통 발음의 범위를 다시 확인해
+  **2020–2025 전체 동결 코퍼스 vocabulary**를 모집단으로 확정했다.
+  소표본은 사전 구축이 아니라 정책 A/B 정렬 품질 검증에만 쓴다.
+- D:에 `common_pron_pilot_full6y_20260728` 격리 release를 만들고,
+  17,156세션·5,103,356발화행을 MFA lab과 같은 규칙으로 전수 스캔했다.
+  어절 출현은 27,847,068개, 6개년 합집합 고유 어절은 881,237개였다.
+  vocabulary CSV는 29,383,023바이트이며 SHA256은
+  `3a6ecbe3a18508dd6807e6d5c8b3ced2179420e2e9fa93967a085daecce25319`다.
+- enriched 1,165,157행과 legacy 1,296,777행을 전수 감사했다.
+  enriched의 `pron_1/2` 무발음 664,596행은 모두 같은 `urimal_id`의
+  legacy `pron_g2p` 하나에 연결됐고 미대응은 0이었다. legacy
+  `pron_g2p`는 우리말샘 등재 발음이 아니라 과거 기계 생성 보완값으로
+  분리한다.
+- 과거 lexicon `*_roman_mfa`와 현재 MFA 3.4.0 `korean_mfa`
+  dictionary/acoustic phone alphabet이 같지 않아 직접 사전 삽입을
+  금지했다. 사전 한글 발음을 현재 G2P phone으로 옮기는 변환 동등성과
+  phone set 밖 기호 0건을 다음 hard gate로 둔다.
+- 파일럿 준비 release는 약 28.035MiB만 사용해 D: 여유가
+  264.146GiB에서 264.119GiB로 변했다. 2021의 31.365GiB 정리 후보는
+  삭제하지 않았고, DB·재현 근거도 그대로 보존했다.
+- 공통 발음 초기화·전수 vocabulary·사전 감사 코드와 테스트는
+  `14cc43e`로 중간 commit/push했고, 로컬 PowerShell cache `Microsoft/`는
+  삭제하지 않고 Git 추적 대상에서만 제외했다.
+- 후속 문서·보고서까지 포함해 Python unittest 91개, PowerShell 안전성
+  6개 파일, JSON 파싱, `git diff --check`를 통과했다.

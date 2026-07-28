@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "kind": "common_pronunciation_full_vocabulary",
+  "status": "success",
+  "scope": "full_frozen_corpus_vocabulary_2020_2025",
+  "recorded_at": "2026-07-28T09:42:42+09:00",
+  "years": [
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "tokenizer": {
+    "function": "realign_eojeol_build_corpus.form_to_lab",
+    "lab_input_version": "eojeol_v3_pron_reference_form",
+    "source_field": "pron_reference_form",
+    "policy": "whitespace eojjeol; keep Hangul syllables only"
+  },
+  "source": {
+    "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+    "build_meta": {
+      "path": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\_build_meta.json",
+      "bytes": 3086,
+      "mtime_ns": 1784955942196758000,
+      "sha256": "1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79"
+    },
+    "session_files_by_year": {
+      "2020": 2232,
+      "2021": 4143,
+      "2022": 2654,
+      "2023": 1973,
+      "2024": 3227,
+      "2025": 2927
+    },
+    "session_files_total": 17156,
+    "path_size_mtime_inventory_sha256": "191ab008329734a79ca6f1bcd351ff59e2ee4bb968a389ddefd9202beba2d061"
+  },
+  "counts": {
+    "session_files": 17156,
+    "utterance_rows": 5103356,
+    "lab_tokens": 27847068,
+    "unique_tokens": 881237,
+    "empty_lab_rows": 848,
+    "unresolved_symbol_rows": 55198,
+    "per_year": {
+      "2020": {
+        "session_files": 2232,
+        "utterance_rows": 870437,
+        "lab_tokens": 3053363,
+        "empty_lab_rows": 53,
+        "unique_tokens": 229899,
+        "unresolved_symbol_rows": 6220
+      },
+      "2021": {
+        "session_files": 4143,
+        "utterance_rows": 1373920,
+        "lab_tokens": 6642222,
+        "empty_lab_rows": 399,
+        "unique_tokens": 327135,
+        "unresolved_symbol_rows": 17394
+      },
+      "2022": {
+        "session_files": 2654,
+        "utterance_rows": 866359,
+        "lab_tokens": 4500448,
+        "empty_lab_rows": 253,
+        "unique_tokens": 274360,
+        "unresolved_symbol_rows": 10106
+      },
+      "2023": {
+        "session_files": 1973,
+        "utterance_rows": 677262,
+        "lab_tokens": 3626227,
+        "empty_lab_rows": 107,
+        "unique_tokens": 252084,
+        "unresolved_symbol_rows": 5039
+      },
+      "2024": {
+        "session_files": 3227,
+        "utterance_rows": 728257,
+        "lab_tokens": 5137438,
+        "empty_lab_rows": 22,
+        "unique_tokens": 294919,
+        "unresolved_symbol_rows": 12945
+      },
+      "2025": {
+        "session_files": 2927,
+        "utterance_rows": 587121,
+        "lab_tokens": 4887370,
+        "empty_lab_rows": 14,
+        "unique_tokens": 312305,
+        "unresolved_symbol_rows": 3494
+      }
+    }
+  },
+  "output": {
+    "path": "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728\\01_vocabulary\\common_vocabulary_2020_2025.csv",
+    "bytes": 29383023,
+    "sha256": "3a6ecbe3a18508dd6807e6d5c8b3ced2179420e2e9fa93967a085daecce25319",
+    "columns": [
+      "token",
+      "n_syllables",
+      "total_occurrences",
+      "n_years_present",
+      "count_2020",
+      "count_2021",
+      "count_2022",
+      "count_2023",
+      "count_2024",
+      "count_2025"
+    ]
+  },
+  "elapsed_seconds": 291.159,
+  "runtime": {
+    "recorded_at": "2026-07-28T09:42:42+09:00",
+    "git_commit": "14cc43eebfab7246f5bcb29f1a0648e01f911b79",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 25952
+  }
+}

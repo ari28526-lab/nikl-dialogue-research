@@ -6,7 +6,8 @@ $files = @(
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
-    (Join-Path $root 'scripts\run_search_master.ps1')
+    (Join-Path $root 'scripts\run_search_master.ps1'),
+    (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1')
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -191,6 +192,27 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("층화 MFA 파일럿 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'initialize_common_pron_pilot.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[CmdletBinding(SupportsShouldProcess)]',
+            'common_pron_home',
+            "D:\mfa_common_pron",
+            "VolumeLabel -ne 'DATA_SSD'",
+            'MinimumFreeGiB',
+            'pre_mfa_bulk.lock',
+            '기존 release를 덮어쓰지 않음',
+            'raw_corpus_read_only',
+            'baseline_2020_2021_read_only',
+            'no_automatic_cleanup',
+            'vocabulary_and_registry_use_all_six_years',
+            "'would_initialize'"
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 발음 파일럿 초기화 안전장치 누락: $required")
             }
         }
     }

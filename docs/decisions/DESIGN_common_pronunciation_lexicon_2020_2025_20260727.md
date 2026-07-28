@@ -3,6 +3,13 @@
 작성일: 2026-07-27  
 상태: **방향 채택, 구현·우선순위는 전수 자원 감사와 A/B 파일럿 뒤 동결**
 
+2026-07-28 구현 착수:
+
+- 6개년 동결 5,103,356행에서 881,237개 고유 MFA 어절을 전수 확정
+- enriched 1,165,157행·legacy 1,296,777행 원천 전수 감사
+- 상세 실측과 폴더·용량·phone 체계 gate는
+  `PILOT_common_pronunciation_full_corpus_20260728.md` 참조
+
 관련 문서:
 
 - `DESIGN_pronunciation_environment_search_2026-07-25.md`
