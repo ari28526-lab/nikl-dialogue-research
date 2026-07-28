@@ -196,3 +196,29 @@ word label은 60/60 동일했다. 다만 phone열이 같은 별도 A/B 실행에
 따라서 control의 최대 70ms를 경험적 run-to-run 잡음 기준으로 함께
 제시한다. 경계 이동만으로 정책 B 개선을 주장하지 않고 WAV/TextGrid
 수동 검토를 거친다.
+
+## 11:19 자동 단계 완료와 독립 전수 검증
+
+완료 marker는 commit
+`e4a69ad42c441076ddc7ea0f23edca05592c296f`를 기록했다. 실패했던 첫
+비교 폴더는 삭제하지 않고
+`06_ab_results\ab_stress_control_20260728_01\archive_failed\
+20260728_111952\comparison_incomplete`로 옮겼다.
+
+독립 전수 검증:
+
+- A/B corpus 파일 120쌍: 누락 0, SHA256 불일치 0
+- A/B 최종 TextGrid: 각각 60개
+- TextGrid parse 실패: 0/120
+- tier 집합: 120/120 `words, phones, morphemes, utterance`
+- 모든 tier의 0초–파일 끝 domain 실패: 0
+- A/B 실제 사전 기본 21,009행 prefix 동일: 통과
+- 실제 사전 inventory 밖 phone: A=0, B=0
+- registry base 후보 17,082행 숫자 phone: 0
+- registry base 후보 inventory 밖 phone: 0
+- 비교 CSV 60행의 A/B WAV·TextGrid 경로 누락: 0
+- D: 라벨 `DATA_SSD`, 최종 여유 263.821GiB
+- 11:22 같은 RunId 재실행: 7단계 marker/hash 전부 재사용, exit 0
+
+자동 단계는 완료됐지만 정책 결정은 완료되지 않았다. 정본 결과 보고서는
+`outputs/reports/RESULT_common_pron_AB_pilot_20260728.md`다.

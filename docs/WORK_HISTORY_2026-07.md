@@ -834,3 +834,11 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - phone열이 같은 control에서도 동일-index 경계가 7/30발화, 최대 70ms
   달라져 별도 MFA 실행의 경험적 잡음 기준으로 기록했다. 경계 변화만으로
   B를 채택하지 않고 수동 WAV/TextGrid 검토를 유지한다.
+- 11:19 공통 발음 A/B 자동 단계를 완료했다. 실제 A/B corpus 120파일쌍
+  SHA 불일치 0, 최종 TextGrid 120개 parse/tier-domain 실패 0, 실제 사전
+  기본 21,009행 prefix 동일, registry 숫자 phone 0, 비교 링크 누락 0을
+  독립 전수 확인했다.
+- 자동 완료와 정책 채택을 분리했다. 수동 검토 순서와 세 phone 변화
+  발화, control 경계 잡음, 다음 결정지는
+  `outputs/reports/RESULT_common_pron_AB_pilot_20260728.md`에 정본으로
+  기록했다.
