@@ -1086,6 +1086,10 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 직접 승인 기록 명령은 파일 저장을 완료한 뒤 IPA `ɨ`의 CP949 콘솔
   출력에서만 실패 표시가 났다. 실제 승인 CSV·JSON 저장을 확인했고,
   helper stdout을 UTF-8로 고정해 성공 후 거짓 오류 표시를 방지했다.
+- 5번 보수 직후 상태판이 기존 24,999행까지 새 세션 처리량으로 세어
+  4,750 words/s의 거짓 속도를 표시했다. 보수 manifest와 output SHA를
+  결합해 승인 보수 shard는 ETA 표본에서 제외하고, 이후 실제 6번
+  증분만으로 속도를 계산하도록 고쳤다. 20:59 실측 표시는 8.22 words/s다.
 - 상세 방법론과 주장 범위는
   `docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md`
   에 기록했다.

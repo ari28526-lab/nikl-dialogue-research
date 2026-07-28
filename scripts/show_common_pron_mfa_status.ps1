@@ -131,11 +131,28 @@ foreach ($reportFile in $reportFiles) {
             $index = [int]$match.Groups[1].Value
             [void]$verifiedIndices.Add($index)
             $verifiedWords += [int64]$report.counts.output_words
+            $repairManifestPath = Join-Path (
+                Join-Path (
+                    Join-Path $releaseRootFull '_state\no_path_repairs'
+                ) $reportFile.BaseName
+            ) 'repair_manifest.json'
+            $repairManifest = Read-JsonFile $repairManifestPath
+            $isReviewedRepair = (
+                $null -ne $repairManifest -and
+                $repairManifest.status -eq 'success' -and
+                [string]$repairManifest.output.repaired_shard.sha256 -eq
+                    [string]$report.inputs.output_shard.sha256
+            )
             $verifiedReportRecords += [pscustomobject]@{
+                shard_index = $index
                 words = [int64]$report.counts.output_words
                 recorded_at = [datetimeoffset]::Parse(
                     [string]$report.recorded_at
                 )
+                output_mtime_ns = [int64](
+                    $report.inputs.output_shard.mtime_ns
+                )
+                is_reviewed_repair = $isReviewedRepair
             }
         } else {
             $invalidReports += 1
@@ -230,8 +247,15 @@ if ($null -ne $startedAt) {
     # fails before the first shard report exists. Sum explicitly so the
     # normal 0/N startup state remains observable.
     $sessionVerifiedWords = [int64]0
+    $startedAtUnixNs = [int64](
+        $startedAt.ToUnixTimeMilliseconds() * 1000000
+    )
     foreach ($record in @($verifiedReportRecords)) {
-        if ($record.recorded_at -ge $startedAt) {
+        if (
+            $record.recorded_at -ge $startedAt -and
+            $record.output_mtime_ns -ge $startedAtUnixNs -and
+            -not $record.is_reviewed_repair
+        ) {
             $sessionVerifiedWords += [int64]$record.words
         }
     }
