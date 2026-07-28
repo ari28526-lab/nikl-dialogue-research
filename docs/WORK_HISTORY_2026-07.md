@@ -768,3 +768,16 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   삭제하지 않고 Git 추적 대상에서만 제외했다.
 - 후속 문서·보고서까지 포함해 Python unittest 91개, PowerShell 안전성
   6개 파일, JSON 파싱, `git diff --check`를 통과했다.
+- 사용자는 `slplab/wav2vec2-xls-r-300m_phone-mfa_korean`을 MFA 개선
+  보조층으로 채택하되, CTC 정렬을 만들더라도 기존 MFA `phones`·시간열·
+  canonical CSV/TextGrid를 바꾸지 않고 별도 append-only 결과와 연구자
+  점검 사본에만 추가하도록 확정했다.
+- 현재 공통 발음 상태가 실제 A/B `.dict` 완성이 아니라 6개년 vocabulary와
+  발음 원천 감사 완료임을 재확인했다. 따라서 2020 재실행과 2022 전량을
+  모두 보류하고 registry→현재 phone 변환 gate→정책 A/B 사전→동일 표본
+  파일럿→연구자 검토 순서를 먼저 밟는다.
+- 정책 A가 baseline과 전수 동등하면 2020·2021을 다시 돌리지 않고 2022로
+  진행한다. 정책 B가 허용 발음 후보를 바꾸고 채택되면 기존 결과를
+  baseline archive로 보존하고 새 run ID로 2020→2021→2022–2025 순서로
+  실행한다. 결정과 gate는
+  `decisions/PLAN_common_pron_AB_then_year_order_20260728.md`에 기록했다.

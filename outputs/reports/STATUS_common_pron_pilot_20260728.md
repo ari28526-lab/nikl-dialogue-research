@@ -42,3 +42,30 @@ release: `common_pron_pilot_full6y_20260728`
 상세 기록:
 
 `docs/decisions/PILOT_common_pronunciation_full_corpus_20260728.md`
+
+## 실행 순서 결정
+
+현재 완료된 것은 공통 vocabulary와 사전 원천 감사이며, 실제 정책 A/B MFA
+파생사전은 아직 생성 전이다. 따라서 2020 재실행과 2022 전량을 모두 잠시
+보류하고 다음 순서로 진행한다.
+
+```text
+registry
+  → 현재 MFA phone 변환 gate
+  → 정책 A/B 사전
+  → 동일 표본 MFA 파일럿
+  → 자동 QC + 연구자 검토
+  → 연도별 전량 결정
+```
+
+정책 A가 기존 2020·2021 phone 후보와 전수 동등하면 재실행 없이 2022로
+진행할 수 있다. 정책 B가 사전 예외·대체 후보를 실제로 바꾸고 채택되면 기존
+결과를 baseline으로 보존하고 2020·2021부터 새 release로 재정렬한 뒤
+2022–2025를 진행한다.
+
+wav2vec2 phone 모델은 A/B stress 표본의 별도 보조층으로만 사용하며 기존
+MFA tier·CSV·TextGrid를 바꾸지 않는다.
+
+상세 결정:
+
+`docs/decisions/PLAN_common_pron_AB_then_year_order_20260728.md`
