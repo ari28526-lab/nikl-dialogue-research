@@ -169,5 +169,10 @@ time을 줄인다는 근거 없이 실행을 중단하거나 shard별 조건을 
   계속한다. 모든 35개 계산을 진행할 수 있지만 미해결 행이 있으면 final
   사전만 차단된다. 따라서 비슷한 단어 하나 때문에 야간 계산 전체가
   매번 중단되지는 않는다.
+- final 생성 뒤 `finalize_common_pron_no_path_method.py`가 후보 생성
+  contract의 동결 Jamo G2P·acoustic·pin SHA와 보수 전후 증거를 재검증한
+  뒤 G2P cache의 해당 행 출처만 교정한다. phone·final dictionary는
+  바꾸지 않으며, supplement를 포함한 production contract ID가 없으면
+  adoption contract가 연도별 MFA를 허용하지 않는다.
 - 상세 결정문:
   `docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md`

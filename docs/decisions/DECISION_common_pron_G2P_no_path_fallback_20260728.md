@@ -74,8 +74,18 @@
   `03_review\decisions\eulp-eo_20260728.json`
 - shard별 시도·partial backup·승인행 snapshot·보수 manifest:
   `_state\no_path_repairs\<shard>\`
+- final 방법론 supplement:
+  `00_contract\g2p_no_path_method_supplement.json`
 
 실제 D: 경로의 앞부분은 위 release root이다.
+
+finalizer는 보수 manifest, 원 partial SHA backup, 승인 snapshot, 최종
+shard, 후보 재철자 raw G2P, 동결 acoustic·Jamo G2P·model pin SHA를 다시
+검증한다. `g2p_cache.csv`에서는 승인 보수된 정확한 행의 `pron_source`만
+`researcher_approved_standard_respelling` 계열로 교정한다. phone열과
+최종 MFA dictionary는 바꾸지 않는다. 기존 prepare contract ID를
+보존하면서 supplement SHA를 포함한 별도 production contract ID를
+만들고, adoption contract가 이를 다시 검증해야 연도별 MFA를 허용한다.
 
 ## 방법론 문장 초안
 

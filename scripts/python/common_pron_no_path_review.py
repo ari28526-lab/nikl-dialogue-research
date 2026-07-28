@@ -172,9 +172,17 @@ def build_review(
     mapping_path: Path,
     raw_dictionary: Path,
     acoustic_model: Path,
+    g2p_model: Path,
+    frozen_model_pin: Path,
     review_path: Path,
     manifest_path: Path,
 ) -> dict:
+    for label, path in (
+        ("G2P model", g2p_model),
+        ("frozen model pin", frozen_model_pin),
+    ):
+        if not path.is_file():
+            raise RuntimeError(f"no-path {label} 없음: {path}")
     mappings = load_mapping(mapping_path)
     generated = read_generated_dictionary(raw_dictionary)
     expected = {row["respelled"] for row in mappings}
@@ -254,6 +262,12 @@ def build_review(
             ),
             "acoustic_model": file_fingerprint(
                 acoustic_model, with_sha256=True
+            ),
+            "g2p_model": file_fingerprint(
+                g2p_model, with_sha256=True
+            ),
+            "frozen_model_pin": file_fingerprint(
+                frozen_model_pin, with_sha256=True
             ),
         },
         "output": {
@@ -560,6 +574,8 @@ def parse_args() -> argparse.Namespace:
     review.add_argument("--mapping", type=Path, required=True)
     review.add_argument("--raw-dictionary", type=Path, required=True)
     review.add_argument("--acoustic-model", type=Path, required=True)
+    review.add_argument("--g2p-model", type=Path, required=True)
+    review.add_argument("--frozen-model-pin", type=Path, required=True)
     review.add_argument("--review", type=Path, required=True)
     review.add_argument("--manifest", type=Path, required=True)
 
@@ -599,6 +615,8 @@ def main() -> int:
             mapping_path=args.mapping.resolve(),
             raw_dictionary=args.raw_dictionary.resolve(),
             acoustic_model=args.acoustic_model.resolve(),
+            g2p_model=args.g2p_model.resolve(),
+            frozen_model_pin=args.frozen_model_pin.resolve(),
             review_path=args.review.resolve(),
             manifest_path=args.manifest.resolve(),
         )

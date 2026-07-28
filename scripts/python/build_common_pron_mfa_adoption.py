@@ -15,6 +15,7 @@ SCHEMA_VERSION = "common_pron_mfa_adoption.v2"
 APPROVAL_SCHEMA_VERSION = "common_pron_mfa_researcher_approval.v1"
 DIFFERENCE_SCHEMA_VERSION = "common_pron_mfa_difference_inventory.v2"
 LEXICON_SCHEMA_VERSION = "common_pron_mfa_lexicon.v2"
+NO_PATH_SCHEMA_VERSION = "common_pron_g2p_no_path_supplement.v1"
 REQUIRED_JAMO_LS_WORDS = {
     "외곬수적인",
     "외곬을",
@@ -33,6 +34,8 @@ def _approved_jamo_ls_pronunciations(release: dict) -> dict[str, str]:
         .get("jamo_ls_researcher_review", {})
     )
     path = Path(str(record.get("path", "")))
+    if not path.is_file():
+        raise RuntimeError("r2 no-path supplement file missing")
     actual = file_fingerprint(path, with_sha256=True)
     if (
         actual["sha256"] != record.get("sha256")
@@ -55,6 +58,81 @@ def _approved_jamo_ls_pronunciations(release: dict) -> dict[str, str]:
     ):
         raise RuntimeError("r2 Jamo ㄽ review approval rows invalid")
     return pronunciations
+
+
+def _verified_no_path_supplement(release: dict) -> dict:
+    count = int(release.get("counts", {}).get(
+        "g2p_reviewed_no_path_words", 0
+    ))
+    if count == 0:
+        return {
+            "status": "not_applicable",
+            "counts": {"reviewed_no_path_words": 0},
+        }
+    record = (
+        release.get("method_supplements", {})
+        .get("reviewed_g2p_no_path", {})
+    )
+    path = Path(str(record.get("path", "")))
+    actual = file_fingerprint(path, with_sha256=True)
+    if (
+        actual["sha256"] != record.get("sha256")
+        or actual["bytes"] != record.get("bytes")
+    ):
+        raise RuntimeError("r2 no-path supplement fingerprint mismatch")
+    supplement = _load(path)
+    policy = supplement.get("policy", {})
+    output_cache = supplement.get("outputs", {}).get("g2p_cache", {})
+    release_cache = release.get("outputs", {}).get("g2p_cache", {})
+    if (
+        supplement.get("schema_version") != NO_PATH_SCHEMA_VERSION
+        or supplement.get("status") != "success"
+        or supplement.get("kind")
+        != "reviewed_g2p_no_path_method_supplement"
+        or supplement.get("production_release_contract_id")
+        != release.get("release_contract_id")
+        or int(supplement.get("counts", {}).get(
+            "reviewed_no_path_words", -1
+        ))
+        != count
+        or policy.get("same_frozen_jamo_g2p_required") is not True
+        or policy.get(
+            "researcher_approved_standard_respelling_required"
+        )
+        is not True
+        or policy.get("only_missing_surface_keys_added") is not True
+        or policy.get("existing_model_pronunciations_replaced") != 0
+        or policy.get("final_spn_words") != 0
+        or policy.get("phone_inventory_changed") is not False
+        or output_cache.get("sha256") != release_cache.get("sha256")
+        or output_cache.get("bytes") != release_cache.get("bytes")
+        or release.get("counts", {}).get(
+            "g2p_existing_model_pronunciations_replaced"
+        )
+        != 0
+    ):
+        raise RuntimeError("r2 no-path supplement hard gate failed")
+    for repair in supplement.get("inputs", {}).get(
+        "repair_manifests", []
+    ):
+        repair_path = Path(str(repair.get("path", "")))
+        if not repair_path.is_file():
+            raise RuntimeError("r2 no-path repair manifest missing")
+        repair_actual = file_fingerprint(
+            repair_path, with_sha256=True
+        )
+        if (
+            repair_actual["sha256"] != repair.get("sha256")
+            or repair_actual["bytes"] != repair.get("bytes")
+        ):
+            raise RuntimeError(
+                "r2 no-path repair manifest fingerprint mismatch"
+            )
+    return {
+        "status": "passed",
+        "supplement": actual,
+        "counts": {"reviewed_no_path_words": count},
+    }
 
 
 def build_adoption_contract(
@@ -87,6 +165,7 @@ def build_adoption_contract(
     ):
         raise RuntimeError("r2 common dictionary hard gate failed")
     approved_pronunciations = _approved_jamo_ls_pronunciations(release)
+    no_path = _verified_no_path_supplement(release)
 
     pin = verify_frozen_bundle(
         contract_path=frozen_bundle_contract_path
@@ -175,12 +254,16 @@ def build_adoption_contract(
         "researcher_approval": file_fingerprint(
             researcher_approval_path, with_sha256=True
         ),
+        "reviewed_no_path": no_path,
         "gate": {
             "dictionary_missing": 0,
             "dictionary_spn_words": 0,
             "phone_outside_acoustic_inventory": 0,
             "difference_inventory_complete": True,
             "jamo_ls_researcher_approval": True,
+            "reviewed_no_path_method_supplement": (
+                no_path["status"] in {"passed", "not_applicable"}
+            ),
             "allow_yearly_mfa": True,
             "legacy_inline_g2p_default": False,
         },

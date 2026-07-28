@@ -192,6 +192,126 @@ class CommonPronAdoptionTests(unittest.TestCase):
                         researcher_approval_path=paths["approval"],
                     )
 
+    def test_reviewed_no_path_supplement_is_verified(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cache = root / "cache.csv"
+            cache.write_text("token\n읊어\n", encoding="utf-8")
+            cache_fp = file_fingerprint(cache, with_sha256=True)
+            repair = root / "repair.json"
+            repair.write_text('{"status":"success"}\n', encoding="utf-8")
+            repair_fp = file_fingerprint(repair, with_sha256=True)
+            supplement = root / "supplement.json"
+            supplement.write_text(
+                json.dumps(
+                    {
+                        "schema_version": (
+                            "common_pron_g2p_no_path_supplement.v1"
+                        ),
+                        "status": "success",
+                        "kind": (
+                            "reviewed_g2p_no_path_method_supplement"
+                        ),
+                        "production_release_contract_id": "production",
+                        "counts": {"reviewed_no_path_words": 1},
+                        "policy": {
+                            "same_frozen_jamo_g2p_required": True,
+                            (
+                                "researcher_approved_standard_"
+                                "respelling_required"
+                            ): True,
+                            "only_missing_surface_keys_added": True,
+                            "existing_model_pronunciations_replaced": 0,
+                            "final_spn_words": 0,
+                            "phone_inventory_changed": False,
+                        },
+                        "inputs": {
+                            "repair_manifests": [repair_fp]
+                        },
+                        "outputs": {"g2p_cache": cache_fp},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            release = {
+                "release_contract_id": "production",
+                "counts": {
+                    "g2p_reviewed_no_path_words": 1,
+                    "g2p_existing_model_pronunciations_replaced": 0,
+                },
+                "outputs": {"g2p_cache": cache_fp},
+                "method_supplements": {
+                    "reviewed_g2p_no_path": file_fingerprint(
+                        supplement, with_sha256=True
+                    )
+                },
+            }
+            result = adoption._verified_no_path_supplement(release)
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual(
+                result["counts"]["reviewed_no_path_words"], 1
+            )
+
+    def test_tampered_no_path_repair_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cache = root / "cache.csv"
+            cache.write_text("token\n읊어\n", encoding="utf-8")
+            cache_fp = file_fingerprint(cache, with_sha256=True)
+            repair = root / "repair.json"
+            repair.write_text('{"status":"success"}\n', encoding="utf-8")
+            repair_fp = file_fingerprint(repair, with_sha256=True)
+            supplement = root / "supplement.json"
+            supplement.write_text(
+                json.dumps(
+                    {
+                        "schema_version": (
+                            "common_pron_g2p_no_path_supplement.v1"
+                        ),
+                        "status": "success",
+                        "kind": (
+                            "reviewed_g2p_no_path_method_supplement"
+                        ),
+                        "production_release_contract_id": "production",
+                        "counts": {"reviewed_no_path_words": 1},
+                        "policy": {
+                            "same_frozen_jamo_g2p_required": True,
+                            (
+                                "researcher_approved_standard_"
+                                "respelling_required"
+                            ): True,
+                            "only_missing_surface_keys_added": True,
+                            "existing_model_pronunciations_replaced": 0,
+                            "final_spn_words": 0,
+                            "phone_inventory_changed": False,
+                        },
+                        "inputs": {
+                            "repair_manifests": [repair_fp]
+                        },
+                        "outputs": {"g2p_cache": cache_fp},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            release = {
+                "release_contract_id": "production",
+                "counts": {
+                    "g2p_reviewed_no_path_words": 1,
+                    "g2p_existing_model_pronunciations_replaced": 0,
+                },
+                "outputs": {"g2p_cache": cache_fp},
+                "method_supplements": {
+                    "reviewed_g2p_no_path": file_fingerprint(
+                        supplement, with_sha256=True
+                    )
+                },
+            }
+            repair.write_text("tampered\n", encoding="utf-8")
+            with self.assertRaisesRegex(
+                RuntimeError, "repair manifest fingerprint"
+            ):
+                adoption._verified_no_path_supplement(release)
+
 
 if __name__ == "__main__":
     unittest.main()

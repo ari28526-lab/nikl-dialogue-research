@@ -37,6 +37,8 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.mapping = self.root / "mapping.csv"
         self.acoustic = self.root / "acoustic.zip"
+        self.g2p_model = self.root / "g2p.zip"
+        self.frozen_pin = self.root / "frozen_model_pin.json"
         self.raw = self.root / "raw.dict"
         self.review_path = self.root / "03_review" / "review.csv"
         self.review_manifest = self.root / "00_contract" / "review.json"
@@ -59,6 +61,8 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             ],
         )
         write_acoustic_model(self.acoustic)
+        self.g2p_model.write_bytes(b"frozen-g2p")
+        self.frozen_pin.write_text('{"status":"passed"}\n', encoding="utf-8")
         self.raw.write_text("을퍼\tɨ ɭ pʰ ʌ\n", encoding="utf-8")
         self.input_shard.parent.mkdir(parents=True)
         self.output_shard.parent.mkdir(parents=True)
@@ -67,6 +71,8 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             mapping_path=self.mapping,
             raw_dictionary=self.raw,
             acoustic_model=self.acoustic,
+            g2p_model=self.g2p_model,
+            frozen_model_pin=self.frozen_pin,
             review_path=self.review_path,
             manifest_path=self.review_manifest,
         )
@@ -92,6 +98,8 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             mapping_path=self.mapping,
             raw_dictionary=self.raw,
             acoustic_model=self.acoustic,
+            g2p_model=self.g2p_model,
+            frozen_model_pin=self.frozen_pin,
             review_path=self.review_path,
             manifest_path=self.review_manifest,
         )
@@ -225,6 +233,8 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
                 mapping_path=self.mapping,
                 raw_dictionary=self.raw,
                 acoustic_model=self.acoustic,
+                g2p_model=self.g2p_model,
+                frozen_model_pin=self.frozen_pin,
                 review_path=self.review_path,
                 manifest_path=self.review_manifest,
             )

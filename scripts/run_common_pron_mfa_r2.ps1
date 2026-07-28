@@ -225,6 +225,9 @@ $pinDriver = Join-Path (
 $noPathDriver = Join-Path (
     $PSScriptRoot
 ) 'python\common_pron_no_path_review.py'
+$noPathMethodDriver = Join-Path (
+    $PSScriptRoot
+) 'python\finalize_common_pron_no_path_method.py'
 $noPathMapping = Join-Path (
     $projectRoot
 ) 'config\common_pron_g2p_no_path_exceptions.csv'
@@ -233,7 +236,8 @@ $bundleContract = Join-Path (
 ) 'outputs\reports\korean_mfa_latest_jamo_bundle_20260728.json'
 foreach ($path in @(
     $sourceVocabulary, $sourceManifest, $py, $mfa, $driver,
-    $pinDriver, $noPathDriver, $noPathMapping, $bundleContract
+    $pinDriver, $noPathDriver, $noPathMethodDriver, $noPathMapping,
+    $bundleContract
 )) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "필수 입력/실행 파일 없음: $path"
@@ -424,6 +428,8 @@ try {
         --mapping $noPathMapping `
         --raw-dictionary $noPathRaw `
         --acoustic-model $acousticModel `
+        --g2p-model $g2pModel `
+        --frozen-model-pin $pinReport `
         --review $noPathReviewPath `
         --manifest $noPathReviewManifest
     if ($LASTEXITCODE -ne 0) {
@@ -609,6 +615,10 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "공통사전 r2 finalize 실패"
     }
+    & $py $noPathMethodDriver --release-root $releaseRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "공통사전 r2 no-path 방법론 supplement 실패"
+    }
     $finalManifest = Join-Path (
         Join-Path $releaseRoot '00_contract'
     ) 'release_manifest.json'
@@ -619,7 +629,11 @@ try {
         [int]$final.counts.g2p_missing -ne 0 -or
         [int]$final.counts.g2p_spn_words -ne 0 -or
         [int]$final.counts.phone_outside_acoustic_inventory -ne 0 -or
-        [int]$final.counts.g2p_jamo_ls_rewrite_words -ne 4
+        [int]$final.counts.g2p_jamo_ls_rewrite_words -ne 4 -or
+        [int]$final.counts.g2p_reviewed_no_path_words -lt 1 -or
+        [int]$final.counts.g2p_existing_model_pronunciations_replaced -ne 0 -or
+        $final.dictionary_contract.reviewed_no_path_fallback.status -ne
+            'passed'
     ) {
         throw "공통사전 r2 final hard gate 실패"
     }

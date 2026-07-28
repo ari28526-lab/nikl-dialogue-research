@@ -1090,6 +1090,15 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   4,750 words/s의 거짓 속도를 표시했다. 보수 manifest와 output SHA를
   결합해 승인 보수 shard는 ETA 표본에서 제외하고, 이후 실제 6번
   증분만으로 속도를 계산하도록 고쳤다. 20:59 실측 표시는 8.22 words/s다.
+- 장시간 shard 실행 중 동결 builder는 변경하지 않고, final 직후 적용할
+  별도 no-path 방법론 supplement를 구현했다. 후보 raw G2P가 release와
+  같은 acoustic·Jamo G2P·frozen pin을 썼는지, partial backup·승인
+  snapshot·repair manifest·최종 shard SHA가 일치하는지 다시 검증한다.
+  G2P cache에서는 승인 보수행의 출처만 교정하고 phone과 final
+  dictionary는 불변으로 유지한다. supplement SHA를 포함한 production
+  contract ID를 만들며 두 번째 실행은 byte-identical한 멱등 동작이다.
+  adoption contract에도 이 supplement와 repair manifest 변조 차단을
+  추가했다.
 - 상세 방법론과 주장 범위는
   `docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md`
   에 기록했다.
