@@ -390,6 +390,17 @@ def load_application_plan(
             "validation manifest is not ready_for_apply"
         )
     outputs = validation_manifest.get("outputs", {})
+    validation_inputs = validation_manifest.get("inputs", {})
+    evidence_paths: dict[str, Path] = {}
+    for label in (
+        "clean_template",
+        "filled_workbook",
+        "model_bundle",
+    ):
+        record = validation_inputs.get(label, {})
+        path = Path(clean(record.get("path")))
+        verify_record(path, record, f"validation {label}")
+        evidence_paths[label] = path
     decision_record = outputs.get("normalized_decisions", {})
     correction_record = outputs.get("correction_registry", {})
     decision_path = Path(clean(decision_record.get("path")))
@@ -413,7 +424,7 @@ def load_application_plan(
             f"correction registry mismatch: {sorted(correction_tokens)}"
         )
 
-    template_manifest_record = validation_manifest.get("inputs", {}).get(
+    template_manifest_record = validation_inputs.get(
         "template_manifest", {}
     )
     template_manifest_path = Path(
@@ -425,6 +436,30 @@ def load_application_plan(
         "clean template manifest",
     )
     template_manifest = read_json(template_manifest_path)
+    template_output = template_manifest.get("output", {})
+    clean_template_record = validation_inputs["clean_template"]
+    if (
+        template_output.get("sha256")
+        != clean_template_record.get("sha256")
+        or template_output.get("bytes")
+        != clean_template_record.get("bytes")
+    ):
+        raise DecisionApplicationError(
+            "clean template differs from template manifest output"
+        )
+    template_model_bundle = template_manifest.get("inputs", {}).get(
+        "model_bundle", {}
+    )
+    validation_model_bundle = validation_inputs["model_bundle"]
+    if (
+        template_model_bundle.get("sha256")
+        != validation_model_bundle.get("sha256")
+        or template_model_bundle.get("bytes")
+        != validation_model_bundle.get("bytes")
+    ):
+        raise DecisionApplicationError(
+            "model bundle differs between validation and template manifest"
+        )
     no_path_record = template_manifest.get("inputs", {}).get(
         "no_path_review", {}
     )
@@ -454,6 +489,8 @@ def load_application_plan(
         "validation_manifest": validation_manifest,
         "validation_manifest_path": validation_manifest_path,
         "template_manifest_path": template_manifest_path,
+        "clean_template_path": evidence_paths["clean_template"],
+        "filled_workbook_path": evidence_paths["filled_workbook"],
         "model_bundle_path": model_bundle_path,
         "decision_path": decision_path,
         "correction_path": correction_path,
@@ -591,13 +628,22 @@ def _apply_plan_locked(
     transaction_root.mkdir(parents=True, exist_ok=False)
     copy_exact(no_path_review_path, archive_no_path)
     copy_exact(jamo_review_path, archive_jamo)
-    for source in (
-        plan["validation_manifest_path"],
-        plan["template_manifest_path"],
-        plan["decision_path"],
-        plan["correction_path"],
-    ):
-        copy_exact(source, evidence_root / source.name)
+    evidence_sources = {
+        "validation_manifest": plan["validation_manifest_path"],
+        "template_manifest": plan["template_manifest_path"],
+        "clean_template": plan["clean_template_path"],
+        "filled_workbook": plan["filled_workbook_path"],
+        "model_bundle": plan["model_bundle_path"],
+        "normalized_decisions": plan["decision_path"],
+        "correction_registry": plan["correction_path"],
+    }
+    evidence_archives: dict[str, dict[str, Any]] = {}
+    for label, source in evidence_sources.items():
+        destination = evidence_root / f"{label}__{source.name}"
+        copy_exact(source, destination)
+        evidence_archives[label] = file_fingerprint(
+            destination, with_sha256=True
+        )
 
     proposal_root.mkdir(parents=True, exist_ok=True)
     write_csv(
@@ -646,6 +692,7 @@ def _apply_plan_locked(
             "jamo_review": file_fingerprint(
                 archive_jamo, with_sha256=True
             ),
+            "decision_evidence": evidence_archives,
         },
         "proposals": {
             "no_path_review": file_fingerprint(

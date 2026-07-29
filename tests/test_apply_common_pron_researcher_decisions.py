@@ -131,6 +131,11 @@ def create_ready_fixture(root: Path) -> dict:
     filled_workbook.close()
 
     template_manifest_path = root / "template.manifest.json"
+    model_bundle_path = root / "model_bundle.json"
+    model_bundle_path.write_text(
+        '{"schema_version":"fixture.model_bundle.v1"}\n',
+        encoding="utf-8",
+    )
     template_manifest = {
         "schema_version": validator.WORKBOOK_SCHEMA_VERSION,
         "status": "success",
@@ -141,6 +146,9 @@ def create_ready_fixture(root: Path) -> dict:
             ),
             "jamo_review": file_fingerprint(
                 jamo_path, with_sha256=True
+            ),
+            "model_bundle": file_fingerprint(
+                model_bundle_path, with_sha256=True
             ),
         },
     }
@@ -174,11 +182,17 @@ def create_ready_fixture(root: Path) -> dict:
         "status": "ready_for_apply",
         "ready_for_apply": True,
         "inputs": {
+            "clean_template": file_fingerprint(
+                TEMPLATE, with_sha256=True
+            ),
             "template_manifest": file_fingerprint(
                 template_manifest_path, with_sha256=True
             ),
             "filled_workbook": file_fingerprint(
                 filled, with_sha256=True
+            ),
+            "model_bundle": file_fingerprint(
+                model_bundle_path, with_sha256=True
             ),
         },
         "outputs": {
@@ -304,6 +318,25 @@ class ApplyCommonPronResearcherDecisionsTests(unittest.TestCase):
                     manifest["outputs"]["correction_registry"]["path"]
                 ).is_file()
             )
+            evidence = manifest["archives"]["decision_evidence"]
+            self.assertEqual(
+                set(evidence),
+                {
+                    "validation_manifest",
+                    "template_manifest",
+                    "clean_template",
+                    "filled_workbook",
+                    "model_bundle",
+                    "normalized_decisions",
+                    "correction_registry",
+                },
+            )
+            for record in evidence.values():
+                archived = Path(record["path"])
+                self.assertTrue(archived.is_file())
+                self.assertEqual(
+                    sha256_file(archived), record["sha256"]
+                )
             with self.frozen_inventory_patch(fixture):
                 repeated = apply.apply_plan(
                     plan=plan,

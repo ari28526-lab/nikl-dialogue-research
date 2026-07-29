@@ -164,7 +164,7 @@ def build_alignment_contract(
         )
         if (
             common_adoption.get("schema_version")
-            != "common_pron_mfa_adoption.v2"
+            != "common_pron_mfa_adoption.v3"
             or common_adoption.get("status") != "passed"
             or not common_adoption.get("gate", {}).get(
                 "allow_yearly_mfa"

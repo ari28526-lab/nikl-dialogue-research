@@ -330,6 +330,34 @@ transaction/correction 파일 수, lock 상태가 전후 완전히 같았다. �
 이 적용 계약의 코드 준비는 완료됐지만, 사용자 `FILLED` 승인본 전에는
 `--apply`를 실행하지 않는다.
 
+## 승인에서 연도별 MFA까지의 adoption v3 계약
+
+`FILLED` workbook의 승인을 원장에 반영했다는 사실만으로 연도별 MFA를
+허용하지 않는다. 적용 transaction과 최종 사전 사이의 provenance가
+끊기지 않았음을 다음 기준으로 다시 증명한다.
+
+1. 적용 transaction은 clean/filled workbook, validator/template
+   manifest, frozen model bundle, 정규화 결정 27행, correction 2행을
+   D: release 안에 SHA archive해야 한다.
+2. adoption은 archived validation과 적용된 no-path/Jamo 원장을 다시
+   읽어 27개 정규화 결정의 model input·후보 phone·승인 phone이
+   동일한지 확인한다.
+3. no-path 최종 supplement는 기존 `읊어` 1개와 신규 23개를 합한
+   정확히 24개여야 한다. repair manifest별 승인 snapshot·사용 후보와
+   적용 원장의 행이 같고, 신규 23개 repair는 적용된 원장 fingerprint를
+   사용해야 한다.
+4. Jamo 4개 승인 phone은 최종 별도 승인 dictionary와 같아야 하며,
+   두 source correction의 승인 phone도 같은 Jamo 원장 행과 같아야
+   한다.
+5. 최종 연구자 승인 v2는 common release, difference inventory,
+   decision application, correction registry 네 SHA를 모두 고정해야
+   한다.
+
+이 다섯 조건을 통과한 `common_pron_mfa_adoption.v3`만
+`allow_yearly_mfa=true`를 낼 수 있다. 연도별 alignment contract와
+PowerShell runner도 v3만 받으므로, 구 adoption v2나 application을
+생략한 수동 실행은 생산 기준으로 사용할 수 없다.
+
 검토 workbook의 SHA256은
 `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
 생성기 SHA256은

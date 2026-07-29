@@ -11,11 +11,114 @@ from pipeline_common import atomic_write_json, file_fingerprint, now_iso
 from verify_frozen_mfa_bundle import verify_frozen_bundle
 
 
-SCHEMA_VERSION = "common_pron_mfa_adoption.v2"
-APPROVAL_SCHEMA_VERSION = "common_pron_mfa_researcher_approval.v1"
+SCHEMA_VERSION = "common_pron_mfa_adoption.v3"
+APPROVAL_SCHEMA_VERSION = "common_pron_mfa_researcher_approval.v2"
 DIFFERENCE_SCHEMA_VERSION = "common_pron_mfa_difference_inventory.v2"
 LEXICON_SCHEMA_VERSION = "common_pron_mfa_lexicon.v2"
 NO_PATH_SCHEMA_VERSION = "common_pron_g2p_no_path_supplement.v1"
+APPLICATION_SCHEMA_VERSION = (
+    "common_pron_researcher_decision_application.v1"
+)
+VALIDATION_SCHEMA_VERSION = (
+    "common_pron_researcher_decision_validation.v1"
+)
+APPLICATION_KIND = "common_pron_researcher_decision_application"
+EXPECTED_APPLICATION_COUNTS = {
+    "normalized_decisions": 27,
+    "no_path_existing_approved_preserved": 1,
+    "no_path_new_approved": 23,
+    "no_path_total_approved": 24,
+    "jamo_new_approved": 4,
+    "correction_registry_rows": 2,
+}
+EXPECTED_APPLICATION_GATES = {
+    "exclusive_runner_lock_held": True,
+    "originals_archived_before_promotion": True,
+    "no_path_post_write_verified": True,
+    "jamo_post_write_verified": True,
+    "correction_registry_hash_verified": True,
+    "raw_corpus_modified": False,
+    "g2p_shards_modified": False,
+    "final_dictionary_created": False,
+}
+EXPECTED_CORRECTIONS = {
+    "외곬수적인": {
+        "correction_kind": "source_spelling",
+        "raw_search_token": "외곬수적인",
+        "normalized_search_token": "외골수적인",
+    },
+    "천구백칤비육": {
+        "correction_kind": "numeric_placeholder",
+        "raw_search_token": "천구백칤비육",
+        "normalized_search_token": "천구백칠십육",
+    },
+}
+AFFIRMATIVE_DECISIONS = {
+    "approve_recommended",
+    "approve_alternative",
+    "approve_custom",
+}
+NO_PATH_FIELDS = (
+    "surface",
+    "respelled",
+    "rule_id",
+    "evidence_source",
+    "evidence_detail",
+    "pron_phones_mfa",
+    "approved_pron_phones_mfa",
+    "approved_phone_evidence",
+    "decision",
+    "notes",
+)
+LEGACY_NO_PATH_FIELDS = (
+    "surface",
+    "respelled",
+    "rule_id",
+    "evidence_source",
+    "evidence_detail",
+    "pron_phones_mfa",
+    "decision",
+    "notes",
+)
+JAMO_FIELDS = (
+    "token",
+    "model_input",
+    "pron_phones_mfa",
+    "approved_pron_phones_mfa",
+    "decision",
+    "evidence_source",
+    "notes",
+)
+DECISION_FIELDS = (
+    "review_order",
+    "category",
+    "token",
+    "model_input",
+    "model_candidate_phone",
+    "recommendation_action",
+    "researcher_decision",
+    "approved_pron_phones_mfa",
+    "approved_phone_source",
+    "approved_phone_provenance",
+    "researcher_notes",
+    "source_handling",
+    "source_url",
+    "reason",
+    "example_utt_id",
+    "review_wav",
+)
+CORRECTION_FIELDS = (
+    "review_order",
+    "token",
+    "correction_kind",
+    "raw_search_token",
+    "normalized_search_token",
+    "source_notation",
+    "approved_pron_phones_mfa",
+    "researcher_decision",
+    "researcher_notes",
+    "example_utt_id",
+)
 REQUIRED_JAMO_LS_WORDS = {
     "외곬수적인",
     "외곬을",
@@ -26,6 +129,79 @@ REQUIRED_JAMO_LS_WORDS = {
 
 def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _clean(value: object) -> str:
+    return str(value or "").strip()
+
+
+def _verify_record(record: dict, *, label: str) -> dict:
+    path = Path(_clean(record.get("path")))
+    if not path.is_file():
+        raise RuntimeError(f"{label} missing: {path}")
+    actual = file_fingerprint(path, with_sha256=True)
+    if (
+        actual["sha256"] != record.get("sha256")
+        or actual["bytes"] != record.get("bytes")
+    ):
+        raise RuntimeError(f"{label} fingerprint mismatch")
+    return actual
+
+
+def _read_csv(path: Path, fields: tuple[str, ...]) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        if tuple(reader.fieldnames or ()) != fields:
+            raise RuntimeError(
+                f"CSV field contract mismatch: {path} "
+                f"{reader.fieldnames}"
+            )
+        return [
+            {field: _clean(row.get(field)) for field in fields}
+            for row in reader
+        ]
+
+
+def _read_no_path_csv(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        fieldnames = tuple(reader.fieldnames or ())
+        if fieldnames not in {NO_PATH_FIELDS, LEGACY_NO_PATH_FIELDS}:
+            raise RuntimeError(
+                f"no-path CSV field contract mismatch: {path} "
+                f"{reader.fieldnames}"
+            )
+        rows = []
+        for raw in reader:
+            row = {
+                field: _clean(raw.get(field)) for field in NO_PATH_FIELDS
+            }
+            if (
+                fieldnames == LEGACY_NO_PATH_FIELDS
+                and row["decision"] == "approved"
+            ):
+                row["approved_pron_phones_mfa"] = row[
+                    "pron_phones_mfa"
+                ]
+                row["approved_phone_evidence"] = (
+                    "legacy_same_frozen_jamo_candidate"
+                )
+            rows.append(row)
+        return rows
+
+
+def _same_record(left: dict, right: dict) -> bool:
+    return (
+        left.get("sha256") == right.get("sha256")
+        and left.get("bytes") == right.get("bytes")
+    )
+
+
+def _same_no_path_row(left: dict, right: dict) -> bool:
+    return all(
+        _clean(left.get(field)) == _clean(right.get(field))
+        for field in NO_PATH_FIELDS
+    )
 
 
 def _approved_jamo_ls_pronunciations(release: dict) -> dict[str, str]:
@@ -196,14 +372,416 @@ def _verified_no_path_supplement(release: dict) -> dict:
     }
 
 
+def _verified_decision_application(
+    *,
+    release: dict,
+    approved_jamo_pronunciations: dict[str, str],
+    no_path: dict,
+    application_path: Path,
+) -> dict:
+    """Prove workbook decisions reached every final pronunciation artifact."""
+    application_path = application_path.resolve()
+    application = _load(application_path)
+    counts = application.get("counts", {})
+    gates = application.get("gates", {})
+    if (
+        application.get("schema_version") != APPLICATION_SCHEMA_VERSION
+        or application.get("status") != "applied"
+        or application.get("kind") != APPLICATION_KIND
+        or application.get("release_id") != release.get("release_id")
+        or any(
+            counts.get(key) != expected
+            for key, expected in EXPECTED_APPLICATION_COUNTS.items()
+        )
+        or any(
+            gates.get(key) is not expected
+            for key, expected in EXPECTED_APPLICATION_GATES.items()
+        )
+    ):
+        raise RuntimeError("researcher decision application hard gate failed")
+
+    application_actual = file_fingerprint(
+        application_path, with_sha256=True
+    )
+    outputs = application.get("outputs", {})
+    output_actual = {
+        label: _verify_record(
+            outputs.get(label, {}), label=f"application {label}"
+        )
+        for label in (
+            "no_path_review",
+            "jamo_review",
+            "correction_registry",
+        )
+    }
+    for label in ("no_path_review", "jamo_review"):
+        _verify_record(
+            application.get("archives", {}).get(label, {}),
+            label=f"application original {label} archive",
+        )
+        proposal = application.get("proposals", {}).get(label, {})
+        _verify_record(
+            proposal, label=f"application proposed {label}"
+        )
+        if not _same_record(proposal, output_actual[label]):
+            raise RuntimeError(
+                f"application proposed/output {label} mismatch"
+            )
+    correction_proposal = application.get("proposals", {}).get(
+        "correction_registry", {}
+    )
+    _verify_record(
+        correction_proposal,
+        label="application proposed correction registry",
+    )
+    if not _same_record(
+        correction_proposal, output_actual["correction_registry"]
+    ):
+        raise RuntimeError(
+            "application proposed/output correction registry mismatch"
+        )
+
+    evidence = (
+        application.get("archives", {}).get("decision_evidence", {})
+    )
+    required_evidence = {
+        "validation_manifest",
+        "template_manifest",
+        "clean_template",
+        "filled_workbook",
+        "model_bundle",
+        "normalized_decisions",
+        "correction_registry",
+    }
+    if not required_evidence.issubset(evidence):
+        raise RuntimeError(
+            "application decision evidence archive is incomplete"
+        )
+    evidence_actual = {
+        label: _verify_record(
+            evidence[label], label=f"application evidence {label}"
+        )
+        for label in sorted(required_evidence)
+    }
+    validation_input = application.get("inputs", {}).get(
+        "validation_manifest", {}
+    )
+    if not _same_record(
+        validation_input, evidence_actual["validation_manifest"]
+    ):
+        raise RuntimeError(
+            "application validation input/archive mismatch"
+        )
+    validation = _load(
+        Path(evidence_actual["validation_manifest"]["path"])
+    )
+    if (
+        validation.get("schema_version") != VALIDATION_SCHEMA_VERSION
+        or validation.get("status") != "ready_for_apply"
+        or validation.get("kind")
+        != "common_pron_r2_researcher_decision_validation"
+        or validation.get("ready_for_apply") is not True
+        or validation.get("counts", {}).get(
+            "normalized_decisions"
+        )
+        != 27
+        or validation.get("counts", {}).get(
+            "correction_registry_rows"
+        )
+        != 2
+    ):
+        raise RuntimeError(
+            "archived researcher decision validation hard gate failed"
+        )
+    validation_inputs = validation.get("inputs", {})
+    validation_outputs = validation.get("outputs", {})
+    evidence_input_map = {
+        "clean_template": "clean_template",
+        "filled_workbook": "filled_workbook",
+        "template_manifest": "template_manifest",
+        "model_bundle": "model_bundle",
+    }
+    for validation_label, evidence_label in evidence_input_map.items():
+        if not _same_record(
+            validation_inputs.get(validation_label, {}),
+            evidence_actual[evidence_label],
+        ):
+            raise RuntimeError(
+                "validation input/evidence archive mismatch: "
+                f"{validation_label}"
+            )
+    if not _same_record(
+        validation_outputs.get("normalized_decisions", {}),
+        evidence_actual["normalized_decisions"],
+    ):
+        raise RuntimeError(
+            "validation decisions/evidence archive mismatch"
+        )
+    if not _same_record(
+        validation_outputs.get("correction_registry", {}),
+        evidence_actual["correction_registry"],
+    ):
+        raise RuntimeError(
+            "validation correction/evidence archive mismatch"
+        )
+    if not _same_record(
+        evidence_actual["correction_registry"],
+        output_actual["correction_registry"],
+    ):
+        raise RuntimeError(
+            "validated/applied correction registry mismatch"
+        )
+
+    decisions = _read_csv(
+        Path(evidence_actual["normalized_decisions"]["path"]),
+        DECISION_FIELDS,
+    )
+    decision_by_token = {
+        row["token"]: row for row in decisions
+    }
+    if (
+        len(decisions) != 27
+        or len(decision_by_token) != 27
+        or sum(row["category"] == "no_path" for row in decisions)
+        != 23
+        or sum(row["category"] == "jamo_ls" for row in decisions)
+        != 4
+        or any(
+            row["researcher_decision"] not in AFFIRMATIVE_DECISIONS
+            for row in decisions
+        )
+    ):
+        raise RuntimeError(
+            "normalized researcher decision contract mismatch"
+        )
+
+    no_path_rows = _read_no_path_csv(
+        Path(output_actual["no_path_review"]["path"])
+    )
+    no_path_by_surface = {
+        row["surface"]: row for row in no_path_rows
+    }
+    if (
+        len(no_path_rows) != 24
+        or len(no_path_by_surface) != 24
+        or any(
+            row["decision"] != "approved"
+            or not row["approved_pron_phones_mfa"]
+            for row in no_path_rows
+        )
+        or "읊어" not in no_path_by_surface
+    ):
+        raise RuntimeError(
+            "applied no-path researcher review contract mismatch"
+        )
+    for token, decision in decision_by_token.items():
+        if decision["category"] != "no_path":
+            continue
+        row = no_path_by_surface.get(token)
+        if (
+            row is None
+            or decision["model_input"] != row["respelled"]
+            or decision["model_candidate_phone"]
+            != row["pron_phones_mfa"]
+            or decision["approved_pron_phones_mfa"]
+            != row["approved_pron_phones_mfa"]
+        ):
+            raise RuntimeError(
+                f"normalized/applied no-path decision mismatch: {token}"
+            )
+
+    jamo_rows = _read_csv(
+        Path(output_actual["jamo_review"]["path"]), JAMO_FIELDS
+    )
+    jamo_by_token = {row["token"]: row for row in jamo_rows}
+    if (
+        len(jamo_rows) != 4
+        or len(jamo_by_token) != 4
+        or set(jamo_by_token) != REQUIRED_JAMO_LS_WORDS
+        or any(
+            row["decision"] != "approved"
+            or not row["approved_pron_phones_mfa"]
+            for row in jamo_rows
+        )
+        or {
+            token: row["approved_pron_phones_mfa"]
+            for token, row in jamo_by_token.items()
+        }
+        != approved_jamo_pronunciations
+    ):
+        raise RuntimeError(
+            "applied/final Jamo researcher review mismatch"
+        )
+    for token, row in jamo_by_token.items():
+        decision = decision_by_token.get(token)
+        if (
+            decision is None
+            or decision["category"] != "jamo_ls"
+            or decision["model_input"] != row["model_input"]
+            or decision["model_candidate_phone"]
+            != row["pron_phones_mfa"]
+            or decision["approved_pron_phones_mfa"]
+            != row["approved_pron_phones_mfa"]
+        ):
+            raise RuntimeError(
+                f"normalized/applied Jamo decision mismatch: {token}"
+            )
+
+    corrections = _read_csv(
+        Path(output_actual["correction_registry"]["path"]),
+        CORRECTION_FIELDS,
+    )
+    correction_by_token = {
+        row["token"]: row for row in corrections
+    }
+    if (
+        len(corrections) != 2
+        or set(correction_by_token) != set(EXPECTED_CORRECTIONS)
+    ):
+        raise RuntimeError("applied correction registry token mismatch")
+    for token, expected in EXPECTED_CORRECTIONS.items():
+        row = correction_by_token[token]
+        jamo_row = jamo_by_token[token]
+        decision = decision_by_token[token]
+        if (
+            any(row.get(key) != value for key, value in expected.items())
+            or row["researcher_decision"] not in AFFIRMATIVE_DECISIONS
+            or row["researcher_decision"]
+            != decision["researcher_decision"]
+            or row["approved_pron_phones_mfa"]
+            != jamo_row["approved_pron_phones_mfa"]
+        ):
+            raise RuntimeError(
+                f"applied correction registry row mismatch: {token}"
+            )
+
+    if (
+        no_path.get("status") != "passed"
+        or no_path.get("counts", {}).get("reviewed_no_path_words")
+        != 24
+    ):
+        raise RuntimeError(
+            "final no-path supplement does not contain 24 approvals"
+        )
+    supplement = _load(Path(no_path["supplement"]["path"]))
+    reviewed_candidates = supplement.get("reviewed_candidates", [])
+    candidate_by_surface = {
+        _clean(row.get("surface")): row
+        for row in reviewed_candidates
+    }
+    if (
+        len(reviewed_candidates) != 24
+        or len(candidate_by_surface) != 24
+        or set(candidate_by_surface) != set(no_path_by_surface)
+        or any(
+            not _same_no_path_row(
+                candidate_by_surface[surface],
+                no_path_by_surface[surface],
+            )
+            for surface in no_path_by_surface
+        )
+    ):
+        raise RuntimeError(
+            "application/final no-path candidate rows mismatch"
+        )
+
+    repaired_surfaces: set[str] = set()
+    for repair_record in supplement.get("inputs", {}).get(
+        "repair_manifests", []
+    ):
+        repair_actual = _verify_record(
+            repair_record, label="final no-path repair manifest"
+        )
+        repair = _load(Path(repair_actual["path"]))
+        if (
+            repair.get("status") != "success"
+            or repair.get("kind") != "reviewed_no_path_shard_repair"
+        ):
+            raise RuntimeError(
+                "final no-path repair manifest contract mismatch"
+            )
+        snapshot_record = repair.get("inputs", {}).get(
+            "approved_review_snapshot", {}
+        )
+        snapshot_actual = _verify_record(
+            snapshot_record, label="final no-path approval snapshot"
+        )
+        snapshot_rows = _read_no_path_csv(
+            Path(snapshot_actual["path"])
+        )
+        used_candidates = repair.get("used_candidates", [])
+        if len(snapshot_rows) != len(used_candidates):
+            raise RuntimeError(
+                "final no-path repair snapshot/candidate count mismatch"
+            )
+        manifest_surfaces: set[str] = set()
+        for snapshot_row in snapshot_rows:
+            surface = snapshot_row["surface"]
+            application_row = no_path_by_surface.get(surface)
+            used = next(
+                (
+                    row
+                    for row in used_candidates
+                    if _clean(row.get("surface")) == surface
+                ),
+                None,
+            )
+            if (
+                not surface
+                or surface in repaired_surfaces
+                or application_row is None
+                or used is None
+                or not _same_no_path_row(
+                    snapshot_row, application_row
+                )
+                or not _same_no_path_row(used, application_row)
+            ):
+                raise RuntimeError(
+                    "application/repair no-path row mismatch: "
+                    f"{surface}"
+                )
+            repaired_surfaces.add(surface)
+            manifest_surfaces.add(surface)
+        if manifest_surfaces - {"읊어"}:
+            researcher_review = repair.get("inputs", {}).get(
+                "researcher_review", {}
+            )
+            if not _same_record(
+                researcher_review, output_actual["no_path_review"]
+            ):
+                raise RuntimeError(
+                    "new no-path repair did not use applied review ledger"
+                )
+    if repaired_surfaces != set(no_path_by_surface):
+        raise RuntimeError(
+            "final no-path repairs do not cover every approved surface"
+        )
+
+    return {
+        "application": application_actual,
+        "validation": evidence_actual["validation_manifest"],
+        "filled_workbook": evidence_actual["filled_workbook"],
+        "correction_registry": output_actual["correction_registry"],
+        "counts": dict(EXPECTED_APPLICATION_COUNTS),
+        "gates": {
+            "decision_evidence_archived": True,
+            "normalized_decisions_match_ledgers": True,
+            "corrections_match_final_jamo": True,
+            "no_path_repairs_match_application": True,
+        },
+    }
+
+
 def build_adoption_contract(
     *,
     common_manifest_path: Path,
     frozen_bundle_contract_path: Path,
+    decision_application_path: Path,
     difference_inventory_path: Path,
     researcher_approval_path: Path,
 ) -> dict:
     common_manifest_path = common_manifest_path.resolve()
+    decision_application_path = decision_application_path.resolve()
     difference_inventory_path = difference_inventory_path.resolve()
     researcher_approval_path = researcher_approval_path.resolve()
     release = _load(common_manifest_path)
@@ -236,6 +814,12 @@ def build_adoption_contract(
         raise RuntimeError("r2 common dictionary hard gate failed")
     approved_pronunciations = _approved_jamo_ls_pronunciations(release)
     no_path = _verified_no_path_supplement(release)
+    decision_application = _verified_decision_application(
+        release=release,
+        approved_jamo_pronunciations=approved_pronunciations,
+        no_path=no_path,
+        application_path=decision_application_path,
+    )
 
     pin = verify_frozen_bundle(
         contract_path=frozen_bundle_contract_path
@@ -294,6 +878,10 @@ def build_adoption_contract(
         != common_manifest_actual["sha256"]
         or approval.get("difference_inventory_sha256")
         != difference_actual["sha256"]
+        or approval.get("decision_application_sha256")
+        != decision_application["application"]["sha256"]
+        or approval.get("correction_registry_sha256")
+        != decision_application["correction_registry"]["sha256"]
         or jamo_ls.get("decision") != "approved"
         or jamo_ls.get("phone_inventory_changed") is not False
         or set(jamo_ls.get("required_words", []))
@@ -324,6 +912,7 @@ def build_adoption_contract(
         "researcher_approval": file_fingerprint(
             researcher_approval_path, with_sha256=True
         ),
+        "researcher_decision_application": decision_application,
         "reviewed_no_path": no_path,
         "gate": {
             "dictionary_missing": 0,
@@ -331,6 +920,8 @@ def build_adoption_contract(
             "phone_outside_acoustic_inventory": 0,
             "difference_inventory_complete": True,
             "jamo_ls_researcher_approval": True,
+            "researcher_decision_application": True,
+            "source_correction_registry": True,
             "reviewed_no_path_method_supplement": (
                 no_path["status"] in {"passed", "not_applicable"}
             ),
@@ -347,6 +938,9 @@ def main() -> int:
         "--frozen-bundle-contract", type=Path, required=True
     )
     parser.add_argument(
+        "--decision-application", type=Path, required=True
+    )
+    parser.add_argument(
         "--difference-inventory", type=Path, required=True
     )
     parser.add_argument(
@@ -357,6 +951,7 @@ def main() -> int:
     contract = build_adoption_contract(
         common_manifest_path=args.common_manifest,
         frozen_bundle_contract_path=args.frozen_bundle_contract,
+        decision_application_path=args.decision_application,
         difference_inventory_path=args.difference_inventory,
         researcher_approval_path=args.researcher_approval,
     )

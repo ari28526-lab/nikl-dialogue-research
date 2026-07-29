@@ -1441,3 +1441,45 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   쓰기는 0이며 합성 승인을 실제 승인으로 사용하지 않았다.
 - transaction 회귀시험 5개를 포함한 전체 Python unittest **189개**,
   PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
+
+## 2026-07-29 연구자 결정 증거 archive와 adoption v3
+
+- 실제 원장 적용 전에 validation manifest·template manifest·정규화
+  결정·correction뿐 아니라 clean v5, 연구자 FILLED workbook, 동결
+  model bundle까지 transaction의 `decision_evidence` 아래에 각각
+  SHA256 동등 복사하도록 강화했다. 적용 manifest가 이 일곱 증거의
+  fingerprint를 직접 참조하므로 이후 C: 작업본이 이동해도 D: release
+  안에서 승인 당시 입력을 감사할 수 있다.
+- `build_common_pron_mfa_adoption.py`를
+  `common_pron_mfa_adoption.v3`로 올렸다. 새 필수 입력은
+  `common_pron_researcher_decision_application.v1` manifest다. 단순
+  파일 존재가 아니라 다음 연쇄를 모두 다시 읽어 대조한다.
+  1. archived validation이 `ready_for_apply`, 결정 27행,
+     correction 2행인지
+  2. 정규화 no-path 23행과 적용 원장의 신규 23행이 후보·승인 phone
+     수준에서 같은지
+  3. 기존 승인 `읊어`를 포함한 no-path 24행이 최종 supplement와
+     repair별 승인 snapshot에 모두 동일하게 들어갔는지
+  4. 신규 23행이 실제 적용 원장 fingerprint를 사용해 shard를
+     보수했는지
+  5. Jamo ㄽ 원장 4행과 최종 승인 dictionary의 phone이 같은지
+  6. `외곬수적인→외골수적인`,
+     `천구백칤비육→천구백칠십육` correction 두 행의 승인 phone이
+     최종 Jamo phone과 같은지
+- 최종 연구자 승인 계약도
+  `common_pron_mfa_researcher_approval.v2`로 올려 common manifest와
+  difference inventory뿐 아니라 decision application SHA와
+  correction registry SHA를 명시해야 한다. 따라서 승인 workbook이
+  검증됐더라도 application·repair·correction 중 하나가 빠지거나
+  바뀌면 연도별 MFA는 허용되지 않는다.
+- `build_mfa_alignment_contract.py`, `run_eojeol_realign.ps1`와
+  PowerShell 안전검사의 소비 기준도 adoption v3로 동시에 갱신했다.
+  새 archive/application/approval 변조 회귀시험을 포함한 전체 Python
+  unittest **192개**와 PowerShell 안전검사 **12개**가 통과했다.
+- 원격 검토를 위해 기존 D: 근거 bundle을 다시 확인했다.
+  occurrence 31행, 고유 발화/WAV 29개이며 기존 manifest의 원본/복사본
+  SHA 동등성 기록을 보존한다. 이 컴퓨터의 Windows 바탕화면은
+  `OneDrive\바탕 화면`이므로 코퍼스 WAV 29개를 바탕화면에 복사하면
+  OneDrive로 전송될 수 있다. 사용자가 Dropbox 이동을 요청했어도
+  별도 OneDrive 전송 승인은 없으므로 휴대용 폴더/ZIP 생성은 보류했고,
+  원본과 기존 D: bundle은 변경하지 않았다.

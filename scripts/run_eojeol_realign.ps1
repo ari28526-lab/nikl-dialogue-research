@@ -383,7 +383,7 @@ if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             [int]$commonData.counts.phone_outside_acoustic_inventory -ne 0 -or
             [int]$commonData.counts.g2p_jamo_ls_rewrite_words -ne 4 -or
             $adoptionData.schema_version -ne
-                'common_pron_mfa_adoption.v2' -or
+                'common_pron_mfa_adoption.v3' -or
             $adoptionData.status -ne 'passed' -or
             $adoptionData.policy -ne
                 'latest_jamo_common_dictionary_required' -or

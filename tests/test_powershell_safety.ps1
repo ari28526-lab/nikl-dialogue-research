@@ -134,7 +134,7 @@ foreach ($path in $files) {
             '공통 G2P/r2 생성과 MFA 동시 실행 금지',
             '$ownsDirectLock',
             '2020·2021은 전수 동등성 baseline으로 보존함',
-            'common_pron_mfa_adoption.v2',
+            'common_pron_mfa_adoption.v3',
             'latest_jamo_common_dictionary_required',
             'allow_yearly_mfa',
             'verify_frozen_mfa_bundle.py',
