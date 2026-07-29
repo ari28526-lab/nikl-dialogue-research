@@ -601,11 +601,15 @@ try {
 
     $review = @(Import-Csv -LiteralPath $reviewPath -Encoding UTF8)
     $approved = @($review | Where-Object {
-        $_.decision -eq 'approved'
+        $_.decision -eq 'approved' -and
+        -not [string]::IsNullOrWhiteSpace(
+            [string]$_.approved_pron_phones_mfa
+        )
     })
     if ($review.Count -ne 4 -or $approved.Count -ne 4) {
         Say (
-            "표준 G2P는 완료됐지만 Jamo ㄽ 4건 연구자 승인이 미완료. " +
+            "표준 G2P는 완료됐지만 Jamo ㄽ 4건의 별도 승인 phone이 " +
+            "미완료. " +
             "finalize·연도별 MFA를 시작하지 않음"
         )
         exit 76
@@ -630,6 +634,12 @@ try {
         [int]$final.counts.g2p_spn_words -ne 0 -or
         [int]$final.counts.phone_outside_acoustic_inventory -ne 0 -or
         [int]$final.counts.g2p_jamo_ls_rewrite_words -ne 4 -or
+        (
+            [int]$final.counts.g2p_jamo_ls_model_candidate_accepted_words +
+            [int]$final.counts.g2p_jamo_ls_manual_override_words
+        ) -ne 4 -or
+        $final.dictionary_contract.jamo_ls_manual_override_policy -ne
+            'researcher_approved_same_acoustic_inventory_only' -or
         [int]$final.counts.g2p_reviewed_no_path_words -lt 1 -or
         [int]$final.counts.g2p_existing_model_pronunciations_replaced -ne 0 -or
         $final.dictionary_contract.reviewed_no_path_fallback.status -ne

@@ -27,13 +27,23 @@ class CommonPronAdoptionTests(unittest.TestCase):
             for index, word in enumerate(words, 1)
         }
         review.write_text(
-            "token,model_input,pron_phones_mfa,decision,notes\n"
+            "token,model_input,pron_phones_mfa,"
+            "approved_pron_phones_mfa,decision,evidence_source,notes\n"
             + "".join(
-                f"{word},{word},{reviewed_pronunciations[word]},"
-                "approved,\n"
+                f"{word},{word},k a,"
+                f"{reviewed_pronunciations[word]},approved,"
+                "official_test,reviewed\n"
                 for word in words
             ),
             encoding="utf-8-sig",
+        )
+        approved_dictionary = root / "jamo_ls_approved.dict"
+        approved_dictionary.write_text(
+            "".join(
+                f"{word}\t{reviewed_pronunciations[word]}\n"
+                for word in words
+            ),
+            encoding="utf-8",
         )
         model_shas = {
             role: hashlib.sha256(role.encode()).hexdigest()
@@ -52,6 +62,8 @@ class CommonPronAdoptionTests(unittest.TestCase):
                         "phone_outside_acoustic_inventory": 0,
                         "observed_oov_coverage_missing": 0,
                         "g2p_jamo_ls_rewrite_words": 4,
+                        "g2p_jamo_ls_model_candidate_accepted_words": 2,
+                        "g2p_jamo_ls_manual_override_words": 2,
                     },
                     "inputs": {
                         "acoustic_model": {
@@ -71,8 +83,14 @@ class CommonPronAdoptionTests(unittest.TestCase):
                     },
                     "dictionary_contract": {
                         "jamo_ls_surface_key_restoration": True,
+                        "jamo_ls_manual_override_policy": (
+                            "researcher_approved_same_acoustic_inventory_only"
+                        ),
                         "jamo_ls_researcher_review": file_fingerprint(
                             review, with_sha256=True
+                        ),
+                        "jamo_ls_approved_pronunciations": file_fingerprint(
+                            approved_dictionary, with_sha256=True
                         ),
                     },
                 }
@@ -134,6 +152,7 @@ class CommonPronAdoptionTests(unittest.TestCase):
             "difference": difference,
             "approval": approval,
             "bundle": bundle,
+            "approved_dictionary": approved_dictionary,
             "model_shas": model_shas,
         }
 
@@ -184,6 +203,26 @@ class CommonPronAdoptionTests(unittest.TestCase):
             ):
                 with self.assertRaisesRegex(
                     RuntimeError, "researcher approval"
+                ):
+                    adoption.build_adoption_contract(
+                        common_manifest_path=paths["common"],
+                        frozen_bundle_contract_path=paths["bundle"],
+                        difference_inventory_path=paths["difference"],
+                        researcher_approval_path=paths["approval"],
+                    )
+
+    def test_jamo_approved_dictionary_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.fixture(Path(temp))
+            paths["approved_dictionary"].write_text(
+                "외곬의\twrong phones\n", encoding="utf-8"
+            )
+            with patch(
+                "build_common_pron_mfa_adoption.verify_frozen_bundle",
+                return_value=self.pin(paths),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError, "fingerprint mismatch"
                 ):
                     adoption.build_adoption_contract(
                         common_manifest_path=paths["common"],

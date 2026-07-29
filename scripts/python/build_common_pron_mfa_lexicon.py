@@ -48,7 +48,9 @@ SPECIAL_REVIEW_FIELDS = (
     "token",
     "model_input",
     "pron_phones_mfa",
+    "approved_pron_phones_mfa",
     "decision",
+    "evidence_source",
     "notes",
 )
 # MFA 3.4.0 ``utils.parse_dictionary_file``의 실제 판별식과 동일하게
@@ -464,6 +466,9 @@ def prepare_paths(release_root: Path) -> dict[str, Path]:
         / "01_g2p"
         / "output_shards"
         / "jamo_ls_restored.dict",
+        "special_approved_output": release_root
+        / "02_mfa_lexicon"
+        / "jamo_ls_researcher_approved.dict",
         "special_candidate_report": release_root
         / "_state"
         / "jamo_ls_candidate_report.json",
@@ -935,7 +940,15 @@ def read_special_mapping(path: Path) -> list[dict[str, str]]:
 def read_special_review(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
-        missing = set(SPECIAL_REVIEW_FIELDS) - set(reader.fieldnames or ())
+        fieldnames = set(reader.fieldnames or ())
+        legacy_required = {
+            "token",
+            "model_input",
+            "pron_phones_mfa",
+            "decision",
+            "notes",
+        }
+        missing = legacy_required - fieldnames
         if missing:
             raise RuntimeError(
                 f"Jamo ㄽ 연구자 검토표 필수 열 누락: {sorted(missing)}"
@@ -945,16 +958,30 @@ def read_special_review(path: Path) -> list[dict[str, str]]:
             # IPA modifier letters such as ʰ and ʲ are meaningful phone
             # symbols. NFKC would silently collapse them to ASCII h/j, so
             # normalization is limited to orthographic key columns.
+            candidate = str(
+                row.get("pron_phones_mfa") or ""
+            ).strip()
+            decision = str(row.get("decision") or "").strip()
+            approved = str(
+                row.get("approved_pron_phones_mfa") or ""
+            ).strip()
+            evidence = str(
+                row.get("evidence_source") or ""
+            ).strip()
+            if (
+                "approved_pron_phones_mfa" not in fieldnames
+                and decision == "approved"
+            ):
+                approved = candidate
+                evidence = evidence or "legacy_same_model_candidate"
             rows.append(
                 {
                     "token": clean(row.get("token")),
                     "model_input": clean(row.get("model_input")),
-                    "pron_phones_mfa": str(
-                        row.get("pron_phones_mfa") or ""
-                    ).strip(),
-                    "decision": str(
-                        row.get("decision") or ""
-                    ).strip(),
+                    "pron_phones_mfa": candidate,
+                    "approved_pron_phones_mfa": approved,
+                    "decision": decision,
+                    "evidence_source": evidence,
                     "notes": str(row.get("notes") or "").strip(),
                 }
             )
@@ -1002,7 +1029,9 @@ def restore_jamo_ls_candidates(
             "token": row["token"],
             "model_input": row["model_input"],
             "pron_phones_mfa": " ".join(raw[row["model_input"]]),
+            "approved_pron_phones_mfa": "",
             "decision": "pending",
+            "evidence_source": "",
             "notes": "",
         }
         for row in mapping
@@ -1029,6 +1058,10 @@ def restore_jamo_ls_candidates(
                 )
     paths["special_review"].parent.mkdir(parents=True, exist_ok=True)
     if paths["special_review"].exists():
+        with paths["special_review"].open(
+            "r", encoding="utf-8-sig", newline=""
+        ) as stream:
+            existing_fields = tuple(csv.DictReader(stream).fieldnames or ())
         existing_review = read_special_review(paths["special_review"])
         candidate_contract = [
             (
@@ -1048,6 +1081,12 @@ def restore_jamo_ls_candidates(
         ]
         if existing_contract != candidate_contract:
             raise RuntimeError("기존 Jamo ㄽ 연구자 검토표 후보가 달라짐")
+        if not set(SPECIAL_REVIEW_FIELDS).issubset(existing_fields):
+            write_csv(
+                paths["special_review"],
+                SPECIAL_REVIEW_FIELDS,
+                existing_review,
+            )
     else:
         write_csv(
             paths["special_review"],
@@ -1104,6 +1143,8 @@ def finalize(*, release_root: Path) -> dict:
     if paths["final_manifest"].exists():
         return verify_final(paths["final_manifest"])
     prepared = verify_prepared(paths["manifest"])
+    acoustic_model = Path(prepared["inputs"]["acoustic_model"]["path"])
+    phone_inventory = acoustic_phone_inventory(acoustic_model)
     for path in (paths["final_dictionary"], paths["g2p_cache"]):
         if path.exists():
             raise FileExistsError(f"manifest 없는 기존 final 산출물: {path}")
@@ -1134,13 +1175,13 @@ def finalize(*, release_root: Path) -> dict:
         )
         output_records.append(record)
     special_mapping = read_special_mapping(paths["special_mapping"])
-    special_generated = (
+    special_candidates = (
         read_generated_dictionary(paths["special_restored_output"])
         if special_mapping
         else {}
     )
     expected_special = {row["token"] for row in special_mapping}
-    if set(special_generated) != expected_special:
+    if set(special_candidates) != expected_special:
         raise RuntimeError("Jamo ㄽ 표층키 복원 coverage 불일치")
     special_review = (
         read_special_review(paths["special_review"])
@@ -1153,37 +1194,111 @@ def finalize(*, release_root: Path) -> dict:
         or set(review_by_token) != expected_special
     ):
         raise RuntimeError("Jamo ㄽ 연구자 검토표 token 집합 불일치")
+    special_approved: dict[str, tuple[str, ...]] = {}
+    special_pron_sources: dict[str, str] = {}
+    manual_override_words: list[str] = []
     for row in special_mapping:
         token = row["token"]
         review = review_by_token[token]
-        phones = " ".join(special_generated[token])
+        candidate_phones = " ".join(special_candidates[token])
         if (
             review["decision"] != "approved"
             or review["model_input"] != row["model_input"]
-            or review["pron_phones_mfa"] != phones
+            or review["pron_phones_mfa"] != candidate_phones
+            or not review["approved_pron_phones_mfa"]
         ):
             raise RuntimeError(
                 f"Jamo ㄽ 연구자 승인 미완료 또는 후보 불일치: {token}"
             )
-    duplicates = set(generated) & set(special_generated)
+        approved_phones = tuple(
+            review["approved_pron_phones_mfa"].split()
+        )
+        unknown_approved = set(approved_phones) - phone_inventory
+        if unknown_approved or "spn" in approved_phones:
+            raise RuntimeError(
+                f"Jamo ㄽ 승인 phone gate 실패: {token}, "
+                f"unknown={sorted(unknown_approved)}, "
+                f"spn={'spn' in approved_phones}"
+            )
+        if approved_phones == special_candidates[token]:
+            source = (
+                "korean_mfa_jamo_g2p_v3.2.0_1best_"
+                "u11b3_decomposed_researcher_approved"
+            )
+        else:
+            if not review["evidence_source"] or not review["notes"]:
+                raise RuntimeError(
+                    "Jamo ㄽ 수동 승인 phone은 evidence_source와 "
+                    f"notes가 필요함: {token}"
+                )
+            source = (
+                "researcher_reviewed_jamo_ls_override_"
+                "same_acoustic_inventory_v1"
+            )
+            manual_override_words.append(token)
+        special_approved[token] = approved_phones
+        special_pron_sources[token] = source
+
+    if special_mapping:
+        paths["special_approved_output"].parent.mkdir(
+            parents=True, exist_ok=True
+        )
+        if paths["special_approved_output"].exists():
+            existing_approved = read_generated_dictionary(
+                paths["special_approved_output"]
+            )
+            if existing_approved != special_approved:
+                raise RuntimeError(
+                    "기존 Jamo ㄽ 연구자 승인 사전이 검토표와 불일치"
+                )
+        else:
+            with atomic_text_writer(
+                paths["special_approved_output"],
+                encoding="utf-8",
+                newline="\n",
+            ) as (stream, _):
+                for token in sorted(special_approved):
+                    stream.write(
+                        f"{token}\t"
+                        f"{' '.join(special_approved[token])}\n"
+                    )
+
+    duplicates = set(generated) & set(special_approved)
     if duplicates:
         raise RuntimeError(
             "표준 shard와 Jamo ㄽ shard 중복: "
             + ", ".join(sorted(duplicates))
         )
-    generated.update(special_generated)
+    generated.update(special_approved)
     if special_mapping:
         output_records.append(
             {
                 **file_fingerprint(
+                    paths["special_approved_output"], with_sha256=True
+                ),
+                "kind": "jamo_ls_researcher_approved",
+                "row_count": len(special_approved),
+                "model_candidate_output": file_fingerprint(
                     paths["special_restored_output"], with_sha256=True
                 ),
-                "kind": "jamo_ls_surface_key_restored",
-                "row_count": len(special_generated),
             }
         )
     special_review_record = (
         file_fingerprint(paths["special_review"], with_sha256=True)
+        if special_mapping
+        else {"status": "not_applicable", "rows": 0}
+    )
+    special_candidate_record = (
+        file_fingerprint(
+            paths["special_restored_output"], with_sha256=True
+        )
+        if special_mapping
+        else {"status": "not_applicable", "rows": 0}
+    )
+    special_approved_record = (
+        file_fingerprint(
+            paths["special_approved_output"], with_sha256=True
+        )
         if special_mapping
         else {"status": "not_applicable", "rows": 0}
     )
@@ -1197,9 +1312,7 @@ def finalize(*, release_root: Path) -> dict:
         )
 
     base_dictionary = Path(prepared["inputs"]["base_dictionary"]["path"])
-    acoustic_model = Path(prepared["inputs"]["acoustic_model"]["path"])
     base_lines, base_prons = read_mfa_dictionary(base_dictionary)
-    phone_inventory = acoustic_phone_inventory(acoustic_model)
     base_unknown = phones_outside_inventory(base_prons, phone_inventory)
     if base_unknown:
         raise RuntimeError(
@@ -1240,7 +1353,7 @@ def finalize(*, release_root: Path) -> dict:
             **oov_by_token[word],
             "pron_phones_mfa": " ".join(generated[word]),
             "pron_source": (
-                "korean_mfa_jamo_g2p_v3.2.0_1best_u11b3_decomposed"
+                special_pron_sources[word]
                 if word in expected_special
                 else "korean_mfa_jamo_g2p_v3.2.0_1best_strict"
             ),
@@ -1280,6 +1393,18 @@ def finalize(*, release_root: Path) -> dict:
             "changes_phone_standard": False,
             "jamo_ls_surface_key_restoration": True,
             "jamo_ls_rewrite_rule": JAMO_LS_REWRITE_RULE,
+            "jamo_ls_model_candidates_preserved": (
+                special_candidate_record
+            ),
+            "jamo_ls_approved_pronunciations": (
+                special_approved_record
+            ),
+            "jamo_ls_manual_override_policy": (
+                "researcher_approved_same_acoustic_inventory_only"
+            ),
+            "jamo_ls_manual_override_words": sorted(
+                manual_override_words
+            ),
             "jamo_ls_researcher_review": special_review_record,
         },
         "inputs": prepared["inputs"],
@@ -1287,6 +1412,12 @@ def finalize(*, release_root: Path) -> dict:
             **prepared["counts"],
             "g2p_output_words": len(generated),
             "g2p_jamo_ls_rewrite_words": len(expected_special),
+            "g2p_jamo_ls_model_candidate_accepted_words": (
+                len(expected_special) - len(manual_override_words)
+            ),
+            "g2p_jamo_ls_manual_override_words": len(
+                manual_override_words
+            ),
             "g2p_missing": 0,
             "g2p_extras": 0,
             "g2p_spn_words": 0,

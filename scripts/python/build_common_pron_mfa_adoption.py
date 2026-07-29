@@ -29,24 +29,28 @@ def _load(path: Path) -> dict:
 
 
 def _approved_jamo_ls_pronunciations(release: dict) -> dict[str, str]:
-    record = (
+    review_record = (
         release.get("dictionary_contract", {})
         .get("jamo_ls_researcher_review", {})
     )
-    path = Path(str(record.get("path", "")))
-    if not path.is_file():
-        raise RuntimeError("r2 no-path supplement file missing")
-    actual = file_fingerprint(path, with_sha256=True)
+    review_path = Path(str(review_record.get("path", "")))
+    if not review_path.is_file():
+        raise RuntimeError("r2 Jamo ㄽ review file missing")
+    review_actual = file_fingerprint(
+        review_path, with_sha256=True
+    )
     if (
-        actual["sha256"] != record.get("sha256")
-        or actual["bytes"] != record.get("bytes")
+        review_actual["sha256"] != review_record.get("sha256")
+        or review_actual["bytes"] != review_record.get("bytes")
     ):
         raise RuntimeError("r2 Jamo ㄽ review fingerprint mismatch")
-    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+    with review_path.open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as stream:
         rows = list(csv.DictReader(stream))
     pronunciations = {
         str(row.get("token", "")).strip(): str(
-            row.get("pron_phones_mfa", "")
+            row.get("approved_pron_phones_mfa", "")
         ).strip()
         for row in rows
         if str(row.get("decision", "")).strip() == "approved"
@@ -57,6 +61,40 @@ def _approved_jamo_ls_pronunciations(release: dict) -> dict[str, str]:
         or len(rows) != len(REQUIRED_JAMO_LS_WORDS)
     ):
         raise RuntimeError("r2 Jamo ㄽ review approval rows invalid")
+
+    approved_record = (
+        release.get("dictionary_contract", {})
+        .get("jamo_ls_approved_pronunciations", {})
+    )
+    approved_path = Path(str(approved_record.get("path", "")))
+    if not approved_path.is_file():
+        raise RuntimeError("r2 Jamo ㄽ approved dictionary missing")
+    approved_actual = file_fingerprint(
+        approved_path, with_sha256=True
+    )
+    if (
+        approved_actual["sha256"] != approved_record.get("sha256")
+        or approved_actual["bytes"] != approved_record.get("bytes")
+    ):
+        raise RuntimeError(
+            "r2 Jamo ㄽ approved dictionary fingerprint mismatch"
+        )
+    approved_dictionary: dict[str, str] = {}
+    for line in approved_path.read_text(
+        encoding="utf-8-sig"
+    ).splitlines():
+        if not line.strip():
+            continue
+        parts = line.split()
+        if len(parts) < 2 or parts[0] in approved_dictionary:
+            raise RuntimeError(
+                "r2 Jamo ㄽ approved dictionary row invalid"
+            )
+        approved_dictionary[parts[0]] = " ".join(parts[1:])
+    if approved_dictionary != pronunciations:
+        raise RuntimeError(
+            "r2 Jamo ㄽ review and approved dictionary mismatch"
+        )
     return pronunciations
 
 
@@ -158,10 +196,19 @@ def build_adoption_contract(
         or counts.get("phone_outside_acoustic_inventory") != 0
         or counts.get("observed_oov_coverage_missing") != 0
         or counts.get("g2p_jamo_ls_rewrite_words") != 4
+        or (
+            counts.get("g2p_jamo_ls_model_candidate_accepted_words", -1)
+            + counts.get("g2p_jamo_ls_manual_override_words", -1)
+        )
+        != 4
         or release.get("dictionary_contract", {}).get(
             "jamo_ls_surface_key_restoration"
         )
         is not True
+        or release.get("dictionary_contract", {}).get(
+            "jamo_ls_manual_override_policy"
+        )
+        != "researcher_approved_same_acoustic_inventory_only"
     ):
         raise RuntimeError("r2 common dictionary hard gate failed")
     approved_pronunciations = _approved_jamo_ls_pronunciations(release)

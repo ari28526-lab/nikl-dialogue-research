@@ -202,6 +202,69 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
         )
         return values, manifest
 
+    def prepare_jamo_ls(self, root: Path):
+        values = self.fixture(root)
+        vocabulary = values[0]
+        with vocabulary.open(
+            "r", encoding="utf-8-sig", newline=""
+        ) as stream:
+            rows = list(csv.DictReader(stream))
+        rows[-1]["token"] = "외곬의"
+        with vocabulary.open(
+            "w", encoding="utf-8-sig", newline=""
+        ) as stream:
+            writer = csv.DictWriter(
+                stream,
+                fieldnames=list(lexicon.OOV_FIELDS),
+                lineterminator="\n",
+            )
+            writer.writeheader()
+            writer.writerows(rows)
+        write_vocabulary_manifest(vocabulary, values[1])
+        decomposed = sorted(
+            set(
+                "".join(
+                    __import__("unicodedata").normalize(
+                        "NFKD", value
+                    )
+                    for value in ("가", "나", "다가", "외곬의")
+                )
+            )
+            - {lexicon.JAMO_LS}
+            | {lexicon.JAMO_L, lexicon.JAMO_S}
+        )
+        write_g2p_model(
+            values[3],
+            graphemes=decomposed,
+            unicode_decomposition=True,
+        )
+        lexicon.prepare(
+            vocabulary=values[0],
+            vocabulary_manifest=values[1],
+            base_dictionary=values[2],
+            g2p_model=values[3],
+            acoustic_model=values[4],
+            release_root=values[5],
+            shard_size=100,
+        )
+        paths = lexicon.prepare_paths(values[5])
+        mapping = lexicon.read_special_mapping(
+            paths["special_mapping"]
+        )
+        paths["special_raw_output"].write_text(
+            f"{mapping[0]['model_input']}\tr a m a\n",
+            encoding="utf-8",
+        )
+        lexicon.restore_jamo_ls_candidates(
+            release_root=values[5],
+            acoustic_model=values[4],
+        )
+        (paths["output_shards"] / "oov_00001.dict").write_text(
+            "나\tn a\n다가\tt a k a\n",
+            encoding="utf-8",
+        )
+        return values, paths
+
     def test_prepare_preserves_surface_scope_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -483,6 +546,86 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
                 paths["special_review"]
             )
             self.assertEqual(review[0]["decision"], "pending")
+
+    def test_finalize_uses_reviewed_jamo_override_and_keeps_candidate(self):
+        with tempfile.TemporaryDirectory() as temp:
+            values, paths = self.prepare_jamo_ls(Path(temp))
+            review = lexicon.read_special_review(
+                paths["special_review"]
+            )
+            review[0].update(
+                {
+                    "approved_pron_phones_mfa": "r a m i",
+                    "decision": "approved",
+                    "evidence_source": "official_rule14_test",
+                    "notes": "same-inventory manual correction",
+                }
+            )
+            lexicon.write_csv(
+                paths["special_review"],
+                lexicon.SPECIAL_REVIEW_FIELDS,
+                review,
+            )
+            manifest = lexicon.finalize(release_root=values[5])
+            self.assertEqual(
+                manifest["counts"]["g2p_jamo_ls_manual_override_words"],
+                1,
+            )
+            self.assertEqual(
+                manifest["counts"][
+                    "g2p_jamo_ls_model_candidate_accepted_words"
+                ],
+                0,
+            )
+            self.assertEqual(
+                lexicon.read_generated_dictionary(
+                    paths["special_restored_output"]
+                )["외곬의"],
+                ("r", "a", "m", "a"),
+            )
+            self.assertEqual(
+                lexicon.read_generated_dictionary(
+                    paths["special_approved_output"]
+                )["외곬의"],
+                ("r", "a", "m", "i"),
+            )
+            final = lexicon.read_generated_dictionary(
+                paths["final_dictionary"]
+            )
+            self.assertEqual(final["외곬의"], ("r", "a", "m", "i"))
+            with paths["g2p_cache"].open(
+                "r", encoding="utf-8-sig", newline=""
+            ) as stream:
+                cache = {
+                    row["token"]: row for row in csv.DictReader(stream)
+                }
+            self.assertEqual(
+                cache["외곬의"]["pron_source"],
+                "researcher_reviewed_jamo_ls_override_"
+                "same_acoustic_inventory_v1",
+            )
+
+    def test_finalize_rejects_jamo_override_without_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            values, paths = self.prepare_jamo_ls(Path(temp))
+            review = lexicon.read_special_review(
+                paths["special_review"]
+            )
+            review[0].update(
+                {
+                    "approved_pron_phones_mfa": "r a m i",
+                    "decision": "approved",
+                }
+            )
+            lexicon.write_csv(
+                paths["special_review"],
+                lexicon.SPECIAL_REVIEW_FIELDS,
+                review,
+            )
+            with self.assertRaisesRegex(
+                RuntimeError, "evidence_source와 notes"
+            ):
+                lexicon.finalize(release_root=values[5])
 
 
 if __name__ == "__main__":

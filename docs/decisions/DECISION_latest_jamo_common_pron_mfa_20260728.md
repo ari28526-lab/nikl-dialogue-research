@@ -150,6 +150,32 @@ inventory 이탈=0 전에는 연도별 MFA 정렬을 시작하지 않는다.
 발음 승인에는 사용할 수 없게 gate를 내린다. G2P 계산과 D: 읽기 경합을
 피하기 위해 현재 전수 shard 계산이 끝난 뒤 실행한다.
 
+### 2026-07-29 승인 phone 계약 보강
+
+공식 규범과 충돌하는 same-model 후보를 그대로 승인하도록 강제하던
+구조를 바로잡았다.
+
+1. `pron_phones_mfa`는 완전분해 입력에서 나온 **모델 후보**로 유지하며
+   수정하지 않는다.
+2. 연구자가 최종 채택할 phone은 별도
+   `approved_pron_phones_mfa` 열에 기록한다.
+3. 승인 phone이 모델 후보와 다르면 `evidence_source`와 `notes`가 모두
+   있어야 하며, 동결 acoustic v3.3.0 inventory 밖 phone이나 `spn`은
+   거부한다.
+4. 모델 후보 `jamo_ls_restored.dict`와 연구자 승인
+   `jamo_ls_researcher_approved.dict`를 별도 보존한다. 최종 공통사전과
+   G2P cache에는 승인 dictionary의 phone만 들어간다.
+5. manifest는 모델 후보 그대로 채택한 수와 수동 교정한 수의 합이
+   정확히 4인지 검증하고, 수동 교정 어절 목록과 `pron_source`를
+   구분한다.
+6. adoption 단계는 검토 CSV의 승인열만 믿지 않고 별도 승인 dictionary
+   SHA와 네 phone을 다시 대조한다.
+
+기존 5열 pending 검토표는 다음 runner 재개 때 후보·결정을 보존한 채
+확장 스키마로 원자 이행한다. 이 기능은 수동 교정을 자동 승인하는
+기능이 아니다. 네 원본 발화 추적과 phone 문맥 대조를 마친 뒤 사용자가
+정확한 후보를 명시 승인해야 한다.
+
 ## 구결과 archive와 D: 정리
 
 새 외장 HDD는 `E:\`(NTFS, 약 1.86TB 여유)로 확인했다. 다음 약 55.9GiB는
