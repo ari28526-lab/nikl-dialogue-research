@@ -1483,3 +1483,20 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   OneDrive로 전송될 수 있다. 사용자가 Dropbox 이동을 요청했어도
   별도 OneDrive 전송 승인은 없으므로 휴대용 폴더/ZIP 생성은 보류했고,
   원본과 기존 D: bundle은 변경하지 않았다.
+- 이후 사용자가 명시적으로 Dropbox root 저장을 요청해
+  `C:\Users\ari30\Dropbox\MFA_R2_REVIEW_20260729`을 새로 만들었다.
+  clean v5의 작성용 복사본, 휴대용 안내문, clean template manifest,
+  occurrence 31행, audio manifest와 `wav` 29개를 넣었다. 중복 발화를
+  한 번만 둔 WAV 총량은 3,879,874바이트, 전체 package는
+  3,967,869바이트다. workbook·occurrence·audio manifest SHA는 각각
+  `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
+  `27b88d8019a0ad4c8956b386b5b56ac61920cb1d70722e96bb54ca18999e0128`,
+  `0fb564df09ce55927e31b2cd144331711d0e75745574c8766365d19795964ed4`
+  로 기존 증거와 같다.
+- 연결표의 29개 고유 `original_wav`를 다시 읽어 expected SHA와
+  Dropbox 복사본을 전수 대조했다. 원본 존재 29/29, 원본 SHA 일치
+  29/29, Dropbox SHA 일치 29/29이며 raw corpus 쓰기는 0이다.
+  workbook의 D: 절대경로 링크가 다른 컴퓨터에서 열리지 않을 때는
+  `wav\<year>\<session_id>\<utt_id>.wav`를 사용하도록 별도 안내문에
+  기록했다. ZIP 중복본은 만들지 않아 Dropbox 전송량을 불필요하게
+  늘리지 않았다.
