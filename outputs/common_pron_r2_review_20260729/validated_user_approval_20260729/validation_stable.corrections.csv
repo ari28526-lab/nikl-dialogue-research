@@ -1,0 +1,3 @@
+﻿review_order,token,correction_kind,raw_search_token,normalized_search_token,source_notation,approved_pron_phones_mfa,researcher_decision,researcher_notes,example_utt_id
+24,외곬수적인,source_spelling,외곬수적인,외골수적인,원 JSON 표기 보존,w eː ɡ o ɭ s͈ u dʑ ʌ ɟ i n,approve_recommended,2026-07-29 사용자 명시 결정: 27개 모두 workbook 권고 발음을 승인함.,SDRW2200001054.1.1.156
+27,천구백칤비육,numeric_placeholder,천구백칤비육,천구백칠십육,form 1976년; raw placeholder 보존,tɕʰ ʌ ŋ ɡ u b ɛː k̚ tɕʰ i ɭ ɕ͈ i m ɲ u k̚,approve_recommended,2026-07-29 사용자 명시 결정: 27개 모두 workbook 권고 발음을 승인함.,SDRW2100003843.1.1.46

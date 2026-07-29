@@ -1500,3 +1500,49 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `wav\<year>\<session_id>\<utt_id>.wav`를 사용하도록 별도 안내문에
   기록했다. ZIP 중복본은 만들지 않아 Dropbox 전송량을 불필요하게
   늘리지 않았다.
+
+## 2026-07-29 15:13–15:22 연구자 27건 일괄 권고 승인
+
+- 사용자가 대화에서 27개를 모두 `approve_recommended`로 명시 승인했다.
+  사용자가 Excel을 다시 수작업하지 않아도 같은 결정을 감사할 수 있게
+  clean v5는 그대로 두고 Dropbox에
+  `02_MFA_R2_REVIEW_FILLED_ALL_RECOMMENDED.xlsx`를 별도로 만들었다.
+  R열 27행만 권고 승인으로 기록하고 S custom phone은 27행 모두
+  비웠으며, U열에는
+  `2026-07-29 사용자 명시 결정: 27개 모두 workbook 권고 발음을 승인함.`
+  을 27행에 동일하게 남겼다. 작성본 SHA256은
+  `ab4297135197b6532e7c1e77d711e439f46ed7975fe9caae518e0c9f635ed2f8`
+  이다.
+- Dropbox 작성본을 프로젝트
+  `outputs/common_pron_r2_review_20260729/validated_user_approval_20260729/`
+  에 SHA 동등 고정 복사했다. clean v5와의 검증에서 불변 셀 1,860개,
+  editable 81칸 경계, sheet/병합/table/data validation/수식/link가
+  통과했다. 결과는 `ready_for_apply=true`,
+  `approve_recommended=27`, pending/hold/reject/error 0,
+  correction registry 2행이다. frozen lexical phone은 107개,
+  SHA256
+  `6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d`
+  로 다시 확인했다. 정규화 결정 CSV SHA는
+  `8913cf9fec4a0e4ffc5dd5d1e57cb7298946d54c7a933b1df92c18d188acbf68`,
+  correction CSV SHA는
+  `f263067dc50f41f2013ad96185d8c26c7873c03f7a536fdf88303950b87d21ec`
+  이다.
+- `발음검토!A1:U28`을 다시 렌더링해 27개 R열 결정, 빈 S열,
+  U열 승인 근거가 기존 서식 안에서 보이는지 확인했다. 이 편집은
+  결정값과 notes만 채웠고 연구 데이터·권고 phone·수식·서식은
+  바꾸지 않았다.
+- 실제 승인본을 대상으로 D: 쓰기 0 dry-run을 먼저 수행했다.
+  no-path/Jamo 원장 SHA, lock, transaction 수가 전후 같았다. 이후
+  `review_ab4297135197` transaction을 실제 적용했다. 기존 `읊어`
+  1행을 보존하고 no-path 신규 23행을 더해 승인 24/pending 0,
+  Jamo 승인 4, correction 2행이 됐다.
+- transaction은 두 원장 원본과 clean/filled workbook, model bundle,
+  validation/template manifest, decision/correction CSV의 일곱 근거를
+  먼저 archive했다. 출력 no-path/Jamo/correction SHA는 각각
+  `23979184e53ca7b983997b6b1caaf2bedf83f2245ee685813a7daed97640cf3d`,
+  `c64cc053179e3b0049fa721440b528238d71cf3390b1ae6a7120fb412408d499`,
+  `f263067dc50f41f2013ad96185d8c26c7873c03f7a536fdf88303950b87d21ec`
+  이다. 적용 manifest는
+  `03_review/decision_application_review_ab4297135197.manifest.json`이며
+  lock은 해제됐다. 이 단계의 raw corpus·G2P shard·final dictionary
+  변경은 모두 0이다.

@@ -1,0 +1,203 @@
+{
+  "schema_version": "common_pron_researcher_decision_validation.v1",
+  "status": "ready_for_apply",
+  "kind": "common_pron_r2_researcher_decision_validation",
+  "ready_for_apply": true,
+  "inputs": {
+    "clean_template": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\common_pron_r2_review_20260729\\common_pron_r2_researcher_review_20260729_v5.xlsx",
+      "bytes": 36459,
+      "mtime_ns": 1785298729901788000,
+      "sha256": "508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25"
+    },
+    "filled_workbook": {
+      "path": "C:\\Users\\ari30\\Dropbox\\MFA_R2_REVIEW_20260729\\02_MFA_R2_REVIEW_FILLED_ALL_RECOMMENDED.xlsx",
+      "bytes": 36517,
+      "mtime_ns": 1785305625164022700,
+      "sha256": "ab4297135197b6532e7c1e77d711e439f46ed7975fe9caae518e0c9f635ed2f8"
+    },
+    "template_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\common_pron_r2_review_20260729\\common_pron_r2_researcher_review_20260729_v5.manifest.json",
+      "bytes": 4851,
+      "mtime_ns": 1785298730487376900,
+      "sha256": "17b07e49998162843dab757ad29275f4e783f1b4362f9f790ebc28bc87f82e6d"
+    },
+    "model_bundle": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\korean_mfa_latest_jamo_bundle_20260728.json",
+      "bytes": 3956,
+      "mtime_ns": 1785218534765967600,
+      "sha256": "2ecb61316952319e44904533ed086915fba1eb7ba3ab315e3b83795de442b787"
+    }
+  },
+  "phone_inventory_contract": {
+    "count": 107,
+    "sorted_phone_sha256": "6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d",
+    "phones": [
+      "b",
+      "bʲ",
+      "bʷ",
+      "c",
+      "cʰ",
+      "cʰː",
+      "c͈",
+      "d",
+      "dʑ",
+      "dʑʷ",
+      "dʲ",
+      "dʷ",
+      "e",
+      "eː",
+      "h",
+      "i",
+      "iː",
+      "j",
+      "k",
+      "kʰ",
+      "kʰː",
+      "kʷ",
+      "kʷː",
+      "k̚",
+      "k͈",
+      "k͈ʷ",
+      "k͈ː",
+      "m",
+      "mʲ",
+      "mʲː",
+      "mː",
+      "n",
+      "nː",
+      "o",
+      "oː",
+      "p",
+      "pʰ",
+      "pʰː",
+      "pʲ",
+      "pʲː",
+      "pʷ",
+      "p̚",
+      "p͈",
+      "p͈ʲ",
+      "p͈ʷ",
+      "p͈ː",
+      "s",
+      "sʰ",
+      "sʰː",
+      "sʷ",
+      "sː",
+      "s͈",
+      "s͈ʷ",
+      "s͈ː",
+      "t",
+      "tɕ",
+      "tɕʰ",
+      "tɕʰː",
+      "tɕʷ",
+      "tɕʷː",
+      "tɕː",
+      "tɕ͈",
+      "tɕ͈ʷ",
+      "tɕ͈ː",
+      "tʰ",
+      "tʰː",
+      "tʲ",
+      "tʷ",
+      "tʷː",
+      "t̚",
+      "t͈",
+      "t͈ʲ",
+      "t͈ː",
+      "u",
+      "uː",
+      "w",
+      "x",
+      "ç",
+      "ŋ",
+      "ɐ",
+      "ɕʰ",
+      "ɕ͈",
+      "ɛ",
+      "ɛː",
+      "ɟ",
+      "ɡ",
+      "ɡʷ",
+      "ɣ",
+      "ɥ",
+      "ɦ",
+      "ɨ",
+      "ɨː",
+      "ɭ",
+      "ɭː",
+      "ɰ",
+      "ɲ",
+      "ɸʷ",
+      "ɾ",
+      "ɾʲ",
+      "ɾʷ",
+      "ʌ",
+      "ʌː",
+      "ʎ",
+      "ʎː",
+      "ʝ",
+      "β",
+      "βʷ"
+    ]
+  },
+  "immutable_contract": {
+    "status": "passed",
+    "cells_compared": 1860,
+    "editable_cells_allowed": 81,
+    "editable_columns": [
+      "R",
+      "S",
+      "U"
+    ]
+  },
+  "decision_report": {
+    "status": "ready_for_apply",
+    "ready_for_apply": true,
+    "decision_counts": {
+      "approve_recommended": 27
+    },
+    "affirmative_decisions": 27,
+    "pending_decisions": 0,
+    "hold_or_reject_decisions": 0,
+    "errors": []
+  },
+  "counts": {
+    "normalized_decisions": 27,
+    "correction_registry_rows": 2
+  },
+  "outputs": {
+    "normalized_decisions": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\common_pron_r2_review_20260729\\validated_user_approval_20260729\\validation.decisions.csv",
+      "bytes": 13944,
+      "mtime_ns": 1785305645810539200,
+      "sha256": "8913cf9fec4a0e4ffc5dd5d1e57cb7298946d54c7a933b1df92c18d188acbf68"
+    },
+    "correction_registry": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\common_pron_r2_review_20260729\\validated_user_approval_20260729\\validation.corrections.csv",
+      "bytes": 727,
+      "mtime_ns": 1785305645814546900,
+      "sha256": "f263067dc50f41f2013ad96185d8c26c7873c03f7a536fdf88303950b87d21ec"
+    }
+  },
+  "implementation": {
+    "validator_script": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\validate_common_pron_researcher_review_xlsx.py",
+      "bytes": 23216,
+      "mtime_ns": 1785299322184342500,
+      "sha256": "2e2f737e50cef5365e9fd3c739c83fef5b89b97fbd0a71408cd579fcf90e64ed"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-07-29T15:14:05+09:00",
+    "git_commit": "4b46f0f1fa652df07a2e6dc2c42bf17005f79422",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 27140
+  }
+}
