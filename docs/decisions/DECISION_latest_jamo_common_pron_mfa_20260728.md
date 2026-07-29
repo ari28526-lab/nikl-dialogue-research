@@ -307,6 +307,29 @@ numeric placeholder는 각각 `외곬수적인→외골수적인`,
 검증기는 D: 검토 원장과 shard를 수정하지 않으며, 정규화 산출물을
 다음 archive+atomic apply 단계의 입력으로만 제공한다.
 
+정규화 결정의 원장 반영은
+`apply_common_pron_researcher_decisions.py`만 담당한다.
+
+1. 기본 실행은 쓰기 0 dry-run이며 `--apply` 없이는 원장을 바꾸지 않는다.
+2. validator manifest·결정 27행·correction 2행과 clean v5 당시 두 원장
+   fingerprint를 모두 다시 확인한다.
+3. 실제 적용 시 r2 runner와 같은 release lock을 배타적으로 잡고, lock
+   안에서 입력을 다시 읽는다.
+4. 두 원장과 승인 근거를 고유 transaction 폴더에 먼저 archive하고,
+   별도 proposed 파일을 기존 reader로 재검증한다.
+5. no-path는 기존 `읊어` 승인을 보존하고 23개 pending만 승인한다.
+   Jamo는 4개 모두 후보와 승인 phone을 분리한 7열 원장으로 승격한다.
+6. 두 원장·correction registry를 각각 원자 교체한다. 중간 실패 또는
+   최종 manifest 실패 시 두 원장을 archive SHA로 함께 rollback한다.
+7. 성공 manifest도 `g2p_shards_modified=false`,
+   `final_dictionary_created=false`를 명시한다. 이후 runner가 별도
+   archive와 검증을 거쳐 4개 partial shard만 보수한다.
+
+실제 D: 경로의 dry-run에서도 no-path/Jamo 원장 SHA·mtime,
+transaction/correction 파일 수, lock 상태가 전후 완전히 같았다. 따라서
+이 적용 계약의 코드 준비는 완료됐지만, 사용자 `FILLED` 승인본 전에는
+`--apply`를 실행하지 않는다.
+
 검토 workbook의 SHA256은
 `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
 생성기 SHA256은
@@ -315,7 +338,8 @@ numeric placeholder는 각각 `외곬수적인→외골수적인`,
 runtime commit도 같은 기준점을 가리킨다.
 7개 시트, 검토 27행, 발화근거 31행, 모든 decision pending,
 formula/data-validation/link/phone-font/manifest SHA를 독립 검사했고,
-작성본 validator까지 포함한 전체 Python unittest 184개와 PowerShell
+작성본 validator와 원장 transaction까지 포함한 전체 Python unittest
+189개와 PowerShell
 안전검사 12개가 통과했다.
 
 ## 구결과 archive와 D: 정리

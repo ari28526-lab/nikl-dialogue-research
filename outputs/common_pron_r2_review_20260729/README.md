@@ -33,3 +33,10 @@
 107-phone inventory를 통과할 때만 정규화 결정표 27행과 correction
 registry 2행을 만들며, 이 단계에서도 D: 원장이나 shard는 수정하지
 않는다.
+
+정규화 결정표의 실제 원장 반영은
+`scripts/python/apply_common_pron_researcher_decisions.py`가 담당한다.
+기본 실행은 쓰기 0 dry-run이고 `--apply`가 있어야만 작동한다. 적용
+전 runner와 같은 lock을 잡고 두 원장을 모두 archive하며, 중간 실패
+시 두 원장을 함께 복구한다. 이 명령은 연구자 승인본 검증이 끝난 뒤
+Codex가 별도로 제시·감사하므로 미리 실행하지 않는다.

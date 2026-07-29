@@ -1407,3 +1407,37 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   쓰기는 모두 0이다.
 - validator 회귀시험 7개를 포함한 전체 Python unittest **184개**,
   PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
+
+## 2026-07-29 13:33–13:43 검증 결정의 원장 적용 transaction
+
+- `apply_common_pron_researcher_decisions.py`를 추가했다. 입력은
+  validator의 `ready_for_apply` manifest·정규화 결정 27행·correction
+  2행뿐이며, 현재 no-path/Jamo 원장이 clean v5 생성 시 fingerprint와
+  달라졌으면 어떤 쓰기도 하지 않는다.
+- no-path는 기존 승인 `읊어` 1행을 후보·승인 의미 그대로 보존하고
+  pending 23행만 승인한다. Jamo 4행은 legacy 5열을 읽되 적용안은
+  후보/승인/evidence를 분리한 7열 `SPECIAL_REVIEW_FIELDS`로 만든다.
+  모든 후보 phone과 승인 phone을 frozen lexical 107-phone으로 다시
+  검사한다.
+- 기본 실행은 `validated_dry_run`, writes 0이다. 실제 적용에는
+  `--apply`가 필요하며 runner와 같은
+  `D:\mfa_common_pron\locks\<release>.lock`을 배타적으로 생성한다.
+  lock을 잡은 뒤 입력 fingerprint를 다시 읽어 TOCTOU 변경을
+  차단한다.
+- 실제 적용 전 두 원장과 validation/template/decision/correction
+  근거를 release의 고유 transaction 폴더에 SHA256 동등 복사한다.
+  제안 원장을 별도 작성·재읽기한 뒤 각 목적지에 `os.replace`로
+  승격한다. 두 번째 원장·correction·최종 manifest 중 하나라도
+  실패하면 두 원장을 archive에서 원자 복구하고 failure manifest를
+  남긴다.
+- 합성 fixture 시험 5개에서 dry-run 무쓰기, 기존 runner lock 차단,
+  no-path 24행(기존 1+신규 23)·Jamo 4행 적용, 같은 승인본 재실행
+  멱등성, 두 번째 승격 강제 실패 뒤 양쪽 SHA 복구를 확인했다.
+- 앞서 만든 `SYNTHETIC_DO_NOT_USE` 승인본으로 실제 D: 두 원장에
+  `--apply` 없는 end-to-end dry-run을 했다. 27개 결정·기존 `읊어`
+  보존·23+4 승인안·correction 2행·107-phone SHA를 모두 통과했다.
+  실행 전후 두 원장의 SHA256과 mtime이 같았고 transaction/correction
+  파일 수 0→0, lock false→false였다. 즉 D: 원장·shard·raw corpus
+  쓰기는 0이며 합성 승인을 실제 승인으로 사용하지 않았다.
+- transaction 회귀시험 5개를 포함한 전체 Python unittest **189개**,
+  PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
