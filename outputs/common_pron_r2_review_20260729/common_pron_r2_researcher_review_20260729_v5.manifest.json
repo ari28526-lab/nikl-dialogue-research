@@ -1,0 +1,122 @@
+{
+  "schema_version": "common_pron_researcher_review_workbook.v1",
+  "status": "success",
+  "kind": "common_pron_r2_researcher_review_workbook",
+  "recorded_at": "2026-07-29T13:18:49+09:00",
+  "counts": {
+    "review_rows": 27,
+    "no_path_rows": 23,
+    "jamo_ls_rows": 4,
+    "occurrence_rows": 31,
+    "unique_review_wavs": 29,
+    "initial_researcher_decisions": 0,
+    "recommendation_actions": {
+      "accept_model_candidate": 22,
+      "manual_phone_override": 2,
+      "numeric_placeholder_correction": 1,
+      "researcher_audio_choice": 1,
+      "source_correction_and_audio_choice": 1
+    }
+  },
+  "policy": {
+    "all_decisions_initially_pending": true,
+    "workbook_does_not_apply_decisions": true,
+    "source_corpus_read_only": true,
+    "candidate_and_approved_phone_separate": true,
+    "same_acoustic_phone_inventory_required": true,
+    "source_spelling_and_numeric_corrections_separate": true
+  },
+  "inputs": {
+    "no_path_review": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\03_review\\g2p_no_path_researcher_review.csv",
+      "bytes": 4765,
+      "mtime_ns": 1785295949964055700,
+      "sha256": "8f36ad3e958e06ac01411ff36d0bf57654978d59cdaff2c4aa0a33c68c913de6"
+    },
+    "jamo_review": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\03_review\\jamo_ls_researcher_review.csv",
+      "bytes": 350,
+      "mtime_ns": 1785225786274106600,
+      "sha256": "fefef964a81b351180adca4e0a84efedac8a25abebd3c255e145125282e52ea1"
+    },
+    "staged_occurrences": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\03_review\\researcher_review_bundle_20260729\\review_occurrences.csv",
+      "bytes": 20397,
+      "mtime_ns": 1785297111800156500,
+      "sha256": "27b88d8019a0ad4c8956b386b5b56ac61920cb1d70722e96bb54ca18999e0128"
+    },
+    "staged_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\03_review\\researcher_review_bundle_20260729\\manifest.json",
+      "bytes": 24798,
+      "mtime_ns": 1785297111975069000,
+      "sha256": "0fb564df09ce55927e31b2cd144331711d0e75745574c8766365d19795964ed4"
+    },
+    "model_bundle": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\korean_mfa_latest_jamo_bundle_20260728.json",
+      "bytes": 3956,
+      "mtime_ns": 1785218534765967600,
+      "sha256": "2ecb61316952319e44904533ed086915fba1eb7ba3ab315e3b83795de442b787"
+    },
+    "lexicon": {
+      "path": "D:\\00_RAW\\reference\\03_lexicon_1기\\01_NIKL_lexicon_full.csv",
+      "bytes": 280816832,
+      "mtime_ns": 1769070016000000000,
+      "sha256": "ad947afd4358e363fee090873a3de946b0f68a8cef889daa16777b9b7e000272"
+    },
+    "original_probe": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\common_pron_review_probes_20260729.dict",
+      "bytes": 454,
+      "mtime_ns": 1785294328867987900,
+      "sha256": "41a2e68485744de2f27b04a6adcf2e901698de2e97be23dda6b1f06d2f62bd4a"
+    },
+    "addendum_probe": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\common_pron_review_probes_addendum_20260729.dict",
+      "bytes": 432,
+      "mtime_ns": 1785296611632187200,
+      "sha256": "d8f622957de03a9f95577b7462957e7ba0a3c06e7c4a91ae4d3c9d4060a6abe7"
+    }
+  },
+  "implementation": {
+    "builder_script": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_common_pron_researcher_review_xlsx.py",
+      "bytes": 42259,
+      "mtime_ns": 1785298464965362500,
+      "sha256": "79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a"
+    },
+    "openpyxl_version": "3.1.5",
+    "phone_font": "Noto Sans"
+  },
+  "output": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\common_pron_r2_review_20260729\\common_pron_r2_researcher_review_20260729_v5.xlsx",
+    "bytes": 36459,
+    "mtime_ns": 1785298729901788000,
+    "sha256": "508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25"
+  },
+  "verification": {
+    "round_trip_openpyxl": "passed",
+    "expected_sheets": [
+      "검토안내",
+      "발음검토",
+      "발화근거",
+      "모델후보원자료",
+      "근거자료",
+      "동결모델프로브",
+      "재현계약"
+    ],
+    "review_rows": 27,
+    "occurrence_rows": 31,
+    "formula_contract": "passed",
+    "data_validation_present": true
+  },
+  "runtime": {
+    "recorded_at": "2026-07-29T13:18:50+09:00",
+    "git_commit": "093ce3119eaff6e6a2ad6f452854deec3befd276",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 10880
+  }
+}

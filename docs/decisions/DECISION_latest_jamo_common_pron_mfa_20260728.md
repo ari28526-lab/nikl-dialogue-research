@@ -277,7 +277,7 @@ no-path 23개는 표제형만 확인하지 않고 실제 발화 전수를 역추
 
 연구자 검토 파일은
 `outputs/common_pron_r2_review_20260729/`
-`common_pron_r2_researcher_review_20260729_v4.xlsx`다. 이 파일은
+`common_pron_r2_researcher_review_20260729_v5.xlsx`다. 이 파일은
 모델 후보·권고/대안·공식/어휘부 근거·발화 원문·원음 링크·동결 모델
 probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 시작하고
 저장만으로 shard나 dictionary를 수정하지 않는다. 사용자가
@@ -294,9 +294,11 @@ probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 �
    시작한다.
 
 검토 workbook의 SHA256은
-`d2a12fd357499d3b414a8b96d85658f950704a75051cc8d16996d2bfd72c075a`,
+`508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
 생성기 SHA256은
 `79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a`다.
+생성기·근거 commit `093ce31`을 먼저 고정한 뒤 v5를 생성해 manifest의
+runtime commit도 같은 기준점을 가리킨다.
 7개 시트, 검토 27행, 발화근거 31행, 모든 decision pending,
 formula/data-validation/link/phone-font/manifest SHA를 독립 검사했고,
 전체 Python unittest 177개와 PowerShell 안전검사 12개가 통과했다.

@@ -1345,18 +1345,20 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   않았다.
 - 연구자 인터페이스
   `outputs/common_pron_r2_review_20260729/`
-  `common_pron_r2_researcher_review_20260729_v4.xlsx`를 최종 검토본으로
+  `common_pron_r2_researcher_review_20260729_v5.xlsx`를 최종 검토본으로
   만들었다.
   7개 시트, 검토 27행, 근거 발화 31행, WAV 링크 89개
   (검토표 27 + 발화표 검토본/원본 62), 자동 수식 54개이며 모든
   결정은 `pending`이다. phone 열은 IPA 기호가 보이도록 Noto Sans를
   썼고, 후보/승인 phone과 source correction/발음 승인을 분리했다.
   workbook SHA256은
-  `d2a12fd357499d3b414a8b96d85658f950704a75051cc8d16996d2bfd72c075a`,
+  `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
   생성기 SHA256은
   `79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a`다.
   manifest에는 생성기 SHA, openpyxl 3.1.5, Noto Sans 사용을
-  명시했다. 초기판과 레이아웃 QA 중간판 v2·v3는 같은 폴더에
+  명시했다. 생성기·근거를 commit `093ce31`에 먼저 고정한 뒤 v5를
+  다시 생성해 manifest의 runtime commit과 실제 코드 기준점을
+  일치시켰다. 초기판과 레이아웃 QA 중간판 v2·v3·v4는 같은 폴더에
   보존해 덮어쓰지 않았다.
 - Excel COM은 이 실행 환경에서 새 workbook과 기존 workbook 모두
   동일한 `0x800A03EC`로 열리지 않았고 artifact-tool loader도
