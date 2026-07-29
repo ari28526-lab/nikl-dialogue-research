@@ -261,7 +261,10 @@ def audit_2020(
     batch_size: int,
     checkpoint_path: Path | None = None,
     common_dictionary_sha256: str = "",
+    checkpoint_every_batches: int = 10,
 ) -> tuple[dict, list[dict]]:
+    if checkpoint_every_batches < 1:
+        raise ValueError("checkpoint_every_batches must be at least 1")
     qc = validate_2020_qc(qc_report_path, textgrid_root)
     qc_record = file_fingerprint(qc_report_path, with_sha256=True)
     expected_files = int(qc["counts"]["valid_textgrids"])
@@ -428,12 +431,12 @@ def audit_2020(
                     )
                 )
                 completed_batches += 1
-                save_checkpoint(
-                    status="in_progress",
-                    last_relative=batch_relatives[-1],
-                    prefix_sha256=inventory.hexdigest(),
-                )
-                if completed_batches % 10 == 0:
+                if completed_batches % checkpoint_every_batches == 0:
+                    save_checkpoint(
+                        status="in_progress",
+                        last_relative=batch_relatives[-1],
+                        prefix_sha256=inventory.hexdigest(),
+                    )
                     print(
                         f"[2020] {counts['textgrid_files']:,}/"
                         f"{expected_files:,} TextGrid 검사",
@@ -756,6 +759,7 @@ def run_audit(
     batch_size: int,
     mode: str = "difference-inventory",
     checkpoint_2020: Path | None = None,
+    checkpoint_every_batches: int = 10,
 ) -> dict:
     if output_json.exists() or output_csv.exists():
         raise FileExistsError("기존 동등성 결과 덮어쓰기 금지")
@@ -778,6 +782,7 @@ def run_audit(
         common_dictionary_sha256=str(
             release["outputs"]["dictionary"]["sha256"]
         ),
+        checkpoint_every_batches=checkpoint_every_batches,
     )
     result_2020_partial_db, mismatch_2020_partial_db = (
         audit_2020_partial_db(
@@ -917,6 +922,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-json", type=Path, required=True)
     parser.add_argument("--output-csv", type=Path, required=True)
     parser.add_argument("--checkpoint-2020", type=Path)
+    parser.add_argument(
+        "--checkpoint-every-batches", type=int, default=10
+    )
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--batch-size", type=int, default=2000)
     parser.add_argument(
@@ -947,6 +955,7 @@ def main() -> int:
             if args.checkpoint_2020 is not None
             else None
         ),
+        checkpoint_every_batches=args.checkpoint_every_batches,
     )
     print(
         "[{0}] 2020={1}, 2021={2}, mismatch={3:,}".format(

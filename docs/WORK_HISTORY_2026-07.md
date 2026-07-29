@@ -1645,3 +1645,28 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `difference_inventory_ready_researcher_approval` phase를 추가했다.
   전체 Python unittest **197개**와 PowerShell 안전검사 **13개**가
   통과했다.
+
+## 2026-07-29 17:07–17:12 무인 재실행 관측과 여섯 연도 재정렬 재확정
+
+- 사용자는 구 2020·2021 결과와 r2의 차이가 작더라도 2020–2025
+  여섯 연도를 모두 동일 r2 기준으로 다시 MFA한다는 결정을 재확인했다.
+  difference inventory는 재사용 판정 gate가 아니라 전환 영향을
+  기록하는 감사일 뿐이다. 이를
+  `DECISION_r2_realign_all_six_years_20260729.md`에 별도 확정했다.
+- 무인 runner는 68,000/866,196 TextGrid checkpoint까지 진행했으나,
+  읽기 전용 상태 확인과 checkpoint `os.replace`가 Windows 공유 잠금
+  순간 충돌해 `PermissionError`로 종료됐다. 68,000파일 checkpoint와
+  실패 직전 staged partial은 모두 보존됐고 원자료·r2 사전·최종
+  JSON/CSV 변경은 0이다.
+- 상태판의 JSON 읽기를 `FileShare.ReadWrite | FileShare.Delete`로
+  바꿔 원자 교체를 방해하지 않게 했다. 공통 `promote_staged`도
+  일시적 `PermissionError`만 최대 약 5.5초 지수 backoff 재시도하며,
+  다른 오류나 지속 잠금은 계속 실패하고 staged 파일을 보존한다.
+- 실제 규모에서 checkpoint가 68,000파일에 약 8MiB로 커지는 것을
+  관측했다. 매 2,000파일마다 전체 누적 상태를 다시 쓰는 병목을
+  피하도록 기본 저장 주기를 10 batch, 즉 20,000파일로 조정했다.
+  중단 시 최대 20,000파일만 재분석하며 기존 68,000 checkpoint는
+  그대로 재사용할 수 있다. transient 공유 잠금 재시도 시험을 포함한
+  전체 Python unittest **198개**, PowerShell 안전검사 **13개**가
+  통과했고 상태판은 `difference_inventory_interrupted_resumable`과
+  68,000/866,196을 정상 표시했다.

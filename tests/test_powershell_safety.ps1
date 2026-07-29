@@ -358,6 +358,7 @@ foreach ($path in $files) {
             'pre_mfa_bulk.lock',
             'common_pron_mfa_difference_inventory.lock',
             '--checkpoint-2020',
+            '--checkpoint-every-batches',
             'checkpoint는 보존됨',
             'SetThreadExecutionState',
             'Enable-SleepGuard',

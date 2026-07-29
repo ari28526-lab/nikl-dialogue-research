@@ -213,6 +213,7 @@ class CommonPronEquivalenceTests(unittest.TestCase):
                         batch_size=1,
                         checkpoint_path=checkpoint,
                         common_dictionary_sha256="b" * 64,
+                        checkpoint_every_batches=1,
                     )
             saved = json.loads(
                 checkpoint.read_text(encoding="utf-8")
@@ -239,6 +240,7 @@ class CommonPronEquivalenceTests(unittest.TestCase):
                     batch_size=1,
                     checkpoint_path=checkpoint,
                     common_dictionary_sha256="b" * 64,
+                    checkpoint_every_batches=1,
                 )
             self.assertEqual(reparsed, ["u2", "u3"])
             self.assertEqual(result["resumed_from_files"], 1)

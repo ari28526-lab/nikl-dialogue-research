@@ -13,6 +13,7 @@ import platform
 import shutil
 import subprocess
 import sys
+import time
 import uuid
 from contextlib import contextmanager
 from datetime import datetime
@@ -80,7 +81,16 @@ def promote_staged(temp: Path, destination: Path) -> None:
     """검증을 끝낸 동일 볼륨 임시파일을 원자적으로 승격한다."""
     if temp.parent.resolve() != destination.parent.resolve():
         raise ValueError("원자 교체는 같은 디렉터리의 임시파일만 허용")
-    os.replace(temp, destination)
+    delay_seconds = 0.05
+    for attempt in range(10):
+        try:
+            os.replace(temp, destination)
+            return
+        except PermissionError:
+            if attempt == 9:
+                raise
+            time.sleep(delay_seconds)
+            delay_seconds = min(delay_seconds * 2, 1.0)
 
 
 @contextmanager

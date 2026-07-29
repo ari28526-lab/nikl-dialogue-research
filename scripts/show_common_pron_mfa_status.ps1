@@ -33,10 +33,31 @@ function Read-JsonFile([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
         return $null
     }
-    return (
-        Get-Content -Raw -Encoding UTF8 -LiteralPath $Path |
-        ConvertFrom-Json
-    )
+    $stream = $null
+    $reader = $null
+    try {
+        $share = (
+            [IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete
+        )
+        $stream = [IO.File]::Open(
+            $Path,
+            [IO.FileMode]::Open,
+            [IO.FileAccess]::Read,
+            $share
+        )
+        $reader = [IO.StreamReader]::new(
+            $stream,
+            [Text.Encoding]::UTF8,
+            $true
+        )
+        return ($reader.ReadToEnd() | ConvertFrom-Json)
+    } finally {
+        if ($null -ne $reader) {
+            $reader.Dispose()
+        } elseif ($null -ne $stream) {
+            $stream.Dispose()
+        }
+    }
 }
 
 function Get-SharedLineCount([string]$Path) {

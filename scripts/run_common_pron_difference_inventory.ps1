@@ -21,6 +21,9 @@ param(
     [ValidateRange(100, 10000)]
     [int]$BatchSize = 2000,
 
+    [ValidateRange(1, 100)]
+    [int]$CheckpointEveryBatches = 10,
+
     [ValidateRange(10, 500)]
     [int]$MinimumFreeGiB = 30
 )
@@ -289,7 +292,8 @@ try {
 
     Say (
         "2020·2021 전수 차이 inventory 시작: workers=$Workers, " +
-        "batch=$BatchSize, D free=${freeGiB}GiB"
+        "batch=$BatchSize, checkpoint=$CheckpointEveryBatches batches, " +
+        "D free=${freeGiB}GiB"
     )
     if (Test-Path -LiteralPath $checkpoint) {
         $saved = Get-Content -Raw -Encoding UTF8 `
@@ -317,6 +321,7 @@ try {
             --output-json $outputJson `
             --output-csv $outputCsv `
             --checkpoint-2020 $checkpoint `
+            --checkpoint-every-batches $CheckpointEveryBatches `
             --workers $Workers `
             --batch-size $BatchSize `
             --mode difference-inventory 2>&1 |
