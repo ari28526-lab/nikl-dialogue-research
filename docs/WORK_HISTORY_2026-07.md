@@ -1582,3 +1582,27 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   관련 lexicon unittest 16개가 통과했고, 실제 D: prepare manifest에
   대한 read-only 재검증도 통과했다. 전체 Python unittest **193개**와
   PowerShell 안전검사 **12개**도 통과했다.
+
+## 2026-07-29 15:42–15:46 r2 실물 완성 및 difference audit 사전 차단 보정
+
+- commit `0e62a66` 코드로 r2 runner를 재개했다. 기존 검증본 31개는
+  다시 계산하지 않았고, 연구자 승인 no-path 23개가 분포한 shard
+  8·12·15·29만 기존 partial 출력에 보수했다. 네 shard 모두 입력/출력
+  coverage, `spn=0`, acoustic phone inventory 이탈 0을 다시 통과했다.
+- 최종 표준 shard는 35/35, 관측 OOV는 866,692/866,692,
+  missing/extras/`spn`/inventory outside 모두 0이다. 최종 사전
+  `common_pron_mfa_r2.dict`는 37,671,240바이트, G2P cache는
+  85,538,430바이트이며 release manifest status는 `success`다.
+- 2020·2021 difference inventory를 시작했으나 전수 파일을 읽기 전에
+  즉시 안전 중단됐다. 감사 코드가 r1의 세 핵심 G2P 필드와 manifest
+  전체 dict의 완전 일치만 허용해, r2가 추가한 model/Jamo/no-path
+  안전계약을 잘못 거부한 것이 원인이다. baseline DB·TextGrid와 r2
+  산출물에 대한 쓰기는 0이며 실패 stdout/stderr는 release logs에
+  보존했다.
+- 감사 계약을 “핵심 세 필드는 정확히 동일해야 하고 추가 안전 필드는
+  허용”하도록 바로잡았다. r2 deterministic no-path가 존재하면 동일
+  동결 모델, 연구자 승인, 기존 모델 발음 대체 0, final `spn` 금지를
+  추가로 강제한다. 핵심값 변경과 no-path 완화는 계속 차단한다.
+  관련 unittest 10개 및 실제 r2 release read-only preflight가 통과했다.
+  전체 Python unittest **195개**, PowerShell 안전검사 **12개**도
+  통과했다.

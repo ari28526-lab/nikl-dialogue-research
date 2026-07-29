@@ -87,6 +87,27 @@ def iter_textgrids(root: Path):
                 yield base / filename
 
 
+def verify_g2p_contract(contract: dict) -> None:
+    expected_core = {
+        "num_pronunciations": 1,
+        "strict_graphemes": True,
+        "input_unit": "unique_surface_eojeol",
+    }
+    if any(
+        contract.get(key) != value
+        for key, value in expected_core.items()
+    ):
+        raise RuntimeError("동일 korean_mfa G2P 1-best 핵심 계약이 아님")
+    no_path = contract.get("deterministic_no_path_policy")
+    if no_path is not None and (
+        no_path.get("same_frozen_model_required") is not True
+        or no_path.get("researcher_approval_required") is not True
+        or no_path.get("existing_model_pronunciations_replaced") != 0
+        or no_path.get("final_spn_allowed") is not False
+    ):
+        raise RuntimeError("r2 deterministic no-path 안전 계약 불일치")
+
+
 def load_release_manifest(path: Path) -> tuple[dict, Path]:
     manifest = json.loads(path.read_text(encoding="utf-8-sig"))
     if (
@@ -108,13 +129,7 @@ def load_release_manifest(path: Path) -> tuple[dict, Path]:
         raise RuntimeError("우리말샘 등 사전 변이가 들어간 release는 동등성 감사 금지")
     if manifest["dictionary_contract"]["changes_phone_standard"]:
         raise RuntimeError("phone 기준 변경 release는 baseline 동등성 감사 금지")
-    expected_g2p = {
-        "num_pronunciations": 1,
-        "strict_graphemes": True,
-        "input_unit": "unique_surface_eojeol",
-    }
-    if manifest.get("g2p_contract") != expected_g2p:
-        raise RuntimeError("동일 korean_mfa G2P 1-best 계약이 아님")
+    verify_g2p_contract(manifest.get("g2p_contract", {}))
     for role in ("base_dictionary", "g2p_model", "acoustic_model"):
         record = manifest.get("inputs", {}).get(role, {})
         model_path = Path(record.get("path", ""))

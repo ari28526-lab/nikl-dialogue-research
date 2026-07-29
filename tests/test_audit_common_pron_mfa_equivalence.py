@@ -93,6 +93,46 @@ def make_database(path: Path) -> None:
 
 
 class CommonPronEquivalenceTests(unittest.TestCase):
+    def test_r2_enriched_g2p_contract_preserves_core_method(self):
+        audit.verify_g2p_contract(
+            {
+                "num_pronunciations": 1,
+                "strict_graphemes": True,
+                "input_unit": "unique_surface_eojeol",
+                "model_contract": {"version": "3.2.0"},
+                "deterministic_no_path_policy": {
+                    "same_frozen_model_required": True,
+                    "researcher_approval_required": True,
+                    "existing_model_pronunciations_replaced": 0,
+                    "final_spn_allowed": False,
+                },
+            }
+        )
+
+    def test_g2p_contract_rejects_core_or_no_path_drift(self):
+        with self.assertRaisesRegex(RuntimeError, "핵심 계약"):
+            audit.verify_g2p_contract(
+                {
+                    "num_pronunciations": 2,
+                    "strict_graphemes": True,
+                    "input_unit": "unique_surface_eojeol",
+                }
+            )
+        with self.assertRaisesRegex(RuntimeError, "no-path"):
+            audit.verify_g2p_contract(
+                {
+                    "num_pronunciations": 1,
+                    "strict_graphemes": True,
+                    "input_unit": "unique_surface_eojeol",
+                    "deterministic_no_path_policy": {
+                        "same_frozen_model_required": True,
+                        "researcher_approval_required": True,
+                        "existing_model_pronunciations_replaced": 1,
+                        "final_spn_allowed": False,
+                    },
+                }
+            )
+
     def test_difference_classifies_removed_spn_as_fixed_defect(self):
         classification = audit.classify_mismatch(
             {
