@@ -115,6 +115,32 @@ function Release-Lock([string]$LockPath) {
     }
 }
 
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class CommonPronDifferenceSleepGuard {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern uint SetThreadExecutionState(uint esFlags);
+}
+'@
+
+function Enable-SleepGuard {
+    # ES_CONTINUOUS | ES_SYSTEM_REQUIRED; display may turn off.
+    $result = [CommonPronDifferenceSleepGuard]::SetThreadExecutionState(
+        [uint32]2147483649
+    )
+    if ($result -eq 0) {
+        throw 'Windows 절전 억제 설정 실패'
+    }
+}
+
+function Disable-SleepGuard {
+    # ES_CONTINUOUS only: restore the thread's normal execution state.
+    [void][CommonPronDifferenceSleepGuard]::SetThreadExecutionState(
+        [uint32]2147483648
+    )
+}
+
 $commonRoot = Expand-CfgPath ([string]$config.common_pron_home)
 $expectedRoot = [IO.Path]::GetFullPath('D:\mfa_common_pron')
 if ($commonRoot.TrimEnd('\') -ne $expectedRoot.TrimEnd('\')) {
@@ -249,7 +275,10 @@ $lockPath = Join-Path (
     Join-Path $commonRoot 'locks'
 ) 'common_pron_mfa_difference_inventory.lock'
 Acquire-Lock $lockPath $commonRoot
+$sleepGuardEnabled = $false
 try {
+    Enable-SleepGuard
+    $sleepGuardEnabled = $true
     $logRoot = Join-Path $releaseRoot 'logs'
     New-Item -ItemType Directory -Force -Path $logRoot | Out-Null
     $logPath = Join-Path $logRoot (
@@ -333,5 +362,8 @@ try {
         "검토가 다음 단계"
     )
 } finally {
+    if ($sleepGuardEnabled) {
+        Disable-SleepGuard
+    }
     Release-Lock $lockPath
 }

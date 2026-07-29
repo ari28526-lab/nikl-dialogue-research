@@ -1635,7 +1635,10 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   r2 final hard gate, baseline 증거, G2P/MFA/자체 배타 lock, 기존
   최종 산출물 쌍과 SHA를 검사한다. PowerShell 창에서 실행하면 진행을
   화면과 고유 log에 동시에 남기고 중단 시 checkpoint를 보존한다.
-  결과가 완성돼도 adoption과 연도별 MFA는 자동 승인하지 않는다.
+  실행 thread에만 `ES_SYSTEM_REQUIRED`를 설정해 무인 실행 중 Windows
+  시스템 절전을 억제하고 finally에서 정상 상태로 복원한다. 화면은
+  꺼질 수 있다. 결과가 완성돼도 adoption과 연도별 MFA는 자동
+  승인하지 않는다.
 - 읽기 전용 상태판에 difference checkpoint 행 수·진행률·lock 생존과
   `difference_inventory_running`,
   `difference_inventory_interrupted_resumable`,
