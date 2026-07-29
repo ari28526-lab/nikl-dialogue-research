@@ -234,6 +234,12 @@ CSV SHA256은
    acoustic inventory 포함을 모두 강제한다.
 4. repair manifest와 cache `pron_source`는 same-model 채택과 manual
    same-inventory override를 구분한다.
+
+2026-07-29 12:32에 이 계약을 구현한 코드 `4bae24a`를 원격에 고정한 뒤,
+D:의 기존 no-path 검토표를 v2로 이관했다. 기존 v1 CSV·manifest는
+`03_review/archive_schema_v1_20260729/`에 보존했으며, 기존 승인
+`읊어` 1건은 phone까지 동일하게 승계했다. 나머지 23건은 자동 승인하지
+않았고 final/adoption gate는 계속 닫아 두었다.
 5. 구형 `읊어` 승인표·snapshot은 후보와 승인 phone이 같은 것으로
    읽기 이행하며 기존 파일과 phone을 덮어쓰지 않는다.
 

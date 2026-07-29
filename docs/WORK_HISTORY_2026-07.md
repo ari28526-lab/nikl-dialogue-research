@@ -1295,3 +1295,16 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 관련 회귀시험 19개와 별도 manual override provenance 시험이
   통과했다. 이어 전체 Python unittest **170개**, PowerShell 안전검사
   **12개**, `git diff --check`도 모두 통과했다.
+
+## 2026-07-29 12:32 no-path 검토표 v2 이관
+
+- 코드 기준점 `4bae24a`를 원격 브랜치에 먼저 push한 뒤 D: 실물 검토표를
+  v1에서 v2로 이관했다. 이관 전에 기존 CSV와 manifest를
+  `03_review/archive_schema_v1_20260729/`에 별도 보존했다.
+- v1 CSV의 SHA256은
+  `412fbaae9ff3923e647dc52c2de8517b17f79ac781c246fe605f94f69ced819e`,
+  v2 CSV의 SHA256은
+  `8f36ad3e958e06ac01411ff36d0bf57654978d59cdaff2c4aa0a33c68c913de6`이다.
+- 이관 후 후보 24행, 기존 승인 1행(`읊어`), 대기 23행, manual
+  override 0행임을 다시 확인했다. 승인 phone과 원 shard는 바뀌지
+  않았고, 최종 사전·연도별 MFA gate도 계속 닫혀 있다.
