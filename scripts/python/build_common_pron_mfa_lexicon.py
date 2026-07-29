@@ -39,6 +39,9 @@ from pipeline_common import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_VERSION = "common_pron_mfa_lexicon.v2"
+PREPARE_CODE_TRANSITIONS_PATH = (
+    PROJECT_ROOT / "config" / "common_pron_prepare_code_transitions.json"
+)
 MFA_DICTIONARY_PARSE_CONTRACT = "mfa_3_4_optional_probability_columns_v1"
 JAMO_LS = "\u11b3"
 JAMO_L = "\u11af"
@@ -427,6 +430,156 @@ def normalized_source_contract(path: Path) -> dict[str, object]:
     }
 
 
+def fingerprint_identity(record: dict) -> dict[str, object]:
+    return {
+        "bytes": int(record["bytes"]),
+        "sha256": str(record["sha256"]).lower(),
+    }
+
+
+def prepare_artifact_contract(manifest: dict) -> dict[str, object]:
+    outputs = manifest["outputs"]
+    named_outputs = {
+        key: fingerprint_identity(outputs[key])
+        for key in (
+            "oov_inventory",
+            "grapheme_audit",
+            "jamo_ls_mapping",
+            "jamo_ls_original_input",
+            "jamo_ls_model_input",
+        )
+    }
+    input_shards = sorted(
+        (
+            {
+                "shard_index": int(record["shard_index"]),
+                "row_count": int(record["row_count"]),
+                "expected_output_name": str(
+                    record["expected_output_name"]
+                ),
+                **fingerprint_identity(record),
+            }
+            for record in outputs["input_shards"]
+        ),
+        key=lambda record: record["shard_index"],
+    )
+    return {
+        "named_outputs": named_outputs,
+        "input_shards": input_shards,
+    }
+
+
+def verify_prepare_code_transition(
+    *,
+    prepared: dict,
+    actual_code: dict[str, object],
+    transitions_path: Path = PREPARE_CODE_TRANSITIONS_PATH,
+) -> dict[str, object]:
+    expected_sha = str(
+        prepared.get("code_contract", {})
+        .get("lexicon_builder", {})
+        .get("normalized_utf8_sha256", "")
+    ).lower()
+    actual_sha = str(actual_code["normalized_utf8_sha256"]).lower()
+    if expected_sha == actual_sha:
+        return {
+            "status": "not_required",
+            "prepare_builder_sha256": expected_sha,
+            "runtime_builder_sha256": actual_sha,
+        }
+    if not transitions_path.is_file():
+        raise RuntimeError(
+            "prepare manifest generator code contract mismatch; "
+            f"no transition registry: {transitions_path}"
+        )
+    registry = json.loads(
+        transitions_path.read_text(encoding="utf-8-sig")
+    )
+    if (
+        registry.get("schema_version")
+        != "common_pron_prepare_code_transition.v1"
+        or registry.get("status") != "active"
+    ):
+        raise RuntimeError("prepare code transition registry contract mismatch")
+    matches = [
+        item
+        for item in registry.get("transitions", [])
+        if str(item.get("from_builder_sha256", "")).lower()
+        == expected_sha
+        and str(item.get("to_builder_sha256", "")).lower() == actual_sha
+        and item.get("release_contract_id")
+        == prepared.get("release_contract_id")
+        and item.get("status") == "byte_equivalent"
+    ]
+    if len(matches) != 1:
+        raise RuntimeError(
+            "prepare manifest generator code contract mismatch; "
+            "no unique byte-equivalent transition"
+        )
+    transition = matches[0]
+    evidence_path = Path(str(transition["evidence_manifest"]["path"]))
+    if not evidence_path.is_absolute():
+        evidence_path = PROJECT_ROOT / evidence_path
+    evidence_record = file_fingerprint(
+        evidence_path, with_sha256=True
+    )
+    if fingerprint_identity(evidence_record) != fingerprint_identity(
+        transition["evidence_manifest"]
+    ):
+        raise RuntimeError("prepare transition evidence fingerprint mismatch")
+    evidence = json.loads(
+        evidence_path.read_text(encoding="utf-8-sig")
+    )
+    if (
+        evidence.get("schema_version") != prepared.get("schema_version")
+        or evidence.get("status") != "prepared"
+        or str(
+            evidence.get("code_contract", {})
+            .get("lexicon_builder", {})
+            .get("normalized_utf8_sha256", "")
+        ).lower()
+        != actual_sha
+    ):
+        raise RuntimeError("prepare transition evidence code contract mismatch")
+    comparable_fields = (
+        "purpose",
+        "phone_policy",
+        "g2p_contract",
+        "phone_inventory_contract",
+        "source_vocabulary_manifest_status",
+        "source_vocabulary_contract",
+        "counts",
+    )
+    for key in comparable_fields:
+        if evidence.get(key) != prepared.get(key):
+            raise RuntimeError(
+                f"prepare transition semantic contract mismatch: {key}"
+            )
+    if set(evidence.get("inputs", {})) != set(
+        prepared.get("inputs", {})
+    ):
+        raise RuntimeError("prepare transition input set mismatch")
+    for key, record in prepared["inputs"].items():
+        if fingerprint_identity(evidence["inputs"][key]) != (
+            fingerprint_identity(record)
+        ):
+            raise RuntimeError(
+                f"prepare transition input fingerprint mismatch: {key}"
+            )
+    if prepare_artifact_contract(evidence) != prepare_artifact_contract(
+        prepared
+    ):
+        raise RuntimeError("prepare transition prepared artifacts differ")
+    return {
+        "status": "byte_equivalent_transition_verified",
+        "transition_id": transition["transition_id"],
+        "prepare_builder_sha256": expected_sha,
+        "runtime_builder_sha256": actual_sha,
+        "evidence_manifest": fingerprint_identity(evidence_record),
+        "evidence_path": str(evidence_path.resolve()),
+    }
+
+
 def verify_fingerprint(record: dict) -> None:
     path = Path(record["path"])
     if not path.is_file():
@@ -506,15 +659,6 @@ def verify_prepared(manifest_path: Path) -> dict:
         )
     for record in manifest["inputs"].values():
         verify_fingerprint(record)
-    expected_code = manifest.get("code_contract", {}).get(
-        "lexicon_builder", {}
-    )
-    actual_code = normalized_source_contract(Path(__file__).resolve())
-    if (
-        expected_code.get("normalized_utf8_sha256")
-        != actual_code["normalized_utf8_sha256"]
-    ):
-        raise RuntimeError("prepare manifest 생성기 코드 계약 불일치")
     verify_fingerprint(manifest["outputs"]["oov_inventory"])
     verify_fingerprint(manifest["outputs"]["grapheme_audit"])
     for key in (
@@ -525,6 +669,13 @@ def verify_prepared(manifest_path: Path) -> dict:
         verify_fingerprint(manifest["outputs"][key])
     for record in manifest["outputs"]["input_shards"]:
         verify_fingerprint(record)
+    actual_code = normalized_source_contract(Path(__file__).resolve())
+    manifest["_runtime_prepare_code_transition"] = (
+        verify_prepare_code_transition(
+            prepared=manifest,
+            actual_code=actual_code,
+        )
+    )
     return manifest
 
 
@@ -1408,6 +1559,16 @@ def finalize(*, release_root: Path) -> dict:
             "jamo_ls_researcher_review": special_review_record,
         },
         "inputs": prepared["inputs"],
+        "implementation": {
+            "prepare_builder": prepared["code_contract"]["lexicon_builder"],
+            "finalize_builder": normalized_source_contract(
+                Path(__file__).resolve()
+            ),
+            "prepare_code_transition": prepared.get(
+                "_runtime_prepare_code_transition",
+                {"status": "not_required"},
+            ),
+        },
         "counts": {
             **prepared["counts"],
             "g2p_output_words": len(generated),

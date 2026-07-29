@@ -1,0 +1,559 @@
+{
+  "schema_version": "common_pron_mfa_lexicon.v2",
+  "status": "prepared",
+  "recorded_at": "2026-07-29T15:36:25+09:00",
+  "release_id": "run_current",
+  "release_contract_id": "7c1ec770ea79646684901bde12ae2a6998783dcbfbd9aa4470a031903f1295d4",
+  "purpose": "MFA efficiency through one reusable surface-word G2P cache",
+  "phone_policy": "preserve base dictionary rows; add only same korean_mfa G2P 1-best strict-grapheme OOV; no Urimalsaem variants",
+  "g2p_contract": {
+    "num_pronunciations": 1,
+    "strict_graphemes": true,
+    "input_unit": "unique_surface_eojeol",
+    "model_contract": {
+      "architecture": "phonetisaurus",
+      "version": "3.2.0",
+      "unicode_decomposition": true,
+      "grapheme_count": 66,
+      "grapheme_sorted_sha256": "45c3ba191937fbdaae40a1ecb9cc6f89a4ebfe751663fae8a7c2fbad4a15b171",
+      "phone_count": 107,
+      "phone_sorted_sha256": "6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d"
+    },
+    "unsupported_grapheme_policy": "only U+11B3 is rewritten to U+11AF+U+11BA for the same frozen Jamo rewriter; every other unsupported grapheme blocks prepare",
+    "surface_key_restoration_required": true
+  },
+  "phone_inventory_contract": {
+    "count": 109,
+    "sorted_phone_sha256": "da65d15ff9e98496b688747d268b87d77639d961d46009e1adb568088880944b",
+    "phones": [
+      "b",
+      "bʲ",
+      "bʷ",
+      "c",
+      "cʰ",
+      "cʰː",
+      "c͈",
+      "d",
+      "dʑ",
+      "dʑʷ",
+      "dʲ",
+      "dʷ",
+      "e",
+      "eː",
+      "h",
+      "i",
+      "iː",
+      "j",
+      "k",
+      "kʰ",
+      "kʰː",
+      "kʷ",
+      "kʷː",
+      "k̚",
+      "k͈",
+      "k͈ʷ",
+      "k͈ː",
+      "m",
+      "mʲ",
+      "mʲː",
+      "mː",
+      "n",
+      "nː",
+      "o",
+      "oː",
+      "p",
+      "pʰ",
+      "pʰː",
+      "pʲ",
+      "pʲː",
+      "pʷ",
+      "p̚",
+      "p͈",
+      "p͈ʲ",
+      "p͈ʷ",
+      "p͈ː",
+      "s",
+      "sil",
+      "spn",
+      "sʰ",
+      "sʰː",
+      "sʷ",
+      "sː",
+      "s͈",
+      "s͈ʷ",
+      "s͈ː",
+      "t",
+      "tɕ",
+      "tɕʰ",
+      "tɕʰː",
+      "tɕʷ",
+      "tɕʷː",
+      "tɕː",
+      "tɕ͈",
+      "tɕ͈ʷ",
+      "tɕ͈ː",
+      "tʰ",
+      "tʰː",
+      "tʲ",
+      "tʷ",
+      "tʷː",
+      "t̚",
+      "t͈",
+      "t͈ʲ",
+      "t͈ː",
+      "u",
+      "uː",
+      "w",
+      "x",
+      "ç",
+      "ŋ",
+      "ɐ",
+      "ɕʰ",
+      "ɕ͈",
+      "ɛ",
+      "ɛː",
+      "ɟ",
+      "ɡ",
+      "ɡʷ",
+      "ɣ",
+      "ɥ",
+      "ɦ",
+      "ɨ",
+      "ɨː",
+      "ɭ",
+      "ɭː",
+      "ɰ",
+      "ɲ",
+      "ɸʷ",
+      "ɾ",
+      "ɾʲ",
+      "ɾʷ",
+      "ʌ",
+      "ʌː",
+      "ʎ",
+      "ʎː",
+      "ʝ",
+      "β",
+      "βʷ"
+    ]
+  },
+  "inputs": {
+    "vocabulary": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728\\01_vocabulary\\common_vocabulary_2020_2025.csv",
+      "bytes": 29383023,
+      "mtime_ns": 1785199361709123000,
+      "sha256": "3a6ecbe3a18508dd6807e6d5c8b3ced2179420e2e9fa93967a085daecce25319"
+    },
+    "vocabulary_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728\\01_vocabulary\\vocabulary_manifest.json",
+      "bytes": 3739,
+      "mtime_ns": 1785199362606196700,
+      "sha256": "485f83de9c83052b8f044d7ea60f6ec0356676128524f535cf59de071b7920ad"
+    },
+    "base_dictionary": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_dictionary_v3.3.0.dict",
+      "bytes": 934391,
+      "mtime_ns": 1785218323166307600,
+      "sha256": "49e223fddb518bc441baa4cb9fec1a108e80dae9a2b54e5834dbff30e89c7d34"
+    },
+    "g2p_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_jamo_g2p_v3.2.0.zip",
+      "bytes": 5456781,
+      "mtime_ns": 1785218534614983300,
+      "sha256": "4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff"
+    },
+    "acoustic_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    }
+  },
+  "code_contract": {
+    "lexicon_builder": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_common_pron_mfa_lexicon.py",
+      "normalization": "UTF-8 text with LF newlines",
+      "lines": 1736,
+      "normalized_utf8_sha256": "b477c9b49620d8a829cc0e390359a142d4535c694b3bd1719bc4fb5d22e7f420"
+    }
+  },
+  "source_vocabulary_manifest_status": "success",
+  "source_vocabulary_contract": {
+    "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+    "build_meta_sha256": "1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79",
+    "vocabulary_sha256": "3a6ecbe3a18508dd6807e6d5c8b3ced2179420e2e9fa93967a085daecce25319"
+  },
+  "counts": {
+    "vocabulary_words": 881237,
+    "base_dictionary_words": 17971,
+    "base_dictionary_rows": 21005,
+    "observed_words_in_base_dictionary": 14545,
+    "observed_oov_words": 866692,
+    "g2p_standard_words": 866688,
+    "g2p_jamo_ls_rewrite_words": 4,
+    "g2p_unsupported_other_words": 0,
+    "shards": 35,
+    "shard_size": 25000
+  },
+  "outputs": {
+    "oov_inventory": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\oov_inventory.csv",
+      "bytes": 26335140,
+      "mtime_ns": 1785306982171050700,
+      "sha256": "a4b53fdb40a0b014b1b99275d93736142bfbc9a75a27bfb91829a8721aebc512"
+    },
+    "grapheme_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\00_contract\\grapheme_coverage.csv",
+      "bytes": 541,
+      "mtime_ns": 1785306984645825000,
+      "sha256": "42264955c06679bb146b664d63af95cd5eb3e0bba1971f0305884d0800c9fc19"
+    },
+    "jamo_ls_mapping": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\jamo_ls_mapping.csv",
+      "bytes": 304,
+      "mtime_ns": 1785306984652826400,
+      "sha256": "dd0593bd7c00b7e58233279ac7f45b3108b91f1f79e620d29678519ff8ad16de"
+    },
+    "jamo_ls_original_input": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\jamo_ls_original.txt",
+      "bytes": 55,
+      "mtime_ns": 1785306984658838000,
+      "sha256": "ef1d73069a13b3eb63b8e48af938834280509b72fee8bfd3a12483fe1d519d63"
+    },
+    "jamo_ls_model_input": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\jamo_ls_model_input.txt",
+      "bytes": 67,
+      "mtime_ns": 1785306984663178900,
+      "sha256": "74da6784da30e5da9b2898beded5083fa8ff3d535a802241ab200119f493303e"
+    },
+    "input_shards": [
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00001.txt",
+        "bytes": 280165,
+        "mtime_ns": 1785306984696887200,
+        "sha256": "963ac160ac94f19aafe8856ff435b13aacb33caa290d4df0ac2af92c37825bed",
+        "shard_index": 1,
+        "row_count": 25000,
+        "expected_output_name": "oov_00001.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00002.txt",
+        "bytes": 301636,
+        "mtime_ns": 1785306984728568400,
+        "sha256": "740173ac9c5e017c67c1604b0943ce108dcebca2f47c6cf92e206ca133913e81",
+        "shard_index": 2,
+        "row_count": 25000,
+        "expected_output_name": "oov_00002.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00003.txt",
+        "bytes": 306568,
+        "mtime_ns": 1785306984758911900,
+        "sha256": "6413498c0c84f2bbb3234ce89a5abff6051eb7bcef352ca552392f0fafcac623",
+        "shard_index": 3,
+        "row_count": 25000,
+        "expected_output_name": "oov_00003.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00004.txt",
+        "bytes": 314485,
+        "mtime_ns": 1785306984789746900,
+        "sha256": "65c855bb123b5031b4682d3ceaed17356a23cea50f447cd8b949f0cb8e04a7de",
+        "shard_index": 4,
+        "row_count": 25000,
+        "expected_output_name": "oov_00004.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00005.txt",
+        "bytes": 323704,
+        "mtime_ns": 1785306984817933200,
+        "sha256": "1cde058be66f4f68b337a5c3bee554545708dbaebbee28e12ece6d5cc68f90c5",
+        "shard_index": 5,
+        "row_count": 25000,
+        "expected_output_name": "oov_00005.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00006.txt",
+        "bytes": 319375,
+        "mtime_ns": 1785306984846274000,
+        "sha256": "ff95fe85c26bb4a841184b3a5a9065fcc65a5beb059b911c5dfdc048b8045ce6",
+        "shard_index": 6,
+        "row_count": 25000,
+        "expected_output_name": "oov_00006.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00007.txt",
+        "bytes": 332473,
+        "mtime_ns": 1785306984873824300,
+        "sha256": "6a2cc351d5ad9a7317547829cb13bb8a3174c1e1ce5794d6317cbbdb6e8b75a0",
+        "shard_index": 7,
+        "row_count": 25000,
+        "expected_output_name": "oov_00007.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00008.txt",
+        "bytes": 328183,
+        "mtime_ns": 1785306984901913000,
+        "sha256": "18a2fc9c79133deede117aa9d7018d823ff3700c577b53f5cc828d56ce7f431e",
+        "shard_index": 8,
+        "row_count": 25000,
+        "expected_output_name": "oov_00008.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00009.txt",
+        "bytes": 334480,
+        "mtime_ns": 1785306984930352000,
+        "sha256": "b2bafecce303842cbfd94c225a07e3984cf1551c91656db2967087d438fad7db",
+        "shard_index": 9,
+        "row_count": 25000,
+        "expected_output_name": "oov_00009.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00010.txt",
+        "bytes": 340879,
+        "mtime_ns": 1785306984955410400,
+        "sha256": "65ef195782de70eaab54970bbc36009820171ec718135e45a14f758c0c4492ad",
+        "shard_index": 10,
+        "row_count": 25000,
+        "expected_output_name": "oov_00010.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00011.txt",
+        "bytes": 346690,
+        "mtime_ns": 1785306984982010900,
+        "sha256": "9a76b72d8842273893d37ec2c7dfcb6f303e59962b63a63dc996d6794cbe6e44",
+        "shard_index": 11,
+        "row_count": 25000,
+        "expected_output_name": "oov_00011.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00012.txt",
+        "bytes": 348571,
+        "mtime_ns": 1785306985006489500,
+        "sha256": "43d51ce83095cd39bc98241bcfad84e14266d5f66d441efd6fa31100fae33bd5",
+        "shard_index": 12,
+        "row_count": 25000,
+        "expected_output_name": "oov_00012.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00013.txt",
+        "bytes": 333217,
+        "mtime_ns": 1785306985034080000,
+        "sha256": "718c1e50ad0cf4ec48fc5f1a92dc0e9e120231acc6cb94d17841ace91e137e8b",
+        "shard_index": 13,
+        "row_count": 25000,
+        "expected_output_name": "oov_00013.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00014.txt",
+        "bytes": 345679,
+        "mtime_ns": 1785306985060141000,
+        "sha256": "c1b80631875198538d1851dd9228ad79360d898449364362f464d17557842904",
+        "shard_index": 14,
+        "row_count": 25000,
+        "expected_output_name": "oov_00014.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00015.txt",
+        "bytes": 352633,
+        "mtime_ns": 1785306985086218300,
+        "sha256": "7a25f7cf64db62f6f5617175e92f348d7884021ec2deabc8d5a935631291feaa",
+        "shard_index": 15,
+        "row_count": 25000,
+        "expected_output_name": "oov_00015.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00016.txt",
+        "bytes": 371248,
+        "mtime_ns": 1785306985105755600,
+        "sha256": "f1f627e8bef22048ab357f0729e3be2beb08c88464c107fe0b538c58d6b0c4ff",
+        "shard_index": 16,
+        "row_count": 25000,
+        "expected_output_name": "oov_00016.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00017.txt",
+        "bytes": 369190,
+        "mtime_ns": 1785306985123978900,
+        "sha256": "0a4e6215936ec7d1c37ad5f51cdc9c58af0d65017f59b5c7d68a53f802d14176",
+        "shard_index": 17,
+        "row_count": 25000,
+        "expected_output_name": "oov_00017.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00018.txt",
+        "bytes": 362164,
+        "mtime_ns": 1785306985144327600,
+        "sha256": "ab9683890e046ac90798f394f172f14923ed9479f54bdc5cfba6fd50b63a4ea6",
+        "shard_index": 18,
+        "row_count": 25000,
+        "expected_output_name": "oov_00018.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00019.txt",
+        "bytes": 367957,
+        "mtime_ns": 1785306985163871200,
+        "sha256": "fbe33da918a662d4b826013735d3308a90b1a313dd90803fe3040c4830314f33",
+        "shard_index": 19,
+        "row_count": 25000,
+        "expected_output_name": "oov_00019.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00020.txt",
+        "bytes": 368116,
+        "mtime_ns": 1785306985183989100,
+        "sha256": "cb84ac8ffd87923b97b12bc2f702e9e47858c02bd0f35065273c6d8287171eff",
+        "shard_index": 20,
+        "row_count": 25000,
+        "expected_output_name": "oov_00020.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00021.txt",
+        "bytes": 370504,
+        "mtime_ns": 1785306985207102400,
+        "sha256": "95e4b6cb70cc350afd31d4af5123303a168a283d79bd8f829ce0c2159ed8958c",
+        "shard_index": 21,
+        "row_count": 25000,
+        "expected_output_name": "oov_00021.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00022.txt",
+        "bytes": 367315,
+        "mtime_ns": 1785306985232455800,
+        "sha256": "493a91e282d0c139b757ff289e3ddeb1330bb24a9fe786b754c06ff1e4ca5774",
+        "shard_index": 22,
+        "row_count": 25000,
+        "expected_output_name": "oov_00022.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00023.txt",
+        "bytes": 372343,
+        "mtime_ns": 1785306985258470100,
+        "sha256": "de6e4e3f9c876e4e8a0966fbfdf2025215fbbc7dbcc8130944304cb3dbad1192",
+        "shard_index": 23,
+        "row_count": 25000,
+        "expected_output_name": "oov_00023.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00024.txt",
+        "bytes": 374038,
+        "mtime_ns": 1785306985290937400,
+        "sha256": "68bb06d9050c26eb8e4aa68b3d4ee8126b22fd77e9892d381a19e5f3cb408bbd",
+        "shard_index": 24,
+        "row_count": 25000,
+        "expected_output_name": "oov_00024.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00025.txt",
+        "bytes": 376060,
+        "mtime_ns": 1785306985313308800,
+        "sha256": "d700df52b3b00040bc74d92ac521e28ca434a20316b66ef80719d5b9a2f3d1d1",
+        "shard_index": 25,
+        "row_count": 25000,
+        "expected_output_name": "oov_00025.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00026.txt",
+        "bytes": 377503,
+        "mtime_ns": 1785306985343226000,
+        "sha256": "52206eed62eb12d18ac00184df1013d86d57e5d0e4100d7e94f973338052e7ec",
+        "shard_index": 26,
+        "row_count": 25000,
+        "expected_output_name": "oov_00026.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00027.txt",
+        "bytes": 378616,
+        "mtime_ns": 1785306985362230500,
+        "sha256": "f757e57a3c80dd11479daabef42f2a9b549e6e9e6b850994289bdfd477eb9bb4",
+        "shard_index": 27,
+        "row_count": 25000,
+        "expected_output_name": "oov_00027.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00028.txt",
+        "bytes": 370876,
+        "mtime_ns": 1785306985380964300,
+        "sha256": "7a7194d28f2b4c43b67b221a98e60ba9409829ea4110fe1cb707457b479db594",
+        "shard_index": 28,
+        "row_count": 25000,
+        "expected_output_name": "oov_00028.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00029.txt",
+        "bytes": 378958,
+        "mtime_ns": 1785306985399837200,
+        "sha256": "1cc56ed1c7629584e64f38e4b67ae66f849eaaa679dc6807bb667948d4fef13a",
+        "shard_index": 29,
+        "row_count": 25000,
+        "expected_output_name": "oov_00029.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00030.txt",
+        "bytes": 369976,
+        "mtime_ns": 1785306985420433400,
+        "sha256": "80d3262f287449f2dd1eaadfbe08d0d6c20875ff20ce867b6b1dd0bc9811d027",
+        "shard_index": 30,
+        "row_count": 25000,
+        "expected_output_name": "oov_00030.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00031.txt",
+        "bytes": 370111,
+        "mtime_ns": 1785306985440239700,
+        "sha256": "886376928041ae800eb0b2aaeecb1d6dace33c875842b2d9e93235687f11bc54",
+        "shard_index": 31,
+        "row_count": 25000,
+        "expected_output_name": "oov_00031.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00032.txt",
+        "bytes": 366139,
+        "mtime_ns": 1785306985460011000,
+        "sha256": "83a6abe8e99359b5cad78f532825fbf6d281310535c3f60ae726a35ddb7e97dc",
+        "shard_index": 32,
+        "row_count": 25000,
+        "expected_output_name": "oov_00032.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00033.txt",
+        "bytes": 364687,
+        "mtime_ns": 1785306985479112600,
+        "sha256": "66ab4b7ed8a3e90ddda4a5c0d9b55224e76445f2bc227af2f4c292b5ce0b12e8",
+        "shard_index": 33,
+        "row_count": 25000,
+        "expected_output_name": "oov_00033.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00034.txt",
+        "bytes": 372001,
+        "mtime_ns": 1785306985497565500,
+        "sha256": "3ed7c89b78603b6d66d17717825102b55647e3b33fbc986adc3d833c5444bee6",
+        "shard_index": 34,
+        "row_count": 25000,
+        "expected_output_name": "oov_00034.dict"
+      },
+      {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\input_shards\\oov_00035.txt",
+        "bytes": 245666,
+        "mtime_ns": 1785306985513111100,
+        "sha256": "2913281fc1a0b60f0b98d7f1410f0de08c1b5fee82ba6ebcf4dc63cb8ccb9beb",
+        "shard_index": 35,
+        "row_count": 16688,
+        "expected_output_name": "oov_00035.dict"
+      }
+    ],
+    "output_shards_directory": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\common_pron_prepare_revalidation_20260729\\run_current\\01_g2p\\output_shards"
+  },
+  "runtime": {
+    "recorded_at": "2026-07-29T15:36:25+09:00",
+    "git_commit": "d2df799586e899168cd3475233592a41c5a19f2a",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 25488
+  }
+}

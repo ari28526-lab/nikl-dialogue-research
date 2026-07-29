@@ -293,6 +293,95 @@ class CommonPronMfaLexiconTests(unittest.TestCase):
                 first["release_contract_id"], second["release_contract_id"]
             )
 
+    def test_prepare_code_transition_requires_byte_equivalent_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _, current = self.prepare(root)
+            prepared = json.loads(json.dumps(current))
+            prepared["code_contract"]["lexicon_builder"][
+                "normalized_utf8_sha256"
+            ] = "0" * 64
+            evidence_path = root / "isolated_prepare_manifest.json"
+            evidence_path.write_text(
+                json.dumps(current, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            evidence_record = file_fingerprint(
+                evidence_path, with_sha256=True
+            )
+            registry_path = root / "transitions.json"
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": (
+                            "common_pron_prepare_code_transition.v1"
+                        ),
+                        "status": "active",
+                        "transitions": [
+                            {
+                                "transition_id": "test_transition",
+                                "status": "byte_equivalent",
+                                "release_contract_id": prepared[
+                                    "release_contract_id"
+                                ],
+                                "from_builder_sha256": "0" * 64,
+                                "to_builder_sha256": current[
+                                    "code_contract"
+                                ]["lexicon_builder"][
+                                    "normalized_utf8_sha256"
+                                ],
+                                "evidence_manifest": evidence_record,
+                            }
+                        ],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            result = lexicon.verify_prepare_code_transition(
+                prepared=prepared,
+                actual_code=current["code_contract"]["lexicon_builder"],
+                transitions_path=registry_path,
+            )
+            self.assertEqual(
+                result["status"],
+                "byte_equivalent_transition_verified",
+            )
+
+            changed = json.loads(
+                evidence_path.read_text(encoding="utf-8")
+            )
+            changed["outputs"]["input_shards"][0]["sha256"] = "f" * 64
+            evidence_path.write_text(
+                json.dumps(changed, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            changed_record = file_fingerprint(
+                evidence_path, with_sha256=True
+            )
+            registry = json.loads(
+                registry_path.read_text(encoding="utf-8")
+            )
+            registry["transitions"][0][
+                "evidence_manifest"
+            ] = changed_record
+            registry_path.write_text(
+                json.dumps(registry, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                RuntimeError, "prepared artifacts differ"
+            ):
+                lexicon.verify_prepare_code_transition(
+                    prepared=prepared,
+                    actual_code=current["code_contract"][
+                        "lexicon_builder"
+                    ],
+                    transitions_path=registry_path,
+                )
+
     def test_finalize_preserves_base_rows_and_adds_only_g2p(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

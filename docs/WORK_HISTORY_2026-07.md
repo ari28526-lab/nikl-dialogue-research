@@ -1546,3 +1546,39 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `03_review/decision_application_review_ab4297135197.manifest.json`이며
   lock은 해제됐다. 이 단계의 raw corpus·G2P shard·final dictionary
   변경은 모두 0이다.
+
+## 2026-07-29 15:26–15:40 r2 prepare 코드 계약 재검증
+
+- 연구자 결정 적용 뒤 r2 runner를 재개했으나 shard 처리 전에
+  `prepare manifest 생성기 코드 계약 불일치`로 안전 중단됐다. 원인은
+  2026-07-28 prepare 당시 builder 전체 파일 SHA와, 이후 Jamo 연구자
+  승인·최종화 로직을 강화한 현재 builder 전체 파일 SHA가 달라진
+  것이었다. prepare 생성 로직의 변경이나 기존 데이터 손상은 아니다.
+  실패 실행은 output shard, final dictionary, raw corpus를 쓰지 않았고
+  lock도 남기지 않았다.
+- 안전장치를 생략하거나 기존 manifest의 SHA를 덮어쓰지 않았다.
+  현재 builder로 prepare를 프로젝트 `work`의 격리 경로에서 다시
+  실행했다. 어휘 881,237, OOV 866,692, 표준 어휘 866,688,
+  U+11B3 rewrite 4, 입력 shard 35라는 count가 기존과 같았다.
+- 기존/격리 prepare의 입력 5종, 정책·G2P·phone·어휘 계약,
+  OOV inventory, grapheme audit, Jamo 보조파일 3종 및 35개 입력
+  shard의 행 수·byte 수·SHA256을 전수 비교했다. 차이는 **0건**이다.
+  고정 증거는
+  `outputs/common_pron_prepare_revalidation_20260729/`에 남겼다.
+- `common_pron_prepare_code_transitions.json` registry를 추가했다.
+  기존 prepare builder
+  `c93648bd045047b0daa22cb0ce6b94e1f5fcb966e1fddd29de1d8ae4c5d361b3`
+  에서 현재 builder
+  `b477c9b49620d8a829cc0e390359a142d4535c694b3bd1719bc4fb5d22e7f420`
+  으로 넘어갈 때 이 특정 release contract와 격리 evidence manifest의
+  fingerprint, 모든 prepare 산출물의 바이트 동등성을 실행 시 다시
+  검증한다. 등록되지 않은 코드 변경이나 evidence 변조는 계속
+  fail-closed다.
+- 최종 release manifest에는 prepare builder와 finalize builder를
+  분리해서 기록하도록 했다. 따라서 논문 방법론상 기존 prepare
+  산출물을 어느 코드로 만들었는지와, 연구자 승인 뒤 최종 사전을
+  어느 코드로 조립했는지를 각각 추적할 수 있다.
+- 전환 성공과 evidence의 shard SHA 변조 차단 회귀시험을 추가했다.
+  관련 lexicon unittest 16개가 통과했고, 실제 D: prepare manifest에
+  대한 read-only 재검증도 통과했다. 전체 Python unittest **193개**와
+  PowerShell 안전검사 **12개**도 통과했다.

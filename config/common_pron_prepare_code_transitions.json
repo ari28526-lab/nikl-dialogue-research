@@ -1,0 +1,25 @@
+{
+  "schema_version": "common_pron_prepare_code_transition.v1",
+  "status": "active",
+  "transitions": [
+    {
+      "transition_id": "r2_prepare_downstream_only_20260729",
+      "status": "byte_equivalent",
+      "release_contract_id": "727bef1b6d483700a464554b9ed8944f2257e1da9f588b68afbeb1b2efb09967",
+      "from_builder_sha256": "c93648bd045047b0daa22cb0ce6b94e1f5fcb966e1fddd29de1d8ae4c5d361b3",
+      "to_builder_sha256": "b477c9b49620d8a829cc0e390359a142d4535c694b3bd1719bc4fb5d22e7f420",
+      "scope": "prepared artifacts only; downstream review and finalize code changed",
+      "evidence_manifest": {
+        "path": "outputs/common_pron_prepare_revalidation_20260729/isolated_current_prepare_manifest.json",
+        "bytes": 23120,
+        "sha256": "b69f8ddaab48d2f1b0d07d72fb5e7ecfa526ffb6ce2978b39b973a4c57382c5a"
+      },
+      "comparison": {
+        "source_inputs": 5,
+        "named_prepared_outputs": 5,
+        "input_shards": 35,
+        "difference_count": 0
+      }
+    }
+  ]
+}
