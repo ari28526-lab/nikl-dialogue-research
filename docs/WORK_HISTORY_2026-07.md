@@ -1225,3 +1225,73 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   살아 있고 정체가 아니다.
 - invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절·4개
   shard는 변함없으며 D: 여유는 263.10GiB다.
+
+## 2026-07-29 11:24 r2 마지막 shard 진입
+
+- shard 34가 검증 완료돼 verified shard는 30/35가 됐고, 마지막
+  shard 35는 3,344행까지 진행했다. 전체 관측 생성은
+  853,325/866,692어절(98.458%)이다.
+- 직전 점검 뒤 약 28분 44초 동안 20,935행이 늘어 실측 처리율은
+  약 12.14 words/s다. 장기 평균 12.08 words/s와 일치하며 계산 종료
+  ETA는 11:43 전후다.
+- invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절·4개
+  shard는 변함없다. lock PID 5464는 살아 있고 D: 여유는
+  263.10GiB다. 마지막 shard 종료 뒤 final이 잘못 실행되지 않고
+  승인 대기 상태로 안전 종료하는지 다음 점검에서 확인한다.
+
+## 2026-07-29 11:42–11:45 전수 계산 종료 감사
+
+- 마지막 shard 35는 16,688/16,688어절, missing·extra·`spn`·acoustic
+  inventory 이탈 모두 0으로 11:42에 검증됐다.
+- 성공 report 31개를 상태판과 별도로 다시 합산한 결과 입력과 출력이
+  각각 정확히 766,688어절로 일치했다. 승인 대기 partial 네 개의
+  99,977행을 더하면 866,665행이고 Jamo ㄽ 후보 4행을 포함한 관측
+  생성은 866,669/866,692어절이다. 차이 23개는 검토표에 등록된
+  `읊-` 활용형과 정확히 같다.
+- phase는 `g2p_review_blocked_not_running`으로 전환됐고 PID 5464는
+  종료, lock 파일은 해제됐다. final manifest·차이 inventory·adoption은
+  모두 pending이며 연도별 MFA 허가는 false다. 이는 의도한 안전
+  중단이며 재계산 실패가 아니다.
+- invalid report 0, 미등록 누락 0, D: 여유 263.10GiB다. stdout 마지막
+  메시지도 승인 대기 shard 8·12·15·29만 밝히고 partial 보수 뒤 같은
+  명령으로 재개하라고 기록했다.
+
+## 2026-07-29 11:46–11:55 Jamo ㄽ 원본 추적과 same-model probe
+
+- `trace_common_pron_special_occurrences.py`로 동결 search-master
+  5,103,356행을 한 번 스캔했다. 네 target은 각각 한 번씩 발견됐고
+  원본 JSON 세 파일의 form·original·식별자 일치가 4/4, mismatch
+  0이었다. 산출물은 D: r2 release의
+  `03_review/jamo_ls_source_occurrences_20260729.csv`와 manifest다.
+- `외곬수적인`은 원본도 같은 표기지만 발음 기준이 `외골수저긴`이고,
+  `천구백칤비육`은 `1976년` placeholder의 비정상 original form임을
+  확인했다. 두 행은 단순 ㄽ phone 문제가 아니라 원전사·숫자 복원
+  예외다.
+- `외곬을`과 `외곬의`는 동일 2025 화자의 실제 글자 설명 발화이며,
+  공식 `[외골쓸]`, 원칙 `[외골씌]`·허용 `[외골쎄]` 후보를 청취와
+  대조해야 한다.
+- 동결 Jamo G2P v3.2.0에 13개 소표본을 넣어 재현 가능한 입력과 출력을
+  `config/common_pron_review_probes_20260729.txt`,
+  `outputs/reports/common_pron_review_probes_20260729.dict`에 보존했다.
+  입력·출력 SHA256은 각각 `770aa96...e849863`,
+  `41a2e684...2bd4a`다.
+- `읍꼬`가 잘못 `ɨː m k͈ o`를 내지만 `읍`, `꼬`, 대리입력 `읖꼬`는
+  기대한 `ɨ p̚`, `k͈ o`, `ɨ p̚ k͈ o`를 냈다. 공식
+  `읊고[읍꼬]`와도 대조되므로 same-model 후보를 자동 승인하면
+  안 된다는 실제 반례다.
+
+## 2026-07-29 no-path 승인 phone 계약 보강
+
+- no-path 검토표도 모델 후보 `pron_phones_mfa`와 최종 연구자 승인
+  `approved_pron_phones_mfa`를 분리하도록 v2로 보강했다. 후보와 다른
+  phone은 근거·notes·동결 acoustic inventory 검증을 모두 요구한다.
+- shard repair는 승인열만 사용하고 model candidate·approved phone을
+  manifest에 함께 보존한다. method supplement와 G2P cache source는
+  same-model fallback과 manual same-inventory override를 구분한다.
+- 기존 `읊어` 구형 승인표와 보수 snapshot은 후보와 승인 phone이 같은
+  것으로 읽기 호환된다. 실제 D: 구형 24행 검토표와 1행 snapshot을
+  읽기 전용 검증한 결과 승인 1, 승인 phone 1, manual override 0이며
+  phone은 변하지 않았다.
+- 관련 회귀시험 19개와 별도 manual override provenance 시험이
+  통과했다. 이어 전체 Python unittest **170개**, PowerShell 안전검사
+  **12개**, `git diff --check`도 모두 통과했다.

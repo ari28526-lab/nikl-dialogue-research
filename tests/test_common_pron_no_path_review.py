@@ -27,7 +27,7 @@ def write_acoustic_model(path: Path) -> None:
     with zipfile.ZipFile(path, "w") as archive:
         archive.writestr(
             "acoustic/meta.json",
-            json.dumps({"phones": ["ɨ", "ɭ", "pʰ", "ʌ"]}),
+            json.dumps({"phones": ["ɨ", "ɭ", "pʰ", "p̚", "k͈", "ʌ"]}),
         )
 
 
@@ -82,6 +82,12 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
 
     def approve(self) -> None:
         rows = review.read_review(self.review_path)
+        rows[0]["approved_pron_phones_mfa"] = rows[0][
+            "pron_phones_mfa"
+        ]
+        rows[0]["approved_phone_evidence"] = (
+            "same_frozen_jamo_candidate_explicitly_approved"
+        )
         rows[0]["decision"] = "approved"
         rows[0]["notes"] = "researcher approved"
         write_csv(self.review_path, review.REVIEW_FIELDS, rows)
@@ -114,7 +120,10 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             review_path=self.review_path,
             surface="읊어",
             decision="approved",
+            approved_pron_phones_mfa="ɨ ɭ pʰ ʌ",
+            approved_phone_evidence="same model candidate",
             notes="explicit researcher approval",
+            acoustic_model=self.acoustic,
             decision_record=decision_record,
             release_root=self.root,
         )
@@ -124,7 +133,7 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
         self.assertEqual(payload["previous_decision"], "pending")
         self.assertEqual(
             payload["approval_scope"],
-            "this exact surface-respelling-phone candidate only",
+            "this exact surface and approved phone only",
         )
         recorded = json.loads(decision_record.read_text(encoding="utf-8"))
         self.assertEqual(recorded["surface"], "읊어")
@@ -134,7 +143,10 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             review_path=self.review_path,
             surface="읊어",
             decision="approved",
+            approved_pron_phones_mfa="ɨ ɭ pʰ ʌ",
+            approved_phone_evidence="same model candidate",
             notes="explicit researcher approval",
+            acoustic_model=self.acoustic,
             decision_record=decision_record,
             release_root=self.root,
         )
@@ -147,7 +159,10 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
             review_path=self.review_path,
             surface="읊어",
             decision="approved",
+            approved_pron_phones_mfa="ɨ ɭ pʰ ʌ",
+            approved_phone_evidence="same model candidate",
             notes="explicit researcher approval",
+            acoustic_model=self.acoustic,
             decision_record=decision_record,
             release_root=self.root,
         )
@@ -156,7 +171,10 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
                 review_path=self.review_path,
                 surface="읊어",
                 decision="rejected",
+                approved_pron_phones_mfa="",
+                approved_phone_evidence="",
                 notes="changed",
+                acoustic_model=self.acoustic,
                 decision_record=self.root / "other.json",
                 release_root=self.root,
             )
@@ -238,6 +256,71 @@ class CommonPronNoPathReviewTests(unittest.TestCase):
                 review_path=self.review_path,
                 manifest_path=self.review_manifest,
             )
+
+    def test_manual_approved_phone_is_separate_from_model_candidate(self) -> None:
+        rows = review.read_review(self.review_path)
+        rows[0].update(
+            {
+                "approved_pron_phones_mfa": "ɨ p̚ k͈ ʌ",
+                "approved_phone_evidence": "official_rule_and_probe",
+                "decision": "approved",
+                "notes": "candidate was linguistically wrong",
+            }
+        )
+        write_csv(self.review_path, review.REVIEW_FIELDS, rows)
+        self.output_shard.write_text("기타\tɨ\n", encoding="utf-8")
+        self.input_shard.write_text("읊어\n기타\n", encoding="utf-8")
+        code, payload = review.repair_shard(
+            input_shard=self.input_shard,
+            output_shard=self.output_shard,
+            acoustic_model=self.acoustic,
+            review_path=self.review_path,
+            release_root=self.root,
+        )
+        self.assertEqual(code, 0)
+        self.assertEqual(
+            self.output_shard.read_text(encoding="utf-8"),
+            "읊어\tɨ p̚ k͈ ʌ\n기타\tɨ\n",
+        )
+        self.assertEqual(payload["counts"]["manual_phone_override_words"], 1)
+        self.assertEqual(
+            payload["used_candidates"][0]["model_candidate_pron_phones_mfa"],
+            "ɨ ɭ pʰ ʌ",
+        )
+        self.assertEqual(
+            payload["used_candidates"][0]["approved_pron_phones_mfa"],
+            "ɨ p̚ k͈ ʌ",
+        )
+
+    def test_legacy_approved_review_migrates_without_changing_phone(self) -> None:
+        legacy = review.read_review(self.review_path)
+        legacy[0]["decision"] = "approved"
+        legacy[0]["notes"] = "legacy approval"
+        write_csv(
+            self.review_path,
+            review.LEGACY_REVIEW_FIELDS,
+            [
+                {
+                    field: legacy[0][field]
+                    for field in review.LEGACY_REVIEW_FIELDS
+                }
+            ],
+        )
+        payload = review.build_review(
+            mapping_path=self.mapping,
+            raw_dictionary=self.raw,
+            acoustic_model=self.acoustic,
+            g2p_model=self.g2p_model,
+            frozen_model_pin=self.frozen_pin,
+            review_path=self.review_path,
+            manifest_path=self.review_manifest,
+        )
+        migrated = review.read_review(self.review_path)[0]
+        self.assertEqual(
+            migrated["approved_pron_phones_mfa"],
+            migrated["pron_phones_mfa"],
+        )
+        self.assertEqual(payload["status"], "approved")
 
 
 if __name__ == "__main__":

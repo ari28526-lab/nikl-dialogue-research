@@ -5,11 +5,13 @@ FST has no path.  This helper never guesses a phone sequence and never
 overwrites a pronunciation that the frozen model already generated.
 
 Known surface words are mapped to an explicitly documented standard-
-pronunciation respelling.  The same frozen Jamo G2P generates phones for that
-respelling, a researcher approves the candidate, and only then may the missing
-surface key be added to a shard.  The partial shard is backed up before an
-atomic replacement, and a separate repair manifest preserves the exception
-provenance.
+pronunciation respelling.  The same frozen Jamo G2P generates an immutable
+candidate.  A researcher separately records the approved phone sequence, which
+must stay inside the frozen acoustic inventory, and only then may the missing
+surface key be added to a shard.  This separation matters because a frozen G2P
+candidate can itself be linguistically wrong.  The partial shard is backed up
+before an atomic replacement, and a separate repair manifest preserves both
+the candidate and the approved exception provenance.
 """
 
 from __future__ import annotations
@@ -39,7 +41,8 @@ from pipeline_common import (
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_VERSION = "common_pron_g2p_no_path.v1"
+LEGACY_SCHEMA_VERSION = "common_pron_g2p_no_path.v1"
+SCHEMA_VERSION = "common_pron_g2p_no_path.v2"
 PENDING_EXIT = 76
 UNKNOWN_EXIT = 77
 MAPPING_FIELDS = (
@@ -50,6 +53,14 @@ MAPPING_FIELDS = (
     "evidence_detail",
 )
 REVIEW_FIELDS = (
+    *MAPPING_FIELDS,
+    "pron_phones_mfa",
+    "approved_pron_phones_mfa",
+    "approved_phone_evidence",
+    "decision",
+    "notes",
+)
+LEGACY_REVIEW_FIELDS = (
     *MAPPING_FIELDS,
     "pron_phones_mfa",
     "decision",
@@ -135,30 +146,68 @@ def _review_candidate(row: dict[str, str], phones: tuple[str, ...]) -> dict:
     return {
         **row,
         "pron_phones_mfa": " ".join(phones),
+        "approved_pron_phones_mfa": "",
+        "approved_phone_evidence": "",
         "decision": "pending",
         "notes": "",
     }
 
 
 def _candidate_signature(row: dict[str, str]) -> tuple[str, ...]:
-    return tuple(_strip(row[field]) for field in REVIEW_FIELDS[:-2])
+    return tuple(
+        _strip(row[field])
+        for field in (*MAPPING_FIELDS, "pron_phones_mfa")
+    )
 
 
 def read_review(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
-        if tuple(reader.fieldnames or ()) != REVIEW_FIELDS:
+        fieldnames = tuple(reader.fieldnames or ())
+        if fieldnames not in {REVIEW_FIELDS, LEGACY_REVIEW_FIELDS}:
             raise RuntimeError(
                 f"no-path review 열 계약 불일치: {reader.fieldnames}"
             )
         rows = []
         for raw in reader:
-            row = {field: _strip(raw[field]) for field in REVIEW_FIELDS}
+            row = {
+                field: _strip(raw.get(field, ""))
+                for field in REVIEW_FIELDS
+            }
             row["surface"] = clean(row["surface"])
             row["respelled"] = clean(row["respelled"])
             if row["decision"] not in DECISIONS:
                 raise RuntimeError(
                     f"no-path review decision 불일치: {row['decision']}"
+                )
+            if fieldnames == LEGACY_REVIEW_FIELDS:
+                if row["decision"] == "approved":
+                    row["approved_pron_phones_mfa"] = row[
+                        "pron_phones_mfa"
+                    ]
+                    row["approved_phone_evidence"] = (
+                        "legacy_same_frozen_jamo_candidate"
+                    )
+            if (
+                row["decision"] == "approved"
+                and not row["approved_pron_phones_mfa"]
+            ):
+                raise RuntimeError(
+                    "승인 no-path 행의 approved phone 누락: "
+                    f"{row['surface']}"
+                )
+            if (
+                row["approved_pron_phones_mfa"]
+                and row["approved_pron_phones_mfa"]
+                != row["pron_phones_mfa"]
+                and (
+                    not row["approved_phone_evidence"]
+                    or not row["notes"]
+                )
+            ):
+                raise RuntimeError(
+                    "no-path 수동 승인 phone은 근거와 notes가 필요함: "
+                    f"{row['surface']}"
                 )
             rows.append(row)
     surfaces = [row["surface"] for row in rows]
@@ -229,11 +278,40 @@ def build_review(
                     "기존 no-path 연구자 검토표 후보가 달라짐: "
                     f"{candidate['surface']}"
                 )
+            candidate["approved_pron_phones_mfa"] = old[
+                "approved_pron_phones_mfa"
+            ]
+            candidate["approved_phone_evidence"] = old[
+                "approved_phone_evidence"
+            ]
             candidate["decision"] = old["decision"]
             candidate["notes"] = old["notes"]
 
+    for candidate in candidates:
+        approved_phones = tuple(
+            candidate["approved_pron_phones_mfa"].split()
+        )
+        if not approved_phones:
+            continue
+        outside = sorted(set(approved_phones) - inventory)
+        if outside or "spn" in approved_phones:
+            raise RuntimeError(
+                "no-path 승인 phone gate 실패: "
+                f"{candidate['surface']} outside={outside} "
+                f"spn={'spn' in approved_phones}"
+            )
     _write_csv(review_path, REVIEW_FIELDS, candidates)
-    approved = sum(row["decision"] == "approved" for row in candidates)
+    approved = sum(
+        row["decision"] == "approved"
+        and bool(row["approved_pron_phones_mfa"])
+        for row in candidates
+    )
+    manual_overrides = sum(
+        row["decision"] == "approved"
+        and row["approved_pron_phones_mfa"]
+        != row["pron_phones_mfa"]
+        for row in candidates
+    )
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "status": (
@@ -241,14 +319,17 @@ def build_review(
         ),
         "kind": "reviewed_standard_pronunciation_no_path_candidates",
         "policy": (
-            "only fill a frozen-Jamo-G2P missing surface after researcher "
-            "approval; never replace an existing model pronunciation"
+            "preserve the frozen-Jamo-G2P respelling candidate; only fill a "
+            "missing surface from a separate researcher-approved phone "
+            "sequence inside the frozen acoustic inventory; never replace an "
+            "existing model pronunciation"
         ),
         "recorded_at": now_iso(),
         "counts": {
             "candidates": len(candidates),
             "approved": approved,
             "pending_or_rejected": len(candidates) - approved,
+            "approved_manual_phone_overrides": manual_overrides,
             "spn_words": 0,
             "phone_outside_acoustic_inventory": 0,
         },
@@ -286,7 +367,10 @@ def record_decision(
     review_path: Path,
     surface: str,
     decision: str,
+    approved_pron_phones_mfa: str,
+    approved_phone_evidence: str,
     notes: str,
+    acoustic_model: Path,
     decision_record: Path,
     release_root: Path,
 ) -> dict:
@@ -295,6 +379,8 @@ def record_decision(
     decision_record = _ensure_within(decision_record, release_root)
     surface = clean(surface)
     decision = _strip(decision)
+    approved_pron_phones_mfa = _strip(approved_pron_phones_mfa)
+    approved_phone_evidence = _strip(approved_phone_evidence)
     notes = _strip(notes)
     if decision not in {"approved", "rejected"}:
         raise RuntimeError("연구자 결정은 approved/rejected만 기록 가능")
@@ -308,6 +394,34 @@ def record_decision(
             f"연구자 결정 대상이 정확히 1행이 아님: {surface}"
         )
     row = matches[0]
+    if decision == "approved":
+        if not approved_pron_phones_mfa:
+            raise RuntimeError(
+                "approved 결정은 exact approved phone이 필요함"
+            )
+        phones = tuple(approved_pron_phones_mfa.split())
+        inventory = acoustic_phone_inventory(acoustic_model)
+        outside = sorted(set(phones) - inventory)
+        if not phones or "spn" in phones or outside:
+            raise RuntimeError(
+                "승인 no-path phone gate 실패: "
+                f"{surface} outside={outside} spn={'spn' in phones}"
+            )
+        if (
+            approved_pron_phones_mfa != row["pron_phones_mfa"]
+            and not approved_phone_evidence
+        ):
+            raise RuntimeError(
+                "모델 후보와 다른 승인 phone은 근거가 필요함"
+            )
+        if not approved_phone_evidence:
+            approved_phone_evidence = (
+                "same_frozen_jamo_candidate_explicitly_approved"
+            )
+    elif approved_pron_phones_mfa or approved_phone_evidence:
+        raise RuntimeError(
+            "rejected 결정에는 approved phone/근거를 기록할 수 없음"
+        )
     previous = row["decision"]
     if previous not in {"pending", decision}:
         raise RuntimeError(
@@ -318,6 +432,16 @@ def record_decision(
         raise RuntimeError(
             f"기존 연구자 결정의 notes를 자동 변경할 수 없음: {surface}"
         )
+    if previous == decision and (
+        row["approved_pron_phones_mfa"]
+        != approved_pron_phones_mfa
+        or row["approved_phone_evidence"]
+        != approved_phone_evidence
+    ):
+        raise RuntimeError(
+            f"기존 연구자 결정의 승인 phone/근거를 자동 변경할 수 없음: "
+            f"{surface}"
+        )
     if previous == decision and decision_record.exists():
         existing = json.loads(
             decision_record.read_text(encoding="utf-8-sig")
@@ -326,6 +450,8 @@ def record_decision(
             "surface": surface,
             "respelled": row["respelled"],
             "pron_phones_mfa": row["pron_phones_mfa"],
+            "approved_pron_phones_mfa": approved_pron_phones_mfa,
+            "approved_phone_evidence": approved_phone_evidence,
             "decision": decision,
             "notes": notes,
         }
@@ -335,6 +461,8 @@ def record_decision(
             )
         return existing
 
+    row["approved_pron_phones_mfa"] = approved_pron_phones_mfa
+    row["approved_phone_evidence"] = approved_phone_evidence
     row["decision"] = decision
     row["notes"] = notes
     _write_csv(review_path, REVIEW_FIELDS, rows)
@@ -347,13 +475,18 @@ def record_decision(
         "surface": surface,
         "respelled": row["respelled"],
         "pron_phones_mfa": row["pron_phones_mfa"],
+        "approved_pron_phones_mfa": row[
+            "approved_pron_phones_mfa"
+        ],
+        "approved_phone_evidence": row["approved_phone_evidence"],
         "previous_decision": previous,
         "decision": decision,
         "notes": notes,
-        "approval_scope": (
-            "this exact surface-respelling-phone candidate only"
-        ),
+        "approval_scope": "this exact surface and approved phone only",
         "review": file_fingerprint(review_path, with_sha256=True),
+        "acoustic_model": file_fingerprint(
+            acoustic_model, with_sha256=True
+        ),
         "helper_code": file_fingerprint(Path(__file__), with_sha256=True),
         "runtime": runtime_snapshot(PROJECT_ROOT),
     }
@@ -422,7 +555,10 @@ def repair_shard(
             "unknown_words": unknown,
         })
     not_approved = [
-        word for word in missing if reviews[word]["decision"] != "approved"
+        word
+        for word in missing
+        if reviews[word]["decision"] != "approved"
+        or not reviews[word]["approved_pron_phones_mfa"]
     ]
     if not_approved:
         return finish(PENDING_EXIT, {
@@ -439,10 +575,11 @@ def repair_shard(
 
     inventory = acoustic_phone_inventory(acoustic_model)
     used = []
+    manual_override_words = []
     repaired = dict(generated)
     for word in missing:
         row = reviews[word]
-        phones = tuple(row["pron_phones_mfa"].split())
+        phones = tuple(row["approved_pron_phones_mfa"].split())
         if not phones or "spn" in phones:
             raise RuntimeError(f"승인 no-path phone이 비었거나 spn임: {word}")
         outside = sorted(set(phones) - inventory)
@@ -451,11 +588,27 @@ def repair_shard(
                 f"승인 no-path phone inventory 이탈: {word} {outside}"
             )
         repaired[word] = phones
+        if (
+            row["approved_pron_phones_mfa"]
+            != row["pron_phones_mfa"]
+        ):
+            manual_override_words.append(word)
         used.append(
             {
                 "surface": word,
                 "respelled": row["respelled"],
-                "pron_phones_mfa": row["pron_phones_mfa"],
+                "pron_phones_mfa": row[
+                    "approved_pron_phones_mfa"
+                ],
+                "model_candidate_pron_phones_mfa": row[
+                    "pron_phones_mfa"
+                ],
+                "approved_pron_phones_mfa": row[
+                    "approved_pron_phones_mfa"
+                ],
+                "approved_phone_evidence": row[
+                    "approved_phone_evidence"
+                ],
                 "rule_id": row["rule_id"],
                 "evidence_source": row["evidence_source"],
                 "evidence_detail": row["evidence_detail"],
@@ -519,18 +672,24 @@ def repair_shard(
         "kind": "reviewed_no_path_shard_repair",
         "recorded_at": now_iso(),
         "policy": (
-            "append only approved missing surfaces using phones generated by "
-            "the same frozen Jamo G2P from documented standard respellings"
+            "append only approved missing surfaces; preserve the same frozen "
+            "Jamo G2P candidate and permit a separately evidenced phone only "
+            "inside the same frozen acoustic inventory"
         ),
         "counts": {
             "input_words": len(words),
             "model_generated_words": len(generated),
             "reviewed_fallback_words": len(used),
+            "same_model_candidate_words": (
+                len(used) - len(manual_override_words)
+            ),
+            "manual_phone_override_words": len(manual_override_words),
             "final_words": len(repaired),
             "spn_words": 0,
             "phone_outside_acoustic_inventory": 0,
         },
         "used_candidates": used,
+        "manual_phone_override_words": sorted(manual_override_words),
         "inputs": {
             "helper_code": file_fingerprint(
                 Path(__file__), with_sha256=True
@@ -585,7 +744,10 @@ def parse_args() -> argparse.Namespace:
     decide.add_argument(
         "--decision", choices=("approved", "rejected"), required=True
     )
+    decide.add_argument("--approved-pron-phones-mfa", default="")
+    decide.add_argument("--approved-phone-evidence", default="")
     decide.add_argument("--notes", required=True)
+    decide.add_argument("--acoustic-model", type=Path, required=True)
     decide.add_argument("--decision-record", type=Path, required=True)
     decide.add_argument("--release-root", type=Path, required=True)
 
@@ -627,7 +789,10 @@ def main() -> int:
             review_path=args.review.resolve(),
             surface=args.surface,
             decision=args.decision,
+            approved_pron_phones_mfa=args.approved_pron_phones_mfa,
+            approved_phone_evidence=args.approved_phone_evidence,
             notes=args.notes,
+            acoustic_model=args.acoustic_model.resolve(),
             decision_record=args.decision_record.resolve(),
             release_root=args.release_root.resolve(),
         )

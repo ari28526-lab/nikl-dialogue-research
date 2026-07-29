@@ -252,12 +252,19 @@ class CommonPronAdoptionTests(unittest.TestCase):
                             "reviewed_g2p_no_path_method_supplement"
                         ),
                         "production_release_contract_id": "production",
-                        "counts": {"reviewed_no_path_words": 1},
+                        "counts": {
+                            "reviewed_no_path_words": 1,
+                            "manual_phone_override_words": 0,
+                        },
                         "policy": {
                             "same_frozen_jamo_g2p_required": True,
                             (
                                 "researcher_approved_standard_"
                                 "respelling_required"
+                            ): True,
+                            (
+                                "manual_phone_override_same_"
+                                "acoustic_inventory_only"
                             ): True,
                             "only_missing_surface_keys_added": True,
                             "existing_model_pronunciations_replaced": 0,
@@ -276,6 +283,7 @@ class CommonPronAdoptionTests(unittest.TestCase):
                 "release_contract_id": "production",
                 "counts": {
                     "g2p_reviewed_no_path_words": 1,
+                    "g2p_reviewed_no_path_manual_override_words": 0,
                     "g2p_existing_model_pronunciations_replaced": 0,
                 },
                 "outputs": {"g2p_cache": cache_fp},
@@ -312,12 +320,19 @@ class CommonPronAdoptionTests(unittest.TestCase):
                             "reviewed_g2p_no_path_method_supplement"
                         ),
                         "production_release_contract_id": "production",
-                        "counts": {"reviewed_no_path_words": 1},
+                        "counts": {
+                            "reviewed_no_path_words": 1,
+                            "manual_phone_override_words": 0,
+                        },
                         "policy": {
                             "same_frozen_jamo_g2p_required": True,
                             (
                                 "researcher_approved_standard_"
                                 "respelling_required"
+                            ): True,
+                            (
+                                "manual_phone_override_same_"
+                                "acoustic_inventory_only"
                             ): True,
                             "only_missing_surface_keys_added": True,
                             "existing_model_pronunciations_replaced": 0,
@@ -336,6 +351,7 @@ class CommonPronAdoptionTests(unittest.TestCase):
                 "release_contract_id": "production",
                 "counts": {
                     "g2p_reviewed_no_path_words": 1,
+                    "g2p_reviewed_no_path_manual_override_words": 0,
                     "g2p_existing_model_pronunciations_replaced": 0,
                 },
                 "outputs": {"g2p_cache": cache_fp},

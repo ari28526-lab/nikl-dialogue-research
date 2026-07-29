@@ -41,6 +41,10 @@ def write_review(path: Path) -> None:
                 "evidence_source": "official",
                 "evidence_detail": "읊어[을퍼]",
                 "pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+                "approved_pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+                "approved_phone_evidence": (
+                    "same_frozen_jamo_candidate_explicitly_approved"
+                ),
                 "decision": "approved",
                 "notes": "explicit approval",
             }
@@ -286,6 +290,61 @@ class FinalizeNoPathMethodTests(unittest.TestCase):
         backup.write_text("tampered\n", encoding="utf-8")
         with self.assertRaisesRegex(RuntimeError, "fingerprint 불일치"):
             finalizer.finalize_supplement(self.root)
+
+    def test_manual_override_gets_distinct_cache_provenance(self) -> None:
+        repair_dir = (
+            self.root / "_state" / "no_path_repairs" / "oov_00001"
+        )
+        repair_path = repair_dir / "repair_manifest.json"
+        repair = json.loads(repair_path.read_text(encoding="utf-8"))
+        snapshot_path = Path(
+            repair["inputs"]["approved_review_snapshot"]["path"]
+        )
+        snapshot = no_path.read_review(snapshot_path)
+        snapshot[0].update(
+            {
+                "pron_phones_mfa": "ɨ ɭ pʰ",
+                "approved_pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+                "approved_phone_evidence": "official_rule_and_probe",
+                "notes": "candidate corrected inside inventory",
+            }
+        )
+        write_csv(snapshot_path, no_path.REVIEW_FIELDS, snapshot)
+        used = repair["used_candidates"][0]
+        used.update(
+            {
+                "pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+                "model_candidate_pron_phones_mfa": "ɨ ɭ pʰ",
+                "approved_pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+                "approved_phone_evidence": "official_rule_and_probe",
+                "notes": "candidate corrected inside inventory",
+            }
+        )
+        repair["counts"]["same_model_candidate_words"] = 0
+        repair["counts"]["manual_phone_override_words"] = 1
+        repair["manual_phone_override_words"] = ["읊어"]
+        repair["inputs"]["approved_review_snapshot"] = file_fingerprint(
+            snapshot_path, with_sha256=True
+        )
+        atomic_write_json(repair_path, repair)
+
+        payload = finalizer.finalize_supplement(self.root)
+        self.assertEqual(
+            payload["counts"]["manual_phone_override_words"], 1
+        )
+        self.assertEqual(
+            self.cache_rows()["읊어"]["pron_source"],
+            finalizer.MANUAL_FALLBACK_SOURCE,
+        )
+        release = json.loads(
+            self.release_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            release["counts"][
+                "g2p_reviewed_no_path_manual_override_words"
+            ],
+            1,
+        )
 
 
 if __name__ == "__main__":

@@ -176,6 +176,72 @@ inventory 이탈=0 전에는 연도별 MFA 정렬을 시작하지 않는다.
 기능이 아니다. 네 원본 발화 추적과 phone 문맥 대조를 마친 뒤 사용자가
 정확한 후보를 명시 승인해야 한다.
 
+### 2026-07-29 전수 계산 완료·원본 추적·no-path 계약 보강
+
+전수 계산은 11:42에 끝났다. 31개 정상 shard의 입력·출력은 각각
+766,688어절로 완전히 같고, 나머지 shard 8·12·15·29에는 알려진
+`읊-` 23어절만 빠진 99,977행 partial이 보존됐다. 합계
+866,669/866,692어절이며 미등록 누락, `spn`, extra, acoustic inventory
+이탈, invalid report는 모두 0이다. runner는 final을 만들지 않고
+승인 대기 상태로 종료해 lock을 정상 해제했다.
+
+Jamo ㄽ 네 표층형은 동결 search-master 5,103,356행과 원본 JSON에
+역추적했다. 각각 정확히 한 번 발견됐고 원본 일치 4/4, mismatch 0이다.
+
+| 표층형 | 원본 발화 | 원본·발음 기준에서 확인한 성격 |
+|---|---|---|
+| `외곬수적인` | `SDRW2200001054.1.1.156` | 원본도 같은 표기이나 발음 기준은 `외골수저긴`; `외골수적인`을 의도한 원전사 표기 문제 가능성 |
+| `외곬을` | `SARW2500000503.1.1.51` | 실제 `외곬` 글자 설명 발화; 공식 제14항의 `[외골쓸]`과 청취 대조 대상 |
+| `외곬의` | `SARW2500000503.1.1.54` | form은 `외곬의`, original은 `외곬에`; 공식 원칙 `[외골씌]`, 허용 `[외골쎄]`와 청취 대조 대상 |
+| `천구백칤비육` | `SDRW2100003843.1.1.46` | `1976년` placeholder의 비정상 original form; 단순 ㄽ 어휘가 아니라 숫자 복원·전사 예외 |
+
+추적 manifest는
+`03_review/jamo_ls_source_occurrences_20260729.manifest.json`이며,
+CSV SHA256은
+`38f62c55aabed313184c6a047d3f081d9a7e110656206b3ab49763a5fd6efc77`다.
+
+동결 Jamo G2P에 13개 재철자를 소표본으로 넣은 결과도 별도 보존한다.
+입력 SHA256은
+`770aa96af9cf4e9089385fe0dcf5840e047c10eec3afa0b837d097e98e849863`,
+출력 SHA256은
+`41a2e68485744de2f27b04a6adcf2e901698de2e97be23dda6b1f06d2f62bd4a`다.
+핵심 결과는 다음과 같다.
+
+- `외골쓸` → `w eː ɡ o ɭ s͈ ɨ ɭ`
+- `외골씌` → `w eː ɡ o ɭ ɕ͈ i`
+- `외골쎄` → `w eː ɡ o ɭ s͈ e`
+- `외골수적인/외골수저긴` →
+  `w eː ɡ o ɭ s u dʑ ʌ ɟ i n`
+- `천구백칠심뉵` →
+  `tɕʰ ʌ ŋ ɡ u b ɛː k̚ tɕʰ i ɭ ɕ͈ i m ɲ u k̚`
+- `읍꼬`는 잘못 `ɨː m k͈ o`를 냈지만 `읍`, `꼬`, 기술적
+  대리입력 `읖꼬`는 각각 `ɨ p̚`, `k͈ o`, `ɨ p̚ k͈ o`를 냈다.
+
+국립국어원 자료는 `읊고[읍꼬]`를 직접 제시한다.
+<https://www.korean.go.kr/common/download.do?book_seq=220&c_file_name=16acefda-2cf4-4237-83a8-17648e09c0ac_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%EB%82%A8%EB%B6%81%EC%96%B8%EC%96%B4-01-41.pdf>
+한국어기초사전은 `칠십[칠씹]`을, 국립국어원 온라인가나다는
+`십육[심뉵]`을 제시하므로 `1976`의 규범 발음 후보는
+`천구백칠씸뉵`이다.
+<https://krdict.korean.go.kr/eng/dicMarinerSearch/search?mainSearchWord=%EC%B9%A0&nation=eng>
+<https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=278421>
+
+이 증거는 no-path에서도 same-model 후보 자체가 틀릴 수 있음을 보인다.
+따라서 Jamo ㄽ 네 행과 같은 원칙을 no-path 24행에도 적용한다.
+
+1. `pron_phones_mfa`는 same-model 재철자 후보로 고정한다.
+2. 최종 shard에 들어갈 값은 별도 `approved_pron_phones_mfa`로 둔다.
+3. 두 값이 다르면 `approved_phone_evidence`, 연구자 notes, 동결
+   acoustic inventory 포함을 모두 강제한다.
+4. repair manifest와 cache `pron_source`는 same-model 채택과 manual
+   same-inventory override를 구분한다.
+5. 구형 `읊어` 승인표·snapshot은 후보와 승인 phone이 같은 것으로
+   읽기 이행하며 기존 파일과 phone을 덮어쓰지 않는다.
+
+이는 phone 체계를 바꾸는 조치가 아니다. acoustic v3.3.0의 동일 107개
+phone inventory와 Jamo G2P v3.2.0 후보를 보존하면서, 검증된 모델 오류를
+연구자가 명시 승인한 경우에만 같은 inventory 안에서 교정하는
+provenance 보강이다.
+
 ## 구결과 archive와 D: 정리
 
 새 외장 HDD는 `E:\`(NTFS, 약 1.86TB 여유)로 확인했다. 다음 약 55.9GiB는

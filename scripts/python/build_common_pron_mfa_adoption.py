@@ -102,10 +102,20 @@ def _verified_no_path_supplement(release: dict) -> dict:
     count = int(release.get("counts", {}).get(
         "g2p_reviewed_no_path_words", 0
     ))
+    manual_count = int(release.get("counts", {}).get(
+        "g2p_reviewed_no_path_manual_override_words", 0
+    ))
     if count == 0:
+        if manual_count != 0:
+            raise RuntimeError(
+                "r2 no-path manual override count without reviewed words"
+            )
         return {
             "status": "not_applicable",
-            "counts": {"reviewed_no_path_words": 0},
+            "counts": {
+                "reviewed_no_path_words": 0,
+                "manual_phone_override_words": 0,
+            },
         }
     record = (
         release.get("method_supplements", {})
@@ -123,7 +133,9 @@ def _verified_no_path_supplement(release: dict) -> dict:
     output_cache = supplement.get("outputs", {}).get("g2p_cache", {})
     release_cache = release.get("outputs", {}).get("g2p_cache", {})
     if (
-        supplement.get("schema_version") != NO_PATH_SCHEMA_VERSION
+        manual_count < 0
+        or manual_count > count
+        or supplement.get("schema_version") != NO_PATH_SCHEMA_VERSION
         or supplement.get("status") != "success"
         or supplement.get("kind")
         != "reviewed_g2p_no_path_method_supplement"
@@ -138,6 +150,14 @@ def _verified_no_path_supplement(release: dict) -> dict:
             "researcher_approved_standard_respelling_required"
         )
         is not True
+        or policy.get(
+            "manual_phone_override_same_acoustic_inventory_only"
+        )
+        is not True
+        or int(supplement.get("counts", {}).get(
+            "manual_phone_override_words", -1
+        ))
+        != manual_count
         or policy.get("only_missing_surface_keys_added") is not True
         or policy.get("existing_model_pronunciations_replaced") != 0
         or policy.get("final_spn_words") != 0
@@ -169,7 +189,10 @@ def _verified_no_path_supplement(release: dict) -> dict:
     return {
         "status": "passed",
         "supplement": actual,
-        "counts": {"reviewed_no_path_words": count},
+        "counts": {
+            "reviewed_no_path_words": count,
+            "manual_phone_override_words": manual_count,
+        },
     }
 
 
