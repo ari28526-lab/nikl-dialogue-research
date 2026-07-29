@@ -5,6 +5,7 @@
 ## 먼저 읽기
 | 문서 | 무엇 |
 |---|---|
+| [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | **현재 상태 정본** — 확정 결정, 완료 상태, 바로 다음 명령, 세션 복구 절차 |
 | [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | 연구 개요 1페이지 (무엇을·왜·자료·1기/2기) |
 | [자료구축_코드해설.md](자료구축_코드해설.md) | **A단계 코드 이해** — 어떤 자료로·어떤 코드로·왜·무슨 역할 |
 | [DATA_LAYOUT.md](DATA_LAYOUT.md) | **데이터 배치도** — D: 전 폴더 구조·규약(세션 하위폴더)·대용량 열람 요령 |

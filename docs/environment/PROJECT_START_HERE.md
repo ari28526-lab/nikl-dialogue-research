@@ -1,11 +1,28 @@
-# 프로젝트 시작 메모 (초기 버전 — 대체됨)
+# 프로젝트 시작 안내
+
+> **가장 먼저 읽을 문서:**
+> [PROJECT_CURRENT_STATE.md](PROJECT_CURRENT_STATE.md)
+>
+> 긴 대화, 새 세션, context compaction 뒤에는 최근 대화만으로 작업을
+> 재구성하지 않는다. 현재 상태 정본과 실제 상태판을 대조한 뒤 명령을
+> 제안하고, 큰 단계가 끝나면 정본의 완료 상태와 바로 다음 작업을
+> 갱신한다.
+
+현재 프로젝트 root:
+
+```text
+C:\Users\ari30\research\2026_summer_research
+```
+
+## 초기 환경 기록
 
 > ⚠️ **낡은 문서.** 아래 경로·폴더구조는 초기(Codex·Dropbox 시절) 기준이라
 > 현재와 다르다. 정본은 프로젝트가 `C:\Users\ari30\research\2026_summer_research`로
 > 이전됐고, 시작 안내는 [../README.md](../README.md)(문서 색인)와 루트 `README.md`가
 > 대신한다. 이 문서는 초기 환경 설계 기록으로만 보존.
 
-이 문서는 `C:\Users\ari30\Dropbox\000_2026_summer_research` 폴더를 잊지 않고 다시 사용할 수 있도록 만든 안내서입니다.
+이하 내용은 `C:\Users\ari30\Dropbox\000_2026_summer_research`를 사용하던
+초기 환경 설계 기록으로만 보존한다.
 
 ## 이 폴더의 역할
 
@@ -73,4 +90,3 @@ C:\Users\ari30\Dropbox\000_2026_summer_research 폴더에서 작업해줘.
 - 첫 pilot 샘플
 
 이 항목들은 자료가 준비되면 하나씩 채우면 됩니다.
-

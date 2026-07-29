@@ -22,6 +22,12 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+throw (
+    "사용 중단된 loose-file archive 스크립트입니다. 수백만 작은 " +
+    "파일을 낱개 복사하지 말고 " +
+    "scripts\archive_pre_jamo_outputs_compressed.ps1을 사용하십시오."
+)
+
 function Assert-ExactSource([string]$Path, [string[]]$Allowed) {
     $resolved = [IO.Path]::GetFullPath($Path).TrimEnd('\')
     $matches = @($Allowed | Where-Object {

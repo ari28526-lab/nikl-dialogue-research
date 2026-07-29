@@ -1658,6 +1658,28 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   순간 충돌해 `PermissionError`로 종료됐다. 68,000파일 checkpoint와
   실패 직전 staged partial은 모두 보존됐고 원자료·r2 사전·최종
   JSON/CSV 변경은 0이다.
+
+## 2026-07-29 22:10 현재 상태 정본과 archive 경로 재발 방지
+
+- 긴 대화와 context compaction 뒤 최근 대화만 따라가면서, 이미
+  압축 archive로 전환한 결정을 놓치고 사용 중단된 loose-file
+  Robocopy 스크립트를 한 차례 잘못 안내했다. 사용자가 실행 전에
+  지적해 실제 loose copy와 원본 변경은 발생하지 않았다.
+- 근본 해결책으로
+  `docs/environment/PROJECT_CURRENT_STATE.md`를 단일 현재 상태 정본으로
+  만들었다. 연구 목적·불변 원칙, 최신 Jamo r2 기준, 완료 상태,
+  바로 다음 명령, adoption 이후 6개년 재정렬 순서와 세션 복구 절차를
+  기록했다.
+- 모든 실질 작업 전에 읽는
+  `docs/environment/PROJECT_START_HERE.md`의 첫 지시가 이 상태 정본을
+  가리키도록 고쳤고 `docs/README.md` 문서 색인 최상단에도 추가했다.
+- 구 `archive_pre_jamo_outputs_to_external.ps1`은 실행 즉시 사용 중단
+  오류를 내도록 차단했다. 정본은
+  `archive_pre_jamo_outputs_compressed.ps1`이며 E:에 항목별 7z를
+  생성하고 CRC, 파일 수·비압축 바이트, 모든 DB 전후 SHA, archive
+  SHA를 검증하며 D: 원본 삭제 기능은 없다.
+- 현재 충돌 가능한 MFA/Python/conda/robocopy/7z 프로세스가 없고,
+  오늘 밤 작업은 E: 압축 archive 하나만 실행한다.
 - 상태판의 JSON 읽기를 `FileShare.ReadWrite | FileShare.Delete`로
   바꿔 원자 교체를 방해하지 않게 했다. 공통 `promote_staged`도
   일시적 `PermissionError`만 최대 약 5.5초 지수 backoff 재시도하며,

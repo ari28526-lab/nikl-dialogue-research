@@ -55,7 +55,7 @@
 | show_common_pron_mfa_status.ps1 | 공통 MFA r2의 검증 shard·ㄽ 후보·모든 미검증 partial·no-path 승인/미등록 대기 shard·현재 출력·lock·D: 공간·final/adoption 상태를 읽기 전용으로 표시. 재개 ETA는 현재 lock 이후 새로 생성된 행만 사용 |
 | package_hf_korean_mfa_bundle.py | MFA 내장 downloader의 stale 성공을 우회해 공식 Hugging Face commit에서 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary를 phone inventory·LF symbol·SHA256 gate로 동결 |
 | build_jamo_nfkd_g2p_model.py | 구 Jamo v3.0 archive의 누락된 NFKD metadata만 파생 수정하는 진단 도구. 최신 v3.2.0은 공식적으로 `unicode_decomposition=true`이므로 새 생산 기준에는 사용하지 않음 |
-| archive_pre_jamo_outputs_to_external.ps1 | D:를 메인으로 유지하면서 구 2020·2021 TextGrid·DB/temp·실패 clone을 E: `READ_ONLY_ARCHIVE`에 robocopy zero-diff·파일 수·바이트·DB SHA256 검증 후 보존. 원본 정리는 명시적 `-PruneAfterVerify`에서만 수행 |
+| archive_pre_jamo_outputs_to_external.ps1 | **사용 중단·기본 실행 차단.** 수백만 작은 파일의 loose Robocopy 방식이므로 실행 시 압축 스크립트를 안내하고 즉시 중단 |
 | archive_pre_jamo_outputs_compressed.ps1 | 수백만 작은 파일의 loose 복사 병목을 피해 항목별 7z로 E:에 보존. CRC 전수검사, 원본/내부 파일 수·바이트, 모든 DB 전후 SHA, archive SHA를 기록하며 원본 삭제 기능 없음 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
