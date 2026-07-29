@@ -108,14 +108,47 @@ inventory 이탈=0 전에는 연도별 MFA 정렬을 시작하지 않는다.
 않고, 원전사와 규범 발음을 확인한 뒤 동일 107-phone inventory 안에서
 비교한다.
 
+공식 근거를 추가 대조한 결과는 다음과 같다.
+
+- 국립국어원 표준 발음법 제14항은 ㄳ·ㄽ·ㅄ의 뒤 ㅅ이 모음 시작
+  조사·어미·접미사 앞에서 연음될 때 [ㅆ]이 된다고 명시하고
+  `곬이[골씨]`를 직접 예시한다.
+  <https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002>
+- 국립국어원은 `외곬의`를 원칙적으로 `[외골씌]`, 관형격 조사
+  `의`의 허용 발음을 적용하면 `[외골쎄]`로도 발음한다고 직접
+  답했다.
+  <https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=324494>
+- 따라서 `외곬을`은 제14항의 직접 적용으로 `[외골쓸]`이 되는
+  규칙적 추론이며, 현재 후보의 plain `sʰ`는 된소리 phone과 대조해야
+  한다. `외곬의`의 현재 `...ɭ t̚ ɰ i`는 뒤 ㅅ의 초성 연음이 없어
+  공식 원칙과 충돌한다.
+- `외곬`은 `[외골]`이 원칙이고 `[웨골]`도 허용되므로, 모델 후보의
+  첫 모음 변이는 이 문제와 별도로 다룬다.
+  <https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=313229>
+- `외곬`과 `외골수`는 모두 존재하지만 서로 다른 구조와 뜻의
+  표준어다. 국립국어원은 `외곬`을 `외-+곬`, `외골수`를 `외-+골수`로
+  분석한다. 따라서 관측 `외곬수적인`이 실제로
+  `외골수적인`을 잘못 변환한 것이라면 수동 phone 1행으로 덮을 문제가
+  아니라 vocabulary 원천·정규화 오류를 고쳐야 한다.
+  <https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=329993>
+
+`천구백칤비육`의 NFKD는
+`ㅊㅓㄴ-ㄱㅜ-ㅂㅐㄱ-ㅊㅣㄽ-ㅂㅣ-ㅇㅠㄱ`이다. 이는
+`천구백칠십육`의 `...ㅊㅣㄹ-ㅅㅣㅂ...`과 비교할 때 ㅅ·ㅂ·ㅣ의
+음절 배치가 달라진 형태로 보인다. 다만 이것은 문자열 구조에 근거한
+진단 가설이며, 원본 JSON을 보기 전에는 전사 오류·정규화 오류·실제
+발화 중 어느 것인지 확정하지 않는다.
+
 원본 추적은
 `scripts/python/trace_common_pron_special_occurrences.py`로 수행한다.
 이 도구는 동결 search-master 2020–2025를 공통 vocabulary와 같은
 `form_to_lab`로 한 번만 읽고, 일치 발화의 form·original_form·발음 기준열과
 원본 JSON을 `year/session_id/utt_id`로 재결합한다. 원본과 search-master가
 다르거나 네 target 중 하나라도 찾지 못하면 실패하며 기존 파일을
-덮어쓰지 않는다. G2P 계산과 D: 읽기 경합을 피하기 위해 현재 전수
-shard 계산이 끝난 뒤 실행한다.
+덮어쓰지 않는다. 원본 불일치는 정상 결과로 숨기지 않고,
+`failed_source_mismatch` manifest와 불일치 CSV를 새 경로에 보존하되
+발음 승인에는 사용할 수 없게 gate를 내린다. G2P 계산과 D: 읽기 경합을
+피하기 위해 현재 전수 shard 계산이 끝난 뒤 실행한다.
 
 ## 구결과 archive와 D: 정리
 

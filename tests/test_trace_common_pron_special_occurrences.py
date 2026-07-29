@@ -123,7 +123,7 @@ class TraceCommonPronSpecialOccurrencesTests(unittest.TestCase):
             self.assertFalse(output.exists())
             self.assertFalse(manifest.exists())
 
-    def test_raw_json_mismatch_fails_without_outputs(self):
+    def test_raw_json_mismatch_is_preserved_as_failed_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             search, dialogue = self.make_fixture(root)
@@ -139,17 +139,30 @@ class TraceCommonPronSpecialOccurrencesTests(unittest.TestCase):
             )
             output = root / "trace.csv"
             manifest = root / "trace.json"
-            with self.assertRaisesRegex(RuntimeError, "원본 JSON 불일치"):
-                trace.trace_occurrences(
-                    search_root=search,
-                    dialogue_json_root=dialogue,
-                    years=("2020",),
-                    targets=("외곬을",),
-                    output_csv=output,
-                    manifest_path=manifest,
-                )
-            self.assertFalse(output.exists())
-            self.assertFalse(manifest.exists())
+            result = trace.trace_occurrences(
+                search_root=search,
+                dialogue_json_root=dialogue,
+                years=("2020",),
+                targets=("외곬을",),
+                output_csv=output,
+                manifest_path=manifest,
+            )
+            self.assertEqual(result["status"], "failed_source_mismatch")
+            self.assertEqual(result["counts"]["source_mismatch_rows"], 1)
+            self.assertFalse(
+                result["gates"]["search_master_matches_raw_json"]
+            )
+            self.assertFalse(
+                result["gates"]["usable_for_pronunciation_approval"]
+            )
+            self.assertTrue(output.is_file())
+            self.assertTrue(manifest.is_file())
+            with output.open("r", encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+            self.assertEqual(
+                rows[0]["raw_json_match_status"],
+                "original_form_mismatch",
+            )
 
     def test_targets_must_match_one_lab_token(self):
         with self.assertRaisesRegex(ValueError, "단일 동일 어절"):

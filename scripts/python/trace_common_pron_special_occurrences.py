@@ -316,13 +316,6 @@ def join_raw_json(
             }
         )
 
-    non_exact = {
-        key: value for key, value in mismatch_counts.items() if key != "exact"
-    }
-    if non_exact:
-        raise RuntimeError(
-            f"search-master와 원본 JSON 불일치: {non_exact}"
-        )
     joined.sort(
         key=lambda row: (
             row["year"],
@@ -335,6 +328,11 @@ def join_raw_json(
         "raw_json_sessions": len(paths),
         "raw_json_files_loaded": len(loaded),
         "raw_json_match_status": dict(sorted(mismatch_counts.items())),
+        "source_mismatch_rows": sum(
+            value
+            for key, value in mismatch_counts.items()
+            if key != "exact"
+        ),
     }
 
 
@@ -372,10 +370,15 @@ def trace_occurrences(
         writer.writeheader()
         writer.writerows(joined)
 
+    source_integrity_passed = raw["source_mismatch_rows"] == 0
     manifest = {
         "schema_version": 1,
         "kind": "common_pron_special_occurrence_trace",
-        "status": "success",
+        "status": (
+            "success"
+            if source_integrity_passed
+            else "failed_source_mismatch"
+        ),
         "recorded_at": now_iso(),
         "years": list(years),
         "targets": list(targets),
@@ -397,6 +400,12 @@ def trace_occurrences(
                 "target_occurrences_by_year"
             ],
             **raw,
+        },
+        "gates": {
+            "all_targets_found": True,
+            "all_sessions_and_utterances_found": True,
+            "search_master_matches_raw_json": source_integrity_passed,
+            "usable_for_pronunciation_approval": source_integrity_passed,
         },
         "output": file_fingerprint(output_csv, with_sha256=True),
         "runtime": runtime_snapshot(Path(__file__).resolve().parents[2]),
@@ -449,6 +458,14 @@ def main() -> int:
     except Exception as exc:
         print(f"[FAIL] 특수 표층형 원본 역추적: {exc}", file=sys.stderr)
         return 1
+    if result["status"] != "success":
+        print(
+            "[FAIL] 특수 표층형 원본 불일치 증거 보존: "
+            f"rows={result['counts']['source_mismatch_rows']}, "
+            f"csv={result['output']['path']}",
+            file=sys.stderr,
+        )
+        return 2
     print(
         "[OK] 특수 표층형 원본 역추적: "
         f"targets={len(result['targets'])}, "
