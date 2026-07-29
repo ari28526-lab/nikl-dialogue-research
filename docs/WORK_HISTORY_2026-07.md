@@ -1308,3 +1308,68 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 이관 후 후보 24행, 기존 승인 1행(`읊어`), 대기 23행, manual
   override 0행임을 다시 확인했다. 승인 phone과 원 shard는 바뀌지
   않았고, 최종 사전·연도별 MFA gate도 계속 닫혀 있다.
+
+## 2026-07-29 12:39–13:18 예외 전수 근거 연결과 연구자 검토표
+
+- no-path 대기 표층형 23개를 동결 search-master 5,103,356행에서
+  공통 vocabulary와 같은 토큰화로 전수 역추적했다. 실제 발화는
+  27행이며 23개 target을 모두 찾았고, 원본 JSON 19개와
+  form·original·식별자가 27/27 정확히 일치했다. 미발견·원본
+  불일치·미등록 누락은 0이다.
+- 추적 CSV와 manifest는
+  `outputs/reports/common_pron_no_path_occurrences_20260729.*`에
+  기록했다. CSV SHA256은
+  `d67fa42d427f4aec4f11a3f4c3fbf795982508ad80f5bcbd097a6b6cb5fdb128`다.
+- Jamo ㄽ 4행과 no-path 27발화를 합쳐 31개 검토 occurrence를
+  구성했다. 겹치는 발화를 한 번만 복사한 결과 검토 WAV는 29개,
+  총 3,879,874바이트다. 원본/검토본 SHA256은 29/29 모두 같고
+  원본은 수정되지 않았다. D: 검토 bundle은
+  `03_review/researcher_review_bundle_20260729/`이며 occurrence CSV
+  SHA256은
+  `27b88d8019a0ad4c8956b386b5b56ac61920cb1d70722e96bb54ca18999e0128`,
+  manifest SHA256은
+  `0fb564df09ce55927e31b2cd144331711d0e75745574c8766365d19795964ed4`다.
+- 외골수·1976 후보를 같은 동결 Jamo G2P v3.2.0의 1-best로 별도
+  probe했다. 입력은
+  `config/common_pron_review_probes_addendum_20260729.txt`, 출력은
+  `outputs/reports/common_pron_review_probes_addendum_20260729.dict`다.
+  출력 SHA256은
+  `d8f622957de03a9f95577b7462957e7ba0a3c06e7c4a91ae4d3c9d4060a6abe7`다.
+- 규범·어휘부·원음 판단을 분리해 권고를 만들었다. no-path 23개 중
+  22개는 same-model 후보 승인 권고이고, `읊고`는 동결 모델의
+  `읍꼬→ɨː m k͈ o` 오류 때문에 동일 107-phone inventory의
+  `ɨ p̚ k͈ o`를 수동 승인해야 한다. Jamo 네 건은
+  `외곬을` 수동 phone, `외곬의` 원칙/허용 발음 청취 선택,
+  `외곬수적인` 원표기 correction+청취, `천구백칤비육` 숫자
+  placeholder correction으로 구분했다. 어떤 항목도 자동 승인하지
+  않았다.
+- 연구자 인터페이스
+  `outputs/common_pron_r2_review_20260729/`
+  `common_pron_r2_researcher_review_20260729_v4.xlsx`를 최종 검토본으로
+  만들었다.
+  7개 시트, 검토 27행, 근거 발화 31행, WAV 링크 89개
+  (검토표 27 + 발화표 검토본/원본 62), 자동 수식 54개이며 모든
+  결정은 `pending`이다. phone 열은 IPA 기호가 보이도록 Noto Sans를
+  썼고, 후보/승인 phone과 source correction/발음 승인을 분리했다.
+  workbook SHA256은
+  `d2a12fd357499d3b414a8b96d85658f950704a75051cc8d16996d2bfd72c075a`,
+  생성기 SHA256은
+  `79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a`다.
+  manifest에는 생성기 SHA, openpyxl 3.1.5, Noto Sans 사용을
+  명시했다. 초기판과 레이아웃 QA 중간판 v2·v3는 같은 폴더에
+  보존해 덮어쓰지 않았다.
+- Excel COM은 이 실행 환경에서 새 workbook과 기존 workbook 모두
+  동일한 `0x800A03EC`로 열리지 않았고 artifact-tool loader도
+  제공되지 않았다. 따라서 openpyxl 왕복 구조검증과 별도
+  Pillow PNG 렌더러로 7개 시트 12개 범위를 시각 점검했다. IPA
+  폰트, 병합, 색상, 입력/수식 영역, 링크 표시를 확인했다.
+- 독립 검사에서 시트 7개, 검토 27행, 근거 31행, 모든 decision
+  `pending`, 수식 54개, source link 27개, WAV link 89개,
+  데이터검증 `R2:R28`, 오류 수식 0, manifest/workbook SHA 일치를
+  확인했다. 전체 Python unittest **177개**, PowerShell 안전검사
+  **12개**, `git diff --check`가 모두 통과했다.
+- 13:03 상태판은 `g2p_review_blocked_not_running`,
+  866,669/866,692(99.997%), verified shard 31/35, invalid report 0,
+  unknown missing 0, D: 여유 263.09GiB다. final·difference inventory·
+  adoption은 pending이고 연도별 MFA 허가는 false다. 연구자 승인
+  전에는 repair나 final을 실행하지 않는다.

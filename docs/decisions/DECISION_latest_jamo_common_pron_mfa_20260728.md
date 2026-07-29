@@ -248,6 +248,59 @@ phone inventory와 Jamo G2P v3.2.0 후보를 보존하면서, 검증된 모델 �
 연구자가 명시 승인한 경우에만 같은 inventory 안에서 교정하는
 provenance 보강이다.
 
+## 예외 승인 인터페이스와 채택 순서
+
+no-path 23개는 표제형만 확인하지 않고 실제 발화 전수를 역추적했다.
+동결 search-master 5,103,356행에서 27개 occurrence를 찾았고 원본 JSON
+일치 27/27, mismatch 0이다. Jamo ㄽ 4개 occurrence와 합친 연구자 근거는
+31행이며, 겹치는 발화를 제거한 원음 29개를 D: r2 release 아래
+`03_review/researcher_review_bundle_20260729/`에 복사했다. 원음과
+검토본의 SHA256은 29/29 모두 같고 원본 수정은 0이다.
+
+검토 단위는 다음 다섯 종류로 고정한다.
+
+| 종류 | 건수 | 처리 원칙 |
+|---|---:|---|
+| same-model 후보 승인 | 22 | `읊-` 활용의 규범 환경과 모델 후보가 일치하면 후보를 승인열에 복사 |
+| 수동 phone 승인 | 2 | `읊고`, `외곬을`은 공식 규범과 동결 모델의 알려진 오류/분포 밖 후보 때문에 동일 107-phone inventory 안의 별도 phone을 명시 승인 |
+| 실제 발음 청취 선택 | 1 | `외곬의`는 원칙 `[외골씌]`와 허용 `[외골쎄]` 중 원음을 듣고 선택 |
+| 원표기 correction+청취 | 1 | `외곬수적인`은 원 JSON 보존, `외골수적인` correction overlay, 발음 후보 선택을 별도 기록 |
+| 숫자 placeholder correction | 1 | `천구백칤비육`은 raw placeholder 보존, `1976→천구백칠십육` overlay와 승인 phone을 함께 기록 |
+
+이 구분은 “모델이 못 낸 phone을 모두 수동 수정”하는 정책이 아니다.
+`읊고`는 공식 `읊고[읍꼬]`에 비해 같은 모델의 `읍꼬` 1-best가
+`ɨː m k͈ o`로 잘못 나온 반례이므로 `ɨ p̚ k͈ o`를 연구자가
+명시 승인해야 한다. 반대로 나머지 22개 no-path는 후보가 규범 환경과
+일치할 때만 same-model fallback으로 분류한다. `외곬수적인`과
+`천구백칤비육`은 phone 행만 바꾸면 검색·원자료 provenance가
+왜곡되므로 correction registry가 먼저 필요하다.
+
+연구자 검토 파일은
+`outputs/common_pron_r2_review_20260729/`
+`common_pron_r2_researcher_review_20260729_v4.xlsx`다. 이 파일은
+모델 후보·권고/대안·공식/어휘부 근거·발화 원문·원음 링크·동결 모델
+probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 시작하고
+저장만으로 shard나 dictionary를 수정하지 않는다. 사용자가
+`researcher_decision`과 필요시 custom phone·notes를 채운 뒤에도 다음
+순서를 지킨다.
+
+1. 결정값, notes, phone inventory, correction overlay를 독립 검증한다.
+2. 승인 snapshot과 기존 partial SHA를 먼저 archive한다.
+3. 대상 4개 shard의 누락 23개 표층키만 원자 보수한다.
+4. 35개 shard 입력/출력 집합, `spn=0`, inventory, 1-best를 전수 재검증한다.
+5. final dictionary와 G2P cache를 생성하고 기본사전 byte 보존을 확인한다.
+6. 2020·2021 구결과 difference inventory와 r2 adoption contract를 만든다.
+7. adoption의 `allow_yearly_mfa=true`가 된 뒤에만 2020부터 연도별 MFA를
+   시작한다.
+
+검토 workbook의 SHA256은
+`d2a12fd357499d3b414a8b96d85658f950704a75051cc8d16996d2bfd72c075a`,
+생성기 SHA256은
+`79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a`다.
+7개 시트, 검토 27행, 발화근거 31행, 모든 decision pending,
+formula/data-validation/link/phone-font/manifest SHA를 독립 검사했고,
+전체 Python unittest 177개와 PowerShell 안전검사 12개가 통과했다.
+
 ## 구결과 archive와 D: 정리
 
 새 외장 HDD는 `E:\`(NTFS, 약 1.86TB 여유)로 확인했다. 다음 약 55.9GiB는

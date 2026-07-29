@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "common_pron_special_occurrence_trace",
+  "status": "success",
+  "recorded_at": "2026-07-29T12:39:08+09:00",
+  "years": [
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "targets": [
+    "읊고",
+    "읊는",
+    "읊는다고",
+    "읊는다는",
+    "읊는다잖아요",
+    "읊어놓고",
+    "읊어보라고",
+    "읊어봐",
+    "읊어서",
+    "읊어야",
+    "읊어졌다는데",
+    "읊어주겠니",
+    "읊어줄까",
+    "읊었는데",
+    "읊었다는",
+    "읊었습니다",
+    "읊으는",
+    "읊으라고",
+    "읊으려면",
+    "읊으면서",
+    "읊으시기도",
+    "읊은",
+    "읊을"
+  ],
+  "tokenizer": {
+    "function": "realign_eojeol_build_corpus.form_to_lab",
+    "same_as_common_vocabulary": true
+  },
+  "source": {
+    "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+    "build_meta": {
+      "path": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\_build_meta.json",
+      "bytes": 3086,
+      "mtime_ns": 1784955942196758000,
+      "sha256": "1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79"
+    },
+    "session_files_by_year": {
+      "2020": 2232,
+      "2021": 4143,
+      "2022": 2654,
+      "2023": 1973,
+      "2024": 3227,
+      "2025": 2927
+    },
+    "session_files_total": 17156,
+    "path_size_mtime_inventory_sha256": "191ab008329734a79ca6f1bcd351ff59e2ee4bb968a389ddefd9202beba2d061",
+    "dialogue_json_root": "D:\\00_RAW\\dialogue_json"
+  },
+  "counts": {
+    "occurrence_rows": 27,
+    "search_master_rows_by_year": {
+      "2020": 870437,
+      "2021": 1373920,
+      "2022": 866359,
+      "2023": 677262,
+      "2024": 728257,
+      "2025": 587121
+    },
+    "target_occurrences": {
+      "읊고": 1,
+      "읊는": 2,
+      "읊는다고": 1,
+      "읊는다는": 1,
+      "읊는다잖아요": 1,
+      "읊어놓고": 1,
+      "읊어보라고": 1,
+      "읊어봐": 1,
+      "읊어서": 1,
+      "읊어야": 1,
+      "읊어졌다는데": 1,
+      "읊어주겠니": 1,
+      "읊어줄까": 1,
+      "읊었는데": 1,
+      "읊었다는": 1,
+      "읊었습니다": 1,
+      "읊으는": 1,
+      "읊으라고": 1,
+      "읊으려면": 1,
+      "읊으면서": 1,
+      "읊으시기도": 1,
+      "읊은": 2,
+      "읊을": 3
+    },
+    "target_occurrences_by_year": {
+      "읊고:2023": 1,
+      "읊는:2022": 1,
+      "읊는:2023": 1,
+      "읊는다고:2024": 1,
+      "읊는다는:2021": 1,
+      "읊는다잖아요:2023": 1,
+      "읊어놓고:2020": 1,
+      "읊어보라고:2020": 1,
+      "읊어봐:2021": 1,
+      "읊어서:2024": 1,
+      "읊어야:2021": 1,
+      "읊어졌다는데:2023": 1,
+      "읊어주겠니:2023": 1,
+      "읊어줄까:2023": 1,
+      "읊었는데:2025": 1,
+      "읊었다는:2025": 1,
+      "읊었습니다:2025": 1,
+      "읊으는:2024": 1,
+      "읊으라고:2025": 1,
+      "읊으려면:2023": 1,
+      "읊으면서:2020": 1,
+      "읊으시기도:2023": 1,
+      "읊은:2025": 2,
+      "읊을:2021": 1,
+      "읊을:2023": 1,
+      "읊을:2025": 1
+    },
+    "raw_json_sessions": 19,
+    "raw_json_files_loaded": 19,
+    "raw_json_match_status": {
+      "exact": 27
+    },
+    "source_mismatch_rows": 0
+  },
+  "gates": {
+    "all_targets_found": true,
+    "all_sessions_and_utterances_found": true,
+    "search_master_matches_raw_json": true,
+    "usable_for_pronunciation_approval": true
+  },
+  "output": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\common_pron_no_path_occurrences_20260729.csv",
+    "bytes": 22085,
+    "mtime_ns": 1785296348168151900,
+    "sha256": "d67fa42d427f4aec4f11a3f4c3fbf795982508ad80f5bcbd097a6b6cb5fdb128"
+  },
+  "runtime": {
+    "recorded_at": "2026-07-29T12:39:08+09:00",
+    "git_commit": "2ed697579322bbb8587cf9612f87e2936c967a5c",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 20088
+  }
+}
