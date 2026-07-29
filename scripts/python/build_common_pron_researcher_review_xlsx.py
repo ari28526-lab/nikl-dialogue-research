@@ -71,6 +71,33 @@ TEXT = "17212B"
 GRID = "D7DEE6"
 THIN_GRAY = Side(style="thin", color=GRID)
 
+REVIEW_HEADERS = (
+    "review_order",
+    "category",
+    "token",
+    "occurrences",
+    "years",
+    "model_input",
+    "model_candidate_phone",
+    "recommended_hangul",
+    "recommended_phone",
+    "alternative_hangul",
+    "alternative_phone",
+    "recommendation_action",
+    "confidence",
+    "reason",
+    "source_url",
+    "example_utt_id",
+    "review_wav",
+    "researcher_decision",
+    "researcher_custom_phone",
+    "selected_approved_phone",
+    "researcher_notes",
+    "validation_status",
+    "source_handling",
+    "implementation_note",
+)
+
 
 def clean(value: object) -> str:
     return str(value or "").strip()
@@ -559,32 +586,7 @@ def populate_review_sheet(
 ) -> None:
     sheet = wb.create_sheet("발음검토")
     sheet.sheet_view.showGridLines = False
-    headers = [
-        "review_order",
-        "category",
-        "token",
-        "occurrences",
-        "years",
-        "model_input",
-        "model_candidate_phone",
-        "recommended_hangul",
-        "recommended_phone",
-        "alternative_hangul",
-        "alternative_phone",
-        "recommendation_action",
-        "confidence",
-        "reason",
-        "source_url",
-        "example_utt_id",
-        "review_wav",
-        "researcher_decision",
-        "researcher_custom_phone",
-        "selected_approved_phone",
-        "researcher_notes",
-        "validation_status",
-        "source_handling",
-        "implementation_note",
-    ]
+    headers = list(REVIEW_HEADERS)
     sheet.append(headers)
     for order, row in enumerate(rows, start=1):
         sheet.append(

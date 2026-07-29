@@ -284,6 +284,9 @@ probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 �
 `researcher_decision`과 필요시 custom phone·notes를 채운 뒤에도 다음
 순서를 지킨다.
 
+0. clean v5는 보존하고 먼저 `..._FILLED.xlsx`로 다른 이름 저장한다.
+   작성 사본은 R·S·U열만 바꿀 수 있으며 나머지 workbook 계약은
+   clean v5와 완전히 같아야 한다.
 1. 결정값, notes, phone inventory, correction overlay를 독립 검증한다.
 2. 승인 snapshot과 기존 partial SHA를 먼저 archive한다.
 3. 대상 4개 shard의 누락 23개 표층키만 원자 보수한다.
@@ -293,6 +296,17 @@ probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 �
 7. adoption의 `allow_yearly_mfa=true`가 된 뒤에만 2020부터 연도별 MFA를
    시작한다.
 
+작성본 검증은
+`validate_common_pron_researcher_review_xlsx.py`가 담당한다. R·S·U 외
+1,860개 불변 셀과 수식·링크·병합·table·data validation을 대조하며,
+27개가 모두 긍정 승인되고 frozen lexical phone 107개 안에 있을 때만
+정규화 승인표를 만든다. `sil`·`spn`은 acoustic loader가 정렬 편의를
+위해 더하는 기호이므로 사전 발음에서는 금지한다. source spelling과
+numeric placeholder는 각각 `외곬수적인→외골수적인`,
+`천구백칤비육→천구백칠십육` correction registry로 분리한다.
+검증기는 D: 검토 원장과 shard를 수정하지 않으며, 정규화 산출물을
+다음 archive+atomic apply 단계의 입력으로만 제공한다.
+
 검토 workbook의 SHA256은
 `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
 생성기 SHA256은
@@ -301,7 +315,8 @@ probe·모델 SHA를 함께 제시하지만, 모든 결정은 `pending`으로 �
 runtime commit도 같은 기준점을 가리킨다.
 7개 시트, 검토 27행, 발화근거 31행, 모든 decision pending,
 formula/data-validation/link/phone-font/manifest SHA를 독립 검사했고,
-전체 Python unittest 177개와 PowerShell 안전검사 12개가 통과했다.
+작성본 validator까지 포함한 전체 Python unittest 184개와 PowerShell
+안전검사 12개가 통과했다.
 
 ## 구결과 archive와 D: 정리
 

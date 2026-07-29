@@ -1375,3 +1375,35 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   unknown missing 0, D: 여유 263.09GiB다. final·difference inventory·
   adoption은 pending이고 연도별 MFA 허가는 false다. 연구자 승인
   전에는 repair나 final을 실행하지 않는다.
+
+## 2026-07-29 13:21–13:33 연구자 작성본 수입 계약
+
+- 깨끗한 v5를 직접 수정하면 원본과 작성본을 독립 비교할 수 없으므로
+  사용자가 먼저 `..._FILLED.xlsx`로 다른 이름 저장한 뒤 R
+  `researcher_decision`, S `researcher_custom_phone`, U
+  `researcher_notes`만 입력하는 계약으로 고정했다.
+- `validate_common_pron_researcher_review_xlsx.py`를 추가했다. 작성본의
+  7개 sheet·차원·병합·table·data validation과 R/S/U 외 1,860개
+  셀·수식·hyperlink를 clean template과 대조한다. template 자체를
+  작성본으로 넘기거나 불변 셀 하나라도 바뀌면 거부한다.
+- 결정은 pending/권고 승인/대안 승인/직접 승인/hold/reject만
+  허용한다. 직접 phone과 모든 수동·대안·correction 결정은 notes를
+  요구한다. `sil`, `spn`, frozen acoustic inventory 밖 phone은
+  승인 발음으로 사용할 수 없다.
+- 실제 동결 acoustic ZIP smoke test에서 공용 inventory loader가
+  107개 lexical phone에 정렬 전용 `sil`, `spn`을 더해 109개를
+  반환한다는 차이를 발견했다. 모델 bundle의 연구 phone 계약은
+  두 특수기호를 제외한 107개,
+  SHA256
+  `6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d`
+  이므로 검증기도 같은 기준으로 대조하고 두 기호는 계속 금지한다.
+- 실제 미작성 v5 사본은 불변 계약과 107-phone SHA를 통과했지만
+  `incomplete_pending`, pending 27, `ready_for_apply=false`가 됐고
+  decision/correction CSV는 생성되지 않았다.
+- `work`의 명시적 합성 사본에만 27개 권고 승인을 넣은 end-to-end
+  smoke test에서는 `ready_for_apply=true`, 정규화 결정 27행,
+  `외곬수적인/천구백칤비육` correction registry 2행이 생성됐다.
+  이 합성 결과는 연구자 승인이 아니며 D: review ledger·shard·원자료
+  쓰기는 모두 0이다.
+- validator 회귀시험 7개를 포함한 전체 Python unittest **184개**,
+  PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
