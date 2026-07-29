@@ -81,6 +81,15 @@ $finalPath = Join-Path $releaseRootFull (
 $differencePath = Join-Path $releaseRootFull (
     '03_equivalence\common_pron_mfa_difference_inventory_2020_2021.json'
 )
+$differenceCheckpointPath = Join-Path $releaseRootFull (
+    '03_equivalence\common_pron_mfa_difference_inventory_2020.checkpoint.json'
+)
+$commonRoot = Split-Path (
+    Split-Path $releaseRootFull -Parent
+) -Parent
+$differenceLockPath = Join-Path (
+    Join-Path $commonRoot 'locks'
+) 'common_pron_mfa_difference_inventory.lock'
 $adoptionPath = Join-Path $releaseRootFull (
     '00_contract\adoption_contract.json'
 )
@@ -213,6 +222,15 @@ if ($null -ne $lock) {
     )
     $startedAt = [datetimeoffset]::Parse([string]$lock.acquired_at)
 }
+$differenceLock = Read-JsonFile $differenceLockPath
+$differenceLockPid = $null
+$differenceLockAlive = $false
+if ($null -ne $differenceLock) {
+    $differenceLockPid = [int]$differenceLock.pid
+    $differenceLockAlive = $null -ne (
+        Get-Process -Id $differenceLockPid -ErrorAction SilentlyContinue
+    )
+}
 
 $specialCandidate = Read-JsonFile $specialCandidatePath
 $specialWords = [int64]0
@@ -335,13 +353,45 @@ $unknownMissingWords = @($unknownMissingWords | Sort-Object -Unique)
 
 $final = Read-JsonFile $finalPath
 $difference = Read-JsonFile $differencePath
+$differenceCheckpoint = Read-JsonFile $differenceCheckpointPath
 $adoption = Read-JsonFile $adoptionPath
+$differenceFiles = [int64]0
+$differenceExpectedFiles = [int64]0
+$differencePercent = [double]0
+$differenceCheckpointStatus = 'pending'
+if ($null -ne $differenceCheckpoint) {
+    $differenceCheckpointStatus = [string]$differenceCheckpoint.status
+    $differenceFiles = [int64](
+        $differenceCheckpoint.counts.textgrid_files
+    )
+    $differenceExpectedFiles = [int64](
+        $differenceCheckpoint.contract.expected_valid_textgrids
+    )
+    if ($differenceExpectedFiles -gt 0) {
+        $differencePercent = [math]::Round(
+            100.0 * $differenceFiles / $differenceExpectedFiles,
+            3
+        )
+    }
+}
 $phase = if (
     $null -ne $adoption -and
     $adoption.status -eq 'passed' -and
     [bool]$adoption.gate.allow_yearly_mfa
 ) {
     'yearly_mfa_approved'
+} elseif (
+    $null -ne $difference -and
+    $difference.status -eq 'differences_inventoried'
+) {
+    'difference_inventory_ready_researcher_approval'
+} elseif ($differenceLockAlive) {
+    'difference_inventory_running'
+} elseif (
+    $null -ne $differenceCheckpoint -and
+    $differenceCheckpoint.status -eq 'in_progress'
+) {
+    'difference_inventory_interrupted_resumable'
 } elseif ($null -ne $final -and $final.status -eq 'success') {
     'artifact_ready_adoption_pending'
 } elseif ($verifiedIndices.Count -eq $totalShards) {
@@ -395,11 +445,18 @@ $result = [ordered]@{
         percent = $progressPct
         average_words_per_second = $rate
         estimated_completion = $eta
+        difference_checkpoint_status = $differenceCheckpointStatus
+        difference_textgrids = $differenceFiles
+        difference_expected_textgrids = $differenceExpectedFiles
+        difference_percent = $differencePercent
     }
     safety = [ordered]@{
         lock_present = $null -ne $lock
         lock_pid = $lockPid
         lock_process_alive = $lockAlive
+        difference_lock_present = $null -ne $differenceLock
+        difference_lock_pid = $differenceLockPid
+        difference_lock_process_alive = $differenceLockAlive
         drive_free_gib = $freeGiB
         current_output_last_write = $currentOutputWrite
         latest_log = $latestLogPath

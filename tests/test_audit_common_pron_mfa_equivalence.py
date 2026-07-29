@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -93,6 +94,157 @@ def make_database(path: Path) -> None:
 
 
 class CommonPronEquivalenceTests(unittest.TestCase):
+    def test_2020_checkpoint_resumes_without_reparsing_completed_files(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            textgrids = root / "textgrids"
+            textgrids.mkdir()
+            write_textgrid(textgrids / "u1.TextGrid")
+            write_textgrid(textgrids / "u2.TextGrid")
+            qc = root / "qc.json"
+            qc.write_text(
+                json.dumps(
+                    {
+                        "status": "success",
+                        "year": "2020",
+                        "textgrid_root": str(textgrids),
+                        "counts": {
+                            "valid_textgrids": 2,
+                            "invalid_textgrids": 0,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            checkpoint = root / "progress.json"
+            first, first_mismatches = audit.audit_2020(
+                textgrid_root=textgrids,
+                qc_report_path=qc,
+                common={"가": {("k", "a")}},
+                workers=1,
+                batch_size=1,
+                checkpoint_path=checkpoint,
+                common_dictionary_sha256="a" * 64,
+            )
+            self.assertEqual(first["status"], "passed")
+            self.assertEqual(first_mismatches, [])
+            saved = json.loads(
+                checkpoint.read_text(encoding="utf-8")
+            )
+            self.assertEqual(saved["status"], "completed")
+            self.assertEqual(saved["counts"]["textgrid_files"], 2)
+
+            with mock.patch.object(
+                audit,
+                "inspect_2020_textgrid",
+                side_effect=AssertionError("completed files reparsed"),
+            ):
+                second, second_mismatches = audit.audit_2020(
+                    textgrid_root=textgrids,
+                    qc_report_path=qc,
+                    common={"가": {("k", "a")}},
+                    workers=1,
+                    batch_size=1,
+                    checkpoint_path=checkpoint,
+                    common_dictionary_sha256="a" * 64,
+                )
+            self.assertEqual(second["status"], "passed")
+            self.assertEqual(second["resumed_from_files"], 2)
+            self.assertEqual(second_mismatches, [])
+
+            with (textgrids / "u1.TextGrid").open(
+                "a", encoding="utf-8"
+            ) as stream:
+                stream.write("\n")
+            with self.assertRaisesRegex(RuntimeError, "입력 prefix 변경"):
+                audit.audit_2020(
+                    textgrid_root=textgrids,
+                    qc_report_path=qc,
+                    common={"가": {("k", "a")}},
+                    workers=1,
+                    batch_size=1,
+                    checkpoint_path=checkpoint,
+                    common_dictionary_sha256="a" * 64,
+                )
+
+    def test_2020_checkpoint_resumes_after_interrupted_batch(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            textgrids = root / "textgrids"
+            textgrids.mkdir()
+            for index in range(1, 4):
+                write_textgrid(textgrids / f"u{index}.TextGrid")
+            qc = root / "qc.json"
+            qc.write_text(
+                json.dumps(
+                    {
+                        "status": "success",
+                        "year": "2020",
+                        "textgrid_root": str(textgrids),
+                        "counts": {
+                            "valid_textgrids": 3,
+                            "invalid_textgrids": 0,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            checkpoint = root / "progress.json"
+            original = audit.inspect_2020_textgrid
+
+            def interrupt_second(path, common):
+                if path.stem == "u2":
+                    raise RuntimeError("simulated interruption")
+                return original(path, common)
+
+            with mock.patch.object(
+                audit,
+                "inspect_2020_textgrid",
+                side_effect=interrupt_second,
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError, "simulated interruption"
+                ):
+                    audit.audit_2020(
+                        textgrid_root=textgrids,
+                        qc_report_path=qc,
+                        common={"가": {("k", "a")}},
+                        workers=1,
+                        batch_size=1,
+                        checkpoint_path=checkpoint,
+                        common_dictionary_sha256="b" * 64,
+                    )
+            saved = json.loads(
+                checkpoint.read_text(encoding="utf-8")
+            )
+            self.assertEqual(saved["status"], "in_progress")
+            self.assertEqual(saved["counts"]["textgrid_files"], 1)
+
+            reparsed = []
+
+            def record_remaining(path, common):
+                reparsed.append(path.stem)
+                return original(path, common)
+
+            with mock.patch.object(
+                audit,
+                "inspect_2020_textgrid",
+                side_effect=record_remaining,
+            ):
+                result, mismatches = audit.audit_2020(
+                    textgrid_root=textgrids,
+                    qc_report_path=qc,
+                    common={"가": {("k", "a")}},
+                    workers=1,
+                    batch_size=1,
+                    checkpoint_path=checkpoint,
+                    common_dictionary_sha256="b" * 64,
+                )
+            self.assertEqual(reparsed, ["u2", "u3"])
+            self.assertEqual(result["resumed_from_files"], 1)
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual(mismatches, [])
+
     def test_r2_enriched_g2p_contract_preserves_core_method(self):
         audit.verify_g2p_contract(
             {

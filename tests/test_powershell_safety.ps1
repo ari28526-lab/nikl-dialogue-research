@@ -11,6 +11,7 @@ $files = @(
     (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1'),
     (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1'),
     (Join-Path $root 'scripts\run_common_pron_mfa_r2.ps1'),
+    (Join-Path $root 'scripts\run_common_pron_difference_inventory.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1')
@@ -346,6 +347,33 @@ foreach ($path in $files) {
             }
         }
     }
+    if (
+        (Split-Path $path -Leaf) -eq
+            'run_common_pron_difference_inventory.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            "D:\mfa_common_pron",
+            "VolumeLabel -ne 'DATA_SSD'",
+            'pre_mfa_bulk.lock',
+            'common_pron_mfa_difference_inventory.lock',
+            '--checkpoint-2020',
+            'checkpoint는 보존됨',
+            'difference_inventory_complete',
+            'common_release.manifest.sha256',
+            'allow_yearly_mfa -ne $false',
+            '기존 차이 inventory 재검증',
+            '아직 adoption·연도별 MFA 승인이 아님',
+            'Acquire-Lock',
+            'Release-Lock'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "공통 발음 차이감사 안전장치 누락: $required"
+                )
+            }
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'show_common_pron_mfa_status.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
@@ -369,7 +397,11 @@ foreach ($path in $files) {
             'unknown_missing_shards',
             'unknown_missing_words',
             'g2p_review_blocked_not_running',
-            'difference_inventory_status'
+            'difference_inventory_status',
+            'difference_inventory_running',
+            'difference_inventory_interrupted_resumable',
+            'difference_checkpoint_status',
+            'difference_lock_process_alive'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA 상태판 안전장치 누락: $required")

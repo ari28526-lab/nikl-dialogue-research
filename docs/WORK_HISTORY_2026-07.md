@@ -1606,3 +1606,39 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   관련 unittest 10개 및 실제 r2 release read-only preflight가 통과했다.
   전체 Python unittest **195개**, PowerShell 안전검사 **12개**도
   통과했다.
+
+## 2026-07-29 16:49–17:02 difference inventory 중단 복구 설계
+
+- 15:51에 시작한 전수 difference inventory 프로세스가 예상치 못한
+  시스템/세션 중단 뒤 사라진 것을 확인했다. traceback과 최종
+  JSON/CSV가 모두 없어 코드가 보고 가능한 예외로 종료된 것이 아니라
+  프로세스가 외부에서 강제 종료된 상태다. r2 release manifest,
+  37,671,240바이트 최종 사전, 85,538,430바이트 G2P cache의 SHA를
+  다시 계산해 manifest와 모두 일치함을 확인했다. adoption은 없고
+  `allow_yearly_mfa=false`다.
+- 연결 드라이브는 D: `DATA_SSD` 여유 262.97GiB, E: 여유
+  1,855.55GiB, H: `SAMSUNG` 여유 93.04GiB다. 약 55.9GiB pre-Jamo
+  archive는 E:가 적합하지만 difference inventory와 동시에 D:를
+  읽으면 I/O 병목이 생기므로 아직 시작하지 않았다.
+- `audit_common_pron_mfa_equivalence.py`에 2020 TextGrid batch
+  checkpoint를 추가했다. 기본 2,000파일마다 counts·차이·마지막
+  상대경로·누적 `path/size/mtime` prefix SHA를 원자 저장한다.
+  재실행에서는 완료 prefix를 다시 열어 분석하지 않되, 경로 수와
+  prefix SHA가 같을 때만 재사용한다. 입력이 바뀌거나 checkpoint와
+  공통사전/QC SHA가 다르면 fail-closed다.
+- 완주한 2020 checkpoint도 보존하므로 이후 2020 partial DB나 2021
+  DB 단계에서 중단되더라도 866,196 TextGrid 분석을 다시 하지 않는다.
+  인위적으로 두 번째 batch에서 중단한 회귀시험에서 첫 batch만
+  checkpoint에 남고 재실행이 나머지만 처리함을 확인했다. 완료본
+  재사용과 완료 prefix 변조 차단도 별도로 통과했다.
+- 새 `run_common_pron_difference_inventory.ps1`은 D: 라벨·여유공간,
+  r2 final hard gate, baseline 증거, G2P/MFA/자체 배타 lock, 기존
+  최종 산출물 쌍과 SHA를 검사한다. PowerShell 창에서 실행하면 진행을
+  화면과 고유 log에 동시에 남기고 중단 시 checkpoint를 보존한다.
+  결과가 완성돼도 adoption과 연도별 MFA는 자동 승인하지 않는다.
+- 읽기 전용 상태판에 difference checkpoint 행 수·진행률·lock 생존과
+  `difference_inventory_running`,
+  `difference_inventory_interrupted_resumable`,
+  `difference_inventory_ready_researcher_approval` phase를 추가했다.
+  전체 Python unittest **197개**와 PowerShell 안전검사 **13개**가
+  통과했다.

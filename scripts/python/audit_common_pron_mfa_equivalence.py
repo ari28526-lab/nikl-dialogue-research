@@ -42,6 +42,7 @@ from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 LEGACY_SCHEMA_VERSION = "common_pron_mfa_equivalence.v1"
 DIFFERENCE_SCHEMA_VERSION = "common_pron_mfa_difference_inventory.v2"
+CHECKPOINT_SCHEMA_VERSION = "common_pron_mfa_difference_checkpoint.v1"
 EXPECTED_TIERS = ["words", "phones", "morphemes", "utterance"]
 MISMATCH_FIELDS = (
     "baseline",
@@ -258,14 +259,111 @@ def audit_2020(
     common: dict[str, set[tuple[str, ...]]],
     workers: int,
     batch_size: int,
+    checkpoint_path: Path | None = None,
+    common_dictionary_sha256: str = "",
 ) -> tuple[dict, list[dict]]:
     qc = validate_2020_qc(qc_report_path, textgrid_root)
+    qc_record = file_fingerprint(qc_report_path, with_sha256=True)
+    expected_files = int(qc["counts"]["valid_textgrids"])
     started = time.time()
     inventory = hashlib.sha256()
     counts: Counter = Counter()
     mismatches: Counter = Counter()
     examples: dict[tuple[str, str, tuple[str, ...]], str] = {}
     batch: list[Path] = []
+    batch_relatives: list[str] = []
+    last_completed_relative = ""
+    expected_prefix_sha256 = ""
+    resumed_from_files = 0
+
+    checkpoint_contract = {
+        "textgrid_root": str(textgrid_root.resolve()),
+        "qc_report": {
+            "bytes": int(qc_record["bytes"]),
+            "sha256": str(qc_record["sha256"]).lower(),
+        },
+        "common_dictionary_sha256": common_dictionary_sha256.lower(),
+        "expected_valid_textgrids": expected_files,
+    }
+    if checkpoint_path is not None and checkpoint_path.exists():
+        checkpoint = json.loads(
+            checkpoint_path.read_text(encoding="utf-8-sig")
+        )
+        if (
+            checkpoint.get("schema_version") != CHECKPOINT_SCHEMA_VERSION
+            or checkpoint.get("status") not in {"in_progress", "completed"}
+            or checkpoint.get("contract") != checkpoint_contract
+        ):
+            raise RuntimeError("2020 difference checkpoint 계약 불일치")
+        counts.update(
+            {
+                str(key): int(value)
+                for key, value in checkpoint.get("counts", {}).items()
+            }
+        )
+        for row in checkpoint.get("mismatches", []):
+            key = (
+                str(row["reason"]),
+                str(row["word"]),
+                tuple(str(value) for value in row["sequence"]),
+            )
+            mismatches[key] = int(row["count"])
+            examples[key] = str(row["example_utt_id"])
+        last_completed_relative = str(
+            checkpoint.get("last_completed_relative", "")
+        )
+        expected_prefix_sha256 = str(
+            checkpoint.get("prefix_inventory_sha256", "")
+        )
+        resumed_from_files = int(counts["textgrid_files"])
+        if (
+            not last_completed_relative
+            or resumed_from_files <= 0
+            or not expected_prefix_sha256
+        ):
+            raise RuntimeError("2020 difference checkpoint 진행상태 불완전")
+
+    def checkpoint_mismatches() -> list[dict]:
+        return [
+            {
+                "reason": reason,
+                "word": word,
+                "sequence": list(sequence),
+                "count": count,
+                "example_utt_id": examples[(reason, word, sequence)],
+            }
+            for (reason, word, sequence), count in sorted(
+                mismatches.items(),
+                key=lambda item: (
+                    item[0][0],
+                    item[0][1],
+                    item[0][2],
+                ),
+            )
+        ]
+
+    def save_checkpoint(
+        *,
+        status: str,
+        last_relative: str,
+        prefix_sha256: str,
+    ) -> None:
+        if checkpoint_path is None:
+            return
+        atomic_write_json(
+            checkpoint_path,
+            {
+                "schema_version": CHECKPOINT_SCHEMA_VERSION,
+                "status": status,
+                "recorded_at": now_iso(),
+                "contract": checkpoint_contract,
+                "last_completed_relative": last_relative,
+                "prefix_inventory_sha256": prefix_sha256,
+                "counts": dict(sorted(counts.items())),
+                "mismatches": checkpoint_mismatches(),
+                "runtime": runtime_snapshot(PROJECT_ROOT),
+            },
+        )
 
     def consume(results):
         for result in results:
@@ -284,16 +382,44 @@ def audit_2020(
                 mismatches[key] += 1
                 examples.setdefault(key, result["utt_id"])
 
+    skipped_prefix_files = 0
+    prefix_verified = not last_completed_relative
+
+    def verify_resumed_prefix() -> None:
+        nonlocal prefix_verified
+        if prefix_verified:
+            return
+        if (
+            skipped_prefix_files != resumed_from_files
+            or inventory.hexdigest() != expected_prefix_sha256
+        ):
+            raise RuntimeError("2020 difference checkpoint 입력 prefix 변경")
+        prefix_verified = True
+        print(
+            f"[2020] checkpoint 재개: {resumed_from_files:,}/"
+            f"{expected_files:,} TextGrid",
+            flush=True,
+        )
+
+    completed_batches = 0
     with ThreadPoolExecutor(max_workers=workers) as executor:
         for path in iter_textgrids(textgrid_root):
             stat = path.stat()
             relative = path.relative_to(textgrid_root).as_posix()
-            inventory.update(
+            inventory_record = (
                 f"{relative}\0{stat.st_size}\0{stat.st_mtime_ns}\n".encode(
                     "utf-8"
                 )
             )
+            if not prefix_verified:
+                inventory.update(inventory_record)
+                skipped_prefix_files += 1
+                if relative == last_completed_relative:
+                    verify_resumed_prefix()
+                continue
+            inventory.update(inventory_record)
             batch.append(path)
+            batch_relatives.append(relative)
             if len(batch) >= batch_size:
                 consume(
                     executor.map(
@@ -301,7 +427,20 @@ def audit_2020(
                         batch,
                     )
                 )
+                completed_batches += 1
+                save_checkpoint(
+                    status="in_progress",
+                    last_relative=batch_relatives[-1],
+                    prefix_sha256=inventory.hexdigest(),
+                )
+                if completed_batches % 10 == 0:
+                    print(
+                        f"[2020] {counts['textgrid_files']:,}/"
+                        f"{expected_files:,} TextGrid 검사",
+                        flush=True,
+                    )
                 batch.clear()
+                batch_relatives.clear()
         if batch:
             consume(
                 executor.map(
@@ -309,8 +448,13 @@ def audit_2020(
                     batch,
                 )
             )
+            save_checkpoint(
+                status="in_progress",
+                last_relative=batch_relatives[-1],
+                prefix_sha256=inventory.hexdigest(),
+            )
+        verify_resumed_prefix()
 
-    expected_files = int(qc["counts"]["valid_textgrids"])
     passed = (
         counts["textgrid_files"] == expected_files
         and counts["file_errors"] == 0
@@ -338,6 +482,14 @@ def audit_2020(
             ),
         )
     ]
+    if checkpoint_path is not None:
+        save_checkpoint(
+            status="completed",
+            last_relative=last_completed_relative
+            if resumed_from_files == expected_files
+            else relative,
+            prefix_sha256=inventory.hexdigest(),
+        )
     return (
         {
             "status": "passed" if passed else "failed",
@@ -349,6 +501,12 @@ def audit_2020(
             "counts": dict(sorted(counts.items())),
             "expected_valid_textgrids": expected_files,
             "unique_mismatch_rows": len(mismatch_rows),
+            "checkpoint": (
+                file_fingerprint(checkpoint_path, with_sha256=True)
+                if checkpoint_path is not None
+                else None
+            ),
+            "resumed_from_files": resumed_from_files,
         },
         mismatch_rows,
     )
@@ -597,6 +755,7 @@ def run_audit(
     workers: int,
     batch_size: int,
     mode: str = "difference-inventory",
+    checkpoint_2020: Path | None = None,
 ) -> dict:
     if output_json.exists() or output_csv.exists():
         raise FileExistsError("기존 동등성 결과 덮어쓰기 금지")
@@ -615,6 +774,10 @@ def run_audit(
         common=common,
         workers=workers,
         batch_size=batch_size,
+        checkpoint_path=checkpoint_2020,
+        common_dictionary_sha256=str(
+            release["outputs"]["dictionary"]["sha256"]
+        ),
     )
     result_2020_partial_db, mismatch_2020_partial_db = (
         audit_2020_partial_db(
@@ -753,6 +916,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output-json", type=Path, required=True)
     parser.add_argument("--output-csv", type=Path, required=True)
+    parser.add_argument("--checkpoint-2020", type=Path)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--batch-size", type=int, default=2000)
     parser.add_argument(
@@ -778,6 +942,11 @@ def main() -> int:
         workers=args.workers,
         batch_size=args.batch_size,
         mode=args.mode,
+        checkpoint_2020=(
+            args.checkpoint_2020.resolve()
+            if args.checkpoint_2020 is not None
+            else None
+        ),
     )
     print(
         "[{0}] 2020={1}, 2021={2}, mismatch={3:,}".format(
