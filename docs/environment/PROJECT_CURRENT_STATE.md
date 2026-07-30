@@ -116,6 +116,7 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 상세 정본:
 
 - `docs/decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md`
+- `docs/decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md`
 - `docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md`
 
 ## 중요한 미완료 항목
