@@ -461,6 +461,43 @@
 - **Minimal fix**: `--search-master-root`를 필수 인자로 변경(기본값 제거).
 - **Rerun scope**: 코드만. / **Required test**: 인자 생략 시 종료 확인.
 
+### MFA-007 — 층화 파일럿 인프라가 r2 계약 이전 방식으로 고정됨 (리허설 도구로 쓰려면 갱신 필요)
+
+- **Severity**: P2 (6개년 샘플 파일럿을 리허설 단계로 채택하는 경우; 파일럿을
+  쓰지 않으면 P3)
+- **Evidence**:
+  - inline G2P 하드코딩: `scripts/run_stratified_mfa_pilot.ps1:267,299`
+    (`'--g2p_model_path', 'korean_mfa'`) — r2가 금지한 연도별 inline G2P 경로
+  - 기본 사전 직접 참조: `:163-164`
+    (`Documents\MFA\pretrained_models\dictionary\korean_mfa.dict`) — r2
+    release 사전(`common_pron_mfa_r2.dict`) 아님
+  - lab 원천이 `form`: `scripts/python/build_stratified_mfa_pilot.py:248`
+    (`form_to_lab(row.get("form", ""))`) — 생산 lab 계약
+    `eojeol_v3_pron_reference_form`(pron_reference_form 우선)과 입력층부터
+    다름
+  - marker 모드 문자열도 legacy 고정: `run_stratified_mfa_pilot.ps1:83,96`
+    (`g2p_model = 'korean_mfa'`) — MFA-001과 같은 계열
+  - 격리 자체는 건전: 파일럿은 wav를 run 폴더로 복사하고 lab을 그 안에
+    새로 쓰므로 운영 코퍼스 lab을 건드리지 않음
+    (`build_stratified_mfa_pilot.py:562-570`)
+- **Violated contract**: workflow §3.3(6개년 생산 실행에서 inline G2P
+  불허)·§3.2(lab은 `pron_reference_form` 기준) — 파일럿을 "전수와 같은
+  코드·같은 방식"의 리허설로 쓰는 순간 이 계약들과 어긋난 방법을 검증하게
+  됨.
+- **Research impact**: 파일럿이 green이어도 그것은 구 방법(inline G2P +
+  기본 사전 + form 기반 lab)의 green이라, r2 전수 실행의 위험(사전 로딩,
+  OOV=0 기대, direct export, r2 marker 판독)을 하나도 미리 밟아 보지
+  못한다. 최악의 경우 "파일럿 통과"가 거짓 안심을 만든다.
+- **Minimal fix**: 파일럿 러너를 r2로 갱신 — ① 사전·adoption 게이트를
+  전수 러너와 동일하게 manifest에서 읽기, ② `--g2p_model_path` 제거,
+  ③ lab 원천을 `pron_reference_form`으로 교체, ④ marker 모드 문자열을
+  r2 값으로(MFA-001 수정과 같은 묶음), ⑤ 파일럿도 direct DB export 경로
+  사용(그래야 export→audit→next-year gate 사슬 리허설이 성립).
+- **Rerun scope**: 코드만(파일럿 도구). 기존 60발화 파일럿 산출물은 구
+  방법의 시행착오 기록으로 보존.
+- **Required test**: 파일럿 러너 정적 검사에 inline G2P 인자 부재·manifest
+  게이트 존재 확인 추가(`test_powershell_safety.ps1` 계열).
+
 ---
 
 ## 3. finding 없이 확인한 경로·불변식
@@ -509,6 +546,9 @@ P0 없음. 위 P1 1건(MFA-001)과 P2 중 시작 전 필수분(MFA-002 확인)�
   + 회귀 테스트 추가 (코드만)
 - [ ] MFA-002 확인: `D:\mfa_eojeol\done`의 legacy marker 실측 → 잔존 시
   보존 격리(자동화 스크립트 or 러너 수정), ASSETS_LEDGER/작업 이력 기록
+- [ ] MFA-007 수정 후 **6개년 층화 샘플 r2 파일럿**을 QC 사슬 끝까지 완주
+  → 발견 수정 반영 → 파일럿 재실행 green → 코드 동결(커밋 SHA 기록)
+  (§6.1 3번 참조)
 - [ ] preflight 1회 실행으로 4번 항목(MFA 패치)·D: 라벨·공간·wav 구조·
   pre-MFA 계약 실측 (`logs/preflight_*.log` 근거 확보)
 - [ ] 2020 QC 절차 명문화: `audit_mfa_4tier_year` → `verify_mfa_db_4tier_
@@ -552,25 +592,44 @@ P0 없음. 위 P1 1건(MFA-001)과 P2 중 시작 전 필수분(MFA-002 확인)�
 
 ### 6.1 권장 진행 순서 (2020 시작까지)
 
+연도별 방법 일관성의 가장 큰 실제 위협은 "연도 사이의 코드 수정"이다
+(2020 QC에서 버그를 고치면 2021~2025가 2020과 다른 코드로 돌게 됨).
+따라서 전수 시작 전에 **6개년 층화 샘플을 같은 코드로 끝까지 한 번
+돌리는 단계**(사용자 제안, 3번)를 넣어 수정을 앞당기고, 전수 6개년이
+단일 코드 커밋으로 완주할 확률을 높인다. done marker가 `git_commit`을
+기록하므로 사후 입증도 가능하다.
+
 1. **코드 수정 1묶음 (반나절 이하, 데이터 무관)**: MFA-001(모드 문자열
-   승인) + CSV-003(안내문) + MFA-006(`--search-master-root` 필수화)을 한
-   커밋 묶음으로. 셋 다 회귀 테스트가 기존 파일에 자연스럽게 붙는다.
+   승인) + MFA-007(파일럿 러너 r2 갱신) + CSV-003(안내문) +
+   MFA-006(`--search-master-root` 필수화)을 한 커밋 묶음으로.
    이 묶음이 끝나야 "중단돼도 그냥 다시 실행하면 이어진다"는 무인 배치의
-   기본 가정이 성립한다.
+   기본 가정이 성립하고, 파일럿이 전수와 같은 방법을 검증하게 된다.
 2. **상태 실측 1회 (스크립트, 콘솔 한 줄 실행)**: legacy done marker·
    lab_input marker·temp·staging 잔존물을 읽기 전용으로 훑어 JSON 보고서를
    `logs/`에 남기는 점검 스크립트를 커밋하고 실행(MFA-002 실측 +
    requires-local-evidence 4건 해소). 결과에 따라 marker 보존 격리까지
    같은 스크립트의 `--apply` 단계로 처리 — 수동 삭제 지시 금지 원칙 유지.
-3. **QC 사슬 리허설 (2020 시작 전, 합성/소표본)**: 수정된
-   `preflight_next_year_after_qc.py`를 2021 legacy 실적이 아니라 **r2
-   모양의 합성 fixture**로 한 번 통과시켜 본다. 게이트를 실전에서 처음
-   실행하는 일이 없도록.
+3. **★ 6개년 층화 샘플 r2 파일럿 (QC 사슬 끝까지)**: r2로 갱신된 파일럿
+   도구(MFA-007 수정판)로 연도당 세션 5~10개(화자=세션이므로 세션 단위
+   표집)를 격리 run 폴더에 wav/lab **사본**으로 구성해, 전수와 같은
+   경로로 align → direct DB export → `audit_mfa_4tier_year` →
+   `verify_mfa_db_4tier_sample` → `preflight_next_year_after_qc`(수정판)
+   까지 완주한다. 표본에 문제 유형을 의도적으로 포함: `unresolved_symbol`
+   발화, 형태소 원천 결측, 평면 연도(2020·2021·2025)와 세션 연도(2023),
+   `발화겹침` note, 숫자·기호 어절. 여기서 나온 수정을 반영한 뒤
+   **파일럿을 한 번 더 green으로** 재확인하고 코드를 동결(커밋 SHA 기록).
+   한계도 명시해 둔다: 소표본 정렬로 품질·임계값을 판단하지 않으며(MFA는
+   코퍼스 단위 통계 추정), 규모 의존 버그(export 전멸·디스크 고갈·수 시간
+   hang)는 이 단계가 잡지 못한다 — 그것은 4번(2020 전수)의 몫이다.
+   실행 중 D: 경합 금지(규칙 7)는 파일럿에도 동일 적용.
 4. **phone inventory 추출기 선반영 (MFA-003)**: 연도 QC에 DB
    `SELECT DISTINCT phone` 1회를 끼워 넣는 작은 스크립트. 2020부터
-   축적해야 6개년 감사가 공짜가 된다.
-5. **§11 명령으로 2020 시작**. 시작 직후 첫 heartbeat와
+   축적해야 6개년 감사가 공짜가 된다. (3번 파일럿에서 함께 리허설 가능.)
+5. **§11 명령으로 2020 전수 시작 (규모 프로브)**. 시작 직후 첫 heartbeat와
    `PREFLIGHT_mfa_input_integrity_*` 보고서만 확인하고 개입하지 않는다.
+   이후 2021~2025는 **코드 무변경 원칙**으로 한 연도씩; 불가피한 변경이
+   생기면 그 시점에 "이전 연도 소급 재실행 여부"를 명시적 결정으로
+   문서화한다.
 
 ### 6.2 2020 완료 후 (게이트 통과까지가 "완료")
 
@@ -585,6 +644,9 @@ P0 없음. 위 P1 1건(MFA-001)과 P2 중 시작 전 필수분(MFA-002 확인)�
   (§8 항목 8의 실측화).
 - E: archive·D: 정리는 **게이트 통과 보고서가 나온 뒤에만**. 정리 전
   phone inventory 추출을 끝냈는지 체크리스트로 강제.
+- 6개년 완료 후 cross-year 감사에 **6개 done marker의 `git_commit` 동일성
+  검사**를 추가할 것을 권장 — 현재 감사는 모델·계약 SHA만 보므로, "같은
+  코드로 6개년을 돌렸다"는 주장의 마지막 고리를 실측으로 닫는다.
 
 ### 6.3 병행 트랙 (MFA와 독립, D: 경합 없는 시간대에)
 
