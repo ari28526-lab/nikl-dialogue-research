@@ -50,13 +50,15 @@
 | run_common_pron_difference_inventory.ps1 | 완성된 r2 hard gate, D: 라벨·공간, G2P/MFA/자체 lock과 baseline 증거를 확인하고 2020·2021 difference inventory를 전수 실행. 실행 중 Windows 시스템 절전을 억제하고 종료 시 복원한다. 기본 20,000 TextGrid마다 checkpoint를 보존하며 재실행 시 입력 prefix가 불변일 때만 이어서 처리하고 adoption은 자동 승인하지 않음 |
 | run_common_pron_mfa_r1.ps1 | 구 acoustic v3.0/음절 G2P r1의 재현·실패 감사용 실행기. 첫 shard의 strict grapheme 누락을 검증기가 차단했으며 최신 Jamo 생산에는 재사용하지 않음 |
 | run_common_pron_mfa_r2.ps1 | 동결 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary SHA를 먼저 검증하고 r2를 shard별 생성·재개. U+11B3 정확히 4건 외 미지원·spn·누락을 차단한다. FST no-path는 모델 후보와 별도로 기록된 연구자 승인 phone(동일 acoustic inventory)을 사용해 누락 키만 보수하고, 새 미승인 누락은 partial을 보존한 채 다음 shard 계산을 계속하되 final/연도별 MFA만 금지 |
-| build_common_pron_mfa_adoption.py | 연도별 MFA를 허용하는 유일한 adoption v3 contract 생성. r2 실물·동결 모델 pin·2020/2021 difference inventory뿐 아니라 연구자 workbook validation과 원장 적용 transaction, 27개 정규화 결정, no-path 24개 승인 snapshot/repair, ㄽ 4개 최종 phone, source/numeric correction 2개를 행·SHA 수준으로 끝까지 대조한다. 최종 연구자 승인 v2가 application·correction SHA를 명시하지 않으면 거부 |
+| build_common_pron_mfa_adoption.py | 연도별 MFA를 허용하는 유일한 adoption v3 contract 생성. r2 실물·동결 모델 pin·2020/2021 difference inventory뿐 아니라 연구자 workbook validation과 원장 적용 transaction, 27개 정규화 결정, no-path 24개 승인 snapshot/repair, ㄽ 4개 최종 phone, source/numeric correction 2개를 행·SHA 수준으로 끝까지 대조한다. no-path 구 repair v1/v2와 현재 review의 필드 배치 차이는 model candidate·approved phone 의미로 정규화한 뒤 비교하며, 최종 연구자 승인 v2가 application·correction SHA를 명시하지 않으면 거부 |
+| build_common_pron_researcher_approval.py | 이미 명시 승인된 27건 workbook·결정 적용 transaction·6개년 전면 재정렬 결정문·완료 difference inventory를 다시 검증해 researcher approval v2를 생성. 새 언어학 판단을 자동 생성하지 않고 기존 명시 결정의 SHA 연결만 기계 판독화 |
 | audit_mfa_cross_year_contracts.py | 2020–2025 여섯 alignment contract의 acoustic·최종 공통사전·Jamo G2P·런타임·manifest·adoption SHA가 동일함을 전수 감사해 논문 방법론의 동일 기준 증거 생성 |
 | show_common_pron_mfa_status.ps1 | 공통 MFA r2의 검증 shard·ㄽ 후보·모든 미검증 partial·no-path 승인/미등록 대기 shard·현재 출력·lock·D: 공간·final/adoption 상태를 읽기 전용으로 표시. 재개 ETA는 현재 lock 이후 새로 생성된 행만 사용 |
 | package_hf_korean_mfa_bundle.py | MFA 내장 downloader의 stale 성공을 우회해 공식 Hugging Face commit에서 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary를 phone inventory·LF symbol·SHA256 gate로 동결 |
 | build_jamo_nfkd_g2p_model.py | 구 Jamo v3.0 archive의 누락된 NFKD metadata만 파생 수정하는 진단 도구. 최신 v3.2.0은 공식적으로 `unicode_decomposition=true`이므로 새 생산 기준에는 사용하지 않음 |
 | archive_pre_jamo_outputs_to_external.ps1 | **사용 중단·기본 실행 차단.** 수백만 작은 파일의 loose Robocopy 방식이므로 실행 시 압축 스크립트를 안내하고 즉시 중단 |
 | archive_pre_jamo_outputs_compressed.ps1 | 수백만 작은 파일의 loose 복사 병목을 피해 항목별 7z로 E:에 보존. CRC 전수검사, 원본/내부 파일 수·바이트, 모든 DB 전후 SHA, archive SHA를 기록하며 원본 삭제 기능 없음 |
+| prune_pre_jamo_outputs_after_compressed_archive.ps1 | E: 압축 archive 성공 manifest·현재 archive SHA·D: 원본 파일 수/바이트·모든 DB SHA를 삭제 전에 전수 재검증하고, 명시적 `-Apply`+고정 승인 토큰에서만 정확한 5개 pre-Jamo allowlist를 정리. 기본은 삭제 0 dry-run |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 
@@ -105,7 +107,7 @@
 | patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
 | run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA·모델 정렬 계약, marker·archive·PreferD, descendant CPU/working-set/private/process/thread, 시스템 available/commit, alignment-log 및 phone·word interval CSV 증분 처리량 heartbeat. `-UseDirectDbExport`는 partial 4-tier를 검증 승격하고 DB를 QC 전 보존 | 2020 보수 경로 완료; 2021 live에는 옛 판본 유지, 다음 실행용 관측 합성·실자료 검사 통과 |
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
-| run_pre_mfa_bulk_safe.ps1 | 새 versioned pre-MFA CSV 전량 생성→연도별 입력계약 lab→MFA→4-tier. `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary | 2020 완료; 2021 direct GO |
+| run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→4-tier. r2 manifest/adoption 필수, `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary. 2020·2021 r2 전수 재실행은 상·하위 러너 모두 명시적 `-AllowBaselineCommonPronRerun`을 요구하고 다른 연도에서 플래그를 거부 | r2 외부 workflow 리뷰 뒤 2020 시작 대기 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 필수 패치의 AST/소스 구조와 SHA256 기록 | 10/10 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |

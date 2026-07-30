@@ -197,9 +197,37 @@ def _same_record(left: dict, right: dict) -> bool:
     )
 
 
+def _canonical_no_path_review_row(row: dict) -> dict[str, str]:
+    """Normalize repair v1/v2 and review rows to the review-ledger schema."""
+    model_candidate = _clean(
+        row.get("model_candidate_pron_phones_mfa")
+        or row.get("pron_phones_mfa")
+    )
+    approved = _clean(
+        row.get("approved_pron_phones_mfa")
+        or row.get("pron_phones_mfa")
+    )
+    approved_evidence = _clean(row.get("approved_phone_evidence"))
+    if (
+        not approved_evidence
+        and _clean(row.get("decision")) == "approved"
+        and approved == model_candidate
+    ):
+        approved_evidence = "legacy_same_frozen_jamo_candidate"
+    normalized = {
+        field: _clean(row.get(field)) for field in NO_PATH_FIELDS
+    }
+    normalized["pron_phones_mfa"] = model_candidate
+    normalized["approved_pron_phones_mfa"] = approved
+    normalized["approved_phone_evidence"] = approved_evidence
+    return normalized
+
+
 def _same_no_path_row(left: dict, right: dict) -> bool:
+    left_normalized = _canonical_no_path_review_row(left)
+    right_normalized = _canonical_no_path_review_row(right)
     return all(
-        _clean(left.get(field)) == _clean(right.get(field))
+        left_normalized[field] == right_normalized[field]
         for field in NO_PATH_FIELDS
     )
 

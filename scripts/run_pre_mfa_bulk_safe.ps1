@@ -21,6 +21,7 @@ param(
     [string]$CommonPronManifest = '',
     [string]$CommonPronAdoptionContract = '',
     [string]$CommonPronEquivalenceReport = '',
+    [switch]$AllowBaselineCommonPronRerun,
     [switch]$AllowLegacyInlineG2p,
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
@@ -84,6 +85,37 @@ if (
 ) {
     Write-Error (
         "-AllowLegacyInlineG2p와 -CommonPronManifest는 함께 사용할 수 없음"
+    )
+    exit 1
+}
+if (
+    $AllowBaselineCommonPronRerun -and
+    [string]::IsNullOrWhiteSpace($CommonPronManifest)
+) {
+    Write-Error (
+        "-AllowBaselineCommonPronRerun은 검증된 공통사전 r2 manifest와 " +
+        "함께만 사용할 수 있음"
+    )
+    exit 1
+}
+if (
+    $AllowBaselineCommonPronRerun -and
+    $Years[0] -notin @('2020', '2021')
+) {
+    Write-Error (
+        "-AllowBaselineCommonPronRerun은 2020·2021 전수 재실행에만 " +
+        "사용할 수 있음: requested=$($Years[0])"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    $Years[0] -in @('2020', '2021') -and
+    -not $AllowBaselineCommonPronRerun
+) {
+    Write-Error (
+        "2020·2021 r2 전수 재실행 결정은 명시적이어야 함. " +
+        "-AllowBaselineCommonPronRerun을 지정할 것"
     )
     exit 1
 }
@@ -162,6 +194,7 @@ if (Test-Path -LiteralPath $lockPath) {
     common_pron_manifest = $CommonPronManifest
     common_pron_adoption_contract = $CommonPronAdoptionContract
     legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
+    allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -243,6 +276,9 @@ try {
                 '-CommonPronAdoptionContract',
                 $CommonPronAdoptionContract
             )
+            if ($AllowBaselineCommonPronRerun) {
+                $realignArgs += '-AllowBaselineCommonPronRerun'
+            }
         } elseif ($AllowLegacyInlineG2p) {
             $realignArgs += '-AllowLegacyInlineG2p'
         }
@@ -294,6 +330,7 @@ try {
         common_pron_manifest = $CommonPronManifest
         common_pron_adoption_contract = $CommonPronAdoptionContract
         legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
+        allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear
         paused_before_year = $pausedBeforeYear

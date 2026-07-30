@@ -32,6 +32,46 @@ def write_csv(
 
 
 class CommonPronAdoptionTests(unittest.TestCase):
+    def test_no_path_repair_v2_manual_override_normalizes_to_review(self):
+        review = {
+            "surface": "읊고",
+            "respelled": "읍꼬",
+            "rule_id": "rule23",
+            "evidence_source": "official",
+            "evidence_detail": "fixture",
+            "pron_phones_mfa": "ɨː m k͈ o",
+            "approved_pron_phones_mfa": "ɨ p̚ k͈ o",
+            "approved_phone_evidence": "official_rule",
+            "decision": "approved",
+            "notes": "manual correction",
+        }
+        repair = {
+            **review,
+            "pron_phones_mfa": "ɨ p̚ k͈ o",
+            "model_candidate_pron_phones_mfa": "ɨː m k͈ o",
+        }
+        self.assertTrue(adoption._same_no_path_row(repair, review))
+
+    def test_no_path_repair_v1_implies_same_candidate_approval(self):
+        legacy = {
+            "surface": "읊어",
+            "respelled": "을퍼",
+            "rule_id": "rule14",
+            "evidence_source": "official",
+            "evidence_detail": "fixture",
+            "pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+            "decision": "approved",
+            "notes": "legacy approval",
+        }
+        migrated = {
+            **legacy,
+            "approved_pron_phones_mfa": "ɨ ɭ pʰ ʌ",
+            "approved_phone_evidence": (
+                "legacy_same_frozen_jamo_candidate"
+            ),
+        }
+        self.assertTrue(adoption._same_no_path_row(legacy, migrated))
+
     def fixture(self, root: Path) -> dict[str, Path]:
         dictionary = root / "common.dict"
         dictionary.write_text("가\tk a\n", encoding="utf-8")

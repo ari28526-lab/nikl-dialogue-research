@@ -1,0 +1,108 @@
+﻿{
+    "schema_version":  "pre_jamo_compressed_prune.v1",
+    "status":  "success",
+    "started_at":  "2026-07-30T08:26:34.4870966+09:00",
+    "apply_requested":  true,
+    "deletion_performed":  true,
+    "approval":  {
+                     "explicit_user_approval_recorded_at":  "2026-07-30",
+                     "required_token_matched":  true
+                 },
+    "policy":  {
+                   "archive_must_be_success":  true,
+                   "all_archives_rehashed_before_delete":  true,
+                   "all_sources_remeasured_before_delete":  true,
+                   "all_database_hashes_rechecked_before_delete":  true,
+                   "exact_source_allowlist_only":  true,
+                   "raw_corpus_targeted":  false
+               },
+    "items":  [
+                  {
+                      "key":  "textgrid_2020",
+                      "source":  "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2020",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\textgrid_baseline_pre_jamo_2020.7z",
+                      "source_files":  866196,
+                      "source_bytes":  3964598141,
+                      "archive_bytes":  254992082,
+                      "archive_sha256":  "f96926e6e77a655f826c7f7d05ef1087e93df2aef989eadc4ecad4b98d499f5d",
+                      "database_sha256":  {
+
+                                          },
+                      "pre_delete_verified":  true,
+                      "removed":  true,
+                      "removed_at":  "2026-07-30T08:42:40.4819088+09:00"
+                  },
+                  {
+                      "key":  "textgrid_2021",
+                      "source":  "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\2021",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\textgrid_baseline_pre_jamo_2021.7z",
+                      "source_files":  1371868,
+                      "source_bytes":  8012484181,
+                      "archive_bytes":  515391504,
+                      "archive_sha256":  "27a2e4626415bfde949fff1f3f413dc1b523c6631111497d109041a05a430aee",
+                      "database_sha256":  {
+
+                                          },
+                      "pre_delete_verified":  true,
+                      "removed":  true,
+                      "removed_at":  "2026-07-30T09:28:08.4036691+09:00"
+                  },
+                  {
+                      "key":  "mfa_temp_2021",
+                      "source":  "D:\\mfa_tmp\\2021",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\mfa_temp_baseline_pre_jamo_2021.7z",
+                      "source_files":  105,
+                      "source_bytes":  47119546244,
+                      "archive_bytes":  12147947993,
+                      "archive_sha256":  "ae4c00cdb1c30ab3b5edfe86a8036049f173daf8573c365b296f71bde57471a4",
+                      "database_sha256":  {
+                                              "relative_path":  "2021.db",
+                                              "bytes":  12455149568,
+                                              "sha256":  "388540be405ae3be8ae5b933105e00d8d415a2d3454c0c96e4dd64c0e0289872"
+                                          },
+                      "pre_delete_verified":  true,
+                      "removed":  true,
+                      "removed_at":  "2026-07-30T09:28:11.7323278+09:00"
+                  },
+                  {
+                      "key":  "mfa_stale_temp",
+                      "source":  "D:\\mfa_eojeol\\archive_stale_temp",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\mfa_stale_temp_pre_jamo.7z",
+                      "source_files":  16,
+                      "source_bytes":  734849353,
+                      "archive_bytes":  150759901,
+                      "archive_sha256":  "747e1519f84da566ac69b2ec59858a46ea8233128ae8e2bb524f3d0c0571bbe6",
+                      "database_sha256":  {
+                                              "relative_path":  "20260725_141701/C/2020/2020.db",
+                                              "bytes":  665677824,
+                                              "sha256":  "4e84e5b44919d434786b2d9d5141ee0e7011acfa2815d1b058e4540151b99118"
+                                          },
+                      "pre_delete_verified":  true,
+                      "removed":  true,
+                      "removed_at":  "2026-07-30T09:28:11.7938528+09:00"
+                  },
+                  {
+                      "key":  "failed_model_clone",
+                      "source":  "D:\\mfa_common_pron\\models\\official_hf_korean_mfa_v3.3.0_20260728",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_jamo_compressed_20260728\\hf_clone_crlf_failure.7z",
+                      "source_files":  52,
+                      "source_bytes":  172573000,
+                      "archive_bytes":  131949266,
+                      "archive_sha256":  "dda0bc706da5567601f7b19b3c8631fcae77359979da63c62a43befab1a1558a",
+                      "database_sha256":  {
+
+                                          },
+                      "pre_delete_verified":  true,
+                      "removed":  true,
+                      "removed_at":  "2026-07-30T09:28:11.9524428+09:00"
+                  }
+              ],
+    "summary":  {
+                    "items":  5,
+                    "files":  2238237,
+                    "bytes":  60004050919,
+                    "expected_reclaim_gib":  55.883
+                },
+    "completed_at":  "2026-07-30T09:28:11.9619745+09:00",
+    "drive_free_bytes_after":  347421974528
+}

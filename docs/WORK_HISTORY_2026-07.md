@@ -1692,3 +1692,92 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   전체 Python unittest **198개**, PowerShell 안전검사 **13개**가
   통과했고 상태판은 `difference_inventory_interrupted_resumable`과
   68,000/866,196을 정상 표시했다.
+
+## 2026-07-30 09:00–10:50 archive 검증 정리, adoption v3, 연구 데이터 계약
+
+### E: 압축 archive와 D: 구 산출물 정리
+
+- E: 압축 archive가
+  `E:\READ_ONLY_ARCHIVE\2026_summer_research\pre_jamo_compressed_20260728`
+  에서 `status=success`로 완료됐다. 2020 TextGrid 866,196개,
+  2021 TextGrid 1,371,868개, 2021 MFA DB/temp, stale temp, 실패한
+  모델 clone을 항목별 7z로 보존했다. 원 약 55.883GiB, archive 약
+  12.294GiB이며 CRC, 내부 파일 수·비압축 bytes, 모든 DB SHA와 archive
+  SHA가 일치했다.
+- 사용자에게 정확한 다섯 D: 경로와 복구 가능한 E: archive를 설명하고
+  명시 승인을 받은 뒤
+  `prune_pre_jamo_outputs_after_compressed_archive.ps1`을 만들었다.
+  기본 dry-run, exact allowlist, `-Apply`와 고정 승인 토큰, reparse point
+  거부, 삭제 직전 archive 재해시·원 파일 수/bytes·DB SHA 재검증을
+  강제했다.
+- 첫 적용은 기본 report 경로에서 `$PSScriptRoot`를 param 기본값으로
+  평가한 문제로 **삭제 전 안전 중단**됐다. 두 번째 적용은
+  `OrderedDictionary`에 `Measure-Object`를 직접 사용한 count 계산 문제로
+  다시 **삭제 전 안전 중단**됐다. 각각 경로 계산을 본문으로 옮기고
+  `.Values`를 명시하도록 고친 뒤 재실행했다. 이 두 시행착오에서 파일
+  삭제는 0건이었다.
+- 최종 적용은 모든 검증을 다시 통과한 뒤 승인한 다섯 경로만 정리했다.
+  보고서는
+  `outputs/reports/PRUNE_pre_jamo_after_compressed_archive_20260730.json`,
+  status는 `success`이다. 원시 corpus는 변경하지 않았고 D: 여유는
+  323.56GiB가 됐다.
+
+### 연구자 승인 계약과 adoption v3 완성
+
+- 이미 사용자가 명시 승인한 27개 예외를 새로 판단하지 않고, workbook
+  validation, 결정 적용 transaction, 6개년 전면 재정렬 결정문, 완료된
+  difference inventory의 SHA를 다시 연결하는
+  `build_common_pron_researcher_approval.py`를 추가했다.
+- 첫 adoption 실행은 `application/final no-path candidate rows mismatch`로
+  안전 중단됐다. 조사 결과 발음 불일치가 아니라 no-path 기록 형식의
+  세대 차이였다. repair v2는 최종 승인 phone을 `pron_phones_mfa`에,
+  모델 후보를 `model_candidate_pron_phones_mfa`에 보존하지만 현재
+  review는 모델 후보와 승인 phone을 각각
+  `pron_phones_mfa`/`approved_pron_phones_mfa`에 둔다. legacy v1은
+  후보=승인을 암시하되 새 필드가 없다.
+- 모델 후보와 승인 phone의 의미를 먼저 정규화해 비교하도록 adoption
+  builder를 보완했다. final dictionary, phone, method supplement,
+  release manifest와 difference inventory는 수정하지 않았다.
+- 최종
+  `00_contract\adoption_contract.json`은
+  `schema_version=common_pron_mfa_adoption.v3`, `status=passed`,
+  `allow_yearly_mfa=true`, `legacy_inline_g2p_default=false`로 생성됐다.
+  adoption SHA는
+  `611f021bb2c051fb21cfffe9dd948f15dd980cd4c2566e29cc363f6bc6c9c081`
+  이다.
+
+### 코드가 아니라 연구 입력·출력을 먼저 고정
+
+- 사용자의 지적에 따라 r2 실행 검토의 중심을 코드 동작에서 연구 데이터
+  계약으로 옮겼다.
+  `WORKFLOW_r2_MFA_research_data_contract_20260730.md`에 원시자료,
+  동결 pre-MFA 입력, 공통 발음 계약, 연도별 DB/interval/TextGrid/QC,
+  최종 검색 CSV/Parquet, 후보 bundle, KOINA/stitch/wav2vec2,
+  연구자 판정의 역할과 조인을 한 흐름으로 정리했다.
+- 동결 `pre_mfa_v1_20260725`가 MFA 입력에는 충분하지만 형태소별·어절별
+  철자 로마자, 우리말샘 보조 발음, 화자/대화 참여자, post-MFA 보조열을
+  모두 갖춘 최종 연구 검색 CSV는 아니라는 점을 명시했다.
+- 운영 4-tier는 현재 호환 이름
+  `words/phones/morphemes/utterance`를 유지하되, `phones`는 의미상
+  MFA 보조 분절이고 `morphemes`는 legacy 형태소 경계 출처임을 고정했다.
+  모든 tier의 0–xmax 연속 빈 interval과 운영본 무padding 원칙도 출력
+  계약에 포함했다.
+- 상위 `run_pre_mfa_bulk_safe.ps1`이 하위 러너의 2020·2021 전면 재실행
+  승인 플래그를 전달하지 못하는 불일치를 발견했다.
+  `-AllowBaselineCommonPronRerun`을 상위에 추가하고, 공통 r2가 있는
+  2020·2021에서만 명시적으로 허용하며 다른 연도·구방식에서는 거부하도록
+  고쳤다. lock과 summary에도 이 결정을 기록한다.
+- 외부 도구가 GitHub 주소만으로 연구 목적·입출력·조인·실패복구·방법
+  동일성을 리뷰하도록
+  `PROMPT_external_review_r2_MFA_research_workflow_20260730.md`를 만들었다.
+  외부 리뷰 전에는 2020 MFA를 시작하지 않는다.
+
+### 검증
+
+- 전체 Python unittest **202개** 통과
+- PowerShell 안전검사 **14개 파일** 통과
+- 상위 runner의 2020 승인 플래그 누락과 2022 오용이 각각 exit 1로
+  차단되는 동작 probe 통과
+- 읽기 전용 상태판:
+  `Phase=yearly_mfa_approved`, shard 35/35, difference 866,196/866,196,
+  lock 없음, final/adoption 통과, `allow_yearly_mfa=true`

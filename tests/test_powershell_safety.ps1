@@ -14,7 +14,10 @@ $files = @(
     (Join-Path $root 'scripts\run_common_pron_difference_inventory.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
-    (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1')
+    (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1'),
+    (Join-Path $root (
+        'scripts\prune_pre_jamo_outputs_after_compressed_archive.ps1'
+    ))
 )
 $failures = New-Object System.Collections.Generic.List[string]
 
@@ -185,9 +188,11 @@ foreach ($path in $files) {
             '[string]$CommonPronManifest',
             '[string]$CommonPronAdoptionContract',
             '[string]$CommonPronEquivalenceReport',
+            '[switch]$AllowBaselineCommonPronRerun',
             '[switch]$AllowLegacyInlineG2p',
             "'-CommonPronManifest'",
             "'-CommonPronAdoptionContract'",
+            "'-AllowBaselineCommonPronRerun'",
             "'-BulkWrapperPid'",
             "owner_mode = 'bulk_wrapper'",
             'if ($PreferD)',
@@ -198,6 +203,8 @@ foreach ($path in $files) {
             '[Parameter(Mandatory=$true)]',
             '$Years.Count -ne 1',
             '-Years는 한 연도만 허용함',
+            '$Years[0] -notin @(''2020'', ''2021'')',
+            'allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun',
             "status = 'paused'",
             'paused_after_year',
             '$yearExitCode -eq 75'
@@ -461,6 +468,29 @@ foreach ($path in $files) {
         }
         if ($text -match '(?im)^\s*Remove-Item\b') {
             $failures.Add('압축 외장 archive에 삭제 명령이 포함됨')
+        }
+    }
+
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prune_pre_jamo_outputs_after_compressed_archive.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$Apply',
+            'DELETE_VERIFIED_PRE_JAMO_20260730',
+            'exact_source_allowlist_only',
+            'all_archives_rehashed_before_delete',
+            'all_sources_remeasured_before_delete',
+            'all_database_hashes_rechecked_before_delete',
+            'Assert-ExactSource',
+            'Remove-Item -LiteralPath $source -Recurse -Force'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "pre-Jamo prune 안전 계약 누락: $required"
+                )
+            }
         }
     }
 }
