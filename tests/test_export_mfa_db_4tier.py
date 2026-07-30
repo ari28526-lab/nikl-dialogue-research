@@ -95,6 +95,14 @@ class ExportMfaDb4TierTests(unittest.TestCase):
                     output_root=output,
                 )
             self.assertEqual(report["status"], "success")
+            self.assertEqual(
+                report["tier_provenance"]["phones"],
+                "phones_mfa",
+            )
+            self.assertEqual(
+                report["tier_provenance"]["morphemes"],
+                "morphemes_legacy_copy_of_06_textgrid_merged_words",
+            )
             path = output / "2021" / "S1" / "S1.1.TextGrid"
             duration, tiers = parse_mfa_textgrid(path)
             self.assertEqual(duration, 1.0)
@@ -106,7 +114,7 @@ class ExportMfaDb4TierTests(unittest.TestCase):
             comparison = compare_trees(output, output)
             self.assertEqual(comparison["status"], "identical")
 
-    def test_spn_pronunciation_blocks_export_before_textgrid_write(self):
+    def test_unused_reserved_spn_pronunciation_does_not_block_export(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             db = root / "corpus.db"
@@ -114,6 +122,44 @@ class ExportMfaDb4TierTests(unittest.TestCase):
             connection = sqlite3.connect(db)
             connection.execute(
                 "UPDATE pronunciation SET pronunciation='spn'"
+            )
+            connection.commit()
+            connection.close()
+            search = root / "search" / "2021"
+            search.mkdir(parents=True)
+            with open(
+                search / "S1.csv", "w", encoding="utf-8", newline=""
+            ) as stream:
+                writer = csv.writer(stream)
+                writer.writerow(["utt_id", "form"])
+                writer.writerow(["S1.1", "가"])
+            output = root / "out"
+            with patch(
+                "export_mfa_db_4tier.morpheme_tier",
+                return_value=[(0.0, 0.8, "가")],
+            ):
+                report = export_database(
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search.parent,
+                    output_root=output,
+                )
+            self.assertEqual(report["status"], "success")
+            self.assertEqual(
+                report["counts"]["spn_intervals"], 0
+            )
+
+    def test_used_spn_phone_interval_blocks_before_textgrid_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "corpus.db"
+            self.make_db(db)
+            connection = sqlite3.connect(db)
+            connection.execute(
+                "INSERT INTO phone VALUES(3, 'spn', 'non_silence')"
+            )
+            connection.execute(
+                "UPDATE phone_interval SET phone_id=3 WHERE id=1"
             )
             connection.commit()
             connection.close()
@@ -125,12 +171,10 @@ class ExportMfaDb4TierTests(unittest.TestCase):
                 output_root=output,
             )
             self.assertEqual(report["status"], "failed")
-            self.assertEqual(
-                report["counts"]["spn_pronunciations"], 1
-            )
+            self.assertEqual(report["counts"]["spn_intervals"], 1)
             self.assertEqual(
                 report["analysis_ready_status"],
-                "blocked_spn_pronunciations",
+                "blocked_spn_intervals",
             )
             self.assertFalse(output.exists())
 

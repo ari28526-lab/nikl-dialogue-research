@@ -1,0 +1,82 @@
+﻿{
+    "schema_version":  "legacy_mfa_marker_archive.v1",
+    "status":  "success",
+    "checked_at":  "2026-07-30T12:04:01.4294419+09:00",
+    "apply_requested":  true,
+    "expected_pronunciation_mode":  "common_pron_mfa_r2_latest_jamo",
+    "policy":  {
+                   "exact_done_root":  "D:\\mfa_eojeol\\done",
+                   "exact_years":  [
+                                       "2020",
+                                       "2021"
+                                   ],
+                   "align_merge_only":  true,
+                   "lab_input_markers_moved":  false,
+                   "raw_corpus_modified":  false,
+                   "textgrids_modified":  false,
+                   "databases_modified":  false,
+                   "deletion_used":  false
+               },
+    "marker_records":  [
+                           {
+                               "year":  "2020",
+                               "stage":  "align",
+                               "source":  "D:\\mfa_eojeol\\done\\2020.align_done",
+                               "destination":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2020.align_done",
+                               "pronunciation_mode":  "korean_mfa",
+                               "sha256":  "cfb1d9c213c3903d3d6da00a0871bb7abfafe17e7fcccd5d134c03a7ce87d336",
+                               "action":  "archive_move",
+                               "moved":  true,
+                               "moved_at":  "2026-07-30T12:04:01.6664357+09:00"
+                           },
+                           {
+                               "year":  "2020",
+                               "stage":  "merge",
+                               "source":  "D:\\mfa_eojeol\\done\\2020.merge_done",
+                               "destination":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2020.merge_done",
+                               "pronunciation_mode":  "korean_mfa",
+                               "sha256":  "9466896e39e9d7456fab8498ac34f9e98bacebe5be56c997453c1b0a6a903de9",
+                               "action":  "archive_move",
+                               "moved":  true,
+                               "moved_at":  "2026-07-30T12:04:01.6777511+09:00"
+                           },
+                           {
+                               "year":  "2021",
+                               "stage":  "align",
+                               "source":  "D:\\mfa_eojeol\\done\\2021.align_done",
+                               "destination":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2021.align_done",
+                               "pronunciation_mode":  "korean_mfa",
+                               "sha256":  "bd1e6e588debae8ee3877c94300e7db6aeeed96b5c52f5458887058d68fd71b3",
+                               "action":  "archive_move",
+                               "moved":  true,
+                               "moved_at":  "2026-07-30T12:04:01.6882725+09:00"
+                           },
+                           {
+                               "year":  "2021",
+                               "stage":  "merge",
+                               "source":  "D:\\mfa_eojeol\\done\\2021.merge_done",
+                               "destination":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2021.merge_done",
+                               "pronunciation_mode":  "korean_mfa",
+                               "sha256":  "5daea2a8bba07ef6f2ed23131b9a958590e4a45d84bbbfb34400986fa1b9e990",
+                               "action":  "archive_move",
+                               "moved":  true,
+                               "moved_at":  "2026-07-30T12:04:01.7002819+09:00"
+                           }
+                       ],
+    "lab_input_records":  [
+                              {
+                                  "year":  "2020",
+                                  "path":  "D:\\mfa_eojeol\\done\\2020.lab_input_done.json",
+                                  "sha256":  "b7f1ae50ab38fc22175c00244bc7b049236f40f95c9d5b5dd99f2f2719ed6236",
+                                  "action":  "retain_in_place"
+                              },
+                              {
+                                  "year":  "2021",
+                                  "path":  "D:\\mfa_eojeol\\done\\2021.lab_input_done.json",
+                                  "sha256":  "5826e68d25845cfe3be28fd50b721e6bc99d84345c749b4c23ab83802a879b5e",
+                                  "action":  "retain_in_place"
+                              }
+                          ],
+    "completed_at":  "2026-07-30T12:04:01.7096528+09:00",
+    "archive_manifest":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\archive_manifest.json"
+}

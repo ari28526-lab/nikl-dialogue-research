@@ -52,7 +52,9 @@
 | run_common_pron_mfa_r2.ps1 | 동결 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary SHA를 먼저 검증하고 r2를 shard별 생성·재개. U+11B3 정확히 4건 외 미지원·spn·누락을 차단한다. FST no-path는 모델 후보와 별도로 기록된 연구자 승인 phone(동일 acoustic inventory)을 사용해 누락 키만 보수하고, 새 미승인 누락은 partial을 보존한 채 다음 shard 계산을 계속하되 final/연도별 MFA만 금지 |
 | build_common_pron_mfa_adoption.py | 연도별 MFA를 허용하는 유일한 adoption v3 contract 생성. r2 실물·동결 모델 pin·2020/2021 difference inventory뿐 아니라 연구자 workbook validation과 원장 적용 transaction, 27개 정규화 결정, no-path 24개 승인 snapshot/repair, ㄽ 4개 최종 phone, source/numeric correction 2개를 행·SHA 수준으로 끝까지 대조한다. no-path 구 repair v1/v2와 현재 review의 필드 배치 차이는 model candidate·approved phone 의미로 정규화한 뒤 비교하며, 최종 연구자 승인 v2가 application·correction SHA를 명시하지 않으면 거부 |
 | build_common_pron_researcher_approval.py | 이미 명시 승인된 27건 workbook·결정 적용 transaction·6개년 전면 재정렬 결정문·완료 difference inventory를 다시 검증해 researcher approval v2를 생성. 새 언어학 판단을 자동 생성하지 않고 기존 명시 결정의 SHA 연결만 기계 판독화 |
-| audit_mfa_cross_year_contracts.py | 2020–2025 여섯 alignment contract의 acoustic·최종 공통사전·Jamo G2P·런타임·manifest·adoption SHA가 동일함을 전수 감사해 논문 방법론의 동일 기준 증거 생성 |
+| validate_mfa_r2_adoption.py | 연도별 실행 직전에 adoption v3가 `passed/allow_yearly_mfa=true`인지 확인하고 공통사전·acoustic·Jamo G2P·model bundle 실물 SHA를 동결 계약과 다시 대조. inline G2P가 아닌 승인 공통사전 경로만 허용 |
+| build_mfa_year_phone_inventory.py | 연도별 보존 MFA DB의 실제 phone interval을 집계하고, 동결 acoustic 허용 inventory SHA와 `spn`·inventory 밖 phone을 hard gate로 기록. 코퍼스별 관측 phone 집합 차이는 기술 통계로 보존 |
+| audit_mfa_cross_year_contracts.py | 2020–2025 여섯 alignment contract의 acoustic·최종 공통사전·Jamo G2P·런타임·manifest·adoption SHA와 허용 phone inventory SHA가 동일함을 전수 감사해 논문 방법론의 동일 기준 증거 생성 |
 | show_common_pron_mfa_status.ps1 | 공통 MFA r2의 검증 shard·ㄽ 후보·모든 미검증 partial·no-path 승인/미등록 대기 shard·현재 출력·lock·D: 공간·final/adoption 상태를 읽기 전용으로 표시. 재개 ETA는 현재 lock 이후 새로 생성된 행만 사용 |
 | package_hf_korean_mfa_bundle.py | MFA 내장 downloader의 stale 성공을 우회해 공식 Hugging Face commit에서 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary를 phone inventory·LF symbol·SHA256 gate로 동결 |
 | build_jamo_nfkd_g2p_model.py | 구 Jamo v3.0 archive의 누락된 NFKD metadata만 파생 수정하는 진단 도구. 최신 v3.2.0은 공식적으로 `unicode_decomposition=true`이므로 새 생산 기준에는 사용하지 않음 |
@@ -94,7 +96,7 @@
 |---|---|---|
 | realign_eojeol_build_corpus.py | 검증된 pre-MFA search master의 `pron_reference_form`→어절 lab. 세션 coverage·build meta SHA256 입력계약, 기존 lab 내용 전수 대조, 불일치 원자 재작성, 미해결 숫자 추측 금지·발화별 부분 lab inventory | 숫자 `1` 원전사 회복·stale lab 재작성·미해결 inventory 회귀검사 통과 |
 | realign_eojeol_merge_output.py | MFA출력+기존 형태소경계 → 검증된 4-tier staging. 기본 출력은 `07_textgrid_eojeol_g2p_staging`, 기존 `06` 보존. 선택적 JSON report | 합성·21,962개 실자료 회귀검사 통과 |
-| export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate. 정렬 export 성공과 형태소 analysis-ready를 분리하고 원천 누락 전수 ID·개별 예외를 보고 | 21,962개 built-in 결과와 라벨·시간 전수 동일; 4 worker 73.983초. 2021 원천 누락 1,109건은 파일/DB 보존+analysis-ready 차단 정책 |
+| export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate. 정렬 export 성공과 형태소 analysis-ready를 분리하고 원천 누락 전수 ID·개별 예외를 보고. `spn`은 미사용 예약 pronunciation 행이 아니라 실제 phone interval만 센다 | 21,962개 built-in 결과와 라벨·시간 전수 동일; r2 2020 파일럿 10/10·실제 spn 0 |
 | compare_textgrid_tiers.py | 두 TextGrid 트리의 파일집합·tier명·라벨·모든 시간경계를 전수 비교 | 3,330개·21,962개 direct 동등성 검증 |
 | audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사. 세션 padding 제거 CSV dur↔WAV header 잔차 0.025초/98% 대응 gate, 전체 행의 극단적 전사량↔duration 물리 불일치 analysis gate, 예상 usable lab의 형태소 원천 존재, strict exit·발화 inventory 포함 | 신규 계산은 analysis profile, 동일 계약 temp 재개는 execution profile. 2021 형태소 원천 1,373,521건 감사: 누락 1,109건/61세션. duration·전체 전사량 전수는 G2P 뒤 대기 |
 | classify_mfa_input_issues.py | 형태소 원천 누락 inventory를 과거 PCM 근거와 동결 search CSV의 duration·한글 음절 수에 1:1 조인. PCM 결함과 물리적으로 불가능한 전사–segment 대응을 발화별 근거 CSV/요약 JSON으로 분리 | 2021 1,109/1,109 분류: PCM 짧음 1,091·PCM 없음 1·PCM 정상이나 47.0–119.3음절/s인 segment 불일치 17, 미분류 0 |
@@ -102,7 +104,7 @@
 | build_mfa_alignment_contract.py | lab 입력계약+acoustic/dictionary/G2P SHA256+MFA/Pynini/Python 판본으로 경로 독립 `alignment_contract_id` 생성 | 내용/경로/계약 변화 합성 회귀시험 통과; 2022 runner 배선 대기 |
 | audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, tier·0–xmax·gap/overlap·label·WAV duration을 hard gate로 검사. 분류 CSV SHA를 고정해 source unusable만 analysis 분모에서 제외하고 raw 통계는 보존 | 2020 866,196/866,196·99.5827%, 2021 1,371,868/1,371,868·99.9604%, invalid/hard failure 0 |
 | verify_mfa_db_4tier_sample.py | 정렬 성공 발화에서 서로 다른 세션의 결정적 표본을 골라 read-only DB에서 별도 scratch 4-tier를 다시 만들고 final과 tier·라벨·시간·SHA256 대조. stale scratch 차단 | 2021 정렬 성공 4,139세션 중 24세션, tier/byte exact 24/24; 합성 2시험 통과 |
-| preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 `direct_db_4tier` 연도의 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV를 같은 입력계약/수량으로 결합 검증. built-in 연도는 별도 QC 분기 | 2022 진입 실자료 20/20 통과; 계약 불일치·DB/direct 누락·손상 숫자·다른 ID 분류 fail-closed 회귀시험 |
+| preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 `direct_db_4tier` 연도의 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV뿐 아니라 DB 재수출 표본과 연구자 인프라 승인 보고서를 같은 DB·input/alignment contract로 결합 검증. built-in 연도는 별도 QC 분기 | 계약 불일치·DB/direct/표본/연구자 보고서 누락·다른 DB·미승인·손상 숫자·다른 ID 분류 fail-closed 회귀시험 |
 | patch_mfa_export_queue.py | MFA export queue 종료 경쟁을 blocking get+worker별 sentinel로 교정하고 설치 전 소스 archive | 3,330/21,965 실제 MFA 검증 |
 | patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
 | run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA·모델 정렬 계약, marker·archive·PreferD, descendant CPU/working-set/private/process/thread, 시스템 available/commit, alignment-log 및 phone·word interval CSV 증분 처리량 heartbeat. `-UseDirectDbExport`는 partial 4-tier를 검증 승격하고 DB를 QC 전 보존 | 2020 보수 경로 완료; 2021 live에는 옛 판본 유지, 다음 실행용 관측 합성·실자료 검사 통과 |
@@ -116,9 +118,15 @@
 | build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
 | run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
-| build_stratified_mfa_pilot.py | 연도별 실제 `speaker_id` 5명×2발화 선택, WAV+어절 lab과 바른/search master/화자 CSV를 독립 run 폴더에 원자 복사. v2는 세션별 CSV–WAV 길이 대응률과 일관된 padding을 검사해 발화 번호가 어긋난 음성 세션 제외 | v2 6개년 60발화 입력 구성·검증 완료 |
+| build_stratified_mfa_pilot.py | 연도별 실제 `speaker_id` 5명×2발화를 5개 세션에서 선택. 동결 `pron_reference_form` LAB과 `source_eojeol_index→mfa_word_index` 명시 대응표, 선택 세션 CSV의 파일별·aggregate SHA256을 함께 동결하고 WAV 길이 대응이 불량한 세션은 근거와 함께 제외 | r2 schema 3 파일럿 6개년 60발화 입력 구성·검증 완료 |
 | finalize_stratified_mfa_pilot.py | 파일럿 MFA 원출력에 기존 형태소 경계를 결합해 4-tier 생성, WAV–TextGrid 및 CSV–WAV 길이 잔차·tier·누락·`spn` 발화별 전수 QC | v2 2020 10/10 통과 |
 | run_stratified_mfa_pilot.ps1 | **연도별 10발화·실제 화자 5명 end-to-end 러너** — 입력 QC→G2P align→4-tier→요약, 단계 marker 재개·미완료 출력 보존, MFA exit 0의 부분 export 수량 차단, 정상 대응 난정렬은 기본 결과를 archive한 뒤 beam 100/400 1회 자동 재시도 | v1/v2 2023에서 9/10 차단, v2 자동 확대 beam 회수 후 6개년 60/60 완료 |
+| package_mfa_r2_pilot_review.py | 모든 연도 machine marker·DB 재수출 표본과 6개년 방법 감사를 독립 재검증한 뒤 60발화의 WAV/TextGrid/LAB/행별 CSV를 `연도__utt_id` 접두사로 Dropbox 단일 평면 폴더에 원자 구성. 복사 전후 SHA, 입력 계약과 상대경로 v2 manifest를 남기며 Dropbox rename 잠금은 제한 시간 backoff 재시도. 구체적 음운 실현 판정 열은 만들지 않음 | 6개년 payload 240개 생성·검증 완료 |
+| recover_mfa_r2_pilot_review_bundle.py | 복사·검증 완료 뒤 Dropbox directory rename만 잠긴 v1 partial을 payload·현재 원본·machine marker·DB 표본·6개년 감사 SHA로 전수 재검증. 목적지 절대경로를 상대경로 v2로 정규화하고 prior manifest SHA·복구 이유를 남긴 뒤에만 최종 이름으로 승격. 원본 삭제·변경 없음 | 2026-07-30 244파일 복구 성공 |
+| create_mfa_r2_review_workbook.py | `REVIEW.csv`를 생성 기준 정본으로 유지하면서 사용자가 쉽게 입력하도록 파일 하이퍼링크·결정 dropdown·안내 시트를 갖춘 `REVIEW.xlsx`를 openpyxl로 생성하고 재로딩 검증. CSV/XLSX SHA를 별도 template manifest에 기록 | r2 인프라 수용 파일럿용 |
+| audit_mfa_r2_pilot_review_delivery.py | 최종 Dropbox 평면 묶음 v2, payload·원본·기계 근거 SHA, REVIEW.csv/XLSX/template manifest, 60행·15열·240링크·dropdown·table을 전수 검사하고 연구자 판정 `pending`을 보존 | 최종 전달 246파일 감사 통과 |
+| validate_mfa_r2_review_workbook.py | 작성된 `REVIEW.xlsx`에서 여섯 검토 열만 허용하고 원본 CSV의 발화·화자·파일 연결 열을 전수 대조. 기계 gate가 결합된 bundle manifest와 같은 연도·계약인지 확인해 normalized decision CSV와 `approved/changes_required/incomplete/invalid` 연구자 보고서를 생성 | 다음 연도 진입 gate의 연구자 증거 |
+| run_mfa_r2_infrastructure_pilot.ps1 | **전수 MFA 전 6개년 r2 인프라 수용 러너** — adoption·모델·공통사전 실물 SHA 검증, 연도당 10발화·5화자·5세션, direct DB 4-tier, 독립 경계 감사, DB 재수출 동등성, 실제 `spn`·phone inventory, 6개년 방법 동일성 감사 뒤에만 Dropbox 평면 검토본·REVIEW.xlsx를 만들고 최종 전달 감사까지 실행 | 2026-07-30 연도 marker 6/6·교차 감사·전달 감사 통과 |
 
 절차·판정 규칙: `docs/decisions/RUNBOOK_MFA_eojeol_realign.md` (가속 결정 2026-07-17 절 참조).
 

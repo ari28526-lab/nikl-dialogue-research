@@ -40,7 +40,8 @@ MFA/G2P phone은 대략적인 자동 정렬 보조 정보이며 실제 실현 �
   `4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff`
 - `spn=0`, 관측 OOV missing=0, phone inventory 이탈=0
 - 27개 예외는 연구자가 권고 발음으로 승인했고 r2에 적용됨
-- 2020–2025 전부를 같은 r2·acoustic·G2P·adoption으로 다시 정렬함
+- 2020–2025 전부를 같은 r2·acoustic·G2P·adoption으로 다시 정렬할 계획이며,
+  전수 완료 전에는 완료 사실로 쓰지 않음
 - 2020/2021 difference inventory는 구결과 재사용 승인이 아니라 전환 감사
 
 ## 완료 상태
@@ -95,8 +96,22 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 ## 현재 실행 상태
 
 - r2 기준 2020–2025 전수 MFA: **아직 시작하지 않음**
-- 공통사전/G2P/MFA lock: 실행 전 다시 확인
-- 현재 단계: 입력·출력 연구 데이터 계약과 연도별 workflow의 외부 리뷰 준비
+- r2 인프라 수용 파일럿: **6개년 기계 검증 완료, 연구자 검토 대기**
+  - 범위: 2020–2025, 연도당 10발화·5화자·5세션
+  - D: 실행 루트:
+    `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730`
+  - 2020–2025: 연도별 machine marker 6/6 통과
+  - 모든 연도 실제 `spn=0`, 허용 inventory 밖 phone 0
+  - 6개년 방법 교차 감사: `passed`, 방법 불일치 0,
+    동일 phone 생성 기준·허용 inventory 참
+  - Dropbox 검토본:
+    `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730`
+  - 평면 파일 246개, 60발화, payload 240개,
+    `REVIEW.xlsx` 링크 240/240 검증
+  - 연구자 인프라 검토: `pending`
+- 외부 workflow 리뷰 판정: `GO AFTER FIXES`
+- 현재 단계: 6개년 소규모 인프라 파일럿의 기계 검증·전달 감사 완료,
+  연구자 인프라 검토 대기
 
 상세 정본:
 
@@ -115,14 +130,16 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. 현재 브랜치와 연구 workflow 문서를 GitHub에 커밋·푸시한다.
-2. 외부 도구에 GitHub URL과 지정 프롬프트를 제공한다.
-3. 외부 리뷰의 P0/P1 및 방법 계약 지적을 반영한다.
-4. 리뷰 판정이 `GO` 또는 수정 후 `GO`일 때 2020 r2 전수 MFA를 시작한다.
-5. 2020 독립 QC·병목 검토 뒤 2021–2025를 한 연도씩 진행한다.
-6. 마지막에 6개년 alignment contract와 phone inventory 동일성을 감사한다.
+1. 연구자가 Dropbox의 `REVIEW.xlsx`에서
+   WAV/TextGrid/LAB/CSV 연결과 tier 사용성을 검토해
+   `인프라 통과` 여부를 결정한다.
+2. 작성 workbook을 `validate_mfa_r2_review_workbook.py`로 회수해
+   기계가독 승인/수정필요 보고서를 만든다.
+3. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
+   넘어간다.
 
-외부 리뷰 전에는 대량 MFA를 시작하지 않는다.
+전수 MFA는 아직 시작하지 않는다. 전수 이전의 60발화 인프라 수용
+파일럿은 기계 검증을 마쳤고 현재 연구자 인프라 검토를 기다린다.
 
 ## 2020 실행 인터페이스의 안전장치
 

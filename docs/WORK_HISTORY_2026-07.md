@@ -1781,3 +1781,138 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 읽기 전용 상태판:
   `Phase=yearly_mfa_approved`, shard 35/35, difference 866,196/866,196,
   lock 없음, final/adoption 통과, `allow_yearly_mfa=true`
+
+## 2026-07-30 — 외부 workflow 리뷰 반영과 6개년 r2 인프라 수용 파일럿
+
+### 연구 단계의 범위를 다시 고정
+
+- 사용자가 실제 연구에서 수행할 순서는 형태소·표기 환경 검색 → 대응
+  WAV/TextGrid 수집 → KOINA 등 운율 정보 결합 → 연구자의 음성·TextGrid
+  직접 판정이다.
+- 이번 파일럿은 ㄴ 삽입 등 구체적 음운 실현을 판정하지 않는다. CSV–WAV–
+  TextGrid 연결, 같은 공통사전·음향모델, 4-tier 구조·경계, DB 재수출,
+  phone inventory, 검토 편의성을 확인하는 인프라 수용 단계다.
+- `phones`는 MFA 정렬·탐색 보조이며 실제 실현 판정값이 아니다.
+
+### 외부 리뷰 조치와 legacy 전환
+
+- 커밋 `3839872` 대상 외부 리뷰의 `GO AFTER FIXES` 판정을 원문으로
+  보존하고, finding별 구현·실물·시험 상태를
+  `RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md`에
+  분리 기록했다.
+- r2 marker를 거부하던 두 preflight의 발음 모드 계약을 고치고 legacy
+  정상·r2 정상·미지값 거부 회귀시험을 추가했다.
+- 구 2020/2021 align/merge marker 4개는 삭제하지 않고
+  `D:\mfa_eojeol\done\archive_stale\r2_transition_20260730_legacy_markers`
+  로 보존 격리했다. 유효한 LAB 입력 marker는 유지했고, JSON 보고서를
+  `outputs/reports/ARCHIVE_legacy_mfa_markers_for_r2_20260730.json`에 남겼다.
+- LAB 입력은 `pron_reference_form`으로 고정하고, 숫자·기호·외국어 전용
+  어절 탈락을 숨기지 않도록
+  `source_eojeol_index → mfa_word_index|null` 대응표를 manifest에 넣었다.
+- 선택된 30개 세션 CSV는 파일별 SHA와 aggregate SHA
+  `c9de8400588339dc1962d9f6a3758220ff23b9501572f4d75f71723baa3be655`
+  로 동결했다.
+
+### 파일럿 구성과 안전 중단
+
+- D: 격리 실행 루트:
+  `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730`
+- 표본: 2020–2025 연도당 10발화, 실제 5화자·서로 다른 5세션,
+  화자당 2발화.
+- 최종 검토본은 모든 기계 gate 뒤에만
+  `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730` 한 폴더의
+  `연도__utt_id` 평면 파일로 만들도록 했다.
+- 초기 시행착오 네 건은 모두 원시자료·기존 정본·Dropbox를 변경하기 전에
+  안전 중단됐다.
+  1. 숨은 PowerShell CP949에서 IPA 출력 실패
+  2. 러너의 `state/logs/temp`를 부분 표본으로 오인
+  3. PowerShell 5.1이 MFA 정상 stderr INFO를 오류로 승격
+  4. MFA 내부의 미사용 예약 `<unk> → spn` pronunciation 행을 실제
+     정렬 `spn` interval로 오인
+- 네 번째 문제는 DB를 읽기 전용으로 확인해 실제 `spn` phone interval이
+  0임을 증명했다. gate를 실제 `phone_interval JOIN phone` 기준으로
+  고치고, 완료된 2020 DB를 버리지 않은 채 후속 export·감사만 다시
+  실행했다.
+
+### 현재 연도별 실측
+
+- 2020: 정렬 10/10, direct DB 4-tier 10/10, 구조 감사 invalid 0,
+  형태소 tier 누락 0, 실제 `spn=0`, inventory 이탈 0,
+  DB 재수출 5세션 tier/byte exact 5/5.
+- 2021: 기계 QC 통과. 허용 phone 109, 관측 phone 46,
+  inventory 이탈 0, 실제 `spn=0`.
+- 2022: 13:26:13 KST 기계 QC 통과.
+- 2023: 13:42:57 KST 기계 QC 통과.
+- 2024: 14:00:27 KST 기계 QC 통과.
+- 2025: 14:00:27 KST에 같은 계약으로 시작했고 14:17:04 KST에
+  기계 QC를 통과.
+- PowerShell 통합 stdout에서 IPA가 깨져 보였지만 2021 JSON 원본은 정상
+  UTF-8이었다. 후속 실행용 러너의 console/native pipeline 인코딩을
+  UTF-8로 고정했다.
+
+### 연구자 검토와 다음 연도 gate 보강
+
+- Dropbox 패키저는 단독 실행에서도 연도별 machine marker, 5세션 DB
+  재수출 표본, 6개년 방법 감사를 다시 검사한다. 복사 전후 SHA를 비교하고
+  기존·부분 폴더는 덮어쓰지 않는다.
+- `REVIEW.xlsx`는 openpyxl 우회로 만들되 CSV/XLSX SHA와 구조를 별도
+  template manifest에 기록한다.
+- 작성 XLSX는 새 validator가 검토 열 여섯 개만 허용하고 발화·화자·파일
+  연결 열을 원본 CSV와 전수 대조한다. 승인·수정 필요·미완·불일치를
+  기계가독 보고서로 구분한다.
+- 다음 연도 preflight는 DB 재수출 표본과 연구자 승인 보고서를 필수
+  입력으로 받아 같은 DB·input/alignment contract일 때만 통과하도록
+  보완했다. 보고서 부재·다른 DB·미승인 회귀시험을 추가했다.
+
+### 중간 검증
+
+- 신규·변경 핵심 Python 회귀시험 36개 통과
+- PowerShell 안전검사 16개 파일 통과
+- 전체 unittest와 최종 변경 감사는 6개년 파일럿 종료 뒤 다시 수행한다.
+
+### 6개년 기계 완료와 방법 동일성 감사
+
+- 2025가 2026-07-30 14:17:04 KST에 기계 QC를 통과해
+  `state\2020.machine_done.json`부터 `2025.machine_done.json`까지
+  6/6 marker가 생성됐다.
+- 여섯 연도 모두 연도당 TextGrid 10/10, 실제 `spn` phone interval 0,
+  허용 inventory 밖 phone 0을 확인했다.
+- `logs\cross_year_method_audit.json`은 `status=passed`,
+  기대/관측 연도 6/6, 방법 계약 불일치 0, 같은 phone 생성 기준과
+  허용 inventory 참을 기록했다.
+- 관측 phone 집합은 표본 어휘에 따라 달라도 되며, 동일 모델·공통사전·
+  input/tier 계약과 같은 허용 inventory의 부분집합이라는 방법론 기준을
+  적용했다.
+
+### Dropbox 마지막 rename 실패와 검증 복구
+
+- 모든 payload 복사와 manifest 생성 뒤, Dropbox가 partial 디렉터리 handle을
+  잠가 마지막 `os.replace`만 `WinError 32`로 실패했다. 장기 runner는
+  정렬과 교차 감사를 이미 끝냈고, D: 결과·원시 corpus·공통사전 손상은
+  없었다.
+- partial에는 244개 파일이 완성돼 있었다. WAV/TextGrid/LAB/행별 CSV 각
+  60개와 지원 파일 3개를 전수 재해시해 목적지·현재 원본·machine marker·
+  DB 재수출 표본·6개년 감사 불일치 0을 확인했다.
+- v1 manifest가 partial 절대경로를 기록해 정상 rename 뒤 낡는 설계 결함을
+  함께 발견했다. 패키저를 상대경로 schema v2와 제한 시간 rename 재시도로
+  교정하고, 전용 복구기는 prior manifest SHA와 복구 이유를 보존하도록
+  했다.
+- 14:27:50 KST에
+  `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730`으로 안전 승격했다.
+  보고서:
+  `outputs/reports/RECOVER_mfa_r2_pilot_bundle_20260730.json`.
+
+### 연구자 검토표와 최종 전달 감사
+
+- openpyxl로 `REVIEW.xlsx`를 만들고 같은 Dropbox 평면 폴더에 두었다.
+- 최종 파일 246개, 60발화·15열·2시트·240 상대 파일 링크·2 dropdown·
+  검토 table을 다시 열어 검증했다.
+- `AUDIT_mfa_r2_pilot_review_delivery_20260730.json`은
+  `status=passed`, 연구자 검토 `pending`, 실제 음운 실현 판정
+  `false`를 기록한다.
+- 기계 인프라 파일럿은 통과했지만 전수 MFA는 아직 시작하지 않는다.
+  사용자가 연결·tier·경계·CSV 검색 편의성을 검토하고 기계가독
+  `approved` 보고서를 만든 뒤에만 2020 r2 전수 실행으로 전환한다.
+- 최종 코드 검증은 Python unittest 222개와 PowerShell 안전검사 16개
+  파일을 모두 통과했고, 핵심 스크립트 compile과 `git diff --check`도
+  통과했다.

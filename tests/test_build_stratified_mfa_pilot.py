@@ -1,4 +1,6 @@
 import csv
+import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -11,7 +13,9 @@ sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from build_stratified_mfa_pilot import (  # noqa: E402
     audit_session_durations,
+    freeze_selected_search_sessions,
     select_year,
+    validate_frozen_search_sessions,
 )
 
 
@@ -55,6 +59,67 @@ def make_session(
 
 
 class StratifiedPilotSelectionTests(unittest.TestCase):
+    def test_frozen_search_session_reuse_rehashes_actual_csv(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp)
+            selected = [
+                {"utt_id": "S1.1", "session_id": "S1"},
+                {"utt_id": "S1.2", "session_id": "S1"},
+            ]
+            rows = [
+                {"utt_id": "S1.1", "pron_reference_form": "한 발화"},
+                {"utt_id": "S1.2", "pron_reference_form": "두 발화"},
+            ]
+            frozen = freeze_selected_search_sessions(
+                run_root=run_root,
+                year="2020",
+                fields=["utt_id", "pron_reference_form"],
+                selected=selected,
+                rows=rows,
+            )
+            canonical = json.dumps(
+                frozen,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            payload = {
+                "schema_version": (
+                    "pilot_search_master_session_hashes.v1"
+                ),
+                "status": "success",
+                "token_map_version": (
+                    "source_eojeol_to_mfa_word.v1"
+                ),
+                "files": frozen,
+                "file_count": 1,
+                "row_count": 2,
+                "aggregate_sha256": hashlib.sha256(
+                    canonical.encode("utf-8")
+                ).hexdigest(),
+            }
+            hashes = (
+                run_root / "search_master" / "_session_hashes.json"
+            )
+            hashes.write_text(
+                json.dumps(payload, ensure_ascii=False),
+                encoding="utf-8",
+            )
+            metadata = {"frozen_search_sessions": frozen}
+            self.assertTrue(
+                validate_frozen_search_sessions(run_root, metadata)
+            )
+
+            session_csv = run_root / frozen[0]["relative_path"]
+            session_csv.write_text(
+                session_csv.read_text(encoding="utf-8-sig")
+                + "S1.3,변조\n",
+                encoding="utf-8-sig",
+            )
+            self.assertFalse(
+                validate_frozen_search_sessions(run_root, metadata)
+            )
+
     def test_duration_audit_accepts_consistent_padding(self):
         with tempfile.TemporaryDirectory() as tmp:
             wav_year = Path(tmp)

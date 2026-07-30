@@ -124,6 +124,7 @@ class VerifyMfaDb4TierSampleTests(unittest.TestCase):
                     report_path=root / "report.json",
                     sample_csv_path=root / "sample.csv",
                     sample_size=2,
+                    input_contract_id="contract-2021",
                 )
             self.assertEqual(exported["status"], "success")
             self.assertEqual(report["status"], "success")
@@ -135,6 +136,9 @@ class VerifyMfaDb4TierSampleTests(unittest.TestCase):
             )
             self.assertEqual(
                 report["comparison_counts"]["byte_equal"], 2
+            )
+            self.assertEqual(
+                report["input_contract_id"], "contract-2021"
             )
 
     def test_refuses_stale_scratch_textgrid(self):

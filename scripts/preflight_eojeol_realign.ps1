@@ -9,6 +9,8 @@ param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string]$Year,
     [string]$SearchMasterRoot = "",
+    [ValidateSet('korean_mfa','common_pron_mfa_r2_latest_jamo')]
+    [string]$ExpectedPronunciationMode = 'korean_mfa',
     [switch]$PreferD
 )
 
@@ -63,6 +65,7 @@ Out-Line "== preflight_eojeol_realign $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') 
 Out-Line "대상 연도: $($years -join ', ')"
 Out-Line "G2P 4-tier staging: $g2pStage"
 Out-Line "pre-MFA search master: $searchMasterRoot"
+Out-Line "expected pronunciation mode: $ExpectedPronunciationMode"
 Out-Line ("작업 드라이브 정책: " + $(if ($PreferD) {
     "PreferD — 신규 MFA temp/output은 D:"
 } else {
@@ -250,7 +253,8 @@ foreach ($y in $years) {
                 $markerOK = (
                     $markerData.year -eq $y -and
                     $markerData.stage -eq $markerStage -and
-                    $markerData.g2p_model -eq 'korean_mfa' -and
+                    $markerData.g2p_model -eq
+                        $ExpectedPronunciationMode -and
                     -not [string]::IsNullOrWhiteSpace(
                         [string]$markerData.details.input_contract_id
                     ) -and
@@ -299,7 +303,7 @@ foreach ($y in $years) {
         }
     }
     if ($a -and $m) { OK "$y 마커 파일 존재(위 내용 검증도 통과해야 완료) — $st" }
-    elseif ($tC -and $tD) { WARN "$y temp가 C·D 양쪽에 있음 — 러너는 C:를 우선. 오래된 쪽 수동 확인 필요. $st" }
+    elseif ($tC -and $tD) { WARN "$y temp가 C·D 양쪽에 있음 — 러너는 D:를 우선. 오래된 쪽 수동 확인 필요. $st" }
     elseif (
         $a -and -not $m -and
         $alignExportMode -eq 'direct_db_4tier' -and

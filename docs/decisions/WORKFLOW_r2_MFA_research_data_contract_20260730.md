@@ -238,10 +238,32 @@ stitched time 대응 manifest를 만든다. wav2vec2 phone도 선택 후보의 �
 7. 최소 5명 이상 화자와 문제 유형을 포함한 연구자 표본 검토
 8. 처리 시간, words/sec, 세션별 outlier와 D: 공간
 
-6개년 완료 뒤에는 `audit_mfa_cross_year_contracts.py`로 phone inventory와
-모든 방법 계약 SHA가 동일한지 전수 감사한다. 논문에는 “같은 기준”이라는
-추상적 표현만 쓰지 않고, 모델 버전·설정·사전 SHA·adoption SHA·alignment
-contract를 함께 기록한다.
+QC 실행 순서와 기계가독 증거는 다음으로 고정한다.
+
+1. `audit_mfa_4tier_year.py`: 연도 전수 coverage·tier·경계·duration
+2. `verify_mfa_db_4tier_sample.py`: 서로 다른 세션 최소 5개의 보존 DB
+   재수출 동등성. `--input-contract-id`를 반드시 기록한다.
+3. `build_mfa_year_phone_inventory.py`: 실제 phone interval 전수 집계,
+   `spn=0`, acoustic 허용 inventory 밖 phone 0
+4. 연구자 표본 검토: 최소 5화자의 WAV/TextGrid/LAB/CSV 연결, tier 경계,
+   검색 편의성만 판정한다. 구체적인 음운 실현은 이 단계의 판정값이 아니다.
+5. `validate_mfa_r2_review_workbook.py`: 원본 `REVIEW.csv`의 불변 연결 열과
+   작성된 XLSX를 전수 대조하고 승인 보고서를 만든다.
+6. `preflight_next_year_after_qc.py`: 위 감사·marker·보존 DB뿐 아니라
+   `--sample-equivalence-report`와 `--researcher-review-report`를 필수로
+   받아 동일 DB·input contract·alignment contract와 결합한다.
+
+따라서 콘솔 성공이나 연구자 구두 확인만으로 다음 연도로 넘어가지 않는다.
+연구자 보고서가 `status=approved`, `allow_bulk_mfa=true`이고 표본 보고서가
+같은 DB와 input contract를 가리킬 때만 전환 gate가 열린다.
+
+6개년 완료 뒤에는 `audit_mfa_cross_year_contracts.py`로 모든 방법 계약과
+허용 phone inventory SHA가 동일한지 전수 감사한다. 연도별 관측 phone
+집합은 실제 어휘가 달라 서로 다를 수 있으므로 동일성을 강제하지 않는다.
+대신 모든 관측 phone이 동일 허용 inventory의 부분집합이고 각 연도의 실제
+`spn` interval이 0인지 증명한다. 논문에는 “같은 기준”이라는 추상적
+표현만 쓰지 않고, 모델 버전·설정·사전 SHA·adoption SHA·alignment contract,
+허용 inventory SHA를 함께 기록한다.
 
 ## 9. 실패·복구·저장장치 정책
 

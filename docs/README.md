@@ -25,6 +25,9 @@
 | [decisions/METHODS_bareun_dialogue_reanalysis.md](decisions/METHODS_bareun_dialogue_reanalysis.md) | 형태소 재분석·의미부여·빈도 **방법론(정본)** |
 | [decisions/STANDARD_textgrid_tiers.md](decisions/STANDARD_textgrid_tiers.md) | TextGrid tier 표준 v2 |
 | [decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md](decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md) | **현재 r2 전수 MFA 연구 데이터 계약** — 입력·발음 의미·4-tier·QC·검색 CSV·후보/KOINA/판정의 전 과정 |
+| [decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md](decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md) | **6개년 r2 인프라 수용 파일럿 정본** — 연도당 10발화·5화자, 동일 모델/사전, direct DB 4-tier, 경계·phone·DB 재수출 gate와 Dropbox 평면 검토본 |
+| [../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md](../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md) | **6개년 r2 인프라 파일럿 결과** — 6/6 연도 기계 QC·방법 감사 통과, Dropbox 60발화/240 payload/REVIEW.xlsx 전달 감사, 연구자 검토 대기 |
+| [../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json](../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json) | Dropbox 평면 묶음 v2·원본 SHA·60행·240링크·dropdown 최종 기계 감사 |
 | [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |
 | [decisions/000_project_folder_structure.md](decisions/000_project_folder_structure.md) | 폴더 구조 결정 |
 | [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
@@ -59,6 +62,8 @@
 |---|---|
 | [reviews/HANDOFF_external_review_CSV_MFA_20260727.md](reviews/HANDOFF_external_review_CSV_MFA_20260727.md) | 다른 도구에 GitHub 주소와 함께 전달할 전체 CSV·MFA 코드리뷰 범위·제약·피드백 양식 |
 | [reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md](reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md) | r2 전수 MFA 시작 전 입력·출력·조인·실패복구·방법론 중심 외부 리뷰 프롬프트 |
+| [reviews/incoming/EXTERNAL_REVIEW_r2_MFA_research_workflow_3839872_20260730.md](reviews/incoming/EXTERNAL_REVIEW_r2_MFA_research_workflow_3839872_20260730.md) | 커밋 `3839872` 대상 r2 연구 자료 흐름 외부 리뷰 원문과 `GO AFTER FIXES` 판정 |
+| [reviews/RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md](reviews/RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md) | r2 외부 finding별 구현·실물·시험 증거와 전수 시작 전 남은 gate를 구분한 조치 기록 |
 | [reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md](reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md) | 커밋 `ce421db` 대상 외부 리뷰 수신 원문 336행(줄바꿈 정규화 SHA256 기록) |
 | [reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md](reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md) | 외부 finding별 독립 재검증·수용/수정/보류 판정과 2021/2022 적용 순서 |
 

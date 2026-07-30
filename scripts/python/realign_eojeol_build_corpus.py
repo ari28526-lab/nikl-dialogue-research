@@ -44,7 +44,8 @@ YEAR_DIRS = {
     "2024": "NIKL_DIALOGUE_2024_v1.0", "2025": "NIKL_DIALOGUE_2025_v1.0",
 }
 HANGUL = re.compile(r"[가-힣]+")
-LAB_INPUT_VERSION = "eojeol_v3_pron_reference_form"
+LAB_INPUT_VERSION = "eojeol_v4_pron_reference_form_with_token_map"
+TOKEN_MAP_VERSION = "source_eojeol_to_mfa_word.v1"
 MISSING = {"", "미상", "NA", "N/A"}
 UNRESOLVED_INVENTORY_FIELDS = [
     "year",
@@ -61,14 +62,40 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
+def form_to_lab_mapping(form: str) -> list[dict[str, object]]:
+    """원문 어절과 MFA word 위치의 명시적 대응표를 만든다.
+
+    숫자·기호·외국어만 있는 원문 어절은 삭제 사실을 숨기지 않고
+    ``mfa_word_index=None``으로 남긴다. 이후 CSV와 TextGrid를 연결할 때
+    원문 어절 번호를 MFA word 번호로 잘못 간주하지 않기 위한 계약이다.
+    """
+
+    mapping: list[dict[str, object]] = []
+    mfa_word_index = 0
+    for source_index, source_token in enumerate((form or "").split()):
+        lab_token = "".join(HANGUL.findall(source_token))
+        row: dict[str, object] = {
+            "source_eojeol_index": source_index,
+            "source_token": source_token,
+            "lab_token": lab_token,
+            "mfa_word_index": None,
+            "included_in_mfa": bool(lab_token),
+        }
+        if lab_token:
+            row["mfa_word_index"] = mfa_word_index
+            mfa_word_index += 1
+        mapping.append(row)
+    return mapping
+
+
 def form_to_lab(form: str) -> str:
-    """표층 form -> 어절 lab. 어절별 한글만 유지(문장부호/숫자/외국어 제외)."""
-    toks = []
-    for w in (form or "").split():
-        h = "".join(HANGUL.findall(w))
-        if h:
-            toks.append(h)
-    return " ".join(toks)
+    """표층 form -> 어절 lab. 대응관계는 :func:`form_to_lab_mapping`에 보존."""
+
+    return " ".join(
+        str(row["lab_token"])
+        for row in form_to_lab_mapping(form)
+        if row["included_in_mfa"]
+    )
 
 
 def load_entries(d: Path) -> dict[str, int]:
@@ -118,6 +145,11 @@ def input_contract(search_master_root: Path, year: str) -> dict[str, str]:
         "search_master_meta_sha256": sha256_file(meta_path),
         "source_field": "pron_reference_form",
         "unresolved_policy": "do_not_guess; keep Hangul only",
+        "token_map_version": TOKEN_MAP_VERSION,
+        "token_map_policy": (
+            "retain every source eojeol; excluded non-Hangul token gets "
+            "mfa_word_index=null"
+        ),
         "search_sessions": str(actual_sessions),
         "source_sessions": str(expected_sessions),
     }
@@ -275,7 +307,7 @@ def archive_stale_lab(
 
 def build_year(
     year: str,
-    search_master_root: Path = SEARCH_MASTER,
+    search_master_root: Path,
     *,
     force_verify: bool = False,
     progress_jsonl: Path | None = None,
@@ -582,7 +614,7 @@ def main() -> int:
     ap.add_argument(
         "--search-master-root",
         type=Path,
-        default=SEARCH_MASTER,
+        required=True,
         help="검증 통과한 pre-MFA search master staging",
     )
     ap.add_argument(

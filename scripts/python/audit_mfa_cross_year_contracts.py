@@ -16,6 +16,7 @@ from pipeline_common import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_VERSION = "mfa_cross_year_method_consistency.v1"
+PHONE_SCHEMA_VERSION = "mfa_year_phone_inventory.v1"
 YEARS = ("2020", "2021", "2022", "2023", "2024", "2025")
 
 
@@ -57,8 +58,10 @@ def _method_key(contract: dict) -> dict:
 def audit_cross_year_contracts(
     *,
     contracts_directory: Path,
+    phone_inventory_directory: Path,
 ) -> dict:
     contracts_directory = contracts_directory.resolve()
+    phone_inventory_directory = phone_inventory_directory.resolve()
     contracts: dict[str, dict] = {}
     records: dict[str, dict] = {}
     for year in YEARS:
@@ -95,6 +98,55 @@ def audit_cross_year_contracts(
             raise RuntimeError(f"공통 {role} 실물 fingerprint 불일치")
         verified_model_files[role] = actual
 
+    phone_reports: dict[str, dict] = {}
+    phone_records: dict[str, dict] = {}
+    for year in YEARS:
+        path = phone_inventory_directory / f"{year}.json"
+        if not path.is_file():
+            raise RuntimeError(f"연도별 phone report 누락: {path}")
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        if (
+            payload.get("schema_version") != PHONE_SCHEMA_VERSION
+            or payload.get("status") != "success"
+            or str(payload.get("year")) != year
+            or payload.get("alignment_contract_id")
+            != contracts[year].get("alignment_contract_id")
+            or payload.get("outside_allowed_inventory") != []
+            or payload.get("spn_intervals") != 0
+        ):
+            raise RuntimeError(f"{year} phone report gate failed: {path}")
+        phone_reports[year] = payload
+        phone_records[year] = file_fingerprint(
+            path, with_sha256=True
+        )
+
+    allowed_contract = phone_reports[YEARS[0]][
+        "allowed_phone_inventory"
+    ]
+    allowed_mismatches = [
+        year
+        for year in YEARS[1:]
+        if phone_reports[year]["allowed_phone_inventory"]
+        != allowed_contract
+    ]
+    if allowed_mismatches:
+        raise RuntimeError(
+            "연도 간 허용 phone inventory 계약 불일치: "
+            + ", ".join(allowed_mismatches)
+        )
+    observed_sets = {
+        year: set(
+            phone_reports[year][
+                "observed_phone_inventory"
+            ]["phones"]
+        )
+        for year in YEARS
+    }
+    observed_union = set().union(*observed_sets.values())
+    observed_intersection = set.intersection(
+        *observed_sets.values()
+    )
+
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "passed",
@@ -108,12 +160,29 @@ def audit_cross_year_contracts(
         ),
         "common_method_contract": reference,
         "alignment_contracts": records,
+        "phone_inventory_reports": phone_records,
         "verified_model_files": verified_model_files,
+        "allowed_phone_inventory": allowed_contract,
+        "observed_phone_summary": {
+            "interpretation": (
+                "Observed sets may differ by corpus year and are not a "
+                "method-consistency failure."
+            ),
+            "union": sorted(observed_union),
+            "intersection": sorted(observed_intersection),
+            "by_year": {
+                year: sorted(values)
+                for year, values in observed_sets.items()
+            },
+        },
         "gate": {
             "years_expected": len(YEARS),
             "years_observed": len(contracts),
             "cross_year_method_mismatches": 0,
             "same_phone_generation_standard": True,
+            "same_allowed_phone_inventory": True,
+            "observed_phones_outside_allowed": 0,
+            "observed_phone_sets_required_identical": False,
         },
         "runtime": runtime_snapshot(PROJECT_ROOT),
     }
@@ -124,10 +193,14 @@ def main() -> int:
     parser.add_argument(
         "--contracts-directory", type=Path, required=True
     )
+    parser.add_argument(
+        "--phone-inventory-directory", type=Path, required=True
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     report = audit_cross_year_contracts(
-        contracts_directory=args.contracts_directory
+        contracts_directory=args.contracts_directory,
+        phone_inventory_directory=args.phone_inventory_directory,
     )
     atomic_write_json(args.output, report)
     print(

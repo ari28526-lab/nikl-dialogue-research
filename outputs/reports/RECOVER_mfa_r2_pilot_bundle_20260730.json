@@ -1,0 +1,116 @@
+{
+  "schema_version": "mfa_r2_review_bundle_recovery.v1",
+  "status": "success",
+  "recovered_at": "2026-07-30T14:27:50+09:00",
+  "reason": "Dropbox directory rename lock after complete package",
+  "partial_root": "C:\\Users\\ari30\\Dropbox\\.MFA_R2_INFRA_PILOT_20260730.21608.partial",
+  "output_root": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730",
+  "prior_manifest": {
+    "path": "C:\\Users\\ari30\\Dropbox\\.MFA_R2_INFRA_PILOT_20260730.21608.partial\\BUNDLE_MANIFEST.json",
+    "bytes": 139030,
+    "mtime_ns": 1785388628910136400,
+    "sha256": "0222d9dec0c221455f4d05959cae661340e84733c7b5b876862c1abf63d20e8d"
+  },
+  "verification_before_rewrite": {
+    "schema_version": "mfa_r2_flat_review_bundle.v1",
+    "files": 244,
+    "payload_files": 240,
+    "support_files": 3,
+    "utterances": 60,
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "role_counts": {
+      "TextGrid": 60,
+      "lab": 60,
+      "selected_search_row_csv": 60,
+      "wav": 60
+    }
+  },
+  "verification_after_rewrite": {
+    "schema_version": "mfa_r2_flat_review_bundle.v2",
+    "files": 244,
+    "payload_files": 240,
+    "support_files": 3,
+    "utterances": 60,
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "role_counts": {
+      "TextGrid": 60,
+      "lab": 60,
+      "selected_search_row_csv": 60,
+      "wav": 60
+    }
+  },
+  "verification_after_promotion": {
+    "schema_version": "mfa_r2_flat_review_bundle.v2",
+    "files": 244,
+    "payload_files": 240,
+    "support_files": 3,
+    "utterances": 60,
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "role_counts": {
+      "TextGrid": 60,
+      "lab": 60,
+      "selected_search_row_csv": 60,
+      "wav": 60
+    }
+  },
+  "final_bundle_manifest": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730\\BUNDLE_MANIFEST.json",
+    "bytes": 124892,
+    "mtime_ns": 1785389268460041600,
+    "sha256": "2d2530ab6de65c2fdcfd7a06e8b91024d91f65d4436a0eb6d409808d70a63441"
+  },
+  "source_or_d_results_modified": false,
+  "final_bundle_recovery": {
+    "recovered_at": "2026-07-30T14:27:48+09:00",
+    "reason": "Dropbox directory rename lock after complete package",
+    "prior_manifest": {
+      "path": "C:\\Users\\ari30\\Dropbox\\.MFA_R2_INFRA_PILOT_20260730.21608.partial\\BUNDLE_MANIFEST.json",
+      "bytes": 139030,
+      "mtime_ns": 1785388628910136400,
+      "sha256": "0222d9dec0c221455f4d05959cae661340e84733c7b5b876862c1abf63d20e8d"
+    },
+    "verification_before_rewrite": {
+      "schema_version": "mfa_r2_flat_review_bundle.v1",
+      "files": 244,
+      "payload_files": 240,
+      "support_files": 3,
+      "utterances": 60,
+      "years": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "role_counts": {
+        "TextGrid": 60,
+        "lab": 60,
+        "selected_search_row_csv": 60,
+        "wav": 60
+      }
+    },
+    "destination_paths_normalized_to_relative": true
+  }
+}

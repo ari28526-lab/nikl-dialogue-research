@@ -15,6 +15,8 @@ $files = @(
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1'),
+    (Join-Path $root 'scripts\archive_legacy_mfa_markers_for_r2.ps1'),
+    (Join-Path $root 'scripts\run_mfa_r2_infrastructure_pilot.ps1'),
     (Join-Path $root (
         'scripts\prune_pre_jamo_outputs_after_compressed_archive.ps1'
     ))
@@ -144,6 +146,8 @@ foreach ($path in $files) {
             'verify_frozen_mfa_bundle.py',
             'korean_mfa_latest_jamo_bundle_20260728.json',
             '$useInlineG2p = $false',
+            "'-ExpectedPronunciationMode', `$pronunciationMode",
+            'tier_provenance = [ordered]@{',
             'pause_after_year_',
             'exit 75',
             'exit 1'
@@ -168,11 +172,47 @@ foreach ($path in $files) {
             '[string]$Year',
             'textgrid_eojeol_staging',
             '[switch]$PreferD',
-            'PreferD: D:'
+            'PreferD: D:',
+            '[string]$ExpectedPronunciationMode',
+            '$ExpectedPronunciationMode',
+            '러너는 D:를 우선'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA preflight 연도/staging 가드 누락: $required")
             }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'run_mfa_r2_infrastructure_pilot.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'common_pron_mfa_r2_latest_jamo',
+            'validate_mfa_r2_adoption.py',
+            'MFA_PROJECT_SKIP_TEXTGRID_EXPORT',
+            'export_mfa_db_4tier.py',
+            'audit_mfa_4tier_year.py',
+            'verify_mfa_db_4tier_sample.py',
+            'build_mfa_year_phone_inventory.py',
+            'audit_mfa_cross_year_contracts.py',
+            'package_mfa_r2_pilot_review.py',
+            'pron_reference_form',
+            'inline_g2p_used = $false',
+            "researcher_review_status = 'pending'",
+            'realization_judgment_performed = $false',
+            'ReviewRoot must be one direct child folder of Dropbox',
+            'Review folder already exists; no overwrite',
+            'D: volume label must be DATA_SSD'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("MFA r2 pilot safety token missing: $required")
+            }
+        }
+        if ($text.Contains("'--g2p_model_path'")) {
+            $failures.Add(
+                'MFA r2 pilot must not use inline --g2p_model_path'
+            )
         }
     }
     if ((Split-Path $path -Leaf) -eq 'run_pre_mfa_bulk_safe.ps1') {
@@ -468,6 +508,35 @@ foreach ($path in $files) {
         }
         if ($text -match '(?im)^\s*Remove-Item\b') {
             $failures.Add('압축 외장 archive에 삭제 명령이 포함됨')
+        }
+    }
+
+    if (
+        (Split-Path $path -Leaf) -eq
+        'archive_legacy_mfa_markers_for_r2.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$Apply',
+            'ARCHIVE_LEGACY_MFA_MARKERS_R2_20260730',
+            'r2_transition_20260730_legacy_markers',
+            "align_merge_only = `$true",
+            "lab_input_markers_moved = `$false",
+            "action = 'retain_in_place'",
+            "Move-Item -LiteralPath",
+            "deletion_used = `$false",
+            "raw_corpus_modified = `$false"
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "legacy MFA marker archive 안전 계약 누락: $required"
+                )
+            }
+        }
+        if ($text -match 'Remove-Item') {
+            $failures.Add(
+                'legacy MFA marker archive에 삭제 명령이 포함됨'
+            )
         }
     }
 

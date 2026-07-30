@@ -12,6 +12,20 @@ import realign_eojeol_build_corpus as builder  # noqa: E402
 
 
 class EojeolLabInputContractTests(unittest.TestCase):
+    def test_non_hangul_drop_keeps_explicit_source_to_mfa_mapping(self):
+        mapping = builder.form_to_lab_mapping("1 다음에 뭐야")
+
+        self.assertEqual(builder.form_to_lab("1 다음에 뭐야"), "다음에 뭐야")
+        self.assertEqual(
+            [row["mfa_word_index"] for row in mapping],
+            [None, 0, 1],
+        )
+        self.assertEqual(
+            [row["included_in_mfa"] for row in mapping],
+            [False, True, True],
+        )
+        self.assertEqual(mapping[0]["source_token"], "1")
+
     def test_unresolved_inventory_is_atomic_and_machine_readable(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "unresolved.csv"

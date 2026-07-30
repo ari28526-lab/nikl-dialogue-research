@@ -35,10 +35,15 @@ SILENCE_WORDS = {"", "<eps>", "sil", "<unk>"}
 SILENCE_PHONES = {"", "sil", "sp"}
 
 
-def count_spn_pronunciations(
+def count_spn_intervals(
     connection: sqlite3.Connection,
 ) -> int:
-    """Count speech/OOV dictionary candidates that resolve to ``spn``."""
+    """Count ``spn`` phones actually used in aligned utterance intervals.
+
+    MFA injects unused reserved rows such as ``<unk> -> spn`` into every
+    corpus DB. Their mere presence is not an aligned OOV and must not block
+    export. A used ``spn`` phone interval is the research-relevant failure.
+    """
 
     tables = {
         str(row[0])
@@ -46,24 +51,17 @@ def count_spn_pronunciations(
             "SELECT name FROM sqlite_master WHERE type='table'"
         )
     }
-    if not {"word", "pronunciation"}.issubset(tables):
+    if not {"phone", "phone_interval"}.issubset(tables):
         raise RuntimeError(
-            "MFA DB spn gate requires word and pronunciation tables"
+            "MFA DB spn gate requires phone and phone_interval tables"
         )
-    word_columns = {
-        str(row[1])
-        for row in connection.execute("PRAGMA table_info(word)")
-    }
-    if "word_type" not in word_columns:
-        raise RuntimeError("MFA DB spn gate requires word.word_type")
     return int(
         connection.execute(
             """
             SELECT COUNT(*)
-            FROM word w
-            JOIN pronunciation p ON p.word_id = w.id
-            WHERE w.word_type IN ('speech', 'oov')
-              AND trim(lower(p.pronunciation)) = 'spn'
+            FROM phone_interval pi
+            JOIN phone p ON p.id = pi.phone_id
+            WHERE trim(lower(p.phone)) = 'spn'
             """
         ).fetchone()[0]
     )
@@ -226,8 +224,8 @@ def export_database(
         timeout=120,
     )
     try:
-        spn_pronunciations = count_spn_pronunciations(connection)
-        if spn_pronunciations:
+        spn_intervals = count_spn_intervals(connection)
+        if spn_intervals:
             return {
                 "schema_version": 2,
                 "year": year,
@@ -240,11 +238,11 @@ def export_database(
                     time.monotonic() - started, 3
                 ),
                 "counts": {
-                    "spn_pronunciations": spn_pronunciations,
+                    "spn_intervals": spn_intervals,
                 },
                 "status": "failed",
                 "morphology_complete": False,
-                "analysis_ready_status": "blocked_spn_pronunciations",
+                "analysis_ready_status": "blocked_spn_intervals",
             }
         word_labels = dict(connection.execute("SELECT id, word FROM word"))
         phone_labels = {
@@ -296,7 +294,7 @@ def export_database(
         return session, len(utterances), result
 
     totals = defaultdict(int)
-    totals["spn_pronunciations"] = spn_pronunciations
+    totals["spn_intervals"] = spn_intervals
     alignment_missing_examples: list[str] = []
     form_missing_examples: list[str] = []
     morpheme_missing_inventory: list[str] = []
@@ -359,6 +357,14 @@ def export_database(
         "db_path": str(db_path.resolve()),
         "search_master_root": str(search_master_root.resolve()),
         "output_root": str(output_root.resolve()),
+        "tier_provenance": {
+            "words": "mfa_word_intervals_eojeol",
+            "phones": "phones_mfa",
+            "morphemes": (
+                "morphemes_legacy_copy_of_06_textgrid_merged_words"
+            ),
+            "utterance": "frozen_search_master_form",
+        },
         "elapsed_seconds": round(elapsed, 3),
         "counts": dict(sorted(totals.items())),
         "alignment_missing_examples": alignment_missing_examples[:100],

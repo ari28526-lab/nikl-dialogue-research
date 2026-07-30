@@ -2,7 +2,8 @@
 
 대량 정렬이 끝났다는 콘솔 문구나 exit code만 신뢰하지 않는다. 독립 4-tier
 전수 감사, align/merge marker, direct export 보고서, 보존 SQLite DB와 temp
-입력계약이 모두 같은 입력계약·검색 마스터를 가리킬 때만 통과한다.
+입력계약, DB 재수출 표본, 연구자 인프라 검토가 모두 같은 입력계약·검색
+마스터를 가리킬 때만 통과한다.
 
 현재 구현은 ``direct_db_4tier`` 완료 연도 전용이다. built-in export로 완료한
 연도는 이 도구에 억지로 맞추지 말고 독립 4-tier 감사와 merge 보고서용 별도
@@ -19,6 +20,11 @@ from pathlib import Path
 from typing import Any
 
 from pipeline_common import atomic_write_json, now_iso, sha256_file
+
+SUPPORTED_PRONUNCIATION_MODES = {
+    "korean_mfa",
+    "common_pron_mfa_r2_latest_jamo",
+}
 
 
 def _read_json(path: Path) -> tuple[dict[str, Any] | None, str | None]:
@@ -115,8 +121,11 @@ def validate_next_year_gate(
     align_marker: Path,
     merge_marker: Path,
     temp_contract: Path,
+    sample_equivalence_report: Path,
+    researcher_review_report: Path,
     expected_search_master_root: Path,
     expected_final_year_root: Path,
+    expected_pronunciation_mode: str,
     report_path: Path,
     minimum_coverage_pct: float = 99.0,
 ) -> dict[str, Any]:
@@ -127,6 +136,12 @@ def validate_next_year_gate(
         "align_marker": align_marker.resolve(strict=False),
         "merge_marker": merge_marker.resolve(strict=False),
         "temp_contract": temp_contract.resolve(strict=False),
+        "sample_equivalence_report": (
+            sample_equivalence_report.resolve(strict=False)
+        ),
+        "researcher_review_report": (
+            researcher_review_report.resolve(strict=False)
+        ),
     }
     loaded: dict[str, dict[str, Any] | None] = {}
     read_errors: dict[str, str | None] = {}
@@ -137,6 +152,8 @@ def validate_next_year_gate(
     align = loaded["align_marker"]
     merge = loaded["merge_marker"]
     contract = loaded["temp_contract"]
+    sample = loaded["sample_equivalence_report"]
+    researcher_review = loaded["researcher_review_report"]
     checks: list[dict[str, Any]] = []
 
     def add(name: str, passed: bool, detail: str) -> None:
@@ -152,6 +169,11 @@ def validate_next_year_gate(
             error is None,
             "JSON object 읽기 성공" if error is None else str(error),
         )
+    add(
+        "expected_pronunciation_mode_supported",
+        expected_pronunciation_mode in SUPPORTED_PRONUNCIATION_MODES,
+        f"expected={expected_pronunciation_mode!r}",
+    )
 
     audit_contract = str(_nested(audit, "input_contract_id") or "")
     align_contract = str(
@@ -211,7 +233,8 @@ def validate_next_year_gate(
         "align_marker_identity",
         str(_nested(align, "year") or "") == prior_year
         and _nested(align, "stage") == "align"
-        and _nested(align, "g2p_model") == "korean_mfa"
+        and _nested(align, "g2p_model")
+        == expected_pronunciation_mode
         and _nested(align, "details", "export_mode")
         == "direct_db_4tier",
         "직전 연도 align/direct-DB marker 확인",
@@ -220,7 +243,8 @@ def validate_next_year_gate(
         "merge_marker_identity",
         str(_nested(merge, "year") or "") == prior_year
         and _nested(merge, "stage") == "merge"
-        and _nested(merge, "g2p_model") == "korean_mfa"
+        and _nested(merge, "g2p_model")
+        == expected_pronunciation_mode
         and _nested(merge, "details", "export_mode")
         == "direct_db_4tier",
         "직전 연도 merge/direct-DB marker 확인",
@@ -292,6 +316,76 @@ def validate_next_year_gate(
         == "direct_merge_completed_temp_retained_for_qc",
         f"db={str(alignment_db) if alignment_db else None!r}, "
         f"retained={db_retained}, temp_status={_nested(contract, 'status')!r}",
+    )
+    sample_compared = _as_nonnegative_int(
+        _nested(sample, "comparison_counts", "compared")
+    )
+    sample_tier_equal = _as_nonnegative_int(
+        _nested(sample, "comparison_counts", "tier_equal")
+    )
+    sample_sessions = _as_nonnegative_int(
+        _nested(sample, "selection_counts", "selected_sessions")
+    )
+    add(
+        "db_textgrid_sample_equivalence",
+        _nested(sample, "schema_version") == 1
+        and _nested(sample, "status") == "success"
+        and str(_nested(sample, "year") or "") == prior_year
+        and _nested(sample, "input_contract_id") == audit_contract
+        and _same_path(_nested(sample, "db", "path"), alignment_db)
+        and sample_compared is not None
+        and sample_compared >= 5
+        and sample_tier_equal == sample_compared
+        and sample_sessions is not None
+        and sample_sessions >= 5,
+        "status="
+        f"{_nested(sample, 'status')!r}, "
+        f"contract={_nested(sample, 'input_contract_id')!r}, "
+        f"db={_nested(sample, 'db', 'path')!r}, "
+        f"compared={sample_compared}, tier_equal={sample_tier_equal}, "
+        f"sessions={sample_sessions}",
+    )
+
+    review_years = _nested(researcher_review, "counts", "years")
+    review_speakers = _as_nonnegative_int(
+        _nested(researcher_review, "counts", "speakers")
+    )
+    review_contract = _nested(
+        researcher_review, "year_contracts", prior_year
+    )
+    alignment_method_id = _nested(
+        align, "details", "alignment_contract_id"
+    )
+    add(
+        "researcher_infrastructure_review",
+        _nested(researcher_review, "schema_version")
+        == "mfa_r2_infrastructure_researcher_review.v1"
+        and _nested(researcher_review, "status") == "approved"
+        and _nested(researcher_review, "allow_bulk_mfa") is True
+        and _nested(researcher_review, "review_scope")
+        == "infrastructure_acceptance_only"
+        and _nested(
+            researcher_review, "realization_judgment_performed"
+        )
+        is False
+        and isinstance(review_years, dict)
+        and set(review_years) == {prior_year}
+        and _as_nonnegative_int(review_years.get(prior_year)) is not None
+        and _as_nonnegative_int(review_years.get(prior_year)) > 0
+        and review_speakers is not None
+        and review_speakers >= 5
+        and isinstance(review_contract, dict)
+        and review_contract.get("alignment_contract_id")
+        == alignment_method_id
+        and review_contract.get("lab_input_contract_id")
+        == audit_contract
+        and _same_path(
+            review_contract.get("database"), alignment_db
+        ),
+        "status="
+        f"{_nested(researcher_review, 'status')!r}, "
+        f"years={review_years!r}, speakers={review_speakers}, "
+        f"contract={review_contract!r}",
     )
 
     direct_report_value = _nested(
@@ -529,6 +623,7 @@ def validate_next_year_gate(
         "prior_year": prior_year,
         "next_year": next_year,
         "minimum_coverage_pct": minimum_coverage_pct,
+        "expected_pronunciation_mode": expected_pronunciation_mode,
         "expected_search_master_root": str(expected_search),
         "expected_final_year_root": str(
             expected_final_year_root.resolve(strict=False)
@@ -566,10 +661,21 @@ def main() -> int:
     parser.add_argument("--merge-marker", type=Path, required=True)
     parser.add_argument("--temp-contract", type=Path, required=True)
     parser.add_argument(
+        "--sample-equivalence-report", type=Path, required=True
+    )
+    parser.add_argument(
+        "--researcher-review-report", type=Path, required=True
+    )
+    parser.add_argument(
         "--expected-search-master-root", type=Path, required=True
     )
     parser.add_argument(
         "--expected-final-year-root", type=Path, required=True
+    )
+    parser.add_argument(
+        "--expected-pronunciation-mode",
+        choices=sorted(SUPPORTED_PRONUNCIATION_MODES),
+        required=True,
     )
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--minimum-coverage-pct", type=float, default=99.0)
@@ -581,8 +687,11 @@ def main() -> int:
         align_marker=args.align_marker,
         merge_marker=args.merge_marker,
         temp_contract=args.temp_contract,
+        sample_equivalence_report=args.sample_equivalence_report,
+        researcher_review_report=args.researcher_review_report,
         expected_search_master_root=args.expected_search_master_root,
         expected_final_year_root=args.expected_final_year_root,
+        expected_pronunciation_mode=args.expected_pronunciation_mode,
         report_path=args.report,
         minimum_coverage_pct=args.minimum_coverage_pct,
     )

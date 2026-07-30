@@ -18,6 +18,8 @@ class CrossYearMfaContractTests(unittest.TestCase):
     def fixture(self, root: Path) -> Path:
         contracts = root / "contracts"
         contracts.mkdir()
+        phones = root / "phones"
+        phones.mkdir()
         model_records = {}
         for role in ("acoustic", "dictionary", "g2p"):
             path = root / f"{role}.model"
@@ -52,22 +54,57 @@ class CrossYearMfaContractTests(unittest.TestCase):
             (contracts / f"{year}.json").write_text(
                 json.dumps(payload), encoding="utf-8"
             )
-        return contracts
+            observed = (
+                ["a", "k"] if year != "2024" else ["a", "k", "n"]
+            )
+            (phones / f"{year}.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": (
+                            audit.PHONE_SCHEMA_VERSION
+                        ),
+                        "status": "success",
+                        "year": year,
+                        "alignment_contract_id": f"id-{year}",
+                        "allowed_phone_inventory": {
+                            "count": 3,
+                            "sorted_phone_sha256": "allowed",
+                            "phones": ["a", "k", "n"],
+                        },
+                        "observed_phone_inventory": {
+                            "count": len(observed),
+                            "sorted_phone_sha256": f"observed-{year}",
+                            "phones": observed,
+                        },
+                        "outside_allowed_inventory": [],
+                        "spn_intervals": 0,
+                    }
+                ),
+                encoding="utf-8",
+            )
+        return contracts, phones
 
     def test_same_method_with_year_specific_inputs_passes(self):
         with tempfile.TemporaryDirectory() as temp:
-            contracts = self.fixture(Path(temp))
+            contracts, phones = self.fixture(Path(temp))
             report = audit.audit_cross_year_contracts(
-                contracts_directory=contracts
+                contracts_directory=contracts,
+                phone_inventory_directory=phones,
             )
             self.assertEqual(report["status"], "passed")
             self.assertTrue(
                 report["gate"]["same_phone_generation_standard"]
             )
+            self.assertFalse(
+                report["gate"][
+                    "observed_phone_sets_required_identical"
+                ]
+            )
+            self.assertIn("n", report["observed_phone_summary"]["union"])
 
     def test_one_year_dictionary_change_fails(self):
         with tempfile.TemporaryDirectory() as temp:
-            contracts = self.fixture(Path(temp))
+            contracts, phones = self.fixture(Path(temp))
             path = contracts / "2024.json"
             payload = json.loads(path.read_text(encoding="utf-8"))
             payload["models"]["dictionary"]["sha256"] = "changed"
@@ -76,7 +113,23 @@ class CrossYearMfaContractTests(unittest.TestCase):
                 RuntimeError, "방법 계약 불일치"
             ):
                 audit.audit_cross_year_contracts(
-                    contracts_directory=contracts
+                    contracts_directory=contracts,
+                    phone_inventory_directory=phones,
+                )
+
+    def test_allowed_phone_inventory_change_fails(self):
+        with tempfile.TemporaryDirectory() as temp:
+            contracts, phones = self.fixture(Path(temp))
+            path = phones / "2023.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["allowed_phone_inventory"]["phones"] = ["a", "k"]
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(
+                RuntimeError, "허용 phone inventory"
+            ):
+                audit.audit_cross_year_contracts(
+                    contracts_directory=contracts,
+                    phone_inventory_directory=phones,
                 )
 
 

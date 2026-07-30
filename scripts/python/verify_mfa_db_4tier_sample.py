@@ -142,6 +142,7 @@ def verify_sample(
     report_path: Path,
     sample_csv_path: Path,
     sample_size: int = 24,
+    input_contract_id: str | None = None,
 ) -> dict[str, object]:
     started = time.monotonic()
     if not db_path.is_file():
@@ -277,6 +278,7 @@ def verify_sample(
         "generated_at": now_iso(),
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "year": year,
+        "input_contract_id": input_contract_id,
         "sample_policy": (
             "정렬 interval이 있는 발화 중 세션별 SHA256 최저 1개를 고른 "
             "뒤 전역 SHA256 최저 N개"
@@ -327,6 +329,7 @@ def main() -> int:
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--sample-csv", type=Path, required=True)
     parser.add_argument("--sample-size", type=int, default=24)
+    parser.add_argument("--input-contract-id")
     args = parser.parse_args()
 
     report = verify_sample(
@@ -338,6 +341,7 @@ def main() -> int:
         report_path=args.report,
         sample_csv_path=args.sample_csv,
         sample_size=args.sample_size,
+        input_contract_id=args.input_contract_id,
     )
     print(
         {

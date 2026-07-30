@@ -4,7 +4,7 @@
 화자당 2발화(총 10발화)다. 각 화자는 서로 다른 원 세션에서 선택한다.
 원본 WAV/CSV/TextGrid는 읽기만 하고, 다음 자료를 run root 아래에 복사한다.
 
-* ``corpus/{year}/{speaker_id}/{utt_id}.wav|lab``: MFA 입력
+* ``corpus/{year}/{session_id}/{utt_id}.wav|lab``: MFA 입력
 * ``csv/{year}/bareun_selected.csv``: 바른 형태소 분석 선택행
 * ``csv/{year}/search_master_selected.csv``: 검색 마스터 선택행
 * ``csv/{year}/speaker_metadata_selected.csv``: 선택 화자 메타데이터
@@ -36,9 +36,15 @@ from pipeline_common import (  # noqa: E402
     now_iso,
     promote_staged,
     runtime_snapshot,
+    sha256_file,
     staged_text_writer,
 )
-from realign_eojeol_build_corpus import YEAR_DIRS, form_to_lab  # noqa: E402
+from realign_eojeol_build_corpus import (  # noqa: E402
+    TOKEN_MAP_VERSION,
+    YEAR_DIRS,
+    form_to_lab,
+    form_to_lab_mapping,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_ROOT = P("layers") / "01_bareun_raw"
@@ -54,9 +60,14 @@ MANIFEST_FIELDS = [
     "session_id",
     "utt_id",
     "form",
+    "pron_reference_form",
+    "pron_reference_source",
+    "pron_reference_status",
     "tagged",
     "n_morphs",
     "lab_text",
+    "lab_source_field",
+    "eojeol_map_json",
     "wav_duration_seconds",
     "csv_duration_seconds",
     "wav_csv_duration_delta_seconds",
@@ -463,6 +474,103 @@ def read_selected_search_rows(
     return fields or [], [found[str(item["utt_id"])] for item in selected]
 
 
+def freeze_selected_search_sessions(
+    *,
+    run_root: Path,
+    year: str,
+    fields: list[str],
+    selected: list[dict[str, object]],
+    rows: list[dict[str, str]],
+) -> list[dict[str, object]]:
+    """선택된 검색행을 원래 세션 파일 구조로 동결하고 해시를 남긴다."""
+
+    by_utt = {row.get("utt_id", ""): row for row in rows}
+    by_session: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for item in selected:
+        utt_id = str(item["utt_id"])
+        by_session[str(item["session_id"])].append(by_utt[utt_id])
+
+    frozen: list[dict[str, object]] = []
+    for session, session_rows in sorted(by_session.items()):
+        path = run_root / "search_master" / year / f"{session}.csv"
+        write_csv_atomic(path, fields, session_rows)
+        frozen.append(
+            {
+                "year": year,
+                "session_id": session,
+                "relative_path": path.relative_to(run_root).as_posix(),
+                "rows": len(session_rows),
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+        )
+    return frozen
+
+
+def validate_frozen_search_sessions(
+    run_root: Path,
+    metadata: dict[str, object],
+) -> bool:
+    """재사용 전에 동결 세션 CSV 목록과 실제 내용을 다시 해시한다."""
+
+    hashes_path = run_root / "search_master" / "_session_hashes.json"
+    if not hashes_path.is_file():
+        return False
+    try:
+        payload = json.loads(hashes_path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    files = payload.get("files")
+    metadata_files = metadata.get("frozen_search_sessions")
+    if (
+        payload.get("schema_version")
+        != "pilot_search_master_session_hashes.v1"
+        or payload.get("status") != "success"
+        or payload.get("token_map_version") != TOKEN_MAP_VERSION
+        or not isinstance(files, list)
+        or files != metadata_files
+        or payload.get("file_count") != len(files)
+    ):
+        return False
+
+    canonical = json.dumps(
+        files,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    if payload.get("aggregate_sha256") != hashlib.sha256(
+        canonical.encode("utf-8")
+    ).hexdigest():
+        return False
+
+    root = run_root.resolve()
+    actual_rows = 0
+    for record in files:
+        if not isinstance(record, dict):
+            return False
+        relative_path = record.get("relative_path")
+        if not isinstance(relative_path, str) or not relative_path:
+            return False
+        path = (root / relative_path).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            return False
+        try:
+            _fields, rows = read_csv(path)
+            actual_bytes = path.stat().st_size
+            actual_sha = sha256_file(path)
+        except (OSError, UnicodeError, csv.Error):
+            return False
+        if (
+            record.get("rows") != len(rows)
+            or record.get("bytes") != actual_bytes
+            or record.get("sha256") != actual_sha
+        ):
+            return False
+        actual_rows += len(rows)
+    return payload.get("row_count") == actual_rows
+
+
 def validate_existing(
     run_root: Path,
     years: list[str],
@@ -479,7 +587,7 @@ def validate_existing(
     except (OSError, json.JSONDecodeError):
         return False
     if (
-        metadata.get("schema_version") != 2
+        metadata.get("schema_version") != 3
         or metadata.get("status") != "selection_complete"
         or metadata.get("utterances_per_year") != utterances
         or metadata.get("speakers_per_year") != speakers
@@ -487,7 +595,14 @@ def validate_existing(
         or not set(years).issubset(set(metadata.get("years", [])))
     ):
         return False
-    _, rows = read_csv(manifest_path)
+    if not validate_frozen_search_sessions(run_root, metadata):
+        return False
+    try:
+        _, rows = read_csv(manifest_path)
+    except (OSError, UnicodeError, csv.Error):
+        return False
+    if metadata.get("rows") != len(rows):
+        return False
     for year in years:
         year_rows = [row for row in rows if row.get("year") == year]
         if len(year_rows) != utterances:
@@ -501,7 +616,26 @@ def validate_existing(
             lab = run_root / row["corpus_lab_relpath"]
             if not wav.is_file() or wav.stat().st_size < 44:
                 return False
-            if not lab.is_file() or not lab.read_text(encoding="utf-8").strip():
+            if not lab.is_file():
+                return False
+            try:
+                lab_text = lab.read_text(encoding="utf-8").strip()
+                mapping = json.loads(row.get("eojeol_map_json", ""))
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                return False
+            reference_form = row.get("pron_reference_form", "")
+            if (
+                row.get("lab_source_field") != "pron_reference_form"
+                or lab_text != row.get("lab_text")
+                or lab_text != form_to_lab(reference_form)
+                or mapping != form_to_lab_mapping(reference_form)
+            ):
+                return False
+            session_csv = (
+                run_root / "search_master" / year
+                / f"{row['session_id']}.csv"
+            )
+            if not session_csv.is_file():
                 return False
     return True
 
@@ -521,14 +655,30 @@ def build_run(args: argparse.Namespace) -> int:
         print(f"검증된 기존 표본 재사용: {run_root}", flush=True)
         return 0
     if run_root.exists() and any(run_root.iterdir()):
-        raise RuntimeError(
-            f"완료 manifest 없는 비어 있지 않은 run root는 덮어쓰지 않음: "
-            f"{run_root}. 새 --run-root를 사용하거나 수동 점검 필요"
-        )
+        # r2 안전 러너는 표본 생성 전에 모델·설치 검증 보고서와 lock을
+        # 생성한다. 그 러너 전용 제어 항목만 있으면 표본 산출물과 충돌하지
+        # 않으므로 허용하되, corpus/csv/manifest 등 부분 표본은 계속 차단한다.
+        allowed_control_entries = {
+            ".pilot.lock",
+            "state",
+            "logs",
+            "contracts",
+            "phone_inventory",
+            "temp",
+        }
+        existing = {path.name for path in run_root.iterdir()}
+        unexpected = existing - allowed_control_entries
+        if unexpected:
+            raise RuntimeError(
+                "완료 manifest 없는 부분 표본 run root는 덮어쓰지 않음: "
+                f"{run_root}; 예상 밖 항목={sorted(unexpected)}. "
+                "새 --run-root를 사용하거나 수동 점검 필요"
+            )
     run_root.mkdir(parents=True, exist_ok=True)
 
     all_rows: list[dict[str, object]] = []
     source_fingerprints: list[dict] = []
+    frozen_search_sessions: list[dict[str, object]] = []
     for year in years:
         raw_dir = args.raw_root / YEAR_DIRS[year]
         selected = select_year(
@@ -544,6 +694,30 @@ def build_run(args: argparse.Namespace) -> int:
         search_fields, search_rows = read_selected_search_rows(
             year, selected, args.search_root
         )
+        for item, search_row in zip(selected, search_rows, strict=True):
+            reference_form = (
+                search_row.get("pron_reference_form") or ""
+            ).strip()
+            lab_text = form_to_lab(reference_form)
+            if not lab_text:
+                raise RuntimeError(
+                    f"{year} {item['utt_id']} pron_reference_form에서 "
+                    "유효한 MFA 어절을 만들 수 없음"
+                )
+            item["pron_reference_form"] = reference_form
+            item["pron_reference_source"] = search_row.get(
+                "pron_reference_source", ""
+            )
+            item["pron_reference_status"] = search_row.get(
+                "pron_reference_status", ""
+            )
+            item["lab_text"] = lab_text
+            item["lab_source_field"] = "pron_reference_form"
+            item["eojeol_map_json"] = json.dumps(
+                form_to_lab_mapping(reference_form),
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
 
         bareun_fields = ["utt_id", "speaker_id", "form", "tagged", "n_morphs"]
         speaker_path = raw_dir / "_speakers.csv"
@@ -556,10 +730,10 @@ def build_run(args: argparse.Namespace) -> int:
             raise RuntimeError(f"{year} 선택 화자 메타데이터 누락")
 
         for item in selected:
-            speaker = str(item["speaker_id"])
+            session = str(item["session_id"])
             utt_id = str(item["utt_id"])
-            wav_rel = Path("corpus") / year / speaker / f"{utt_id}.wav"
-            lab_rel = Path("corpus") / year / speaker / f"{utt_id}.lab"
+            wav_rel = Path("corpus") / year / session / f"{utt_id}.wav"
+            lab_rel = Path("corpus") / year / session / f"{utt_id}.lab"
             atomic_copy(Path(str(item["source_wav"])), run_root / wav_rel)
             with atomic_text_writer(
                 run_root / lab_rel, encoding="utf-8", newline="\n"
@@ -586,6 +760,15 @@ def build_run(args: argparse.Namespace) -> int:
             speaker_fields,
             selected_speaker_rows,
         )
+        frozen_search_sessions.extend(
+            freeze_selected_search_sessions(
+                run_root=run_root,
+                year=year,
+                fields=search_fields,
+                selected=selected,
+                rows=search_rows,
+            )
+        )
         all_rows.extend(selected)
         for path in sorted({Path(str(row["source_bareun_csv"])) for row in selected}):
             source_fingerprints.append(file_fingerprint(path))
@@ -602,9 +785,12 @@ def build_run(args: argparse.Namespace) -> int:
         all_rows,
     )
     payload = {
-        "schema_version": 2,
+        "schema_version": 3,
         "created_at": now_iso(),
-        "purpose": "연도별 실제 화자 층화 G2P MFA end-to-end 파일럿",
+        "purpose": (
+            "연도별 실제 화자 층화 MFA r2 인프라 수용 파일럿; "
+            "음운 실현 판정은 수행하지 않음"
+        ),
         "years": years,
         "utterances_per_year": args.utterances_per_year,
         "speakers_per_year": args.speakers_per_year,
@@ -620,6 +806,13 @@ def build_run(args: argparse.Namespace) -> int:
             "utterance_duration_residual_tolerance_seconds": 0.025,
             "session_padding_allowed_seconds": [-0.025, 0.5],
         },
+        "lab_contract": {
+            "source_field": "pron_reference_form",
+            "token_map_version": TOKEN_MAP_VERSION,
+            "non_hangul_policy": (
+                "exclude from MFA lab but preserve source-to-MFA mapping"
+            ),
+        },
         "run_root": str(run_root),
         "source_roots": {
             "bareun": str(args.raw_root.resolve()),
@@ -628,11 +821,36 @@ def build_run(args: argparse.Namespace) -> int:
             "morpheme_textgrid": str(args.morph_root.resolve()),
         },
         "source_bareun_csv_fingerprints": source_fingerprints,
+        "frozen_search_sessions": frozen_search_sessions,
         "runtime": runtime_snapshot(PROJECT_ROOT),
         "rows": len(all_rows),
         "status": "selection_complete",
     }
     atomic_write_json(run_root / "selection_manifest.json", payload)
+    session_hash_payload = {
+        "schema_version": "pilot_search_master_session_hashes.v1",
+        "status": "success",
+        "created_at": now_iso(),
+        "token_map_version": TOKEN_MAP_VERSION,
+        "files": frozen_search_sessions,
+        "file_count": len(frozen_search_sessions),
+        "row_count": sum(
+            int(item["rows"]) for item in frozen_search_sessions
+        ),
+    }
+    canonical = json.dumps(
+        frozen_search_sessions,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    session_hash_payload["aggregate_sha256"] = hashlib.sha256(
+        canonical.encode("utf-8")
+    ).hexdigest()
+    atomic_write_json(
+        run_root / "search_master" / "_session_hashes.json",
+        session_hash_payload,
+    )
     print(f"표본 manifest: {run_root / 'selection_manifest.csv'}", flush=True)
     return 0
 

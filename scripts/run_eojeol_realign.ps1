@@ -1265,6 +1265,9 @@ if (-not $SkipPreflight) {
     )
     if ($Year) { $preflightArgs += @('-Year', $Year) }
     $preflightArgs += @('-SearchMasterRoot', $searchMasterRoot)
+    $preflightArgs += @(
+        '-ExpectedPronunciationMode', $pronunciationMode
+    )
     if ($PreferD) { $preflightArgs += '-PreferD' }
     & powershell.exe @preflightArgs
     if ($LASTEXITCODE -ne 0) {
@@ -2204,6 +2207,13 @@ foreach ($y in $years) {
                 morph_source_unclassified = (
                     [int64]$integrityYear[0].counts.morph_source_unclassified
                 )
+                tier_provenance = [ordered]@{
+                    phones = 'phones_mfa'
+                    morphemes = (
+                        'morphemes_legacy_copy_of_' +
+                        '06_textgrid_merged_words'
+                    )
+                }
             } $inputContractId $alignmentContract
             $mergeMark = Join-Path $doneDir "$y.merge_done"
             Write-DoneMarker $mergeMark $y 'merge' @{
@@ -2228,6 +2238,13 @@ foreach ($y in $years) {
                 morph_source_unclassified = (
                     [int64]$integrityYear[0].counts.morph_source_unclassified
                 )
+                tier_provenance = [ordered]@{
+                    phones = 'phones_mfa'
+                    morphemes = (
+                        'morphemes_legacy_copy_of_' +
+                        '06_textgrid_merged_words'
+                    )
+                }
             } $inputContractId $alignmentContract
             if ($CleanupDirectDbAfterMerge) {
                 try { Remove-SafeYearPath $tmpYear $tmp }
@@ -2283,6 +2300,13 @@ foreach ($y in $years) {
             morph_source_unclassified = (
                 [int64]$integrityYear[0].counts.morph_source_unclassified
             )
+            tier_provenance = [ordered]@{
+                phones = 'phones_mfa'
+                morphemes = (
+                    'morphemes_legacy_copy_of_' +
+                    '06_textgrid_merged_words'
+                )
+            }
         } $inputContractId $alignmentContract
         Write-TempContract $tempContractPath $y $inputContractId `
             $alignmentContract $tmpYear `
@@ -2337,6 +2361,13 @@ foreach ($y in $years) {
         morph_source_unclassified = (
             [int64]$integrityYear[0].counts.morph_source_unclassified
         )
+        tier_provenance = [ordered]@{
+            phones = 'phones_mfa'
+            morphemes = (
+                'morphemes_legacy_copy_of_' +
+                '06_textgrid_merged_words'
+            )
+        }
     } $inputContractId $alignmentContract
     # temp DB는 raw MFA 출력과 4-tier 병합이 모두 검증된 뒤에만 정리한다.
     # 병합 실패 시 위에서 exit 1이므로 이 지점에 오지 않고 temp가 보존된다.

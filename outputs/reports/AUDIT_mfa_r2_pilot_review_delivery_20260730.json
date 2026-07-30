@@ -1,0 +1,61 @@
+{
+  "schema_version": "mfa_r2_pilot_review_delivery_audit.v1",
+  "status": "passed",
+  "audited_at": "2026-07-30T14:29:05+09:00",
+  "review_root": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730",
+  "flat_directory_files": 246,
+  "bundle": {
+    "schema_version": "mfa_r2_flat_review_bundle.v2",
+    "files": 246,
+    "payload_files": 240,
+    "support_files": 3,
+    "utterances": 60,
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "role_counts": {
+      "TextGrid": 60,
+      "lab": 60,
+      "selected_search_row_csv": 60,
+      "wav": 60
+    }
+  },
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730\\REVIEW.csv",
+    "bytes": 14779,
+    "mtime_ns": 1785388628859280200,
+    "sha256": "840e2d79871159a8c0d155c59ec9ba46b1511c91073e5f1bc8ed343c7d32210a"
+  },
+  "review_xlsx": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730\\REVIEW.xlsx",
+    "bytes": 15671,
+    "mtime_ns": 1785389286239237200,
+    "sha256": "6161d1b9550fd7aa2c7b6fc34c2739560f3cd9d22be99166e80ed57512d906cf"
+  },
+  "review_xlsx_manifest": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_R2_INFRA_PILOT_20260730\\REVIEW_XLSX_TEMPLATE_MANIFEST.json",
+    "bytes": 1084,
+    "mtime_ns": 1785389286290972100,
+    "sha256": "b2d4b0ed50c7220414fed96b082964b88381117b152413ba753eec8095fb0691"
+  },
+  "workbook": {
+    "sheets": [
+      "검토입력",
+      "안내"
+    ],
+    "rows": 60,
+    "columns": 15,
+    "hyperlinks_verified": 240,
+    "dropdown_validations": 2,
+    "table": "MfaR2InfrastructureReview"
+  },
+  "review_scope": "infrastructure_acceptance_only",
+  "realization_judgment_performed": false,
+  "researcher_review_status": "pending",
+  "source_or_d_results_modified": false
+}
