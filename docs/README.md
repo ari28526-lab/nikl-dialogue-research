@@ -27,6 +27,7 @@
 | [decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md](decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md) | **현재 r2 전수 MFA 연구 데이터 계약** — 입력·발음 의미·4-tier·QC·검색 CSV·후보/KOINA/판정의 전 과정 |
 | [decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md](decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md) | **6개년 r2 인프라 수용 파일럿 정본** — 연도당 10발화·5화자, 동일 모델/사전, direct DB 4-tier, 경계·phone·DB 재수출 gate와 Dropbox 평면 검토본 |
 | [decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md](decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md) | **REVIEW.xlsx 15개 열 정본 가이드** — 사용자 요청 배경, 각 열의 의미·출처·판정 기준·편집 정책·후속 활용과 실현 판정 금지 범위 |
+| [decisions/DECISION_mfa_r2_review_global_issues_20260730.md](decisions/DECISION_mfa_r2_review_global_issues_20260730.md) | **연구자 1차 검토의 전역 이슈 정본** — legacy 형태소 시간층과 구조화 형태 환경표 부재, 반복 코드 기록, 목표 4-tier·재검토 gate |
 | [../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md](../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md) | **6개년 r2 인프라 파일럿 결과** — 6/6 연도 기계 QC·방법 감사 통과, Dropbox 60발화/240 payload/REVIEW.xlsx 전달 감사, 연구자 검토 대기 |
 | [../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json](../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json) | Dropbox 평면 묶음 v2·원본 SHA·60행·240링크·dropdown 최종 기계 감사 |
 | [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |

@@ -1930,3 +1930,51 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   검색본이 아닌 한 발화 snapshot임을 명확히 했다.
 - 현재 pilot 승인과 전수 연도별 연구자 gate를 분리하고, MFA phone·사전
   발음·실제 음운 실현 판정을 혼동하지 않도록 금지 범위를 기록했다.
+
+### 연구자 1번 발화 검토와 전역 이슈 코드화
+
+- 연구자가 `SDRW2000000510.1.1.98`의 WAV·LAB·CSV·TextGrid 연결,
+  발화 내용, word/phone 정렬, 양끝 경계를 직접 확인했다.
+- 연결과 경계는 대체로 사용할 수 있었으나, `morphemes`가 형태소 tagging
+  없이 legacy 시간경계를 중복 표시해 형태소 음향경계처럼 보이는 문제가
+  확인됐다.
+- 60개 TextGrid를 읽기 전용으로 대조했다.
+  - legacy 4-tier 구성 60/60
+  - `words`와 `morphemes` 라벨 순서를 직접 비교할 수 있는 파일 6개
+  - 그 6개 중 시간경계까지 완전히 같은 파일 0개
+  - 구조 또는 시간이 다른 파일 60개
+  - 비교 가능한 경계의 최대 차이 0.245초
+- 60개 행별 CSV는 헤더가 하나로 일치하고 `search__tagged`와
+  `search__tagged_roman`이 전부 존재했지만, 형태소 첫/끝·좌우 환경을
+  정규화한 `morph_tokens/morph_boundaries`는 전부 없었다.
+- 반복 문제를 `G-TIER-01`, `G-CSV-01`로 고정했다. 목표 TextGrid는
+  `words/phones_mfa/morph_analysis/utterance_info`, 셋째 tier는
+  `0–xmax` 단일 tagging 구간으로 결정했다.
+- 이 결정은 MFA phone 기준·공통사전·정렬 DB를 바꾸지 않는다. 기존 pilot
+  DB와 CSV에서 출력만 다시 만들어 동등성을 확인하는 문제다.
+
+### REVIEW.xlsx 전역 이슈 사전입력
+
+- 사용자가 Excel을 저장하고 닫은 뒤 수정 전 파일을
+  `archive/mfa_r2_review/REVIEW_before_global_prefill_20260730_173905.xlsx`
+  로 보관했다. 원본과 백업 SHA-256이 일치했다.
+- `prefill_mfa_r2_review_global_issues.py`를 추가해 기존 연구자 입력이 있는
+  행을 덮어쓰지 않도록 선행조건을 두었다.
+- 1번 상세 입력은 그대로 두고 2–60번 59행에 다음을 입력했다.
+  - `tier_structure_status=문제있음`
+  - `csv_searchability_status=문제있음`
+  - `overall_infrastructure_decision=수정 후 재검토`
+  - notes=`[전역 G-TIER-01, G-CSV-01]`
+- 2–60번의 `linkage_status`와 `boundary_status`는 연구자가 개별 확인할 수
+  있도록 `미검토`로 남겼다.
+- 재로딩 뒤 1번 행·불변 식별/파일 열, 59행 입력값, 240 하이퍼링크,
+  2 dropdown, 열 너비·style ID, `A1:O61` table, 수식 오류 0을 확인했다.
+- Dropbox의 `REVIEW.xlsx`는 수정 전 SHA가 그대로일 때만 검증본으로
+  교체했고 최종 SHA-256은
+  `0802b6a0d5c590d8d5f818dfcac23ad4bb6b506cc8004746322ad69196d75d9a`다.
+- 전용 artifact 편집 런타임은 이 세션에 제공되지 않아, 사용자가 이전에
+  명시적으로 승인한 openpyxl 우회 경로를 사용했다. Excel COM 시각
+  렌더링은 `Workbooks.Open` 단계에서 지원되지 않았으나, 값·구조·스타일·
+  링크·dropdown·table을 독립 재로딩으로 검증했다.
+- 상세 결정과 재검토 gate는
+  `DECISION_mfa_r2_review_global_issues_20260730.md`에 기록했다.

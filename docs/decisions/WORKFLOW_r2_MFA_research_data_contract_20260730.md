@@ -155,7 +155,7 @@ DB와 temp는 해당 연도 QC 및 복구 가능성 확인 전 삭제하지 않�
 
 ### 6.2 운영 4-tier TextGrid
 
-현재 대량 파이프라인의 호환 표준은 다음 순서와 이름이다.
+첫 60발화 파일럿은 다음 legacy 호환 형식으로 생성했다.
 
 ```text
 words
@@ -170,14 +170,35 @@ utterance
   형태소 내부의 새 음향 경계를 추정한 것이 아님
 - `utterance`: 발화 전사
 
+연구자 1차 검토와 60개 TextGrid 전수 대조에서 `morphemes`가 `words`와
+다른 시간경계를 보이면서 형태소 음향경계처럼 오해될 수 있음이 확인됐다.
+따라서 이 형식은 **파일럿 v1 증거로만 보존하고 전수 출력 계약으로
+승격하지 않는다**.
+
+전수 MFA 전에 구현·재검토할 목표 4-tier는 다음과 같다.
+
+```text
+words
+phones_mfa
+morph_analysis
+utterance_info
+```
+
+- `words`: MFA DB의 어절 시간 정렬
+- `phones_mfa`: MFA DB의 phone 시간 정렬; 실제 실현 판정 아님
+- `morph_analysis`: `0–xmax` 단일 구간의 형태소 표면형/POS tagging;
+  형태소 시간경계를 주장하지 않음
+- `utterance_info`: 발화 철자와 검색용 참조값을 담는 비판정 표지
+
 모든 IntervalTier는 `0–xmax`를 연속적으로 덮고, 라벨 없는 구간도 명시적
 빈 interval로 가져야 한다. 운영본에는 시간 padding을 넣지 않는다.
 
 점검 사본은 필요할 때만 WAV 양끝에 0.05초 무음을 넣고
 `words/phones_mfa/morph_analysis/utterance_info`로 만든다. 이 경우
 `source_time = review_time - left_padding` 환산값을 manifest에 남긴다.
-운영 4-tier를 3-tier로 줄이거나 tier 이름을 바꾸는 일은 호환성 전수 검증
-전에는 하지 않는다.
+pilot v1에서 목표 형식으로 바꾸는 것은 DB의 word·phone interval을 다시
+계산하는 일이 아니다. 보존 DB와 CSV에서 60발화를 재수출해 동등성을 검사하고,
+연구자가 승인한 뒤 같은 형식을 전수 출력에 적용한다.
 
 ### 6.3 연구 검색 마스터와 MFA 보조 레이어
 
@@ -189,6 +210,8 @@ utterance
 - 텍스트: `form`, `original_form`, `reference_form`
 - 형태: 형태소 표면형·품사·어절 번호, 정렬 상태
 - 철자 검색: 형태소별·어절별 철자 로마자
+- 구조화 형태 환경: `morph_tokens`, `morph_boundaries` 파생표의 형태소
+  첫/끝 단위와 좌우 어절·형태소 경계
 - 발음 참고: 규칙 발음과 우리말샘 발음의 한글·로마자·IPA·출처·status
 - 파일 연결: WAV/TextGrid 경로와 존재·quarantine 상태
 - MFA 보조: `pron_mfa`, `pron_mfa_ipa`, `n_spn`, `spn_ratio`,

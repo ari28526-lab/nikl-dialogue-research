@@ -551,3 +551,24 @@ workbook과 파일을 함께 옮기면 링크를 유지하기 위해서다.
   `outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md`
 
 이 문서는 열 이름이 바뀌거나 검토 범위가 달라질 때 함께 갱신해야 한다.
+
+## 14. 2026-07-30 전역 이슈 사전입력
+
+1번 발화 검토 뒤 동일한 지적을 60행에 반복해서 적지 않도록 다음 코드를
+도입했다.
+
+| 코드 | 의미 | workbook 사전입력 |
+|---|---|---|
+| `G-TIER-01` | legacy `morphemes` 시간분할이 형태소의 실제 음향경계처럼 보일 수 있음 | `tier_structure_status=문제있음` |
+| `G-CSV-01` | `tagged_roman`은 있으나 형태소 첫/끝·좌우 경계 환경의 구조화 표가 없음 | `csv_searchability_status=문제있음` |
+
+2–60번에는 `overall_infrastructure_decision=수정 후 재검토`와 notes
+`[전역 G-TIER-01, G-CSV-01]`도 함께 입력했다. 1번의 상세 연구자 notes는
+전역 문제를 발견한 실제 예시이므로 그대로 보존했다.
+
+이제 각 행에서 반복해서 확인할 것은 `linkage_status`와
+`boundary_status`다. 전역 코드로 설명되지 않는 파일 누락, 내용 불일치,
+경계 붕괴, 형태소 분석 오류만 해당 행 notes에 추가한다.
+
+근거와 수정 계약은
+`DECISION_mfa_r2_review_global_issues_20260730.md`를 따른다.

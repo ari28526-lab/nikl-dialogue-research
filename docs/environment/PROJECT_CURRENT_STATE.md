@@ -96,7 +96,8 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 ## 현재 실행 상태
 
 - r2 기준 2020–2025 전수 MFA: **아직 시작하지 않음**
-- r2 인프라 수용 파일럿: **6개년 기계 검증 완료, 연구자 검토 대기**
+- r2 인프라 수용 파일럿:
+  **6개년 기계 검증 완료, 전역 수정 2건 확인 후 개별 검토 진행 중**
   - 범위: 2020–2025, 연도당 10발화·5화자·5세션
   - D: 실행 루트:
     `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730`
@@ -108,15 +109,22 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
     `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730`
   - 평면 파일 246개, 60발화, payload 240개,
     `REVIEW.xlsx` 링크 240/240 검증
-  - 연구자 인프라 검토: `pending`
+  - 연구자 인프라 검토: 1/60 상세 확인
+  - 전역 `G-TIER-01`: legacy 시간분할 `morphemes`를 `0–xmax` 단일
+    `morph_analysis` tagging tier로 교체 필요
+  - 전역 `G-CSV-01`: 형태소 첫/끝·좌우 환경의 구조화
+    `morph_tokens/morph_boundaries` 파생표 필요
+  - `REVIEW.xlsx` 2–60번에 전역 코드 사전입력 완료;
+    남은 개별 검토는 연결과 경계
 - 외부 workflow 리뷰 판정: `GO AFTER FIXES`
-- 현재 단계: 6개년 소규모 인프라 파일럿의 기계 검증·전달 감사 완료,
-  연구자 인프라 검토 대기
+- 현재 단계: 목표 4-tier와 형태 환경표 구현 전 단계.
+  기존 pilot DB·CSV에서 60발화를 재수출한 뒤 연구자 재검토가 필요
 
 상세 정본:
 
 - `docs/decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md`
 - `docs/decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md`
+- `docs/decisions/DECISION_mfa_r2_review_global_issues_20260730.md`
 - `docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md`
 
 ## 중요한 미완료 항목
@@ -131,16 +139,17 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. 연구자가 Dropbox의 `REVIEW.xlsx`에서
-   WAV/TextGrid/LAB/CSV 연결과 tier 사용성을 검토해
-   `인프라 통과` 여부를 결정한다.
-2. 작성 workbook을 `validate_mfa_r2_review_workbook.py`로 회수해
-   기계가독 승인/수정필요 보고서를 만든다.
-3. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
+1. `G-TIER-01`과 `G-CSV-01`을 출력·검색 스키마에 구현한다.
+2. 보존한 pilot DB·CSV에서 60발화 TextGrid/행별 CSV를 다시 내보내
+   word·phone·식별자·duration 동등성을 검사한다. MFA 재정렬은 하지 않는다.
+3. 연구자가 수정본에서 연결·경계를 재검토하고
+   `validate_mfa_r2_review_workbook.py`로 승인 보고서를 만든다.
+4. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
    넘어간다.
 
 전수 MFA는 아직 시작하지 않는다. 전수 이전의 60발화 인프라 수용
-파일럿은 기계 검증을 마쳤고 현재 연구자 인프라 검토를 기다린다.
+파일럿은 기계 검증을 마쳤지만 연구자가 확인한 전역 출력·검색 문제를 고쳐
+같은 표본으로 다시 검토해야 한다.
 
 ## 2020 실행 인터페이스의 안전장치
 
