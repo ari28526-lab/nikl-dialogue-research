@@ -1,6 +1,6 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-07-30 KST
+최종 갱신: 2026-07-31 KST
 
 이 문서는 세션 전환이나 context compaction 뒤에도 확정된 결정과 바로 다음
 작업을 잃지 않기 위한 단일 상태 정본이다. 새 작업은 최근 대화만 보고
@@ -117,10 +117,14 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
   - `REVIEW.xlsx` 2–60번에 전역 코드 사전입력 완료;
     남은 개별 검토는 연결과 경계
 - 외부 workflow 리뷰 판정: `GO AFTER FIXES`
-- 현재 단계: **TextGrid 발화 수준 검색 tier 설계 리뷰 대기**.
-  legacy 형태소 시간층을 제거한다는 방향은 확정했으나, 철자 로마자·형태소
-  표기를 `utterance_search` 하나에 합칠지와 label 문법·시간 범위는 외부
-  리뷰 뒤 확정한다. 구현과 60발화 재수출은 그 전까지 중지
+- TextGrid 발화 수준 검색 tier 외부 리뷰:
+  `words/phones_mfa/utterance/utterance_search` 4-tier 권장
+- 현재 단계: **형태소·음절·분절 단위 로마자 및 위치 검색 스키마 외부 리뷰
+  대기**.
+  legacy 형태소 시간층 제거와 발화 수준 검색 tier 방향은 유력하지만,
+  `tagged_roman` 구분자 문법, 무음 초성 `ㅇ`, 형태소·어절·발화 위치 좌표,
+  `morph_tokens/morph_syllables/morph_boundaries`의 정본 구조를 먼저
+  검토한다. 구현과 60발화 재수출은 그 전까지 중지
 
 상세 정본:
 
@@ -128,6 +132,8 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 - `docs/decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md`
 - `docs/decisions/DECISION_mfa_r2_review_global_issues_20260730.md`
 - `docs/reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`
+- `docs/reviews/RESULT_design_review_TextGrid_utterance_search_tier_20260731.md`
+- `docs/reviews/PROMPT_external_review_morph_roman_position_schema_20260731.md`
 - `docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md`
 
 ## 중요한 미완료 항목
@@ -142,9 +148,10 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. 외부 리뷰로 3/4/5-tier, 정확한 tier 이름·순서,
-   `utterance_search` label 문법·시간 범위·발음 포함 여부를 확정한다.
-2. 확정한 `G-TIER-01`과 필요한 CSV 검색 보조 구조를 구현한다.
+1. 외부 리뷰로 현행 `tagged_roman`의 분절·음절·형태소·어절 구분자,
+   무음 초성, 품사 표지, 위치 좌표와 구조화 검색 표를 확정한다.
+2. TextGrid 4-tier 권고와 위 검색 계약을 합쳐 `G-TIER-01`·`G-CSV-01`
+   구현 사양을 하나로 동결한다.
 3. 보존한 pilot DB·CSV에서 60발화 TextGrid/행별 CSV를 다시 내보내
    word·phone·식별자·duration 동등성을 검사한다. MFA 재정렬은 하지 않는다.
 4. 연구자가 수정본에서 연결·경계를 재검토하고

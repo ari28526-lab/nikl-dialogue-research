@@ -1997,3 +1997,28 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`에
   연구 흐름, 현재 실측 문제, 후보안, 변경 금지 기준, 필수 검토 질문,
   요구 답변 형식을 정리했다.
+
+### 형태소·음절·분절 단위 로마자 위치 검색 외부 리뷰 요청
+
+- TextGrid 4-tier 외부 리뷰는
+  `words/phones_mfa/utterance/utterance_search`를 권장했으나,
+  `morph_tokens/morph_boundaries`를 나중 개선으로 분류했다.
+- 연구자는 형태소별 시작·내부·끝의 로마자, 음절 내 초성·중성·종성,
+  형태소·어절 경계의 좌우 환경 검색이 핵심이라고 재확인했다.
+- 현행 `tagged_roman`의 `공백 / _ / + / | / /POS` 위계는 표시에는
+  유용하지만, 위치 단위의 모호성, 가변 길이 로마자 토큰, 무음 초성 `ㅇ`,
+  품사 표지와 마지막 분절의 결합, 예약문자·왕복 검증 문제가 남는다.
+- D: 동결 pre-MFA CSV를 읽기 전용으로 확인했다. 2020–2025 각 연도 표본은
+  모두 48열이며 `form_roman`, `tagged`, `tagged_roman`, `align_warn`,
+  `n_eojeol`을 포함했다. 대표 발화
+  `SDRW2200000836.1.1.61`의 값도 문서 예시와 일치했다.
+- 따라서 구조화 색인은 기존 동결 CSV에서 파생할 수 있으며, 원 JSON이나
+  Bareun 분석을 무조건 다시 실행해야 하는 문제는 아니다. 전수 값 완전성은
+  별도 preflight로 검증해야 한다.
+- 외부 도구가 GitHub 주소만으로 이 문제를 독립 검토하도록
+  `PROMPT_external_review_morph_roman_position_schema_20260731.md`를
+  작성했다. 대안 A/B/C, 형식 문법, `morph_tokens/morph_syllables/
+  morph_boundaries`, 무음 초성, Unicode·escaping, 510만 발화 저장 방식,
+  검증 gate와 MFA 병행 순서를 요구한다.
+- 리뷰 결과를 받기 전에는 직렬화 문법을 코드에 동결하거나 60발화
+  TextGrid를 재수출하지 않는다.
