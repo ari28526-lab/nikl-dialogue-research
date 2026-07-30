@@ -1978,3 +1978,22 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   링크·dropdown·table을 독립 재로딩으로 검증했다.
 - 상세 결정과 재검토 gate는
   `DECISION_mfa_r2_review_global_issues_20260730.md`에 기록했다.
+
+### TextGrid 발화 수준 로마자·형태소 검색 tier 재검토
+
+- 사용자가 원한 것은 형태소별 시간을 억지로 나눈 tier가 아니라,
+  TextGrid 안에서 발화 전체의 철자 로마자와 형태소 표기를 검색할 수 있는
+  utterance 수준 tier임을 다시 명확히 했다.
+- 따라서 `morph_analysis`를 word slot에 배치하는 구현도 일단 중지했다.
+  형태소 시간경계를 주장하지 않으면서 Praat 검색과 가독성을 확보하는
+  3/4/5-tier 대안을 먼저 검토한다.
+- 내부 잠정 우선안은
+  `words/phones_mfa/utterance/utterance_search` 4-tier다.
+  `utterance_search`에는 `[ORTH_R]`, `[MORPH]`, `[MORPH_R]` 표지를 둔다.
+- label의 정확한 한 줄 문법, label 시간 범위, 규칙·사전 발음 포함 여부,
+  510만 발화의 크기·I/O 영향을 확정하기 전에는 코드를 수정하거나 60발화를
+  재생성하지 않는다.
+- 다른 도구가 GitHub 주소만으로 설계를 검토할 수 있도록
+  `PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`에
+  연구 흐름, 현재 실측 문제, 후보안, 변경 금지 기준, 필수 검토 질문,
+  요구 답변 형식을 정리했다.

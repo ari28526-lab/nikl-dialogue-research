@@ -117,14 +117,17 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
   - `REVIEW.xlsx` 2–60번에 전역 코드 사전입력 완료;
     남은 개별 검토는 연결과 경계
 - 외부 workflow 리뷰 판정: `GO AFTER FIXES`
-- 현재 단계: 목표 4-tier와 형태 환경표 구현 전 단계.
-  기존 pilot DB·CSV에서 60발화를 재수출한 뒤 연구자 재검토가 필요
+- 현재 단계: **TextGrid 발화 수준 검색 tier 설계 리뷰 대기**.
+  legacy 형태소 시간층을 제거한다는 방향은 확정했으나, 철자 로마자·형태소
+  표기를 `utterance_search` 하나에 합칠지와 label 문법·시간 범위는 외부
+  리뷰 뒤 확정한다. 구현과 60발화 재수출은 그 전까지 중지
 
 상세 정본:
 
 - `docs/decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md`
 - `docs/decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md`
 - `docs/decisions/DECISION_mfa_r2_review_global_issues_20260730.md`
+- `docs/reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`
 - `docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md`
 
 ## 중요한 미완료 항목
@@ -139,12 +142,14 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. `G-TIER-01`과 `G-CSV-01`을 출력·검색 스키마에 구현한다.
-2. 보존한 pilot DB·CSV에서 60발화 TextGrid/행별 CSV를 다시 내보내
+1. 외부 리뷰로 3/4/5-tier, 정확한 tier 이름·순서,
+   `utterance_search` label 문법·시간 범위·발음 포함 여부를 확정한다.
+2. 확정한 `G-TIER-01`과 필요한 CSV 검색 보조 구조를 구현한다.
+3. 보존한 pilot DB·CSV에서 60발화 TextGrid/행별 CSV를 다시 내보내
    word·phone·식별자·duration 동등성을 검사한다. MFA 재정렬은 하지 않는다.
-3. 연구자가 수정본에서 연결·경계를 재검토하고
+4. 연구자가 수정본에서 연결·경계를 재검토하고
    `validate_mfa_r2_review_workbook.py`로 승인 보고서를 만든다.
-4. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
+5. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
    넘어간다.
 
 전수 MFA는 아직 시작하지 않는다. 전수 이전의 60발화 인프라 수용
