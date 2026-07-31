@@ -1,0 +1,78 @@
+{
+  "schema_version": "phoneme_roman_pilot_verification.v2",
+  "status": "success",
+  "recorded_at": "2026-07-31T23:03:28+09:00",
+  "reason": "normalize post-rename manifest paths and independently recheck outputs",
+  "prior_manifest": {
+    "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\PILOT_MANIFEST.json",
+    "bytes": 3929,
+    "mtime_ns": 1785506100965344200,
+    "sha256": "93eaabfc2ccc959e9fe784a83d9f9a88c95f637970be2ea425a18588d583cfdf"
+  },
+  "prior_stale_partial_paths_detected": 4,
+  "prior_stale_paths": [
+    "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\.phoneme_roman_aux_v1_20260731.cb21c5769d7548158aaebf45c4adf9f1.partial\\PHONE_ROMAN_INVENTORY.csv",
+    "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\.phoneme_roman_aux_v1_20260731.cb21c5769d7548158aaebf45c4adf9f1.partial\\PHONE_ROMAN_INTERVALS.csv",
+    "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\.phoneme_roman_aux_v1_20260731.cb21c5769d7548158aaebf45c4adf9f1.partial\\PHONEME_ROMAN_CORRESPONDENCE.csv",
+    "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\.phoneme_roman_aux_v1_20260731.cb21c5769d7548158aaebf45c4adf9f1.partial\\UTTERANCE_PHONEME_ROMAN_SUMMARY.csv"
+  ],
+  "counts": {
+    "csv_rows": {
+      "PHONE_ROMAN_INVENTORY.csv": 109,
+      "PHONE_ROMAN_INTERVALS.csv": 1801,
+      "PHONEME_ROMAN_CORRESPONDENCE.csv": 1683,
+      "UTTERANCE_PHONEME_ROMAN_SUMMARY.csv": 60
+    },
+    "five_tier_textgrids": 60,
+    "dropbox_review_textgrids": 12,
+    "source_four_tiers_unchanged": 60,
+    "phone_phoneme_boundaries_equal": 60
+  },
+  "outputs": [
+    {
+      "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\PHONE_ROMAN_INVENTORY.csv",
+      "bytes": 11095,
+      "mtime_ns": 1785506099457781400,
+      "sha256": "abf79ba76d4ef4eebc62fba43b0e9a71b1e28b821e92398b0641638b3253540e"
+    },
+    {
+      "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\PHONE_ROMAN_INTERVALS.csv",
+      "bytes": 700781,
+      "mtime_ns": 1785506099487812900,
+      "sha256": "8068843521aa7fb6e8b1ef29670f6b6db705f3931dc48f177201d5f824a38c2e"
+    },
+    {
+      "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\PHONEME_ROMAN_CORRESPONDENCE.csv",
+      "bytes": 260261,
+      "mtime_ns": 1785506099509564100,
+      "sha256": "626e647a1d17b775e91a4476a5086ea2498fc22ff8d1d50ea5484ba3bc1b60c2"
+    },
+    {
+      "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\UTTERANCE_PHONEME_ROMAN_SUMMARY.csv",
+      "bytes": 59225,
+      "mtime_ns": 1785506099513566300,
+      "sha256": "af214dffddb4f46e1b543136f059f941320d563b8ea821df22d3015b0bd982d0"
+    }
+  ],
+  "workbooks": {
+    "d": {
+      "path": "D:\\mfa_eojeol\\pilots\\r2_infrastructure\\mfa_r2_infra_pilot_20260730\\phoneme_roman_aux_v1_20260731\\review_delivery\\PHONEME_ROMAN_PILOT.xlsx",
+      "bytes": 52618,
+      "mtime_ns": 1785506100561602900,
+      "sha256": "bef0588ce8b2401eb36441456b9e2c22054d4bb59eab9d3f26b555471a1683a2"
+    },
+    "dropbox": {
+      "path": "C:\\Users\\ari30\\Dropbox\\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731\\PHONEME_ROMAN_PILOT.xlsx",
+      "bytes": 52618,
+      "mtime_ns": 1785506100561602900,
+      "sha256": "bef0588ce8b2401eb36441456b9e2c22054d4bb59eab9d3f26b555471a1683a2"
+    },
+    "sha_equal": true
+  },
+  "contracts": {
+    "phones_mfa_unchanged": true,
+    "default_four_tier_unchanged": true,
+    "realization_judgment_performed": false,
+    "canonical_paths_are_final_not_partial": true
+  }
+}

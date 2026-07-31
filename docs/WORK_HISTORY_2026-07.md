@@ -2136,3 +2136,49 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
 - 내일 검토 순서는
   `docs/reviews/GUIDE_morph_combined_search_demo_20260731.md`에 기록했다.
   실제 음운 실현은 이 데모의 판정 대상이 아니다.
+
+### MFA phone의 검색용 로마자 음소 보조층 파일럿
+
+- 사용자는 MFA IPA phone을 실제 검색에서 쓰기 쉽도록 로마자 넓은 범주와
+  철자·예측발음을 참조한 음소 후보로 기계 대응하되, 원 `phones_mfa`를
+  바꾸지 않는 추가 보조층을 요청했다.
+- MFA phone은 음성을 독립 전사한 실제 변이음 관찰값이 아니라
+  사전/G2P 경로의 forced-alignment 결과임을 다시 구분했다. 따라서
+  `phone_class_r_auto`와 `phoneme_lexical_r_auto` 모두 실제 실현 판정이
+  아니며 `realization_judgment=not_performed`를 고정했다.
+- 동결 acoustic v3.3.0 `meta.json`의 비침묵 phone 107개와 22
+  `phone_groups`를 직접 읽고, 한국어 평음/격음/경음 대립을 보존하는
+  프로젝트 로마자 매핑을 만들었다. `sil/spn`을 합친 허용 interval
+  inventory 109개와 `<eps>`까지 포함한 내부 mapping 110개를 구분했다.
+- `phoneme_roman.py`, `build_phoneme_roman_pilot.py`와 회귀시험 6개를
+  추가했다. 복합 중성은 component로 펼치고, 초성/종성 위치 차이와
+  대체·삽입·탈락을 결정적 DP 상태로 노출한다.
+- 실제 60발화에서 관측 phone 74종, 유표 interval 1,625개,
+  correspondence 1,683행을 생성했다. exact 1,421,
+  position-compatible 151, model-group-only 29, substitution 16,
+  phone-only 8, reference-only 58이었다.
+- 첫 실자료 실행은 2024 한 파일에서 원본 tier의 1 μs 허용 gap을
+  재직렬화가 새 interval로 만드는 것을 감지하고 중단했다. 네 tier 원문을
+  byte 보존하고 다섯 번째 tier만 append하는 방식으로 고쳤다.
+- 두 번째 실행은 2025 `SARW2500000414.1.1.2`의 raw `2사람이` 1어절과
+  원전사 회복 `두 사람이` 2어절 때문에 `form_roman` 12대 실제 MFA 입력
+  13어절 불일치를 감지하고 중단했다. raw 철자는 보존하되 시간 투영은
+  LAB과 같은 `pron_reference_form_roman`을 쓰도록 근거열을 분리했다.
+- 최종 실행은 기존 네 tier 의미·경계·label 불변 60/60, 선택적
+  `phoneme_r_auto` 5-tier 60/60을 통과했다. D: 정본은
+  `phoneme_roman_aux_v1_20260731`에 있고, Dropbox 기존 12발화 폴더에는
+  새 이름의 5-tier 12개, `PHONEME_ROMAN_PILOT.xlsx`, CSV, README,
+  전달 manifest만 추가했다. 기존 REVIEW와 payload는 수정하지 않았다.
+- workbook 네 시트를 재로딩하고 36링크·2 dropdown·오류 셀 0을 검사한
+  뒤 전 시트를 PIL로 렌더링했다. 미리보기의 IPA 결합기호 glyph 한계는
+  있었지만 원 workbook Unicode 값과 구조는 보존됐다.
+- 최종 directory rename 전 `.partial` 경로가 첫 manifest의 output path에
+  남은 것을 사후 점검에서 발견했다. SHA·bytes는 맞았고 실물에는 영향이
+  없었다. 생성기는 최종 예상경로를 기록하도록 고치고,
+  `verify_phoneme_roman_pilot.py`로 CSV 행수, 60개 기존 4-tier 불변,
+  phone/phoneme 경계 동등성, D/Dropbox workbook SHA를 다시 검사해
+  `PILOT_VERIFICATION_V2.json`을 만들었다. 구 manifest는 시행착오 증거로
+  보존했다.
+- 결정과 한계는
+  `DECISION_auto_phoneme_roman_aux_layer_20260731.md`, 아침 순서는
+  `GUIDE_phoneme_roman_pilot_20260731.md`에 기록했다.

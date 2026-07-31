@@ -161,6 +161,9 @@
 | audit_mfa_research_schema_pilot.py | DB·구 TextGrid·새 TextGrid·검색 CSV를 독립 대조해 coverage, tier, duration, word/phone, 형태소 label을 검사 | `PILOT_AUDIT.json` status passed |
 | package_mfa_research_schema_review.py | 연도별 2발화의 WAV/TextGrid/LAB/CSV와 REVIEW.xlsx를 Dropbox에 원자 구성. 네 tier 모두의 정확한 0.05초 endpoint·바깥 빈 label, SHA, 링크·dropdown을 검증하고 이전 연구자 입력을 utt_id로 승계. Dropbox rename lock 복구 지원 | 수동 검토가 잡은 느슨한 경계 gate 교정; v2 12발화·48 payload·명시 경계 12/12 |
 | build_morph_combined_search_demo.py | 60발화의 morph master/tokens/units/boundaries를 실제 조합 검색해 현재 12발화 bundle 안 대표 결과로 제한하고, 검색식·전체 적중 수·구조 근거·WAV/TextGrid/CSV 링크와 검토 dropdown을 갖춘 별도 workbook/CSV/manifest 생성 | Q1–Q7 7검색·대표 13행·39링크·SHA 검증 통과 |
+| phoneme_roman.py | 동결 acoustic `meta.json`의 107 phone·22 phone group을 읽고 MFA IPA를 검색용 `phone_class_r_auto`로 범주화. 복합 중성 component 전개와 결정적 DP로 철자·예측발음 참조 `phoneme_lexical_r_auto` 대응을 만들되, 삽입/탈락/대체·평격경 차이는 자동 승인하지 않음 | 단위시험과 실제 60발화 inventory hard gate 통과 |
+| build_phoneme_roman_pilot.py | `phones_mfa` IPA·시간과 기존 4-tier를 변경하지 않고 interval/correspondence/발화요약 CSV와 선택적 `phoneme_r_auto` 5-tier 사본을 생성. raw 철자와 실제 MFA 입력 resolved 철자를 분리하고 12발화 workbook·Dropbox 복사 SHA를 검증 | 60발화 1,625 phone, 5-tier 60/60, 기존 4-tier 불변 60/60; 연구자 수용 대기 |
+| verify_phoneme_roman_pilot.py | 완성 output의 4개 CSV 행수·phone 중복/spn·60개 5-tier·원 4-tier 전 구간·phone/phoneme 경계·D/Dropbox workbook SHA를 독립 재검증하고 rename 전 stale path를 정규화한 v2 verification 생성 | 실자료 60/60·Dropbox 12/12·최종경로 검증 통과 |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

@@ -4,6 +4,13 @@
 상태: **방법론 계약 고정, 공통 G2P 계산 및 전수 동등성 실행 전**  
 적용 범위: 2020–2025 어절 MFA 4-tier 인프라
 
+> 2026-07-31 최신 r2 모델 계수 보충: acoustic `meta.json`의 비침묵
+> phone은 107개, release의 허용 interval inventory는 `sil/spn`을 포함한
+> 109개, 내부 numeric mapping은 `<eps>`까지 포함한 110개다. 아래 7월 28일
+> 본문의 “110개 정렬용 inventory”는 마지막 내부 mapping 범위를 가리킨다.
+> 논문·manifest에서는 이 세 범위를 구분한다. 최신 SHA와 파생 보조층 설계는
+> `DECISION_auto_phoneme_roman_aux_layer_20260731.md`를 따른다.
+
 ## 결론
 
 논문에서 주장하려는 동일성은 다음이다.

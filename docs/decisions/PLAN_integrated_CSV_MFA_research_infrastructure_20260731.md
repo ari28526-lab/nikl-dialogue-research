@@ -332,9 +332,17 @@ MFA와 같은 D: 대량 I/O 작업 중에는 다른 연도의 morph 전수 build
 - `pron_mfa`, 관측 phone 수, `n_spn`, `spn_ratio`
 - `align_status`, 누락·난정렬·quarantine 이유
 - TextGrid와 DB 경로·SHA
+- `phone_class_r_auto`: 원 MFA IPA를 보존한 검색용 로마자 phone 범주
+- `phoneme_lexical_r_auto`: raw 철자, 실제 MFA 입력 resolved 철자,
+  규칙 예측발음을 참조한 자동 음소 후보와 대응 상태
 
 발화 master에는 요약과 조인 키만 붙인다. 전체 interval을 긴 셀 하나에
 밀어 넣지 않는다.
+
+로마자 음소 보조층은 60발화 파일럿에서 구현·기계 검증했다. 기본 4-tier에
+상시 넣지 않고 정규화 interval/correspondence 표를 정본으로 하며, 선택
+후보에만 `phoneme_r_auto` 5-tier 사본을 만든다. `model_group_only`,
+`substitution`, `phone_only`, `reference_only`는 자동 승인하지 않는다.
 
 ### 단계 6 — 6개년 통합과 재현성 감사
 

@@ -135,6 +135,11 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
   - 단순 표시 검토만으로 승인하지 않도록 60발화 구조화 표의 실제 조합
     검색 Q1–Q7을 실행한 `COMBINED_SEARCH_DEMO.xlsx` 추가. 전체 적중 수와
     대표 13행, WAV/TextGrid/CSV 링크 39개, 파일 SHA 검증 통과
+  - MFA IPA를 없애지 않고 검색용 로마자로 보조하는 post-MFA 파일럿 완료.
+    동결 phone 107개 전수 매핑, 실제 60발화 1,625구간, 선택적
+    `phoneme_r_auto` 5-tier 60/60과 기존 네 tier 불변 검증 통과.
+    Dropbox의 `PHONEME_ROMAN_PILOT.xlsx`와 12개 새 5-tier는 연구자
+    수용 검토 대기이며 기본 운영 tier는 아직 4개다.
   - 전수 MFA는 연구자 수용 전까지 시작하지 않음
 
 상세 정본:
@@ -155,20 +160,21 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
   CSV가 아니다.
 - 최종 검색 CSV/Parquet에는 형태소 정보, 형태소별·어절별 철자 로마자,
   규칙 발음, 우리말샘 보조 발음, 화자/대화 참여자, 파일 coverage가 필요하다.
-- 6개년 MFA 뒤 TextGrid에서 `pron_mfa`, `n_spn`, `align_status` 등을 만드는
-  post-MFA 보조 레이어를 전수 생성·검증해야 한다.
+- 6개년 MFA 뒤 TextGrid에서 `pron_mfa`, `n_spn`, `align_status`와
+  `phone_class_r_auto/phoneme_lexical_r_auto`를 만드는 post-MFA 보조
+  레이어를 전수 생성·검증해야 한다. 로마자 음소층은 60발화 코드·파일럿만
+  완료됐고 연구자 수용 및 연도 runner 배선은 아직이다.
 - KOINA, stitch, wav2vec2, 연구자 판정은 선택 후보에만 별도 산출물로 추가한다.
 
 ## 바로 다음 작업
 
-1. Dropbox의 `COMBINED_SEARCH_DEMO.xlsx`에서 Q1–Q7의 조건 적중·파일
-   연결·표시 이해를 대표 13행으로 확인한다.
-2. 기존 `REVIEW.xlsx`의 미완료 판정을 마치고 두 workbook을 기계 gate와
-   결합해 인프라 승인 보고서를 만든다.
-3. 승인 뒤 2020 r2 전수 MFA를 시작하고 같은 검색 표를 연도 단위로 만든다.
-4. 2020의 정렬·phone inventory·검색 표·연구자 표본 QC를 모두 통과한 뒤
-   2021로 넘어간다.
-5. 2022–2025도 동일 계약과 한 연도씩의 gate로 진행한다.
+1. Dropbox의 `PHONEME_ROMAN_PILOT.xlsx` 1행에서 WAV, 기존 4-tier,
+   새 5-tier를 차례로 열어 로마자 보조층의 이해 가능성과 경계를 확인한다.
+2. 문제가 있을 때만 `대응_세부`에서 같은 `utt_id`를 필터한다.
+3. `COMBINED_SEARCH_DEMO.xlsx` Q1 첫 결과부터 조건·연결·표시를 확인한다.
+4. 두 파일럿이 수용되면 `REVIEW.xlsx`의 남은 인프라 판정을 정리하고
+   machine gate와 결합한 승인 보고서를 만든다.
+5. 승인 뒤 2020 전수 MFA를 시작한다. 현재 실행할 대량 PowerShell은 없다.
 
 전수 MFA는 아직 시작하지 않는다. 연구자가 확인한 전역 출력·검색 문제는
 코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제 수정본
