@@ -224,6 +224,11 @@ def _standalone_jamo_roman(jamo: str) -> str:
         return pp.VOWEL_ROMAN[jamo]
     if jamo in pp.SPELL_CODA_ROMAN:
         return pp.SPELL_CODA_ROMAN[jamo]
+    # ㄸ·ㅃ·ㅉ처럼 종성에 올 수 없는 독립 자음은 종성 철자표에 없다.
+    # 독립 ㄴ·ㄹ 등의 기존 소문자 표기는 유지하고, 필요한 경우에만
+    # onset 표기로 fallback해 표면 자모가 검색에서 사라지지 않게 한다.
+    if jamo in pp.ONSET_ROMAN and pp.ONSET_ROMAN[jamo]:
+        return pp.ONSET_ROMAN[jamo]
     raise MorphSchemaError(f"지원하지 않는 독립 자모: {jamo!r}")
 
 
