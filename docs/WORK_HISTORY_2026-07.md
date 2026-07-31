@@ -2116,3 +2116,23 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   연구자가 판정한다.
 - 상세 수치와 사용 한계는
   `docs/reviews/TEST_morph_roman_phonological_matrix_20260731.md`에 기록했다.
+
+### 60발화 조합 검색 → 연결 산출물 데모
+
+- 연구자가 `[MORPH_R]` 표시만 보는 것으로 충분하지 않고, 실제 조합
+  검색이 어떤 후보와 연결 파일을 내는지 확인해야 한다고 지적했다.
+- `build_morph_combined_search_demo.py`를 추가해 60발화의 구조화 표에서
+  다음 7검색을 실제 실행했다: ㄴ 삽입 유사 철자 환경, 형태소+POS+위치,
+  겹받침, 복합모음, 독립 자모, literal+정렬 경고, 어절 사이 좌우 환경.
+- 전체 적중은 Q1 10행, Q2 7행, Q3 7행, Q4 24행, Q5 25행, Q6 6행,
+  Q7 17행이다. 현재 12발화 bundle에서 검색별 최대 2건을 뽑아 대표
+  결과 13행을 만들었다.
+- `COMBINED_SEARCH_DEMO.xlsx`에는 `검색_결과/검색식_안내/세부_근거`
+  세 시트, 조건·연결·표시 이해·판정 dropdown과 WAV/TextGrid/CSV 상대링크
+  39개가 있다. 동반 catalog/results CSV와 별도 manifest/README도 만들었다.
+- Dropbox의 기존 12발화 폴더에 다섯 파일만 추가했다. 원 payload와
+  `REVIEW.xlsx`는 바꾸지 않았다. 복사 전후 SHA, 7검색·13행·39링크를
+  재검증했다.
+- 내일 검토 순서는
+  `docs/reviews/GUIDE_morph_combined_search_demo_20260731.md`에 기록했다.
+  실제 음운 실현은 이 데모의 판정 대상이 아니다.

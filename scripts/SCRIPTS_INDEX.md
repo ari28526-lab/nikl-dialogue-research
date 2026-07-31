@@ -160,6 +160,7 @@
 | export_mfa_db_research_4tier.py | 보존 MFA SQLite의 word/phone을 바꾸지 않고 연구 4-tier로 재수출. 기존 exporter와 구 산출물은 보존 | 기존 DB 60발화 재수출·동등성 통과 |
 | audit_mfa_research_schema_pilot.py | DB·구 TextGrid·새 TextGrid·검색 CSV를 독립 대조해 coverage, tier, duration, word/phone, 형태소 label을 검사 | `PILOT_AUDIT.json` status passed |
 | package_mfa_research_schema_review.py | 연도별 2발화의 WAV/TextGrid/LAB/CSV와 REVIEW.xlsx를 Dropbox에 원자 구성. 네 tier 모두의 정확한 0.05초 endpoint·바깥 빈 label, SHA, 링크·dropdown을 검증하고 이전 연구자 입력을 utt_id로 승계. Dropbox rename lock 복구 지원 | 수동 검토가 잡은 느슨한 경계 gate 교정; v2 12발화·48 payload·명시 경계 12/12 |
+| build_morph_combined_search_demo.py | 60발화의 morph master/tokens/units/boundaries를 실제 조합 검색해 현재 12발화 bundle 안 대표 결과로 제한하고, 검색식·전체 적중 수·구조 근거·WAV/TextGrid/CSV 링크와 검토 dropdown을 갖춘 별도 workbook/CSV/manifest 생성 | Q1–Q7 7검색·대표 13행·39링크·SHA 검증 통과 |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

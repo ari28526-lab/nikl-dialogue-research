@@ -132,6 +132,9 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
   - 첫 수동 검토에서 일부 tier의 명시적 0.05초 padding endpoint 누락을
     발견해 v2로 교정. 네 tier의 좌우 endpoint 12/12 재검증, 기존판은
     `MFA_RESEARCH_SCHEMA_REVIEW_12_v1_ARCHIVE_20260731`에 보존
+  - 단순 표시 검토만으로 승인하지 않도록 60발화 구조화 표의 실제 조합
+    검색 Q1–Q7을 실행한 `COMBINED_SEARCH_DEMO.xlsx` 추가. 전체 적중 수와
+    대표 13행, WAV/TextGrid/CSV 링크 39개, 파일 SHA 검증 통과
   - 전수 MFA는 연구자 수용 전까지 시작하지 않음
 
 상세 정본:
@@ -158,9 +161,10 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. Dropbox의 12발화 수정본에서 연결·양끝 경계·`[MORPH]` 가독성·
-   `[MORPH_R]` 검색 가능성을 확인한다.
-2. 작성된 `REVIEW.xlsx`를 기계 gate와 결합해 인프라 승인 보고서를 만든다.
+1. Dropbox의 `COMBINED_SEARCH_DEMO.xlsx`에서 Q1–Q7의 조건 적중·파일
+   연결·표시 이해를 대표 13행으로 확인한다.
+2. 기존 `REVIEW.xlsx`의 미완료 판정을 마치고 두 workbook을 기계 gate와
+   결합해 인프라 승인 보고서를 만든다.
 3. 승인 뒤 2020 r2 전수 MFA를 시작하고 같은 검색 표를 연도 단위로 만든다.
 4. 2020의 정렬·phone inventory·검색 표·연구자 표본 QC를 모두 통과한 뒤
    2021로 넘어간다.
