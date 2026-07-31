@@ -119,12 +119,17 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 - 외부 workflow 리뷰 판정: `GO AFTER FIXES`
 - TextGrid 발화 수준 검색 tier 외부 리뷰:
   `words/phones_mfa/utterance/utterance_search` 4-tier 권장
-- 현재 단계: **형태소·음절·분절 단위 로마자 및 위치 검색 스키마 외부 리뷰
-  대기**.
-  legacy 형태소 시간층 제거와 발화 수준 검색 tier 방향은 유력하지만,
-  `tagged_roman` 구분자 문법, 무음 초성 `ㅇ`, 형태소·어절·발화 위치 좌표,
-  `morph_tokens/morph_syllables/morph_boundaries`의 정본 구조를 먼저
-  검토한다. 구현과 60발화 재수출은 그 전까지 중지
+- 외부 형태소·로마자 위치 검색 리뷰는 필수 정정을 반영해 triage 완료
+- 현재 단계: **검색 스키마·새 4-tier의 60발화 기계 gate 통과,
+  12발화 연구자 수용 검토 대기**.
+  - 구조화 검색 정본:
+    `morph_tokens/morph_units/morph_boundaries`, 선택 파생
+    `orth_components`
+  - 60발화: 새 TextGrid 60/60, DB word/phone 의미 동등성 60/60,
+    CSV–TextGrid 형태소 label 동등성 60/60
+  - Dropbox:
+    `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731`
+  - 전수 MFA는 연구자 수용 전까지 시작하지 않음
 
 상세 정본:
 
@@ -134,6 +139,8 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 - `docs/reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`
 - `docs/reviews/RESULT_design_review_TextGrid_utterance_search_tier_20260731.md`
 - `docs/reviews/PROMPT_external_review_morph_roman_position_schema_20260731.md`
+- `docs/reviews/RESULT_design_review_morph_roman_position_schema_20260731.md`
+- `docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`
 - `docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md`
 
 ## 중요한 미완료 항목
@@ -148,20 +155,17 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 바로 다음 작업
 
-1. 외부 리뷰로 현행 `tagged_roman`의 분절·음절·형태소·어절 구분자,
-   무음 초성, 품사 표지, 위치 좌표와 구조화 검색 표를 확정한다.
-2. TextGrid 4-tier 권고와 위 검색 계약을 합쳐 `G-TIER-01`·`G-CSV-01`
-   구현 사양을 하나로 동결한다.
-3. 보존한 pilot DB·CSV에서 60발화 TextGrid/행별 CSV를 다시 내보내
-   word·phone·식별자·duration 동등성을 검사한다. MFA 재정렬은 하지 않는다.
-4. 연구자가 수정본에서 연결·경계를 재검토하고
-   `validate_mfa_r2_review_workbook.py`로 승인 보고서를 만든다.
-5. 연구자 승인 뒤 2020 r2 전수 MFA를 시작하고, 연도별 QC 뒤 다음 연도로
-   넘어간다.
+1. Dropbox의 12발화 수정본에서 연결·양끝 경계·`[MORPH]` 가독성·
+   `[MORPH_R]` 검색 가능성을 확인한다.
+2. 작성된 `REVIEW.xlsx`를 기계 gate와 결합해 인프라 승인 보고서를 만든다.
+3. 승인 뒤 2020 r2 전수 MFA를 시작하고 같은 검색 표를 연도 단위로 만든다.
+4. 2020의 정렬·phone inventory·검색 표·연구자 표본 QC를 모두 통과한 뒤
+   2021로 넘어간다.
+5. 2022–2025도 동일 계약과 한 연도씩의 gate로 진행한다.
 
-전수 MFA는 아직 시작하지 않는다. 전수 이전의 60발화 인프라 수용
-파일럿은 기계 검증을 마쳤지만 연구자가 확인한 전역 출력·검색 문제를 고쳐
-같은 표본으로 다시 검토해야 한다.
+전수 MFA는 아직 시작하지 않는다. 연구자가 확인한 전역 출력·검색 문제는
+코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제 수정본
+12발화를 사람이 수용하는 단계다.
 
 ## 2020 실행 인터페이스의 안전장치
 
@@ -170,7 +174,7 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 r2 재실행이 가능하다. 다른 연도나 공통사전 없는 실행에서 이 플래그를 쓰면
 차단한다.
 
-실제 명령은 외부 리뷰 반영 뒤
+실제 명령은 12발화 연구자 수용 뒤
 `WORKFLOW_r2_MFA_research_data_contract_20260730.md`의 11절에서 가져온다.
 첫 실행에는 cleanup을 넣지 않는다.
 

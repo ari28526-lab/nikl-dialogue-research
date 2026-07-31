@@ -339,3 +339,28 @@ $release = "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728"
 ```
 
 이 명령에는 cleanup이나 자동 정본 승격을 넣지 않는다.
+
+## 12. 2026-07-31 검색 스키마·TextGrid 파일럿 반영
+
+외부 리뷰의 필수 정정을 반영해 다음 계약을 구현했다.
+
+- 구조화 검색:
+  `morph_tokens/morph_units/morph_boundaries`, 선택 파생
+  `orth_components`
+- 직렬화:
+  `roman_mfa.v1/tagged_roman.v2/morph_position.v1/morph_search.v1`
+- 연구 TextGrid:
+  `words/phones_mfa/utterance/utterance_search`
+
+기존 60발화 보존 DB에서 MFA 재정렬 없이 다시 내보내 다음을 통과했다.
+
+- 새 TextGrid 유효성 60/60
+- DB word/phone과 새 `words/phones_mfa` 의미 동등성 60/60
+- CSV와 TextGrid 형태소·로마자 label 동등성 60/60
+- tagged 직렬화 재생성, 음절 재조합, 형태소 경계 수 불일치 0
+
+이 결과는 기계 gate 통과이며 아직 연구자 수용을 뜻하지 않는다. Dropbox
+`MFA_RESEARCH_SCHEMA_REVIEW_12_20260731`의 연도별 2발화, 총 12발화를
+검토한 뒤에만 §11의 2020 명령을 실행한다. 상세 설계 정정과 표 수치는
+`docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`
+를 따른다.

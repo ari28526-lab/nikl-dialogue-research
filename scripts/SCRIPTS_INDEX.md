@@ -149,6 +149,18 @@
 | build_search_parquet.py | 세션 CSV → 연도 Parquet + 전체 단일 Parquet 미러 | 미작성 (전량 CSV 후) |
 | extract_actual_pron.py | 4-tier phones 라벨·시간을 검색용 보조 레이어로 추출. **사람의 실현 판정값이 아님** | 미작성(경로명 `06_actual_pron`도 오해 방지를 위해 구현 전 재검토) |
 
+## 형태소 위치 검색·연구 TextGrid v1 (2026-07-31)
+
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| morph_schema.py | `tagged`를 `morph_tokens/morph_units/morph_boundaries/orth_components`로 정규화하고 `tagged_roman.v2`를 결정적으로 생성. 완성형 음절·독립 자모·literal을 구분하고 음절 슬롯과 구성 자모를 분리 | 60발화 parse·재생성·재조합·경계 gate 통과 |
+| build_morph_position_tables.py | 동결 pre-MFA CSV에서 위 4개 검색 표와 발화별 schema index를 원자 생성. 중복 ID·구조 오류·count 불일치를 차단 | 2020–2025 파일럿 60발화, token 548·unit 809·boundary 488 생성 |
+| textgrid_labels.py | `[UTT]/[ORTH_R]/[MORPH]/[MORPH_R]/[NOTE]` label의 예약문자 escape와 왕복 복원 | 회귀시험 통과 |
+| research_textgrid.py | `words/phones_mfa/utterance/utterance_search` 4-tier 작성·파싱·연속 interval 검증 | 회귀시험 통과 |
+| export_mfa_db_research_4tier.py | 보존 MFA SQLite의 word/phone을 바꾸지 않고 연구 4-tier로 재수출. 기존 exporter와 구 산출물은 보존 | 기존 DB 60발화 재수출·동등성 통과 |
+| audit_mfa_research_schema_pilot.py | DB·구 TextGrid·새 TextGrid·검색 CSV를 독립 대조해 coverage, tier, duration, word/phone, 형태소 label을 검사 | `PILOT_AUDIT.json` status passed |
+| package_mfa_research_schema_review.py | 연도별 2발화의 WAV/TextGrid/LAB/CSV와 REVIEW.xlsx를 Dropbox에 원자 구성. 0.05초 점검 padding, SHA, 링크·dropdown 검증, Dropbox rename lock 복구 지원 | 12발화·48 payload·양끝 경계 12/12 검증 |
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장

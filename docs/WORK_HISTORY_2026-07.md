@@ -2027,3 +2027,51 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   연구 정합성·검색 정확성·장기 재현성에 더 나은 v2 또는 전면 재설계가
   있으면 기존판을 archive·versioning하고 새 표기를 채택할 수 있다고
   추가했다.
+
+### 외부 리뷰 반영과 형태소 위치 검색·TextGrid 수정본 파일럿
+
+- 외부 리뷰 판정의 핵심인 정규화 표, idx+count 위치, literal 표기,
+  versioning과 4-tier TextGrid를 채택했다.
+- 리뷰의 `segment=syllable slot` 동일시는 연구 언어학 정본으로 그대로
+  채택하지 않았다. 겹받침·복합 모음의 슬롯과 구성 자모를 구분하기 위해
+  `morph_units`와 선택 파생 `orth_components`를 만들었다.
+- 완성형 음절 외에도 독립 자모와 기호가 검색에서 사라지지 않도록 unit을
+  `hangul/jamo/literal`로 명시했다.
+- `morph_schema.py`, `build_morph_position_tables.py`,
+  `textgrid_labels.py`, `research_textgrid.py`,
+  `export_mfa_db_research_4tier.py`,
+  `audit_mfa_research_schema_pilot.py`,
+  `package_mfa_research_schema_review.py`를 추가했다.
+- 활성 TextGrid 표준을
+  `words/phones_mfa/utterance/utterance_search`로 동결했다.
+  `utterance_search`에는 `[UTT]/[ORTH_R]/[MORPH]/[MORPH_R]`와 필요한
+  경우에만 `[NOTE]`를 둔다. 형태소의 거짓 음향 경계는 만들지 않는다.
+- 기존 60발화 MFA DB를 읽기 전용으로 재사용했다. 새 MFA 정렬은 없었고
+  구 exporter와 산출물도 덮어쓰지 않았다.
+- D: 산출:
+  `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730\
+  research_schema_v1_20260731`
+- 60발화 구조화 표는 morph token 548, unit 809
+  (hangul 757/jamo 25/literal 27), boundary 488, orth component 1,847행이다.
+- 자동 gate는 중복 ID·parse error·v2 재생성 불일치·음절 재조합 불일치·
+  경계 count 불일치가 모두 0이었다.
+- 새 TextGrid 유효성 60/60, DB의 기존 word/phone과 의미 동등성 60/60,
+  CSV와 TextGrid `[MORPH]/[MORPH_R]` 동등성 60/60을 통과했다.
+- 연구자가 반복 없이 확인할 수 있도록 연도별 2발화, 총 12발화의
+  Dropbox 묶음을 만들었다:
+  `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731`.
+- 묶음에는 발화당 WAV/TextGrid/LAB/CSV, 구조화 표 4종, README,
+  `REVIEW.csv`, 3-sheet `REVIEW.xlsx`, manifest를 넣었다. 48개 링크,
+  dropdown, 파일 크기·SHA, WAV/TextGrid duration과 양끝 0.05초 경계를
+  검증했다.
+- Dropbox 동기화가 최종 폴더 rename을 잠근 1회 실패는 partial manifest와
+  모든 파일 SHA/크기, workbook 링크를 재검증하는 복구 경로로 안전
+  승격했다. 원본·기존 결과를 삭제하거나 수정하지 않았다.
+- 전용 artifact-tool 의존성 로더는 이 환경에서 제공되지 않아, 사용자가
+  이전에 승인한 openpyxl 생성과 프로젝트의 PIL sheet renderer를 사용했다.
+  `검토/열_안내/변경_요약` 세 시트를 렌더링해 잘림·가독성을 확인했다.
+- 새 모듈 compile과 신규·관련 기존 회귀시험 31개가 통과했다.
+- 상세 리뷰 triage와 다음 gate는
+  `docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`
+  에 기록했다. 현재는 기계 파일럿 통과이며 연구자 12발화 수용 전에는
+  2020 전수 MFA를 시작하지 않는다.
