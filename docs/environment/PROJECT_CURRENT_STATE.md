@@ -129,6 +129,9 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
     CSV–TextGrid 형태소 label 동등성 60/60
   - Dropbox:
     `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731`
+  - 첫 수동 검토에서 일부 tier의 명시적 0.05초 padding endpoint 누락을
+    발견해 v2로 교정. 네 tier의 좌우 endpoint 12/12 재검증, 기존판은
+    `MFA_RESEARCH_SCHEMA_REVIEW_12_v1_ARCHIVE_20260731`에 보존
   - 전수 MFA는 연구자 수용 전까지 시작하지 않음
 
 상세 정본:

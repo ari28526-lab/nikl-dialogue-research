@@ -39,6 +39,15 @@ DETAIL_TABLES = (
     "orth_components",
 )
 REVIEW_EDGE_PADDING_SECONDS = 0.05
+REVIEW_INPUT_HEADERS = (
+    "WAV_LAB_일치",
+    "words_phones_정상",
+    "양끝_경계_보임",
+    "MORPH_읽기_쉬움",
+    "MORPH_R_검색_가능",
+    "결정",
+    "메모",
+)
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -200,41 +209,6 @@ def wav_duration(path: Path) -> float:
         return stream.getnframes() / stream.getframerate()
 
 
-def blank_review_padding(
-    intervals: list[tuple[float, float, str]],
-    *,
-    duration: float,
-) -> list[tuple[float, float, str]]:
-    """검토용으로 추가된 좌우 무음 구간의 label을 명시적으로 비운다.
-
-    padding 안쪽의 시간·라벨은 바꾸지 않는다. 경계를 가로지른 interval은
-    0.05초 경계에서 나누며, 새로 추가된 무음 바깥 조각만 빈 label로 둔다.
-    """
-
-    left = REVIEW_EDGE_PADDING_SECONDS
-    right = float(duration) - REVIEW_EDGE_PADDING_SECONDS
-    if right <= left:
-        raise RuntimeError(f"검토 WAV가 padding보다 짧음: {duration}")
-    result: list[tuple[float, float, str]] = []
-    for begin, end, label in intervals:
-        points = [float(begin)]
-        points.extend(
-            cut
-            for cut in (left, right)
-            if float(begin) + 1e-9 < cut < float(end) - 1e-9
-        )
-        points.append(float(end))
-        for piece_begin, piece_end in zip(points, points[1:]):
-            piece_label = (
-                ""
-                if piece_end <= left + 1e-9
-                or piece_begin >= right - 1e-9
-                else label
-            )
-            result.append((piece_begin, piece_end, piece_label))
-    return result
-
-
 def _hyperlink(cell, filename: str) -> None:
     cell.value = filename
     cell.hyperlink = filename
@@ -244,6 +218,7 @@ def _hyperlink(cell, filename: str) -> None:
 def create_workbook(
     path: Path,
     review_rows: list[dict[str, object]],
+    prior_reviews: Mapping[str, Mapping[str, object]] | None = None,
 ) -> None:
     workbook = Workbook()
     sheet = workbook.active
@@ -270,19 +245,14 @@ def create_workbook(
     sheet.append(headers)
     for review in review_rows:
         row_index = sheet.max_row + 1
+        prior = (prior_reviews or {}).get(str(review["utt_id"]), {})
         values = [
             review["review_order"],
             review["year"],
             review["utt_id"],
             review["form"],
             review["selection_reason"],
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
+            *(str(prior.get(header, "") or "") for header in REVIEW_INPUT_HEADERS),
             None,
             None,
             None,
@@ -434,6 +404,37 @@ def create_workbook(
     workbook.save(path)
 
 
+def load_prior_reviews(path: Path | None) -> dict[str, dict[str, object]]:
+    if path is None:
+        return {}
+    if not path.is_file():
+        raise FileNotFoundError(f"이전 검토 workbook 없음: {path}")
+    workbook = load_workbook(path, data_only=False, read_only=False)
+    if "검토" not in workbook.sheetnames:
+        raise RuntimeError(f"이전 workbook에 검토 시트 없음: {path}")
+    sheet = workbook["검토"]
+    headers = {
+        str(cell.value): cell.column
+        for cell in sheet[1]
+        if cell.value is not None
+    }
+    required = {"utt_id", *REVIEW_INPUT_HEADERS}
+    missing = sorted(required - set(headers))
+    if missing:
+        raise RuntimeError(f"이전 workbook 필수 열 누락: {missing}")
+    result: dict[str, dict[str, object]] = {}
+    for row_index in range(2, sheet.max_row + 1):
+        utt_id = str(sheet.cell(row_index, headers["utt_id"]).value or "")
+        if not utt_id:
+            continue
+        result[utt_id] = {
+            header: sheet.cell(row_index, headers[header]).value or ""
+            for header in REVIEW_INPUT_HEADERS
+        }
+    workbook.close()
+    return result
+
+
 def validate_workbook(path: Path, expected_rows: int) -> None:
     workbook = load_workbook(path, data_only=False)
     if workbook.sheetnames != ["검토", "열_안내", "변경_요약"]:
@@ -456,10 +457,13 @@ def package_review(
     legacy_review_root: Path,
     morph_root: Path,
     output_root: Path,
+    prior_review_workbook: Path | None = None,
 ) -> dict[str, object]:
     legacy_review_root = legacy_review_root.resolve()
     morph_root = morph_root.resolve()
     output_root = output_root.resolve()
+    if prior_review_workbook is not None:
+        prior_review_workbook = prior_review_workbook.resolve()
     partial = output_root.with_name(output_root.name + ".partial")
     if output_root.exists():
         raise FileExistsError(f"기존 검토 묶음 덮어쓰기 금지: {output_root}")
@@ -481,6 +485,7 @@ def package_review(
     review_rows: list[dict[str, object]] = []
     manifest_files: list[dict[str, object]] = []
     boundary_counts = Counter()
+    prior_reviews = load_prior_reviews(prior_review_workbook)
 
     for review_order, row in enumerate(selected, 1):
         year = row["year"]
@@ -500,19 +505,24 @@ def package_review(
         phones = tiers.get("phones_mfa", tiers.get("phones", []))
         if not words or not phones:
             raise RuntimeError(f"{source_tg}: words/phones 누락")
-        words = blank_review_padding(words, duration=float(duration))
-        phones = blank_review_padding(phones, duration=float(duration))
         validation = write_research_textgrid(
             destination_tg,
             duration=float(duration),
             words=words,
             phones=phones,
             search_row=row,
+            edge_padding_seconds=REVIEW_EDGE_PADDING_SECONDS,
         )
         if not validation["valid"]:
             raise RuntimeError(f"{destination_tg}: 새 TextGrid 검증 실패")
         boundary_counts["left"] += bool(validation["left_empty_boundary"])
         boundary_counts["right"] += bool(validation["right_empty_boundary"])
+        boundary_counts["explicit_left"] += bool(
+            validation["explicit_left_edge_boundary"]
+        )
+        boundary_counts["explicit_right"] += bool(
+            validation["explicit_right_edge_boundary"]
+        )
         if (
             abs(wav_duration(destination_wav) - float(duration)) > 0.001
         ):
@@ -570,7 +580,7 @@ def package_review(
     ]
     write_csv(review_csv, review_rows, review_fields)
     workbook_path = partial / "REVIEW.xlsx"
-    create_workbook(workbook_path, review_rows)
+    create_workbook(workbook_path, review_rows, prior_reviews)
     validate_workbook(workbook_path, 12)
     readme = partial / "README.md"
     readme.write_text(
@@ -598,14 +608,27 @@ def package_review(
                 "sha256": sha256_file(path),
             }
         )
-    if boundary_counts != {"left": 12, "right": 12}:
+    if boundary_counts != {
+        "left": 12,
+        "right": 12,
+        "explicit_left": 12,
+        "explicit_right": 12,
+    }:
         raise RuntimeError(f"12발화 양끝 padding gate 실패: {boundary_counts}")
     manifest = {
-        "schema_version": "mfa_research_schema_review_bundle.v1",
+        "schema_version": "mfa_research_schema_review_bundle.v2",
         "status": "success",
         "created_at": datetime.now().astimezone().isoformat(),
         "legacy_review_root": str(legacy_review_root),
         "morph_root": str(morph_root),
+        "prior_review_workbook": (
+            str(prior_review_workbook) if prior_review_workbook else ""
+        ),
+        "prior_review_workbook_sha256": (
+            sha256_file(prior_review_workbook)
+            if prior_review_workbook
+            else ""
+        ),
         "selection": [
             {
                 "review_order": row["review_order"],
@@ -622,6 +645,8 @@ def package_review(
             "payload_files": 48,
             "left_empty_boundary": 12,
             "right_empty_boundary": 12,
+            "explicit_left_padding_boundary_all_tiers": 12,
+            "explicit_right_padding_boundary_all_tiers": 12,
         },
         "files": sorted(
             manifest_files, key=lambda record: str(record["relative_path"])
@@ -641,12 +666,14 @@ def main() -> int:
     parser.add_argument("--legacy-review-root", type=Path, required=True)
     parser.add_argument("--morph-root", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--prior-review-workbook", type=Path)
     args = parser.parse_args()
     try:
         manifest = package_review(
             legacy_review_root=args.legacy_review_root,
             morph_root=args.morph_root,
             output_root=args.output_root,
+            prior_review_workbook=args.prior_review_workbook,
         )
     except Exception as exc:
         print(f"[FAIL] {type(exc).__name__}: {exc}", file=sys.stderr)

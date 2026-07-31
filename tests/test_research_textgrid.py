@@ -70,6 +70,62 @@ class ResearchTextGridTests(unittest.TestCase):
             self.assertEqual(tiers["utterance"][0], (0.0, 0.1, ""))
             self.assertEqual(tiers["utterance"][-1], (1.0, 1.2, ""))
 
+    def test_review_padding_boundary_is_explicit_on_every_tier(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "U1.TextGrid"
+            validation = write_research_textgrid(
+                path,
+                duration=1.2,
+                words=[
+                    (0.0, 0.2, ""),
+                    (0.2, 0.6, "혹시"),
+                    (0.6, 1.0, "요즘"),
+                    (1.0, 1.2, ""),
+                ],
+                phones=[
+                    (0.0, 0.2, ""),
+                    (0.2, 0.5, "h"),
+                    (0.5, 1.0, "m"),
+                    (1.0, 1.2, ""),
+                ],
+                search_row=self.row(),
+                edge_padding_seconds=0.05,
+            )
+            self.assertTrue(validation["valid"])
+            self.assertTrue(validation["explicit_left_edge_boundary"])
+            self.assertTrue(validation["explicit_right_edge_boundary"])
+            _duration, tiers = parse_mfa_textgrid(path)
+            for tier_name, intervals in tiers.items():
+                endpoints = {begin for begin, _, _ in intervals} | {
+                    end for _, end, _ in intervals
+                }
+                self.assertIn(0.05, endpoints, tier_name)
+                self.assertIn(1.15, endpoints, tier_name)
+                self.assertEqual(intervals[0], (0.0, 0.05, ""))
+                self.assertEqual(intervals[-1], (1.15, 1.2, ""))
+
+    def test_padding_gate_rejects_implicit_empty_span(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "U1.TextGrid"
+            write_research_textgrid(
+                path,
+                duration=1.2,
+                words=[(0.0, 0.2, ""), (0.2, 1.0, "혹시")],
+                phones=[(0.0, 0.2, ""), (0.2, 1.0, "h")],
+                search_row=self.row(),
+            )
+            checked = validate_research_textgrid(
+                path,
+                expected_duration=1.2,
+                expected_row=self.row(),
+                expected_edge_padding_seconds=0.05,
+            )
+            self.assertFalse(checked["valid"])
+            self.assertIn(
+                "explicit left padding boundary missing: utterance",
+                checked["reasons"],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

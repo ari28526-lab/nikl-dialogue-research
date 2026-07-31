@@ -175,6 +175,33 @@ Dropbox 동기화가 폴더 rename을 잠근 1회 실패는 부분 폴더의 man
 파일별 크기·SHA-256, workbook 링크를 전수 재검증한 뒤 승격했다. payload를
 다시 복사하거나 원본을 변경하지 않았다.
 
+### 7.1 첫 수동 검토에서 발견한 경계 gate 정정
+
+첫 발화 `SDRW2000000510.1.1.98`을 Praat에서 확인하던 중 연구자가
+`words/phones_mfa`에만 0.05초 padding 경계가 있고
+`utterance/utterance_search`에는 그 경계가 긴 빈 구간에 합쳐졌음을
+발견했다. v1 gate는 발화 label 앞뒤에 빈 공간이 있는지만 검사해 이를
+12/12 통과로 잘못 보고했다.
+
+다음과 같이 교정했다.
+
+- 모든 tier에 정확히 `0.05`와 `xmax-0.05` endpoint가 모두 있는지 검사
+- 두 바깥 padding interval의 label이 비었는지 tier별 검사
+- 경계가 없는 긴 빈 interval을 넣은 회귀 fixture가 실패하는지 검사
+- 새 TextGrid 12개를 다시 만들고 독립 validator로 12/12 재검증
+- 연구자가 이미 입력한 `WAV_LAB_일치=정상`은 `utt_id`로 안전 승계
+
+기존 Dropbox 판본은 삭제하지 않고 다음에 보존했다.
+
+```text
+C:\Users\ari30\Dropbox\
+  MFA_RESEARCH_SCHEMA_REVIEW_12_v1_ARCHIVE_20260731
+```
+
+수정본 v2는 원래 검토 주소에 두었다. manifest schema는
+`mfa_research_schema_review_bundle.v2`이며, 모든 파일의 현재 크기와
+SHA-256 불일치가 0임을 다시 확인했다.
+
 ## 8. 다음 gate
 
 연구자는 12발화에서 다음만 확인한다.

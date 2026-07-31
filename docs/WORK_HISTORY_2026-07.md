@@ -2075,3 +2075,24 @@ TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 def
   `docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`
   에 기록했다. 현재는 기계 파일럿 통과이며 연구자 12발화 수용 전에는
   2020 전수 MFA를 시작하지 않는다.
+
+### 12발화 첫 수동 검토에서 padding gate 거짓 통과 발견·교정
+
+- 연구자가 첫 발화 `SDRW2000000510.1.1.98`을 Praat에서 확인하면서
+  `words/phones_mfa`에는 0.05초 경계가 보이지만
+  `utterance/utterance_search`에는 보이지 않는다고 지적했다.
+- 실제 TextGrid를 대조한 결과 위 두 tier는 `0–1.21초` 빈 interval 하나로
+  합쳐져 있었고 0.05초 endpoint가 없었다. 기존 validator는 label 앞뒤의
+  빈 시간만 확인했기 때문에 이를 잘못 통과시켰다.
+- writer가 요청된 padding endpoint에서 모든 tier를 명시적으로 분할하게
+  하고, validator가 네 tier 각각의 정확한 좌우 endpoint와 바깥 빈 label을
+  검사하도록 강화했다. 경계 없는 긴 빈 interval의 실패 회귀시험도
+  추가했다.
+- 새 Dropbox manifest를 `mfa_research_schema_review_bundle.v2`로 올리고
+  TextGrid 12/12에서 네 tier 좌우 명시 경계를 독립 재검증했다. 파일
+  SHA-256 불일치는 0건, workbook 링크는 48/48이다.
+- 사용자가 이미 입력한 1번 행 `WAV_LAB_일치=정상`은 이전 workbook의
+  `utt_id`를 기준으로 새 workbook에 승계했다. 나머지 판정은 비어 있다.
+- 기존판은 삭제하지 않고
+  `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_v1_ARCHIVE_20260731`
+  로 보존했으며, 수정본은 원래 검토 주소에 다시 만들었다.

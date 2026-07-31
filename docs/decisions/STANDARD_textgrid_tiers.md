@@ -156,5 +156,10 @@ WAV에 좌우 0.05초 무음을 붙이고 모든 tier를 함께 이동해 양끝
 interval을 12/12 보장한다. 운영 원시간 파일에는 존재하지 않는 무음을
 임의로 만들지 않는다.
 
+첫 수동 검토에서 v1 검사가 “빈 구간 존재”와 “정확한 padding endpoint
+존재”를 구분하지 못한 것이 발견됐다. 활성 v2 검토 gate는 네 tier 모두에
+`0.05`와 `xmax-0.05` 경계가 명시적으로 존재하고 바깥 label이 비어야만
+통과한다. 수정본 12/12를 이 강화 gate로 재검증했다.
+
 세부 정정과 실측 근거:
 `docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`.
