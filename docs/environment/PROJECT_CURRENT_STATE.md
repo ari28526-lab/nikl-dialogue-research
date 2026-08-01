@@ -69,13 +69,18 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 
 ## 현재 안전 정지점
 
-계산 중인 전수 MFA는 없다. workflow 수정, 전체 시험, 2020 source contract
-생성·검증은 완료했다. 다음 작업은 다음 순서로만 진행한다.
+신규 전수 MFA는 아직 시작하지 않았다. workflow 수정, 전체 시험, 2020 source
+contract 생성·검증을 완료했고, 2026-08-01 17:14 KST에 2020
+`morph_search.v3` shard 2–23 재개 작업을 시작했다. lock PID 25716,
+Python worker PID 13480, 시작 직후 manifest는 `running`, 1/23 재사용 상태다.
+이는 MFA 대체가 아니라 2020 MFA 직전 필수 검색·입력 인프라 단계다.
 
-1. 2020 `morph_search.v3` shard 2–23을 재개한다.
+다음 작업은 다음 순서로만 진행한다.
+
+1. 실행 중인 2020 `morph_search.v3` shard 2–23을 완주한다.
 2. 2020 승인 제외표만 만들고 연구자가 확인한다.
-3. 2020 MFA→6-tier→4 동반표→독립 QC→생산 표본 검토를 완료한다.
-4. 2020 Gate B가 통과한 뒤에만 2021–2025 큐를 연다.
+3. **필수** 2020 MFA→6-tier→4 동반표→독립 QC→생산 표본 검토를 완료한다.
+4. 2020 Gate B가 통과한 뒤 **필수** 2021–2025 전 연도 MFA 큐를 연다.
 
 실행 명령은 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 

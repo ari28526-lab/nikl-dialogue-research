@@ -487,3 +487,13 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 다음 계산은 커밋·푸시 뒤 `scripts/resume_2020_morph_search.ps1` 하나로 2020
 shard 2–23을 재개하는 것이다.
+
+### 17:14 KST — 2020 검색표 재개
+
+- 커밋 `cbfd299`를 GitHub에 푸시한 뒤 2020 전용 wrapper를 백그라운드로
+  시작했다.
+- 시작 실측: source contract `passed`, 충돌 lock 0, 기존 progress 1/23,
+  새 lock PID 25716, Python worker PID 13480, manifest `running`.
+- 이 계산은 MFA를 대신하지 않는다. 완료 뒤 2020 제외 후보 승인과 2020 신규
+  r2 전수 정렬이 필수 후속 단계이며, Gate B 뒤 2021–2025도 전부 정렬한다.
+- 로그: `logs/morph_search_2020_20260801_171441.out.log` 및 `.err.log`.
