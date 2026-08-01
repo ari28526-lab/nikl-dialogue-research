@@ -29,6 +29,7 @@ param(
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
     [switch]$AllowLegacyInlineG2p,
+    [switch]$AllowFullCleanRetry,
     [ValidateRange(0, 2147483647)]
     [int]$BulkWrapperPid = 0
 )
@@ -1817,10 +1818,11 @@ foreach ($y in $years) {
         #   에러 traceback은 자기 로그 파일이 닫힌 '뒤' 출력되는 구조라 콘솔이 닫히면 유실됨
         #   (7/17 2020 실패 원인 유실 사고). 파일로 받되, 1분마다 파일 끝(=현재 진행바)을
         #   요약해 콘솔에 하트비트로 찍음 — 실시간성 유지 + 실패 원인 영구 보존.
-        # ★ 이어가기 (2026-07-18): 같은 연도 재시도 시 temp DB가 남아 있으면 1차는
-        #   --clean 없이 실행 → MFA가 끝난 단계(코퍼스 로딩 5.5h, MFCC 등)를 재사용.
-        #   실패하면 temp 비우고 --clean 전체 재실행(2차 폴백 — 어중간한 DB 방어).
-        #   lab을 바꾼 적 없는 동일-연도 재시도에만 안전(연도 첫 시도는 항상 --clean).
+        # ★ 이어가기 (2026-08-01): 같은 입력 계약의 temp DB가 남아 있으면
+        #   --clean 없이 한 번만 재개한다. 재개 실패 뒤의 연도 전체 --clean
+        #   재계산은 기본 금지다. 이미 끝난 코퍼스 로딩·MFCC·정렬 계산을 보존하고
+        #   연구자가 원인을 확인한 뒤에만 -AllowFullCleanRetry로 명시 허용한다.
+        #   연도 첫 실행(temp 없음)은 MFA 초기화를 위해 --clean이 필요하다.
             $errFile = Join-Path $logDir "mfa_${y}_stderr.log"
             $heartbeatFile = Join-Path $logDir (
                 "mfa_{0}_{1}_heartbeat.jsonl" -f $y, $runId
@@ -1834,8 +1836,12 @@ foreach ($y in $years) {
             )
         } else {
             $tries = @()
-            if (Test-Path $tmpYear) { $tries += $false }
-            $tries += $true
+            if (Test-Path $tmpYear) {
+                $tries += $false
+                if ($AllowFullCleanRetry) { $tries += $true }
+            } else {
+                $tries += $true
+            }
             $ok = $false
         }
         foreach ($doClean in $tries) {
@@ -2148,7 +2154,7 @@ foreach ($y in $years) {
                         stderr_tail = $tail
                     })
                     if ($kill) {
-                    Say "!! $y MFA 교착 추정(단계=$phase, 카운터 ${frozenMin}분 정지, 마지막='$tail') — 강제종료 후 자동 재시도"
+                    Say "!! $y MFA 교착 추정(단계=$phase, 카운터 ${frozenMin}분 정지, 마지막='$tail') — 강제종료하고 temp 보존"
                     try { $p.Kill() } catch {}
                     $watchdogKilled = $true
                 }
@@ -2224,19 +2230,28 @@ foreach ($y in $years) {
                 Say "!! $y MFA 실패 (exit $($p.ExitCode)) — 원인 traceback: $errFile"
             }
             if (-not $doClean) {
-                Say "$y 이어가기 실패 → temp 비우고 --clean 전체로 재시도"
-                try { Remove-SafeYearPath $tmpYear $tmp }
-                catch { Say "!! temp 안전 삭제 실패: $($_.Exception.Message)"; exit 1 }
+                if ($AllowFullCleanRetry) {
+                    Say "$y 이어가기 실패 → 명시적 허용에 따라 temp를 archive한 뒤 --clean 전체 재시도"
+                    try {
+                        Archive-StaleTemp $tmpYear $y `
+                            "explicit_full_clean_retry_after_resume_failure"
+                    } catch {
+                        Say "!! temp 안전 archive 실패: $($_.Exception.Message)"
+                        exit 1
+                    }
+                } else {
+                    Say (
+                        "!! $y 이어가기 실패 — 연도 전체 자동 재계산 금지. " +
+                        "temp($tmpYear)와 DB를 보존하고 중단"
+                    )
+                    break
+                }
             }
         }
         if (-not $ok) {
-            # ★ 최종 실패에도 temp 보존 (2026-07-24, "무조건 이어가기"): 종전(7-21)엔 여기서
-            #   temp를 지워 다음 실행이 코퍼스 로딩(최대 5.5h)부터 재시작했음. 보존해도
-            #   다음 실행이 temp-우선 Get-WorkDrive로 같은 드라이브를 잡고, 이어가기 실패
-            #   시 그때 비우고 --clean 폴백($tries 로직)하므로 어중간한 DB도 방어됨.
-            #   7-21 삭제 도입 사유(찌꺼기→드라이브 선택 흔들림)는 7-22 temp-우선 규칙이
-            #   이미 해소. 남는 건 실패 연도 1개분(15~35GB)뿐이고 preflight가 리포트함.
-            Say "!! $y MFA 최종 실패(이어가기+clean 모두 실패) — temp($tmpYear) 보존한 채 중단, 사람 확인 필요"
+            # 최종 실패에도 temp·DB를 보존한다. 기본 실행은 같은 입력에서
+            # 전체 clean 재계산을 자동 선택하지 않는다.
+            Say "!! $y MFA 실패 — temp($tmpYear) 보존한 채 중단, 문제 ID/단계 확인 후 재개"
             exit 1
         }
         if ($UseDirectDbExport) {

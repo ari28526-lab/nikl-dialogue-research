@@ -230,19 +230,20 @@ C:\Users\ari30\research\2026_summer_research\outputs\
 
 ## 바로 다음 작업
 
-1. 전체 Python 단위시험·PowerShell 정적 안전검사·`git diff --check`를
-   최종 실행한다.
-2. 외부 리뷰 항목별 처리표와 작업 기록을 확정하고 commit/push한다.
-3. `prepare_mfa_year_exclusion_review.ps1`로 2020 입력을 **dry-run 감사**해
-   연구자 승인 제외표를 만든다. 자동 승인은 하지 않는다.
-4. 2020 제외 계약과 전수 lab `--force-verify`가 통과한 뒤에만 2020 r2
-   MFA 명령을 제공한다. 첫 실행에는 cleanup/자동 정본 승격을 넣지 않는다.
+1. `run_mfa_year_queue_safe.ps1 -PrepareMissingReviews`로 6개년 입력을
+   감사하고 연도별 pending 제외 후보표를 만든다. 이 단계는 MFA를 시작하지 않는다.
+2. 연구자가 후보를 승인/기각하고 각 input contract에 묶인 승인 JSON을 만든다.
+3. `preflight_mfa_year_queue.ps1 -RunRepositoryTests`의 `status=GO`를 확인한다.
+4. 같은 queue를 다시 실행해 2020–2025 계산과 독립 machine QC를 연도별로
+   진행한다. 성공 연도도 연구자 검토 전에는 정본으로 승격하지 않는다.
 
-현재 사용자가 실행할 대량 PowerShell은 없다.
+무인 연도 큐는 재개 실패 뒤 연도 전체 `--clean`을 자동 수행하지 않는다.
+temp·SQLite DB·interval·로그를 보존하며, 일부 문제가 있는 연도만 상태표에
+차단된 것으로 남기고 다른 연도의 독립 준비/계산을 계속할 수 있다.
 
-전수 MFA는 아직 시작하지 않는다. 연구자가 확인한 전역 출력·검색 문제는
-코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제
-전수 운영·방법론 계약을 외부 도구가 재검토하는 단계다.
+전수 MFA는 승인 계약과 최종 preflight `GO` 전에는 시작하지 않는다. 연구자가
+확인한 전역 출력·검색 문제는 코드와 60발화 재수출에서 수정됐고 기계 검증도
+통과했다.
 
 ## 2020 실행 인터페이스의 안전장치
 

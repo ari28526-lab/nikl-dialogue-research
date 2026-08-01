@@ -274,3 +274,22 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 - 변경된 Python 실행 파일의 문법 컴파일과 Git 공백 검사를 통과했다.
 - 이 결과는 코드·소형 표본 수준의 생산 준비 판정이다. 2020년 전수 시작 전에
   연구자가 pending 제외 후보를 확인하고 승인 계약을 만드는 단계는 여전히 필요하다.
+
+## 2026-08-01 무인 연도 큐와 연도 내부 재계산 방지
+
+- 연구자가 며칠간 계속 확인하지 못해도 2020–2025를 연도별 독립 작업으로
+  순회하는 `run_mfa_year_queue_safe.ps1`을 추가했다.
+- 기존 러너에서 temp 재개 실패 뒤 자동으로 temp를 지우고 연도 전체를 `--clean`
+  재계산하던 폴백을 기본 금지했다. 명시적 `-AllowFullCleanRetry`가 없으면
+  temp·SQLite DB·로그를 보존하고 해당 연도만 차단한다.
+- 무인 큐는 full-clean 스위치를 전달하지 않는다. 승인 제외 계약이 없으면
+  pending 후보표만 만들고 MFA를 시작하지 않으며, 다른 연도의 준비는 계속한다.
+- 성공 연도는 독립 6-tier 전수 감사와 보존 DB 표본 재수출까지 자동 수행하지만,
+  연구자 검토와 정본 승격은 `human_review_pending`으로 남긴다.
+- 읽기 전용 상태판 `show_mfa_year_queue_status.ps1`을 추가했다.
+- 전수 시작 전 공통사전·저장공간·lock·입력/승인 계약·staging 충돌·테스트·Git
+  상태를 합쳐 `GO/NO_GO`로 판정하는 `preflight_mfa_year_queue.ps1`을 추가했다.
+- PowerShell 안전 검사 대상 20개 파일이 모두 통과했다.
+
+결정 문서:
+`docs/decisions/DECISION_incremental_unattended_year_MFA_20260801.md`.

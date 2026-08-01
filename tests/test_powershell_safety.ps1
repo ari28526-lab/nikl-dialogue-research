@@ -5,6 +5,9 @@ $files = @(
     (Join-Path $root 'scripts\preflight_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
+    (Join-Path $root 'scripts\run_mfa_year_queue_safe.ps1'),
+    (Join-Path $root 'scripts\show_mfa_year_queue_status.ps1'),
+    (Join-Path $root 'scripts\preflight_mfa_year_queue.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
@@ -147,6 +150,10 @@ foreach ($path in $files) {
             'exact_id_reconciliation',
             '[switch]$AllowBaselineCommonPronRerun',
             '[switch]$AllowLegacyInlineG2p',
+            '[switch]$AllowFullCleanRetry',
+            'if ($AllowFullCleanRetry) { $tries += $true }',
+            'explicit_full_clean_retry_after_resume_failure',
+            '연도 전체 자동 재계산 금지',
             '[int]$BulkWrapperPid = 0',
             "owner_mode = 'direct_runner'",
             "owner_mode -ne 'bulk_wrapper'",
@@ -247,6 +254,9 @@ foreach ($path in $files) {
             '[string]$CommonPronEquivalenceReport',
             '[switch]$AllowBaselineCommonPronRerun',
             '[switch]$AllowLegacyInlineG2p',
+            '[switch]$AllowFullCleanRetry',
+            "'-AllowFullCleanRetry'",
+            'allow_full_clean_retry = [bool]$AllowFullCleanRetry',
             "'-CommonPronManifest'",
             "'-CommonPronAdoptionContract'",
             "'-AllowBaselineCommonPronRerun'",
@@ -269,6 +279,77 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("pre-MFA 안전 wrapper D 우선 가드 누락: $required")
             }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_mfa_year_queue_safe.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_r2_unattended_year_queue.v1',
+            'no_automatic_full_clean_retry = $true',
+            '연구자 승인 제외 계약이 없으면 후보표만 만들고',
+            '연구자 인프라 검토와 정본 승격은 자동 수행하지 않는다',
+            'prepare_mfa_year_exclusion_review.ps1',
+            'run_pre_mfa_bulk_safe.ps1',
+            'audit_mfa_research_6tier_year.py',
+            'verify_mfa_db_research_6tier_sample.py',
+            'mfa_failed_checkpoint_preserved',
+            'machine_qc_failed_outputs_preserved',
+            'machine_qc_passed_human_review_pending',
+            '의도적으로 -AllowFullCleanRetry를 전달하지 않는다',
+            'canonical_promotion_automatic = $false',
+            'researcher_approval_automatic = $false',
+            'Write-JsonAtomic',
+            'mfa_year_queue.lock'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("연도 무인 큐 안전장치 누락: $required")
+            }
+        }
+        if ($text -match '\$runArgs\s*\+=\s*''-AllowFullCleanRetry''') {
+            $failures.Add('연도 무인 큐가 full clean retry를 전달함')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'show_mfa_year_queue_status.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'read-only dashboard',
+            'mfa_year_queue.lock',
+            'queue_state.json',
+            'machine_qc_passed_human_review_pending',
+            '이 상태판은 파일이나 프로세스를 변경하지 않음'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("연도 큐 상태판 안전장치 누락: $required")
+            }
+        }
+        if ($text -match (
+            '(?im)^\s*(Remove-Item|Move-Item|Rename-Item|Stop-Process|' +
+            'Start-Process|Set-Content|Add-Content|Out-File|Tee-Object)\b'
+        )) {
+            $failures.Add('연도 큐 상태판에 상태 변경 명령이 포함됨')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'preflight_mfa_year_queue.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_r2_full_year_queue_preflight.v1',
+            'validate_mfa_r2_adoption.py',
+            'preflight_eojeol_realign.ps1',
+            'mfa_exclusion_contract.py',
+            'test_powershell_safety.ps1',
+            'python_full_test_suite',
+            'tracked_code_committed',
+            "status = `$(if (`$failed.Count -eq 0) { 'GO' } else { 'NO_GO' })",
+            'starts_mfa = $false',
+            'approves_exclusions = $false',
+            'promotes_canonical_outputs = $false'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("연도 큐 최종 preflight 누락: $required")
+            }
+        }
+        if ($text -match '(?im)^\s*(Start-Process|Stop-Process)\b') {
+            $failures.Add('연도 큐 최종 preflight가 MFA 프로세스를 시작/중단함')
         }
     }
     if ((Split-Path $path -Leaf) -eq 'run_stratified_mfa_pilot.ps1') {

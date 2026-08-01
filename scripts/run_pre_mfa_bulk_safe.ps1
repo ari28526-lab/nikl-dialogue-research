@@ -25,6 +25,7 @@ param(
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
     [switch]$AllowLegacyInlineG2p,
+    [switch]$AllowFullCleanRetry,
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
 )
@@ -219,6 +220,7 @@ if (Test-Path -LiteralPath $lockPath) {
     legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
     force_verify_lab_input = [bool]$ForceVerifyLabInput
     allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
+    allow_full_clean_retry = [bool]$AllowFullCleanRetry
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
 } | ConvertTo-Json -Depth 4 |
@@ -292,6 +294,7 @@ try {
         $realignArgs += '-PreferD'
         if ($UseDirectDbExport) { $realignArgs += '-UseDirectDbExport' }
         if ($ForceVerifyLabInput) { $realignArgs += '-ForceVerifyLabInput' }
+        if ($AllowFullCleanRetry) { $realignArgs += '-AllowFullCleanRetry' }
         if ($CleanupDirectDbAfterMerge) {
             $realignArgs += '-CleanupDirectDbAfterMerge'
         }
@@ -360,6 +363,7 @@ try {
         legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
         force_verify_lab_input = [bool]$ForceVerifyLabInput
         allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
+        allow_full_clean_retry = [bool]$AllowFullCleanRetry
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear
         paused_before_year = $pausedBeforeYear
