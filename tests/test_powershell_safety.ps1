@@ -339,7 +339,10 @@ foreach ($path in $files) {
             'test_powershell_safety.ps1',
             'python_full_test_suite',
             'tracked_code_committed',
-            "status = `$(if (`$failed.Count -eq 0) { 'GO' } else { 'NO_GO' })",
+            "`$env:PYTHONUTF8 = '1'",
+            "`$finalStatus = if (`$failed.Count -eq 0) { 'GO' } else { 'NO_GO' }",
+            'status = $finalStatus',
+            '$checkRows = @($checks | ForEach-Object { $_ })',
             'starts_mfa = $false',
             'approves_exclusions = $false',
             'promotes_canonical_outputs = $false'

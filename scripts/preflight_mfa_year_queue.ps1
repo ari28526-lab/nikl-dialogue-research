@@ -20,6 +20,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
+$env:PYTHONUTF8 = '1'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
@@ -239,16 +240,20 @@ Add-Check 'tracked_code_committed' ($trackedClean -and $stagedClean) (
 
 $failed = @($checks | Where-Object { $_.status -eq 'failed' })
 $warnings = @($checks | Where-Object { $_.status -eq 'warning' })
+$finalStatus = if ($failed.Count -eq 0) { 'GO' } else { 'NO_GO' }
+$checkRows = @($checks | ForEach-Object { $_ })
+$failedNames = @($failed | ForEach-Object { $_.name })
+$warningNames = @($warnings | ForEach-Object { $_.name })
 $report = [ordered]@{
     schema_version = 'mfa_r2_full_year_queue_preflight.v1'
-    status = $(if ($failed.Count -eq 0) { 'GO' } else { 'NO_GO' })
+    status = $finalStatus
     checked_at = (Get-Date).ToString('o')
     queue_id = $QueueId
     search_master_run_id = $SearchMasterRunId
     years = @($Years)
-    checks = @($checks)
-    failed_checks = @($failed | ForEach-Object { $_.name })
-    warning_checks = @($warnings | ForEach-Object { $_.name })
+    checks = $checkRows
+    failed_checks = $failedNames
+    warning_checks = $warningNames
     d_drive = [ordered]@{ label = $dLabel; free_gib = $dFree }
     output = $Output
     starts_mfa = $false
