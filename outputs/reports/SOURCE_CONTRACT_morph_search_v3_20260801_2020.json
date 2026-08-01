@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  "production_source_contract_check.v1",
     "status":  "passed",
-    "checked_at":  "2026-08-01T17:10:02.4742743+09:00",
+    "checked_at":  "2026-08-01T18:14:07.0344417+09:00",
     "year":  "2020",
     "morph_run_id":  "morph_search_v3_20260801",
     "search_master_run_id":  "pre_mfa_v1_20260725",
@@ -58,6 +58,16 @@
                        "name":  "source_contract_paths",
                        "status":  "passed",
                        "detail":  "source/input/output path identity"
+                   },
+                   {
+                       "name":  "morph_year_manifest_exists",
+                       "status":  "passed",
+                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\YEAR_MANIFEST.json"
+                   },
+                   {
+                       "name":  "morph_year_manifest_success",
+                       "status":  "passed",
+                       "detail":  "status=success, year=2020"
                    }
                ],
     "failed_checks":  [

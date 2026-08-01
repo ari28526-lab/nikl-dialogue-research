@@ -44,12 +44,13 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 - 공통 Jamo r2 release/adoption: `passed`, `allow_yearly_mfa=true`.
 - 6-tier exporter, 동반표, DB checkpoint, 독립 연도 감사, DB 표본 재수출,
   승인 제외 계약, 연도 큐 구현.
-- 2020 `morph_search.v3`: shard 1/23 성공, 41,803발화, 현재 lock 없음.
+- 2020 `morph_search.v3`: 23/23 성공, 870,437발화, 7개 연도표 생성,
+  중복 0·기호 coverage 일치·현재 lock 없음.
 - workflow reset 반영 뒤 Python 293개 및 PowerShell 안전검사 31개 파일 통과.
 
 ## 실제 미완료
 
-- 2020 검색표 shard 2–23과 2021–2025 검색표.
+- 2021–2025 검색표.
 - 2020–2025 신규 r2 MFA 전량.
 - 연도별 승인 제외 계약과 2020 생산 표본 연구자 확인.
 - 7표+4표 최종 join/Parquet·DuckDB view.
@@ -70,17 +71,15 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 ## 현재 안전 정지점
 
 신규 전수 MFA는 아직 시작하지 않았다. workflow 수정, 전체 시험, 2020 source
-contract 생성·검증을 완료했고, 2026-08-01 17:14 KST에 2020
-`morph_search.v3` shard 2–23 재개 작업을 시작했다. lock PID 25716,
-Python worker PID 13480, 시작 직후 manifest는 `running`, 1/23 재사용 상태다.
-이는 MFA 대체가 아니라 2020 MFA 직전 필수 검색·입력 인프라 단계다.
+contract와 2020 `morph_search.v3` 23/23을 완료했다. 검색은 2026-08-01
+17:47 KST에 `status=success`로 끝났고 lock은 정상 해제됐다. 연도 manifest에는
+7개 표의 SHA와 row 수, 중복 0, 기호 coverage 일치가 기록됐다.
 
 다음 작업은 다음 순서로만 진행한다.
 
-1. 실행 중인 2020 `morph_search.v3` shard 2–23을 완주한다.
-2. 2020 승인 제외표만 만들고 연구자가 확인한다.
-3. **필수** 2020 MFA→6-tier→4 동반표→독립 QC→생산 표본 검토를 완료한다.
-4. 2020 Gate B가 통과한 뒤 **필수** 2021–2025 전 연도 MFA 큐를 연다.
+1. 2020 승인 제외표와 LAB 입력 계약을 만들고 연구자가 확인한다.
+2. **필수** 2020 MFA→6-tier→4 동반표→독립 QC→생산 표본 검토를 완료한다.
+3. 2020 Gate B가 통과한 뒤 **필수** 2021–2025 전 연도 MFA 큐를 연다.
 
 실행 명령은 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 

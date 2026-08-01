@@ -497,3 +497,17 @@ shard 2–23을 재개하는 것이다.
 - 이 계산은 MFA를 대신하지 않는다. 완료 뒤 2020 제외 후보 승인과 2020 신규
   r2 전수 정렬이 필수 후속 단계이며, Gate B 뒤 2021–2025도 전부 정렬한다.
 - 로그: `logs/morph_search_2020_20260801_171441.out.log` 및 `.err.log`.
+
+### 17:47 KST — 2020 검색표 23/23 완료
+
+- `YEAR_PROGRESS.status=success`, 23/23 shard, lock 정상 해제를 확인했다.
+- 2020 발화 870,437행을 기준으로 7개 gzip 표를 생성했다.
+  `eojeol_tokens` 3,030,081행, `orth_eojeol_tokens` 3,042,451행,
+  `morph_tokens` 5,767,506행, `morph_units` 8,581,967행,
+  `morph_boundaries` 4,897,069행, `symbol_readings` 290,525행이다.
+- `all_shards_success=true`, `duplicate_utt_id=0`, deterministic gzip,
+  `orth_symbol_coverage_equal=true`를 확인했다.
+- 완료 연도 manifest와 동결 `_build_meta` SHA를 다시 대조해 source contract
+  검증이 `passed`였다.
+- 다음 사용자 PowerShell 단계는 `prepare_2020_mfa_approval_review.ps1`이다.
+  이는 2020 LAB 입력 전수 검증과 제외 후보표만 만들며 MFA는 아직 시작하지 않는다.
