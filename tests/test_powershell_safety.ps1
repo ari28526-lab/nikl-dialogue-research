@@ -112,7 +112,12 @@ foreach ($path in $files) {
             'interval_word_bytes',
             'interval_latest_write_utc',
             'MFA_PROJECT_SKIP_TEXTGRID_EXPORT',
-            'export_mfa_db_4tier.py',
+            'export_mfa_db_research_6tier.py',
+            'inspect_mfa_db_checkpoint.py',
+            'direct_db_ready',
+            'legacy 4-tier 병합으로 폴백하지 않음',
+            'textgrid_research_v2_staging',
+            'direct_db_research_6tier_v1',
             '_partial_direct_db',
             'direct_merge_completed_temp_retained_for_qc',
             'build_mfa_alignment_contract.py',
@@ -161,7 +166,7 @@ foreach ($path in $files) {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
             '$alignExportMode',
-            "direct_db_4tier align marker",
+            "direct DB align marker",
             'marker 삭제·재정렬 금지'
         )) {
             if (-not $text.Contains($required)) {
@@ -171,6 +176,8 @@ foreach ($path in $files) {
         foreach ($required in @(
             '[string]$Year',
             'textgrid_eojeol_staging',
+            'textgrid_research_v2_staging',
+            'inspect_mfa_db_checkpoint.py',
             '[switch]$PreferD',
             'PreferD: D:',
             '[string]$ExpectedPronunciationMode',

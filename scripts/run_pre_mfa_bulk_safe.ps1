@@ -50,6 +50,16 @@ if ($CleanupDirectDbAfterMerge -and -not $UseDirectDbExport) {
     exit 1
 }
 if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    -not $UseDirectDbExport
+) {
+    Write-Error (
+        "r2 공통사전 전수 실행에는 연구 6-tier+동반표 direct export가 " +
+        "필수임: -UseDirectDbExport를 지정할 것"
+    )
+    exit 1
+}
+if (
     -not [string]::IsNullOrWhiteSpace($CommonPronEquivalenceReport)
 ) {
     Write-Error (

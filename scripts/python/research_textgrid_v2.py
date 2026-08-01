@@ -85,6 +85,71 @@ def _validate_continuous(
         raise ValueError(f"0-xmax 연속 tier가 아님: {tier_name}")
 
 
+def _materialize_intervals(
+    intervals: Sequence[Interval], duration: float
+) -> list[Interval]:
+    """MFA interval을 0--xmax의 연속 IntervalTier로 만든다.
+
+    입력의 유표 interval 시간과 label은 바꾸지 않고, 실제로 비어 있는 gap과
+    양끝에만 빈 interval을 추가한다. overlap은 자료 손상으로 간주해 차단한다.
+    """
+
+    fixed: list[Interval] = []
+    cursor = 0.0
+    for begin, end, label in sorted(
+        intervals, key=lambda item: (float(item[0]), float(item[1]))
+    ):
+        begin = max(0.0, float(begin))
+        end = min(float(duration), float(end))
+        if end - begin <= 1e-9:
+            continue
+        if begin < cursor - 1e-6:
+            raise ValueError(
+                f"interval overlap: begin={begin:.6f} < cursor={cursor:.6f}"
+            )
+        if begin - cursor > 1e-6:
+            fixed.append((cursor, begin, ""))
+        fixed.append((begin, end, str(label)))
+        cursor = end
+    if not fixed:
+        return [(0.0, float(duration), "")]
+    if float(duration) - cursor > 1e-6:
+        fixed.append((cursor, float(duration), ""))
+    return fixed
+
+
+def _labeled_word_span(
+    words: Sequence[Interval], duration: float
+) -> tuple[float, float, bool]:
+    labeled = [
+        (float(begin), float(end))
+        for begin, end, label in words
+        if str(label).strip().lower() not in SILENCE
+    ]
+    if not labeled:
+        return 0.0, float(duration), True
+    return labeled[0][0], labeled[-1][1], False
+
+
+def _mapped_phone_intervals(
+    phones: Sequence[Interval], phone_mapper: PhoneMapper
+) -> list[Interval]:
+    mapped = [
+        (
+            float(begin),
+            float(end),
+            "" if str(label).strip().lower() in SILENCE else phone_mapper(str(label)),
+        )
+        for begin, end, label in phones
+    ]
+    if any(
+        str(phone).strip().lower() not in SILENCE and not str(phoneme).strip()
+        for (_begin, _end, phone), (_b2, _e2, phoneme) in zip(phones, mapped)
+    ):
+        raise ValueError("유표 phone의 빈 phoneme 매핑")
+    return mapped
+
+
 def _interval_tier_exact(
     name: str, intervals: Sequence[Interval], duration: float
 ) -> list[str]:
@@ -181,19 +246,10 @@ def build_base_tier_data(
         raise ValueError("form/form_roman/tagged 필수값 누락")
     morph_label = canonicalize_tagged(tagged)
     phones = list(source["phones_mfa"])
-    phonemes = [
-        (
-            float(begin),
-            float(end),
-            "" if str(label).strip().lower() in SILENCE else phone_mapper(str(label)),
-        )
-        for begin, end, label in phones
-    ]
-    if any(
-        str(phone).strip().lower() not in SILENCE and not str(phoneme).strip()
-        for (_begin, _end, phone), (_b2, _e2, phoneme) in zip(phones, phonemes)
-    ):
-        raise ValueError(f"유표 phone의 빈 phoneme 매핑: {source_textgrid}")
+    try:
+        phonemes = _mapped_phone_intervals(phones, phone_mapper)
+    except ValueError as exc:
+        raise ValueError(f"{exc}: {source_textgrid}") from exc
     utterance_source = list(source["utterance"])
     tier_data = [
         ("words", list(source["words"])),
@@ -219,16 +275,70 @@ def build_base_tier_data(
     return float(duration), tier_data
 
 
-def validate_base_textgrid(
-    path: Path,
+def build_base_tier_data_from_intervals(
     *,
-    source_textgrid: Path,
+    duration: float,
+    words: Sequence[Interval],
+    phones: Sequence[Interval],
     row: Mapping[str, object],
     phone_mapper: PhoneMapper,
-) -> dict[str, object]:
-    expected_duration, expected_data = build_base_tier_data(
-        source_textgrid, row, phone_mapper
+) -> tuple[list[tuple[str, list[Interval]]], bool]:
+    """MFA DB interval에서 승인된 6-tier를 직접 구성한다.
+
+    반환값의 bool은 유표 word가 없어 발화 전체 span을 대신 썼는지를 뜻한다.
+    전수 exporter는 이 값을 성공으로 숨기지 않고 hard gate로 센다.
+    """
+
+    if duration <= 0:
+        raise ValueError(f"duration은 양수여야 함: {duration}")
+    if not words or not phones:
+        raise ValueError("words와 phones interval이 모두 필요함")
+    form = str(row.get("form", "")).strip()
+    form_roman = str(row.get("form_roman", "")).strip()
+    tagged = str(row.get("tagged", "")).strip()
+    if not form or not form_roman or not tagged:
+        raise ValueError("form/form_roman/tagged 필수값 누락")
+
+    word_intervals = _materialize_intervals(words, duration)
+    phone_intervals = _materialize_intervals(phones, duration)
+    phoneme_intervals = _mapped_phone_intervals(phone_intervals, phone_mapper)
+    speech_start, speech_end, fallback = _labeled_word_span(
+        word_intervals, duration
     )
+    speech_source = _materialize_intervals(
+        [(speech_start, speech_end, form)], duration
+    )
+    morph_label = canonicalize_tagged(tagged)
+    tier_data = [
+        ("words", word_intervals),
+        ("phones_mfa", phone_intervals),
+        ("phoneme_r_auto", phoneme_intervals),
+        (
+            "utterance",
+            _relabel_utterance_tier(speech_source, form, "utterance"),
+        ),
+        (
+            "utterance_orth_r",
+            _relabel_utterance_tier(
+                speech_source, form_roman, "utterance_orth_r"
+            ),
+        ),
+        (
+            "morph_analysis_utt",
+            _relabel_utterance_tier(
+                speech_source, morph_label, "morph_analysis_utt"
+            ),
+        ),
+    ]
+    return tier_data, fallback
+
+
+def _validate_against_tier_data(
+    path: Path,
+    *,
+    expected_duration: float,
+    expected_data: Sequence[tuple[str, Sequence[Interval]]],
+) -> dict[str, object]:
     duration, tiers = parse_mfa_textgrid(path)
     reasons: list[str] = []
     if duration is None or abs(float(duration) - expected_duration) > 1e-6:
@@ -240,7 +350,7 @@ def validate_base_textgrid(
         actual = tiers.get(name, [])
         if not _continuous(actual, expected_duration):
             reasons.append(f"0-xmax 비연속: {name}")
-        if not _same_intervals(actual, expected[name]):
+        if not _same_intervals(actual, expected.get(name, [])):
             reasons.append(f"예상 interval/label 불일치: {name}")
     if not _same_edges(
         tiers.get("phones_mfa", []), tiers.get("phoneme_r_auto", [])
@@ -259,10 +369,10 @@ def validate_base_textgrid(
         "duration": expected_duration,
         "tier_names": list(tiers),
         "words_unchanged": _same_intervals(
-            tiers.get("words", []), expected["words"]
+            tiers.get("words", []), expected.get("words", [])
         ),
         "phones_mfa_unchanged": _same_intervals(
-            tiers.get("phones_mfa", []), expected["phones_mfa"]
+            tiers.get("phones_mfa", []), expected.get("phones_mfa", [])
         ),
         "phoneme_boundaries_equal_phones_mfa": _same_edges(
             tiers.get("phones_mfa", []), tiers.get("phoneme_r_auto", [])
@@ -271,6 +381,48 @@ def validate_base_textgrid(
             _same_edges(speech_tiers[0], item) for item in speech_tiers[1:]
         ),
     }
+
+
+def validate_base_textgrid(
+    path: Path,
+    *,
+    source_textgrid: Path,
+    row: Mapping[str, object],
+    phone_mapper: PhoneMapper,
+) -> dict[str, object]:
+    expected_duration, expected_data = build_base_tier_data(
+        source_textgrid, row, phone_mapper
+    )
+    return _validate_against_tier_data(
+        path,
+        expected_duration=expected_duration,
+        expected_data=expected_data,
+    )
+
+
+def validate_base_textgrid_from_intervals(
+    path: Path,
+    *,
+    duration: float,
+    words: Sequence[Interval],
+    phones: Sequence[Interval],
+    row: Mapping[str, object],
+    phone_mapper: PhoneMapper,
+) -> dict[str, object]:
+    expected_data, fallback = build_base_tier_data_from_intervals(
+        duration=duration,
+        words=words,
+        phones=phones,
+        row=row,
+        phone_mapper=phone_mapper,
+    )
+    result = _validate_against_tier_data(
+        path,
+        expected_duration=duration,
+        expected_data=expected_data,
+    )
+    result["word_span_fallback"] = fallback
+    return result
 
 
 def write_base_textgrid(
@@ -290,6 +442,37 @@ def write_base_textgrid(
         row=row,
         phone_mapper=phone_mapper,
     )
+    if not result["valid"]:
+        destination.unlink(missing_ok=True)
+        raise RuntimeError("6-tier 검증 실패: " + "; ".join(result["reasons"]))
+    return result
+
+
+def write_base_textgrid_from_intervals(
+    destination: Path,
+    *,
+    duration: float,
+    words: Sequence[Interval],
+    phones: Sequence[Interval],
+    row: Mapping[str, object],
+    phone_mapper: PhoneMapper,
+) -> dict[str, object]:
+    if destination.exists():
+        raise FileExistsError(f"기존 출력 보호: {destination}")
+    tier_data, fallback = build_base_tier_data_from_intervals(
+        duration=duration,
+        words=words,
+        phones=phones,
+        row=row,
+        phone_mapper=phone_mapper,
+    )
+    write_textgrid_exact(destination, duration=duration, tier_data=tier_data)
+    result = _validate_against_tier_data(
+        destination,
+        expected_duration=duration,
+        expected_data=tier_data,
+    )
+    result["word_span_fallback"] = fallback
     if not result["valid"]:
         destination.unlink(missing_ok=True)
         raise RuntimeError("6-tier 검증 실패: " + "; ".join(result["reasons"]))

@@ -153,7 +153,7 @@
 
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
-| morph_schema.py | `tagged`를 `morph_tokens/morph_units/morph_boundaries/orth_components`로 정규화하고 `tagged_roman.v2`를 결정적으로 생성. 완성형 음절·독립 자모·literal을 구분하고 음절 슬롯과 구성 자모를 분리 | 60발화 parse·재생성·재조합·경계 gate 통과 |
+| morph_schema.py | `tagged`를 `eojeol_tokens/morph_tokens/morph_units/morph_boundaries/orth_components`로 정규화하고 `tagged_roman.v2`를 결정적으로 생성. 어절 표는 `form/form_roman`의 철자·Roman·형태소 요약을 1행/어절로 보존하며, 완성형 음절·독립 자모·literal·구성 자모를 분리 | 회귀시험 통과; 60발화 전수 재생성은 외부 리뷰 후 최종 schema로 수행 |
 | build_morph_position_tables.py | 동결 pre-MFA CSV에서 위 4개 검색 표와 발화별 schema index를 원자 생성. 중복 ID·구조 오류·count 불일치를 차단 | 2020–2025 파일럿 60발화, token 548·unit 809·boundary 488 생성 |
 | textgrid_labels.py | `[UTT]/[ORTH_R]/[MORPH]/[MORPH_R]/[NOTE]` label의 예약문자 escape와 왕복 복원 | 회귀시험 통과 |
 | research_textgrid.py | `words/phones_mfa/utterance/utterance_search` 4-tier 작성·파싱·연속 interval 검증 | 회귀시험 통과 |
@@ -173,6 +173,8 @@
 | research_textgrid_v2.py | 기존 4-tier를 읽기 전용으로 사용해 `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/morph_analysis_utt` 6-tier를 생성·검증. phone-derived broad Roman만 허용하고 세 발화 수준 tier의 경계를 동기화. 연결 검토본에는 `source_utt_id/speaker`와 원시간 manifest만 추가 | 합성 2발화 및 실자료 최소 파일럿 통과 |
 | build_textgrid_v2_mini_pilot.py | 익숙한 2020 단일 발화 1건과 같은 세션·화자의 2022 비인접 2발화 `review` 연결본을 새 평면 root에 생성. 기존 4/5-tier 불변, KOINA 미실행, seam 횡단 운율 해석 금지를 manifest에 기록 | 단일 6-tier·연결 8-tier 생성 성공 |
 | verify_textgrid_v2_mini_pilot.py | 입력·출력 SHA, WAV–TextGrid duration, 전 tier 0–xmax 연속성, phone–phoneme 및 세 발화 tier 경계, 연결 `utt_id` 순서와 원시간 역매핑을 독립 재검증 | 실자료 status success |
+| export_mfa_db_research_6tier.py | MFA SQLite를 읽기 전용으로 읽어 승인 6-tier와 연도별 `utterance/word/phone` gzip 동반표를 direct partial에 생성. 원 형태소 어절, reference 어절, MFA word 좌표를 분리하고 spn·phone inventory·조인·count·label·원자적 승격을 gate함 | 합성 4시험·실 DB 60/60·구 word/phone 동등성 60/60 통과; 외부 리뷰 대기 |
+| inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

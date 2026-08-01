@@ -95,6 +95,29 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 현재 실행 상태
 
+### 2026-08-01 최신 상태 — 6-tier·동반표 생산 후보 리뷰 대기
+
+- r2 기준 2020–2025 전수 MFA는 **아직 시작하지 않았다**.
+- 연구자가 승인한 새 기본 표시는
+  `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/
+  morph_analysis_utt` 6-tier다.
+- 기존 r2 DB에서 연도당 10발화, 총 60발화를 MFA 재실행 없이
+  새 6-tier와 연도별 gzip 동반표로 재출력했다.
+- duration·word·phone은 기존 4-tier와 60/60 동일했고, DB
+  checkpoint 6/6, actual `spn=0`, 전체 Python 263시험·PowerShell 16파일
+  안전 검사가 통과했다.
+- `SARW2500000414.1.1.2`의 `2사람이`(원 1어절) →
+  `두 사람이`(MFA reference 2 word) 사례를 발견해 원 형태소 어절,
+  reference 어절, MFA word 좌표계를 분리했다.
+- 출력 schema 실패 때 비싼 MFA까지 재실행하지 않도록
+  `direct_db_ready`를 추가했다. 이는 정렬 계산 재사용 표시이지
+  TextGrid 출력/분석 승인이 아니다.
+- 현재 판정은 **구현·회귀검사 통과, 외부 리뷰 및 최종 GO 대기**다.
+- 최신 설계:
+  `docs/decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md`
+- 외부 리뷰 지시:
+  `docs/reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md`
+
 - r2 기준 2020–2025 전수 MFA: **아직 시작하지 않음**
 - r2 인프라 수용 파일럿:
   **6개년 기계 검증 완료, 전역 수정 2건 확인 후 개별 검토 진행 중**
@@ -196,19 +219,20 @@ C:\Users\ari30\research\2026_summer_research\outputs\
 
 ## 바로 다음 작업
 
-1. `TEXTGRID_6TIER_MINI_PILOT_20260801`의 단일 WAV와 6-tier를 열어
-   tier 순서·label·경계를 확인한다.
-2. 같은 폴더의 연결 WAV와 8-tier를 열어 두 `source_utt_id`, `speaker`,
-   0.05초 빈 seam을 확인한다.
-3. `REVIEW.csv` 두 행에 `승인/수정 필요`와 메모를 적는다.
-4. 수용되면 최소본 결과를 60발화 재수출·파일 크기 추정으로 확장한다.
-5. 그 gate 뒤에만 연도 runner와 2020 전수 MFA 진입 순서를 확정한다.
+1. 현재 branch의 코드·문서·60발화 증거를 외부 도구에 읽기 전용
+   리뷰를 맡긴다.
+2. 외부 보고서를 `GO/GO AFTER FIXES/STOP`으로 triage하고 BLOCKER/HIGH를
+   수정한다.
+3. 미정렬 발화 분류·독립 6-tier 연도 QC·Parquet 미러·우말샘
+   1:N 후보 표의 필수 범위를 확정한다.
+4. 리뷰 통과 후에만 2020 r2 전수 MFA 명령을 새 운영 계약으로
+   다시 작성한다. 첫 실행에는 cleanup/자동 정본 승격을 넣지 않는다.
 
 현재 사용자가 실행할 대량 PowerShell은 없다.
 
 전수 MFA는 아직 시작하지 않는다. 연구자가 확인한 전역 출력·검색 문제는
-코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제 수정본
-12발화를 사람이 수용하는 단계다.
+코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제
+전수 운영·방법론 계약을 외부 도구가 재검토하는 단계다.
 
 ## 2020 실행 인터페이스의 안전장치
 
@@ -217,9 +241,9 @@ C:\Users\ari30\research\2026_summer_research\outputs\
 r2 재실행이 가능하다. 다른 연도나 공통사전 없는 실행에서 이 플래그를 쓰면
 차단한다.
 
-실제 명령은 12발화 연구자 수용 뒤
-`WORKFLOW_r2_MFA_research_data_contract_20260730.md`의 11절에서 가져온다.
-첫 실행에는 cleanup을 넣지 않는다.
+기존 `WORKFLOW_r2_MFA_research_data_contract_20260730.md` §11의 명령은
+현재 사용하지 않는다. 외부 리뷰·필수 수정 통과 후 새 계약으로
+2020 명령을 다시 만들며, 첫 실행에는 cleanup을 넣지 않는다.
 
 ## 세션 복구 절차
 

@@ -128,3 +128,68 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
   `fb275b7`과 세 스크립트·시험·파일럿 manifest SHA를 묶은
   `CODE_PROVENANCE.json`을 추가했다. 이 파일도 복사 SHA가 일치한다.
 - 최종 전달본은 12파일·308,428 bytes다.
+
+## 2026-08-01 — 전수 6-tier·동반표 생산 후보 정리
+
+### 시작 점검에서 확인한 불일치
+
+- 연구자가 최종 6-tier와 TextGrid 연결 CSV를 승인했지만,
+  실제 전수 runner의 direct 출력은 여전히 구
+  `export_mfa_db_4tier.py`를 호출하고 있었다.
+- 최종 search Parquet/post-MFA 추출 스크립트도 실물이 없었다.
+  이 상태로 전수 MFA를 시작하면 새 r2 정렬 후에도 구 4-tier와
+  미완성 CSV만 남을 수 있어 전수 실행을 계속 차단했다.
+
+### 생산 코드 수정
+
+- MFA SQLite에서 승인된
+  `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/
+  morph_analysis_utt` 6-tier를 직접 쓰는
+  `export_mfa_db_research_6tier.py`를 추가했다.
+- 연도별 logical sidecar로
+  `utterance_alignment/word_intervals_mfa/phone_intervals_mfa.csv.gz`를
+  생성했다. 510만 발화별 개별 CSV는 만들지 않고, 선별
+  후보 bundle에서만 파생하도록 했다.
+- 형태소 표에 발화당 1행/어절 `eojeol_tokens`를 추가해 어절
+  철자·Roman·형태소 tagging을 검색할 수 있게 했다.
+- r2 공통사전 전수 runner는 새 6-tier direct export를 생략하면
+  중단하고, legacy 4-tier로 조용히 폴백하지 않도록 바꿘었다.
+
+### 실자료가 잡은 좌표 혼동
+
+- 첫 회귀에서 2020–2024는 통과했지만 2025의
+  `SARW2500000414.1.1.2`가 어절 수 불일치로 차단됐다.
+- 형태소 원 `form`은 `2사람이` 1어절이고 MFA 입력용
+  `pron_reference_form`은 원 JSON에서 복원한 `두 사람이` 2 word였다.
+- 초안의 단일 `eojeol_idx`는 다음 항목을 모두 혼동했다. 이를
+  `eojeol_idx`(원 form/tagged), `reference_eojeol_idx`(MFA reference),
+  `mfa_word_idx`(유표 MFA word)로 분리했다.
+- 이 분리는 형태소–phone의 자동 직결을 주장하지 않고,
+  `utt_id`를 중심으로 검색 후보와 정렬 참조값을 안전하게 결합한다.
+
+### 원자적 승격과 비싼 재실행 방지
+
+- 초안은 count gate 실패를 확인하기 전 gzip `.partial`을 완성 이름으로
+  승격했다. 모든 조인·개수·label gate 통과 후에만 승격하도록
+  순서를 바꾸고 실패 시 완성 gzip 0개임을 회귀시험으로 고정했다.
+- 출력 schema 실패 때 이미 끝난 MFA를 다시 돌리지 않도록
+  `inspect_mfa_db_checkpoint.py`와 `direct_db_ready` marker를 추가했다.
+  이 marker는 정렬 계산 재사용 가능만 뜻하며 분석 승인은 별도다.
+- direct align marker만 있고 merge marker가 없을 때 legacy 4-tier 병합으로
+  떨어지는 경로도 명시적으로 차단했다.
+
+### 60발화 회귀 결과와 현재 gate
+
+- 2020–2025 각 10발화, 총 60/60 6-tier·동반표 출력 성공
+- 기존 4-tier 대비 duration·word·phone 불일치 0
+- DB checkpoint 6/6 `success`, coverage 100%, actual `spn=0`
+- 전체 Python 263시험, PowerShell 16파일 정적 안전 검사 통과
+- 전수 MFA는 시작하지 않았다. 미정렬 분류·Parquet·우말샘
+  1:N 후보·독립 6-tier QC·510만 파일 운영을 외부 리뷰한 뒤만
+  2020 전수에 `GO`한다.
+
+정본 제안:
+`docs/decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md`.
+
+외부 리뷰 프롬프트:
+`docs/reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md`.

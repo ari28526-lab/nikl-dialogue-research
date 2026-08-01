@@ -38,6 +38,30 @@ class MorphSchemaTests(unittest.TestCase):
             result["morph_boundaries"][0]["boundary_scope"],
             "inter_eojeol",
         )
+        self.assertEqual(
+            [
+                (row["eojeol_idx"], row["eojeol_form"], row["eojeol_roman"])
+                for row in result["eojeol_tokens"]
+            ],
+            [(1, "혹시", "H O k _ S I"), (2, "요즘", "YO _ J EU m")],
+        )
+
+    def test_eojeol_tokens_prefer_explicit_form_and_roman(self):
+        result = build_utterance_tables(
+            {
+                "utt_id": "U1B",
+                "year": "2020",
+                "form": "그걸",
+                "form_roman": "G EU _ G EO l",
+                "tagged": "그/NP+ㄹ/JKO",
+            }
+        )
+        row = result["eojeol_tokens"][0]
+        self.assertEqual(row["eojeol_form"], "그걸")
+        self.assertEqual(row["morph_surface_concat"], "그ㄹ")
+        self.assertFalse(row["form_matches_morph_surface"])
+        self.assertEqual(row["eojeol_form_source"], "form")
+        self.assertEqual(row["eojeol_roman_source"], "form_roman")
 
     def test_complex_coda_keeps_slot_and_components(self):
         result = build_utterance_tables(

@@ -442,6 +442,67 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
     flat_morphs = [morph for eojeol in parsed for morph in eojeol]
     morph_count = len(flat_morphs)
 
+    # 어절 철자·로마자 검색은 형태소 표와 분리한 1행/어절 표를 정본으로
+    # 사용한다. form이 없는 단위시험·구자료는 tagged 표면형으로 결정적으로
+    # 재생성하지만, 그 출처를 숨기지 않는다.
+    tagged_eojeol_forms = [
+        "".join(morph.surface for morph in morphs) for morphs in parsed
+    ]
+    form_value = nfc(row.get("form", "")).strip()
+    if form_value:
+        form_eojeols = form_value.split()
+        eojeol_form_source = "form"
+        if len(form_eojeols) != len(parsed):
+            raise MorphSchemaError(
+                f"{utt_id}: form/tagged 어절 수 불일치 "
+                f"{len(form_eojeols)}!={len(parsed)}"
+            )
+    else:
+        form_eojeols = tagged_eojeol_forms
+        eojeol_form_source = "tagged_surface_fallback"
+
+    form_roman_value = str(row.get("form_roman", "") or "").strip()
+    if form_roman_value:
+        form_roman_eojeols = form_roman_value.split(EOJEOL_SEPARATOR)
+        eojeol_roman_source = "form_roman"
+        if len(form_roman_eojeols) != len(parsed):
+            raise MorphSchemaError(
+                f"{utt_id}: form_roman/tagged 어절 수 불일치 "
+                f"{len(form_roman_eojeols)}!={len(parsed)}"
+            )
+    else:
+        predicted = pp.predict_pron(" ".join(form_eojeols), tagged=tagged)
+        form_roman_eojeols = str(predicted["form_roman"]).split(
+            EOJEOL_SEPARATOR
+        )
+        eojeol_roman_source = "deterministic_form_fallback"
+
+    eojeol_rows: list[dict[str, object]] = []
+    for eojeol_idx, (morphs, eojeol_form, eojeol_roman) in enumerate(
+        zip(parsed, form_eojeols, form_roman_eojeols), 1
+    ):
+        eojeol_rows.append(
+            {
+                "utt_id": utt_id,
+                "year": year,
+                "eojeol_idx": eojeol_idx,
+                "eojeol_count": len(parsed),
+                "eojeol_form": eojeol_form,
+                "eojeol_roman": eojeol_roman,
+                "morph_count_in_eojeol": len(morphs),
+                "morph_surface_concat": tagged_eojeol_forms[eojeol_idx - 1],
+                "morph_tagged": canonicalize_tagged([morphs]),
+                "morph_roman": tagged_roman_v2([morphs]),
+                "form_matches_morph_surface": (
+                    eojeol_form == tagged_eojeol_forms[eojeol_idx - 1]
+                ),
+                "eojeol_form_source": eojeol_form_source,
+                "eojeol_roman_source": eojeol_roman_source,
+                "roman_system_version": ROMAN_SYSTEM_VERSION,
+                "position_schema_version": POSITION_SCHEMA_VERSION,
+            }
+        )
+
     units_by_morph: dict[tuple[int, int], list[SurfaceUnit]] = {
         (morph.eojeol_idx, morph.morph_idx_in_eojeol): list(
             iter_surface_units(morph.surface)
@@ -661,6 +722,7 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
         raise MorphSchemaError(f"{utt_id}: tagged regeneration 불일치")
     return {
         "master": master,
+        "eojeol_tokens": eojeol_rows,
         "morph_tokens": morph_rows,
         "morph_units": unit_rows,
         "morph_boundaries": boundary_rows,

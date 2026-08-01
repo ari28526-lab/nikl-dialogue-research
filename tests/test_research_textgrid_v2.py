@@ -13,7 +13,9 @@ from research_textgrid_v2 import (  # noqa: E402
     BASE_TIERS,
     STITCHED_TIERS,
     validate_base_textgrid,
+    validate_base_textgrid_from_intervals,
     write_base_textgrid,
+    write_base_textgrid_from_intervals,
     write_stitched_review,
 )
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
@@ -84,6 +86,48 @@ class ResearchTextGridV2Tests(unittest.TestCase):
                 phone_mapper=self.mapper,
             )
             self.assertTrue(checked["speech_tier_boundaries_equal"])
+
+    def test_direct_interval_six_tier_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "direct.TextGrid"
+            row = self.row()
+            words = [
+                (0.0, 0.05, ""),
+                (0.05, 0.1, "혹시"),
+                (0.1, 0.15, "요즘"),
+                (0.15, 0.2, ""),
+            ]
+            phones = [
+                (0.0, 0.05, ""),
+                (0.05, 0.1, "h"),
+                (0.1, 0.15, "m"),
+                (0.15, 0.2, ""),
+            ]
+            result = write_base_textgrid_from_intervals(
+                output,
+                duration=0.2,
+                words=words,
+                phones=phones,
+                row=row,
+                phone_mapper=self.mapper,
+            )
+            self.assertTrue(result["valid"])
+            self.assertFalse(result["word_span_fallback"])
+            checked = validate_base_textgrid_from_intervals(
+                output,
+                duration=0.2,
+                words=words,
+                phones=phones,
+                row=row,
+                phone_mapper=self.mapper,
+            )
+            self.assertTrue(checked["valid"])
+            _duration, tiers = parse_mfa_textgrid(output)
+            self.assertEqual(list(tiers), BASE_TIERS)
+            self.assertEqual(
+                [label for _, _, label in tiers["utterance_orth_r"] if label],
+                ["H O k _ S I | YO _ J EU m"],
+            )
 
     def test_stitched_review_contract_and_inverse_manifest(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -147,6 +147,7 @@ def build_tables(
     writers: dict[str, csv.DictWriter] = {}
     paths = {
         "master": partial / "utterance_master_v2.csv",
+        "eojeol_tokens": partial / "eojeol_tokens.csv",
         "morph_tokens": partial / "morph_tokens.csv",
         "morph_units": partial / "morph_units.csv",
         "morph_boundaries": partial / "morph_boundaries.csv",
@@ -202,6 +203,7 @@ def build_tables(
             counts["utterances"] += 1
             years[str(row.get("year", ""))] += 1
             for table_name in (
+                "eojeol_tokens",
                 "morph_tokens",
                 "morph_units",
                 "morph_boundaries",

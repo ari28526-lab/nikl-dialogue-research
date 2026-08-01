@@ -36,7 +36,13 @@ try {
     $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
-    $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    $g2pStage = if (
+        $ExpectedPronunciationMode -eq 'common_pron_mfa_r2_latest_jamo'
+    ) {
+        Expand-CfgPath $cfg.textgrid_research_v2_staging
+    } else {
+        Expand-CfgPath $cfg.textgrid_eojeol_staging
+    }
     $py = Expand-CfgPath $cfg.pipeline_python
     if ([string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
         $searchMasterRoot = Expand-CfgPath $cfg.search_master
@@ -63,7 +69,7 @@ function FAIL($m) { $script:fail++; Out-Line ("  [FAIL] " + $m) }
 
 Out-Line "== preflight_eojeol_realign $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') =="
 Out-Line "대상 연도: $($years -join ', ')"
-Out-Line "G2P 4-tier staging: $g2pStage"
+Out-Line "연구 TextGrid staging: $g2pStage"
 Out-Line "pre-MFA search master: $searchMasterRoot"
 Out-Line "expected pronunciation mode: $ExpectedPronunciationMode"
 Out-Line ("작업 드라이브 정책: " + $(if ($PreferD) {
@@ -81,7 +87,9 @@ if (Test-Path $py) {
     if ($LASTEXITCODE -ne 0) { FAIL "pipeline_python 실행 실패(exit $LASTEXITCODE): $py" }
 } else { FAIL "pipeline_python 없음: $py" }
 foreach ($h in 'realign_eojeol_build_corpus.py','quarantine_bad_wavs.py',
-                 'realign_eojeol_merge_output.py','export_mfa_db_4tier.py') {
+                 'realign_eojeol_merge_output.py','export_mfa_db_4tier.py',
+                 'export_mfa_db_research_6tier.py',
+                 'inspect_mfa_db_checkpoint.py') {
     if (Test-Path (Join-Path $pydir $h)) { OK $h } else { FAIL "python 헬퍼 없음: $h" }
 }
 if ((Test-Path $py) -and (Test-Path (Join-Path $pydir 'verify_mfa_install.py'))) {
@@ -306,19 +314,21 @@ foreach ($y in $years) {
     elseif ($tC -and $tD) { WARN "$y temp가 C·D 양쪽에 있음 — 러너는 D:를 우선. 오래된 쪽 수동 확인 필요. $st" }
     elseif (
         $a -and -not $m -and
-        $alignExportMode -eq 'direct_db_4tier' -and
+        $alignExportMode -in @(
+            'direct_db_4tier', 'direct_db_research_6tier_v1'
+        ) -and
         -not ($oC -or $oD)
     ) {
         $directFinalYear = Join-Path $g2pStage $y
         if (Test-Path -LiteralPath $directFinalYear) {
             FAIL (
-                "$y direct_db_4tier align marker와 final staging은 있으나 " +
+                "$y direct DB align marker와 final staging은 있으나 " +
                 "merge marker가 없음 — marker 삭제·재정렬 금지. final staging, " +
                 "direct report, retained DB를 검증해 merge marker만 복구해야 함. $st"
             )
         } else {
             FAIL (
-                "$y direct_db_4tier align marker 뒤 완료 기록이 중단됨 — " +
+                "$y direct DB align marker 뒤 완료 기록이 중단됨 — " +
                 "marker 삭제·재정렬 전에 retained DB와 partial을 보존·점검해야 함. $st"
             )
         }

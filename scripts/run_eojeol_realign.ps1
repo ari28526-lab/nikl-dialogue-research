@@ -1,5 +1,6 @@
 ﻿# 어절(語節) 전량 재정렬 배치 — 목적 B: 4-tier TextGrid. ★실시간 출력판★
-#   words(어절)+phones(G2P 사전으로 정렬한 대략적 라벨·시간)+morphemes(형태소 경계)+utterance
+# r2 공통사전 실행은 연구용 6-tier+연도별 압축 동반표를 생성한다.
+# legacy inline G2P 재현에만 기존 4-tier fallback을 남긴다.
 # lab은 wav 옆에 제자리 생성(하드링크 없음). 기존 06_textgrid_merged는 읽기전용 보존.
 # 신규 결과: D:\20_AUDIO\07_textgrid_eojeol_g2p_staging
 # 기존 D:\20_AUDIO\06_textgrid_eojeol은 검증·archive·승격 전까지 그대로 보존.
@@ -91,6 +92,16 @@ if ($UseDirectDbExport -and $CleanupMfaOutput) {
     )
     exit 1
 }
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    -not $UseDirectDbExport
+) {
+    Write-Error (
+        "r2 공통사전 전수 실행은 승인 후보 6-tier와 동반표를 함께 만드는 " +
+        "-UseDirectDbExport가 필수임. 구형 4-tier fallback으로 실행하지 않음"
+    )
+    exit 1
+}
 
 # 주의: $ErrorActionPreference는 Stop 안 씀(네이티브 exe stderr가 오류로 오인되는 것 방지).
 $root = Split-Path -Parent $PSScriptRoot
@@ -147,7 +158,13 @@ try {
     $tmpSecondary = Expand-CfgPath $cfg.mfa_temp_secondary
     $outPrimary = Expand-CfgPath $cfg.mfa_output_primary
     $outSecondary = Expand-CfgPath $cfg.mfa_output_secondary
-    $g2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    $legacyG2pStage = Expand-CfgPath $cfg.textgrid_eojeol_staging
+    $researchV2Stage = Expand-CfgPath $cfg.textgrid_research_v2_staging
+    $g2pStage = if ($UseDirectDbExport) {
+        $researchV2Stage
+    } else {
+        $legacyG2pStage
+    }
     $commonPronRoot = Expand-CfgPath $cfg.common_pron_home
     $morphTextGridRoot = Expand-CfgPath $cfg.textgrid_merged
     $sourcePcmCheck = Join-Path $layersRoot "05_audio_index\source_pcm_check.csv"
@@ -1423,14 +1440,14 @@ $runId = $runPrefix + "_" + ($years -join '-') + "_" + `
          (Get-Date -Format "yyyyMMdd_HHmmss")
 
 Say "어절 재정렬 시작 (대상: $($years -join ', '), run_id=$runId)"
-Say "신규 G2P 4-tier는 기존본을 건드리지 않고 staging에 기록: $g2pStage"
+Say "신규 연구 출력은 기존본을 건드리지 않고 versioned staging에 기록: $g2pStage"
 Say "pre-MFA search master 입력: $searchMasterRoot"
 Say (
     "발음 입력: mode=$pronunciationMode, " +
     "dictionary=$dictionaryModelPath, inline_g2p=$useInlineG2p"
 )
 Say ("TextGrid 생성 경로: " + $(if ($UseDirectDbExport) {
-    "MFA DB -> 4-tier 직접(검증된 고속 경로, raw 2-tier 중복 생성 안 함)"
+    "MFA DB -> 6-tier+gzip 동반표 직접(raw 2-tier 중복 생성 안 함)"
 } else {
     "MFA built-in raw export -> 4-tier 병합(보수적 fallback)"
 }))
@@ -1677,6 +1694,23 @@ foreach ($y in $years) {
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
+    $directDbReadyMark = Join-Path $doneDir "$y.direct_db_ready"
+    $directDbReady = (
+        $UseDirectDbExport -and
+        (Read-DoneMarker $directDbReadyMark $y 'direct_db_ready' `
+            $inputContractId $alignmentContractId)
+    )
+    if (
+        $UseDirectDbExport -and
+        (Test-Path -LiteralPath $directDbReadyMark) -and
+        -not $directDbReady
+    ) {
+        Say (
+            "!! $y direct_db_ready가 현재 입력·정렬 계약과 불일치 " +
+            "— 자동 재정렬 금지: $directDbReadyMark"
+        )
+        exit 1
+    }
     if (Read-DoneMarker $doneMark $y 'align' $inputContractId `
             $alignmentContractId) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"
@@ -1729,8 +1763,19 @@ foreach ($y in $years) {
             $heartbeatFile = Join-Path $logDir (
                 "mfa_{0}_{1}_heartbeat.jsonl" -f $y, $runId
             )
-            $tries = @(); if (Test-Path $tmpYear) { $tries += $false }; $tries += $true
-        $ok = $false
+        if ($UseDirectDbExport -and $directDbReady) {
+            $tries = @()
+            $ok = $true
+            Say (
+                "$y [2/3] MFA DB 계산 완료 체크포인트 재사용 " +
+                "— 재정렬 없이 출력 단계만 재개"
+            )
+        } else {
+            $tries = @()
+            if (Test-Path $tmpYear) { $tries += $false }
+            $tries += $true
+            $ok = $false
+        }
         foreach ($doClean in $tries) {
             $mode = if ($doClean) { "--clean 전체" } else { "이어가기(temp 재사용)" }
             Say "$y [2/3] MFA 정렬 — $mode (num_jobs $numJobs, temp=$tmp 여유 ${freeGB}GB, 진행=1분 하트비트)..."
@@ -2133,15 +2178,65 @@ foreach ($y in $years) {
             exit 1
         }
         if ($UseDirectDbExport) {
-            # Built-in raw TextGrid 수백만 개를 쓴 뒤 다시 읽는 이중 I/O를 피한다.
-            # align()은 word/phone interval을 이미 SQLite에 수집했다. 동일 writer로
-            # 4-tier를 partial staging에 만들고, 전수 검증 뒤 연도 디렉터리 하나를
-            # 원자적으로 최종 staging 위치로 이동한다.
             $dbPath = Join-Path $tmpYear "$y.db"
             if (-not (Test-Path -LiteralPath $dbPath)) {
                 Say "!! $y direct-DB용 MFA DB 없음: $dbPath"
                 exit 1
             }
+            $dbCheckpointReport = Join-Path $logDir (
+                "mfa_db_checkpoint_{0}_{1}.json" -f $y, $runId
+            )
+            if (-not $directDbReady) {
+                Say "$y [2.5/3] MFA DB 계산 완료 체크포인트 검증..."
+                & $py (Join-Path $pydir "inspect_mfa_db_checkpoint.py") `
+                    --db $dbPath --year $y --output $dbCheckpointReport
+                if ($LASTEXITCODE -ne 0) {
+                    Say (
+                        "!! $y MFA DB 체크포인트 실패 — DB 보존, " +
+                        "무조건 재정렬하지 말고 보고서 확인: " +
+                        $dbCheckpointReport
+                    )
+                    exit 1
+                }
+                try {
+                    $dbCheckpoint = Get-Content -LiteralPath `
+                        $dbCheckpointReport -Raw -Encoding UTF8 |
+                        ConvertFrom-Json
+                    if ($dbCheckpoint.status -ne 'success') {
+                        throw "status=$($dbCheckpoint.status)"
+                    }
+                    Write-DoneMarker $directDbReadyMark $y `
+                        'direct_db_ready' @{
+                            alignment_db = $dbPath
+                            checkpoint_report = $dbCheckpointReport
+                            computation_complete = $true
+                            analysis_ready = $false
+                            source_utterances = `
+                                [int64]$dbCheckpoint.counts.source_utterances
+                            utterances_with_words = `
+                                [int64]$dbCheckpoint.counts.utterances_with_words
+                            utterances_with_phones = `
+                                [int64]$dbCheckpoint.counts.utterances_with_phones
+                            spn_intervals = `
+                                [int64]$dbCheckpoint.counts.spn_intervals
+                            search_master_root = $searchMasterRoot
+                        } $inputContractId $alignmentContract
+                    Write-TempContract $tempContractPath $y `
+                        $inputContractId $alignmentContract $tmpYear `
+                        "alignment_computation_complete_export_pending"
+                    $directDbReady = $true
+                } catch {
+                    Say (
+                        "!! $y MFA DB 체크포인트 보고서 손상 — " +
+                        "DB 보존: $($_.Exception.Message)"
+                    )
+                    exit 1
+                }
+            }
+            # Built-in raw TextGrid 수백만 개를 쓴 뒤 다시 읽는 이중 I/O를 피한다.
+            # align()은 word/phone interval을 이미 SQLite에 수집했다. 동일 writer로
+            # 6-tier와 정규화 gzip 동반표를 partial staging에 만들고, 전수
+            # 검증 뒤 연도 디렉터리 하나를 원자적으로 최종 staging에 옮긴다.
             if (Test-Path -LiteralPath $finalStageYear) {
                 Say "!! $y 최종 staging이 marker 없이 이미 존재 — 자동 덮어쓰기 금지: $finalStageYear"
                 exit 1
@@ -2151,13 +2246,16 @@ foreach ($y in $years) {
             $directReport = Join-Path $logDir (
                 "direct_db_export_{0}_{1}.json" -f $y, $runId
             )
-            Say "$y [3/3-direct] MFA DB -> partial 4-tier staging..."
-            & $py (Join-Path $pydir "export_mfa_db_4tier.py") `
+            Say "$y [3/3-direct] MFA DB -> partial 연구 6-tier+동반표 staging..."
+            & $py (Join-Path $pydir "export_mfa_db_research_6tier.py") `
                 --db $dbPath --year $y `
                 --search-master-root $searchMasterRoot `
-                --output-root $directPartialRoot --report $directReport
+                --output-root $directPartialRoot `
+                --acoustic-model $acousticModelPath `
+                --alignment-contract $alignmentContractPath `
+                --workers 4 --report $directReport
             if ($LASTEXITCODE -ne 0) {
-                Say "!! $y direct-DB 4-tier 실패 — DB와 partial 보존: $directReport"
+                Say "!! $y direct-DB 연구 6-tier 실패 — DB와 partial 보존: $directReport"
                 exit 1
             }
             try {
@@ -2165,6 +2263,36 @@ foreach ($y in $years) {
                     -Encoding UTF8 | ConvertFrom-Json
                 if ($directData.status -ne 'success') {
                     throw "status=$($directData.status)"
+                }
+                if (
+                    [string]$directData.alignment_contract_id -ne
+                    $alignmentContractId
+                ) {
+                    throw "direct export alignment contract 불일치"
+                }
+                $expectedTiers = @(
+                    'words', 'phones_mfa', 'phoneme_r_auto', 'utterance',
+                    'utterance_orth_r', 'morph_analysis_utt'
+                ) -join '|'
+                $actualTiers = @($directData.tier_names) -join '|'
+                if ($actualTiers -ne $expectedTiers) {
+                    throw "6-tier 계약 불일치: $actualTiers"
+                }
+                if (
+                    [string]$directData.companion_tables.status -ne
+                    'success'
+                ) {
+                    throw "gzip 동반표 manifest 미통과"
+                }
+                if (-not (Test-Path -LiteralPath $directPartialYear)) {
+                    throw "partial 연도 디렉터리 없음: $directPartialYear"
+                }
+                $stalePartial = [IO.Directory]::EnumerateFiles(
+                    $directPartialYear, "*.partial",
+                    [IO.SearchOption]::AllDirectories
+                ) | Select-Object -First 1
+                if ($stalePartial) {
+                    throw "연도 승격 폴더에 partial 잔류: $stalePartial"
                 }
                 $tgN = [int64]$directData.counts.created +
                        [int64]$directData.counts.validated_existing
@@ -2178,9 +2306,6 @@ foreach ($y in $years) {
                 if ($labN -le 0 -or $tgN -le 0 -or $pct -lt 99) {
                     throw "coverage gate 실패: TextGrid=$tgN lab=$labN pct=$pct"
                 }
-                if (-not (Test-Path -LiteralPath $directPartialYear)) {
-                    throw "partial 연도 디렉터리 없음: $directPartialYear"
-                }
                 Move-Item -LiteralPath $directPartialYear `
                     -Destination $finalStageYear
             } catch {
@@ -2191,7 +2316,7 @@ foreach ($y in $years) {
                 textgrids = $tgN
                 labs = $labN
                 coverage_pct = $pct
-                export_mode = 'direct_db_4tier'
+                export_mode = 'direct_db_research_6tier_v1'
                 alignment_db = $dbPath
                 input_contract_id = $inputContractId
                 search_master_root = $searchMasterRoot
@@ -2208,16 +2333,17 @@ foreach ($y in $years) {
                     [int64]$integrityYear[0].counts.morph_source_unclassified
                 )
                 tier_provenance = [ordered]@{
-                    phones = 'phones_mfa'
-                    morphemes = (
-                        'morphemes_legacy_copy_of_' +
-                        '06_textgrid_merged_words'
-                    )
+                    words = 'mfa_db.word_interval'
+                    phones_mfa = 'mfa_db.phone_interval'
+                    phoneme_r_auto = 'phones_mfa_only'
+                    utterance = 'frozen_search_master.form'
+                    utterance_orth_r = 'frozen_search_master.form_roman'
+                    morph_analysis_utt = 'frozen_search_master.tagged_whole_span'
                 }
             } $inputContractId $alignmentContract
             $mergeMark = Join-Path $doneDir "$y.merge_done"
             Write-DoneMarker $mergeMark $y 'merge' @{
-                export_mode = 'direct_db_4tier'
+                export_mode = 'direct_db_research_6tier_v1'
                 direct_export_report = $directReport
                 staging_output_root = $g2pStage
                 existing_final_root = (Expand-CfgPath $cfg.textgrid_eojeol)
@@ -2239,27 +2365,28 @@ foreach ($y in $years) {
                     [int64]$integrityYear[0].counts.morph_source_unclassified
                 )
                 tier_provenance = [ordered]@{
-                    phones = 'phones_mfa'
-                    morphemes = (
-                        'morphemes_legacy_copy_of_' +
-                        '06_textgrid_merged_words'
-                    )
+                    words = 'mfa_db.word_interval'
+                    phones_mfa = 'mfa_db.phone_interval'
+                    phoneme_r_auto = 'phones_mfa_only'
+                    utterance = 'frozen_search_master.form'
+                    utterance_orth_r = 'frozen_search_master.form_roman'
+                    morph_analysis_utt = 'frozen_search_master.tagged_whole_span'
                 }
             } $inputContractId $alignmentContract
             if ($CleanupDirectDbAfterMerge) {
                 try { Remove-SafeYearPath $tmpYear $tmp }
                 catch {
-                    Say "!! direct-DB 완료 후 temp 정리 실패(4-tier·marker 보존): $($_.Exception.Message)"
+                    Say "!! direct-DB 완료 후 temp 정리 실패(6-tier·동반표·marker 보존): $($_.Exception.Message)"
                 }
                 Write-TempContract $tempContractPath $y $inputContractId `
                     $alignmentContract $tmpYear `
                     "direct_merge_completed_temp_removed"
-                Say "===== $y direct-DB 완료 (temp 정리, 4-tier $tgN/$labN) ====="
+                Say "===== $y direct-DB 완료 (temp 정리, 연구 6-tier $tgN/$labN) ====="
             } else {
                 Write-TempContract $tempContractPath $y $inputContractId `
                     $alignmentContract $tmpYear `
                     "direct_merge_completed_temp_retained_for_qc"
-                Say "===== $y direct-DB 완료 (QC 전 DB 보존: $dbPath, 4-tier $tgN/$labN) ====="
+                Say "===== $y direct-DB 완료 (QC 전 DB 보존: $dbPath, 연구 6-tier $tgN/$labN) ====="
             }
             continue
         }
@@ -2312,6 +2439,15 @@ foreach ($y in $years) {
             $alignmentContract $tmpYear `
             "align_completed_temp_retained_until_merge"
         Say "$y MFA 정렬 완료 (병합·QC 전까지 temp $tmpYear 보존)"
+    }
+
+    if ($UseDirectDbExport) {
+        Say (
+            "!! $y direct DB align_done은 있지만 merge_done이 없음. " +
+            "legacy 4-tier 병합으로 폴백하지 않음. final staging·" +
+            "direct report를 확인해 merge marker만 복구할 것."
+        )
+        exit 1
     }
 
     # 3) 4-tier 병합 — 진행줄 실시간. MFA 원출력은 선택된 작업 드라이브에 있음.

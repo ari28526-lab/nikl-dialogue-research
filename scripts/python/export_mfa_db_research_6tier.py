@@ -1,0 +1,1053 @@
+"""MFA SQLite DB에서 연구용 6-tier와 정규화 동반 CSV를 직접 생성한다.
+
+원시 WAV, 동결 search master, MFA DB는 모두 읽기 전용이다. 출력은 연도별
+TextGrid와 세 개의 gzip CSV로 구성한다. 510만 발화마다 작은 CSV 파일을
+만들지 않고 ``utt_id``와 interval index로 논리적 1:1 대응을 보장한다.
+
+``utterance_alignment.csv.gz``
+    TextGrid 1개당 1행. 텍스트·화자·파일·정렬 요약과 계약 ID를 가진다.
+``word_intervals_mfa.csv.gz``
+    MFA word interval 1개당 1행. MFA에 실제 들어간
+    ``pron_reference_form``과 원 형태소 분석의 ``form``을 구분한다.
+``phone_intervals_mfa.csv.gz``
+    MFA phone interval 1개당 1행. DB ``word_interval_id``로 word에 연결한다.
+
+MFA phone과 ``phoneme_r_auto``는 실제 음운 실현 판정값이 아니다.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import gzip
+import json
+import os
+import sqlite3
+import sys
+import time
+from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from typing import Callable, Mapping, Sequence
+
+from morph_schema import canonicalize_tagged, tagged_roman_v2
+from phoneme_roman import (
+    ROMAN_SYSTEM_VERSION,
+    SCHEMA_VERSION as PHONEME_SCHEMA_VERSION,
+    classify_phone,
+    load_acoustic_meta,
+    model_group_lookup,
+)
+from pipeline_common import atomic_write_json, file_fingerprint
+from realign_eojeol_build_corpus import (
+    LAB_INPUT_VERSION,
+    MISSING,
+    TOKEN_MAP_VERSION,
+    form_to_lab_mapping,
+)
+from research_textgrid_v2 import (
+    BASE_TIERS,
+    SCHEMA_VERSION as TEXTGRID_SCHEMA_VERSION,
+    SILENCE,
+    validate_base_textgrid_from_intervals,
+    write_base_textgrid_from_intervals,
+)
+
+csv.field_size_limit(10_000_000)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+SCHEMA_VERSION = "mfa_research_6tier_export.v1"
+TABLE_SCHEMA_VERSION = "mfa_research_companion_tables.v1"
+SILENCE_WORDS = {"", "<eps>", "sil", "<unk>"}
+SILENCE_PHONES = {"", "<eps>", "sil", "sp", "<unk>"}
+REQUIRED_SEARCH_FIELDS = {
+    "utt_id",
+    "form",
+    "form_roman",
+    "tagged",
+    "n_eojeol",
+    "pron_reference_form",
+    "pron_reference_n_eojeol",
+}
+
+Interval = tuple[float, float, str]
+PhoneMapper = Callable[[str], str]
+
+UTTERANCE_FIELDS = [
+    "utt_id",
+    "year",
+    "session_id",
+    "speaker_id",
+    "dialogue_id",
+    "dialogue_speaker_ids",
+    "co_speaker_ids",
+    "form",
+    "original_form",
+    "canonical_tagged",
+    "form_roman",
+    "tagged_roman_v2",
+    "pron_reference_form",
+    "pron_reference_form_roman",
+    "pron_pred_hangul",
+    "pron_pred_roman",
+    "pron_pred_ipa",
+    "pron_reference_hangul",
+    "pron_reference_roman",
+    "pron_reference_ipa",
+    "pron_reference_source",
+    "pron_reference_status",
+    "source_start_seconds",
+    "source_end_seconds",
+    "wav_duration_seconds",
+    "source_wav_path",
+    "source_lab_path",
+    "textgrid_relative_path",
+    "n_word_intervals",
+    "n_phone_intervals",
+    "n_source_eojeol",
+    "n_reference_eojeol",
+    "n_lab_words_expected",
+    "n_mfa_words_aligned",
+    "lab_word_count_match",
+    "word_label_sequence_match",
+    "reference_differs_from_form",
+    "pron_mfa_ipa",
+    "pron_mfa_r_auto",
+    "n_spn",
+    "alignment_score",
+    "align_status",
+    "alignment_contract_id",
+    "textgrid_schema_version",
+    "phoneme_schema_version",
+    "roman_system_version",
+]
+
+WORD_FIELDS = [
+    "utt_id",
+    "year",
+    "session_id",
+    "word_interval_idx",
+    "mfa_word_idx",
+    "reference_eojeol_idx",
+    "reference_eojeol",
+    "lab_word_expected",
+    "begin_seconds",
+    "end_seconds",
+    "duration_seconds",
+    "word_mfa",
+    "is_silence",
+    "n_phones",
+    "phone_link_status",
+    "pron_mfa_ipa",
+    "pron_mfa_r_auto",
+    "mapping_status",
+    "alignment_contract_id",
+]
+
+PHONE_FIELDS = [
+    "utt_id",
+    "year",
+    "session_id",
+    "phone_interval_idx",
+    "phone_idx_in_word",
+    "word_interval_idx",
+    "mfa_word_idx",
+    "reference_eojeol_idx",
+    "begin_seconds",
+    "end_seconds",
+    "duration_seconds",
+    "phone_mfa",
+    "phoneme_r_auto",
+    "is_silence",
+    "word_mfa",
+    "alignment_contract_id",
+]
+
+
+def placeholders(count: int) -> str:
+    if count <= 0:
+        raise ValueError("SQL placeholder count는 양수여야 함")
+    return ",".join("?" for _ in range(count))
+
+
+def open_readonly(path: Path) -> sqlite3.Connection:
+    return sqlite3.connect(
+        f"file:{path.resolve().as_posix()}?mode=ro", uri=True, timeout=120
+    )
+
+
+def count_spn_intervals(connection: sqlite3.Connection) -> int:
+    return int(
+        connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM phone_interval pi
+            JOIN phone p ON p.id = pi.phone_id
+            WHERE trim(lower(p.phone)) = 'spn'
+            """
+        ).fetchone()[0]
+    )
+
+
+def load_alignment_contract(path: Path, year: str) -> tuple[str, dict]:
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
+    contract_id = str(data.get("alignment_contract_id", "")).strip()
+    if data.get("status") != "passed" or str(data.get("year")) != str(year):
+        raise RuntimeError(f"alignment contract status/year 불일치: {path}")
+    if not contract_id:
+        raise RuntimeError(f"alignment_contract_id 누락: {path}")
+    return contract_id, data
+
+
+def load_session_rows(
+    search_master_root: Path, year: str, session: str
+) -> dict[str, dict[str, str]]:
+    path = search_master_root / year / f"{session}.csv"
+    if not path.is_file():
+        return {}
+    rows: dict[str, dict[str, str]] = {}
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        missing = REQUIRED_SEARCH_FIELDS - set(reader.fieldnames or ())
+        if missing:
+            raise RuntimeError(f"{path}: 필수 열 누락 {sorted(missing)}")
+        for row in reader:
+            utt_id = str(row.get("utt_id", "")).strip()
+            if not utt_id:
+                raise RuntimeError(f"{path}: 빈 utt_id")
+            if utt_id in rows:
+                raise RuntimeError(f"{path}: 중복 utt_id {utt_id}")
+            rows[utt_id] = row
+    return rows
+
+
+def _db_inventory(
+    connection: sqlite3.Connection,
+) -> tuple[dict[int, str], dict[int, tuple[str, str]]]:
+    words = {int(row[0]): str(row[1]) for row in connection.execute(
+        "SELECT id, word FROM word"
+    )}
+    phones = {
+        int(row[0]): (str(row[1]), str(row[2]))
+        for row in connection.execute(
+            "SELECT id, phone, phone_type FROM phone"
+        )
+    }
+    return words, phones
+
+
+def _sessions(connection: sqlite3.Connection) -> list[tuple[str, list[tuple]]]:
+    grouped: dict[str, list[tuple]] = defaultdict(list)
+    for row in connection.execute(
+        """
+        SELECT u.id, f.name, f.relative_path, sf.duration,
+               sf.sound_file_path, u.alignment_score
+        FROM utterance u
+        JOIN file f ON f.id = u.file_id
+        JOIN sound_file sf ON sf.file_id = f.id
+        WHERE u.ignored = 0
+        ORDER BY f.relative_path, f.name
+        """
+    ):
+        uid, name, relative_path, duration, wav_path, alignment_score = row
+        session = str(relative_path or str(name).split(".", 1)[0])
+        grouped[session].append(
+            (
+                int(uid),
+                str(name),
+                float(duration),
+                str(wav_path),
+                alignment_score,
+            )
+        )
+    return sorted(grouped.items())
+
+
+def _session_intervals(
+    connection: sqlite3.Connection,
+    utterance_ids: Sequence[int],
+    word_labels: Mapping[int, str],
+    phone_labels: Mapping[int, tuple[str, str]],
+) -> tuple[dict[int, list[tuple]], dict[int, list[tuple]]]:
+    marks = placeholders(len(utterance_ids))
+    words: dict[int, list[tuple]] = defaultdict(list)
+    for row in connection.execute(
+        "SELECT id, utterance_id, begin, end, word_id "
+        f"FROM word_interval WHERE utterance_id IN ({marks}) "
+        "ORDER BY utterance_id, begin, end, id",
+        list(utterance_ids),
+    ):
+        interval_id, uid, begin, end, word_id = row
+        label = word_labels.get(int(word_id), "")
+        if label.strip().lower() in SILENCE_WORDS:
+            label = ""
+        words[int(uid)].append(
+            (int(interval_id), float(begin), float(end), label)
+        )
+    phones: dict[int, list[tuple]] = defaultdict(list)
+    for row in connection.execute(
+        "SELECT id, utterance_id, begin, end, phone_id, word_interval_id "
+        f"FROM phone_interval WHERE utterance_id IN ({marks}) "
+        "ORDER BY utterance_id, begin, end, id",
+        list(utterance_ids),
+    ):
+        interval_id, uid, begin, end, phone_id, word_interval_id = row
+        label, phone_type = phone_labels.get(int(phone_id), ("", ""))
+        if label.strip().lower() in SILENCE_PHONES or phone_type == "silence":
+            label = ""
+        phones[int(uid)].append(
+            (
+                int(interval_id),
+                float(begin),
+                float(end),
+                label,
+                int(word_interval_id) if word_interval_id is not None else None,
+            )
+        )
+    return words, phones
+
+
+def export_session_textgrids(
+    *,
+    db_path: Path,
+    year: str,
+    session: str,
+    utterances: list[tuple],
+    search_master_root: Path,
+    output_root: Path,
+    word_labels: Mapping[int, str],
+    phone_labels: Mapping[int, tuple[str, str]],
+    phone_mapper: PhoneMapper,
+) -> dict[str, object]:
+    connection = open_readonly(db_path)
+    try:
+        search_rows = load_session_rows(search_master_root, year, session)
+        words_by_utt, phones_by_utt = _session_intervals(
+            connection,
+            [row[0] for row in utterances],
+            word_labels,
+            phone_labels,
+        )
+    finally:
+        connection.close()
+
+    counts: Counter[str] = Counter()
+    failures: list[dict[str, str]] = []
+    missing_search: list[str] = []
+    missing_alignment: list[str] = []
+    output_dir = output_root / year / session
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for uid, utt_id, duration, _wav_path, _score in utterances:
+        row = search_rows.get(utt_id)
+        if row is None:
+            counts["search_row_missing"] += 1
+            missing_search.append(utt_id)
+            continue
+        words = [
+            (begin, end, label)
+            for _iid, begin, end, label in words_by_utt.get(uid, [])
+        ]
+        phones = [
+            (begin, end, label)
+            for _iid, begin, end, label, _wid in phones_by_utt.get(uid, [])
+        ]
+        if not words or not phones:
+            counts["alignment_missing"] += 1
+            missing_alignment.append(utt_id)
+            continue
+        destination = output_dir / f"{utt_id}.TextGrid"
+        try:
+            if destination.is_file():
+                validation = validate_base_textgrid_from_intervals(
+                    destination,
+                    duration=duration,
+                    words=words,
+                    phones=phones,
+                    row=row,
+                    phone_mapper=phone_mapper,
+                )
+                if validation["valid"]:
+                    counts["validated_existing"] += 1
+                else:
+                    raise RuntimeError(
+                        "기존 6-tier 검증 실패: "
+                        + "; ".join(validation["reasons"])
+                    )
+            else:
+                validation = write_base_textgrid_from_intervals(
+                    destination,
+                    duration=duration,
+                    words=words,
+                    phones=phones,
+                    row=row,
+                    phone_mapper=phone_mapper,
+                )
+                counts["created"] += 1
+            if validation.get("word_span_fallback"):
+                counts["word_span_fallback"] += 1
+        except Exception as exc:
+            counts["failed"] += 1
+            if len(failures) < 100:
+                failures.append(
+                    {"utt_id": utt_id, "error": f"{type(exc).__name__}: {exc}"}
+                )
+    return {
+        "counts": dict(counts),
+        "failed_examples": failures,
+        "search_row_missing_inventory": missing_search,
+        "alignment_missing_inventory": missing_alignment,
+    }
+
+
+def _format_seconds(value: object) -> str:
+    if value in (None, ""):
+        return ""
+    return f"{float(value):.6f}"
+
+
+def _atomic_gzip_writer(path: Path, fields: list[str]):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    partial = path.with_name(f".{path.name}.{os.getpid()}.partial")
+    stream = gzip.open(
+        partial, "wt", encoding="utf-8-sig", newline="", compresslevel=3
+    )
+    writer = csv.DictWriter(
+        stream, fieldnames=fields, extrasaction="ignore", lineterminator="\n"
+    )
+    writer.writeheader()
+    return stream, writer, partial
+
+
+def _archive_stale_table_partials(
+    output_root: Path, year: str, table_root: Path
+) -> list[str]:
+    """실패한 이전 시도의 table partial을 삭제하지 않고 분리한다."""
+
+    stale = sorted(table_root.glob(".*.partial")) if table_root.is_dir() else []
+    if not stale:
+        return []
+    archive_root = (
+        output_root
+        / "_failed_table_partials"
+        / str(year)
+        / f"{time.time_ns()}_{os.getpid()}"
+    )
+    archive_root.mkdir(parents=True, exist_ok=False)
+    archived: list[str] = []
+    for path in stale:
+        destination = archive_root / path.name
+        os.replace(path, destination)
+        archived.append(str(destination.relative_to(output_root)))
+    return archived
+
+
+def _reference_form(search: Mapping[str, str]) -> str:
+    form = str(search.get("form", "") or "").strip()
+    reference = str(search.get("pron_reference_form", "") or "").strip()
+    return form if reference in MISSING else reference
+
+
+def _reference_word_map(search: Mapping[str, str]) -> list[dict[str, object]]:
+    """MFA .lab에 쓴 참조 표기와 MFA word 위치를 재생성한다.
+
+    ``form``은 형태소·철자 검색의 원본이고
+    ``pron_reference_form``은 숫자 읽기 복원 등을 반영한 MFA 입력이다.
+    둘의 어절 위치가 항상 같다고 간주하지 않는다.
+    """
+
+    reference = _reference_form(search)
+    result: list[dict[str, object]] = []
+    for row in form_to_lab_mapping(reference):
+        if not row["included_in_mfa"]:
+            continue
+        result.append(
+            {
+                "mfa_word_idx": int(row["mfa_word_index"]) + 1,
+                "reference_eojeol_idx": int(row["source_eojeol_index"]) + 1,
+                "reference_eojeol": str(row["source_token"]),
+                "lab_word_expected": str(row["lab_token"]),
+            }
+        )
+    return result
+
+
+def write_companion_tables(
+    *,
+    db_path: Path,
+    year: str,
+    sessions: list[tuple[str, list[tuple]]],
+    search_master_root: Path,
+    output_root: Path,
+    word_labels: Mapping[int, str],
+    phone_labels: Mapping[int, tuple[str, str]],
+    phone_mapper: PhoneMapper,
+    alignment_contract_id: str,
+) -> dict[str, object]:
+    table_root = output_root / year / "_tables"
+    archived_stale_partials = _archive_stale_table_partials(
+        output_root, year, table_root
+    )
+    destinations = {
+        "utterances": table_root / "utterance_alignment.csv.gz",
+        "words": table_root / "word_intervals_mfa.csv.gz",
+        "phones": table_root / "phone_intervals_mfa.csv.gz",
+    }
+    opened = {
+        "utterances": _atomic_gzip_writer(destinations["utterances"], UTTERANCE_FIELDS),
+        "words": _atomic_gzip_writer(destinations["words"], WORD_FIELDS),
+        "phones": _atomic_gzip_writer(destinations["phones"], PHONE_FIELDS),
+    }
+    counts: Counter[str] = Counter()
+    errors: list[dict[str, str]] = []
+    connection = open_readonly(db_path)
+    try:
+        for session_index, (session, utterances) in enumerate(sessions, 1):
+            search_rows = load_session_rows(search_master_root, year, session)
+            words_by_utt, phones_by_utt = _session_intervals(
+                connection,
+                [row[0] for row in utterances],
+                word_labels,
+                phone_labels,
+            )
+            for uid, utt_id, duration, wav_path, score in utterances:
+                search = search_rows.get(utt_id)
+                if search is None:
+                    errors.append({"utt_id": utt_id, "error": "search_row_missing"})
+                    continue
+                word_rows = words_by_utt.get(uid, [])
+                phone_rows = phones_by_utt.get(uid, [])
+                phone_by_word: dict[int | None, list[tuple]] = defaultdict(list)
+                for phone_row in phone_rows:
+                    phone_by_word[phone_row[4]].append(phone_row)
+
+                reference_words = _reference_word_map(search)
+                reference_by_mfa_idx = {
+                    int(item["mfa_word_idx"]): item for item in reference_words
+                }
+                word_meta: dict[int, dict[str, object]] = {}
+                word_output_rows: list[dict[str, object]] = []
+                mfa_word_idx = 0
+                observed_word_labels: list[str] = []
+                utterance_pron_ipa: list[str] = []
+                utterance_pron_r: list[str] = []
+                for word_index, (word_id, begin, end, word_label) in enumerate(
+                    word_rows, 1
+                ):
+                    is_silence = not word_label.strip()
+                    if not is_silence:
+                        mfa_word_idx += 1
+                        mfa_word_value: int | str = mfa_word_idx
+                        observed_word_labels.append(word_label)
+                        reference_meta = reference_by_mfa_idx.get(
+                            mfa_word_idx, {}
+                        )
+                    else:
+                        mfa_word_value = ""
+                        reference_meta = {}
+                    linked = phone_by_word.get(word_id, [])
+                    ipa_tokens = [row[3] for row in linked if row[3].strip()]
+                    roman_tokens = [phone_mapper(phone) for phone in ipa_tokens]
+                    pron_ipa = " ".join(ipa_tokens)
+                    pron_r = " ".join(roman_tokens)
+                    if not is_silence:
+                        utterance_pron_ipa.append(pron_ipa)
+                        utterance_pron_r.append(pron_r)
+                        if not linked:
+                            counts["words_without_linked_phone"] += 1
+                    expected_label = str(
+                        reference_meta.get("lab_word_expected", "")
+                    )
+                    if is_silence:
+                        mapping_status = "silence"
+                    elif not reference_meta:
+                        mapping_status = "no_reference_map"
+                    elif word_label == expected_label:
+                        mapping_status = "matched_reference_lab"
+                    else:
+                        mapping_status = "label_mismatch"
+                    word_meta[word_id] = {
+                        "word_interval_idx": word_index,
+                        "word_mfa": word_label,
+                        "mfa_word_idx": mfa_word_value,
+                        "reference_eojeol_idx": reference_meta.get(
+                            "reference_eojeol_idx", ""
+                        ),
+                    }
+                    word_output_rows.append(
+                        {
+                            "utt_id": utt_id,
+                            "year": year,
+                            "session_id": session,
+                            "word_interval_idx": word_index,
+                            "mfa_word_idx": mfa_word_value,
+                            "reference_eojeol_idx": reference_meta.get(
+                                "reference_eojeol_idx", ""
+                            ),
+                            "reference_eojeol": reference_meta.get(
+                                "reference_eojeol", ""
+                            ),
+                            "lab_word_expected": expected_label,
+                            "begin_seconds": _format_seconds(begin),
+                            "end_seconds": _format_seconds(end),
+                            "duration_seconds": _format_seconds(end - begin),
+                            "word_mfa": word_label,
+                            "is_silence": is_silence,
+                            "n_phones": len(linked),
+                            "phone_link_status": (
+                                "linked_by_word_interval_id"
+                                if linked else (
+                                    "silence_without_phone"
+                                    if is_silence else "no_linked_phone"
+                                )
+                            ),
+                            "pron_mfa_ipa": pron_ipa,
+                            "pron_mfa_r_auto": pron_r,
+                            "mapping_status": mapping_status,
+                            "alignment_contract_id": alignment_contract_id,
+                        }
+                    )
+                for row in word_output_rows:
+                    opened["words"][1].writerow(row)
+                    counts["word_intervals"] += 1
+
+                phone_idx_by_word: Counter[int | None] = Counter()
+                for phone_index, (
+                    _phone_id,
+                    begin,
+                    end,
+                    phone_label,
+                    word_interval_id,
+                ) in enumerate(phone_rows, 1):
+                    phone_idx_by_word[word_interval_id] += 1
+                    linked_meta = word_meta.get(word_interval_id)
+                    word_index = (
+                        linked_meta["word_interval_idx"] if linked_meta else ""
+                    )
+                    word_label = linked_meta["word_mfa"] if linked_meta else ""
+                    phone_mfa_word_idx = (
+                        linked_meta["mfa_word_idx"] if linked_meta else ""
+                    )
+                    phone_reference_eojeol_idx = (
+                        linked_meta["reference_eojeol_idx"]
+                        if linked_meta else ""
+                    )
+                    is_silence = not phone_label.strip()
+                    opened["phones"][1].writerow(
+                        {
+                            "utt_id": utt_id,
+                            "year": year,
+                            "session_id": session,
+                            "phone_interval_idx": phone_index,
+                            "phone_idx_in_word": phone_idx_by_word[word_interval_id],
+                            "word_interval_idx": word_index,
+                            "mfa_word_idx": phone_mfa_word_idx,
+                            "reference_eojeol_idx": (
+                                phone_reference_eojeol_idx
+                            ),
+                            "begin_seconds": _format_seconds(begin),
+                            "end_seconds": _format_seconds(end),
+                            "duration_seconds": _format_seconds(end - begin),
+                            "phone_mfa": phone_label,
+                            "phoneme_r_auto": (
+                                "" if is_silence else phone_mapper(phone_label)
+                            ),
+                            "is_silence": is_silence,
+                            "word_mfa": word_label,
+                            "alignment_contract_id": alignment_contract_id,
+                        }
+                    )
+                    counts["phone_intervals"] += 1
+                    if not is_silence and linked_meta is None:
+                        counts["unlinked_nonsilence_phones"] += 1
+
+                source_eojeols = str(search.get("n_eojeol", "") or "").strip()
+                source_eojeol_count: int | str = (
+                    int(source_eojeols) if source_eojeols.isdigit() else ""
+                )
+                reference_form = _reference_form(search)
+                reference_eojeols = str(
+                    search.get("pron_reference_n_eojeol", "") or ""
+                ).strip()
+                reference_eojeol_count: int | str = (
+                    int(reference_eojeols)
+                    if reference_eojeols.isdigit()
+                    else len(reference_form.split())
+                )
+                expected_lab_labels = [
+                    str(item["lab_word_expected"]) for item in reference_words
+                ]
+                label_sequence_match = observed_word_labels == expected_lab_labels
+                source_wav = Path(wav_path)
+                opened["utterances"][1].writerow(
+                    {
+                        "utt_id": utt_id,
+                        "year": year,
+                        "session_id": session,
+                        "speaker_id": search.get("speaker_id", ""),
+                        "dialogue_id": search.get("dialogue_id", ""),
+                        "dialogue_speaker_ids": search.get("dialogue_speaker_ids", ""),
+                        "co_speaker_ids": search.get("co_speaker_ids", ""),
+                        "form": search.get("form", ""),
+                        "original_form": search.get("original_form", ""),
+                        "canonical_tagged": canonicalize_tagged(search["tagged"]),
+                        "form_roman": search.get("form_roman", ""),
+                        "tagged_roman_v2": tagged_roman_v2(search["tagged"]),
+                        "pron_reference_form": search.get("pron_reference_form", ""),
+                        "pron_reference_form_roman": search.get(
+                            "pron_reference_form_roman", ""
+                        ),
+                        "pron_pred_hangul": search.get("pron_pred_hangul", ""),
+                        "pron_pred_roman": search.get("pron_pred_roman", ""),
+                        "pron_pred_ipa": search.get("pron_pred_ipa", ""),
+                        "pron_reference_hangul": search.get("pron_reference_hangul", ""),
+                        "pron_reference_roman": search.get("pron_reference_roman", ""),
+                        "pron_reference_ipa": search.get("pron_reference_ipa", ""),
+                        "pron_reference_source": search.get("pron_reference_source", ""),
+                        "pron_reference_status": search.get("pron_reference_status", ""),
+                        "source_start_seconds": search.get("start", ""),
+                        "source_end_seconds": search.get("end", ""),
+                        "wav_duration_seconds": _format_seconds(duration),
+                        "source_wav_path": str(source_wav),
+                        "source_lab_path": str(source_wav.with_suffix(".lab")),
+                        "textgrid_relative_path": str(
+                            Path(year) / session / f"{utt_id}.TextGrid"
+                        ),
+                        "n_word_intervals": len(word_rows),
+                        "n_phone_intervals": len(phone_rows),
+                        "n_source_eojeol": source_eojeol_count,
+                        "n_reference_eojeol": reference_eojeol_count,
+                        "n_lab_words_expected": len(reference_words),
+                        "n_mfa_words_aligned": mfa_word_idx,
+                        "lab_word_count_match": (
+                            mfa_word_idx == len(reference_words)
+                        ),
+                        "word_label_sequence_match": label_sequence_match,
+                        "reference_differs_from_form": (
+                            reference_form != str(search.get("form", "")).strip()
+                        ),
+                        "pron_mfa_ipa": " | ".join(utterance_pron_ipa),
+                        "pron_mfa_r_auto": " | ".join(utterance_pron_r),
+                        "n_spn": 0,
+                        "alignment_score": "" if score is None else score,
+                        "align_status": "aligned",
+                        "alignment_contract_id": alignment_contract_id,
+                        "textgrid_schema_version": TEXTGRID_SCHEMA_VERSION,
+                        "phoneme_schema_version": PHONEME_SCHEMA_VERSION,
+                        "roman_system_version": ROMAN_SYSTEM_VERSION,
+                    }
+                )
+                counts["utterances"] += 1
+                if mfa_word_idx != len(reference_words):
+                    counts["lab_word_count_mismatch"] += 1
+                    if len(errors) < 100:
+                        errors.append(
+                            {
+                                "utt_id": utt_id,
+                                "error": "lab_word_count_mismatch",
+                                "expected": str(len(reference_words)),
+                                "actual": str(mfa_word_idx),
+                            }
+                        )
+                if not label_sequence_match:
+                    counts["word_label_sequence_mismatch"] += 1
+                    if len(errors) < 100:
+                        errors.append(
+                            {
+                                "utt_id": utt_id,
+                                "error": "word_label_sequence_mismatch",
+                                "expected": " | ".join(expected_lab_labels),
+                                "actual": " | ".join(observed_word_labels),
+                            }
+                        )
+            if session_index % 100 == 0 or session_index == len(sessions):
+                print(
+                    f"[{year}] companion tables {session_index:,}/{len(sessions):,} "
+                    f"sessions · utterances={counts['utterances']:,}",
+                    flush=True,
+                )
+    finally:
+        connection.close()
+        for _name, (stream, _writer, _partial) in opened.items():
+            if not stream.closed:
+                stream.close()
+
+    if errors:
+        raise RuntimeError(
+            f"동반표 계약 불일치 {len(errors)}건: {errors[:3]}"
+        )
+    if counts["words_without_linked_phone"]:
+        raise RuntimeError(
+            "phone이 연결되지 않은 유표 word: "
+            f"{counts['words_without_linked_phone']}"
+        )
+    if counts["unlinked_nonsilence_phones"]:
+        raise RuntimeError(
+            "word_interval_id 없는 유표 phone: "
+            f"{counts['unlinked_nonsilence_phones']}"
+        )
+    if counts["lab_word_count_mismatch"]:
+        raise RuntimeError(
+            "MFA 유표 word와 재생성한 lab word 수 불일치: "
+            f"{counts['lab_word_count_mismatch']}"
+        )
+    if counts["word_label_sequence_mismatch"]:
+        raise RuntimeError(
+            "MFA word label과 재생성한 lab word 순서 불일치: "
+            f"{counts['word_label_sequence_mismatch']}"
+        )
+
+    # 모든 연결·개수·label gate를 통과한 뒤에만 최종 파일명으로
+    # 승격한다. 실패 시 .partial은 조사 근거로 남고, 완성본은 없다.
+    for name, (_stream, _writer, partial) in opened.items():
+        os.replace(partial, destinations[name])
+    manifest = {
+        "schema_version": TABLE_SCHEMA_VERSION,
+        "status": "success",
+        "year": year,
+        "alignment_contract_id": alignment_contract_id,
+        "textgrid_schema_version": TEXTGRID_SCHEMA_VERSION,
+        "phoneme_schema_version": PHONEME_SCHEMA_VERSION,
+        "roman_system_version": ROMAN_SYSTEM_VERSION,
+        "lab_input_version": LAB_INPUT_VERSION,
+        "token_map_version": TOKEN_MAP_VERSION,
+        "index_base": 1,
+        "position_contract": (
+            "source eojeol (form/tagged) and MFA reference eojeol "
+            "(pron_reference_form) are separate domains"
+        ),
+        "archived_stale_partials": archived_stale_partials,
+        "logical_sidecar_policy": (
+            "annual compressed normalized tables keyed by utt_id; "
+            "per-utterance CSV only in selected candidate bundles"
+        ),
+        "tables": {
+            name: file_fingerprint(path, with_sha256=True)
+            for name, path in destinations.items()
+        },
+        "counts": dict(sorted(counts.items())),
+    }
+    atomic_write_json(table_root / "TABLES_MANIFEST.json", manifest)
+    return manifest
+
+
+def export_database(
+    *,
+    db_path: Path,
+    year: str,
+    search_master_root: Path,
+    output_root: Path,
+    acoustic_model: Path,
+    alignment_contract: Path,
+    workers: int = 4,
+    limit_sessions: int = 0,
+) -> dict[str, object]:
+    started = time.monotonic()
+    db_path = db_path.resolve()
+    search_master_root = search_master_root.resolve()
+    output_root = output_root.resolve()
+    acoustic_model = acoustic_model.resolve()
+    alignment_contract = alignment_contract.resolve()
+    contract_id, contract_data = load_alignment_contract(
+        alignment_contract, year
+    )
+    groups = model_group_lookup(load_acoustic_meta(acoustic_model))
+
+    def phone_mapper(phone: str) -> str:
+        return classify_phone(phone, groups).phone_class_r_auto
+
+    connection = open_readonly(db_path)
+    try:
+        spn_intervals = count_spn_intervals(connection)
+        if spn_intervals:
+            return {
+                "schema_version": SCHEMA_VERSION,
+                "status": "failed",
+                "analysis_ready_status": "blocked_spn_intervals",
+                "year": year,
+                "counts": {"spn_intervals": spn_intervals},
+            }
+        word_labels, phone_labels = _db_inventory(connection)
+        sessions = _sessions(connection)
+        used_phones = {
+            str(row[0])
+            for row in connection.execute(
+                """
+                SELECT DISTINCT p.phone
+                FROM phone_interval pi
+                JOIN phone p ON p.id = pi.phone_id
+                WHERE trim(p.phone) <> ''
+                """
+            )
+            if str(row[0]).strip().lower() not in SILENCE_PHONES
+        }
+    finally:
+        connection.close()
+    outside = sorted(used_phones - set(groups))
+    if outside:
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "status": "failed",
+            "analysis_ready_status": "blocked_phone_inventory",
+            "year": year,
+            "phone_outside_acoustic_inventory": outside,
+        }
+    if limit_sessions:
+        sessions = sessions[:limit_sessions]
+
+    totals: Counter[str] = Counter(spn_intervals=0)
+    failures: list[dict[str, str]] = []
+    missing_search: list[str] = []
+    missing_alignment: list[str] = []
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
+        futures = {
+            executor.submit(
+                export_session_textgrids,
+                db_path=db_path,
+                year=year,
+                session=session,
+                utterances=utterances,
+                search_master_root=search_master_root,
+                output_root=output_root,
+                word_labels=word_labels,
+                phone_labels=phone_labels,
+                phone_mapper=phone_mapper,
+            ): (session, len(utterances))
+            for session, utterances in sessions
+        }
+        for index, future in enumerate(as_completed(futures), 1):
+            _session, source_count = futures[future]
+            result = future.result()
+            totals["source_utterances"] += source_count
+            totals.update(result["counts"])
+            failures.extend(
+                result["failed_examples"][: max(0, 100 - len(failures))]
+            )
+            missing_search.extend(result["search_row_missing_inventory"])
+            missing_alignment.extend(result["alignment_missing_inventory"])
+            if index % 50 == 0 or index == len(futures):
+                print(
+                    f"[{year}] research 6-tier {index:,}/{len(futures):,} "
+                    f"sessions · created={totals['created']:,}",
+                    flush=True,
+                )
+
+    accounted = sum(
+        totals[key]
+        for key in (
+            "created",
+            "validated_existing",
+            "alignment_missing",
+            "search_row_missing",
+            "failed",
+        )
+    )
+    hard_failure = any(
+        totals[key]
+        for key in (
+            "alignment_missing",
+            "search_row_missing",
+            "failed",
+            "word_span_fallback",
+        )
+    ) or accounted != totals["source_utterances"]
+    tables_manifest: dict[str, object] | None = None
+    if not hard_failure:
+        try:
+            tables_manifest = write_companion_tables(
+                db_path=db_path,
+                year=year,
+                sessions=sessions,
+                search_master_root=search_master_root,
+                output_root=output_root,
+                word_labels=word_labels,
+                phone_labels=phone_labels,
+                phone_mapper=phone_mapper,
+                alignment_contract_id=contract_id,
+            )
+        except Exception as exc:
+            hard_failure = True
+            failures.append(
+                {"utt_id": "", "error": f"companion tables: {type(exc).__name__}: {exc}"}
+            )
+
+    status = "failed" if hard_failure else "success"
+    elapsed = time.monotonic() - started
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "status": status,
+        "analysis_ready_status": "ready" if status == "success" else "blocked",
+        "year": year,
+        "db_path": str(db_path),
+        "search_master_root": str(search_master_root),
+        "output_root": str(output_root),
+        "tier_names": BASE_TIERS,
+        "alignment_contract": file_fingerprint(
+            alignment_contract, with_sha256=True
+        ),
+        "alignment_contract_id": contract_id,
+        "alignment_models": contract_data.get("models", {}),
+        "acoustic_model": file_fingerprint(acoustic_model, with_sha256=True),
+        "counts": dict(sorted(totals.items())),
+        "accounted": accounted,
+        "coverage_pct": (
+            round(
+                100
+                * (totals["created"] + totals["validated_existing"])
+                / totals["source_utterances"],
+                4,
+            )
+            if totals["source_utterances"]
+            else 0
+        ),
+        "phone_inventory": {
+            "used_non_silence": len(used_phones),
+            "outside_acoustic": outside,
+        },
+        "companion_tables": tables_manifest,
+        "failed_examples": failures[:100],
+        "search_row_missing_inventory": sorted(set(missing_search))[:1000],
+        "alignment_missing_inventory": sorted(set(missing_alignment))[:1000],
+        "elapsed_seconds": round(elapsed, 3),
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--db", type=Path, required=True)
+    parser.add_argument("--year", required=True)
+    parser.add_argument("--search-master-root", type=Path, required=True)
+    parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--acoustic-model", type=Path, required=True)
+    parser.add_argument("--alignment-contract", type=Path, required=True)
+    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--limit-sessions", type=int, default=0)
+    parser.add_argument("--report", type=Path, required=True)
+    args = parser.parse_args()
+    try:
+        report = export_database(
+            db_path=args.db,
+            year=args.year,
+            search_master_root=args.search_master_root,
+            output_root=args.output_root,
+            acoustic_model=args.acoustic_model,
+            alignment_contract=args.alignment_contract,
+            workers=args.workers,
+            limit_sessions=args.limit_sessions,
+        )
+    except Exception as exc:
+        report = {
+            "schema_version": SCHEMA_VERSION,
+            "status": "failed",
+            "analysis_ready_status": "blocked_exception",
+            "year": args.year,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+    atomic_write_json(args.report, report)
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0 if report.get("status") == "success" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

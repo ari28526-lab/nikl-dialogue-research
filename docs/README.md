@@ -24,7 +24,10 @@
 |---|---|
 | [decisions/METHODS_bareun_dialogue_reanalysis.md](decisions/METHODS_bareun_dialogue_reanalysis.md) | 형태소 재분석·의미부여·빈도 **방법론(정본)** |
 | [decisions/STANDARD_textgrid_tiers.md](decisions/STANDARD_textgrid_tiers.md) | TextGrid tier 표준 v2 |
-| [decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md](decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md) | **현재 r2 전수 MFA 연구 데이터 계약** — 입력·발음 의미·4-tier·QC·검색 CSV·후보/KOINA/판정의 전 과정 |
+| [decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md](decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md) | **현재 외부 리뷰 대상 최신 제안** — 6-tier, 연도별 gzip 동반표, 출처·좌표·DB checkpoint·논문 방법 근거 |
+| [decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md](decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md) | r2 방법·QC 역사적 계약. 구 4-tier·§11 명령은 실행 기준이 아님 |
+| [reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md](reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md) | **전수 시작 전 로컬 외부 리뷰 지시** — 연구자 부착 정보·기계 파생값·논문 서술·510만 운영을 함께 검사 |
+| [../outputs/reports/RESULT_research_6tier_candidate_60_20260801.md](../outputs/reports/RESULT_research_6tier_candidate_60_20260801.md) | 6개년 60발화 DB 재출력, 구 word/phone 동등성·gzip·checkpoint 회귀검사 결과 |
 | [decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md](decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md) | **6개년 r2 인프라 수용 파일럿 정본** — 연도당 10발화·5화자, 동일 모델/사전, direct DB 4-tier, 경계·phone·DB 재수출 gate와 Dropbox 평면 검토본 |
 | [decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md](decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md) | **REVIEW.xlsx 15개 열 정본 가이드** — 사용자 요청 배경, 각 열의 의미·출처·판정 기준·편집 정책·후속 활용과 실현 판정 금지 범위 |
 | [decisions/DECISION_mfa_r2_review_global_issues_20260730.md](decisions/DECISION_mfa_r2_review_global_issues_20260730.md) | **연구자 1차 검토의 전역 이슈 정본** — legacy 형태소 시간층과 구조화 형태 환경표 부재, 반복 코드 기록, 목표 4-tier·재검토 gate |
