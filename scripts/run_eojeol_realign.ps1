@@ -1639,6 +1639,11 @@ foreach ($y in $years) {
         '--gate-profile', $integrityGateProfile,
         '--output', $inputIntegrityReport
     )
+    if ($UseDirectDbExport) {
+        # 확정 6-tier의 morph_analysis_utt는 search CSV에서 만들며,
+        # 구형 06_textgrid_merged를 형태소 원천으로 소비하지 않는다.
+        $integrityArguments += '--skip-morph-source-audit'
+    }
     if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
         $integrityArguments += @(
             '--approved-exclusions-contract', $ApprovedExclusionsContract,

@@ -138,6 +138,63 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
                 )
             )
 
+    def test_year_gate_rejects_even_one_residual_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            wav_root = root / "wav"
+            year_dir = search / "2021"
+            session_dir = wav_root / "2021" / "S1"
+            year_dir.mkdir(parents=True)
+            session_dir.mkdir(parents=True)
+            fields = [
+                "utt_id", "form", "pron_reference_form",
+                "pron_reference_source", "pron_reference_status", "sex", "dur",
+            ]
+            rows = []
+            for index in range(1, 101):
+                utt_id = f"S1.{index}"
+                rows.append(
+                    {
+                        "utt_id": utt_id,
+                        "form": "가",
+                        "pron_reference_form": "가",
+                        "pron_reference_source": "form",
+                        "pron_reference_status": "resolved_form",
+                        "sex": "여성",
+                        "dur": "1.0",
+                    }
+                )
+                write_wav(
+                    session_dir / f"{utt_id}.wav",
+                    2.0 if index == 50 else 1.0,
+                )
+                (session_dir / f"{utt_id}.lab").write_text(
+                    "가", encoding="utf-8"
+                )
+            with (year_dir / "S1.csv").open(
+                "w", encoding="utf-8", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields)
+                writer.writeheader()
+                writer.writerows(rows)
+
+            result = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                known_pcm=None,
+            )
+
+            self.assertEqual(
+                result["counts"].get("duration_sessions_failed", 0), 0
+            )
+            self.assertEqual(result["counts"]["duration_residual_mismatch"], 1)
+            self.assertFalse(
+                result["gates"]["csv_wav_duration_correspondence"]
+            )
+
     def test_rejects_physically_impossible_text_duration_without_logging_text(
         self,
     ):
@@ -275,6 +332,60 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
                     "source_segment_text_duration_impossible", 0
                 ),
                 0,
+            )
+            self.assertEqual(
+                result["counts"]["approved_alignment_active_pair"], 1
+            )
+            self.assertFalse(
+                result["gates"]["approved_alignment_inputs_inactive"]
+            )
+            self.assertFalse(result["analysis_ready_gates_pass"])
+
+    def test_fully_approved_missing_session_is_not_an_active_gate_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            year_dir = search / "2021"
+            year_dir.mkdir(parents=True)
+            fields = [
+                "utt_id", "form", "pron_reference_form",
+                "pron_reference_source", "pron_reference_status", "sex", "dur",
+            ]
+            with (year_dir / "S1.csv").open(
+                "w", encoding="utf-8", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow(
+                    {
+                        "utt_id": "S1.1",
+                        "form": "가",
+                        "pron_reference_form": "가",
+                        "pron_reference_source": "form",
+                        "pron_reference_status": "resolved_form",
+                        "sex": "여성",
+                        "dur": "1.0",
+                    }
+                )
+
+            result = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=root / "wav",
+                compare_lab_content=True,
+                known_pcm=None,
+                approved_alignment_exclusions={"S1.1"},
+            )
+
+            self.assertEqual(
+                result["counts"]["duration_sessions_fully_excluded"], 1
+            )
+            self.assertTrue(result["gates"]["session_folders_present"])
+            self.assertTrue(
+                result["gates"]["csv_wav_duration_correspondence"]
+            )
+            self.assertTrue(
+                result["gates"]["approved_alignment_inputs_inactive"]
             )
             self.assertTrue(result["analysis_ready_gates_pass"])
 

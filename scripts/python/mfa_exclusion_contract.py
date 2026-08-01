@@ -34,6 +34,7 @@ ALLOWED_REASON_CODES = {
     "researcher_excluded",
     "manual_review_unclassified",
     "mfa_alignment_missing",
+    "audio_pairing_unresolved",
 }
 ALLOWED_SCOPES = {"alignment_and_analysis", "analysis_only"}
 

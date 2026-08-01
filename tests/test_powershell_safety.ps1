@@ -391,6 +391,12 @@ foreach ($path in $files) {
         if (-not $text.Contains('-Years 2020')) {
             $failures.Add('2020 approval wrapper is not year-scoped')
         }
+        if (
+            -not $text.Contains('-AudioRecoveryPlan') -or
+            -not $text.Contains('PLAN_2020_wav_duration_recovery_20260801.csv')
+        ) {
+            $failures.Add('2020 approval wrapper lacks audio recovery evidence')
+        }
     }
     if ((Split-Path $path -Leaf) -eq 'start_2020_mfa_after_review.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
@@ -441,6 +447,14 @@ foreach ($path in $files) {
         foreach ($required in @(
             'prepare_mfa_year_exclusion_review.ps1',
             'existing_review_preserved',
+            '$rows = @($records | ForEach-Object { $_ })',
+            '$totalCandidates',
+            "`$record['candidate_count']",
+            'morph_source_audit_enabled',
+            'gates.session_folders_present',
+            'gates.csv_wav_duration_correspondence',
+            'uncovered_audio_pairing_issue_count',
+            '기존 검토표는 현행 6-tier/음원 대응 계약에 맞지 않아',
             '자동 덮어쓰기 금지',
             'starts_mfa = $false',
             'moves_wav = $false',
@@ -453,6 +467,22 @@ foreach ($path in $files) {
         }
         if ($text.Contains('run_mfa_year_queue_safe.ps1')) {
             $failures.Add('승인자료 준비기가 MFA 연도 큐를 호출함')
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prepare_mfa_year_exclusion_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '--skip-morph-source-audit',
+            '[string]$AudioRecoveryPlan',
+            "'--audio-recovery-plan'",
+            '$reviewArgs'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("연도 승인표 준비의 음원 가드 누락: $required")
+            }
         }
     }
     if (

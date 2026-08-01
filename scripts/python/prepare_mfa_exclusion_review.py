@@ -17,6 +17,16 @@ from pipeline_common import atomic_text_writer, atomic_write_json, file_fingerpr
 from realign_eojeol_build_corpus import input_contract
 
 SCHEMA_VERSION = "mfa_exclusion_review_candidates.v1"
+AUDIO_PAIRING_ISSUES = {
+    "duration_residual_mismatch",
+    "duration_wav_missing",
+    "duration_wav_too_small",
+    "wav_header_unreadable",
+}
+AUDIO_PLAN_EXCLUSION_STATUSES = {
+    "ambiguous_short_match",
+    "target_unresolved",
+}
 
 
 def _candidate_from_issue(issue: dict[str, object]) -> dict[str, str] | None:
@@ -52,6 +62,7 @@ def prepare_review(
     output_report: Path,
     quarantine_log: Path | None = None,
     input_contract_id: str | None = None,
+    audio_recovery_plan: Path | None = None,
 ) -> dict[str, object]:
     audit_report = audit_report.resolve()
     audit = json.loads(audit_report.read_text(encoding="utf-8-sig"))
@@ -68,9 +79,14 @@ def prepare_review(
         ]
     )
     by_utt: dict[str, dict[str, str]] = {}
+    active_audio_issue_ids: set[str] = set()
     for issue in year_reports[0].get("issue_inventory", []):
         if not isinstance(issue, dict):
             continue
+        if str(issue.get("issue") or "") in AUDIO_PAIRING_ISSUES:
+            utt_id = str(issue.get("utt_id") or "").strip()
+            if utt_id:
+                active_audio_issue_ids.add(utt_id)
         candidate = _candidate_from_issue(issue)
         if candidate is None:
             continue
@@ -80,6 +96,53 @@ def prepare_review(
             or candidate["exclusion_scope"] == "alignment_and_analysis"
         ):
             by_utt[candidate["utt_id"]] = candidate
+
+    audio_plan_fingerprint = None
+    audio_plan_exclusion_ids: set[str] = set()
+    if audio_recovery_plan is not None:
+        audio_recovery_plan = audio_recovery_plan.resolve()
+        audio_plan_fingerprint = file_fingerprint(
+            audio_recovery_plan, with_sha256=True
+        )
+        with audio_recovery_plan.open(
+            encoding="utf-8-sig", newline=""
+        ) as stream:
+            reader = csv.DictReader(stream)
+            required = {"year", "target_utt_id", "status"}
+            missing = required - set(reader.fieldnames or ())
+            if missing:
+                raise RuntimeError(
+                    f"audio recovery plan 필수 열 누락: {sorted(missing)}"
+                )
+            for row in reader:
+                if str(row.get("year") or "").strip() != str(year):
+                    continue
+                status = str(row.get("status") or "").strip()
+                if status not in AUDIO_PLAN_EXCLUSION_STATUSES:
+                    continue
+                utt_id = str(row.get("target_utt_id") or "").strip()
+                if not utt_id:
+                    raise RuntimeError(
+                        "audio recovery plan 제외 후보의 target_utt_id 누락"
+                    )
+                audio_plan_exclusion_ids.add(utt_id)
+                by_utt[utt_id] = {
+                    "utt_id": utt_id,
+                    "reason_code": "audio_pairing_unresolved",
+                    "exclusion_scope": "alignment_and_analysis",
+                    "evidence_path": str(audio_recovery_plan),
+                    "notes": status,
+                }
+
+    uncovered_audio_issues = sorted(
+        active_audio_issue_ids - audio_plan_exclusion_ids
+    )
+    if uncovered_audio_issues:
+        raise RuntimeError(
+            "CSV-WAV 대응 복구가 완료되지 않음: 감사 issue 중 복구계획의 "
+            "unresolved/ambiguous로 분류되지 않은 발화 "
+            f"{len(uncovered_audio_issues):,}건; 예={uncovered_audio_issues[:20]}"
+        )
 
     quarantine_fingerprint = None
     if quarantine_log is not None and quarantine_log.is_file():
@@ -134,6 +197,10 @@ def prepare_review(
         "input_contract_id": contract_id,
         "audit_report": file_fingerprint(audit_report, with_sha256=True),
         "quarantine_log": quarantine_fingerprint,
+        "audio_recovery_plan": audio_plan_fingerprint,
+        "active_audio_pairing_issue_count": len(active_audio_issue_ids),
+        "audio_plan_exclusion_count": len(audio_plan_exclusion_ids),
+        "uncovered_audio_pairing_issue_count": len(uncovered_audio_issues),
         "review_csv": file_fingerprint(
             output_csv.resolve(), with_sha256=True
         ),
@@ -153,6 +220,7 @@ def main() -> int:
     parser.add_argument("--output-report", type=Path, required=True)
     parser.add_argument("--quarantine-log", type=Path)
     parser.add_argument("--input-contract-id")
+    parser.add_argument("--audio-recovery-plan", type=Path)
     args = parser.parse_args()
     result = prepare_review(
         audit_report=args.audit_report,
@@ -162,6 +230,7 @@ def main() -> int:
         output_report=args.output_report,
         quarantine_log=args.quarantine_log,
         input_contract_id=args.input_contract_id,
+        audio_recovery_plan=args.audio_recovery_plan,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

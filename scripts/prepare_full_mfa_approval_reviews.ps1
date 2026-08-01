@@ -13,7 +13,8 @@ param(
     [string]$SearchMasterRunId = 'pre_mfa_v1_20260725',
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
-    [string]$ReviewRoot = ''
+    [string]$ReviewRoot = '',
+    [string]$AudioRecoveryPlan = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -79,6 +80,39 @@ foreach ($year in $Years) {
         ) {
             throw "$year 기존 검토 manifest identity/status 불일치"
         }
+        $auditPath = [string]$data.audit_report.path
+        if (-not (Test-Path -LiteralPath $auditPath -PathType Leaf)) {
+            throw "$year 기존 검토의 입력 감사 보고서 누락: $auditPath"
+        }
+        $auditData = Get-Content -LiteralPath $auditPath -Raw -Encoding UTF8 |
+            ConvertFrom-Json
+        $auditYear = @(
+            $auditData.years |
+                Where-Object { [string]$_.year -eq $year }
+        )
+        if ($auditYear.Count -ne 1) {
+            throw "$year 기존 검토의 입력 감사 연도 결과 불일치"
+        }
+        $coveredAudioIssues = (
+            $data.PSObject.Properties.Name -contains
+                'uncovered_audio_pairing_issue_count' -and
+            $null -ne $data.audio_recovery_plan -and
+            [int64]$data.uncovered_audio_pairing_issue_count -eq 0
+        )
+        $audioGateFailed = (
+            -not [bool]$auditYear[0].gates.session_folders_present -or
+            -not [bool]$auditYear[0].gates.csv_wav_duration_correspondence
+        )
+        if (
+            [bool]$auditYear[0].morph_source_audit_enabled -or
+            ($audioGateFailed -and -not $coveredAudioIssues)
+        ) {
+            throw (
+                "$year 기존 검토표는 현행 6-tier/음원 대응 계약에 맞지 않아 " +
+                "승인할 수 없음. 입력 음원 복구 뒤 새 후보표를 만들 것: " +
+                $yearRoot
+            )
+        }
         $records.Add([ordered]@{
             year = $year
             status = 'existing_review_preserved'
@@ -94,7 +128,7 @@ foreach ($year in $Years) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
         Join-Path $PSScriptRoot 'prepare_mfa_year_exclusion_review.ps1'
     ) -Year $year -SearchMasterRoot $searchMasterRoot `
-        -OutputRoot $yearRoot
+        -OutputRoot $yearRoot -AudioRecoveryPlan $AudioRecoveryPlan
     if ($LASTEXITCODE -ne 0) {
         throw "$year 승인 후보표 준비 실패; 기존 원자료는 변경하지 않음"
     }
@@ -110,7 +144,13 @@ foreach ($year in $Years) {
     })
 }
 
-$rows = @($records.ToArray())
+$rows = @($records | ForEach-Object { $_ })
+$totalCandidates = 0
+foreach ($record in $rows) {
+    # Windows PowerShell 5.1에서는 [ordered] dictionary의 key를
+    # Measure-Object -Property가 안정적으로 속성으로 보지 못한다.
+    $totalCandidates += [int]$record['candidate_count']
+}
 $summary = [ordered]@{
     schema_version = 'mfa_full6y_approval_review_preparation.v1'
     status = 'researcher_review_required'
@@ -119,9 +159,7 @@ $summary = [ordered]@{
     search_master_run_id = $SearchMasterRunId
     review_root = $ReviewRoot
     years = @($Years)
-    total_candidates = [int](
-        ($rows | Measure-Object -Property candidate_count -Sum).Sum
-    )
+    total_candidates = $totalCandidates
     records = $rows
     starts_mfa = $false
     moves_wav = $false
@@ -132,7 +170,9 @@ $summaryPath = Join-Path $ReviewRoot 'PREPARE_SUMMARY.json'
 Write-JsonAtomic $summaryPath $summary
 
 Write-Host ''
-Write-Host '[OK] 6개년 승인 후보표 준비 완료' -ForegroundColor Green
+Write-Host (
+    '[OK] 승인 후보표 준비 완료: years=' + (@($Years) -join ',')
+) -ForegroundColor Green
 Write-Host "후보 합계: $($summary.total_candidates)"
 Write-Host "검토 root: $ReviewRoot"
 Write-Host "요약: $summaryPath"

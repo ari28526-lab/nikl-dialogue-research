@@ -511,3 +511,26 @@ shard 2–23을 재개하는 것이다.
   검증이 `passed`였다.
 - 다음 사용자 PowerShell 단계는 `prepare_2020_mfa_approval_review.ps1`이다.
   이는 2020 LAB 입력 전수 검증과 제외 후보표만 만들며 MFA는 아직 시작하지 않는다.
+
+### 18:59 KST 이후 — 승인표 요약 오류와 2020 음원 ID 밀림 차단
+
+- 최초 후보표 14행 생성은 끝났지만 Windows PowerShell 5.1이 `[ordered]`
+  dictionary의 `candidate_count`를 `Measure-Object -Property`로 읽지 못해 마지막
+  요약만 실패했다. 명시적 정수 합산으로 고치고 안전검사 31개 파일을 통과했다.
+- 후보 14행은 모두 구형 `06_textgrid_merged`의 형태소 TextGrid 누락이었다.
+  확정 6-tier의 `morph_analysis_utt`는 search CSV에서 생성되므로 현행 제외
+  사유가 아니다. 자동 승인 없이 검토 root 전체를 이유문과 함께 archive했다.
+- 같은 입력 감사의 실제 차단 사유는 길이 잔차 불일치 15,074발화/126세션,
+  WAV 누락 544발화, 세션 폴더 누락 1개였다. `SDRW2000000108`에서 JSON과
+  H: 배포 PCM을 직접 대조해 발화 번호 밀림을 확인했다. D:/H: JSON SHA는 같다.
+- 세션 통과율 98%만으로는 소수의 잘못 짝지어진 발화를 허용하므로, 승인 제외 후
+  남은 모든 발화의 잔차·누락·깨진 header가 0이어야 gate가 통과하도록 강화했다.
+- 읽기 전용 복구 계획은 영향 129세션 52,519행을 분류했다. 고신뢰 remap
+  14,221, identity 35,210, 짧은 모호 일치 92, target unresolved 1,742,
+  source orphan 1,254다. 아직 WAV 적용·MFA·자동 승인은 수행하지 않았다.
+- 승인 제외가 감사에서만 빠지고 실제 MFA 입력 WAV+LAB에는 남는 경로도
+  차단했다. `alignment_and_analysis` 승인 입력은 실제 격리 전까지 실행 gate를
+  통과하지 않는다. 전체 Python 298개와 PowerShell 31개 파일 검사가 통과했다.
+
+결정:
+`docs/decisions/DECISION_2020_CSV_WAV_ID_recovery_20260801.md`

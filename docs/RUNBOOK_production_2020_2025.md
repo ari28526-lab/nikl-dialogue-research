@@ -24,6 +24,7 @@
 ```text
 workflow 수정·시험
   → 2020 검색표 완주
+  → 2020 CSV–WAV ID 대응 복구·전수 재감사
   → 2020 제외 후보 검토·승인
   → 2020 신규 MFA·6-tier·동반표·기계 QC
   → 2020 생산 표본 연구자 확인
@@ -50,15 +51,22 @@ workflow 수정·시험
 기존 성공 shard 1은 SHA 검증 후 재사용한다. 완료 기준은
 `annual_tables\YEAR_MANIFEST.json`의 `status=success`와 source contract 일치다.
 
-### B. 2020 제외 후보 준비
+### B. 2020 CSV–WAV 대응 복구와 제외 후보 준비
+
+2026-08-01 전수 감사에서 배포 PCM/WAV의 발화 번호 밀림이 확인되었다. 복구
+결정과 dry-run 수량은
+`docs/decisions/DECISION_2020_CSV_WAV_ID_recovery_20260801.md`를 따른다.
+고신뢰 remap 표본 확인·H: archive·국소 적용·전수 재감사 전에는 아래 명령을
+다시 실행하거나 기존 14행 표를 승인하지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\prepare_2020_mfa_approval_review.ps1"
 ```
 
-이 단계는 전수 LAB을 검증하고 2020 후보표만 만든다. MFA, WAV 이동, 자동 승인,
-정본 승격을 하지 않는다. 연구자는 실제로 제외에 동의하는 행만 `approved`로
-바꾼다. 후보가 0건이어도 입력 계약에 결속된 0행 승인을 남긴다.
+복구 후 이 단계는 전수 LAB을 검증하고 복구 불가·모호한 2020 후보표만 만든다.
+MFA, 자동 승인, 정본 승격을 하지 않는다. 연구자는 실제로 제외에 동의하는
+행만 `approved`로 바꾼다. 후보가 0건이어도 입력 계약에 결속된 0행 승인을
+남긴다.
 
 ### C. 2020 신규 MFA 시작
 

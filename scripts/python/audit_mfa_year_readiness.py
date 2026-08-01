@@ -405,13 +405,18 @@ def audit_year(
             for session, rows in rows_by_session.items():
                 session_dir = wav_root / year / session
                 entries = directory_entries(session_dir)
+                active_rows = [
+                    row for row in rows
+                    if (row.get("utt_id") or "").strip()
+                    not in approved_alignment_exclusions
+                ]
                 if session in scanned_sessions:
                     raise RuntimeError(
                         f"{year} 세션이 여러 CSV에 중복됨: {session}"
                     )
                 scanned_sessions.add(session)
                 counts["search_sessions"] += 1
-                if not session_dir.is_dir():
+                if active_rows and not session_dir.is_dir():
                     counts["session_folder_missing"] += 1
                     _add_example(examples, "session_folder_missing", session)
 
@@ -436,35 +441,33 @@ def audit_year(
                         _add_example(examples, "wav_too_small", utt_id)
 
                 if check_wav_durations:
-                    active_rows = [
-                        row for row in rows
-                        if (row.get("utt_id") or "").strip()
-                        not in approved_alignment_exclusions
-                    ]
-                    duration_result = audit_session_durations(
-                        session=session,
-                        rows=active_rows,
-                        session_dir=session_dir,
-                        entries=entries,
-                        executor=executor,
-                    )
-                    duration_sessions.append(duration_result)
-                    counts["duration_sessions_checked"] += 1
-                    counts[
-                        "duration_sessions_passed"
-                        if duration_result["valid"]
-                        else "duration_sessions_failed"
-                    ] += 1
-                    for key, value in duration_result["counts"].items():
-                        counts[f"duration_{key}"] += value
-                    for issue in duration_result["issues"]:
-                        issue["year"] = year
-                        issue_inventory.append(issue)
-                        issue_name = str(issue["issue"])
-                        utt_id = str(issue.get("utt_id") or session)
-                        _add_example(examples, issue_name, utt_id)
-                    if not duration_result["valid"]:
-                        risky_sessions[session] += 1
+                    if not active_rows:
+                        counts["duration_sessions_fully_excluded"] += 1
+                    else:
+                        duration_result = audit_session_durations(
+                            session=session,
+                            rows=active_rows,
+                            session_dir=session_dir,
+                            entries=entries,
+                            executor=executor,
+                        )
+                        duration_sessions.append(duration_result)
+                        counts["duration_sessions_checked"] += 1
+                        counts[
+                            "duration_sessions_passed"
+                            if duration_result["valid"]
+                            else "duration_sessions_failed"
+                        ] += 1
+                        for key, value in duration_result["counts"].items():
+                            counts[f"duration_{key}"] += value
+                        for issue in duration_result["issues"]:
+                            issue["year"] = year
+                            issue_inventory.append(issue)
+                            issue_name = str(issue["issue"])
+                            utt_id = str(issue.get("utt_id") or session)
+                            _add_example(examples, issue_name, utt_id)
+                        if not duration_result["valid"]:
+                            risky_sessions[session] += 1
 
                 search_ids: set[str] = set()
                 expected_lab_ids: set[str] = set()
@@ -475,6 +478,14 @@ def audit_year(
                     search_ids.add(utt_id)
                     if utt_id in approved_alignment_exclusions:
                         counts["approved_alignment_excluded"] += 1
+                        if utt_id in wav_ids and utt_id in lab_ids:
+                            counts["approved_alignment_active_pair"] += 1
+                            risky_sessions[session] += 1
+                            _add_example(
+                                examples,
+                                "approved_alignment_active_pair",
+                                utt_id,
+                            )
                         # A still-present lab is expected before quarantine;
                         # a moved lab is also valid.  Either way it must not be
                         # misclassified as an unexpected active input.
@@ -779,7 +790,14 @@ def audit_year(
         "session_folders_present": counts["session_folder_missing"] == 0,
         "csv_wav_duration_correspondence": (
             not check_wav_durations
-            or counts["duration_sessions_failed"] == 0
+            or (
+                counts["duration_sessions_failed"] == 0
+                and counts["duration_residual_mismatch"] == 0
+                and counts["duration_wav_missing"] == 0
+                and counts["duration_wav_too_small"] == 0
+                and counts["duration_wav_header_unreadable"] == 0
+                and counts["duration_csv_duration_invalid"] == 0
+            )
         ),
         "no_dangerous_unexpected_labs": (
             counts["lab_not_expected_with_wav"] == 0
@@ -796,6 +814,9 @@ def audit_year(
             )
         ),
         "no_fatal_tiny_wav": counts["wav_too_small"] == 0,
+        "approved_alignment_inputs_inactive": (
+            counts["approved_alignment_active_pair"] == 0
+        ),
         "source_segment_text_duration_plausible": (
             counts["source_segment_text_duration_impossible"] == 0
         ),
@@ -827,6 +848,7 @@ def audit_year(
         "no_dangerous_unexpected_labs",
         "all_expected_labs_ready",
         "no_fatal_tiny_wav",
+        "approved_alignment_inputs_inactive",
         "morph_source_inventory_classified",
     )
     analysis_gate_names = (

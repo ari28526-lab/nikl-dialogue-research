@@ -7,7 +7,8 @@ param(
     [string]$Year,
     [Parameter(Mandatory=$true)]
     [string]$SearchMasterRoot,
-    [string]$OutputRoot = ''
+    [string]$OutputRoot = '',
+    [string]$AudioRecoveryPlan = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -64,17 +65,38 @@ $reviewReport = Join-Path $OutputRoot '03_RESEARCHER_REVIEW_MANIFEST.json'
     --years $Year --search-master-root $SearchMasterRoot `
     --wav-root $wavRoot --morph-textgrid-root $morphRoot `
     --source-pcm-check $sourcePcm --gate-profile analysis --no-strict `
+    --skip-morph-source-audit `
     --output $auditReport
 if ($LASTEXITCODE -ne 0) { throw "입력 후보 감사 실행 실패" }
+$auditData = Get-Content -LiteralPath $auditReport -Raw -Encoding UTF8 |
+    ConvertFrom-Json
+$yearAudit = @(
+    $auditData.years | Where-Object { [string]$_.year -eq $Year }
+)
+if ($yearAudit.Count -ne 1) {
+    throw "$Year 입력 감사 연도 결과가 정확히 1개가 아님"
+}
 & $python (Join-Path $pythonDir 'quarantine_bad_wavs.py') `
     --year $Year --inventory-csv $wavInventory
 if ($LASTEXITCODE -ne 0) { throw "불량 WAV dry-run inventory 실패" }
-& $python (Join-Path $pythonDir 'prepare_mfa_exclusion_review.py') `
-    --audit-report $auditReport --year $Year `
-    --search-master-root $SearchMasterRoot `
-    --input-contract-id $inputContractId `
-    --quarantine-log $wavInventory `
-    --output-csv $reviewCsv --output-report $reviewReport
+$reviewArgs = @(
+    (Join-Path $pythonDir 'prepare_mfa_exclusion_review.py'),
+    '--audit-report', $auditReport,
+    '--year', $Year,
+    '--search-master-root', $SearchMasterRoot,
+    '--input-contract-id', $inputContractId,
+    '--quarantine-log', $wavInventory,
+    '--output-csv', $reviewCsv,
+    '--output-report', $reviewReport
+)
+if (-not [string]::IsNullOrWhiteSpace($AudioRecoveryPlan)) {
+    $audioPlanPath = [IO.Path]::GetFullPath($AudioRecoveryPlan)
+    if (-not (Test-Path -LiteralPath $audioPlanPath -PathType Leaf)) {
+        throw "audio recovery plan 없음: $audioPlanPath"
+    }
+    $reviewArgs += @('--audio-recovery-plan', $audioPlanPath)
+}
+& $python @reviewArgs
 if ($LASTEXITCODE -ne 0) { throw "연구자 검토표 생성 실패" }
 
 Write-Host "[OK] 승인 전 후보표 생성(자동 승인 없음)" -ForegroundColor Green
