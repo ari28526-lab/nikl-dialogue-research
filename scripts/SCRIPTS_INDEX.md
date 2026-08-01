@@ -188,6 +188,7 @@
 | mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
 | prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. 현 6-tier에 쓰지 않는 구 형태소 TextGrid는 제외하고 CSV–WAV 대응 복구 전에는 fail-closed. WAV 이동·자동 승인 없음 | 2020 음원 복구 뒤 재실행 |
 | plan_wav_duration_recovery.py | 기존 감사에서 영향 세션만 골라 CSV 순서와 WAV 밀리초 길이의 연속 일치로 `identity/remap/ambiguous/unresolved/orphan` 읽기 전용 계획표 생성. 자동 적용 금지 | 2020 129세션 dry-run 완료 |
+| build_wav_recovery_review_bundle.py | 고신뢰 remap을 짧은·중간·긴 연속 일치 구간에서 결정적으로 표본화하고 A=제안 WAV/B=현재 같은 ID WAV 복사본·전사·SHA manifest·단계별 안내를 한 폴더에 생성. 원본 WAV 변경 없음 | 2020 6세션·12건·24 WAV, 복사 SHA 불일치 0 |
 | audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사 | 합성 full-year fixture 통과 |
 | verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
 | preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·생산연도 연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 생산연도 review schema와 구 파일럿 schema 합성 exact gate 통과; `preflight_2020_gate_b.ps1`에 배선 |

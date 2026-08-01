@@ -1,7 +1,7 @@
 # 2020 CSV–WAV 발화 ID 대응 복구 결정
 
 결정일: 2026-08-01 KST
-상태: `MFA BLOCKED — DRY-RUN RECOVERY PLAN COMPLETE`
+상태: `MFA BLOCKED — MINIMAL LISTENING REVIEW READY`
 
 ## 연구 목적과 위험
 
@@ -65,6 +65,31 @@ outputs/reports/PLAN_2020_wav_duration_recovery_20260801.csv
 outputs/reports/PLAN_2020_wav_duration_recovery_20260801.json
 ```
 
+## 2026-08-02 최소 청취 검토
+
+고신뢰라는 표현이 길이열 알고리즘의 판정에만 머물지 않도록 실제 음성과 전사를
+대조하는 최소 표본을 만들었다. 표본은 연속 일치 길이 3–10, 11–80, 81 이상을
+각각 두 블록씩 선택하고, 각 블록의 재매핑 구간 시작·끝을 한 건씩 뽑아 총
+12건·6세션으로 구성했다.
+
+- A: 길이열이 대상 전사에 대응한다고 제안한 다른 ID의 WAV 복사본
+- B: 현재 대상 ID와 같은 이름의 WAV 복사본
+- 원본 D: WAV 변경: 0
+- 복사본: 24개, 복사 전후 SHA-256 불일치 0
+- 전체 묶음: 약 1.51 MiB
+
+검토 정본과 provenance:
+
+```text
+outputs/2020_wav_id_recovery_review_20260802/00_READ_ME_FIRST.md
+outputs/2020_wav_id_recovery_review_20260802/REVIEW_MANIFEST.json
+```
+
+사람은 각 대상 전사를 읽고 우선 A가 맞는지만 판정한다. B는 필요할 때 현재
+오대응을 비교하기 위한 보조다. `A 맞음`은 고신뢰 복구 적용 단계로 진행할
+근거이지 원본 덮어쓰기 승인이 아니다. 불확실·불일치는 해당 블록의 자동 적용을
+확대하지 않고 재계획 대상으로 돌린다.
+
 ## 코드 안전 수정
 
 - PowerShell 5.1에서 `[ordered]` 후보 record를 `Measure-Object -Property`로
@@ -81,7 +106,7 @@ outputs/reports/PLAN_2020_wav_duration_recovery_20260801.json
 ## 다음 순서
 
 ```text
-고신뢰 remap 최소 음성 표본 확인
+고신뢰 remap 최소 음성 표본 12건 확인
   → H:에 영향 세션 원본 archive+hash manifest
   → 고신뢰 remap만 적용
   → 2020 CSV–WAV 전수 재감사
