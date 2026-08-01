@@ -2,6 +2,23 @@
 
 최종 갱신: 2026-08-01 KST
 
+## 2026-08-01 최신 정지점 — 전수 순서 외부 리뷰 대기
+
+- 2020 `morph_search.v3` 실제 첫 shard 1/23은 성공했고 lock 없이 정상 정지했다.
+- 사용자가 코드보다 전수 작업의 입력·출력·실행 순서를 먼저 외부 리뷰하기로 했다.
+- 리뷰가 끝날 때까지 shard 2 이후, LAB 전수 생성, MFA 전수 실행을 시작하지 않는다.
+- MFA 전에 동결해야 하는 정렬 영향 입력과, 정렬 뒤에도 재생성할 수 있는 검색·
+  사전 보조 레이어를 구분한 제안서를 작성했다.
+- 현재 확인된 workflow 쟁점은 `morph_search.v3`와 MFA 연도 큐가 별도 runner라는
+  점이다. 연도 검색 manifest를 hard gate로 할지 동일 source contract 확인만
+  요구할지 외부 리뷰에서 판정한다.
+
+제안서:
+`docs/decisions/PROPOSAL_prebulk_execution_order_20260801.md`
+
+외부 리뷰 프롬프트:
+`docs/reviews/PROMPT_external_review_prebulk_execution_order_20260801.md`
+
 ## 2026-08-01 최신 정정 — 2020 구 정렬을 다시 보지 않는다
 
 - 2020–2025는 모두 공통 Jamo r2 기준으로 **새 MFA 정렬**한다.

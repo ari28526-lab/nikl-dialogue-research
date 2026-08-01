@@ -416,3 +416,24 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 실제 첫 shard 근거:
 `outputs/reports/PREFLIGHT_morph_search_v3_2020_shard1_20260801.json`
+
+## 2026-08-01 — 전수 실행 전 workflow 순서 재정돈
+
+- 사용자가 코드보다 연구 목적에 맞는 입력·출력·작업 순서를 외부 도구에 먼저
+  리뷰받기로 했다. 2020 검색 shard 2 이후 계산은 시작하지 않았다.
+- MFA 전에 반드시 동결할 LAB/reference·공통사전·모델·phone inventory와,
+  정렬 후 재생성 가능한 형태소/Roman/우리말샘 1:N/Parquet/KOINA 레이어를
+  구분했다.
+- 6개년 검색표 전부를 MFA의 무조건적 선행조건으로 두지 않고, 2020 검색 전수는
+  첫 생산 연도의 원 입력 검증을 위해 먼저 완료하는 권장안을 제시했다.
+- 현재 별도 runner인 `morph_search.v3`와 MFA 연도 큐 사이에서 연도 manifest를
+  hard gate로 할지 동일 source/input contract만 gate로 할지를 외부 리뷰의 핵심
+  질문으로 남겼다.
+- 구 2020 정렬 재검토, 근거 없는 기호 읽기 자동 확정, KOINA/wav2vec2 전수,
+  검증 전 자료 삭제는 실행 순서에서 명시적으로 제외했다.
+
+제안서:
+`docs/decisions/PROPOSAL_prebulk_execution_order_20260801.md`
+
+외부 리뷰 프롬프트:
+`docs/reviews/PROMPT_external_review_prebulk_execution_order_20260801.md`
