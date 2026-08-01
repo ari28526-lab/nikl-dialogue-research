@@ -33,11 +33,7 @@ MFA 정렬, WAV 이동, 제외 자동 승인, 정본 승격은 하지 않는다.
 
 ```powershell
 Set-Location "C:\Users\ari30\research\2026_summer_research"
-
-& ".\scripts\run_mfa_year_queue_safe.ps1" `
-  -CommonPronManifest "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\release_manifest.json" `
-  -CommonPronAdoptionContract "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\adoption_contract.json" `
-  -PrepareMissingReviews
+& ".\scripts\prepare_full_mfa_approval_reviews.ps1"
 ```
 
 검토자료 기본 위치:
@@ -59,25 +55,11 @@ C:\Users\ari30\research\2026_summer_research\outputs\reviews\
 4. 결과 JSON의 `status`가 정확히 `GO`인지 확인
 5. 같은 Queue ID로 `run_mfa_year_queue_safe.ps1` 실행
 
-승인 완료 뒤 최종 검사 명령:
+승인 완료 뒤에는 아래 한 명령이 승인 계약 생성 → 전체 테스트 포함 preflight →
+정확한 `GO`일 때만 전수 큐 시작을 순서대로 수행한다.
 
 ```powershell
-$approvalRoot = "C:\Users\ari30\research\2026_summer_research\outputs\reviews\mfa_exclusions_queue_mfa_r2_full6y_20260801"
-
-& ".\scripts\preflight_mfa_year_queue.ps1" `
-  -CommonPronManifest "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\release_manifest.json" `
-  -CommonPronAdoptionContract "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\adoption_contract.json" `
-  -ApprovedExclusionsRoot $approvalRoot `
-  -RunRepositoryTests
-```
-
-위 보고서가 `GO`인 경우에만 실행할 전수 큐 명령:
-
-```powershell
-& ".\scripts\run_mfa_year_queue_safe.ps1" `
-  -CommonPronManifest "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\release_manifest.json" `
-  -CommonPronAdoptionContract "D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\00_contract\adoption_contract.json" `
-  -ApprovedExclusionsRoot $approvalRoot
+& ".\scripts\start_full_mfa_after_review.ps1" -ApprovedBy "ari30"
 ```
 
 전수 큐는 한 연도 실패 시 temp·SQLite DB·로그·partial을 보존하고 다른 연도의

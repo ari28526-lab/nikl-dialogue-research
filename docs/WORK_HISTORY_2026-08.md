@@ -336,3 +336,17 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 - `outputs/presentations/MFA_research_infrastructure_final_prebulk_20260801.pptx`
 - `outputs/presentations/MFA_research_infrastructure_final_prebulk_20260801.pdf`
 - `outputs/reports/QA_MFA_research_infrastructure_final_prebulk_20260801.json`
+
+### 사용자가 전수 실행까지 갈 수 있는 2단계 진입점
+
+- 승인 작업은 MFA phone이나 실제 음운 실현을 승인하는 절차가 아니다. 입력에서
+  제외할 발화를 자동 누락하지 않도록, 제외 사유·범위·증거를 정확한
+  `input_contract_id`에 묶어 연구자가 확인하는 절차다.
+- `prepare_full_mfa_approval_reviews.ps1`은 6개년 입력을 검증하고 pending 제외
+  후보표만 만든다. MFA·WAV 이동·자동 승인·정본 승격은 하지 않으며 기존 검토
+  입력을 덮어쓰지 않는다.
+- 사용자가 각 후보의 제외에 동의할 때만 `decision=approved`로 바꾼다. 동의하지
+  않는 후보는 승인하지 않고 원자료/분류 원인을 수정한 뒤 검토표를 재생성한다.
+- `start_full_mfa_after_review.ps1 -ApprovedBy <연구자>`는 승인된 CSV만 계약화하고
+  전체 테스트 포함 preflight가 정확히 `GO`일 때만 연도 큐를 시작한다.
+  full clean retry, 자동 승인, 정본 자동 승격은 전달하지 않는다.

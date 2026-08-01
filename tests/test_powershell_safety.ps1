@@ -8,6 +8,8 @@ $files = @(
     (Join-Path $root 'scripts\run_mfa_year_queue_safe.ps1'),
     (Join-Path $root 'scripts\show_mfa_year_queue_status.ps1'),
     (Join-Path $root 'scripts\preflight_mfa_year_queue.ps1'),
+    (Join-Path $root 'scripts\prepare_full_mfa_approval_reviews.ps1'),
+    (Join-Path $root 'scripts\start_full_mfa_after_review.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
@@ -353,6 +355,51 @@ foreach ($path in $files) {
         }
         if ($text -match '(?im)^\s*(Start-Process|Stop-Process)\b') {
             $failures.Add('연도 큐 최종 preflight가 MFA 프로세스를 시작/중단함')
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prepare_full_mfa_approval_reviews.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'prepare_mfa_year_exclusion_review.ps1',
+            'existing_review_preserved',
+            '자동 덮어쓰기 금지',
+            'starts_mfa = $false',
+            'moves_wav = $false',
+            'approves_exclusions = $false',
+            'promotes_canonical_outputs = $false'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("전수 승인자료 준비 가드 누락: $required")
+            }
+        }
+        if ($text.Contains('run_mfa_year_queue_safe.ps1')) {
+            $failures.Add('승인자료 준비기가 MFA 연도 큐를 호출함')
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'start_full_mfa_after_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_exclusion_contract.py',
+            'preflight_mfa_year_queue.ps1',
+            "[string]`$preflight.status -ne 'GO'",
+            '[bool]$preflight.starts_mfa -ne $false',
+            'run_mfa_year_queue_safe.ps1',
+            '-RunRepositoryTests',
+            '의도적으로 -AllowFullCleanRetry와 -PrepareMissingReviews를 전달하지 않는다',
+            '연도 전체 자동 clean 재계산·자동 정본 승격은 금지'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("승인 후 전수 시작 가드 누락: $required")
+            }
+        }
+        if ($text -match "`$queueArgs\s*\+=.*AllowFullCleanRetry") {
+            $failures.Add('승인 후 전수 시작기가 full clean retry를 전달함')
         }
     }
     if ((Split-Path $path -Leaf) -eq 'run_stratified_mfa_pilot.ps1') {
