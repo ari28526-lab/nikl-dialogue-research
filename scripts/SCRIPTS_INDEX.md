@@ -166,6 +166,14 @@
 | verify_phoneme_roman_pilot.py | 완성 output의 4개 CSV 행수·phone 중복/spn·60개 5-tier·원 4-tier 전 구간·phone/phoneme 경계·D/Dropbox workbook SHA를 독립 재검증하고 rename 전 stale path를 정규화한 v2 verification 생성 | 실자료 60/60·Dropbox 12/12·최종경로 검증 통과 |
 | make_phoneme_roman_workbook_portable.py | 원본 workbook을 보존하고 WAV·기존 4-tier·새 5-tier 링크를 같은 Dropbox 폴더의 파일명 상대경로로 바꾸어 원격 컴퓨터에서도 열리는 새 workbook을 생성 | 12행·36링크·36대상 재로딩 검증 통과 |
 
+## 서울 코퍼스 참조 연구 TextGrid v2 (2026-08-01)
+
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| research_textgrid_v2.py | 기존 4-tier를 읽기 전용으로 사용해 `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/morph_analysis_utt` 6-tier를 생성·검증. phone-derived broad Roman만 허용하고 세 발화 수준 tier의 경계를 동기화. 연결 검토본에는 `source_utt_id/speaker`와 원시간 manifest만 추가 | 합성 2발화 및 실자료 최소 파일럿 통과 |
+| build_textgrid_v2_mini_pilot.py | 익숙한 2020 단일 발화 1건과 같은 세션·화자의 2022 비인접 2발화 `review` 연결본을 새 평면 root에 생성. 기존 4/5-tier 불변, KOINA 미실행, seam 횡단 운율 해석 금지를 manifest에 기록 | 단일 6-tier·연결 8-tier 생성 성공 |
+| verify_textgrid_v2_mini_pilot.py | 입력·출력 SHA, WAV–TextGrid duration, 전 tier 0–xmax 연속성, phone–phoneme 및 세 발화 tier 경계, 연결 `utt_id` 순서와 원시간 역매핑을 독립 재검증 | 실자료 status success |
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장

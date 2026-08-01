@@ -1,6 +1,6 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-07-31 KST
+최종 갱신: 2026-08-01 KST
 
 이 문서는 세션 전환이나 context compaction 뒤에도 확정된 결정과 바로 다음
 작업을 잃지 않기 위한 단일 상태 정본이다. 새 작업은 최근 대화만 보고
@@ -142,6 +142,34 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
     수용 검토 대기이며 기본 운영 tier는 아직 4개다.
   - 전수 MFA는 연구자 수용 전까지 시작하지 않음
 
+### 서울 코퍼스 참조 TextGrid v2 결정과 최소 파일럿
+
+- 2026-08-01 연구자가 차기 연구 표시 6-tier를 승인했다.
+  `words / phones_mfa / phoneme_r_auto / utterance /
+  utterance_orth_r / morph_analysis_utt` 순서다.
+- `phoneme_r_auto`는 `phones_mfa`만으로 만드는 broad Roman이며,
+  철자·규칙·사전 발음으로 기저형을 역복원하지 않는다.
+- `utterance_orth_r`는 현행 `form_roman`과 ` | ` 어절 구분자를 쓰고,
+  `morph_analysis_utt`는 한글 `형태소/POS`를 발화 전체 span에 표시한다.
+  형태소 시간경계를 주장하지 않는다.
+- KOINA는 선별 후보의 별도 파생 산출물이다. 연결본에는
+  `source_utt_id/speaker`와 원시간 manifest를 추가하지만, 인공 seam을
+  가로지르는 AP/IP 해석은 금지한다.
+- 새 코드는 기존 v5 생성기를 바꾸지 않고 `research_textgrid_v2.py`로
+  분리해 구 4/5-tier 코드와 실물을 보존했다.
+- 최소 파일럿은 다음에 생성했으며 독립 verification이 `success`다.
+
+```text
+C:\Users\ari30\research\2026_summer_research\outputs\
+  textgrid_6tier_mini_pilot_20260801
+```
+
+- 실물 범위: 2020 단일 발화 1건(6-tier), 같은 2022 세션·같은 화자의
+  비인접 2발화 `review` 연결본 1건(기본 6-tier+
+  `source_utt_id/speaker`). KOINA는 실행하지 않았다.
+- 전수 생성과 전수 MFA runner 연결은 이 최소본을 연구자가 확인한 뒤로
+  유지한다.
+
 상세 정본:
 
 - `docs/decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md`
@@ -161,20 +189,22 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 - 최종 검색 CSV/Parquet에는 형태소 정보, 형태소별·어절별 철자 로마자,
   규칙 발음, 우리말샘 보조 발음, 화자/대화 참여자, 파일 coverage가 필요하다.
 - 6개년 MFA 뒤 TextGrid에서 `pron_mfa`, `n_spn`, `align_status`와
-  `phone_class_r_auto/phoneme_lexical_r_auto`를 만드는 post-MFA 보조
-  레이어를 전수 생성·검증해야 한다. 로마자 음소층은 60발화 코드·파일럿만
-  완료됐고 연구자 수용 및 연도 runner 배선은 아직이다.
+  phone-derived `phoneme_r_auto`를 만드는 post-MFA 보조 레이어를 전수
+  생성·검증해야 한다. 철자·예측발음 대응은 진단 CSV로만 분리한다.
+  로마자 음소층의 연도 runner 배선은 아직이다.
 - KOINA, stitch, wav2vec2, 연구자 판정은 선택 후보에만 별도 산출물로 추가한다.
 
 ## 바로 다음 작업
 
-1. Dropbox의 `PHONEME_ROMAN_PILOT.xlsx` 1행에서 WAV, 기존 4-tier,
-   새 5-tier를 차례로 열어 로마자 보조층의 이해 가능성과 경계를 확인한다.
-2. 문제가 있을 때만 `대응_세부`에서 같은 `utt_id`를 필터한다.
-3. `COMBINED_SEARCH_DEMO.xlsx` Q1 첫 결과부터 조건·연결·표시를 확인한다.
-4. 두 파일럿이 수용되면 `REVIEW.xlsx`의 남은 인프라 판정을 정리하고
-   machine gate와 결합한 승인 보고서를 만든다.
-5. 승인 뒤 2020 전수 MFA를 시작한다. 현재 실행할 대량 PowerShell은 없다.
+1. `TEXTGRID_6TIER_MINI_PILOT_20260801`의 단일 WAV와 6-tier를 열어
+   tier 순서·label·경계를 확인한다.
+2. 같은 폴더의 연결 WAV와 8-tier를 열어 두 `source_utt_id`, `speaker`,
+   0.05초 빈 seam을 확인한다.
+3. `REVIEW.csv` 두 행에 `승인/수정 필요`와 메모를 적는다.
+4. 수용되면 최소본 결과를 60발화 재수출·파일 크기 추정으로 확장한다.
+5. 그 gate 뒤에만 연도 runner와 2020 전수 MFA 진입 순서를 확정한다.
+
+현재 사용자가 실행할 대량 PowerShell은 없다.
 
 전수 MFA는 아직 시작하지 않는다. 연구자가 확인한 전역 출력·검색 문제는
 코드와 60발화 재수출에서 수정됐고 기계 검증도 통과했다. 이제 수정본

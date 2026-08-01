@@ -1,5 +1,12 @@
 # MFA phone의 검색용 로마자 음소 보조층 결정
 
+> **2026-08-01 후속 결정이 아래 v1 설계의 `phoneme_lexical_r_auto`를
+> 전수 TextGrid 표시 기준으로 대체한다.** `phoneme_r_auto`는
+> `phones_mfa`만으로 만드는 broad Roman transcription이며 철자·예측발음은
+> 진단용 별도 CSV 참조로만 남긴다. 기존 v1 코드·파일럿은 시행착오와 비교
+> 근거로 보존하며, 차기 표준은
+> `PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md`의 6-tier다.
+
 기록일: 2026-07-31
 상태: **60발화 기계 파일럿 통과, 12발화 연구자 수용 검토 대기**
 적용 범위: 2020–2025 r2 MFA의 post-MFA 파생 인프라
