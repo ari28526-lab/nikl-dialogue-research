@@ -1,0 +1,106 @@
+﻿{
+    "checked_at":  "2026-08-01T14:13:52.2972177+09:00",
+    "presentation":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\presentations\\MFA_research_infrastructure_final_prebulk_20260801.pptx",
+    "slide_count":  15,
+    "slide_size":  {
+                       "width":  960,
+                       "height":  540
+                   },
+    "status":  "passed",
+    "issue_count":  0,
+    "issues":  [
+
+               ],
+    "slides":  [
+                   {
+                       "slide":  1,
+                       "shapes":  17,
+                       "text_shapes":  9,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  2,
+                       "shapes":  20,
+                       "text_shapes":  15,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  3,
+                       "shapes":  13,
+                       "text_shapes":  8,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  4,
+                       "shapes":  28,
+                       "text_shapes":  16,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  5,
+                       "shapes":  27,
+                       "text_shapes":  17,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  6,
+                       "shapes":  47,
+                       "text_shapes":  22,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  7,
+                       "shapes":  26,
+                       "text_shapes":  14,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  8,
+                       "shapes":  26,
+                       "text_shapes":  17,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  9,
+                       "shapes":  13,
+                       "text_shapes":  9,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  10,
+                       "shapes":  27,
+                       "text_shapes":  15,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  11,
+                       "shapes":  22,
+                       "text_shapes":  19,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  12,
+                       "shapes":  38,
+                       "text_shapes":  21,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  13,
+                       "shapes":  24,
+                       "text_shapes":  20,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  14,
+                       "shapes":  24,
+                       "text_shapes":  16,
+                       "sources_block":  true
+                   },
+                   {
+                       "slide":  15,
+                       "shapes":  7,
+                       "text_shapes":  6,
+                       "sources_block":  true
+                   }
+               ]
+}

@@ -293,3 +293,46 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 결정 문서:
 `docs/decisions/DECISION_incremental_unattended_year_MFA_20260801.md`.
+
+## 2026-08-01 전수 직전 최종 preflight와 연구 설계 슬라이드
+
+### 최종 preflight 실측
+
+- 첫 실행에서 Windows PowerShell 5.1의 CP949 출력과 Generic.List JSON 직렬화
+  문제를 발견했다. `PYTHONUTF8=1`, 평탄화 배열, 명시적 최종 상태 계산으로 고쳤고
+  PowerShell 정적 검사에 회귀 조건을 추가했다.
+- 수정 후 최종 preflight는 공통 Jamo 사전/adoption SHA, D: `DATA_SSD`,
+  318.5 GiB 여유, lock/staging 충돌, 2020–2025 원 세션 exact coverage,
+  Python 287/287, PowerShell 20/20을 모두 통과했다.
+- 현재 `NO_GO`의 유일한 이유는 2020–2021 승인 제외 계약 부재와
+  2022–2025 lab 입력·승인 계약 생성 전 상태다. 이는 전수 계산을 섣불리 시작하지
+  않게 하는 의도된 안전 중단이다.
+- 다음 단계는 `run_mfa_year_queue_safe.ps1 -PrepareMissingReviews`로 6개 연도의
+  lab 입력을 전수 검증하고 pending 연구자 검토표를 만드는 것이다. 이 단계는
+  MFA·WAV 이동·자동 승인·정본 승격을 하지 않는다.
+
+근거:
+
+- `outputs/reports/PREFLIGHT_mfa_year_queue_mfa_r2_full6y_20260801.json`
+- `outputs/reports/PREFLIGHT_mfa_adoption_mfa_r2_full6y_20260801.json`
+- `outputs/reports/FINAL_PREBULK_MFA_CHECKLIST_20260801.md`
+
+### 서울코퍼스 참고형 최종 슬라이드
+
+- 서울코퍼스의 레이블·WAV/TextGrid pair·경계 검색·후속 통계 활용 흐름을 참고하되,
+  이번 연구의 역할 분리를 중심으로 15장 편집 가능한 PPTX와 PDF를 만들었다.
+- 원자료, 연구자 정책, 기계 파생값, 수동 판정을 구분하고, 6-tier TextGrid,
+  연도별 gzip/Parquet 동반표, Roman/형태소 검색 좌표, MFA phone의 한계,
+  KOINA/이어붙이기/wav2vec2의 선별 사용, 체크포인트 복구, 현재 `NO_GO`와
+  다음 명령을 한 흐름으로 설명한다.
+- 모든 슬라이드에 `[Sources]` 노트를 넣었다. PowerPoint 렌더를 15/15 육안
+  확인했고, 도형 범위·텍스트 넘침·출처 블록 기계 QA도 issue 0으로 통과했다.
+- PowerPoint COM 생성 과정에서 BOM 없는 UTF-8을 Windows PowerShell 5.1이
+  잘못 읽는 문제와 텍스트 입력 뒤 도형 높이를 최소값으로 되돌리는 문제를 실물로
+  발견했다. 생성 스크립트는 UTF-8 BOM과 최종 도형 치수 재고정으로 해결했다.
+
+산출물:
+
+- `outputs/presentations/MFA_research_infrastructure_final_prebulk_20260801.pptx`
+- `outputs/presentations/MFA_research_infrastructure_final_prebulk_20260801.pdf`
+- `outputs/reports/QA_MFA_research_infrastructure_final_prebulk_20260801.json`
