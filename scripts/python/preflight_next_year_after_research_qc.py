@@ -168,19 +168,41 @@ def validate_research_next_year_gate(
         and _same_path(_nested(sample, "db", "path"), db_path),
         f"compared={compared}, semantic={semantic}, sessions={sessions}",
     )
-    review_contract = _nested(review, "year_contracts", prior_year)
+    if review.get("schema_version") == "mfa_production_year_researcher_review.v1":
+        review_contract = review.get("year_contract")
+        review_ok = (
+            review.get("status") == "approved"
+            and review.get("allow_next_year_mfa") is True
+            and review.get("realization_judgment_performed") is False
+            and review.get("automatic_approval_performed") is False
+            and int(_nested(review, "counts", "sessions") or 0) >= 5
+            and isinstance(review_contract, dict)
+            and str(review_contract.get("year")) == prior_year
+            and review_contract.get("alignment_contract_id") in alignment_ids
+            and review_contract.get("lab_input_contract_id") in input_ids
+            and _same_path(review_contract.get("database"), db_path)
+        )
+    else:
+        # Historical 60-utterance infrastructure review remains accepted for
+        # reproducibility, but new production gates use the year-specific schema.
+        review_contract = _nested(review, "year_contracts", prior_year)
+        review_ok = (
+            review.get("schema_version")
+            == "mfa_r2_infrastructure_researcher_review.v1"
+            and review.get("status") == "approved"
+            and review.get("allow_bulk_mfa") is True
+            and review.get("realization_judgment_performed") is False
+            and int(_nested(review, "counts", "speakers") or 0) >= 5
+            and isinstance(review_contract, dict)
+            and review_contract.get("alignment_contract_id") in alignment_ids
+            and review_contract.get("lab_input_contract_id") in input_ids
+            and _same_path(review_contract.get("database"), db_path)
+        )
     add(
         "researcher_infrastructure_review",
-        review.get("schema_version") == "mfa_r2_infrastructure_researcher_review.v1"
-        and review.get("status") == "approved"
-        and review.get("allow_bulk_mfa") is True
-        and review.get("realization_judgment_performed") is False
-        and int(_nested(review, "counts", "speakers") or 0) >= 5
-        and isinstance(review_contract, dict)
-        and review_contract.get("alignment_contract_id") in alignment_ids
-        and review_contract.get("lab_input_contract_id") in input_ids
-        and _same_path(review_contract.get("database"), db_path),
-        f"status={review.get('status')}, contract={review_contract}",
+        review_ok,
+        f"schema={review.get('schema_version')}, status={review.get('status')}, "
+        f"contract={review_contract}",
     )
     direct_path = Path(str(_nested(merge, "details", "direct_export_report") or ""))
     try:

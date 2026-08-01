@@ -1,85 +1,40 @@
-# docs — 문서 색인
+# 연구 인프라 문서 색인
 
-이 리포의 모든 문서 길잡이. **처음이면 위에서부터** 읽으면 된다.
+이 폴더의 활성 문서는 네 개다. 새 세션과 외부 도구는 이 순서로 읽는다.
 
-## 먼저 읽기
-| 문서 | 무엇 |
-|---|---|
-| [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | **현재 상태 정본** — 확정 결정, 완료 상태, 바로 다음 명령, 세션 복구 절차 |
-| [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | 연구 개요 1페이지 (무엇을·왜·자료·1기/2기) |
-| [자료구축_코드해설.md](자료구축_코드해설.md) | **A단계 코드 이해** — 어떤 자료로·어떤 코드로·왜·무슨 역할 |
-| [DATA_LAYOUT.md](DATA_LAYOUT.md) | **데이터 배치도** — D: 전 폴더 구조·규약(세션 하위폴더)·대용량 열람 요령 |
-| [WORK_HISTORY_2026-07.md](WORK_HISTORY_2026-07.md) | 작업 이력 (시간순 · Claude 협업 기록) |
-| [WORKLOG_infrastructure_audit_2026-07-24.md](WORKLOG_infrastructure_audit_2026-07-24.md) | CSV·MFA 인프라 감사의 확인·판단·실행·커밋 작업일지 |
+| 순서 | 문서 | 역할 |
+|---:|---|---|
+| 1 | [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | 현재 완료·미완료·안전 정지점 |
+| 2 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
+| 3 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/외장 HDD/저장소 실물 위치 정본 |
+| 4 | 이 문서 | 문서 역할과 역사 기록의 위치 |
 
-## 진행 관리
-| 문서 | 무엇 |
-|---|---|
-| [WORKFLOW.md](WORKFLOW.md) | 작업 흐름 (A/B단계 구조) |
-| [TODO_A단계.md](TODO_A단계.md) | 남은 일·사용자 결정 대기 목록 |
+## 고정 연구 계약
 
-## 결정·표준 (decisions/)
-논문 인용 수준의 방법론·표준·계획 기록.
-| 문서 | 무엇 |
-|---|---|
-| [decisions/METHODS_bareun_dialogue_reanalysis.md](decisions/METHODS_bareun_dialogue_reanalysis.md) | 형태소 재분석·의미부여·빈도 **방법론(정본)** |
-| [decisions/STANDARD_textgrid_tiers.md](decisions/STANDARD_textgrid_tiers.md) | TextGrid tier 표준 v2 |
-| [decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md](decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md) | **현재 외부 리뷰 대상 최신 제안** — 6-tier, 연도별 gzip 동반표, 출처·좌표·DB checkpoint·논문 방법 근거 |
-| [decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md](decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md) | r2 방법·QC 역사적 계약. 구 4-tier·§11 명령은 실행 기준이 아님 |
-| [reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md](reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md) | **전수 시작 전 로컬 외부 리뷰 지시** — 연구자 부착 정보·기계 파생값·논문 서술·510만 운영을 함께 검사 |
-| [../outputs/reports/RESULT_research_6tier_candidate_60_20260801.md](../outputs/reports/RESULT_research_6tier_candidate_60_20260801.md) | 6개년 60발화 DB 재출력, 구 word/phone 동등성·gzip·checkpoint 회귀검사 결과 |
-| [decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md](decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md) | **6개년 r2 인프라 수용 파일럿 정본** — 연도당 10발화·5화자, 동일 모델/사전, direct DB 4-tier, 경계·phone·DB 재수출 gate와 Dropbox 평면 검토본 |
-| [decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md](decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md) | **REVIEW.xlsx 15개 열 정본 가이드** — 사용자 요청 배경, 각 열의 의미·출처·판정 기준·편집 정책·후속 활용과 실현 판정 금지 범위 |
-| [decisions/DECISION_mfa_r2_review_global_issues_20260730.md](decisions/DECISION_mfa_r2_review_global_issues_20260730.md) | **연구자 1차 검토의 전역 이슈 정본** — legacy 형태소 시간층과 구조화 형태 환경표 부재, 반복 코드 기록, 목표 4-tier·재검토 gate |
-| [reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md](reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md) | **TextGrid 발화 수준 검색 tier 외부 리뷰 프롬프트** — legacy 형태소 시간층을 제거하고 철자 로마자·형태소 표기를 발화 수준에서 검색하는 3/4/5-tier 대안 검토 |
-| [../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md](../outputs/reports/RESULT_mfa_r2_infrastructure_pilot_20260730.md) | **6개년 r2 인프라 파일럿 결과** — 6/6 연도 기계 QC·방법 감사 통과, Dropbox 60발화/240 payload/REVIEW.xlsx 전달 감사, 연구자 검토 대기 |
-| [../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json](../outputs/reports/AUDIT_mfa_r2_pilot_review_delivery_20260730.json) | Dropbox 평면 묶음 v2·원본 SHA·60행·240링크·dropdown 최종 기계 감사 |
-| [decisions/PLAN_KOINA_intonation_IP_AP.md](decisions/PLAN_KOINA_intonation_IP_AP.md) | 운율 주석(IP/AP) 계획 |
-| [decisions/000_project_folder_structure.md](decisions/000_project_folder_structure.md) | 폴더 구조 결정 |
-| [decisions/RUNBOOK_MFA_eojeol_realign.md](decisions/RUNBOOK_MFA_eojeol_realign.md) | 어절 전량 재정렬 런북 (실패 분석 이력 포함) |
-| [decisions/RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md](decisions/RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md) | **현재 실행 정본** — pre-MFA CSV 동결·숫자/기호 lab·입력계약·stale temp 보존·무인 MFA 명령 |
-| [decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md](decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md) | 연도별 10발화·실제 화자 5명 MFA 파일럿 실행·QC·시행착오 |
-| [decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md](decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md) | 대량 실행 전 실패·시행착오 27건과 수용 기준 |
-| [decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md](decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md) | 원자 출력·구판 보존·MFA/CSV 검증 설계와 연구적 근거 |
-| [decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md](decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md) | 후보 검색→파일 수집→KOINA→수동 판정의 층 분리와 2020 파일럿 게이트 |
-| [decisions/DESIGN_pronunciation_environment_search_2026-07-25.md](decisions/DESIGN_pronunciation_environment_search_2026-07-25.md) | 사전·규칙·MFA 발음 분리, 음운·형태 경계 검색표와 CSV–WAV–TextGrid 연동 설계 |
-| [decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md](decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md) | **2020–2025 공통 발음 자원** — G2P 판본·우리말샘 예외·출처·MFA 파생사전·재실행 정책 |
-| [decisions/PILOT_common_pronunciation_full_corpus_20260728.md](decisions/PILOT_common_pronunciation_full_corpus_20260728.md) | **공통 발음 파일럿 착수 실측** — 6개년 전체 510만행·88만 고유 어절, 사전 원천 감사, D: release·Git·phone 체계 gate |
-| [../outputs/reports/RESULT_common_pron_AB_pilot_20260728.md](../outputs/reports/RESULT_common_pron_AB_pilot_20260728.md) | **공통 발음 A/B 파일럿 결과** — A/B 60/60, 4-tier·사전 확률열·효과군 20·phone 변화 3·control 잡음과 수동 검토 순서 |
-| [decisions/DECISION_common_pronunciation_resource_v2_20260728.md](decisions/DECISION_common_pronunciation_resource_v2_20260728.md) | **공통 발음 자원 v2 정본** — 어절 type/occurrence 분리, 형태소 조건 사전 후보, 수동 A/B 결과, MFA 주 정렬·wav2vec2/KFaligner 보조 역할 |
-| [decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md](decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md) | **6개년 phone 방법론 동일성 정본** — 같은 모델·사전·G2P·입력/tier 기준, 2020 TextGrid+부분 DB·2021 DB 전수 gate, 논문용 주장 범위 |
-| [decisions/RUNBOOK_common_pron_mfa_r1_20260728.md](decisions/RUNBOOK_common_pron_mfa_r1_20260728.md) | **공통 G2P 장시간 실행 정본** — 한 줄 실행, 35 shard 진행 확인·재개, 2020 TextGrid/부분 DB·2021 DB 자동 전수 gate |
-| [decisions/MONITOR_common_pron_mfa_r1_20260728.md](decisions/MONITOR_common_pron_mfa_r1_20260728.md) | 공통 G2P 35 shard와 2020 TextGrid·부분 DB/2021 DB 전수 동등성의 실시간 진행·오류·무손상 점검대장 |
-| [decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md](decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md) | **2020 전 단계 완료 감사** — 510만행 CSV, 86만 TextGrid, 4-tier 경계, 16시간 export 병목과 2021 전 개선 gate |
-| [decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md](decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md) | **2021–2025 실행 준비도와 병목 개선 감사** — 연도별 CSV/WAV/lab 위험, export 경쟁 원인, 21,962개 direct 동등성, 2021 GO 명령·복구 정책 |
-| [decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md](decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md) | 29시간 실행의 CPU·I/O·디스크·마커·오류·시행착오 시간순 점검대장 |
-| [decisions/MONITOR_2021_pre_mfa_v1_20260727.md](decisions/MONITOR_2021_pre_mfa_v1_20260727.md) | 현재 2021 direct-DB 실행의 lab·MFA 단계·CPU·용량·watchdog 실측 점검대장 |
-| [decisions/MONITOR_common_pron_AB_pilot_20260728.md](decisions/MONITOR_common_pron_AB_pilot_20260728.md) | 공통 발음 A/B의 단계·오류·부분 성공·무손상·재개를 기록하는 실시간 점검대장 |
-| [decisions/PLAN_2022_improved_MFA_after_2020_2021.md](decisions/PLAN_2022_improved_MFA_after_2020_2021.md) | 2020·2021 실측을 반영한 2022 개선 실행안과 GO/NO-GO |
-| [decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md](decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md) | **2020·2021 최종 비교 정본** — 전수 QC·속도·DB 증거·D: dry-run·2022 기술 GO/방법론 HOLD와 승인 후 명령 |
-| [decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md](decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md) | 한국어 wav2vec2 phone 모델을 MFA 대체가 아닌 음향 후보 탐지층으로 검증하는 방법·한계·소표본 gate |
-| [decisions/PLAN_2021_post_QC_storage_cleanup_20260727.md](decisions/PLAN_2021_post_QC_storage_cleanup_20260727.md) | 2021 QC 뒤 DB·계약·최종 결과를 보존하고 재계산 가능한 대형 temp만 dry-run·승인 후 정리하는 용량 정책 |
-| [decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md](decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md) | 2020이 아닌 수정 전 보존 코드·과거 로그를 기준으로 현재 처리시간과 추가 검증 비용을 분리한 분석 |
-| [decisions/RUNBOOK_SSD_migration.md](decisions/RUNBOOK_SSD_migration.md) | **SSD 이전+세션 재구성 런북 (7/20 실행)** |
+- [decisions/_INDEX.md](decisions/_INDEX.md): 현행·역사·대체된 결정 색인
+- [decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md](decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md): 6-tier·CSV/동반표 계약
+- [decisions/DECISION_pre_MFA_combination_search_v3_20260801.md](decisions/DECISION_pre_MFA_combination_search_v3_20260801.md): 형태소·Roman·기호 조합검색 계약
+- [decisions/DECISION_incremental_unattended_year_MFA_20260801.md](decisions/DECISION_incremental_unattended_year_MFA_20260801.md): 연도별 checkpoint와 실패 보존
+- [decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md](decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md): 6개년 phone 방법 동일성
+- [decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md](decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md): 서울 코퍼스·KOINA를 고려한 tier 근거
 
-## 외부 리뷰 (reviews/)
+## 코드·증거·검토
 
-| 문서 | 무엇 |
-|---|---|
-| [reviews/HANDOFF_external_review_CSV_MFA_20260727.md](reviews/HANDOFF_external_review_CSV_MFA_20260727.md) | 다른 도구에 GitHub 주소와 함께 전달할 전체 CSV·MFA 코드리뷰 범위·제약·피드백 양식 |
-| [reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md](reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md) | r2 전수 MFA 시작 전 입력·출력·조인·실패복구·방법론 중심 외부 리뷰 프롬프트 |
-| [reviews/incoming/EXTERNAL_REVIEW_r2_MFA_research_workflow_3839872_20260730.md](reviews/incoming/EXTERNAL_REVIEW_r2_MFA_research_workflow_3839872_20260730.md) | 커밋 `3839872` 대상 r2 연구 자료 흐름 외부 리뷰 원문과 `GO AFTER FIXES` 판정 |
-| [reviews/RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md](reviews/RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md) | r2 외부 finding별 구현·실물·시험 증거와 전수 시작 전 남은 gate를 구분한 조치 기록 |
-| [reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md](reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md) | 커밋 `ce421db` 대상 외부 리뷰 수신 원문 336행(줄바꿈 정규화 SHA256 기록) |
-| [reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md](reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md) | 외부 finding별 독립 재검증·수용/수정/보류 판정과 2021/2022 적용 순서 |
+- 코드 색인: [../scripts/SCRIPTS_INDEX.md](../scripts/SCRIPTS_INDEX.md)
+- 결과·기계 증거: `outputs/reports/`
+- 외부 리뷰 원문: `reviews/incoming/`
+- 리뷰 조치: `reviews/RESOLUTION_*.md`, `reviews/TRIAGE_*.md`
+- 시간순 시행착오: `WORK_HISTORY_*.md`, `WORKLOG_*.md`
+- 환경: `environment/ENVIRONMENT_NOTES_INDEX.md`
 
-## 환경 설정 (environment/)
-기계·도구 셋업 노트(바른·MFA·R·Praat·VS Code 등). 색인은
-[environment/ENVIRONMENT_NOTES_INDEX.md](environment/ENVIRONMENT_NOTES_INDEX.md).
+## 역사 문서 규칙
 
-## 지난 문서 (archive/)
-역할을 다한 과정 문서(초기 GitHub 준비·전문가 세션 전달문·구 START_HERE·
-세션 핸드오프). 이력 보존용이며 현재 지침은 아님.
+`WORKFLOW.md`, `TODO_A단계.md`, `HANDOFF_*.md`, 구 RUNBOOK·MONITOR·PILOT은
+삭제하지 않지만 현재 실행 지침으로 사용하지 않는다. 현재 명령과 충돌하면
+반드시 `RUNBOOK_production_2020_2025.md`가 우선한다.
 
----
-*코드 한 줄 색인은 [../scripts/SCRIPTS_INDEX.md](../scripts/SCRIPTS_INDEX.md).*
+workflow reset 이전의 누적 현재 상태는
+[archive/PROJECT_CURRENT_STATE_20260801_full.md](archive/PROJECT_CURRENT_STATE_20260801_full.md)에
+보존한다. 최종 점검 슬라이드와
+`decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md`는 산출물
+계약과 manifest의 근거이므로 이동하지 않는다.

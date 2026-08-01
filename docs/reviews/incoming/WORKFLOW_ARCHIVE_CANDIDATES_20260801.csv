@@ -1,0 +1,110 @@
+﻿current_path,classification,canonical_or_superseded_by,proposed_path,reason,link_or_code_risk,recommended_action
+docs/ASSETS_LEDGER.md,canonical_active,—,"(유지)","자산 위치 정본. 단 최종 실측 7/24로 낡음 — HDD reference 회수 전 갱신 필요","코드1(recover_reference_from_hdd.ps1)·CLAUDE.md·docs5",keep_update_content
+docs/DATA_LAYOUT.md,canonical_active,—,"(유지)","좌표계(연도/세션 규약) 정본, 코드가 진실 원천으로 지목","코드2(fetch_audio_for_search.py, locate_utt.py)",keep
+docs/PROJECT_SUMMARY.md,canonical_active,—,"(유지)","연구 개요 1페이지 정본","CLAUDE.md·README",keep
+docs/README.md,canonical_active,—,"(유지)","문서 색인 정본. 단 내부 라벨 다수 구식(r1을 실행 정본 표기 등) — 본 리뷰 분류 반영 갱신","CLAUDE.md·README·docs7",keep_update_content
+docs/SETUP_다른기기_작업가이드.md,canonical_active,—,"(유지)","기기 간 git 동기화 가이드 현행 유효",docs1,keep
+docs/자료구축_코드해설.md,canonical_active,—,"(유지)","A단계 코드 해설 정본","SCRIPTS_INDEX·CLAUDE.md",keep
+docs/WORK_HISTORY_2026-07.md,supporting_evidence,—,"(유지)","7월 이력 마감분",CLAUDE.md,keep
+docs/WORK_HISTORY_2026-08.md,supporting_evidence,—,"(유지)","8월 이력 진행 중",docs1,keep
+docs/WORKLOG_infrastructure_audit_2026-07-24.md,historical_valid,—,"(유지+헤더)","7/24 감사 작업일지",docs1,add_status_header
+docs/TODO_A단계.md,superseded,docs/environment/PROJECT_CURRENT_STATE.md,docs/archive/TODO_A단계_20260723_frozen.md,"7/23 동결·r2/6-tier/v3 미반영. ★CLAUDE.md가 아직 정본 지정","CLAUDE.md 링크 — 선수정 필수·docs7",archive_move_after_link_fix
+docs/WORKFLOW.md,superseded,PROJECT_CURRENT_STATE.md+PROPOSAL 2종,docs/archive/WORKFLOW_v2_20260709.md,"7/09 v2. 레이어 경로·상태표 구식","CLAUDE.md 링크 — 선수정 필수",archive_move_after_link_fix
+docs/HANDOFF_pilot_search_master.md,superseded,DECISION_pre_MFA_combination_search_v3_20260801.md,docs/archive/,"v1 파일럿 세션 시작 문서. ★CLAUDE.md가 '새 세션 시작점'으로 지시 중 — 오도 위험 높음","CLAUDE.md 링크 — 선수정 필수",archive_move_after_link_fix
+docs/HANDOFF_search_master_session2.md,superseded,동일,docs/archive/,"v1 전량 대기 시점 핸드오프",docs2,archive_move
+docs/GUIDE_실행순서_제3자용.md,superseded,PROPOSAL_prebulk_execution_order_20260801.md,docs/archive/,"v1 search master 감사 절차 — 경로 자체 대체됨",docs1,archive_move
+docs/decisions/000_project_folder_structure.md,superseded,archive/HANDOFF_2026-07-09.md 기록,"(유지+헤더)","Dropbox 루트 시절 결정",docs1,add_status_header
+docs/decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md,failed_diagnostic,—,"(유지+헤더)","거짓 성공 원인 규명 기록 — 실패 증거 보존",docs2,add_status_header
+docs/decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md,historical_valid,DECISION_r2_realign_all_six_years_20260729.md,"(유지+헤더)","구 baseline 감사 — 전환 감사 증거로 존치",docs7,add_status_header
+docs/decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md,historical_valid,DECISION_pre_MFA_combination_search_v3_20260801.md,"(유지+헤더)","구 2020 정렬 완료 감사 — 구 정렬 비재사용",docs4,add_status_header
+docs/decisions/AUDIT_pre_bulk_MFA_CSV_2026-07-24.md,historical_valid,—,"(유지+헤더)","실패 이력 27건 — 안전설계의 역사 근거",docs5,add_status_header
+docs/decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md,historical_valid,r2 전면 재정렬 결정,"(유지+헤더)","구 pre_mfa_v1 기반 2021 GO 감사",docs6,add_status_header
+docs/decisions/DECISION_auto_phoneme_roman_aux_layer_20260731.md,canonical_active,—,"(유지)","phoneme_r_auto 정의 정본(대체 범위 자체 구분)",docs3,keep
+docs/decisions/DECISION_bareun_engine_provenance_20260801.md,canonical_active,—,"(유지)","바른 provenance 한계 기술 결정",docs1,keep
+docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md,canonical_active,—,"(유지)","r2 no-path 보완 계약 현행",docs2,keep
+docs/decisions/DECISION_common_pronunciation_resource_v2_20260728.md,supporting_evidence,DECISION_latest_jamo_common_pron_mfa_20260728.md,"(유지)","r2 사전 결정의 설계 기반",docs4,keep
+docs/decisions/DECISION_compressed_external_archive_20260728.md,canonical_active,—,"(유지)","현행 E: 압축 archive 정책",없음,keep
+docs/decisions/DECISION_incremental_unattended_year_MFA_20260801.md,canonical_active,—,"(유지)","무인 연도 큐 결정",docs3,keep
+docs/decisions/DECISION_latest_jamo_common_pron_mfa_20260728.md,canonical_active,—,"(유지)","r2 모델 묶음 동결 정본",docs1,keep
+docs/decisions/DECISION_mfa_r2_infrastructure_acceptance_pilot_20260730.md,historical_valid,PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md,"(유지+헤더)","r2 4-tier 수용 파일럿 — 단계 종료·6-tier로 대체",docs2,add_status_header
+docs/decisions/DECISION_mfa_r2_review_global_issues_20260730.md,supporting_evidence,—,"(유지)","G-TIER-01/G-CSV-01 발견 기록 — 6-tier 재설계 직접 근거",docs8,keep
+docs/decisions/DECISION_pre_MFA_combination_search_v3_20260801.md,canonical_active,—,"(유지)","현행 조합검색 v3 결정",docs4,keep
+docs/decisions/DECISION_r2_realign_all_six_years_20260729.md,canonical_active,—,"(유지)","6개년 전면 재정렬 결정",docs4,keep
+docs/decisions/DESIGN_candidate_infrastructure_layers_2026-07-24.md,historical_valid,PROPOSAL_full_production 계열,"(유지+헤더)","층 분리 원칙 최초 설계 — 원칙 계승·구체 설계 대체",docs3,add_status_header
+docs/decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md,superseded,DECISION_common_pronunciation_resource_v2_20260728.md,"(유지+헤더)","자체 헤더로 대체 명시 — 물리 이동 불필요",docs9,add_status_header
+docs/decisions/DESIGN_mfa_pilot_review_workbook_2026-07-25.md,historical_valid,—,"(유지+헤더)","구 파일럿 워크북 설계(openpyxl 승인 이력 포함)",docs1,add_status_header
+docs/decisions/DESIGN_pronunciation_environment_search_2026-07-25.md,superseded,DECISION_pre_MFA_combination_search_v3+PROPOSAL_full_production,"(유지+헤더)","구 검색·v4 설계. ★인용 13건 최다 — 이동 금지·헤더만",docs13,add_status_header
+docs/decisions/DESIGN_safe_pre_bulk_pipeline_2026-07-24.md,supporting_evidence,—,"(유지)","'연구용 완료' 정의 — 현행 러너 안전설계 근거",docs4,keep
+docs/decisions/DESIGN_search_master_layer.md,superseded,DECISION_pre_MFA_combination_search_v3_20260801.md,"(유지+헤더)","v1 설계. roman 규약 일부 계승. ★코드 3곳 참조 — 이동 금지","코드3(build_search_master.py, paths.json, SCRIPTS_INDEX)·CLAUDE.md",add_status_header
+docs/decisions/GUIDE_mfa_r2_infrastructure_review_columns_20260730.md,historical_valid,6-tier 검토 체계,"(유지+헤더)","4-tier REVIEW.xlsx 15열 가이드 — 해당 검토 폐지(V01)",docs5,add_status_header
+docs/decisions/HANDOFF_20260728_common_pron_archive_mfa.md,historical_valid,—,"(유지+헤더)","7/28 시점 인계문",없음,add_status_header
+docs/decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md,canonical_active,—,"(유지)","논문용 phone 기준 동일성 계약(4-tier 표현만 부분 갱신 필요)",docs4,keep_update_content
+docs/decisions/METHODS_bareun_dialogue_reanalysis.md,canonical_active,—,"(유지)","방법론 정본(CLAUDE.md 필수 규칙 지정)","CLAUDE.md·docs10",keep
+docs/decisions/MONITOR_2021_pre_mfa_v1_20260727.md,historical_valid,—,"(유지+헤더)","구 2021 실행 점검대장",docs5,add_status_header
+docs/decisions/MONITOR_common_pron_AB_pilot_20260728.md,supporting_evidence,—,"(유지)","A/B 파일럿 실측 — v2 사전 결정 증거",docs3,keep
+docs/decisions/MONITOR_common_pron_mfa_r1_20260728.md,failed_diagnostic,r2 계열,"(유지+헤더)","r1 실패·중단 실시간 기록 — 안전장치 작동 증거",docs2,add_status_header
+docs/decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md,historical_valid,—,"(유지+헤더)","구 pre_mfa_v1 29시간 실행 점검대장",docs4,add_status_header
+docs/decisions/NOTE_wav2vec2_phone_candidate_layer_20260727.md,supporting_evidence,—,"(유지)","wav2vec2 보조층 역할 규정 — Stage 6 근거",docs3,keep
+docs/decisions/PILOT_common_pronunciation_full_corpus_20260728.md,supporting_evidence,—,"(유지)","r2 사전 모집단 실측 근거",docs3,keep
+docs/decisions/PLAN_2021_post_QC_storage_cleanup_20260727.md,canonical_active,—,"(유지)","유일하게 열린 정리 결정(승인 대기). r2 이후 구 2021 DB 보존 가치 재평가는 연구자 몫",docs2,keep_owner_decision
+docs/decisions/PLAN_2022_improved_MFA_after_2020_2021.md,superseded,DECISION_r2_realign_all_six_years_20260729.md,"(유지+헤더)","구 경로 기반 2022 실행안 — 전면 재정렬로 무효",docs4,add_status_header
+docs/decisions/PLAN_KOINA_intonation_IP_AP.md,canonical_active,—,"(유지)","B단계 운율 계획 — 미착수이나 대체 없음",docs3,keep
+docs/decisions/PLAN_common_pron_AB_then_year_order_20260728.md,superseded,PROPOSAL_prebulk_execution_order_20260801.md,"(유지+헤더)","순서안 자체가 교체됨",docs2,add_status_header
+docs/decisions/PLAN_integrated_CSV_MFA_research_infrastructure_20260731.md,superseded,PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md,"(유지+헤더)","4층 연결 원칙 계승·4/5-tier 기준 대체",docs1,add_status_header
+docs/decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md,canonical_active,—,"(유지)","6-tier 설계 승인 정본. ★코드가 approved_design 문자열로 경로 기록 — 이동 절대 금지","코드1(build_textgrid_v2_mini_pilot.py:275 manifest 기록)",keep_never_move
+docs/decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md,canonical_active,—,"(유지)","현행 전수 생산 계약",docs8,keep
+docs/decisions/PROPOSAL_prebulk_execution_order_20260801.md,canonical_active,—,"(유지)","현행 실행 순서 제안",docs4,keep
+docs/decisions/REVIEW_MFA_pilot_manual_feedback_2026-07-25.md,historical_valid,—,"(유지+헤더)","구 파일럿 수동 검토 기록",docs3,add_status_header
+docs/decisions/RUNBOOK_MFA_eojeol_realign.md,superseded,DECISION_incremental_unattended_year_MFA_20260801.md,"(유지+헤더)","구 4-tier 런북. G2P 부재 발견 이력 — 실패 증거 가치. 코드 참조 있어 이동 금지","코드1(SCRIPTS_INDEX:142)·docs7",add_status_header
+docs/decisions/RUNBOOK_MFA_realign_2020-2025.md,historical_valid,—,"(유지+헤더)","1기 재정렬(7/15 완료된 과거 작업)","코드1(SCRIPTS_INDEX:101)·docs3",add_status_header
+docs/decisions/RUNBOOK_MFA_stratified_year10_pilot_2026-07-24.md,historical_valid,—,"(유지+헤더)","구 층화 파일럿 실행서",docs2,add_status_header
+docs/decisions/RUNBOOK_SSD_migration.md,historical_valid,—,"(유지+헤더)","7/20 완료된 이전 런북(1화자 사고 교훈)","코드1(copy_hdd_to_ssd.ps1:107)",add_status_header
+docs/decisions/RUNBOOK_common_pron_AB_pilot_20260728.md,historical_valid,—,"(유지+헤더)","A/B 파일럿 실행서 — 종료",docs2,add_status_header
+docs/decisions/RUNBOOK_common_pron_mfa_r1_20260728.md,superseded,r2 STATUS/DECISION 문서,"(유지+헤더)","r1은 검증 실패 폐기 기준선. ★docs/README가 아직 '실행 정본' 라벨 — 색인 갱신 필수",docs1,add_status_header
+docs/decisions/RUNBOOK_pre_MFA_bulk_safe_2026-07-25.md,superseded,신설 RUNBOOK_production(권고),"(유지+헤더)","pre_mfa_v1 실행 기록 가치 존치. 신설 통합 RUNBOOK이 대체",docs 다수,add_status_header
+docs/decisions/STANDARD_textgrid_tiers.md,canonical_active,—,"(유지)","변천 보존형 표준 — 하단 v6 6-tier가 현재 확정","코드1(merge_textgrid_v2.py:5)·docs9",keep
+docs/decisions/STATUS_common_pron_mfa_r2_prebuild_20260728.md,historical_valid,PROJECT_CURRENT_STATE.md,"(유지+헤더)","r2 생성 전 시점 스냅샷",없음,add_status_header
+docs/decisions/WORKFLOW_r2_MFA_research_data_contract_20260730.md,canonical_active,§11·4-tier 부분은 PROPOSAL_full_production으로 대체(자체 명시),"(유지)","r2 방법·QC 원칙 유효·무효 범위 자체 구분. ★인용 12건 — 이동 금지",docs12,keep
+docs/decisions/사회변수_코드북.md,canonical_active,—,"(유지)","living document — 코드가 규칙 정본으로 참조","코드2(build_speakers_normalized.py, build_stratified_freq.py)",keep_never_move
+docs/environment/ENVIRONMENT_NOTES_INDEX.md,historical_valid,—,"(유지+헤더)","7/07 기준 환경 색인",docs1,add_status_header
+docs/environment/PROJECT_CURRENT_STATE.md,canonical_active,—,docs/archive/PROJECT_CURRENT_STATE_20260801_full.md로 사본 이동 후 80줄 초안으로 교체,"현 파일에 최신 정지점 3개 공존 — append 부패. 교체 초안 제공됨(PROJECT_CURRENT_STATE_REFRESH_DRAFT)","docs14(인용 최다) — 경로는 유지하고 내용만 교체하므로 링크 무손상",replace_content_archive_old
+docs/environment/PROJECT_START_HERE.md,canonical_active,docs/README.md,"(유지·내용 축소)","자체적으로 '낡은 문서' 명시. 상단 리다이렉트 3줄만 남기고 본문은 archive/START_HERE_old 계열로","AGENTS.md 참조 — 경로 유지·내용 축소가 안전",keep_shrink_to_redirect
+docs/environment/linguistics-research-environment-master-notes.md,historical_valid,—,"(유지+헤더)","초기 마스터 노트(구 Codex 경로). AGENTS.md가 아직 필독 지정 — 헤더에 '환경 참고용' 명시","AGENTS.md 참조",add_status_header
+docs/environment/bareun-morph-analyzer-setup-plan.md,historical_valid,—,"(유지+헤더)","7/06 셋업 판단 기록",docs3,add_status_header
+docs/environment/codex-dev-environment-notes.md,historical_valid,—,"(유지+헤더)","초기 개발환경 기록",docs2,add_status_header
+docs/environment/external-data-paths.example.md,superseded,config/paths.json,"(유지+헤더)","경로 중앙관리로 대체",없음,add_status_header
+docs/environment/mfa-setup-notes.md,historical_valid,—,"(유지+헤더)","MFA 설치 기록 — env 정보 대체로 유효",docs2,add_status_header
+docs/environment/r-linguistics-setup-notes.md,historical_valid,—,"(유지+헤더)","구 경로 기준 R 셋업",docs2,add_status_header
+docs/environment/speech-praat-setup-notes.md,historical_valid,—,"(유지+헤더)","구 경로 기준 Praat 기록",docs2,add_status_header
+docs/environment/vscode-codex-workflow-notes.md,historical_valid,—,"(유지+헤더)","초기 VS Code 기록",docs1,add_status_header
+docs/learning/자료구축_단계별_리뷰.md,canonical_active,—,"(유지)","진행 중 학습노트(사용자 메모리에도 진행 중 기록)",docs1,keep
+docs/archive/GITHUB_PREP_2026-07-15.md,historical_valid,—,"(유지)","이미 archive됨",docs1,keep
+docs/archive/HANDOFF_2026-07-09.md,historical_valid,—,"(유지)","이미 archive됨",docs1,keep
+docs/archive/START_HERE_old.md,historical_valid,—,"(유지)","이미 archive됨",없음,keep
+docs/archive/전문가님께_전달문서_2026-07-15.md,historical_valid,—,"(유지)","이미 archive됨",없음,keep
+docs/reviews/BRIEF_external_review_workflow_reset_20260801.md,canonical_active,—,"(유지)","현재 리뷰 브리프",docs3,keep
+docs/reviews/PROMPT_external_review_workflow_reset_20260801.md,canonical_active,—,"(유지)","현재 리뷰 지시문",docs3,keep
+docs/reviews/PROMPT_external_review_prebulk_execution_order_20260801.md,superseded,PROMPT_external_review_workflow_reset_20260801.md(자체 명시),"(유지+헤더)","더 넓은 리뷰로 대체",docs2,add_status_header
+docs/reviews/PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md,historical_valid,—,"(유지+헤더)","리뷰 완료(RESULT 존재)",docs5,add_status_header
+docs/reviews/PROMPT_external_review_common_pron_mfa_20260728.md,historical_valid,—,"(유지+헤더)","리뷰 완료",없음,add_status_header
+docs/reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md,historical_valid,—,"(유지+헤더)","리뷰 수신·RESOLUTION 완료",docs3,add_status_header
+docs/reviews/PROMPT_external_review_morph_roman_position_schema_20260731.md,historical_valid,—,"(유지+헤더)","리뷰 완료",docs3,add_status_header
+docs/reviews/PROMPT_external_review_r2_MFA_research_workflow_20260730.md,historical_valid,—,"(유지+헤더)","리뷰 완료",docs3,add_status_header
+docs/reviews/HANDOFF_external_review_CSV_MFA_20260727.md,historical_valid,—,"(유지+헤더)","완료 리뷰 요청문",docs3,add_status_header
+docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md,supporting_evidence,—,"(유지)","현행 검색 스키마 확정 반영 기록",docs5,keep
+docs/reviews/RESOLUTION_external_review_common_pron_mfa_20260728.md,supporting_evidence,—,"(유지)","r2 계약 반영 증거",없음,keep
+docs/reviews/RESOLUTION_external_review_full_production_TextGrid_CSV_20260801.md,supporting_evidence,—,"(유지)","현행 생산 계약 H-01/H-02 구현 증거",docs1,keep
+docs/reviews/RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md,supporting_evidence,—,"(유지)","r2 finding 조치표",docs2,keep
+docs/reviews/RESULT_design_review_TextGrid_utterance_search_tier_20260731.md,superseded,6-tier 확정(PROPOSAL_Seoul)+후속 리뷰 정정,"(유지+헤더)","4-tier 권고 — 최종 6-tier로 대체",docs2,add_status_header
+docs/reviews/RESULT_design_review_morph_roman_position_schema_20260731.md,supporting_evidence,—,"(유지)","현행 검색 스키마 설계 리뷰(반영 완료)",docs2,keep
+docs/reviews/TEST_morph_roman_phonological_matrix_20260731.md,supporting_evidence,—,"(유지)","영구 회귀시험 근거 문서",docs1,keep
+docs/reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md,historical_valid,—,"(유지+헤더)","구 경로 리뷰 판정 기록",docs3,add_status_header
+docs/reviews/GUIDE_morph_combined_search_demo_20260731.md,generated_review_artifact,—,"(유지+헤더)","재생성 가능 데모 안내 — 검토 목적 달성(V04 폐지)",docs1,add_status_header
+docs/reviews/GUIDE_phoneme_roman_pilot_20260731.md,generated_review_artifact,6-tier 확정으로 검토 자체 폐지(V03),"(유지+헤더)","5-tier 수용 검토 안내 — 본 리뷰가 폐지 판정",docs1,add_status_header
+docs/reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md,historical_valid,—,"(유지)","구 경로 리뷰 원문 보존(수신함 규약)",docs4,keep
+docs/reviews/incoming/EXTERNAL_REVIEW_common_pron_mfa_claude-code_20260728.md,supporting_evidence,—,"(유지)","r2 계약 형성 리뷰 원문",docs1,keep
+docs/reviews/incoming/EXTERNAL_REVIEW_r2_MFA_research_workflow_3839872_20260730.md,supporting_evidence,—,"(유지)","r2 workflow 리뷰 원문",docs2,keep
+docs/reviews/incoming/EXTERNAL_REVIEW_full_production_TextGrid_CSV_20260801.md,supporting_evidence,—,"(유지)","현행 생산 계약 리뷰 원문",docs3,keep
+scripts/SCRIPTS_INDEX.md,canonical_active,—,"(유지)","스크립트 색인 정본. ★114행 'alignment contract 배선 대기'와 159행 인근 낡은 상태 라벨 갱신 필요(T17)","코드·문서 다수",keep_update_content
+CLAUDE.md,canonical_active,—,"(유지)","프로젝트 지침. ★TODO_A단계·HANDOFF_pilot_search_master를 정본/시작점으로 지정 중 — archive 이동 전 반드시 갱신","루트 지침",keep_update_content
+AGENTS.md,canonical_active,—,"(유지)","Codex 지침. environment 구식 문서 2종 참조 — environment 재편 시 함께 갱신","루트 지침",keep_update_content

@@ -10,6 +10,15 @@ $files = @(
     (Join-Path $root 'scripts\preflight_mfa_year_queue.ps1'),
     (Join-Path $root 'scripts\prepare_full_mfa_approval_reviews.ps1'),
     (Join-Path $root 'scripts\start_full_mfa_after_review.ps1'),
+    (Join-Path $root 'scripts\verify_production_source_contract.ps1'),
+    (Join-Path $root 'scripts\resume_2020_morph_search.ps1'),
+    (Join-Path $root 'scripts\prepare_2020_mfa_approval_review.ps1'),
+    (Join-Path $root 'scripts\start_2020_mfa_after_review.ps1'),
+    (Join-Path $root 'scripts\prepare_2020_production_sample_review.ps1'),
+    (Join-Path $root 'scripts\approve_2020_production_sample_review.ps1'),
+    (Join-Path $root 'scripts\preflight_2020_gate_b.ps1'),
+    (Join-Path $root 'scripts\prepare_remaining_mfa_approval_reviews.ps1'),
+    (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
@@ -355,6 +364,73 @@ foreach ($path in $files) {
         }
         if ($text -match '(?im)^\s*(Start-Process|Stop-Process)\b') {
             $failures.Add('연도 큐 최종 preflight가 MFA 프로세스를 시작/중단함')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'verify_production_source_contract.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'production_frozen_source_contract.v1',
+            'source_meta_sha256',
+            'RequireMorphYearSuccess',
+            'YEAR_MANIFEST.json',
+            'modifies_frozen_source = $false'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("source contract safety token missing: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'resume_2020_morph_search.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        if (-not $text.Contains('-Year 2020') -or $text.Contains('-Year 2021')) {
+            $failures.Add('2020 morph wrapper is not year-scoped')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'prepare_2020_mfa_approval_review.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        if (-not $text.Contains('-Years 2020')) {
+            $failures.Add('2020 approval wrapper is not year-scoped')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'start_2020_mfa_after_review.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'verify_production_source_contract.ps1',
+            '-RequireMorphYearSuccess',
+            "'-Years', '2020'"
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("2020 start wrapper safety token missing: $required")
+            }
+        }
+        if ($text.Contains("'2021'")) {
+            $failures.Add('2020 start wrapper includes a later year')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'preflight_2020_gate_b.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'preflight_next_year_after_qc.py',
+            'mfa_production_year_review.py',
+            'verify_production_source_contract.ps1',
+            'allow_remaining_years = [bool]$passed',
+            "--prior-year 2020 --next-year 2021"
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("2020 Gate B safety token missing: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -in @(
+        'prepare_remaining_mfa_approval_reviews.ps1',
+        'start_remaining_mfa_after_2020_gate.ps1'
+    )) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        if (-not $text.Contains('preflight_2020_gate_b.ps1')) {
+            $failures.Add("remaining-years entrypoint bypasses Gate B: $path")
+        }
+        if ($text.Contains("'2020'")) {
+            $failures.Add("remaining-years entrypoint includes 2020: $path")
         }
     }
     if (

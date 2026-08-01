@@ -111,7 +111,7 @@
 | audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사. 세션 padding 제거 CSV dur↔WAV header 잔차 0.025초/98% 대응 gate, 전체 행의 극단적 전사량↔duration 물리 불일치 analysis gate, 예상 usable lab의 형태소 원천 존재, strict exit·발화 inventory 포함 | 신규 계산은 analysis profile, 동일 계약 temp 재개는 execution profile. 2021 형태소 원천 1,373,521건 감사: 누락 1,109건/61세션. duration·전체 전사량 전수는 G2P 뒤 대기 |
 | classify_mfa_input_issues.py | 형태소 원천 누락 inventory를 과거 PCM 근거와 동결 search CSV의 duration·한글 음절 수에 1:1 조인. PCM 결함과 물리적으로 불가능한 전사–segment 대응을 발화별 근거 CSV/요약 JSON으로 분리 | 2021 1,109/1,109 분류: PCM 짧음 1,091·PCM 없음 1·PCM 정상이나 47.0–119.3음절/s인 segment 불일치 17, 미분류 0 |
 | inventory_mfa_storage.py | 독립 QC·다음 연도 gate 통과 뒤 MFA temp의 보존/정리 후보를 exact file manifest로 산정하는 삭제 없는 dry-run. DB transaction·미분류·symlink·계약 불일치 fail-closed, DB SHA256 선택 지원 | 2021 실자료 blocker 0: 총 43.883GiB 중 31.365GiB 후보·12.519GiB 보존, 삭제 0. Kaldi `alignment/tree` 보존·Windows UTF-8 출력 회귀시험 포함 |
-| build_mfa_alignment_contract.py | lab 입력계약+acoustic/dictionary/G2P SHA256+MFA/Pynini/Python 판본으로 경로 독립 `alignment_contract_id` 생성 | 내용/경로/계약 변화 합성 회귀시험 통과; 2022 runner 배선 대기 |
+| build_mfa_alignment_contract.py | lab 입력계약+acoustic/dictionary/G2P SHA256+MFA/Pynini/Python 판본으로 경로 독립 `alignment_contract_id` 생성 | 전 연도 direct runner 기본 경로에 배선, 내용/경로/계약 변화 회귀시험 통과 |
 | audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, tier·0–xmax·gap/overlap·label·WAV duration을 hard gate로 검사. 분류 CSV SHA를 고정해 source unusable만 analysis 분모에서 제외하고 raw 통계는 보존 | 2020 866,196/866,196·99.5827%, 2021 1,371,868/1,371,868·99.9604%, invalid/hard failure 0 |
 | verify_mfa_db_4tier_sample.py | 정렬 성공 발화에서 서로 다른 세션의 결정적 표본을 골라 read-only DB에서 별도 scratch 4-tier를 다시 만들고 final과 tier·라벨·시간·SHA256 대조. stale scratch 차단 | 2021 정렬 성공 4,139세션 중 24세션, tier/byte exact 24/24; 합성 2시험 통과 |
 | preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 `direct_db_4tier` 연도의 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV뿐 아니라 DB 재수출 표본과 연구자 인프라 승인 보고서를 같은 DB·input/alignment contract로 결합 검증. built-in 연도는 별도 QC 분기 | 계약 불일치·DB/direct/표본/연구자 보고서 누락·다른 DB·미승인·손상 숫자·다른 ID 분류 fail-closed 회귀시험 |
@@ -189,12 +189,18 @@
 | prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. WAV 이동·자동 승인 없음 | 2020 실행 전 사용 대기 |
 | audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사 | 합성 full-year fixture 통과 |
 | verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
-| preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 합성 exact gate 통과 |
+| preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·생산연도 연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 생산연도 review schema와 구 파일럿 schema 합성 exact gate 통과; `preflight_2020_gate_b.ps1`에 배선 |
 | run_mfa_year_queue_safe.ps1 | 2020–2025를 연도별 독립 staging으로 순회. 승인 계약 없는 연도는 pending 검토표만 만들고, 실패 temp·DB를 보존하며, 성공 연도는 독립 6-tier 감사·DB 표본 재수출까지 수행. full clean retry·연구자 승인·정본 승격은 자동화하지 않음 | PowerShell 정적 안전검사 통과 |
 | show_mfa_year_queue_status.ps1 | 연도 큐 JSON·lock·D 여유와 연도별 phase/status를 보여주는 읽기 전용 상태판 | 상태 변경 명령 없음 |
 | preflight_mfa_year_queue.ps1 | 공통사전·adoption·D 라벨/용량·live lock·기존 MFA preflight·연도별 lab/승인 계약·정적 안전검사·선택적 전체 Python 테스트·Git 추적 변경을 결합해 전수 큐 시작 전 GO/NO-GO JSON 생성 | MFA·승인·정본 승격 수행 안 함 |
-| prepare_full_mfa_approval_reviews.ps1 | 2020–2025의 lab 입력을 연도별 전수 검증하고 제외 후보 CSV/manifest만 준비하는 사용자 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 전수 시작 전 첫 실행 명령 |
-| start_full_mfa_after_review.ps1 | 연구자가 `approved`로 확인한 6개년 검토 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | full clean retry·검토표 자동승인·정본 자동승격 없음 |
+| prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |
+| start_full_mfa_after_review.ps1 | 지정 연도의 승인 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | 내부 공통 진입점; 직접 기본값 사용 금지, full clean/자동승인/정본승격 없음 |
+| verify_production_source_contract.ps1 | morph_search와 MFA가 같은 동결 `_build_meta.json` SHA·run ID·연도 입력을 사용했음을 `SOURCE_CONTRACT.json`으로 생성/검증 | 원자료 읽기 전용, 2020 검색·MFA·Gate B wrapper에 강제 |
+| resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | **현재 첫 계산 사용자 진입점** |
+| prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |
+| mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC의 5세션 이상 결정 표본에서 WAV/LAB/6-tier 연결·가용성만 검토하고 수정 불가 identity에 묶인 승인 JSON 생성 | 실제 실현 판정 요청/수행 금지, 자동 승인 없음 |
+| preflight_2020_gate_b.ps1 | 2020 source contract·기계 audit·marker·retained DB·DB 표본·생산 연구자 승인을 결합해 2021 진입 허가 | `allow_remaining_years` fail-closed |
+| prepare_remaining_mfa_approval_reviews.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤에만 2021–2025 제외표 준비 또는 남은 연도 큐 시작 | 2020 재포함 금지 |
 | research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
 | build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |
 | benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |

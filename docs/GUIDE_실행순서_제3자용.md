@@ -1,5 +1,7 @@
 # 실행 순서 가이드 (제3자용) — 검색 마스터 감사 + MFA 분절 인프라
 
+> 상태: **superseded**. 현재 실행은 `RUNBOOK_production_2020_2025.md`만 따른다.
+
 작성 2026-07-23, 2026-07-24 상태 정정. **현재 감사 완료 전에는 이 문서의
 대량 명령을 바로 실행하지 않는다.**
 상세 배경·사고 이력은 `docs/decisions/RUNBOOK_MFA_eojeol_realign.md`.

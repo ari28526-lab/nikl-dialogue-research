@@ -458,3 +458,32 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 새 외부 리뷰 프롬프트:
 `docs/reviews/PROMPT_external_review_workflow_reset_20260801.md`
+
+## 2026-08-01 — workflow reset 반영과 2020 생산 진입점 고정
+
+- Claude Code 외부 리뷰 원문·결정 추적표·검수 가치표·archive 후보표를 보존하고
+  저장소 코드 및 D: 실물과 다시 대조했다.
+- 외부 리뷰의 방향은 수용했지만, `코드 수정 없이 GO`, Gate B 배선 완료,
+  5주 경과, Python 287개, reference 4종 HDD 유일본 주장은 실제 상태와 달라
+  최종 판정을 `GO AFTER SMALL WORKFLOW FIXES`로 수정했다.
+- 구 4-tier 60행 잔여 검토, 12발화 검토, 5-tier 수용 검토, difference
+  inventory 반복을 종료했다. mini pilot 확인은 2020 생산 표본 검토에 통합했다.
+- 누적형 `PROJECT_CURRENT_STATE.md`를 archive하고 89줄 교체형 정본으로 바꿨다.
+  README/CLAUDE 진입점, production RUNBOOK, decision index, archive manifest를
+  새로 만들고 구 TODO/WORKFLOW/HANDOFF에는 역사·대체 상태를 표시했다.
+- 슬라이드가 고정한 6-tier, pre-MFA 7표, post-MFA 4표, Jamo r2, phone 기준,
+  선택적 KOINA/stitch/wav2vec2 설계는 바꾸지 않았다.
+- 2020-only 검색·승인표·정렬 wrapper와 2020 Gate B 뒤 2021–2025 wrapper를
+  추가해 기본 6개년 오실행을 막았다.
+- `SOURCE_CONTRACT.json`을 생성해 동결 `_build_meta.json` SHA
+  `1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79`를
+  2020 morph_search와 MFA 사이의 공통 입력 근거로 고정했다. 원자료 수정은 없다.
+- 생산연도 표본 검토 schema를 추가했다. 최소 5세션의 WAV/LAB/6-tier/CSV
+  연결과 연구 가용성만 확인하며 실제 음운 실현은 판정하지 않는다.
+- 새 생산연도 review schema를 다음 연도 QC gate에 배선했다. Gate B는 source,
+  input, alignment, DB, 6-tier audit, 재수출 표본, 연구자 승인을 모두 요구한다.
+- 회귀시험: Python 293/293, PowerShell 안전검사 31개 파일, source contract
+  실물 검증 `passed`.
+
+다음 계산은 커밋·푸시 뒤 `scripts/resume_2020_morph_search.ps1` 하나로 2020
+shard 2–23을 재개하는 것이다.

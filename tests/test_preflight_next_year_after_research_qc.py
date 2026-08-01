@@ -112,17 +112,17 @@ class PreflightNextYearAfterResearchQcTests(unittest.TestCase):
             self.write(
                 review,
                 {
-                    "schema_version": "mfa_r2_infrastructure_researcher_review.v1",
+                    "schema_version": "mfa_production_year_researcher_review.v1",
                     "status": "approved",
-                    "allow_bulk_mfa": True,
+                    "allow_next_year_mfa": True,
                     "realization_judgment_performed": False,
-                    "counts": {"speakers": 5},
-                    "year_contracts": {
-                        "2020": {
-                            "alignment_contract_id": "ALIGN",
-                            "lab_input_contract_id": "INPUT",
-                            "database": str(db),
-                        }
+                    "automatic_approval_performed": False,
+                    "counts": {"sessions": 5},
+                    "year_contract": {
+                        "year": "2020",
+                        "alignment_contract_id": "ALIGN",
+                        "lab_input_contract_id": "INPUT",
+                        "database": str(db),
                     },
                 },
             )

@@ -106,3 +106,19 @@ GitHub·claude.ai 프로젝트 지식은 구버전 — **커밋·푸시 후 최�
 3. `python scripts\python\preflight_search_master.py` 재실행 → reference [OK] 확인.
 4. 이 문서 표(거점 1) ✅로 갱신. **HDD 원본은 삭제하지 말 것**(역백업 유지, 유일본 보호).
 - 안전: 회수 후에도 D: 라벨은 DATA_SSD 유지(러너·파이프라인이 HDD 오인 방지에 씀).
+
+## 2026-08-01 생산 source contract
+
+2020 `morph_search.v3`와 신규 r2 MFA가 같은 동결 search master를 사용한다는
+근거를 다음 실물로 고정했다. `D:\00_RAW`와 동결 search master는 수정하지 않았다.
+
+```text
+D:\10_LAYERS\09_morph_search_v3_staging\morph_search_v3_20260801\2020\SOURCE_CONTRACT.json
+```
+
+- source `_build_meta.json` SHA256:
+  `1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79`
+- contract schema: `production_frozen_source_contract.v1`
+- 검증 보고서:
+  `outputs/reports/SOURCE_CONTRACT_morph_search_v3_20260801_2020.json`
+- 상태: `passed`

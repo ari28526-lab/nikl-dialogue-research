@@ -1,0 +1,25 @@
+﻿<# Start 2021-2025 only after the exact 2020 Gate B passes. #>
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ApprovedBy,
+    [ValidatePattern('^[A-Za-z0-9._-]+$')]
+    [string]$QueueId = 'mfa_r2_prod_2021_2025_20260801',
+    [switch]$PreflightOnly
+)
+$ErrorActionPreference = 'Stop'
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
+    Join-Path $PSScriptRoot 'preflight_2020_gate_b.ps1'
+)
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$start = Join-Path $PSScriptRoot 'start_full_mfa_after_review.ps1'
+$args = @(
+    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $start,
+    '-ApprovedBy', $ApprovedBy,
+    '-QueueId', $QueueId,
+    '-Years', '2021', '2022', '2023', '2024', '2025'
+)
+if ($PreflightOnly) { $args += '-PreflightOnly' }
+& powershell.exe @args
+exit $LASTEXITCODE
