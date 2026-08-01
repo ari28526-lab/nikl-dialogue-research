@@ -46,8 +46,13 @@
   - 클라이언트: `bareunpy==2.0.1`, Python 3.13.14 (venv: bareun-smoke)
   - 사용 기능: 형태소 분석 `Tagger.tags()`(배치)/`tag()`(폴백),
     스크립트 `scripts/python/bareun_dialogue_full.py`.
-  - ⚠️ **서버 엔진 버전**: 스크립트가 서버 기본 모델을 사용(버전 미고정).
-    논문 보고용으로 바른 엔진 버전 문자열을 별도 확인·기록 요망(TODO).
+  - ⚠️ **서버 엔진 버전**: 스크립트가 2026-07-09~10 당시 클라우드 서버의
+    기본 모델을 사용했으며, API 응답과 당시 로그에는 서버 build ID가
+    노출·보존되지 않았다. 따라서 사후에 정확한 엔진 build를 추정해 쓰지 않고,
+    논문에는 분석 기간·endpoint·클라이언트(`bareunpy==2.0.1`)와 이 한계를
+    명시한다. 현재 동결 A1을 만드는 데 Bareun을 다시 호출하지 않으며, 정확한
+    서버 build 확인이 출판 요건이면 바이칼AI 확인 또는 전수 재분석이 별도
+    연구자 결정이다(결정 기록: `DECISION_bareun_engine_provenance_20260801.md`).
   - 로컬 Docker 서버 대신 클라우드 API를 택한 이유: 작업 PC(RAM 8GB, Intel N200)
     에서 로컬 AI 서버 상시 구동이 부담(2026-07-06 판단 기록 참조:
     `docs/environment/bareun-morph-analyzer-setup-plan.md`)

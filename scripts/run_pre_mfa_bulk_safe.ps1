@@ -20,7 +20,9 @@ param(
     [switch]$SkipSearchMasterBuild,
     [string]$CommonPronManifest = '',
     [string]$CommonPronAdoptionContract = '',
+    [string]$ApprovedExclusionsContract = '',
     [string]$CommonPronEquivalenceReport = '',
+    [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
     [switch]$AllowLegacyInlineG2p,
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
@@ -56,6 +58,16 @@ if (
     Write-Error (
         "r2 공통사전 전수 실행에는 연구 6-tier+동반표 direct export가 " +
         "필수임: -UseDirectDbExport를 지정할 것"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    [string]::IsNullOrWhiteSpace($ApprovedExclusionsContract)
+) {
+    Write-Error (
+        "r2 전수 실행에는 연구자 승인 제외 계약이 필수임: " +
+        "-ApprovedExclusionsContract"
     )
     exit 1
 }
@@ -203,7 +215,9 @@ if (Test-Path -LiteralPath $lockPath) {
     direct_db_export = [bool]$UseDirectDbExport
     common_pron_manifest = $CommonPronManifest
     common_pron_adoption_contract = $CommonPronAdoptionContract
+    approved_exclusions_contract = $ApprovedExclusionsContract
     legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
+    force_verify_lab_input = [bool]$ForceVerifyLabInput
     allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
     started_at = (Get-Date).ToString('o')
     pre_mfa_root = $preMfaRoot
@@ -277,6 +291,7 @@ try {
         # 위해 남기되 wrapper에서는 항상 하위 러너에 전달한다.
         $realignArgs += '-PreferD'
         if ($UseDirectDbExport) { $realignArgs += '-UseDirectDbExport' }
+        if ($ForceVerifyLabInput) { $realignArgs += '-ForceVerifyLabInput' }
         if ($CleanupDirectDbAfterMerge) {
             $realignArgs += '-CleanupDirectDbAfterMerge'
         }
@@ -284,7 +299,9 @@ try {
             $realignArgs += @(
                 '-CommonPronManifest', $CommonPronManifest,
                 '-CommonPronAdoptionContract',
-                $CommonPronAdoptionContract
+                $CommonPronAdoptionContract,
+                '-ApprovedExclusionsContract',
+                $ApprovedExclusionsContract
             )
             if ($AllowBaselineCommonPronRerun) {
                 $realignArgs += '-AllowBaselineCommonPronRerun'
@@ -339,7 +356,9 @@ try {
         cleanup_direct_db_after_merge = [bool]$CleanupDirectDbAfterMerge
         common_pron_manifest = $CommonPronManifest
         common_pron_adoption_contract = $CommonPronAdoptionContract
+        approved_exclusions_contract = $ApprovedExclusionsContract
         legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
+        force_verify_lab_input = [bool]$ForceVerifyLabInput
         allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
         pause_after_year_requested = $PauseAfterYear
         paused_after_year = $pausedAfterYear

@@ -24,7 +24,9 @@ param(
     [switch]$SkipPreflight,
     [string]$CommonPronManifest = "",
     [string]$CommonPronAdoptionContract = "",
+    [string]$ApprovedExclusionsContract = "",
     [string]$CommonPronEquivalenceReport = "",
+    [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
     [switch]$AllowLegacyInlineG2p,
     [ValidateRange(0, 2147483647)]
@@ -99,6 +101,17 @@ if (
     Write-Error (
         "r2 공통사전 전수 실행은 승인 후보 6-tier와 동반표를 함께 만드는 " +
         "-UseDirectDbExport가 필수임. 구형 4-tier fallback으로 실행하지 않음"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
+    [string]::IsNullOrWhiteSpace($ApprovedExclusionsContract)
+) {
+    Write-Error (
+        "r2 전수 실행에는 input_contract_id에 묶인 연구자 승인 제외 " +
+        "계약이 필수임(0건도 명시적 승인 계약 필요): " +
+        "-ApprovedExclusionsContract"
     )
     exit 1
 }
@@ -1466,9 +1479,14 @@ foreach ($y in $years) {
     $labHeartbeatFile = Join-Path $logDir (
         "lab_{0}_{1}_heartbeat.jsonl" -f $y, $runId
     )
-    & $py (Join-Path $pydir "realign_eojeol_build_corpus.py") `
-        --year $y --search-master-root $searchMasterRoot `
-        --progress-jsonl $labHeartbeatFile
+    $labArguments = @(
+        (Join-Path $pydir "realign_eojeol_build_corpus.py"),
+        '--year', $y,
+        '--search-master-root', $searchMasterRoot,
+        '--progress-jsonl', $labHeartbeatFile
+    )
+    if ($ForceVerifyLabInput) { $labArguments += '--force-verify' }
+    & $py @labArguments
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
     $labReportPath = Join-Path $logDir "lab_build_${y}_latest.json"
     try {
@@ -1484,6 +1502,18 @@ foreach ($y in $years) {
         exit 1
     }
     Say "$y 입력 계약: $($inputContractId.Substring(0,12)) / $searchMasterRoot"
+    if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
+        & $py (Join-Path $pydir "mfa_exclusion_contract.py") validate `
+            --contract $ApprovedExclusionsContract --year $y `
+            --input-contract-id $inputContractId
+        if ($LASTEXITCODE -ne 0) {
+            Say (
+                "!! $y 연구자 승인 제외 계약 불일치 — MFA 시작 금지: " +
+                $ApprovedExclusionsContract
+            )
+            exit 1
+        }
+    }
     # lab/CSV 계약과 별도로 모델 파일 내용·MFA/Pynini 판본을 고정한다.
     # 같은 이름의 korean_mfa 파일이 바뀌면 alignment_contract_id가 달라져
     # 기존 temp·marker를 재사용하지 않는다.
@@ -1598,12 +1628,23 @@ foreach ($y in $years) {
         "outputs\reports\PREFLIGHT_mfa_input_integrity_{0}_{1}.json" -f
         $y, $runId
     )
-    & $py (Join-Path $pydir "audit_mfa_year_readiness.py") `
-        --years $y --search-master-root $searchMasterRoot `
-        --wav-root $wavRoot `
-        --morph-textgrid-root $morphTextGridRoot `
-        --source-pcm-check $sourcePcmCheck `
-        --gate-profile $integrityGateProfile --output $inputIntegrityReport
+    $integrityArguments = @(
+        (Join-Path $pydir "audit_mfa_year_readiness.py"),
+        '--years', $y,
+        '--search-master-root', $searchMasterRoot,
+        '--wav-root', $wavRoot,
+        '--morph-textgrid-root', $morphTextGridRoot,
+        '--source-pcm-check', $sourcePcmCheck,
+        '--gate-profile', $integrityGateProfile,
+        '--output', $inputIntegrityReport
+    )
+    if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
+        $integrityArguments += @(
+            '--approved-exclusions-contract', $ApprovedExclusionsContract,
+            '--input-contract-id', $inputContractId
+        )
+    }
+    & $py @integrityArguments
     if ($LASTEXITCODE -ne 0) {
         Say (
             "!! $y MFA 입력 무결성 gate 실패 — 정렬 시작 금지: " +
@@ -1750,6 +1791,27 @@ foreach ($y in $years) {
         Say "$y [1.5/3] 깨진 wav 스캔·격리 (0바이트 등)..."
         & $py (Join-Path $pydir "quarantine_bad_wavs.py") --year $y --apply
         if ($LASTEXITCODE -ne 0) { Say "!! $y wav 스캔 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
+        $quarantineLog = Join-Path $stateRoot "quarantine\$y\quarantine_log.csv"
+        if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
+            $exclusionValidateArgs = @(
+                'validate', '--contract', $ApprovedExclusionsContract,
+                '--year', $y, '--input-contract-id', $inputContractId
+            )
+            if (Test-Path -LiteralPath $quarantineLog) {
+                $exclusionValidateArgs += @(
+                    '--quarantine-log', $quarantineLog
+                )
+            }
+            & $py (Join-Path $pydir "mfa_exclusion_contract.py") `
+                @exclusionValidateArgs
+            if ($LASTEXITCODE -ne 0) {
+                Say (
+                    "!! $y 새 quarantine 항목이 연구자 승인 계약에 없음 — " +
+                    "MFA 시작 전 중단. 검토표를 갱신할 것."
+                )
+                exit 1
+            }
+        }
 
         # ★ stderr를 파일로 캡처 (2026-07-18): MFA는 진행바·traceback을 전부 stderr로 쓰고,
         #   에러 traceback은 자기 로그 파일이 닫힌 '뒤' 출력되는 구조라 콘솔이 닫히면 유실됨
@@ -2186,25 +2248,45 @@ foreach ($y in $years) {
             $dbCheckpointReport = Join-Path $logDir (
                 "mfa_db_checkpoint_{0}_{1}.json" -f $y, $runId
             )
-            if (-not $directDbReady) {
-                Say "$y [2.5/3] MFA DB 계산 완료 체크포인트 검증..."
-                & $py (Join-Path $pydir "inspect_mfa_db_checkpoint.py") `
-                    --db $dbPath --year $y --output $dbCheckpointReport
-                if ($LASTEXITCODE -ne 0) {
-                    Say (
-                        "!! $y MFA DB 체크포인트 실패 — DB 보존, " +
-                        "무조건 재정렬하지 말고 보고서 확인: " +
-                        $dbCheckpointReport
-                    )
-                    exit 1
+            # marker가 있더라도 DB가 외부 요인으로 바뀌거나 잘린 경우를
+            # 조용히 재사용하지 않는다. 출력 재시작마다 read-only
+            # quick_check/count를 다시 계산하고 marker 수치와 대조한다.
+            Say "$y [2.5/3] MFA DB 계산 체크포인트 재검증..."
+            & $py (Join-Path $pydir "inspect_mfa_db_checkpoint.py") `
+                --db $dbPath --year $y --output $dbCheckpointReport
+            if ($LASTEXITCODE -ne 0) {
+                Say (
+                    "!! $y MFA DB 체크포인트 실패 — DB 보존, " +
+                    "무조건 재정렬하지 말고 보고서 확인: " +
+                    $dbCheckpointReport
+                )
+                exit 1
+            }
+            try {
+                $dbCheckpoint = Get-Content -LiteralPath `
+                    $dbCheckpointReport -Raw -Encoding UTF8 |
+                    ConvertFrom-Json
+                if ($dbCheckpoint.status -ne 'success') {
+                    throw "status=$($dbCheckpoint.status)"
                 }
-                try {
-                    $dbCheckpoint = Get-Content -LiteralPath `
-                        $dbCheckpointReport -Raw -Encoding UTF8 |
+                if ($directDbReady) {
+                    $priorReady = Get-Content -LiteralPath `
+                        $directDbReadyMark -Raw -Encoding UTF8 |
                         ConvertFrom-Json
-                    if ($dbCheckpoint.status -ne 'success') {
-                        throw "status=$($dbCheckpoint.status)"
+                    foreach ($countName in @(
+                        'source_utterances', 'utterances_with_words',
+                        'utterances_with_phones', 'spn_intervals'
+                    )) {
+                        $priorValue = [int64]$priorReady.details.$countName
+                        $currentValue = [int64]$dbCheckpoint.counts.$countName
+                        if ($priorValue -ne $currentValue) {
+                            throw (
+                                "direct_db_ready count 불일치 " +
+                                "$countName=$priorValue/$currentValue"
+                            )
+                        }
                     }
+                } else {
                     Write-DoneMarker $directDbReadyMark $y `
                         'direct_db_ready' @{
                             alignment_db = $dbPath
@@ -2225,13 +2307,13 @@ foreach ($y in $years) {
                         $inputContractId $alignmentContract $tmpYear `
                         "alignment_computation_complete_export_pending"
                     $directDbReady = $true
-                } catch {
-                    Say (
-                        "!! $y MFA DB 체크포인트 보고서 손상 — " +
-                        "DB 보존: $($_.Exception.Message)"
-                    )
-                    exit 1
                 }
+            } catch {
+                Say (
+                    "!! $y MFA DB 체크포인트 보고서/marker 불일치 — " +
+                    "DB 보존: $($_.Exception.Message)"
+                )
+                exit 1
             }
             # Built-in raw TextGrid 수백만 개를 쓴 뒤 다시 읽는 이중 I/O를 피한다.
             # align()은 word/phone interval을 이미 SQLite에 수집했다. 동일 writer로
@@ -2247,13 +2329,22 @@ foreach ($y in $years) {
                 "direct_db_export_{0}_{1}.json" -f $y, $runId
             )
             Say "$y [3/3-direct] MFA DB -> partial 연구 6-tier+동반표 staging..."
+            $directExportArgs = @(
+                '--db', $dbPath, '--year', $y,
+                '--search-master-root', $searchMasterRoot,
+                '--output-root', $directPartialRoot,
+                '--acoustic-model', $acousticModelPath,
+                '--alignment-contract', $alignmentContractPath,
+                '--approved-exclusions-contract',
+                $ApprovedExclusionsContract,
+                '--lab-root', $wavRoot,
+                '--workers', '4', '--report', $directReport
+            )
+            if (Test-Path -LiteralPath $quarantineLog) {
+                $directExportArgs += @('--quarantine-log', $quarantineLog)
+            }
             & $py (Join-Path $pydir "export_mfa_db_research_6tier.py") `
-                --db $dbPath --year $y `
-                --search-master-root $searchMasterRoot `
-                --output-root $directPartialRoot `
-                --acoustic-model $acousticModelPath `
-                --alignment-contract $alignmentContractPath `
-                --workers 4 --report $directReport
+                @directExportArgs
             if ($LASTEXITCODE -ne 0) {
                 Say "!! $y direct-DB 연구 6-tier 실패 — DB와 partial 보존: $directReport"
                 exit 1
@@ -2284,6 +2375,13 @@ foreach ($y in $years) {
                 ) {
                     throw "gzip 동반표 manifest 미통과"
                 }
+                if (
+                    [string]$directData.exact_id_reconciliation.status -ne
+                    'passed' -or
+                    -not [bool]$directData.exact_id_reconciliation.full_year_gate
+                ) {
+                    throw "lab/DB/TextGrid/승인 제외 정확 ID 대사 미통과"
+                }
                 if (-not (Test-Path -LiteralPath $directPartialYear)) {
                     throw "partial 연도 디렉터리 없음: $directPartialYear"
                 }
@@ -2300,11 +2398,12 @@ foreach ($y in $years) {
                     (Join-Path $wavRoot $y), "*.lab",
                     [IO.SearchOption]::AllDirectories
                 ) | Measure-Object).Count
-                $pct = if ($labN -gt 0) {
-                    [math]::Round(100 * $tgN / $labN, 2)
-                } else { 0 }
-                if ($labN -le 0 -or $tgN -le 0 -or $pct -lt 99) {
-                    throw "coverage gate 실패: TextGrid=$tgN lab=$labN pct=$pct"
+                $pct = [double]$directData.coverage_pct
+                if ($labN -le 0 -or $tgN -le 0 -or $pct -ne 100) {
+                    throw (
+                        "exact coverage gate 실패: TextGrid=$tgN " +
+                        "active_lab=$labN eligible_pct=$pct"
+                    )
                 }
                 Move-Item -LiteralPath $directPartialYear `
                     -Destination $finalStageYear
@@ -2337,7 +2436,7 @@ foreach ($y in $years) {
                     phones_mfa = 'mfa_db.phone_interval'
                     phoneme_r_auto = 'phones_mfa_only'
                     utterance = 'frozen_search_master.form'
-                    utterance_orth_r = 'frozen_search_master.form_roman'
+                    utterance_orth_r = 'deterministic orth_roman_v2(form); mixed literals preserved'
                     morph_analysis_utt = 'frozen_search_master.tagged_whole_span'
                 }
             } $inputContractId $alignmentContract
@@ -2369,7 +2468,7 @@ foreach ($y in $years) {
                     phones_mfa = 'mfa_db.phone_interval'
                     phoneme_r_auto = 'phones_mfa_only'
                     utterance = 'frozen_search_master.form'
-                    utterance_orth_r = 'frozen_search_master.form_roman'
+                    utterance_orth_r = 'deterministic orth_roman_v2(form); mixed literals preserved'
                     morph_analysis_utt = 'frozen_search_master.tagged_whole_span'
                 }
             } $inputContractId $alignmentContract

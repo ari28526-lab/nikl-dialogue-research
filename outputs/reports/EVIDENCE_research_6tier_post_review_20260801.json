@@ -1,0 +1,88 @@
+{
+  "schema_version": "mfa_research_6tier_post_review_evidence.v1",
+  "status": "success",
+  "collected_at": "2026-08-01T13:17:23+09:00",
+  "mfa_executed": false,
+  "counts": {
+    "utterances": 60,
+    "word_intervals": 479,
+    "phone_intervals": 1801,
+    "spn_intervals": 0
+  },
+  "candidate_output": {
+    "files": 96,
+    "bytes": 673456,
+    "active_partial_files": 0
+  },
+  "legacy_textgrid_comparison": {
+    "compared": 60,
+    "missing_or_extra_count": 0,
+    "intentional_orth_roman_v2_label_changes": 2,
+    "non_orth_tier_mismatch_count": 0,
+    "changed_orth_files": [
+      "2024/SDRW2400002903/SDRW2400002903.1.1.242.TextGrid",
+      "2025/SARW2500000414/SARW2500000414.1.1.2.TextGrid"
+    ],
+    "non_orth_mismatches": []
+  },
+  "repeat_textgrid_comparison": {
+    "compared": 60,
+    "sha256_mismatch_count": 0,
+    "mismatches": []
+  },
+  "deterministic_gzip_comparison": {
+    "compared": 24,
+    "sha256_mismatch_count": 0,
+    "mismatches": []
+  },
+  "parquet_roundtrip": {
+    "year_reports": 6,
+    "tables": 24,
+    "failed_years": []
+  },
+  "synthetic_10k_benchmark": {
+    "schema_version": "mfa_research_6tier_export_benchmark.v1",
+    "status": "success",
+    "generated_at": "2026-08-01T13:02:46+09:00",
+    "synthetic_data_only": true,
+    "mfa_executed": false,
+    "parameters": {
+      "year": "2025",
+      "sessions": 100,
+      "per_session": 100
+    },
+    "fixture": {
+      "utterances": 10000,
+      "word_intervals": 30000,
+      "phone_intervals": 30000,
+      "build_seconds": 0.484
+    },
+    "first_export": {
+      "elapsed_seconds": 87.738,
+      "python_peak_mib": 9.214,
+      "created": 10000,
+      "validated_existing": 0,
+      "status": "success"
+    },
+    "resume_export": {
+      "elapsed_seconds": 38.404,
+      "python_peak_mib": 8.443,
+      "created": 0,
+      "validated_existing": 10000,
+      "status": "success"
+    },
+    "output": {
+      "files": 10005,
+      "bytes": 28460257,
+      "active_partial_files": 0
+    },
+    "memory_note": "tracemalloc Python allocations only; OS/SQLite buffers excluded"
+  },
+  "evidence_roots": {
+    "legacy": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\research_6tier_candidate_60_20260801",
+    "candidate": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\research_6tier_candidate_60_final2_20260801",
+    "repeat": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\research_6tier_candidate_60_final2_repeat_20260801",
+    "parquet": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\research_6tier_candidate_60_final2_parquet_20260801",
+    "benchmark": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\benchmark_research_exporter_10k_20260801\\BENCHMARK.json"
+  }
+}

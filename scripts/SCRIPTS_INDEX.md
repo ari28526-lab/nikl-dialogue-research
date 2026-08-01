@@ -173,8 +173,17 @@
 | research_textgrid_v2.py | 기존 4-tier를 읽기 전용으로 사용해 `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/morph_analysis_utt` 6-tier를 생성·검증. phone-derived broad Roman만 허용하고 세 발화 수준 tier의 경계를 동기화. 연결 검토본에는 `source_utt_id/speaker`와 원시간 manifest만 추가 | 합성 2발화 및 실자료 최소 파일럿 통과 |
 | build_textgrid_v2_mini_pilot.py | 익숙한 2020 단일 발화 1건과 같은 세션·화자의 2022 비인접 2발화 `review` 연결본을 새 평면 root에 생성. 기존 4/5-tier 불변, KOINA 미실행, seam 횡단 운율 해석 금지를 manifest에 기록 | 단일 6-tier·연결 8-tier 생성 성공 |
 | verify_textgrid_v2_mini_pilot.py | 입력·출력 SHA, WAV–TextGrid duration, 전 tier 0–xmax 연속성, phone–phoneme 및 세 발화 tier 경계, 연결 `utt_id` 순서와 원시간 역매핑을 독립 재검증 | 실자료 status success |
-| export_mfa_db_research_6tier.py | MFA SQLite를 읽기 전용으로 읽어 승인 6-tier와 연도별 `utterance/word/phone` gzip 동반표를 direct partial에 생성. 원 형태소 어절, reference 어절, MFA word 좌표를 분리하고 spn·phone inventory·조인·count·label·원자적 승격을 gate함 | 합성 4시험·실 DB 60/60·구 word/phone 동등성 60/60 통과; 외부 리뷰 대기 |
+| export_mfa_db_research_6tier.py | MFA SQLite를 읽기 전용으로 읽어 승인 6-tier와 연도별 `utterance/word/phone/excluded` gzip v2 동반표를 direct partial에 생성. 원 형태소 어절, reference 어절, MFA word 좌표를 분리하고 승인 제외 정확 대사·spn·phone inventory·조인·count·label·원자 승격을 gate함 | 외부 리뷰 HIGH 반영; 실 DB 60/60·결정적 gzip 24/24 통과 |
 | inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
+| mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
+| prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. WAV 이동·자동 승인 없음 | 2020 실행 전 사용 대기 |
+| audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사 | 합성 full-year fixture 통과 |
+| verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
+| preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 합성 exact gate 통과 |
+| research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
+| build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |
+| benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |
+| collect_research_6tier_regression_evidence.py | 로컬 60발화·재출력·Parquet·10k 벤치 결과를 작은 추적 JSON으로 집계 | `outputs/reports/EVIDENCE_research_6tier_post_review_20260801.json` success |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

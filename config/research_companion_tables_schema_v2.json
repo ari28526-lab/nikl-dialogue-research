@@ -1,0 +1,86 @@
+{
+  "schema_version": "mfa_research_companion_tables.v2",
+  "encoding": "utf-8-sig",
+  "compression": {"format": "gzip", "mtime": 0},
+  "csv": {
+    "delimiter": ",",
+    "lineterminator": "\\n",
+    "null": "",
+    "boolean_true": "true",
+    "boolean_false": "false"
+  },
+  "tables": {
+    "utterances": {
+      "filename": "utterance_alignment.csv.gz",
+      "primary_key": ["utt_id"],
+      "fields": [
+        ["utt_id", "string", false], ["year", "string", false],
+        ["session_id", "string", false], ["speaker_id", "string", true],
+        ["dialogue_id", "string", true], ["dialogue_speaker_ids", "string", true],
+        ["co_speaker_ids", "string", true], ["form", "string", false],
+        ["original_form", "string", true], ["canonical_tagged", "string", false],
+        ["form_roman", "string", false], ["form_roman_v2", "string", false],
+        ["tagged_roman_v2", "string", false],
+        ["pron_reference_form", "string", true], ["pron_reference_form_roman", "string", true],
+        ["pron_pred_hangul", "string", true], ["pron_pred_roman", "string", true],
+        ["pron_pred_ipa", "string", true], ["pron_reference_hangul", "string", true],
+        ["pron_reference_roman", "string", true], ["pron_reference_ipa", "string", true],
+        ["pron_reference_source", "string", true], ["pron_reference_status", "string", true],
+        ["source_start_seconds", "float64", true], ["source_end_seconds", "float64", true],
+        ["wav_duration_seconds", "float64", false], ["source_wav_path", "string", false],
+        ["source_lab_path", "string", false], ["textgrid_relative_path", "string", false],
+        ["n_word_intervals", "int64", false], ["n_phone_intervals", "int64", false],
+        ["n_source_eojeol", "int64", true], ["n_reference_eojeol", "int64", true],
+        ["n_lab_words_expected", "int64", false], ["n_mfa_words_aligned", "int64", false],
+        ["lab_word_count_match", "bool", false], ["word_label_sequence_match", "bool", false],
+        ["reference_differs_from_form", "bool", false], ["pron_mfa_ipa", "string", true],
+        ["pron_mfa_r_auto", "string", true], ["n_spn", "int64", false],
+        ["alignment_score", "float64", true], ["align_status", "string", false],
+        ["alignment_contract_id", "string", false], ["textgrid_schema_version", "string", false],
+        ["phoneme_schema_version", "string", false], ["roman_system_version", "string", false]
+      ]
+    },
+    "words": {
+      "filename": "word_intervals_mfa.csv.gz",
+      "primary_key": ["utt_id", "word_interval_idx"],
+      "fields": [
+        ["utt_id", "string", false], ["year", "string", false],
+        ["session_id", "string", false], ["word_interval_idx", "int64", false],
+        ["mfa_word_idx", "int64", true], ["reference_eojeol_idx", "int64", true],
+        ["reference_eojeol", "string", true], ["lab_word_expected", "string", true],
+        ["begin_seconds", "float64", false], ["end_seconds", "float64", false],
+        ["duration_seconds", "float64", false], ["word_mfa", "string", true],
+        ["is_silence", "bool", false], ["n_phones", "int64", false],
+        ["phone_link_status", "string", false], ["pron_mfa_ipa", "string", true],
+        ["pron_mfa_r_auto", "string", true], ["mapping_status", "string", false],
+        ["alignment_contract_id", "string", false]
+      ]
+    },
+    "phones": {
+      "filename": "phone_intervals_mfa.csv.gz",
+      "primary_key": ["utt_id", "phone_interval_idx"],
+      "fields": [
+        ["utt_id", "string", false], ["year", "string", false],
+        ["session_id", "string", false], ["phone_interval_idx", "int64", false],
+        ["phone_idx_in_word", "int64", false], ["word_interval_idx", "int64", true],
+        ["mfa_word_idx", "int64", true], ["reference_eojeol_idx", "int64", true],
+        ["begin_seconds", "float64", false], ["end_seconds", "float64", false],
+        ["duration_seconds", "float64", false], ["phone_mfa", "string", true],
+        ["phoneme_r_auto", "string", true], ["is_silence", "bool", false],
+        ["word_mfa", "string", true], ["alignment_contract_id", "string", false]
+      ]
+    },
+    "excluded": {
+      "filename": "excluded_utterances.csv.gz",
+      "primary_key": ["utt_id"],
+      "fields": [
+        ["year", "string", false], ["utt_id", "string", false],
+        ["input_contract_id", "string", false], ["alignment_contract_id", "string", false],
+        ["reason_code", "string", false], ["exclusion_scope", "string", false],
+        ["evidence_path", "string", true], ["decision", "string", false],
+        ["notes", "string", true], ["db_presence", "bool", false],
+        ["alignment_presence", "bool", false], ["textgrid_emitted", "bool", false]
+      ]
+    }
+  }
+}

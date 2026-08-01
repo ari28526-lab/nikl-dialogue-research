@@ -10,11 +10,19 @@ from morph_schema import (  # noqa: E402
     MorphSchemaError,
     build_utterance_tables,
     canonicalize_tagged,
+    orth_roman_v2,
     tagged_roman_v2,
 )
 
 
 class MorphSchemaTests(unittest.TestCase):
+    def test_orth_roman_v2_preserves_mixed_eojeol(self):
+        self.assertEqual(
+            orth_roman_v2("2사람이 A층"),
+            "⟨2⟩ _ S A _ R A m _ I | ⟨A⟩ _ CH EU ng",
+        )
+        self.assertEqual(orth_roman_v2("사람이?"), "S A _ R A m _ I")
+
     def test_basic_hierarchy_and_onset_zero(self):
         tagged = "혹시/MAG 요즘/NNG"
         self.assertEqual(

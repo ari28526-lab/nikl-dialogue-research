@@ -57,7 +57,10 @@ BUILD_PROVENANCE = {
             "tool": "바른(Bareun), 바이칼AI 클라우드 API",
             "client": "bareunpy 2.0.1 / Python 3.13",
             "run": "2026-07-09~10 (2020-2025 6개년 단일 실행, 동일 서버 모델)",
-            "engine_version": "미고정 — 논문용 버전 문자열 확인 요망(METHODS §2 TODO)",
+            "engine_version": (
+                "클라우드 서버 기본 엔진(2026-07-09~10); API 응답/당시 로그에 "
+                "서버 build ID가 노출·보존되지 않아 사후 정확 복원 불가"
+            ),
             "coverage": "17,156 파일, form 비어 있지 않은 분석대상 5,103,356 발화, 빈 분석 0",
             "validation": "형태소 F1 0.929 (2024/다층위 2025 gold 대조)",
         },

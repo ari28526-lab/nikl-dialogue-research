@@ -265,6 +265,33 @@ def tagged_roman_v2(
     return EOJEOL_SEPARATOR.join(eojeol_values)
 
 
+def orth_roman_v2(form: str) -> str:
+    """Romanize surface orthography without dropping mixed-script eojeols.
+
+    Hangul syllables use the frozen orthographic Roman mapping. Non-Hangul
+    runs remain escaped ``⟨literal⟩`` tokens instead of turning the entire
+    eojeol into ``∅``. No pronunciation rule or morphology is used.
+    """
+
+    eojeols = str(form or "").split()
+    if not eojeols:
+        raise MorphSchemaError("빈 form은 orth_roman_v2로 변환할 수 없음")
+    values: list[str] = []
+    for eojeol in eojeols:
+        units = [
+            unit for unit in iter_surface_units(eojeol)
+            if unit.unit_type != "literal"
+            or not all(char in pp.PUNCT for char in unit.surface)
+        ]
+        if not units:
+            # A punctuation-only eojeol must retain its position, but attached
+            # punctuation is omitted to stay compatible with legacy Hangul
+            # orthographic Roman labels.
+            units = list(iter_surface_units(eojeol))
+        values.append(UNIT_SEPARATOR.join(unit_roman(unit) for unit in units))
+    return EOJEOL_SEPARATOR.join(values)
+
+
 def _slot_components(slot: str, jamo: str) -> tuple[str, ...]:
     if not jamo:
         return ()

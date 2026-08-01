@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from export_mfa_db_research_6tier import export_database  # noqa: E402
+from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
+from pipeline_common import sha256_file  # noqa: E402
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
 
 
@@ -28,6 +30,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                     "status": "passed",
                     "year": "2021",
                     "alignment_contract_id": "ALIGN_TEST",
+                    "lab_input_contract_id": "INPUT_TEST",
                     "models": {},
                 }
             ),
@@ -139,6 +142,41 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             row.update(overrides or {})
             writer.writerow(row)
 
+    def make_lab_root(self, root: Path, utt_ids=("S1.1",)):
+        for utt_id in utt_ids:
+            session = utt_id.split(".", 1)[0]
+            path = root / "2021" / session / f"{utt_id}.lab"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("가", encoding="utf-8")
+
+    def make_exclusion_contract(self, root: Path, utt_id="U2"):
+        review = root / "approved_exclusions.csv"
+        with review.open("w", encoding="utf-8-sig", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
+            writer.writeheader()
+            writer.writerow(
+                {
+                    "year": "2021",
+                    "input_contract_id": "INPUT_TEST",
+                    "utt_id": utt_id,
+                    "reason_code": "mfa_alignment_missing",
+                    "exclusion_scope": "alignment_and_analysis",
+                    "evidence_path": "fixture",
+                    "decision": "approved",
+                    "notes": "fixture",
+                }
+            )
+        contract = root / "approved_exclusions.json"
+        build_contract(
+            review_csv=review,
+            output=contract,
+            year="2021",
+            input_contract_id="INPUT_TEST",
+            approved_by="researcher",
+            approved_at="2026-08-01T12:00:00+09:00",
+        )
+        return contract
+
     def make_two_word_db(self, path: Path):
         self.make_db(path)
         con = sqlite3.connect(path)
@@ -203,7 +241,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             ) as stream:
                 utterances = list(csv.DictReader(stream))
             self.assertEqual(len(utterances), 1)
-            self.assertEqual(utterances[0]["textgrid_relative_path"], "2021\\S1\\S1.1.TextGrid")
+            self.assertEqual(utterances[0]["textgrid_relative_path"], "2021/S1/S1.1.TextGrid")
             self.assertEqual(utterances[0]["pron_mfa_ipa"], "k")
             self.assertEqual(utterances[0]["pron_mfa_r_auto"], "G")
             with gzip.open(
@@ -221,6 +259,9 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             )
             self.assertEqual(manifest["status"], "success")
             self.assertEqual(manifest["counts"]["utterances"], 1)
+            self.assertTrue(
+                (table_root / "excluded_utterances.csv.gz").is_file()
+            )
 
     def test_source_and_alignment_reference_positions_are_not_conflated(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -264,7 +305,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.assertEqual(utterance["n_reference_eojeol"], "2")
             self.assertEqual(utterance["n_lab_words_expected"], "2")
             self.assertEqual(utterance["n_mfa_words_aligned"], "2")
-            self.assertEqual(utterance["reference_differs_from_form"], "True")
+            self.assertEqual(utterance["reference_differs_from_form"], "true")
             with gzip.open(
                 table_root / "word_intervals_mfa.csv.gz",
                 "rt",
@@ -308,6 +349,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.assertFalse((table_root / "utterance_alignment.csv.gz").exists())
             self.assertFalse((table_root / "word_intervals_mfa.csv.gz").exists())
             self.assertFalse((table_root / "phone_intervals_mfa.csv.gz").exists())
+            self.assertFalse((table_root / "excluded_utterances.csv.gz").exists())
             self.make_search(search)
             recovered = export_database(
                 db_path=db,
@@ -320,7 +362,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.assertEqual(recovered["status"], "success")
             self.assertEqual(
                 len(recovered["companion_tables"]["archived_stale_partials"]),
-                3,
+                4,
             )
             self.assertEqual(list(table_root.glob(".*.partial")), [])
 
@@ -345,6 +387,158 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             )
             self.assertEqual(report["status"], "failed")
             self.assertEqual(report["counts"]["spn_intervals"], 1)
+
+    def test_exact_id_reconciliation_requires_approved_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            labs = root / "labs"
+            self.make_db(db)
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search)
+            self.make_lab_root(labs, ("S1.1", "U2"))
+            blocked = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=root / "blocked",
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                lab_root=labs,
+            )
+            self.assertEqual(blocked["status"], "failed")
+            self.assertEqual(
+                blocked["exact_id_reconciliation"]["inventories"]
+                ["unknown_active_lab_without_alignment"],
+                ["U2"],
+            )
+
+            approved = self.make_exclusion_contract(root)
+            output = root / "approved"
+            passed = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                approved_exclusions_contract=approved,
+                lab_root=labs,
+            )
+            self.assertEqual(passed["status"], "success")
+            self.assertEqual(
+                passed["exact_id_reconciliation"]["status"], "passed"
+            )
+            with gzip.open(
+                output / "2021" / "_tables" / "excluded_utterances.csv.gz",
+                "rt",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                excluded = list(csv.DictReader(stream))
+            self.assertEqual([row["utt_id"] for row in excluded], ["U2"])
+
+    def test_quarantined_id_requires_matching_approved_exclusion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            labs = root / "labs"
+            quarantine = root / "quarantine.csv"
+            self.make_db(db)
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search)
+            self.make_lab_root(labs)
+            with quarantine.open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=["name", "reason"])
+                writer.writeheader()
+                writer.writerow({"name": "U2.wav", "reason": "invalid_wav"})
+
+            blocked = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=root / "blocked",
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                lab_root=labs,
+                quarantine_log=quarantine,
+            )
+            self.assertEqual(blocked["status"], "failed")
+            self.assertEqual(
+                blocked["exact_id_reconciliation"]["inventories"]
+                ["unapproved_quarantine_ids"],
+                ["U2"],
+            )
+
+            approved = self.make_exclusion_contract(root)
+            output = root / "approved"
+            passed = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                approved_exclusions_contract=approved,
+                lab_root=labs,
+                quarantine_log=quarantine,
+            )
+            self.assertEqual(passed["status"], "success")
+            self.assertEqual(
+                passed["exact_id_reconciliation"]["status"], "passed"
+            )
+            with gzip.open(
+                output / "2021" / "_tables" / "excluded_utterances.csv.gz",
+                "rt",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                excluded = list(csv.DictReader(stream))
+            self.assertEqual([row["utt_id"] for row in excluded], ["U2"])
+            self.assertEqual(excluded[0]["db_presence"], "false")
+            self.assertEqual(excluded[0]["alignment_presence"], "false")
+
+    def test_gzip_tables_are_byte_deterministic(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            self.make_db(db)
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search)
+            hashes = []
+            for name in ("out_a", "out_b"):
+                output = root / name
+                report = export_database(
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search,
+                    output_root=output,
+                    acoustic_model=acoustic,
+                    alignment_contract=contract,
+                )
+                self.assertEqual(report["status"], "success")
+                table_root = output / "2021" / "_tables"
+                hashes.append(
+                    {
+                        path.name: sha256_file(path)
+                        for path in table_root.glob("*.csv.gz")
+                    }
+                )
+            self.assertEqual(hashes[0], hashes[1])
 
 
 if __name__ == "__main__":

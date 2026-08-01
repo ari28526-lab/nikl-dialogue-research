@@ -249,7 +249,12 @@ foreach ($y in $years) {
     $tD = Test-Path (Join-Path $tmpSecondary $y)
     $oC = Test-Path (Join-Path $outPrimary $y)
     $oD = Test-Path (Join-Path $outSecondary $y)
-    $st = "align_done=$a merge_done=$m temp(C=$tC,D=$tD) mfa_out(C=$oC,D=$oD)"
+    $directFinalYear = Join-Path $g2pStage $y
+    $directFinalPresent = Test-Path -LiteralPath $directFinalYear
+    $st = (
+        "align_done=$a merge_done=$m temp(C=$tC,D=$tD) " +
+        "mfa_out(C=$oC,D=$oD) final_staging=$directFinalPresent"
+    )
     if ($a -or $m) {
         foreach ($marker in @((Join-Path $doneDir "$y.align_done"),
                               (Join-Path $doneDir "$y.merge_done"))) {
@@ -310,7 +315,14 @@ foreach ($y in $years) {
             WARN "$y temp 입력 계약 손상 — 러너가 stale temp로 보존 격리"
         }
     }
-    if ($a -and $m) { OK "$y 마커 파일 존재(위 내용 검증도 통과해야 완료) — $st" }
+    if ((-not $a) -and (-not $m) -and $directFinalPresent) {
+        FAIL (
+            "$y final staging은 있으나 완료 marker가 전무함 — 재정렬 금지. " +
+            "direct report·retained DB·TABLES_MANIFEST를 검증한 뒤 marker만 " +
+            "복구해야 함. $st"
+        )
+    }
+    elseif ($a -and $m) { OK "$y 마커 파일 존재(위 내용 검증도 통과해야 완료) — $st" }
     elseif ($tC -and $tD) { WARN "$y temp가 C·D 양쪽에 있음 — 러너는 D:를 우선. 오래된 쪽 수동 확인 필요. $st" }
     elseif (
         $a -and -not $m -and
@@ -319,8 +331,7 @@ foreach ($y in $years) {
         ) -and
         -not ($oC -or $oD)
     ) {
-        $directFinalYear = Join-Path $g2pStage $y
-        if (Test-Path -LiteralPath $directFinalYear) {
+        if ($directFinalPresent) {
             FAIL (
                 "$y direct DB align marker와 final staging은 있으나 " +
                 "merge marker가 없음 — marker 삭제·재정렬 금지. final staging, " +

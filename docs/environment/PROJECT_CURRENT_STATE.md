@@ -95,28 +95,39 @@ D: 사후 여유 공간은 약 323.56 GiB였다. 원시 corpus는 건드리지 �
 
 ## 현재 실행 상태
 
-### 2026-08-01 최신 상태 — 6-tier·동반표 생산 후보 리뷰 대기
+### 2026-08-01 최신 상태 — 외부 리뷰 HIGH 수정·최종 회귀 진행
 
 - r2 기준 2020–2025 전수 MFA는 **아직 시작하지 않았다**.
 - 연구자가 승인한 새 기본 표시는
   `words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/
   morph_analysis_utt` 6-tier다.
-- 기존 r2 DB에서 연도당 10발화, 총 60발화를 MFA 재실행 없이
-  새 6-tier와 연도별 gzip 동반표로 재출력했다.
-- duration·word·phone은 기존 4-tier와 60/60 동일했고, DB
-  checkpoint 6/6, actual `spn=0`, 전체 Python 263시험·PowerShell 16파일
-  안전 검사가 통과했다.
+- 외부 리뷰 판정 `GO AFTER FIXES`의 HIGH 2건을 구현했다.
+  승인 제외 계약 없이는 실행할 수 없고, 승인 밖 누락은 1건도 허용하지 않는다.
+  6-tier 연도 전수 감사·보존 DB 표본 재수출·다음 연도 gate를 새 계약에
+  배선했다.
+- 기존 r2 DB에서 연도당 10발화, 총 60발화를 MFA 재실행 없이 최종 schema로
+  다시 출력했다. 연도별 `utterance/word/phone/excluded` gzip 4종이다.
+- duration·word·phone은 기존 4-tier와 60/60 동일했고, 혼합 표기 2건의
+  `utterance_orth_r`만 의도적으로 개선했다. 다른 tier 불일치 0,
+  word 479, phone 1,801, actual `spn=0`이다.
+- 결정적 gzip 두 번 재생성 SHA 24/24, Parquet 24표 값·dtype·행 순서
+  왕복 24/24가 통과했다. 1만 합성 발화 exporter 벤치는 최초 87.7초,
+  재개 38.4초, Python 추적 메모리 정점 9.2MiB였다.
 - `SARW2500000414.1.1.2`의 `2사람이`(원 1어절) →
   `두 사람이`(MFA reference 2 word) 사례를 발견해 원 형태소 어절,
   reference 어절, MFA word 좌표계를 분리했다.
 - 출력 schema 실패 때 비싼 MFA까지 재실행하지 않도록
   `direct_db_ready`를 추가했다. 이는 정렬 계산 재사용 표시이지
   TextGrid 출력/분석 승인이 아니다.
-- 현재 판정은 **구현·회귀검사 통과, 외부 리뷰 및 최종 GO 대기**다.
+- 현재 판정은 **외부 리뷰 수정 구현·소규모/합성 회귀 통과, 전체 단위시험과
+  문서·commit/push 마감 중**이다. 이 마감과 2020 승인 제외 검토표 확인 전에는
+  전수 MFA를 시작하지 않는다.
 - 최신 설계:
   `docs/decisions/PROPOSAL_full_production_TextGrid_CSV_contract_20260801.md`
-- 외부 리뷰 지시:
-  `docs/reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md`
+- 외부 리뷰 결과:
+  `docs/reviews/incoming/EXTERNAL_REVIEW_full_production_TextGrid_CSV_20260801.md`
+- 기계 증거:
+  `outputs/reports/EVIDENCE_research_6tier_post_review_20260801.json`
 
 - r2 기준 2020–2025 전수 MFA: **아직 시작하지 않음**
 - r2 인프라 수용 파일럿:
@@ -219,14 +230,13 @@ C:\Users\ari30\research\2026_summer_research\outputs\
 
 ## 바로 다음 작업
 
-1. 현재 branch의 코드·문서·60발화 증거를 외부 도구에 읽기 전용
-   리뷰를 맡긴다.
-2. 외부 보고서를 `GO/GO AFTER FIXES/STOP`으로 triage하고 BLOCKER/HIGH를
-   수정한다.
-3. 미정렬 발화 분류·독립 6-tier 연도 QC·Parquet 미러·우말샘
-   1:N 후보 표의 필수 범위를 확정한다.
-4. 리뷰 통과 후에만 2020 r2 전수 MFA 명령을 새 운영 계약으로
-   다시 작성한다. 첫 실행에는 cleanup/자동 정본 승격을 넣지 않는다.
+1. 전체 Python 단위시험·PowerShell 정적 안전검사·`git diff --check`를
+   최종 실행한다.
+2. 외부 리뷰 항목별 처리표와 작업 기록을 확정하고 commit/push한다.
+3. `prepare_mfa_year_exclusion_review.ps1`로 2020 입력을 **dry-run 감사**해
+   연구자 승인 제외표를 만든다. 자동 승인은 하지 않는다.
+4. 2020 제외 계약과 전수 lab `--force-verify`가 통과한 뒤에만 2020 r2
+   MFA 명령을 제공한다. 첫 실행에는 cleanup/자동 정본 승격을 넣지 않는다.
 
 현재 사용자가 실행할 대량 PowerShell은 없다.
 

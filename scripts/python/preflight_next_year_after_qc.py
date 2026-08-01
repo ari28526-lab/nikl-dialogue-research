@@ -1,13 +1,12 @@
 """다음 연도 MFA 전에 직전 연도 QC·marker·DB 계약을 읽기 전용으로 검증한다.
 
-대량 정렬이 끝났다는 콘솔 문구나 exit code만 신뢰하지 않는다. 독립 4-tier
-전수 감사, align/merge marker, direct export 보고서, 보존 SQLite DB와 temp
+대량 정렬이 끝났다는 콘솔 문구나 exit code만 신뢰하지 않는다. 독립 연도
+감사, align/merge marker, direct export 보고서, 보존 SQLite DB와 temp
 입력계약, DB 재수출 표본, 연구자 인프라 검토가 모두 같은 입력계약·검색
 마스터를 가리킬 때만 통과한다.
 
-현재 구현은 ``direct_db_4tier`` 완료 연도 전용이다. built-in export로 완료한
-연도는 이 도구에 억지로 맞추지 말고 독립 4-tier 감사와 merge 보고서용 별도
-QC 분기를 사용한다.
+``direct_db_research_6tier_v1``은 새 계약 gate로 자동 분기하며, 역사적
+``direct_db_4tier`` 결과에는 기존 검증을 보존한다.
 """
 from __future__ import annotations
 
@@ -154,6 +153,25 @@ def validate_next_year_gate(
     contract = loaded["temp_contract"]
     sample = loaded["sample_equivalence_report"]
     researcher_review = loaded["researcher_review_report"]
+    if _nested(audit, "schema_version") == "mfa_research_6tier_year_audit.v1":
+        from preflight_next_year_after_research_qc import (
+            validate_research_next_year_gate,
+        )
+
+        return validate_research_next_year_gate(
+            prior_year=prior_year,
+            next_year=next_year,
+            audit_report=audit_report,
+            align_marker=align_marker,
+            merge_marker=merge_marker,
+            temp_contract=temp_contract,
+            sample_equivalence_report=sample_equivalence_report,
+            researcher_review_report=researcher_review_report,
+            expected_search_master_root=expected_search_master_root,
+            expected_final_year_root=expected_final_year_root,
+            expected_pronunciation_mode=expected_pronunciation_mode,
+            report_path=report_path,
+        )
     checks: list[dict[str, Any]] = []
 
     def add(name: str, passed: bool, detail: str) -> None:

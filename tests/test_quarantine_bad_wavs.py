@@ -1,4 +1,5 @@
 import json
+import csv
 import sys
 import tempfile
 import unittest
@@ -56,6 +57,25 @@ class QuarantineTests(unittest.TestCase):
             self.assertEqual(count, 1)
             self.assertTrue(source.exists())
             self.assertFalse((root / "q").exists())
+
+    def test_dry_run_writes_complete_review_inventory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "wav" / "2020" / "S" / "u.wav"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"")
+            inventory = root / "inventory.csv"
+            count = scan_year(
+                "2020", 44, False,
+                wav_root=root / "wav", quarantine_root=root / "q",
+                inventory_csv=inventory,
+            )
+            with inventory.open(encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+            self.assertEqual(count, 1)
+            self.assertEqual([row["name"] for row in rows], ["u.wav"])
+            self.assertEqual(rows[0]["apply"], "false")
+            self.assertTrue(source.exists())
 
 
 if __name__ == "__main__":

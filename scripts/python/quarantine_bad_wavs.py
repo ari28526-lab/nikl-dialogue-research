@@ -23,7 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from paths import P  # noqa: E402
-from pipeline_common import atomic_write_json  # noqa: E402
+from pipeline_common import atomic_text_writer, atomic_write_json  # noqa: E402
 
 QUARANTINE_ROOT = P("mfa_state") / "quarantine"
 YEARS = ["2020", "2021", "2022", "2023", "2024", "2025"]
@@ -38,6 +38,7 @@ def scan_year(
     *,
     wav_root: Path | None = None,
     quarantine_root: Path | None = None,
+    inventory_csv: Path | None = None,
 ) -> int:
     base_wav = wav_root or (P("wav") / "individual")
     qroot = quarantine_root or QUARANTINE_ROOT
@@ -67,6 +68,29 @@ def scan_year(
           f"{len(bad)}건 ({time.time()-t0:,.0f}초)", flush=True)
     for p, size in bad:
         print(f"  - {p.relative_to(root)} ({size}B)", flush=True)
+    if inventory_csv is not None:
+        with atomic_text_writer(
+            inventory_csv.resolve(), encoding="utf-8-sig", newline=""
+        ) as (stream, _temp):
+            fields = [
+                "year", "name", "size_bytes", "orig_path",
+                "quarantine_path", "lab_present", "apply",
+            ]
+            writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
+            writer.writeheader()
+            for path, size in bad:
+                relative = path.relative_to(root)
+                writer.writerow(
+                    {
+                        "year": year,
+                        "name": path.name,
+                        "size_bytes": size,
+                        "orig_path": str(path),
+                        "quarantine_path": str(qdir / relative),
+                        "lab_present": str(path.with_suffix(".lab").is_file()).lower(),
+                        "apply": str(apply).lower(),
+                    }
+                )
     if not bad:
         return 0
     if not apply:
@@ -147,10 +171,17 @@ def main() -> int:
     ap.add_argument("--root", type=Path, help="wav individual 루트(테스트용)")
     ap.add_argument("--quarantine-root", type=Path,
                     help="격리 루트(테스트용)")
+    ap.add_argument(
+        "--inventory-csv",
+        type=Path,
+        help="dry-run/apply와 무관하게 불량 후보 전수 목록을 원자적으로 기록",
+    )
     args = ap.parse_args()
     if args.min_bytes < 44:
         ap.error("--min-bytes는 WAV 최소 헤더 44보다 작게 설정할 수 없습니다.")
     years = YEARS if args.year == "all" else [args.year]
+    if args.inventory_csv is not None and len(years) != 1:
+        ap.error("--inventory-csv는 연도 1개 실행에서만 사용")
     total = 0
     for y in years:
         if y not in YEARS:
@@ -158,6 +189,7 @@ def main() -> int:
         total += scan_year(
             y, args.min_bytes, args.apply,
             wav_root=args.root, quarantine_root=args.quarantine_root,
+            inventory_csv=args.inventory_csv,
         )
     print(f"총 불량 {total}건" + ("" if args.apply else " (dry-run)"), flush=True)
     return 0

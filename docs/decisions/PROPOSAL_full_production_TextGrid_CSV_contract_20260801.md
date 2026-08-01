@@ -58,7 +58,7 @@ morph_analysis_utt
 | `phones_mfa` | MFA DB phone interval | 사전/G2P phone의 강제정렬 | 대략적 분절 위치 |
 | `phoneme_r_auto` | `phones_mfa`만의 broad Roman | `phones_mfa`와 경계 동일 | 실용적 Roman 검색·표시 |
 | `utterance` | frozen `form` | 첫·마지막 유표 word span | 한글 발화 확인 |
-| `utterance_orth_r` | frozen `form_roman` | `utterance`와 경계 동일 | 철자 Roman 검색 |
+| `utterance_orth_r` | `form`의 결정적 `orth_roman_v2` | `utterance`와 경계 동일 | 철자 Roman 검색; 혼합 어절 literal 보존 |
 | `morph_analysis_utt` | canonical `tagged` | `utterance`와 경계 동일 | 형태소/POS 문자열 검색 |
 
 모든 tier는 빈 interval을 포함해 `0–xmax`를 연속 커버한다.
@@ -69,7 +69,7 @@ morph_analysis_utt
 ## 4. TextGrid와 같이 생성할 연도별 동반표
 
 5,103,356발화마다 작은 CSV를 하나씩 만들면 파일 수·탐색·복사·
-백업 비용이 과도하다. 따라서 전수 정본은 연도별 gzip CSV 세 개로 두고,
+백업 비용이 과도하다. 따라서 전수 정본은 연도별 gzip CSV 네 개로 두고,
 후보 검토 bundle에서만 발화별 CSV를 파생한다.
 
 | 파일 | 행 단위 | 주요 키/내용 |
@@ -77,10 +77,26 @@ morph_analysis_utt
 | `utterance_alignment.csv.gz` | TextGrid 1개당 1행 | `utt_id`, 화자/대화, 원·reference 표기, 형태소, 정렬 요약, 계약 ID |
 | `word_intervals_mfa.csv.gz` | MFA word interval 1개당 1행 | `utt_id+word_interval_idx`, reference 어절·lab word·phone열 |
 | `phone_intervals_mfa.csv.gz` | MFA phone interval 1개당 1행 | `utt_id+phone_interval_idx`, DB word 연결, IPA·broad Roman·시간 |
+| `excluded_utterances.csv.gz` | 연구자 승인 제외 1건당 1행 | `utt_id`, input/alignment 계약, 사유·범위·증거·정렬/TextGrid 존재 여부 |
 
-최종 검색용으로는 이 CSV를 동일 schema의 연도별 Parquet으로 재생성하고,
+열 순서·dtype·nullable·소문자 부울·빈 문자열 null·UTF-8 BOM·결정적 gzip
+`mtime=0`은 `config/research_companion_tables_schema_v2.json`에서 기계적으로
+고정한다. 최종 검색용으로는 이 CSV를 동일 schema의 연도별 Parquet으로 재생성하고,
 기존 형태소 정규화 표와 `utt_id`로 join한다. gzip CSV는 장기 호환·감사용,
 Parquet은 DuckDB/R/Python 검색용이다.
+
+기존 `form_roman`은 숫자·라틴 문자가 섞인 어절 전체를 `∅`로 만들 수 있어
+provenance 보존용 legacy 열로 유지한다. 새 `form_roman_v2`와
+`utterance_orth_r`는 비한글 run을 `⟨literal⟩`로 남기고 한글 음절의 철자
+Roman을 보존한다. 예: `2사람이` → `⟨2⟩ _ S A _ R A m _ I`.
+이는 발음 추정이 아니라 검색을 위한 표기 전자다.
+
+Roman 검색은 대소문자를 구분한다. 예를 들어 `k/p/t`는 미파열 종성,
+`K/P/T`는 격음이며, `R`은 탄설음, `l`은 설측음이다. Praat·정규식·DuckDB
+검색에서 무조건 대소문자 무시 옵션을 쓰면 이 구분이 사라진다.
+
+형태소 위치표의 유일성 검증은 메모리에 발화 ID 집합을 유지하므로 반드시
+연도 단위로 실행한다. 5.1M 발화를 한 번에 합친 입력으로 실행하지 않는다.
 
 ## 5. 위치 번호를 하나로 합치지 않는 이유
 
@@ -147,29 +163,35 @@ MFA 정렬을 다시 시작하지 않게 하는 중간 체크포인트다. 이 �
 - 기존 4-tier의 duration·`words`·`phones`와 새 `words/phones_mfa`
   전수 동일: 60/60, 불일치 0
 - 새 6-tier 순서·`0–xmax`·phone–Roman 경계·발화 수준 경계 통과
-- 연도별 gzip 3개, 총 18개 생성; 발화 행 60
+- 수정 계약 재회귀에서 연도별 gzip 4개, 총 24개 생성; 발화 행 60
+- word interval 합계 **479**(초기 문서의 529는 합산 오기), phone 1,801
+- legacy 대비 58/60 TextGrid 바이트 동일; 혼합 표기 2건은 의도대로
+  `utterance_orth_r`만 변경되고 나머지 tier 불일치 0
+- 두 독립 재출력의 gzip 24개 SHA-256 불일치 0
+- Parquet 24개 생성 및 gzip→Parquet 값·dtype·행 순서 왕복 24/24 통과
 - DB computation checkpoint 6/6 `success`, coverage 100%, actual `spn=0`
-- 전체 회귀 산출물 669,108 bytes, 활성 `.partial` 0
+- 수정 회귀 산출물 673,456 bytes(보고서 포함 96파일), 활성 `.partial` 0
 - 위 `2사람이 → 두 사람이` 사례로 좌표 혼동을 발견·수정
 - 실패한 동반표가 완성 gzip으로 남던 순서를 수정하고 회귀시험 추가
 
-검증본:
-`work/research_6tier_candidate_60_20260801`.
+수정 계약 검증본:
+`work/research_6tier_candidate_60_final2_20260801`.
 
-## 9. 외부 리뷰에서 반드시 결정할 사항
+## 9. 외부 리뷰 후 결정·구현 상태
 
-1. 5.1백만 TextGrid에 6-tier 모두를 물리적으로 저장할지, 일부 발화
-   수준 tier를 후보 추출 시 파생할지
-2. 대량 gzip CSV 생성 후 Parquet 미러 계약·toolchain·schema를 어떻게
-   동결할지
-3. 예상된 MFA 미정렬/원 WAV 사용 불가 항목을 어떻게 분류·승인해
-   연도 staging을 완료할지
-4. 우리말샘 복수 센스·복수 발음을 별도 1:N 후보 표로 연결할
-   키와 중복 정책
-5. 형태소 표, MFA word/phone 표, 사전 후보 표, manual judgment 표의
-   최종 조인 계약
-6. 독립 연도 QC가 새 6-tier·동반표·DB checkpoint와 같은
-   계약 ID를 확인하는지
+1. 5.1백만 TextGrid에는 승인한 6-tier를 물리 저장한다. 파일 수가 병목의
+   본질이고 세 발화 tier를 빼도 파일 수가 줄지 않기 때문이다.
+2. gzip v2 schema와 Parquet 생성·왕복 검증기를 구현했다. gzip은 감사·보존
+   정본, Parquet은 재생성 가능한 검색 미러다.
+3. 미정렬/원 WAV 사용 불가 항목은 input contract에 묶인 연구자 승인
+   제외표로만 허용한다. 자동 승인은 금지하며 목록 밖 누락은 1건도 hard fail이다.
+4. 우리말샘 복수 센스·복수 발음은 정본 발화표를 증식시키지 않는 별도 1:N
+   후보표로 둔다. sense 연결의 실제 승인 정책은 어휘부 자료 회수 뒤 결정한다.
+5. 형태소 표, MFA word/phone 표, 사전 후보 표, manual judgment 표는
+   `utt_id`와 각 표의 명시적 하위 키로 조인한다.
+6. 독립 연도 QC는 새 6-tier·동반표·DB checkpoint의 동일 input/alignment
+   contract ID를 확인하도록 배선했다.
 
-이 운영 미정 사항을 해결하기 전에는 코드 단위시험이 통과해도 전수
+우리말샘 1:N 정책 등 후속 검색 레이어 결정은 MFA 정렬을 막지 않지만,
+연도별 승인 제외표·독립 6-tier QC·연구자 표본 검토 없이는 전수
 실행에 `GO`하지 않는다.

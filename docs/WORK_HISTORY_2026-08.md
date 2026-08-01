@@ -147,7 +147,8 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
   morph_analysis_utt` 6-tier를 직접 쓰는
   `export_mfa_db_research_6tier.py`를 추가했다.
 - 연도별 logical sidecar로
-  `utterance_alignment/word_intervals_mfa/phone_intervals_mfa.csv.gz`를
+  `utterance_alignment/word_intervals_mfa/phone_intervals_mfa/
+  excluded_utterances.csv.gz` 4종을
   생성했다. 510만 발화별 개별 CSV는 만들지 않고, 선별
   후보 bundle에서만 파생하도록 했다.
 - 형태소 표에 발화당 1행/어절 `eojeol_tokens`를 추가해 어절
@@ -193,3 +194,83 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 외부 리뷰 프롬프트:
 `docs/reviews/PROMPT_external_review_full_production_TextGrid_CSV_20260801.md`.
+
+## 2026-08-01 — 전수 6-tier·동반표 외부 리뷰 수정
+
+### 외부 판정과 작업 경계
+
+- 외부 리뷰는 BLOCKER 0, HIGH 2, MEDIUM 10, LOW 6으로
+  `GO AFTER FIXES`를 판정했다.
+- HIGH는 (1) 새 6-tier 연도 QC/다음 연도 gate 부재, (2) 예상 미정렬·
+  사용 불가 자료의 연구자 승인 제외 계약 부재였다.
+- 이 수정 중에는 기존 D: 파일럿 SQLite를 읽기만 했고 MFA·KOINA·wav2vec2를
+  실행하지 않았다. 2020–2025 전수 MFA도 시작하지 않았다.
+
+### 승인 제외와 정확 대사
+
+- input contract에 묶인 승인 CSV/JSON 계약을 신설했다. 자동 후보는
+  `pending`만 쓰며, 연구자·승인시각·review CSV SHA가 없으면 계약이 아니다.
+- exporter에 네 번째 동반표 `excluded_utterances.csv.gz`를 추가했다.
+- 99% 휴리스틱을 폐기하고 active LAB, 정렬 성공, 승인 제외, quarantine의
+  정확 ID 대사를 요구한다. 목록 밖 누락·stale 승인·승인 밖 quarantine은
+  한 건도 통과하지 못한다.
+- `prepare_mfa_year_exclusion_review.ps1`은 lab 전수 force-verify, 입력 후보
+  감사, 불량 WAV dry-run inventory, pending 검토표까지만 만들며 WAV 이동과
+  자동 승인을 하지 않는다.
+
+### 독립 연도 QC와 재현성
+
+- 6-tier 연도 감사, 보존 DB 세션 표본 재수출, 다음 연도 gate를 구현했다.
+- 연 phone 표 감사가 수천만 행을 메모리에 올리지 않도록 스트리밍 key/count
+  검증으로 바꿨다.
+- DB checkpoint 재사용 때 DB를 다시 quick-check하고 marker count와 대조한다.
+- TextGrid 구간은 허용오차 밖 0–xmax 초과를 조용히 clamp하지 않고 실패한다.
+- gzip은 `mtime=0`, 소문자 부울, fsync 후 승격으로 고정했다.
+
+### 검색 표기와 Parquet
+
+- machine-readable companion schema v2에 네 표의 열 순서·dtype·nullable·
+  null·부울·BOM·gzip 계약을 동결했다.
+- legacy `form_roman`은 보존하되, 혼합 어절 전체가 `∅`가 되는 문제를
+  `form_roman_v2`/`orth_roman_v2`로 해결했다. 비한글은 `⟨literal⟩`,
+  한글은 철자 Roman으로 남는다. 발음 규칙이나 실현 판정은 추가하지 않았다.
+- 별도 임시 분석 venv에만 `pyarrow==21.0.0`을 설치했다. 동결 MFA conda
+  환경은 변경하지 않았다.
+- Windows에서 Parquet partial의 읽기 전용 fd `fsync`가 실패한 것을 실물로
+  발견해 `rb+` fd로 수정했다. 실패 root에는 success manifest가 없다.
+
+### 실측 결과와 정정
+
+- 최종 60발화: utterance 60, word 479, phone 1,801, spn 0,
+  96파일 673,456 bytes, active partial 0.
+- 기존 문서의 word 합계 529는 연도별 수치를 잘못 더한 오기였다. 정확한
+  합계 479로 정정했고 원 실물·연도별 값은 변하지 않았다.
+- legacy 대비 혼합 표기 2건의 `utterance_orth_r`만 의도적으로 변경,
+  다른 tier 불일치 0. 최종 독립 재출력 TextGrid SHA 불일치 0.
+- 결정적 gzip 24/24 SHA 불일치 0, Parquet 24/24 값·dtype·행 순서 왕복 통과.
+- 10,000 합성 발화 exporter: 최초 87.738초, 재개 38.404초,
+  Python 추적 메모리 peak 9.214MiB, partial 0.
+
+### Bareun provenance
+
+- 2026-07-09~10 사용한 클라우드 서버 build ID가 당시 API·로그에
+  보존되지 않아 사후 정확 복원이 불가능함을 확인했다.
+- 현재 버전을 과거 버전으로 허위 소급하지 않고 분석일, endpoint,
+  `bareunpy==2.0.1`, 검증 결과와 이 한계를 논문에 명시하기로 했다.
+- 현재 MFA/CSV는 동결 A1을 읽을 뿐 Bareun을 다시 호출하지 않는다.
+
+처리표:
+`docs/reviews/RESOLUTION_external_review_full_production_TextGrid_CSV_20260801.md`.
+
+기계 증거:
+`outputs/reports/EVIDENCE_research_6tier_post_review_20260801.json`.
+
+### 외부 리뷰 수정 최종 회귀 검사
+
+- Python 전체 테스트 287개 전부 통과.
+- PowerShell 대량 작업 안전 정적 검사 대상 17개 파일 전부 통과.
+- quarantine된 발화가 연구자 승인 계약 없이 빠질 수 없고, 승인된 경우에도
+  별도 제외표로 남는 직접 회귀 테스트를 추가했다.
+- 변경된 Python 실행 파일의 문법 컴파일과 Git 공백 검사를 통과했다.
+- 이 결과는 코드·소형 표본 수준의 생산 준비 판정이다. 2020년 전수 시작 전에
+  연구자가 pending 제외 후보를 확인하고 승인 계약을 만드는 단계는 여전히 필요하다.

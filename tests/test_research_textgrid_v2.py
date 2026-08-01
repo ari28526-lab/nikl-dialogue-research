@@ -12,6 +12,7 @@ from research_textgrid import write_research_textgrid  # noqa: E402
 from research_textgrid_v2 import (  # noqa: E402
     BASE_TIERS,
     STITCHED_TIERS,
+    build_base_tier_data_from_intervals,
     validate_base_textgrid,
     validate_base_textgrid_from_intervals,
     write_base_textgrid,
@@ -128,6 +129,50 @@ class ResearchTextGridV2Tests(unittest.TestCase):
                 [label for _, _, label in tiers["utterance_orth_r"] if label],
                 ["H O k _ S I | YO _ J EU m"],
             )
+
+    def test_out_of_range_interval_is_not_silently_clamped(self):
+        with self.assertRaisesRegex(ValueError, "0-xmax 범위"):
+            build_base_tier_data_from_intervals(
+                duration=0.2,
+                words=[(0.05, 0.20001, "혹시")],
+                phones=[(0.05, 0.2, "h")],
+                row=self.row(),
+                phone_mapper=self.mapper,
+            )
+
+    def test_mixed_orthography_is_searchable_in_orth_roman_tier(self):
+        row = self.row(form="2사람이")
+        row["form_roman"] = "∅"
+        row["tagged"] = "2/SN+사람/NNG+이/JKS"
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "mixed.TextGrid"
+            write_base_textgrid_from_intervals(
+                output,
+                duration=0.2,
+                words=[(0.05, 0.15, "두사람이")],
+                phones=[(0.05, 0.15, "h")],
+                row=row,
+                phone_mapper=self.mapper,
+            )
+            _duration, tiers = parse_mfa_textgrid(output)
+            labels = [
+                label for _begin, _end, label
+                in tiers["utterance_orth_r"] if label
+            ]
+            self.assertEqual(labels, ["⟨2⟩ _ S A _ R A m _ I"])
+
+    def test_control_character_in_label_is_rejected(self):
+        row = self.row(form="혹시\n요즘")
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(ValueError, "제어문자"):
+                write_base_textgrid_from_intervals(
+                    Path(tmp) / "must_not_exist.TextGrid",
+                    duration=0.2,
+                    words=[(0.05, 0.15, "혹시")],
+                    phones=[(0.05, 0.15, "h")],
+                    row=row,
+                    phone_mapper=self.mapper,
+                )
 
     def test_stitched_review_contract_and_inverse_manifest(self):
         with tempfile.TemporaryDirectory() as tmp:

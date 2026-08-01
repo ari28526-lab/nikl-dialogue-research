@@ -5,6 +5,7 @@ $files = @(
     (Join-Path $root 'scripts\preflight_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
+    (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
     (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
@@ -115,6 +116,8 @@ foreach ($path in $files) {
             'export_mfa_db_research_6tier.py',
             'inspect_mfa_db_checkpoint.py',
             'direct_db_ready',
+            'MFA DB 계산 체크포인트 재검증',
+            'direct_db_ready count 불일치',
             'legacy 4-tier 병합으로 폴백하지 않음',
             'textgrid_research_v2_staging',
             'direct_db_research_6tier_v1',
@@ -137,6 +140,11 @@ foreach ($path in $files) {
             '[string]$CommonPronManifest',
             '[string]$CommonPronAdoptionContract',
             '[string]$CommonPronEquivalenceReport',
+            '[string]$ApprovedExclusionsContract',
+            '[switch]$ForceVerifyLabInput',
+            'mfa_exclusion_contract.py',
+            '--approved-exclusions-contract',
+            'exact_id_reconciliation',
             '[switch]$AllowBaselineCommonPronRerun',
             '[switch]$AllowLegacyInlineG2p',
             '[int]$BulkWrapperPid = 0',
@@ -167,7 +175,9 @@ foreach ($path in $files) {
         foreach ($required in @(
             '$alignExportMode',
             "direct DB align marker",
-            'marker 삭제·재정렬 금지'
+            'marker 삭제·재정렬 금지',
+            '$directFinalPresent',
+            'final staging은 있으나 완료 marker가 전무함'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA preflight 복구 안전장치 누락: $required")

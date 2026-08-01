@@ -219,6 +219,65 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
             self.assertTrue(result["execution_gates_pass"])
             self.assertFalse(result["analysis_ready_gates_pass"])
 
+    def test_approved_alignment_exclusion_is_not_an_active_gate_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            wav_root = root / "wav"
+            year_dir = search / "2021"
+            session_dir = wav_root / "2021" / "S1"
+            year_dir.mkdir(parents=True)
+            session_dir.mkdir(parents=True)
+            fields = [
+                "utt_id", "form", "pron_reference_form",
+                "pron_reference_source", "pron_reference_status", "sex", "dur",
+            ]
+            with (year_dir / "S1.csv").open(
+                "w", encoding="utf-8", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields)
+                writer.writeheader()
+                writer.writerows(
+                    [
+                        {
+                            "utt_id": "S1.good", "form": "가",
+                            "pron_reference_form": "가",
+                            "pron_reference_source": "form",
+                            "pron_reference_status": "resolved_form",
+                            "sex": "여성", "dur": "1.0",
+                        },
+                        {
+                            "utt_id": "S1.bad", "form": "가" * 20,
+                            "pron_reference_form": "가" * 20,
+                            "pron_reference_source": "form",
+                            "pron_reference_status": "resolved_form",
+                            "sex": "여성", "dur": "0.4",
+                        },
+                    ]
+                )
+            write_wav(session_dir / "S1.good.wav", 1.0)
+            (session_dir / "S1.good.lab").write_text("가", encoding="utf-8")
+            (session_dir / "S1.bad.wav").write_bytes(b"")
+            (session_dir / "S1.bad.lab").write_text("가", encoding="utf-8")
+
+            result = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                known_pcm=None,
+                approved_alignment_exclusions={"S1.bad"},
+            )
+            self.assertEqual(result["counts"]["approved_alignment_excluded"], 1)
+            self.assertEqual(result["counts"].get("wav_too_small", 0), 0)
+            self.assertEqual(
+                result["counts"].get(
+                    "source_segment_text_duration_impossible", 0
+                ),
+                0,
+            )
+            self.assertTrue(result["analysis_ready_gates_pass"])
+
     def test_morph_source_missing_is_preflight_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

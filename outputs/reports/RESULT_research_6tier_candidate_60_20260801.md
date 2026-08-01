@@ -15,14 +15,18 @@
 | 2023 | 10/10 | 86 | 363 | success | 0 |
 | 2024 | 10/10 | 119 | 419 | success | 0 |
 | 2025 | 10/10 | 107 | 394 | success | 0 |
-| **합계** | **60/60** | **529** | **1,801** | **6/6** | **0** |
+| **합계** | **60/60** | **479** | **1,801** | **6/6** | **0** |
+
+> 2026-08-01 정정: 초기 작성 때 연도별 word 수를 잘못 합산해 529로
+> 기록했다. 연도별 manifest를 다시 합산한 정확한 값은 479다. 연도별 행과
+> 실물 자체에는 오류가 없었다.
 
 - 기존 4-tier ↔ 새 6-tier duration/word/phone 전수 대조: 60/60, 불일치 0
-- 연도별 `utterance_alignment/word_intervals_mfa/phone_intervals_mfa.csv.gz`:
-  18개
-- 총 회귀 산출물: 669,108 bytes, 활성 `.partial` 0
-- 전체 unit test: Python 263건 통과
-- PowerShell static safety: 16파일 통과
+- 연도별 `utterance_alignment/word_intervals_mfa/phone_intervals_mfa/
+  excluded_utterances.csv.gz`: 24개
+- 총 회귀 산출물: 673,456 bytes, 활성 `.partial` 0
+- 전체 unit test: Python 287건 통과
+- PowerShell static safety: 17파일 통과
 
 ## 회귀검사가 잡은 실제 문제
 

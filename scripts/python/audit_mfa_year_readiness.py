@@ -32,6 +32,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from pipeline_common import atomic_write_json
+from mfa_exclusion_contract import load_contract as load_exclusion_contract
 from paths import P
 from realign_eojeol_build_corpus import MISSING, form_to_lab
 
@@ -350,9 +351,11 @@ def audit_year(
     known_pcm: Counter | None = None,
     known_pcm_records: dict[str, dict[str, str]] | None = None,
     lab_workers: int = 8,
+    approved_alignment_exclusions: set[str] | None = None,
 ) -> dict:
     """한 연도를 읽기 전용으로 전수 감사한다."""
     source_dir = search_master_root / year
+    approved_alignment_exclusions = approved_alignment_exclusions or set()
     csv_files = sorted(
         path
         for path in source_dir.glob("*.csv")
@@ -425,15 +428,22 @@ def audit_year(
                 counts["wav_files"] += len(wav_ids)
                 counts["lab_files"] += len(lab_ids)
                 for utt_id in wav_ids:
+                    if utt_id in approved_alignment_exclusions:
+                        continue
                     if entries.get(f"{utt_id}.wav", 0) < 44:
                         counts["wav_too_small"] += 1
                         risky_sessions[session] += 1
                         _add_example(examples, "wav_too_small", utt_id)
 
                 if check_wav_durations:
+                    active_rows = [
+                        row for row in rows
+                        if (row.get("utt_id") or "").strip()
+                        not in approved_alignment_exclusions
+                    ]
                     duration_result = audit_session_durations(
                         session=session,
-                        rows=rows,
+                        rows=active_rows,
                         session_dir=session_dir,
                         entries=entries,
                         executor=executor,
@@ -463,6 +473,13 @@ def audit_year(
                     counts["search_rows"] += 1
                     utt_id = row["utt_id"].strip()
                     search_ids.add(utt_id)
+                    if utt_id in approved_alignment_exclusions:
+                        counts["approved_alignment_excluded"] += 1
+                        # A still-present lab is expected before quarantine;
+                        # a moved lab is also valid.  Either way it must not be
+                        # misclassified as an unexpected active input.
+                        expected_lab_ids.add(utt_id)
+                        continue
                     if row.get("sex") == "미상":
                         counts["speaker_missing"] += 1
                     if row.get("pron_reference_status") == "unresolved_symbol":
@@ -684,6 +701,9 @@ def audit_year(
         "compare_lab_content": compare_lab_content,
         "wav_duration_audit_enabled": check_wav_durations,
         "morph_source_audit_enabled": morph_year_dir is not None,
+        "approved_alignment_exclusion_count": len(
+            approved_alignment_exclusions
+        ),
         "csv_files": len(csv_files),
         "elapsed_seconds": round(elapsed, 3),
         "counts": dict(sorted(counts.items())),
@@ -881,8 +901,17 @@ def main() -> int:
         ),
     )
     parser.add_argument("--lab-workers", type=int, default=8)
+    parser.add_argument("--approved-exclusions-contract", type=Path)
+    parser.add_argument("--input-contract-id")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+
+    if bool(args.approved_exclusions_contract) != bool(args.input_contract_id):
+        raise SystemExit(
+            "--approved-exclusions-contract와 --input-contract-id는 함께 지정"
+        )
+    if args.approved_exclusions_contract and len(args.years) != 1:
+        raise SystemExit("승인 제외 계약 감사에서는 연도 1개만 지정")
 
     meta_path = args.search_master_root / "_build_meta.json"
     try:
@@ -910,9 +939,26 @@ def main() -> int:
         ),
         "strict": not args.no_strict,
         "gate_profile": args.gate_profile,
+        "approved_exclusions_contract": (
+            None
+            if args.approved_exclusions_contract is None
+            else str(args.approved_exclusions_contract.resolve())
+        ),
         "years": [],
     }
     for year in args.years:
+        approved_alignment_exclusions: set[str] = set()
+        if args.approved_exclusions_contract is not None:
+            _contract, exclusion_rows = load_exclusion_contract(
+                args.approved_exclusions_contract,
+                year=year,
+                input_contract_id=args.input_contract_id,
+            )
+            approved_alignment_exclusions = {
+                utt_id
+                for utt_id, row in exclusion_rows.items()
+                if row["exclusion_scope"] == "alignment_and_analysis"
+            }
         report["years"].append(
             audit_year(
                 year=year,
@@ -928,6 +974,9 @@ def main() -> int:
                 known_pcm=known_pcm.get(year),
                 known_pcm_records=known_pcm_by_utt.get(year),
                 lab_workers=args.lab_workers,
+                approved_alignment_exclusions=(
+                    approved_alignment_exclusions
+                ),
             )
         )
         atomic_write_json(args.output, report)

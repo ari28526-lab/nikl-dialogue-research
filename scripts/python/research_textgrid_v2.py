@@ -16,7 +16,7 @@ import wave
 from pathlib import Path
 from typing import Callable, Mapping, Sequence
 
-from morph_schema import canonicalize_tagged
+from morph_schema import canonicalize_tagged, orth_roman_v2
 from pipeline_common import promote_staged, sha256_file, staged_text_writer
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 
@@ -32,14 +32,22 @@ BASE_TIERS = [
     "morph_analysis_utt",
 ]
 STITCHED_TIERS = BASE_TIERS + ["source_utt_id", "speaker"]
-SILENCE = {"", "<eps>", "sil", "sp", "spn", "<unk>"}
+# ``spn``은 침묵이 아니라 정렬 실패/미등록 발음 표지다. 전수 exporter가
+# 별도 gate에서 차단하며, 여기서 빈 label로 숨기지 않는다.
+SILENCE = {"", "<eps>", "sil", "sp", "<unk>"}
 
 Interval = tuple[float, float, str]
 PhoneMapper = Callable[[str], str]
 
 
 def _escape(value: object) -> str:
-    return str(value).replace('"', '""')
+    text = str(value)
+    controls = sorted({f"U+{ord(char):04X}" for char in text if ord(char) < 32})
+    if controls:
+        raise ValueError(
+            "TextGrid label에 제어문자가 있음: " + ", ".join(controls)
+        )
+    return text.replace('"', '""')
 
 
 def _same_intervals(
@@ -99,8 +107,19 @@ def _materialize_intervals(
     for begin, end, label in sorted(
         intervals, key=lambda item: (float(item[0]), float(item[1]))
     ):
-        begin = max(0.0, float(begin))
-        end = min(float(duration), float(end))
+        begin = float(begin)
+        end = float(end)
+        if begin < -1e-6 or end > float(duration) + 1e-6:
+            raise ValueError(
+                "interval이 0-xmax 범위를 벗어남: "
+                f"begin={begin:.6f}, end={end:.6f}, "
+                f"duration={float(duration):.6f}"
+            )
+        # 부동소수점 직렬화 오차가 tolerance 안에 있을 때만 경계로 맞춘다.
+        if begin < 0:
+            begin = 0.0
+        if end > float(duration):
+            end = float(duration)
         if end - begin <= 1e-9:
             continue
         if begin < cursor - 1e-6:
@@ -240,7 +259,7 @@ def build_base_tier_data(
             f"source 4-tier 계약 불일치: {source_textgrid} tiers={list(source)}"
         )
     form = str(row.get("form", "")).strip()
-    form_roman = str(row.get("form_roman", "")).strip()
+    form_roman = orth_roman_v2(form)
     tagged = str(row.get("tagged", "")).strip()
     if not form or not form_roman or not tagged:
         raise ValueError("form/form_roman/tagged 필수값 누락")
@@ -294,7 +313,7 @@ def build_base_tier_data_from_intervals(
     if not words or not phones:
         raise ValueError("words와 phones interval이 모두 필요함")
     form = str(row.get("form", "")).strip()
-    form_roman = str(row.get("form_roman", "")).strip()
+    form_roman = orth_roman_v2(form)
     tagged = str(row.get("tagged", "")).strip()
     if not form or not form_roman or not tagged:
         raise ValueError("form/form_roman/tagged 필수값 누락")
