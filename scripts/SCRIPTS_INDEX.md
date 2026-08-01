@@ -164,6 +164,7 @@
 | phoneme_roman.py | 동결 acoustic `meta.json`의 107 phone·22 phone group을 읽고 MFA IPA를 검색용 `phone_class_r_auto`로 범주화. 복합 중성 component 전개와 결정적 DP로 철자·예측발음 참조 `phoneme_lexical_r_auto` 대응을 만들되, 삽입/탈락/대체·평격경 차이는 자동 승인하지 않음 | 단위시험과 실제 60발화 inventory hard gate 통과 |
 | build_phoneme_roman_pilot.py | `phones_mfa` IPA·시간과 기존 4-tier를 변경하지 않고 interval/correspondence/발화요약 CSV와 선택적 `phoneme_r_auto` 5-tier 사본을 생성. raw 철자와 실제 MFA 입력 resolved 철자를 분리하고 12발화 workbook·Dropbox 복사 SHA를 검증 | 60발화 1,625 phone, 5-tier 60/60, 기존 4-tier 불변 60/60; 연구자 수용 대기 |
 | verify_phoneme_roman_pilot.py | 완성 output의 4개 CSV 행수·phone 중복/spn·60개 5-tier·원 4-tier 전 구간·phone/phoneme 경계·D/Dropbox workbook SHA를 독립 재검증하고 rename 전 stale path를 정규화한 v2 verification 생성 | 실자료 60/60·Dropbox 12/12·최종경로 검증 통과 |
+| make_phoneme_roman_workbook_portable.py | 원본 workbook을 보존하고 WAV·기존 4-tier·새 5-tier 링크를 같은 Dropbox 폴더의 파일명 상대경로로 바꾸어 원격 컴퓨터에서도 열리는 새 workbook을 생성 | 12행·36링크·36대상 재로딩 검증 통과 |
 
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입

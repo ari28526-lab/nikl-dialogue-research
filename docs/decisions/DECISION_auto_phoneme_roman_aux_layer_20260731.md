@@ -220,6 +220,18 @@ TextGrid를 다시 확인한 `PILOT_VERIFICATION_V2.json`을 추가했다. 이 v
 - MFA phone과 wav2vec2 phone 또는 연구자 판정을 같은 열로 덮어쓰기
 - 로마자 보조층 때문에 `phones_mfa` IPA나 시간을 삭제
 
+## 2026-08-01 원격 검토 링크 보정
+
+검토 파일을 Dropbox에 모았어도 workbook이 `D:\...` 절대경로를
+저장하면 다른 컴퓨터에서 열 수 없다. 따라서 이후 모든 파일럿 검토
+workbook은 다음을 필수 계약으로 삼는다.
+
+- workbook과 WAV·구 TextGrid·신 TextGrid를 같은 검토 폴더에 둔다.
+- hyperlink에는 drive·상위/하위 경로 없이 파일명만 저장한다.
+- 생성 후 전체 36개 링크가 상대경로이고 대상이 존재하는지 재로딩
+  검증한다.
+- 기존 workbook은 덮어쓰지 않고 `PORTABLE_YYYYMMDD` 새 파일로 전달한다.
+
 ## 다음 gate
 
 1. 12발화에서 WAV, 기존 4-tier, 새 5-tier를 비교한다.

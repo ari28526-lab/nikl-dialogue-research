@@ -806,8 +806,12 @@ def build_workbook(
         old_tg = review_root / f"{year}__{utt_id}.TextGrid"
         new_tg = delivered_textgrids[utt_id]
         for column, target in ((14, wav), (15, old_tg), (16, new_tg)):
+            if target.parent.resolve() != review_root.resolve():
+                raise RuntimeError(f"검토 링크 대상이 전달 폴더 밖에 있음: {target}")
             cell = ws.cell(row=row_index, column=column)
-            cell.hyperlink = str(target)
+            # Workbook과 36개 검토 파일을 같은 Dropbox 폴더에 두고
+            # 다른 컴퓨터에서도 열 수 있도록 절대경로를 저장하지 않는다.
+            cell.hyperlink = target.name
             cell.style = "Hyperlink"
         ws.cell(row=row_index, column=13).number_format = "0.0%"
     normal_validation = DataValidation(
@@ -982,6 +986,16 @@ def verify_workbook(path: Path, *, expected_rows: int) -> None:
     )
     if links != expected_rows * 3:
         raise RuntimeError(f"workbook 링크 불일치: {links}")
+    nonportable_links = []
+    for row in review.iter_rows(min_row=2):
+        for cell in row:
+            if cell.hyperlink is None:
+                continue
+            target = str(cell.hyperlink.target)
+            if Path(target).is_absolute() or ":" in target or "/" in target or "\\" in target:
+                nonportable_links.append(f"{cell.coordinate}={target}")
+    if nonportable_links:
+        raise RuntimeError(f"workbook 비휴대형 절대경로 링크: {nonportable_links[:5]}")
     if len(review.data_validations.dataValidation) != 2:
         raise RuntimeError("workbook dropdown 수 불일치")
     errors = []

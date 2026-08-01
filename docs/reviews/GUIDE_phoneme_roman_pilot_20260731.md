@@ -4,10 +4,13 @@
 
 ```text
 C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731\
-PHONEME_ROMAN_PILOT.xlsx
+PHONEME_ROMAN_PILOT_PORTABLE_20260801.xlsx
 ```
 
 PowerShell 실행은 필요 없다. 대량 MFA도 아직 시작하지 않는다.
+이 portable workbook의 WAV·기존 4-tier·새 5-tier 링크는 모두 같은
+Dropbox 폴더의 파일명을 사용하므로, 폴더 전체가 동기화된 다른
+컴퓨터에서도 열려야 한다.
 
 ## 한 번에 한 행씩 보는 순서
 
