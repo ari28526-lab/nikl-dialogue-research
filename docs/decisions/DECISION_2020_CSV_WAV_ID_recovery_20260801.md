@@ -1,7 +1,7 @@
 # 2020 CSV–WAV 발화 ID 대응 복구 결정
 
 결정일: 2026-08-01 KST
-상태: `MFA BLOCKED — MINIMAL LISTENING REVIEW READY`
+상태: `MFA BLOCKED — MINIMAL LISTENING REVIEW PASSED 12/12`
 
 ## 연구 목적과 위험
 
@@ -89,6 +89,19 @@ outputs/2020_wav_id_recovery_review_20260802/REVIEW_MANIFEST.json
 오대응을 비교하기 위한 보조다. `A 맞음`은 고신뢰 복구 적용 단계로 진행할
 근거이지 원본 덮어쓰기 승인이 아니다. 불확실·불일치는 해당 블록의 자동 적용을
 확대하지 않고 재계획 대상으로 돌린다.
+
+연구자 청취 결과는 12/12 모두 `A_MATCHES_TARGET`이었다. 첫 두 건은 개별로,
+3–12번은 각 확인 문장과 같다는 일괄 응답으로 기록했다. 판정 파일은 다음과
+같고 Dropbox 검토 묶음에도 같은 SHA의 사본을 두었다.
+
+```text
+outputs/2020_wav_id_recovery_review_20260802/REVIEW_DECISIONS.json
+outputs/2020_wav_id_recovery_review_20260802/REVIEW_DECISIONS.md
+```
+
+방법론적 해석 범위는 `연속 일치 길이 3–10, 11–80, 81+의 6개 블록에서
+재매핑 구간 양끝 12건 모두 음성–전사 일치`다. 이를 고신뢰 후보 14,221건의
+전수 수동 검수라고 쓰지 않는다.
 
 ## 코드 안전 수정
 

@@ -556,3 +556,15 @@ shard 2–23을 재개하는 것이다.
 
 재현 스크립트:
 `scripts/python/build_wav_recovery_review_bundle.py`
+
+### 연구자 청취 결과
+
+- 1–2번은 개별 응답, 3–12번은 일괄 응답으로 확인했다.
+- 12/12 모두 A 제안 음원이 대상 전사와 일치했다.
+- 판정은 `REVIEW_DECISIONS.json/.md`에 기록하고 Dropbox 검토 폴더에도
+  SHA 동일 사본으로 동기화했다.
+- 이 결과는 3개 길이대의 6블록 양끝 표본이 복구 규칙을 지지한다는 뜻이다.
+  14,221건을 사람이 전수 확인한 것으로 해석하거나 기록하지 않는다.
+- 다음 단계는 원본 변경 전 영향 세션 archive manifest·복구 적용 transaction·
+  rollback 계약을 구현하고 dry-run으로 검증하는 것이다. 사용자가 새로 실행할
+  PowerShell 명령은 아직 없다.

@@ -190,7 +190,7 @@ def write_guide(path: Path, review_rows: list[dict[str, object]]) -> None:
             ]
         )
     with atomic_text_writer(path, encoding="utf-8", newline="\n") as (stream, _):
-        stream.write("\n".join(lines) + "\n")
+        stream.write("\n".join(lines).rstrip() + "\n")
 
 
 def main() -> int:
