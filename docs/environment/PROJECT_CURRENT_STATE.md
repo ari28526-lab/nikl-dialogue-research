@@ -2,6 +2,23 @@
 
 최종 갱신: 2026-08-01 KST
 
+## 2026-08-01 최신 정지점 — 전체 workflow 리셋 외부 리뷰 대기
+
+- 단순 실행 순서 리뷰를 전체 workflow·반영 추적·검수 가치·archive 구조 감사로
+  확대했다.
+- 2020 `morph_search.v3`은 1/23 성공 상태로 정지했고 신규 r2 MFA는 미시작이다.
+- 외부 리뷰 전에는 추가 파일럿, shard 2 이후, LAB 전수, MFA를 실행하지 않는다.
+- 리뷰어는 결정→문서→config/schema→runner→test→실물의 반영 사슬을 감사하고,
+  각 검수를 유지/통합/기계화/조건부/폐지로 판정한다.
+- archive는 지금 실행하지 않는다. 기존 링크·entrypoint를 조사한 이동표와 새
+  `PROJECT_CURRENT_STATE` 초안을 받은 뒤 manifest·`git mv`·link 검증으로 적용한다.
+
+리뷰 브리프:
+`docs/reviews/BRIEF_external_review_workflow_reset_20260801.md`
+
+외부 도구 프롬프트:
+`docs/reviews/PROMPT_external_review_workflow_reset_20260801.md`
+
 ## 2026-08-01 최신 정지점 — 전수 순서 외부 리뷰 대기
 
 - 2020 `morph_search.v3` 실제 첫 shard 1/23은 성공했고 lock 없이 정상 정지했다.

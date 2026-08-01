@@ -437,3 +437,24 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 
 외부 리뷰 프롬프트:
 `docs/reviews/PROMPT_external_review_prebulk_execution_order_20260801.md`
+
+## 2026-08-01 — 전체 workflow·검수 가치·archive 구조 리뷰로 확대
+
+- 사용자는 계속 검수에 머물면서 반영 누락, 의미 없는 반복 검수, 다음 생산 단계
+  지연이 생겼을 가능성을 전체적으로 점검해 달라고 요청했다.
+- 현재 문서 104개, decision 53개, review 21개이며 과거와 최신 `GO/완료/대기`
+  상태가 함께 노출되는 구조 자체를 위험으로 기록했다.
+- 새 외부 리뷰는 문서의 완료 표현을 믿지 않고 결정→문서→config/schema→runner→
+  test→실물 artifact를 대조하게 했다.
+- 모든 검수를 `유지/통합/기계화/조건부/폐지`로 판정하고, 사람이 해야 하는 것은
+  언어학적 선택·자료 제외·파괴적 작업 승인으로 제한하게 했다.
+- 정본/현재 증거/역사자료/대체됨/실패근거/검토산출물 archive 후보표와 50–120줄의
+  새 현재상태 초안을 결과물로 요구했다.
+- 이번 리뷰에서는 실제 파일 이동·삭제·코드 수정·전수 계산을 금지했다. 결과 반영
+  뒤 manifest와 `git mv`로 archive 및 구조 refresh를 별도 시행한다.
+
+브리프:
+`docs/reviews/BRIEF_external_review_workflow_reset_20260801.md`
+
+새 외부 리뷰 프롬프트:
+`docs/reviews/PROMPT_external_review_workflow_reset_20260801.md`
