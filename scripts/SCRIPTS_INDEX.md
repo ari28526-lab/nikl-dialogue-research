@@ -1,5 +1,15 @@
 # 스크립트 색인 (scripts/python) — 2026-07-14
 
+## 2026-08-01 조합검색 v3 전수 진입
+
+| 스크립트 | 역할 |
+|---|---|
+| `python/build_morph_search_year_sharded.py` | 동결 pre-MFA search master를 읽기 전용으로 받아 연도·session-file shard별 7개 형태/철자/기호 검색표를 만들고, 성공 shard SHA 재검증·결정적 gzip·연도 승격을 수행한다. 실패 partial은 보존한다. |
+| `run_morph_search_year_safe.ps1` | 한 연도만 허용하고 D: 공간·동결 입력 manifest·중복 lock을 검사한 뒤 위 builder를 실행한다. MFA·TextGrid·공통사전은 변경하지 않는다. |
+| `show_morph_search_year_status.ps1` | 연도별 shard 진행률, schema, 연도 manifest와 table 행 수를 읽기 전용으로 표시한다. |
+| `python/collect_morph_search_regression_evidence.py` | 2020–2025 각 10발화의 두 독립 출력에서 42개 gzip SHA, 어절 좌표 mismatch, 기호 상태와 `2사람이→두` 근거를 감사한다. |
+
+
 파이프라인 순서대로. 모든 경로 상수는 새 D: 구조 기준 (config/paths.json 참조).
 각 코드가 **무슨 자료로·왜·무슨 역할**인지 서술형 해설은
 [docs/자료구축_코드해설.md](../docs/자료구축_코드해설.md).

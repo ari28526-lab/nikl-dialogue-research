@@ -24,6 +24,9 @@ class BuildMorphPositionTablesTests(unittest.TestCase):
                     "tagged",
                     "n_morphs",
                     "tagged_roman",
+                    "pron_reference_form",
+                    "pron_reference_source",
+                    "pron_reference_status",
                 ],
             )
             writer.writeheader()
@@ -47,6 +50,11 @@ class BuildMorphPositionTablesTests(unittest.TestCase):
                     "tagged": "1/SN+층/NNG",
                     "n_morphs": "2",
                     "tagged_roman": "1/SN + CH EU ng/NNG",
+                    "pron_reference_form": "일층",
+                    "pron_reference_source": (
+                        "original_form_placeholder_resolution"
+                    ),
+                    "pron_reference_status": "resolved_original_form",
                 }
             )
 
@@ -65,11 +73,15 @@ class BuildMorphPositionTablesTests(unittest.TestCase):
             self.assertEqual(manifest["counts"]["utterances"], 2)
             self.assertEqual(manifest["counts"]["morph_tokens"], 4)
             self.assertEqual(manifest["counts"]["morph_boundaries"], 2)
+            self.assertEqual(manifest["counts"]["symbol_readings"], 1)
             self.assertTrue((output / "orth_components.csv").is_file())
+            self.assertTrue((output / "eojeol_tokens.csv").is_file())
+            self.assertTrue((output / "symbol_readings.csv").is_file())
             saved = json.loads(
                 (output / "BUILD_MANIFEST.json").read_text(encoding="utf-8")
             )
             self.assertTrue(saved["gates"]["boundary_count_equal"])
+            self.assertTrue(saved["gates"]["orth_symbol_coverage_equal"])
             with open(
                 output / "utterance_master_v2.csv",
                 encoding="utf-8-sig",
@@ -80,6 +92,14 @@ class BuildMorphPositionTablesTests(unittest.TestCase):
             self.assertEqual(
                 rows[1]["legacy_tagged_roman_equal_v2"], "False"
             )
+            with open(
+                output / "symbol_readings.csv",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                symbols = list(csv.DictReader(stream))
+            self.assertEqual(symbols[0]["symbol_surface"], "1")
+            self.assertEqual(symbols[0]["reference_reading"], "일")
             with self.assertRaises(FileExistsError):
                 build_tables(input_paths=[source], output_root=output)
 

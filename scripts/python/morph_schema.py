@@ -11,6 +11,7 @@ import json
 import re
 import unicodedata
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from typing import Iterable, Iterator, Mapping, Sequence
 
 import predict_pron as pp
@@ -18,13 +19,60 @@ import predict_pron as pp
 ROMAN_SYSTEM_VERSION = "roman_mfa.v1"
 SERIALIZATION_VERSION = "tagged_roman.v2"
 POSITION_SCHEMA_VERSION = "morph_position.v1"
-MORPH_SCHEMA_VERSION = "morph_search.v1"
+MORPH_SCHEMA_VERSION = "morph_search.v3"
+SYMBOL_SCHEMA_VERSION = "symbol_reading.v1"
 
 EOJEOL_SEPARATOR = " | "
 MORPH_SEPARATOR = " + "
 UNIT_SEPARATOR = " _ "
 
 POS_RE = re.compile(r"^[A-Z][A-Z0-9_-]*$")
+
+# 단일 아라비아 숫자의 읽기 *후보*다. 실제 읽기 선택값이 아니며, 원 JSON의
+# 전사나 연구자 판정이 없을 때 후보를 실제 발음처럼 확정하지 않는다.
+# `2`는 문맥에 따라 `이/둘/두`가 될 수 있으므로 세 값을 함께 둔다.
+DIGIT_READING_CANDIDATES: dict[str, tuple[str, ...]] = {
+    "0": ("영", "공"),
+    "1": ("일", "하나", "한"),
+    "2": ("이", "둘", "두"),
+    "3": ("삼", "셋", "세"),
+    "4": ("사", "넷", "네"),
+    "5": ("오", "다섯"),
+    "6": ("육", "륙", "여섯"),
+    "7": ("칠", "일곱"),
+    "8": ("팔", "여덟"),
+    "9": ("구", "아홉"),
+}
+
+SYMBOL_READING_FIELDS = [
+    "utt_id",
+    "year",
+    "symbol_idx_in_utterance",
+    "symbol_count_in_utterance",
+    "orth_eojeol_idx",
+    "orth_eojeol_count",
+    "symbol_surface",
+    "symbol_type",
+    "source_eojeol",
+    "char_start_in_eojeol",
+    "char_end_in_eojeol",
+    "char_start_in_compact_utterance",
+    "char_end_in_compact_utterance",
+    "left_context",
+    "right_context",
+    "reference_form",
+    "reference_reading",
+    "reference_reading_orth_roman",
+    "reading_candidates_json",
+    "reading_candidate_source",
+    "reading_source",
+    "reading_status",
+    "resolution_method",
+    "affects_reference_form",
+    "pron_reference_source",
+    "pron_reference_status",
+    "symbol_schema_version",
+]
 
 # 호환 자모 한 글자 안에 결합되어 있는 철자 구성 성분이다. 이 목록을
 # MFA phone이나 실제 음성 분절 목록으로 해석하지 않는다.
@@ -292,6 +340,174 @@ def orth_roman_v2(form: str) -> str:
     return EOJEOL_SEPARATOR.join(values)
 
 
+def _symbol_type(value: str) -> str:
+    """Classify one literal run without interpreting its pronunciation."""
+
+    if value and all(char.isdigit() for char in value):
+        return "digit"
+    if value and all(
+        char.isalpha() and "LATIN" in unicodedata.name(char, "")
+        for char in value
+    ):
+        return "latin"
+    if value and all(unicodedata.category(char).startswith("P") for char in value):
+        return "punctuation"
+    if value and all(unicodedata.category(char).startswith("S") for char in value):
+        return "symbol"
+    return "mixed_literal"
+
+
+def _is_korean_reading(value: str) -> bool:
+    return bool(value) and all(
+        pp.is_syllable(char) or _is_standalone_jamo(char) for char in value
+    )
+
+
+def _symbol_reading_candidates(value: str) -> tuple[str, ...]:
+    # 여러 자리 수는 자리값·단위·문맥에 따라 읽기가 달라지므로 각 자릿값을
+    # 기계적으로 이어 붙이지 않는다.
+    return DIGIT_READING_CANDIDATES.get(value, ())
+
+
+def build_symbol_readings(
+    *,
+    utt_id: str,
+    year: str,
+    form_eojeols: Sequence[str],
+    reference_form: str,
+    pron_reference_source: str,
+    pron_reference_status: str,
+) -> list[dict[str, object]]:
+    """Build source-preserving literal/symbol rows and evidence-backed readings.
+
+    The table never treats a numeral candidate as the selected pronunciation.
+    A selected ``reference_reading`` is emitted only when a SequenceMatcher
+    replacement aligns exactly to the literal run in ``form``.  Thus
+    ``2사람이`` -> ``두 사람이`` can yield ``2`` -> ``두`` when the corpus
+    reference supplies that form, while an unexpanded ``2`` remains unresolved
+    with ``이/둘/두`` only in ``reading_candidates_json``.
+    """
+
+    source_compact = "".join(form_eojeols)
+    reference_value = nfc(reference_form).strip()
+    reference_compact = "".join(reference_value.split())
+    opcodes = (
+        SequenceMatcher(
+            None, source_compact, reference_compact, autojunk=False
+        ).get_opcodes()
+        if reference_compact
+        else []
+    )
+
+    specs: list[dict[str, object]] = []
+    compact_offset = 0
+    for eojeol_idx, eojeol in enumerate(form_eojeols, 1):
+        for unit in iter_surface_units(eojeol):
+            if unit.unit_type != "literal":
+                continue
+            specs.append(
+                {
+                    "eojeol_idx": eojeol_idx,
+                    "source_eojeol": eojeol,
+                    "surface": unit.surface,
+                    "start_eojeol": unit.char_start,
+                    "end_eojeol": unit.char_end,
+                    "start_compact": compact_offset + unit.char_start,
+                    "end_compact": compact_offset + unit.char_end,
+                }
+            )
+        compact_offset += len(eojeol)
+
+    rows: list[dict[str, object]] = []
+    symbol_count = len(specs)
+    for symbol_idx, spec in enumerate(specs, 1):
+        start = int(spec["start_compact"])
+        end = int(spec["end_compact"])
+        surface = str(spec["surface"])
+        symbol_type = _symbol_type(surface)
+        reading = ""
+        reading_source = ""
+        status = "unresolved_no_reference"
+        method = "no_reference"
+        affects_reference = False
+
+        covering = [
+            opcode
+            for opcode in opcodes
+            if opcode[1] <= start and end <= opcode[2]
+        ]
+        if covering:
+            tag, i1, i2, j1, j2 = covering[0]
+            exact = i1 == start and i2 == end
+            reading_source = pron_reference_source
+            if tag == "equal":
+                method = "literal_preserved_in_reference"
+                status = (
+                    "not_applicable_punctuation_preserved"
+                    if symbol_type == "punctuation"
+                    else "unresolved_same_literal"
+                )
+            elif exact and tag == "replace":
+                reading = reference_compact[j1:j2]
+                affects_reference = True
+                method = "exact_sequence_replace"
+                status = (
+                    "resolved_reference_transcription"
+                    if _is_korean_reading(reading)
+                    else "unresolved_non_korean_replacement"
+                )
+            elif exact and tag == "delete":
+                affects_reference = True
+                method = "exact_sequence_delete"
+                status = (
+                    "not_applicable_punctuation_omitted"
+                    if symbol_type == "punctuation"
+                    else "unresolved_reference_omitted"
+                )
+            else:
+                affects_reference = tag != "equal"
+                method = "sequence_change_not_isolated_to_symbol"
+                status = "unresolved_alignment_ambiguous"
+
+        candidates = _symbol_reading_candidates(surface)
+        rows.append(
+            {
+                "utt_id": utt_id,
+                "year": year,
+                "symbol_idx_in_utterance": symbol_idx,
+                "symbol_count_in_utterance": symbol_count,
+                "eojeol_idx": spec["eojeol_idx"],
+                "eojeol_count": len(form_eojeols),
+                "symbol_surface": surface,
+                "symbol_type": symbol_type,
+                "source_eojeol": spec["source_eojeol"],
+                "char_start_in_eojeol": spec["start_eojeol"],
+                "char_end_in_eojeol": spec["end_eojeol"],
+                "char_start_in_compact_utterance": start,
+                "char_end_in_compact_utterance": end,
+                "left_context": source_compact[max(0, start - 12):start],
+                "right_context": source_compact[end:end + 12],
+                "reference_form": reference_value,
+                "reference_reading": reading,
+                "reference_reading_orth_roman": (
+                    orth_roman_v2(reading) if reading else ""
+                ),
+                "reading_candidates_json": _json_list(candidates),
+                "reading_candidate_source": (
+                    "korean_digit_candidates.v1" if candidates else ""
+                ),
+                "reading_source": reading_source,
+                "reading_status": status,
+                "resolution_method": method,
+                "affects_reference_form": affects_reference,
+                "pron_reference_source": pron_reference_source,
+                "pron_reference_status": pron_reference_status,
+                "symbol_schema_version": SYMBOL_SCHEMA_VERSION,
+            }
+        )
+    return rows
+
+
 def _slot_components(slot: str, jamo: str) -> tuple[str, ...]:
     if not jamo:
         return ()
@@ -458,7 +674,7 @@ def _edge_payload(unit_row: Mapping[str, object], prefix: str) -> dict[str, obje
 
 
 def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
-    """발화 1행에서 정규화 표 네 종류와 master 파생값을 만든다."""
+    """발화 1행에서 정규화 검색표와 master 파생값을 만든다."""
 
     utt_id = nfc(row.get("utt_id", "")).strip()
     year = nfc(row.get("year", "")).strip()
@@ -479,35 +695,72 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
     if form_value:
         form_eojeols = form_value.split()
         eojeol_form_source = "form"
-        if len(form_eojeols) != len(parsed):
-            raise MorphSchemaError(
-                f"{utt_id}: form/tagged 어절 수 불일치 "
-                f"{len(form_eojeols)}!={len(parsed)}"
-            )
     else:
         form_eojeols = tagged_eojeol_forms
         eojeol_form_source = "tagged_surface_fallback"
+    form_tagged_count_equal = len(form_eojeols) == len(parsed)
 
     form_roman_value = str(row.get("form_roman", "") or "").strip()
     if form_roman_value:
         form_roman_eojeols = form_roman_value.split(EOJEOL_SEPARATOR)
         eojeol_roman_source = "form_roman"
-        if len(form_roman_eojeols) != len(parsed):
-            raise MorphSchemaError(
-                f"{utt_id}: form_roman/tagged 어절 수 불일치 "
-                f"{len(form_roman_eojeols)}!={len(parsed)}"
-            )
     else:
         predicted = pp.predict_pron(" ".join(form_eojeols), tagged=tagged)
         form_roman_eojeols = str(predicted["form_roman"]).split(
             EOJEOL_SEPARATOR
         )
         eojeol_roman_source = "deterministic_form_fallback"
+    form_roman_count_equal = len(form_roman_eojeols) == len(form_eojeols)
+
+    orth_eojeol_rows: list[dict[str, object]] = []
+    for orth_idx, orth_form in enumerate(form_eojeols, 1):
+        orth_eojeol_rows.append(
+            {
+                "utt_id": utt_id,
+                "year": year,
+                "orth_eojeol_idx": orth_idx,
+                "orth_eojeol_count": len(form_eojeols),
+                "orth_eojeol_form": orth_form,
+                "orth_eojeol_roman": (
+                    form_roman_eojeols[orth_idx - 1]
+                    if form_roman_count_equal
+                    else ""
+                ),
+                "orth_eojeol_roman_v2": orth_roman_v2(orth_form),
+                "linked_morph_eojeol_idx": (
+                    orth_idx if form_tagged_count_equal else ""
+                ),
+                "morph_link_status": (
+                    "count_aligned"
+                    if form_tagged_count_equal
+                    else "form_tagged_count_mismatch"
+                ),
+                "orth_eojeol_form_source": eojeol_form_source,
+                "orth_eojeol_roman_source": (
+                    eojeol_roman_source
+                    if form_roman_count_equal
+                    else "legacy_form_roman_count_mismatch"
+                ),
+                "roman_system_version": ROMAN_SYSTEM_VERSION,
+                "position_schema_version": POSITION_SCHEMA_VERSION,
+            }
+        )
 
     eojeol_rows: list[dict[str, object]] = []
-    for eojeol_idx, (morphs, eojeol_form, eojeol_roman) in enumerate(
-        zip(parsed, form_eojeols, form_roman_eojeols), 1
-    ):
+    for eojeol_idx, morphs in enumerate(parsed, 1):
+        morph_surface = tagged_eojeol_forms[eojeol_idx - 1]
+        linked_form = (
+            form_eojeols[eojeol_idx - 1]
+            if form_tagged_count_equal
+            else ""
+        )
+        use_legacy_roman = form_tagged_count_equal and form_roman_count_equal
+        eojeol_form = linked_form or morph_surface
+        eojeol_roman = (
+            form_roman_eojeols[eojeol_idx - 1]
+            if use_legacy_roman
+            else orth_roman_v2(morph_surface)
+        )
         eojeol_rows.append(
             {
                 "utt_id": utt_id,
@@ -516,19 +769,66 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
                 "eojeol_count": len(parsed),
                 "eojeol_form": eojeol_form,
                 "eojeol_roman": eojeol_roman,
+                "eojeol_roman_v2": (
+                    orth_roman_v2(linked_form)
+                    if linked_form
+                    else orth_roman_v2(morph_surface)
+                ),
+                "morph_eojeol_surface": morph_surface,
+                "orth_eojeol_form": linked_form,
                 "morph_count_in_eojeol": len(morphs),
                 "morph_surface_concat": tagged_eojeol_forms[eojeol_idx - 1],
                 "morph_tagged": canonicalize_tagged([morphs]),
                 "morph_roman": tagged_roman_v2([morphs]),
                 "form_matches_morph_surface": (
-                    eojeol_form == tagged_eojeol_forms[eojeol_idx - 1]
+                    bool(linked_form) and linked_form == morph_surface
                 ),
-                "eojeol_form_source": eojeol_form_source,
-                "eojeol_roman_source": eojeol_roman_source,
+                "morph_to_form_status": (
+                    "form_tagged_count_mismatch"
+                    if not form_tagged_count_equal
+                    else (
+                        "exact_concat"
+                        if linked_form == morph_surface
+                        else "surface_mismatch"
+                    )
+                ),
+                "eojeol_form_source": (
+                    eojeol_form_source
+                    if linked_form
+                    else "tagged_analysis_space"
+                ),
+                "eojeol_roman_source": (
+                    eojeol_roman_source
+                    if use_legacy_roman
+                    else "tagged_roman_v2_analysis_space"
+                ),
+                "eojeol_roman_v2_source": (
+                    "orth_roman_v2"
+                    if linked_form
+                    else "tagged_roman_v2_analysis_space"
+                ),
                 "roman_system_version": ROMAN_SYSTEM_VERSION,
                 "position_schema_version": POSITION_SCHEMA_VERSION,
             }
         )
+
+    reference_form = nfc(row.get("pron_reference_form", "")).strip()
+    if not reference_form:
+        reference_form = " ".join(form_eojeols)
+    pron_reference_source = nfc(
+        row.get("pron_reference_source", "")
+    ).strip() or "form_fallback"
+    pron_reference_status = nfc(
+        row.get("pron_reference_status", "")
+    ).strip() or "reference_not_supplied"
+    symbol_rows = build_symbol_readings(
+        utt_id=utt_id,
+        year=year,
+        form_eojeols=form_eojeols,
+        reference_form=reference_form,
+        pron_reference_source=pron_reference_source,
+        pron_reference_status=pron_reference_status,
+    )
 
     units_by_morph: dict[tuple[int, int], list[SurfaceUnit]] = {
         (morph.eojeol_idx, morph.morph_idx_in_eojeol): list(
@@ -729,6 +1029,7 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
         {
             "canonical_tagged": canonicalize_tagged(parsed),
             "tagged_roman_v2": roman,
+            "form_roman_v2": orth_roman_v2(" ".join(form_eojeols)),
             "roman_system_version": ROMAN_SYSTEM_VERSION,
             "serialization_version": SERIALIZATION_VERSION,
             "position_schema_version": POSITION_SCHEMA_VERSION,
@@ -737,6 +1038,23 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
             "morph_count_structured": morph_count,
             "morph_unit_count": total_units,
             "morph_boundary_count": boundary_count,
+            "orth_eojeol_count_structured": len(form_eojeols),
+            "morph_eojeol_count_structured": len(parsed),
+            "form_tagged_eojeol_count_equal": form_tagged_count_equal,
+            "symbol_schema_version": SYMBOL_SCHEMA_VERSION,
+            "symbol_count": len(symbol_rows),
+            "symbol_reading_resolved_count": sum(
+                str(item["reading_status"]).startswith("resolved_")
+                for item in symbol_rows
+            ),
+            "symbol_reading_unresolved_count": sum(
+                str(item["reading_status"]).startswith("unresolved_")
+                for item in symbol_rows
+            ),
+            "symbol_not_applicable_count": sum(
+                str(item["reading_status"]).startswith("not_applicable_")
+                for item in symbol_rows
+            ),
             "tagged_regeneration_equal": (
                 recompose_raw_tagged(parsed) == tagged
             ),
@@ -749,10 +1067,12 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
         raise MorphSchemaError(f"{utt_id}: tagged regeneration 불일치")
     return {
         "master": master,
+        "orth_eojeol_tokens": orth_eojeol_rows,
         "eojeol_tokens": eojeol_rows,
         "morph_tokens": morph_rows,
         "morph_units": unit_rows,
         "morph_boundaries": boundary_rows,
+        "symbol_readings": symbol_rows,
         "orth_components": component_rows,
     }
 

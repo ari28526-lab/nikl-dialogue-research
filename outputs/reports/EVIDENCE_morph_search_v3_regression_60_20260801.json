@@ -1,0 +1,93 @@
+{
+  "schema_version": "morph_search_v3_regression_evidence.v1",
+  "status": "success",
+  "collected_at": "2026-08-01T15:25:11.118407+09:00",
+  "mfa_executed": false,
+  "scope": "2020-2025, 10 utterances per year from existing text pilot inputs",
+  "versions": {
+    "morph_schema": "morph_search.v3",
+    "roman_system": "roman_mfa.v1",
+    "serialization": "tagged_roman.v2",
+    "position_schema": "morph_position.v1",
+    "symbol_schema": "symbol_reading.v1"
+  },
+  "years": {
+    "2020": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 4,
+      "orth_eojeol_rows": 32,
+      "morph_eojeol_rows": 31
+    },
+    "2021": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 5,
+      "orth_eojeol_rows": 35,
+      "morph_eojeol_rows": 33
+    },
+    "2022": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 4,
+      "orth_eojeol_rows": 35,
+      "morph_eojeol_rows": 34
+    },
+    "2023": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 3,
+      "orth_eojeol_rows": 56,
+      "morph_eojeol_rows": 56
+    },
+    "2024": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 4,
+      "orth_eojeol_rows": 79,
+      "morph_eojeol_rows": 79
+    },
+    "2025": {
+      "utterances": 10,
+      "tables": 7,
+      "symbol_rows": 6,
+      "orth_eojeol_rows": 65,
+      "morph_eojeol_rows": 64
+    }
+  },
+  "totals": {
+    "eojeol_tokens": 297,
+    "master": 60,
+    "morph_boundaries": 488,
+    "morph_tokens": 548,
+    "morph_units": 809,
+    "orth_eojeol_tokens": 302,
+    "symbol_readings": 26
+  },
+  "form_tagged_count_mismatch_utterances": 7,
+  "symbol_statuses": {
+    "not_applicable_punctuation_preserved": 24,
+    "resolved_reference_transcription": 1,
+    "unresolved_same_literal": 1
+  },
+  "deterministic_gzip": {
+    "compared_tables": 42,
+    "sha256_mismatch_count": 0
+  },
+  "target_symbol_example": {
+    "utt_id": "SARW2500000414.1.1.2",
+    "source_eojeol": "2사람이",
+    "symbol_surface": "2",
+    "reference_form": "오늘 이 자리에서 두 사람이 부부가 되어 새로운 인생의 길을 함께 걷게 되었습니다.",
+    "selected_reading": "두",
+    "candidate_readings": [
+      "이",
+      "둘",
+      "두"
+    ],
+    "reading_source": "original_form_placeholder_resolution",
+    "reading_status": "resolved_reference_transcription"
+  },
+  "candidate_root": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\morph_search_v2_regression_60_20260801",
+  "repeat_root": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\morph_search_v2_regression_60_repeat_20260801"
+}

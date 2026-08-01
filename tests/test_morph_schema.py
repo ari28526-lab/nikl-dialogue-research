@@ -1,4 +1,5 @@
 import sys
+import json
 import unicodedata
 import unittest
 from pathlib import Path
@@ -71,6 +72,32 @@ class MorphSchemaTests(unittest.TestCase):
         self.assertEqual(row["eojeol_form_source"], "form")
         self.assertEqual(row["eojeol_roman_source"], "form_roman")
 
+    def test_form_tagged_count_mismatch_keeps_both_coordinate_spaces(self):
+        result = build_utterance_tables(
+            {
+                "utt_id": "U1C",
+                "year": "2020",
+                "form": "나는 그걸 할 수 있어",
+                "tagged": "나/NP+는/JX 그거/NP+ㄹ/JKO 하/VV+ㄹ/ETM 수/NNB+있/VA+어/EC",
+                "align_warn": "eojeol_tag_mismatch(5!=4)",
+            }
+        )
+        self.assertEqual(len(result["orth_eojeol_tokens"]), 5)
+        self.assertEqual(len(result["eojeol_tokens"]), 4)
+        self.assertFalse(result["master"]["form_tagged_eojeol_count_equal"])
+        self.assertTrue(
+            all(
+                row["morph_link_status"] == "form_tagged_count_mismatch"
+                for row in result["orth_eojeol_tokens"]
+            )
+        )
+        self.assertTrue(
+            all(
+                row["morph_to_form_status"] == "form_tagged_count_mismatch"
+                for row in result["eojeol_tokens"]
+            )
+        )
+
     def test_complex_coda_keeps_slot_and_components(self):
         result = build_utterance_tables(
             {
@@ -120,6 +147,59 @@ class MorphSchemaTests(unittest.TestCase):
             ],
             [("A1", "literal", 0, 2), ("층", "hangul", 2, 3)],
         )
+
+    def test_symbol_reading_uses_source_backed_context_not_global_replacement(self):
+        result = build_utterance_tables(
+            {
+                "utt_id": "U3B",
+                "year": "2025",
+                "form": "2사람이",
+                "tagged": "2/SN+사람/NNG+이/JKS",
+                "pron_reference_form": "두 사람이",
+                "pron_reference_source": (
+                    "original_form_placeholder_resolution"
+                ),
+                "pron_reference_status": "resolved_original_form",
+            }
+        )
+        symbol = result["symbol_readings"][0]
+        self.assertEqual(symbol["symbol_surface"], "2")
+        self.assertEqual(symbol["symbol_type"], "digit")
+        self.assertEqual(symbol["reference_reading"], "두")
+        self.assertEqual(symbol["reference_reading_orth_roman"], "D U")
+        self.assertEqual(
+            symbol["reading_status"], "resolved_reference_transcription"
+        )
+        self.assertEqual(
+            json.loads(symbol["reading_candidates_json"]),
+            ["이", "둘", "두"],
+        )
+        self.assertTrue(symbol["affects_reference_form"])
+        self.assertEqual(result["master"]["symbol_count"], 1)
+        self.assertEqual(
+            result["master"]["symbol_reading_resolved_count"], 1
+        )
+        self.assertEqual(
+            result["eojeol_tokens"][0]["eojeol_roman_v2"],
+            "⟨2⟩ _ S A _ R A m _ I",
+        )
+
+    def test_symbol_candidate_does_not_become_selected_without_evidence(self):
+        result = build_utterance_tables(
+            {
+                "utt_id": "U3C",
+                "year": "2025",
+                "form": "2",
+                "tagged": "2/SN",
+                "pron_reference_form": "2",
+                "pron_reference_source": "form_rule_prediction",
+                "pron_reference_status": "unresolved_symbol",
+            }
+        )
+        symbol = result["symbol_readings"][0]
+        self.assertEqual(symbol["reference_reading"], "")
+        self.assertEqual(symbol["reading_status"], "unresolved_same_literal")
+        self.assertIn("둘", json.loads(symbol["reading_candidates_json"]))
 
     def test_nfd_input_is_nfc_canonicalized(self):
         nfd = unicodedata.normalize("NFD", "꽃")

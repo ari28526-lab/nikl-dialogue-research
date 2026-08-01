@@ -350,3 +350,69 @@ TextGrid 링크를 열 수 없었다. 12발화의 WAV·기존 4-tier·새 5-tier
 - `start_full_mfa_after_review.ps1 -ApprovedBy <연구자>`는 승인된 CSV만 계약화하고
   전체 테스트 포함 preflight가 정확히 `GO`일 때만 연도 큐를 시작한다.
   full clean retry, 자동 승인, 정본 자동 승격은 전달하지 않는다.
+
+## 2026-08-01 — 구 2020 정렬 검토 중단과 조합검색 v3 생산 준비
+
+### 범위 정정
+
+- 2020–2025는 공통 Jamo r2 기준으로 모두 새로 정렬하므로 구 2020 정렬을
+  전수 검토·승인·재사용하지 않기로 다시 명시했다.
+- 중단된 `mfa_exclusions_queue_mfa_r2_full6y_20260801/2020`에는 검토 CSV가
+  생성되지 않았고, 이를 재개하지 않았다.
+- 현재 2020 작업은 구 TextGrid 검토가 아니라 새 정렬 전 조합검색 CSV/LAB
+  인프라 생성이다. 사람 확인은 새 입력에서 실제 예외 후보가 있을 때 그
+  후보에만 한정한다.
+
+### 구현
+
+- `morph_search.v3`에서 `form` 철자 어절과 `tagged` 분석 어절을
+  `orth_eojeol_tokens`/`eojeol_tokens`로 분리했다. 수가 다르면 hard fail하거나
+  zip으로 유실하지 않고 mismatch 상태를 남긴다.
+- `form_roman_v2`, 형태소·음절·경계 검색표와 `symbol_readings`를 함께 생성한다.
+- 숫자·기호는 occurrence별 표기, 좌우 문맥, 출처 근거 발음, 후보 목록,
+  해결 상태를 분리했다. 근거가 없으면 후보를 선택값으로 승격하지 않는다.
+- 연도·session-file shard checkpoint runner와 읽기 전용 상태판을 추가했다.
+  성공 shard는 SHA를 재검증해 재사용하고 실패 partial은 자동 삭제하지 않는다.
+- 실제 전수 경로와 run ID는 `morph_search_v3`로 통일했다.
+
+### 실자료 회귀 중 발견·보존한 시행착오
+
+1. 첫 시도는 2020에서 `form` 5어절과 `tagged` 4어절을 동일 좌표로 강제해
+   안전 중단됐다. 실패본은
+   `work/morph_search_v2_regression_60_pre_coordinate_fix_ARCHIVE_20260801`에
+   남겼고, 두 좌표계 분리로 수정했다.
+2. 두 번째 시도는 2024에서 형태소 literal 수와 원표기 symbol 수를 잘못
+   비교하는 gate 때문에 중단됐다. 실패본은
+   `work/morph_search_v2_regression_60_pre_orth_symbol_gate_ARCHIVE_20260801`에
+   남겼고, 원표기 기대 symbol 수와 실제 symbol 표 행 수를 비교하도록 고쳤다.
+
+### 검증 결과
+
+- 2020–2025 각 10발화, 총 60발화를 두 번 독립 생성했다.
+- 7표×6년 gzip 42개 SHA-256 불일치 0, 발화 60, 기호 occurrence 26,
+  철자/분석 어절 수 mismatch 7발화를 보존했다.
+- `SARW2500000414.1.1.2`의 `2사람이`는 원 전사 근거로 `두`를 선택하고
+  `이/둘/두` 후보를 별도 보존했다.
+- 전체 Python 292시험과 PowerShell 안전 검사 22파일이 통과했다.
+- 이 작업에서는 MFA·TextGrid·공통발음사전을 실행하거나 변경하지 않았다.
+
+### 2020 실제 전수 경로 첫 shard
+
+- 실제 동결 2020 입력은 session CSV 2,232개이며 100파일씩 총 23 shard로
+  계약됐다.
+- `morph_search_v3_20260801`의 shard 1만 실행해 41,803발화를 처리했다.
+- 압축 7표 28,540,035 bytes, SHA-256 재검사 불일치 0이었다.
+- 철자 어절 141,931행, 형태소 분석 어절 140,807행, 형태소 269,827행,
+  형태소 unit 402,110행, 경계 228,024행, 기호 13,560행을 보존했다.
+- `paused_after_max_shards`, 1/23으로 정상 중단했고 lock은 해제됐다. 다음 실행은
+  shard 1을 SHA 검증한 뒤 shard 2부터 이어간다.
+- 이 실측에서도 MFA·TextGrid·구 2020 정렬은 실행하거나 읽지 않았다.
+
+결정:
+`docs/decisions/DECISION_pre_MFA_combination_search_v3_20260801.md`
+
+근거:
+`outputs/reports/EVIDENCE_morph_search_v3_regression_60_20260801.json`
+
+실제 첫 shard 근거:
+`outputs/reports/PREFLIGHT_morph_search_v3_2020_shard1_20260801.json`

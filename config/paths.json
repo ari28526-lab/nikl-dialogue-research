@@ -20,6 +20,8 @@
   "_comment_common_pron": "2020-2025 전체 동결 코퍼스 어휘로 만드는 공통 발음 registry/index/MFA 파생사전. 대형 산출물은 D: release별 격리, 저장소에는 코드·작은 보고서만 추적.",
   "common_pron_home": "D:/mfa_common_pron",
   "pre_mfa_search_master": "D:/10_LAYERS/05_search_master_pre_mfa_staging/pre_mfa_v1_20260725",
+  "morph_search_v3_staging": "D:/10_LAYERS/09_morph_search_v3_staging",
+  "_comment_morph_search_v3": "morph_search.v3 연도·shard checkpoint형 조합검색 CSV.gz staging. 기존 search master를 읽기 전용으로 사용하고, 성공 manifest 전에는 최종 검색층으로 승격하지 않음.",
   "search_master": "D:/10_LAYERS/05_search_master",
   "actual_pron": "D:/10_LAYERS/06_actual_pron",
   "_comment_lexicon": "lexicon_full=1기 어휘목록(발음 pron_1/pron_2/pron_g2p, 내부 형태경계 morph_dict 포함, 130만 행). Dropbox 00_01_1차_archive/02_DICTIONARY에서 복사 후 사용 (DESIGN_search_master_layer.md)",

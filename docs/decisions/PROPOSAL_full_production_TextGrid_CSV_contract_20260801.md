@@ -1,9 +1,9 @@
 # 2020–2025 전수 MFA 연구 출력 계약 제안
 
 - 작성일: 2026-08-01 KST
-- 상태: **구현·60발화 회귀검사 통과, 외부 리뷰 및 최종 GO 대기**
+- 상태: **외부 리뷰 수정·60발화 회귀검사 통과; 2020 신규 생산 진입**
 - 적용 대상: 2020–2025 전체 5,103,356발화
-- 금지: 외부 리뷰와 필수 수정 전 전수 MFA 시작
+- 생산 원칙: 수정 계약의 연도별 기계 gate를 통과한 뒤 해당 연도 신규 MFA 시작
 
 ## 1. 연구 목적에서 출발한 설계
 
@@ -104,16 +104,18 @@ Roman 검색은 대소문자를 구분한다. 예를 들어 `k/p/t`는 미파열
 
 | 위치 | 좌표계 |
 |---|---|
-| `eojeol_idx` | `form/tagged`의 형태소 검색용 원 어절 |
+| `orth_eojeol_idx` | 철자 `form`의 원 어절 |
+| `eojeol_idx` | `tagged`의 형태소 분석 어절 |
 | `reference_eojeol_idx` | MFA 입력 `pron_reference_form`의 어절 |
 | `mfa_word_idx` | 유표 MFA word interval의 순서 |
 | `word_interval_idx` | 무음 interval까지 포함한 word interval 순서 |
 | `phone_interval_idx` | phone interval 순서 |
 
+`form`과 `tagged`의 어절 수가 다른 자료가 있으므로 두 좌표를 합치지 않는다.
 실자료 `SARW2500000414.1.1.2`에서 `form`의 `2사람이`는 한 어절이지만,
 원 JSON에서 복원한 MFA 참조 표기는 `두 사람이`라서 두 word다. 이를 같은
 `eojeol_idx`로 처리하면 이후의 모든 형태소–phone 연결이 한 칸씩 밀릴 수
-있다. 새 계약은 원 형태소 좌표와 MFA 입력 좌표를 분리하고, 두 수가
+있다. 새 계약은 철자·형태소 분석·MFA 입력 좌표를 분리하고, 수가
 다른 사실 자체를 출처 정보로 보존한다.
 
 ## 6. 재실행·실패 복구 계약

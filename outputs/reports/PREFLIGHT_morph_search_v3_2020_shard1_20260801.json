@@ -1,0 +1,28 @@
+{
+  "schema_version": "morph_search_v3_real_shard_preflight.v1",
+  "status": "success",
+  "year": "2020",
+  "run_id": "morph_search_v3_20260801",
+  "scope": "first production-path shard only; no MFA or TextGrid executed",
+  "input_session_csv_files_total": 2232,
+  "files_per_shard": 100,
+  "total_shards": 23,
+  "completed_shards": 1,
+  "progress_status": "paused_after_max_shards",
+  "shard_1": {
+    "session_csv_files": 100,
+    "utterances": 41803,
+    "orth_eojeol_tokens": 141931,
+    "eojeol_tokens": 140807,
+    "morph_tokens": 269827,
+    "morph_units": 402110,
+    "morph_boundaries": 228024,
+    "symbol_readings": 13560,
+    "gzip_tables": 7,
+    "compressed_bytes": 28540035,
+    "sha256_mismatch_count": 0,
+    "manifest_sha256": "5efd2348fb1364286751d1a1b380a9166292a16e03116be8410253f1b55772cf"
+  },
+  "output_root": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020",
+  "next_action": "resume the same year command without MaxShards; shard 1 is verified and reused"
+}

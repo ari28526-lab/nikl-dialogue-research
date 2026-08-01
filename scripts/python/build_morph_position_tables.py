@@ -22,6 +22,8 @@ from morph_schema import (
     POSITION_SCHEMA_VERSION,
     ROMAN_SYSTEM_VERSION,
     SERIALIZATION_VERSION,
+    SYMBOL_READING_FIELDS,
+    SYMBOL_SCHEMA_VERSION,
     MorphSchemaError,
     build_utterance_tables,
 )
@@ -34,6 +36,7 @@ if hasattr(sys.stdout, "reconfigure"):
 MASTER_DERIVED_FIELDS = [
     "canonical_tagged",
     "tagged_roman_v2",
+    "form_roman_v2",
     "roman_system_version",
     "serialization_version",
     "position_schema_version",
@@ -42,6 +45,14 @@ MASTER_DERIVED_FIELDS = [
     "morph_count_structured",
     "morph_unit_count",
     "morph_boundary_count",
+    "orth_eojeol_count_structured",
+    "morph_eojeol_count_structured",
+    "form_tagged_eojeol_count_equal",
+    "symbol_schema_version",
+    "symbol_count",
+    "symbol_reading_resolved_count",
+    "symbol_reading_unresolved_count",
+    "symbol_not_applicable_count",
     "tagged_regeneration_equal",
     "legacy_tagged_roman_equal_v2",
 ]
@@ -147,21 +158,30 @@ def build_tables(
     writers: dict[str, csv.DictWriter] = {}
     paths = {
         "master": partial / "utterance_master_v2.csv",
+        "orth_eojeol_tokens": partial / "orth_eojeol_tokens.csv",
         "eojeol_tokens": partial / "eojeol_tokens.csv",
         "morph_tokens": partial / "morph_tokens.csv",
         "morph_units": partial / "morph_units.csv",
         "morph_boundaries": partial / "morph_boundaries.csv",
+        "symbol_readings": partial / "symbol_readings.csv",
         "orth_components": partial / "orth_components.csv",
     }
     master_stream, master_writer = csv_writer(paths["master"], master_fields)
     handles.append(master_stream)
     writers["master"] = master_writer
+    symbol_stream, symbol_writer = csv_writer(
+        paths["symbol_readings"], SYMBOL_READING_FIELDS
+    )
+    handles.append(symbol_stream)
+    writers["symbol_readings"] = symbol_writer
 
     seen_ids: set[str] = set()
     counts: Counter[str] = Counter()
     years: Counter[str] = Counter()
     unit_types: Counter[str] = Counter()
+    symbol_statuses: Counter[str] = Counter()
     errors: list[dict[str, object]] = []
+    expected_orth_symbol_rows = 0
     detail_fieldnames: dict[str, list[str]] = {}
     try:
         for source, row_number, row in _iter_rows(input_paths):
@@ -201,12 +221,15 @@ def build_tables(
                 continue
             writers["master"].writerow(result["master"])
             counts["utterances"] += 1
+            expected_orth_symbol_rows += int(result["master"]["symbol_count"])
             years[str(row.get("year", ""))] += 1
             for table_name in (
+                "orth_eojeol_tokens",
                 "eojeol_tokens",
                 "morph_tokens",
                 "morph_units",
                 "morph_boundaries",
+                "symbol_readings",
                 "orth_components",
             ):
                 if table_name == "orth_components" and not emit_orth_components:
@@ -226,6 +249,8 @@ def build_tables(
                     counts[table_name] += 1
                     if table_name == "morph_units":
                         unit_types[str(detail_row["unit_type"])] += 1
+                    elif table_name == "symbol_readings":
+                        symbol_statuses[str(detail_row["reading_status"])] += 1
         for handle in handles:
             handle.flush()
             os.fsync(handle.fileno())
@@ -257,6 +282,12 @@ def build_tables(
             f"expected={expected_boundaries} "
             f"actual={counts['morph_boundaries']}"
         )
+    if counts["symbol_readings"] != expected_orth_symbol_rows:
+        raise RuntimeError(
+            "원표기 symbol coverage 불일치: "
+            f"expected={expected_orth_symbol_rows} "
+            f"symbol_rows={counts['symbol_readings']}"
+        )
     output_files = {
         name: output_file_record(path)
         for name, path in paths.items()
@@ -271,6 +302,7 @@ def build_tables(
             "roman_system": ROMAN_SYSTEM_VERSION,
             "serialization": SERIALIZATION_VERSION,
             "position_schema": POSITION_SCHEMA_VERSION,
+            "symbol_schema": SYMBOL_SCHEMA_VERSION,
         },
         "input_files": [file_record(path) for path in input_paths],
         "output_files": output_files,
@@ -278,12 +310,14 @@ def build_tables(
         "counts": dict(sorted(counts.items())),
         "years": dict(sorted(years.items())),
         "unit_types": dict(sorted(unit_types.items())),
+        "symbol_statuses": dict(sorted(symbol_statuses.items())),
         "gates": {
             "duplicate_utt_id": 0,
             "parse_errors": 0,
             "tagged_regeneration_mismatch": 0,
             "syllable_recomposition_mismatch": 0,
             "boundary_count_equal": True,
+            "orth_symbol_coverage_equal": True,
         },
     }
     write_json(partial / "BUILD_MANIFEST.json", manifest)

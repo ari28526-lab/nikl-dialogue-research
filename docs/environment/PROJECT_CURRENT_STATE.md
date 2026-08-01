@@ -2,6 +2,26 @@
 
 최종 갱신: 2026-08-01 KST
 
+## 2026-08-01 최신 정정 — 2020 구 정렬을 다시 보지 않는다
+
+- 2020–2025는 모두 공통 Jamo r2 기준으로 **새 MFA 정렬**한다.
+- 기존 2020 TextGrid/phone을 전수 검토·승인·재사용하는 단계는 없다.
+- 현재 새로 만드는 2020 전수 산출물은 정렬 전 조합검색 CSV.gz와 LAB 입력이다.
+- 연구자가 확인할 수 있는 것은 새 입력에서 자동 분류된 예외 후보뿐이며,
+  전수 발화나 구 정렬을 다시 보는 검토가 아니다.
+- `morph_search.v3`은 철자 어절과 형태소 분석 어절 좌표를 분리하고,
+  숫자·기호를 occurrence별 별도 표로 보존한다.
+- 6개년 60발화 자동 회귀검사에서 42개 gzip SHA 재현성, 기호 26건 coverage,
+  어절 좌표 mismatch 보존이 모두 통과했다. MFA는 실행하지 않았다.
+- 다음 계산: 2020 `morph_search.v3` 신규 전수 생성 → 신규 LAB 계약 →
+  r2 신규 MFA → 6-tier/TextGrid 동반표/QC.
+
+결정 정본:
+`docs/decisions/DECISION_pre_MFA_combination_search_v3_20260801.md`
+
+회귀 근거:
+`outputs/reports/EVIDENCE_morph_search_v3_regression_60_20260801.json`
+
 이 문서는 세션 전환이나 context compaction 뒤에도 확정된 결정과 바로 다음
 작업을 잃지 않기 위한 단일 상태 정본이다. 새 작업은 최근 대화만 보고
 명령을 제안하지 말고 이 문서와 실제 manifest를 먼저 대조한다.
