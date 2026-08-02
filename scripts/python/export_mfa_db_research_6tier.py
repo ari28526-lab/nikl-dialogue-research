@@ -268,6 +268,36 @@ def load_active_lab_ids(lab_root: Path, year: str) -> set[str]:
     return ids
 
 
+def load_search_master_ids(search_master_root: Path, year: str) -> set[str]:
+    """Load the frozen pre-MFA source universe for exact ID reconciliation."""
+
+    year_root = search_master_root.resolve() / year
+    if not year_root.is_dir():
+        raise FileNotFoundError(year_root)
+    ids: set[str] = set()
+    duplicates: set[str] = set()
+    for path in sorted(year_root.glob("*.csv")):
+        with path.open(encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            if "utt_id" not in set(reader.fieldnames or ()):
+                raise RuntimeError(f"search master utt_id field missing: {path}")
+            for row in reader:
+                utt_id = str(row.get("utt_id", "") or "").strip()
+                if not utt_id:
+                    raise RuntimeError(f"search master blank utt_id: {path}")
+                if utt_id in ids:
+                    duplicates.add(utt_id)
+                ids.add(utt_id)
+    if duplicates:
+        raise RuntimeError(
+            "search master duplicate utt_id "
+            f"{len(duplicates)}: {sorted(duplicates)[:10]}"
+        )
+    if not ids:
+        raise RuntimeError(f"search master 0 rows: {year_root}")
+    return ids
+
+
 def load_quarantine_ids(path: Path | None) -> set[str]:
     if path is None:
         return set()
@@ -1188,23 +1218,35 @@ def export_database(
         }
     else:
         active_lab_ids = load_active_lab_ids(lab_root, year)
+        source_search_ids = load_search_master_ids(search_master_root, year)
         unapproved_quarantine = quarantine_ids - alignment_exclusion_ids
         unknown_active_missing = (
             active_lab_ids - aligned_ids - alignment_exclusion_ids
         )
         unexpected_db_ids = db_ids - active_lab_ids
-        stale_approval_ids = (
-            alignment_exclusion_ids
-            - active_lab_ids
-            - db_ids
-            - quarantine_ids
+        approved_upstream_exclusions = (
+            alignment_exclusion_ids - active_lab_ids
+        )
+        approved_active_exclusions = alignment_exclusion_ids & active_lab_ids
+        unapproved_source_without_active_lab = (
+            source_search_ids - active_lab_ids - alignment_exclusion_ids
+        )
+        active_lab_ids_outside_source = active_lab_ids - source_search_ids
+        approved_exclusion_ids_outside_source = (
+            alignment_exclusion_ids - source_search_ids
         )
         invalid_analysis_only = analysis_only_ids - aligned_ids
         hard_sets = {
             "unapproved_quarantine_ids": unapproved_quarantine,
             "unknown_active_lab_without_alignment": unknown_active_missing,
             "db_ids_without_active_lab": unexpected_db_ids,
-            "stale_approved_exclusion_ids": stale_approval_ids,
+            "unapproved_source_without_active_lab": (
+                unapproved_source_without_active_lab
+            ),
+            "active_lab_ids_outside_source": active_lab_ids_outside_source,
+            "approved_exclusion_ids_outside_source": (
+                approved_exclusion_ids_outside_source
+            ),
             "analysis_only_ids_without_alignment": invalid_analysis_only,
         }
         reconciliation = {
@@ -1215,6 +1257,7 @@ def export_database(
             ),
             "full_year_gate": True,
             "counts": {
+                "source_search_ids": len(source_search_ids),
                 "active_lab_ids": len(active_lab_ids),
                 "database_utterance_ids": len(db_ids),
                 "aligned_database_ids": len(aligned_ids),
@@ -1223,6 +1266,12 @@ def export_database(
                 ),
                 "approved_analysis_only_exclusions": len(
                     analysis_only_ids
+                ),
+                "approved_upstream_alignment_exclusions": len(
+                    approved_upstream_exclusions
+                ),
+                "approved_active_alignment_exclusions": len(
+                    approved_active_exclusions
                 ),
                 "quarantine_ids": len(quarantine_ids),
                 **{
@@ -1233,9 +1282,11 @@ def export_database(
                 name: sorted(values) for name, values in hard_sets.items()
             },
             "equation": (
-                "active_lab_ids = aligned_database_ids union "
-                "approved_alignment_exclusions; quarantine_ids subset "
-                "approved_alignment_exclusions"
+                "source_search_ids = active_lab_ids union "
+                "approved_upstream_alignment_exclusions; active_lab_ids = "
+                "aligned_database_ids union "
+                "approved_active_alignment_exclusions; quarantine_ids "
+                "subset approved_alignment_exclusions"
             ),
         }
         if reconciliation["status"] != "passed":

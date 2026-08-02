@@ -186,6 +186,7 @@
 | build_textgrid_v2_mini_pilot.py | 익숙한 2020 단일 발화 1건과 같은 세션·화자의 2022 비인접 2발화 `review` 연결본을 새 평면 root에 생성. 기존 4/5-tier 불변, KOINA 미실행, seam 횡단 운율 해석 금지를 manifest에 기록 | 단일 6-tier·연결 8-tier 생성 성공 |
 | verify_textgrid_v2_mini_pilot.py | 입력·출력 SHA, WAV–TextGrid duration, 전 tier 0–xmax 연속성, phone–phoneme 및 세 발화 tier 경계, 연결 `utt_id` 순서와 원시간 역매핑을 독립 재검증 | 실자료 status success |
 | export_mfa_db_research_6tier.py | MFA SQLite를 읽기 전용으로 읽어 승인 6-tier와 연도별 `utterance/word/phone/excluded` gzip v2 동반표를 direct partial에 생성. 원 형태소 어절, reference 어절, MFA word 좌표를 분리하고 승인 제외 정확 대사·spn·phone inventory·조인·count·label·원자 승격을 gate함 | 외부 리뷰 HIGH 반영; 실 DB 60/60·결정적 gzip 24/24 통과 |
+| prepare_post_mfa_alignment_review.py | direct export exact-ID gate에서 발견한 active LAB 미정렬 발화를 DB·보고서 간 전수 대사하고, 자동 승인 없이 상세표·pending 결정표·대표 WAV/LAB 대조 파일럿을 생성. DB는 읽기 전용이며 전체 연도 재정렬 필요 여부를 명시 | 2020년 363건/82세션, 실패 12+정상 대조 4 파일럿 생성; 단위시험 고정 |
 | inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
 | mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
 | prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. 현 6-tier에 쓰지 않는 구 형태소 TextGrid는 제외하고 CSV–WAV 대응 복구 전에는 fail-closed. WAV 이동·자동 승인 없음 | 2020 음원 복구 뒤 재실행 |

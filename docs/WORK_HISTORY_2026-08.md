@@ -735,3 +735,29 @@ shard 2–23을 재개하는 것이다.
   통과했다. 이어 장시간 무인 MFA 큐에 process-scoped Windows sleep guard가
   빠진 것을 확인해 추가했다. 큐 시작부터 종료·실패까지 시스템 절전을 막고,
   `finally`에서 정상 전원 정책으로 복원한다. 화면 꺼짐은 허용한다.
+
+### 2020 공통 Jamo r2 전수 MFA 계산 완료·post-MFA gate 보류
+
+- 2026-08-02 18:50–23:05 KST에 `--clean` 2020년 전수 정렬을 수행했고 MFA는
+  exit 0으로 계산을 마쳤다. 구 정렬 결과를 재사용한 실행이 아니다.
+- 입력 WAV 868,603개 중 pre-MFA에서 빈 기준 발음/미해결 기호로 승인 제외된
+  53개를 제외한 active DB 발화는 868,550개다. 이 중 word와 phone interval이
+  모두 생성된 것은 868,187개이고, 기본 beam 10과 retry beam 40에서도
+  정렬되지 않은 active 발화는 363개다. job별 최종 오류는
+  `33 + 54 + 39 + 237 = 363`으로 일치한다.
+- 보존 DB `D:\mfa_tmp\2020\2020.db`는 6,348,247,040 bytes이며 SQLite
+  checkpoint 검사 뒤 `D:\mfa_eojeol\done\2020.direct_db_ready` marker를
+  남겼다. 따라서 후속 판단 뒤에는 전수 MFA를 다시 하지 않고 direct 6-tier
+  export부터 재개한다.
+- 기존 exporter는 pre-MFA 승인 제외 1,887건을 active LAB 밖의 stale 승인으로
+  잘못 해석했다. 안전 gate를 완화하지 않고 원천/active/post-MFA 방정식을
+  분리했다. 실 DB 재검증에서 `870,437 = 868,550 + 1,887`, DB 밖 active 0,
+  원천 밖 승인 0, 미승인 quarantine 0을 확인했다.
+- 남은 363건은 82개 세션에 분포하지만 `SDRW2000000257`에 200/464건이
+  집중됐다. 단순 실패로 자동 제외하지 않고, 실패 12개와 같은 세션 정렬 성공
+  대조 4개를 묶은 WAV/LAB 파일럿을
+  `outputs/reviews/mfa_post_alignment_2020_mfa_r2_prod_2020_20260802`에 만들었다.
+- 연구자 판단 전에는 승인 계약 변경, 정본 승격, 2021 진입을 하지 않는다.
+  상세 방법론 결정은
+  `docs/decisions/DECISION_2020_post_mfa_alignment_missing_gate_20260802.md`에
+  기록했다.

@@ -93,7 +93,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
         con.commit()
         con.close()
 
-    def make_search(self, root: Path, overrides=None):
+    def make_search(self, root: Path, overrides=None, extra_utt_ids=()):
         path = root / "2021" / "S1.csv"
         path.parent.mkdir(parents=True, exist_ok=True)
         fields = [
@@ -141,6 +141,11 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 }
             row.update(overrides or {})
             writer.writerow(row)
+            for utt_id in extra_utt_ids:
+                extra = dict(row)
+                extra["utt_id"] = utt_id
+                extra["session_id"] = utt_id.split(".", 1)[0]
+                writer.writerow(extra)
 
     def make_lab_root(self, root: Path, utt_ids=("S1.1",)):
         for utt_id in utt_ids:
@@ -444,7 +449,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.make_db(db)
             self.make_acoustic(acoustic)
             self.make_contract(contract)
-            self.make_search(search)
+            self.make_search(search, extra_utt_ids=("U2",))
             self.make_lab_root(labs, ("S1.1", "U2"))
             blocked = export_database(
                 db_path=db,
@@ -487,6 +492,47 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 excluded = list(csv.DictReader(stream))
             self.assertEqual([row["utt_id"] for row in excluded], ["U2"])
 
+    def test_exact_id_reconciliation_accepts_approved_upstream_absence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            labs = root / "labs"
+            self.make_db(db)
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search, extra_utt_ids=("U2",))
+            self.make_lab_root(labs, ("S1.1",))
+            approved = self.make_exclusion_contract(root)
+
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=root / "output",
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                approved_exclusions_contract=approved,
+                lab_root=labs,
+            )
+
+            self.assertEqual(report["status"], "success")
+            reconciliation = report["exact_id_reconciliation"]
+            self.assertEqual(reconciliation["status"], "passed")
+            self.assertEqual(reconciliation["counts"]["source_search_ids"], 2)
+            self.assertEqual(
+                reconciliation["counts"]
+                ["approved_upstream_alignment_exclusions"],
+                1,
+            )
+            self.assertEqual(
+                reconciliation["inventories"]
+                ["approved_exclusion_ids_outside_source"],
+                [],
+            )
+
     def test_quarantined_id_requires_matching_approved_exclusion(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -499,7 +545,7 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.make_db(db)
             self.make_acoustic(acoustic)
             self.make_contract(contract)
-            self.make_search(search)
+            self.make_search(search, extra_utt_ids=("U2",))
             self.make_lab_root(labs)
             with quarantine.open(
                 "w", encoding="utf-8-sig", newline=""
