@@ -71,6 +71,9 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
   00_CATEGORY_SUMMARY.json
   03_RESEARCHER_REVIEW.csv
   03_RESEARCHER_REVIEW_MANIFEST.json
+  04_RESEARCHER_APPROVED.csv
+  04_RESEARCHER_APPROVAL.json
+  approved_exclusions.json
 ```
 
 활성본은 전수 LAB 생성, WAV 스캔, MFA를 다시 실행하지 않았다. 기존 검증 증거를
@@ -85,5 +88,8 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 입력으로 사용하고 미해결 상태를 동반표에 보존했으며, 정렬 입력이 완전히 비는
 경우에는 명시적 제외 계약으로 회계했다고 보고할 수 있다.
 
-현재 표는 아직 `pending`이며 자동 승인과 MFA는 수행하지 않았다. 두 제외 범주에
-대한 연구자의 명시적 승인이 다음 단계다.
+2026-08-02 13:27 KST에 연구자 `ari30`이 “두 범주 모두 승인”이라고 명시했다.
+원 `pending` 후보표는 변경하지 않고 별도 승인 CSV를 만들었으며, 승인자·시각·
+문구·두 범주 합계·후보/승인 SHA를 `04_RESEARCHER_APPROVAL.json`에 기록했다.
+`approved_exclusions.json`은 이 승인본과 입력 계약 ID에 결속됐다. 이는 자동
+승인이 아니며 MFA는 아직 수행하지 않았다.

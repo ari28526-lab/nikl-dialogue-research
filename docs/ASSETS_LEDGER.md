@@ -134,4 +134,8 @@ D:\10_LAYERS\09_morph_search_v3_staging\morph_search_v3_20260801\2020\SOURCE_CON
 - 제외하지 않고 경고 보존: 부분 LAB `unresolved_symbol` 6,158
 - 구 1,834건 표:
   `outputs/reviews/archive/mfa_exclusions_queue_mfa_r2_prod_2020_20260801_pre_symbol_accounting_20260802`
-- 상태: 연구자 승인 대기, MFA 미시작
+- 승인 기록:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/04_RESEARCHER_APPROVAL.json`
+- 승인 계약:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/approved_exclusions.json`
+- 상태: 연구자 두 범주 승인 완료, MFA 미시작

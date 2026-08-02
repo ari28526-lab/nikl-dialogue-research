@@ -104,10 +104,21 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 `pron_reference_status=unresolved_symbol` 경고를 연결 CSV에 보존한다. 자세한
 근거는
 `docs/decisions/DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md`다.
-MFA, 자동 승인, 정본 승격은 아직 하지 않았다. 다음 사용자 행동은 두 제외
-범주에 대한 명시적 승인이다. 후보표 재생성 명령을 다시 실행하지 않는다.
+두 제외 범주 1,887건은 2026-08-02 연구자 `ari30`이 명시 승인했고, 원 pending
+표와 별도 승인본·승인 기록·입력 계약 결속 제외 계약을 보존했다. 자동 승인은
+하지 않았다. 후보표 재생성 명령을 다시 실행하지 않는다. 다음 사용자 행동은
+아래 C단계의 `PreflightOnly` 확인이다.
 
 ### C. 2020 신규 MFA 시작
+
+먼저 MFA를 시작하지 않는 최종 preflight만 실행한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\start_2020_mfa_after_review.ps1" -ApprovedBy "ari30" -PreflightOnly
+```
+
+정확히 `GO`임을 확인한 뒤 같은 명령에서 `-PreflightOnly`만 빼 2020 신규 MFA를
+시작한다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_2020_mfa_after_review.ps1" -ApprovedBy "ari30"

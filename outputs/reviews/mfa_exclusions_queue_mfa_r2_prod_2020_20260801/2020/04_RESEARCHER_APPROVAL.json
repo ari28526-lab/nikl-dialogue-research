@@ -1,0 +1,46 @@
+{
+  "schema_version": "mfa_exclusion_category_approval.v1",
+  "status": "approved",
+  "year": "2020",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-02T13:27:56.201700+09:00",
+  "approval_statement": "두 범주 모두 승인",
+  "approved_categories": {
+    "audio_pairing_unresolved": 1834,
+    "empty_reference_unresolved_symbol": 53
+  },
+  "approved_row_count": 1887,
+  "candidate_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 2510,
+    "mtime_ns": 1785644410406840900,
+    "sha256": "16bca1a716f71f161229ac00f464defacfb471962e0b7a849c26db0ed3de1d12"
+  },
+  "pending_candidate_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 515721,
+    "mtime_ns": 1785643983259266900,
+    "sha256": "006c10c330619c6d4d7c3d95339a7f1a06a130c2d585aafb285947aba0570547"
+  },
+  "approved_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 517608,
+    "mtime_ns": 1785644876189099100,
+    "sha256": "ce61b55cc8f187c411e82b6ea3534c0fbd4018bcf67bb4945ca4662d44a7dc59"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\approved_exclusions.json",
+    "bytes": 965,
+    "mtime_ns": 1785644876233052300,
+    "sha256": "67f90bb7f0631ca1f7bd01f3bf6a43e6d713cb9539400e3a5dac6df95535ea37"
+  },
+  "contract_row_count": 1887,
+  "policy": {
+    "explicit_researcher_category_approval": true,
+    "pending_candidate_snapshot_unchanged": true,
+    "automatic_approval": false,
+    "starts_mfa": false,
+    "changes_wav_or_lab": false
+  }
+}

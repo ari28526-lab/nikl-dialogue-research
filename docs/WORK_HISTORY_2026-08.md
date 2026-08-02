@@ -655,3 +655,17 @@ shard 2–23을 재개하는 것이다.
   막는다. 자동 승인과 MFA는 수행하지 않았다.
 - 결정 근거:
   `docs/decisions/DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md`
+
+### 2020 제외 두 범주 연구자 명시 승인
+
+- 2026-08-02 13:27 KST에 사용자 `ari30`이 “두 범주 모두 승인”이라고 답했다.
+- 1,834건 `audio_pairing_unresolved`와 53건
+  `empty_reference_unresolved_symbol`, 합계 1,887건을 승인했다.
+- 원 `03_RESEARCHER_REVIEW.csv`는 1,887행 모두 `pending`인 생성 증거로
+  바꾸지 않았다. 별도 `04_RESEARCHER_APPROVED.csv`의 동일 1,887 ID만
+  `approved`로 기록했다.
+- 승인 문구·시각·범주별 수·pending/approved SHA는
+  `04_RESEARCHER_APPROVAL.json`에, 실제 실행 제외는 입력 계약 ID에 결속된
+  `approved_exclusions.json`에 기록했다.
+- 독립 계약 validate는 approved 1,887, ID 차이 0, pending SHA 보존을 확인했다.
+  승인 기록 생성은 MFA·WAV·LAB·정본을 변경하지 않았다.
