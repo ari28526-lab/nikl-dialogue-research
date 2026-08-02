@@ -357,6 +357,9 @@ foreach ($path in $files) {
             'audit_mfa_research_6tier_year.py',
             'verify_mfa_db_research_6tier_sample.py',
             'mfa_failed_checkpoint_preserved',
+            'post_mfa_export_failed_db_preserved',
+            'Set-YearStateFromDirectDbCheckpoint',
+            'direct export부터 재개, full clean 금지',
             'machine_qc_failed_outputs_preserved',
             'machine_qc_passed_human_review_pending',
             '의도적으로 -AllowFullCleanRetry를 전달하지 않는다',
@@ -383,6 +386,8 @@ foreach ($path in $files) {
             'read-only dashboard',
             'mfa_year_queue.lock',
             'queue_state.json',
+            'direct_db_ready',
+            'direct_checkpoint',
             'machine_qc_passed_human_review_pending',
             '이 상태판은 파일이나 프로세스를 변경하지 않음'
         )) {

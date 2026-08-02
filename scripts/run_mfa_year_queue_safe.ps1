@@ -88,6 +88,32 @@ function Read-Json([string]$Path) {
     return Get-Content -LiteralPath $Path -Raw -Encoding UTF8 |
         ConvertFrom-Json
 }
+function Set-YearStateFromDirectDbCheckpoint(
+    $State,
+    [string]$StateRoot,
+    [string]$Year
+) {
+    $markerPath = Join-Path $StateRoot "done\$Year.direct_db_ready"
+    if (-not (Test-Path -LiteralPath $markerPath -PathType Leaf)) {
+        return $false
+    }
+    $marker = Read-Json $markerPath
+    $db = [string]$marker.details.alignment_db
+    if (
+        $marker.stage -ne 'direct_db_ready' -or
+        -not [bool]$marker.details.computation_complete -or
+        [string]::IsNullOrWhiteSpace($db) -or
+        -not (Test-Path -LiteralPath $db -PathType Leaf)
+    ) {
+        return $false
+    }
+    $State.input_contract_id = [string]$marker.details.input_contract_id
+    $State.alignment_contract_id = [string](
+        $marker.details.alignment_contract_id
+    )
+    $State.retained_alignment_db = [IO.Path]::GetFullPath($db)
+    return $true
+}
 function New-YearState([string]$Year) {
     return [ordered]@{
         year = $Year
@@ -303,11 +329,25 @@ try {
         & powershell.exe @runArgs
         $yearExit = $LASTEXITCODE
         if ($yearExit -ne 0) {
-            $state.status = 'mfa_failed_checkpoint_preserved'
+            $directDbPreserved = $false
+            try {
+                $directDbPreserved = Set-YearStateFromDirectDbCheckpoint `
+                    -State $state -StateRoot $stateRoot -Year $year
+            } catch {
+                $directDbPreserved = $false
+            }
+            $state.status = if ($directDbPreserved) {
+                'post_mfa_export_failed_db_preserved'
+            } else {
+                'mfa_failed_checkpoint_preserved'
+            }
             $state.phase = 'blocked_after_partial_work'
-            $state.failed_reason = (
+            $state.failed_reason = if ($directDbPreserved) {
+                "연도 runner exit $yearExit; MFA 계산 완료 DB checkpoint 보존, " +
+                'direct export부터 재개, full clean 금지'
+            } else {
                 "연도 runner exit $yearExit; temp/DB/log 보존, full clean 금지"
-            )
+            }
             $state.updated_at = (Get-Date).ToString('o')
             $blocked += 1
             Write-JsonAtomic $queueStatePath $queue

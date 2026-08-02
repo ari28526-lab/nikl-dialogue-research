@@ -770,3 +770,10 @@ shard 2–23을 재개하는 것이다.
   실패다. 최다 세션은 구방식 205건/이번 200건이며 193 ID가 겹친다. 해당
   세션은 WAV ID 복구 계획 대상이 아니므로 새 remap 회귀 가능성은 낮지만,
   원자료 대응 문제를 배제하기 위한 대표 청취는 유지한다.
+- 큐의 실패 분기가 실제 `direct_db_ready` marker를 읽지 않아 상태판에는
+  `db_retained=False`로 보이는 관찰성 오류를 발견했다. 향후 큐는 marker의
+  `computation_complete`, DB 경로·존재를 검증해 계약 ID와 보존 DB를 상태에
+  기록하고 `post_mfa_export_failed_db_preserved`로 구분한다. 읽기 전용
+  상태판도 과거 큐 JSON을 marker와 대사해 실제 DB 보존 여부를 표시하도록
+  고쳤다. 현 2020 상태판에서 direct checkpoint와 DB 보존이 모두 True,
+  D: 여유 343.54GiB, live lock 없음으로 확인됐다.

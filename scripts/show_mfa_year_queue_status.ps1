@@ -56,21 +56,60 @@ Write-Host ''
 
 $rows = foreach ($year in @($state.years_requested)) {
     $record = $state.years.$year
+    $checkpointPath = Join-Path $stateRoot "done\$year.direct_db_ready"
+    $checkpoint = $null
+    $checkpointDb = ''
+    if (Test-Path -LiteralPath $checkpointPath -PathType Leaf) {
+        try {
+            $candidate = Get-Content -LiteralPath $checkpointPath `
+                -Raw -Encoding UTF8 | ConvertFrom-Json
+            $candidateDb = [string]$candidate.details.alignment_db
+            if (
+                $candidate.stage -eq 'direct_db_ready' -and
+                [bool]$candidate.details.computation_complete -and
+                -not [string]::IsNullOrWhiteSpace($candidateDb) -and
+                (Test-Path -LiteralPath $candidateDb -PathType Leaf)
+            ) {
+                $checkpoint = $candidate
+                $checkpointDb = [IO.Path]::GetFullPath($candidateDb)
+            }
+        } catch {}
+    }
+    $inputContract = [string]$record.input_contract_id
+    $alignmentContract = [string]$record.alignment_contract_id
+    $retainedDb = [string]$record.retained_alignment_db
+    if ($null -ne $checkpoint) {
+        if ([string]::IsNullOrWhiteSpace($inputContract)) {
+            $inputContract = [string]$checkpoint.details.input_contract_id
+        }
+        if ([string]::IsNullOrWhiteSpace($alignmentContract)) {
+            $alignmentContract = [string](
+                $checkpoint.details.alignment_contract_id
+            )
+        }
+        if ([string]::IsNullOrWhiteSpace($retainedDb)) {
+            $retainedDb = $checkpointDb
+        }
+    }
     [PSCustomObject]@{
         year = $year
         status = $record.status
         phase = $record.phase
-        input_contract = $(if ($record.input_contract_id) {
-            ([string]$record.input_contract_id).Substring(
-                0, [Math]::Min(12, ([string]$record.input_contract_id).Length)
+        input_contract = $(if ($inputContract) {
+            $inputContract.Substring(
+                0, [Math]::Min(12, $inputContract.Length)
             )
         } else { '' })
-        alignment_contract = $(if ($record.alignment_contract_id) {
-            ([string]$record.alignment_contract_id).Substring(
-                0, [Math]::Min(12, ([string]$record.alignment_contract_id).Length)
+        alignment_contract = $(if ($alignmentContract) {
+            $alignmentContract.Substring(
+                0, [Math]::Min(12, $alignmentContract.Length)
             )
         } else { '' })
-        db_retained = [bool]$record.retained_alignment_db
+        db_retained = (
+            -not [string]::IsNullOrWhiteSpace($retainedDb) -and
+            (Test-Path -LiteralPath $retainedDb -PathType Leaf)
+        )
+        direct_checkpoint = ($null -ne $checkpoint)
         human_review = [bool]$record.researcher_review_required
         promoted = [bool]$record.canonical_promotion_allowed
         updated_at = $record.updated_at
