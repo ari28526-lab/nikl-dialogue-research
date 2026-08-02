@@ -64,3 +64,23 @@ outputs/reports/ARCHIVE_legacy_d_workspace_20260802.json
 - 신규 6-tier·동반표 생산 경로
 
 archive I/O와 MFA는 동시에 실행하지 않는다.
+
+## 완료 결과
+
+- 완료: 2026-08-02 18:29:48 KST
+- manifest: `selection_completed`
+- 대상: 8항목 모두 `pruned`
+  - `06_textgrid_eojeol`: 2020–2021
+  - `06_textgrid_merged`: 2020–2025
+- 보존한 원본 규모: 7,341,358파일, 33.297GiB
+- E: 최종 archive 규모: 2.226GiB
+- 독립 완료 감사:
+  - D: 8개 원본 경로 모두 부재
+  - E: 8개 최종 `.7z` 모두 존재
+  - manifest 기록과 실제 archive SHA-256 8/8 일치
+  - 진행 중 `legacy_06_textgrid*.partial` 0개
+- 완료 시 D: 여유: 366.300GiB
+- 완료 시 E: 여유: 1,834.532GiB
+
+항목별 파일 수·바이트·SHA-256·검증 및 정리 시각은
+`outputs/reports/ARCHIVE_legacy_d_workspace_20260802.json`을 기계 정본으로 삼는다.

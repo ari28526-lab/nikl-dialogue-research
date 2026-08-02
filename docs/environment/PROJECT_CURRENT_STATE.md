@@ -92,8 +92,12 @@ contract와 2020 `morph_search.v3` 23/23을 완료했다. 검색은 2026-08-01
 E: archive 대상으로 확정했다. archive I/O와 MFA를 동시에 실행하지 않는다.
 문서 정본은 시작 안내/이 문서/생산 RUNBOOK/자산 대장/결정 색인 다섯 개로
 줄였으며 종료된 결정 33개와 구 진입문서는 `docs/archive`에 원문 보존했다.
-상세 manifest는 `docs/archive/ARCHIVE_MANIFEST_20260802.md`다. archive가 끝나면
-추가 검토표를 만들지 않고 C단계 2020 단일 시작 wrapper로 간다.
+상세 manifest는 `docs/archive/ARCHIVE_MANIFEST_20260802.md`다. 2026-08-02
+18:29 KST에 구 TextGrid 8항목의 archive·CRC·SHA 검증·D: 정리가 모두
+완료됐다. 7,341,358파일/33.297GiB를 E: 압축본 2.226GiB로 보존했고,
+8개 원본 부재·압축본 존재·manifest SHA 일치를 독립 재확인했다. D: 여유는
+366.300GiB이며 archive I/O는 종료됐다. 추가 검토표를 만들지 않고 C단계
+2020 단일 시작 wrapper로 간다.
 
 최초 생성된 14행 검토표는 구형 형태소 TextGrid 누락에 근거해 현행 6-tier와
 맞지 않으므로 자동 승인 없이 archive했다. 읽기 전용 음원 복구 계획은 영향

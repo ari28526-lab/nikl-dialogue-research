@@ -701,3 +701,18 @@ shard 2–23을 재개하는 것이다.
   허용하되 시스템 절전으로 작업이 중단되지 않도록 Windows execution-state
   guard를 추가했다. 성공·실패 어느 경우에도 `finally`에서 정상 전원 정책으로
   복원한다.
+
+### 구 TextGrid 8항목 archive·D: 정리 완료
+
+- 2026-08-02 14:32–18:29 KST에 `06_textgrid_eojeol` 2020–2021과
+  `06_textgrid_merged` 2020–2025, 총 8항목을 순차 처리했다.
+- 항목마다 파일 수·비압축 바이트 일치, 7-Zip CRC 전수검사, 최종 archive
+  SHA-256 기록을 통과한 뒤에만 해당 D: 원본을 정리했다.
+- 최종 manifest는 `selection_completed`, 8항목은 모두 `pruned`다.
+- 합계 7,341,358파일/33.297GiB를 E: 2.226GiB의 8개 archive로 보존했다.
+- 완료 후 독립 감사에서 D: 원본 8경로 부재, E: archive 8개 존재,
+  manifest SHA-256 8/8 일치, 미완성 `.partial` 0개를 확인했다.
+- D: 여유는 작업 전 317.184GiB에서 366.300GiB로 늘었다. 이 증가량에는
+  같은 날 먼저 완료한 구 공통사전·파일럿 7항목 정리도 포함된다.
+- archive I/O는 종료됐으며, 다음 생산 단계는 별도 후보표 재생성 없이
+  `start_2020_mfa_after_review.ps1 -ApprovedBy ari30` 단일 진입점이다.

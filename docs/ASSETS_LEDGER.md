@@ -40,7 +40,7 @@ E:\READ_ONLY_ARCHIVE\2026_summer_research
 | `pre_jamo_compressed_20260728` | 구 2020/2021 TextGrid, 구 2021 MFA DB/temp, stale temp, 실패 모델 clone | 검증 성공; D: 55.883GiB 정리 완료 |
 | `wav_id_recovery_2020_eb64f80d9106` | 2020 WAV ID 복구 전 영향 세션 | 128 ZIP + 129 manifest, 계약 passed |
 | `wav_id_recovery_2020_eba4f3c7debf` | 첫 복구 계약의 안전 중단 증거 | 역사·실패 근거로 보존 |
-| `legacy_d_workspace_20260802` | 구 공통사전 r1/A-B/파일럿과 구 `06_textgrid_*` | 2026-08-02 항목별 archive 진행 |
+| `legacy_d_workspace_20260802` | 구 공통사전 r1/A-B/파일럿과 구 `06_textgrid_*` | 2026-08-02 완료; TextGrid 8항목 7,341,358파일/33.297GiB를 2.226GiB로 검증 보존 후 D: 정리 |
 
 archive는 원자료 정본이 아니라 과거 산출물의 재현·감사 근거다. E: archive가
 검증되기 전에는 대응하는 D: 경로를 제거하지 않는다.

@@ -450,6 +450,158 @@
                       "archive_sha256":  "97625a8dbfbc08901a50596fb2cc2bb00eed816502caba44a738f7e92d5735c1",
                       "verified_at":  "2026-08-02T14:22:43.7761372+09:00",
                       "pruned_at":  "2026-08-02T14:22:51.3751325+09:00"
+                  },
+                  {
+                      "key":  "legacy_eojeol_2020",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_eojeol\\2020",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_eojeol_2020.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T14:32:37.0954372+09:00",
+                      "source_files":  869132,
+                      "source_bytes":  2895610763,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  869132,
+                      "archive_uncompressed_bytes":  2895610763,
+                      "archive_bytes":  179260061,
+                      "archive_sha256":  "db4a700bcfd0e827f1b9d47f7388c07832aeb82fd1f0249814022d6bde225b57",
+                      "verified_at":  "2026-08-02T14:56:04.0040809+09:00",
+                      "pruned_at":  "2026-08-02T15:16:50.7226262+09:00"
+                  },
+                  {
+                      "key":  "legacy_eojeol_2021",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_eojeol\\2021",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_eojeol_2021.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T15:16:50.7859310+09:00",
+                      "source_files":  1372068,
+                      "source_bytes":  5880974433,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  1372068,
+                      "archive_uncompressed_bytes":  5880974433,
+                      "archive_bytes":  367188122,
+                      "archive_sha256":  "76fc0f69b13441088e26fe4f85a8a0e37bf4f0ec5b6b54f6ec3b46d7c138a6c7",
+                      "verified_at":  "2026-08-02T15:37:14.0332037+09:00",
+                      "pruned_at":  "2026-08-02T15:56:11.3840578+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2020",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2020",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2020.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T15:56:11.4469777+09:00",
+                      "source_files":  869883,
+                      "source_bytes":  3248469145,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  869883,
+                      "archive_uncompressed_bytes":  3248469145,
+                      "archive_bytes":  215381716,
+                      "archive_sha256":  "c41e44ebb694b488558abf94392493223657852e573fef1bd898018a3963d55f",
+                      "verified_at":  "2026-08-02T16:10:20.8471959+09:00",
+                      "pruned_at":  "2026-08-02T16:22:16.7783873+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2021",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2021",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2021.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T16:22:16.8423525+09:00",
+                      "source_files":  1372800,
+                      "source_bytes":  6572817455,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  1372800,
+                      "archive_uncompressed_bytes":  6572817455,
+                      "archive_bytes":  436796789,
+                      "archive_sha256":  "09cdca0b7508b26f4f8badc1d22e0a6ecf9054b58249d365179719bac7c5d052",
+                      "verified_at":  "2026-08-02T16:45:57.8633663+09:00",
+                      "pruned_at":  "2026-08-02T17:04:54.4317076+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2022",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2022",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2022.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T17:04:54.4945696+09:00",
+                      "source_files":  866344,
+                      "source_bytes":  4319745532,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  866344,
+                      "archive_uncompressed_bytes":  4319745532,
+                      "archive_bytes":  291419938,
+                      "archive_sha256":  "cb58117053e93bb28e09b4adcf11a4919e40243d1f4f756ded273635b2170370",
+                      "verified_at":  "2026-08-02T17:17:13.3434062+09:00",
+                      "pruned_at":  "2026-08-02T17:29:36.7829361+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2023",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2023",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2023.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T17:29:36.8403497+09:00",
+                      "source_files":  675765,
+                      "source_bytes":  3499631087,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  675765,
+                      "archive_uncompressed_bytes":  3499631087,
+                      "archive_bytes":  239191850,
+                      "archive_sha256":  "d5a540d1870f34449cb3a1cdf409a3d7a068963d7510ff30afe3ddfaa70a0e84",
+                      "verified_at":  "2026-08-02T17:39:15.2657895+09:00",
+                      "pruned_at":  "2026-08-02T17:49:20.1105292+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2024",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2024",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2024.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T17:49:20.1683204+09:00",
+                      "source_files":  728256,
+                      "source_bytes":  4861174541,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  728256,
+                      "archive_uncompressed_bytes":  4861174541,
+                      "archive_bytes":  341392543,
+                      "archive_sha256":  "e4c7e69d13dbf01f1751948b032e6da124ff5c1059f45af0b8ae930cd0399025",
+                      "verified_at":  "2026-08-02T17:59:54.6810751+09:00",
+                      "pruned_at":  "2026-08-02T18:11:41.3536623+09:00"
+                  },
+                  {
+                      "key":  "legacy_merged_2025",
+                      "source":  "D:\\20_AUDIO\\06_textgrid_merged\\2025",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\legacy_06_textgrid_merged_2025.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T18:11:41.4115217+09:00",
+                      "source_files":  587110,
+                      "source_bytes":  4475163415,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  false,
+                      "archive_files":  587110,
+                      "archive_uncompressed_bytes":  4475163415,
+                      "archive_bytes":  319261072,
+                      "archive_sha256":  "fcd172602e214ed5a3c0db483c7d2eb50eb28abb986cbc586dd87991af684d34",
+                      "verified_at":  "2026-08-02T18:21:01.9162837+09:00",
+                      "pruned_at":  "2026-08-02T18:29:48.5746416+09:00"
                   }
               ],
     "failure_history":  [
@@ -464,7 +616,7 @@
                         ],
     "error":  null,
     "failed_at":  null,
-    "last_resumed_at":  "2026-08-02T14:17:46.9611543+09:00",
-    "current_selection":  "small",
-    "last_completed_at":  "2026-08-02T14:22:51.4159030+09:00"
+    "last_resumed_at":  "2026-08-02T14:32:36.9233681+09:00",
+    "current_selection":  "textgrid",
+    "last_completed_at":  "2026-08-02T18:29:48.6305840+09:00"
 }
