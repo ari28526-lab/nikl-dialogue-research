@@ -716,3 +716,18 @@ shard 2–23을 재개하는 것이다.
   같은 날 먼저 완료한 구 공통사전·파일럿 7항목 정리도 포함된다.
 - archive I/O는 종료됐으며, 다음 생산 단계는 별도 후보표 재생성 없이
   `start_2020_mfa_after_review.ps1 -ApprovedBy ari30` 단일 진입점이다.
+
+### 2020 시작 preflight 자기유발 tracked-diff 수정
+
+- archive 완료 뒤 2020 단일 wrapper의 `-PreflightOnly`를 실제 Windows
+  PowerShell 5.1에서 실행했다. 계약·승인 1,887건·공통 Jamo r2·phone 109개·
+  D: 366.3GiB·전체 312시험은 모두 통과했지만 최종 gate만
+  `tracked_code_committed`에서 `NO_GO`였다. MFA는 시작되지 않았다.
+- 원인은 wrapper가 먼저 `verify_production_source_contract.ps1`를 기본 출력으로
+  호출해 Git 추적 보고서의 `checked_at`을 갱신한 뒤, 이어지는 preflight가
+  그 자기유발 diff를 미커밋 코드로 판정한 것이었다. 데이터·계약 실패가 아니다.
+- 2020 시작 wrapper가 source contract 검증 결과를 비추적 runtime preflight
+  보고서로 명시 출력하도록 수정했다. 코드 청결 gate 자체를 약화하거나
+  `outputs/reports` 전체를 예외 처리하지 않았다.
+- 회귀 안전검사에 `-Output $sourceContractReport`와 runtime 보고서 경로 토큰을
+  고정해 같은 자기차단이 재발하지 않게 했다.

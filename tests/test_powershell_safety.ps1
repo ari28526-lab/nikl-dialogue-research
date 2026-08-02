@@ -456,6 +456,8 @@ foreach ($path in $files) {
         foreach ($required in @(
             'verify_production_source_contract.ps1',
             '-RequireMorphYearSuccess',
+            'PREFLIGHT_source_contract_',
+            '-Output $sourceContractReport',
             "'-Years', '2020'"
         )) {
             if (-not $text.Contains($required)) {
