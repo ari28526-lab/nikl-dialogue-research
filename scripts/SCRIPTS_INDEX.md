@@ -198,7 +198,7 @@
 | audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사 | 합성 full-year fixture 통과 |
 | verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
 | preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·생산연도 연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 생산연도 review schema와 구 파일럿 schema 합성 exact gate 통과; `preflight_2020_gate_b.ps1`에 배선 |
-| run_mfa_year_queue_safe.ps1 | 2020–2025를 연도별 독립 staging으로 순회. 승인 계약 없는 연도는 pending 검토표만 만들고, 실패 temp·DB를 보존하며, 성공 연도는 독립 6-tier 감사·DB 표본 재수출까지 수행. full clean retry·연구자 승인·정본 승격은 자동화하지 않음 | PowerShell 정적 안전검사 통과 |
+| run_mfa_year_queue_safe.ps1 | 2020–2025를 연도별 독립 staging으로 순회. 승인 계약 없는 연도는 pending 검토표만 만들고, 실패 temp·DB를 보존하며, 성공 연도는 독립 6-tier 감사·DB 표본 재수출까지 수행. full clean retry·연구자 승인·정본 승격은 자동화하지 않음 | 장시간 실행 중 시스템 절전 방지 후 종료 시 복원; PowerShell 정적 안전검사 통과 |
 | show_mfa_year_queue_status.ps1 | 연도 큐 JSON·lock·D 여유와 연도별 phase/status를 보여주는 읽기 전용 상태판 | 상태 변경 명령 없음 |
 | preflight_mfa_year_queue.ps1 | 공통사전·adoption·D 라벨/용량·live lock·기존 MFA preflight·연도별 lab/승인 계약·정적 안전검사·선택적 전체 Python 테스트·Git 추적 변경을 결합해 전수 큐 시작 전 GO/NO-GO JSON 생성 | MFA·승인·정본 승격 수행 안 함 |
 | prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |

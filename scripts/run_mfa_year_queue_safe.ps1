@@ -33,6 +33,32 @@ $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 |
     ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class MfaYearQueueSleepGuard {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern uint SetThreadExecutionState(uint esFlags);
+}
+'@
+
+function Enable-MfaYearQueueSleepGuard {
+    # ES_CONTINUOUS | ES_SYSTEM_REQUIRED; 화면 꺼짐은 허용한다.
+    $result = [MfaYearQueueSleepGuard]::SetThreadExecutionState(
+        [uint32]2147483649
+    )
+    if ($result -eq 0) {
+        throw 'Windows 절전 억제 설정 실패'
+    }
+}
+
+function Disable-MfaYearQueueSleepGuard {
+    # ES_CONTINUOUS만 남겨 정상 전원 정책으로 복원한다.
+    [void][MfaYearQueueSleepGuard]::SetThreadExecutionState(
+        [uint32]2147483648
+    )
+}
+
 function Resolve-ConfiguredPath([string]$Value) {
     return [IO.Path]::GetFullPath(
         [Environment]::ExpandEnvironmentVariables($Value.Replace('/', '\'))
@@ -176,7 +202,11 @@ Write-JsonAtomic $queueStatePath $queue
 $blocked = 0
 $machinePassed = 0
 $exitCode = 0
+$sleepGuardEnabled = $false
 try {
+    Enable-MfaYearQueueSleepGuard
+    $sleepGuardEnabled = $true
+    Write-Host 'Windows system sleep guard: enabled' -ForegroundColor Cyan
     # 모든 연도가 공유할 동결 search master를 한 번만 준비한다. 성공 meta가
     # 있으면 다시 쓰지 않으며, 이후 연도별 child runner도 같은 root를 재사용한다.
     $searchMeta = Join-Path $searchMasterRoot '_build_meta.json'
@@ -377,6 +407,10 @@ try {
     $queue.failure = $_.Exception.Message
     $exitCode = 1
 } finally {
+    if ($sleepGuardEnabled) {
+        Disable-MfaYearQueueSleepGuard
+        $sleepGuardEnabled = $false
+    }
     $queue.updated_at = (Get-Date).ToString('o')
     $queue.finished_at = (Get-Date).ToString('o')
     $queue.machine_qc_passed_years = $machinePassed

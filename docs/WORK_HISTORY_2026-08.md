@@ -731,3 +731,7 @@ shard 2–23을 재개하는 것이다.
   `outputs/reports` 전체를 예외 처리하지 않았다.
 - 회귀 안전검사에 `-Output $sourceContractReport`와 runtime 보고서 경로 토큰을
   고정해 같은 자기차단이 재발하지 않게 했다.
+- 수정 후 실제 최종 preflight는 `GO`, 전체 312시험과 PowerShell 5.1 검사가
+  통과했다. 이어 장시간 무인 MFA 큐에 process-scoped Windows sleep guard가
+  빠진 것을 확인해 추가했다. 큐 시작부터 종료·실패까지 시스템 절전을 막고,
+  `finally`에서 정상 전원 정책으로 복원한다. 화면 꺼짐은 허용한다.

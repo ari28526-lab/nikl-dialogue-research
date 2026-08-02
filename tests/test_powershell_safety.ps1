@@ -363,7 +363,11 @@ foreach ($path in $files) {
             'canonical_promotion_automatic = $false',
             'researcher_approval_automatic = $false',
             'Write-JsonAtomic',
-            'mfa_year_queue.lock'
+            'mfa_year_queue.lock',
+            'MfaYearQueueSleepGuard',
+            'Enable-MfaYearQueueSleepGuard',
+            'Disable-MfaYearQueueSleepGuard',
+            'Windows system sleep guard: enabled'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("연도 무인 큐 안전장치 누락: $required")
