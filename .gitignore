@@ -62,6 +62,7 @@ data/03_analysis_ready/
 *.csv
 !config/**/*.csv
 !outputs/tables/2020_mfa_missing_textgrid_ids_20260726.csv
+!outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/03_RESEARCHER_REVIEW.csv
 *.TextGrid
 *.tmp
 *.db

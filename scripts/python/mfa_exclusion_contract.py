@@ -35,6 +35,7 @@ ALLOWED_REASON_CODES = {
     "manual_review_unclassified",
     "mfa_alignment_missing",
     "audio_pairing_unresolved",
+    "empty_reference_unresolved_symbol",
 }
 ALLOWED_SCOPES = {"alignment_and_analysis", "analysis_only"}
 

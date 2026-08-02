@@ -1,0 +1,25 @@
+﻿{
+    "schema_version":  "mfa_exclusion_review_category_summary.v1",
+    "status":  "pending_researcher_review",
+    "year":  "2020",
+    "input_contract_id":  "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+    "final_review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW.csv",
+    "final_review_manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "candidates":  {
+                       "audio_pairing_unresolved":  1834,
+                       "empty_reference_unresolved_symbol":  53,
+                       "total":  1887
+                   },
+    "retained_with_warning":  {
+                                  "partial_lab_unresolved_symbol":  6158,
+                                  "exclusion_candidate":  false,
+                                  "warning_field":  "pron_reference_status=unresolved_symbol"
+                              },
+    "policy":  {
+                   "no_global_symbol_guessing":  true,
+                   "no_automatic_approval":  true,
+                   "no_full_lab_or_wav_rescan":  true,
+                   "no_mfa_started":  true,
+                   "prior_1834_review":  "superseded_and_archived"
+               }
+}

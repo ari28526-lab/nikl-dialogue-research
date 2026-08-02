@@ -16,7 +16,13 @@ from mfa_exclusion_contract import (  # noqa: E402
 
 
 class MfaExclusionContractTests(unittest.TestCase):
-    def write_review(self, path: Path, *, decision="approved"):
+    def write_review(
+        self,
+        path: Path,
+        *,
+        decision="approved",
+        reason_code="quarantined_wav",
+    ):
         with path.open("w", encoding="utf-8-sig", newline="") as stream:
             writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
             writer.writeheader()
@@ -25,7 +31,7 @@ class MfaExclusionContractTests(unittest.TestCase):
                     "year": "2020",
                     "input_contract_id": "INPUT1",
                     "utt_id": "U1",
-                    "reason_code": "quarantined_wav",
+                    "reason_code": reason_code,
                     "exclusion_scope": "alignment_and_analysis",
                     "evidence_path": "D:/evidence/U1.wav",
                     "decision": decision,
@@ -70,6 +76,30 @@ class MfaExclusionContractTests(unittest.TestCase):
                     approved_by="researcher",
                     approved_at="2026-08-01T12:00:00+09:00",
                 )
+
+    def test_empty_reference_unresolved_symbol_can_be_explicitly_approved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            review = root / "review.csv"
+            contract = root / "contract.json"
+            self.write_review(
+                review,
+                reason_code="empty_reference_unresolved_symbol",
+            )
+            built = build_contract(
+                review_csv=review,
+                output=contract,
+                year="2020",
+                input_contract_id="INPUT1",
+                approved_by="researcher",
+                approved_at="2026-08-02T12:00:00+09:00",
+            )
+            self.assertEqual(
+                built["counts"][
+                    "empty_reference_unresolved_symbol|alignment_and_analysis"
+                ],
+                1,
+            )
 
 
 if __name__ == "__main__":

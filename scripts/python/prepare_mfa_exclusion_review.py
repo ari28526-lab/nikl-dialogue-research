@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+from collections import Counter
 from pathlib import Path
 
 from mfa_exclusion_contract import REVIEW_FIELDS
@@ -63,6 +64,7 @@ def prepare_review(
     quarantine_log: Path | None = None,
     input_contract_id: str | None = None,
     audio_recovery_plan: Path | None = None,
+    lab_report: Path | None = None,
 ) -> dict[str, object]:
     audit_report = audit_report.resolve()
     audit = json.loads(audit_report.read_text(encoding="utf-8-sig"))
@@ -96,6 +98,99 @@ def prepare_review(
             or candidate["exclusion_scope"] == "alignment_and_analysis"
         ):
             by_utt[candidate["utt_id"]] = candidate
+
+    lab_report_fingerprint = None
+    unresolved_inventory_fingerprint = None
+    unresolved_symbol_ids: set[str] = set()
+    empty_reference_unresolved_ids: set[str] = set()
+    if lab_report is not None:
+        lab_report = lab_report.resolve()
+        lab_report_fingerprint = file_fingerprint(
+            lab_report, with_sha256=True
+        )
+        lab_data = json.loads(lab_report.read_text(encoding="utf-8-sig"))
+        if str(lab_data.get("status") or "") != "passed":
+            raise RuntimeError("lab report status가 passed가 아님")
+        if str(lab_data.get("year") or "") != str(year):
+            raise RuntimeError("lab report year 불일치")
+        if str(lab_data.get("input_contract_id") or "") != contract_id:
+            raise RuntimeError("lab report input_contract_id 불일치")
+        inventory_value = str(
+            lab_data.get("unresolved_symbol_inventory") or ""
+        ).strip()
+        if not inventory_value:
+            raise RuntimeError("lab report unresolved_symbol_inventory 누락")
+        unresolved_inventory = Path(inventory_value).resolve()
+        unresolved_inventory_fingerprint = file_fingerprint(
+            unresolved_inventory, with_sha256=True
+        )
+        with unresolved_inventory.open(
+            encoding="utf-8-sig", newline=""
+        ) as stream:
+            reader = csv.DictReader(stream)
+            required = {
+                "year",
+                "utt_id",
+                "pron_reference_status",
+                "lab_text",
+            }
+            missing = required - set(reader.fieldnames or ())
+            if missing:
+                raise RuntimeError(
+                    "unresolved symbol inventory 필수 열 누락: "
+                    f"{sorted(missing)}"
+                )
+            for line_number, row in enumerate(reader, 2):
+                row_year = str(row.get("year") or "").strip()
+                if row_year != str(year):
+                    raise RuntimeError(
+                        "unresolved symbol inventory year 불일치: "
+                        f"line={line_number}, year={row_year!r}"
+                    )
+                status = str(
+                    row.get("pron_reference_status") or ""
+                ).strip()
+                if status != "unresolved_symbol":
+                    raise RuntimeError(
+                        "unresolved symbol inventory status 불일치: "
+                        f"line={line_number}, status={status!r}"
+                    )
+                utt_id = str(row.get("utt_id") or "").strip()
+                if not utt_id or utt_id in unresolved_symbol_ids:
+                    raise RuntimeError(
+                        "unresolved symbol inventory 빈/중복 utt_id: "
+                        f"line={line_number}, utt_id={utt_id!r}"
+                    )
+                unresolved_symbol_ids.add(utt_id)
+                if str(row.get("lab_text") or "").strip():
+                    continue
+                empty_reference_unresolved_ids.add(utt_id)
+                by_utt[utt_id] = {
+                    "utt_id": utt_id,
+                    "reason_code": "empty_reference_unresolved_symbol",
+                    "exclusion_scope": "alignment_and_analysis",
+                    "evidence_path": str(unresolved_inventory),
+                    "notes": (
+                        "empty_reference_form; unresolved_symbol; "
+                        "no_LAB_generated"
+                    ),
+                }
+        expected_unresolved = int(
+            lab_data.get("pron_reference_unresolved", -1)
+        )
+        if len(unresolved_symbol_ids) != expected_unresolved:
+            raise RuntimeError(
+                "lab report/inventory unresolved count 불일치: "
+                f"report={expected_unresolved}, "
+                f"inventory={len(unresolved_symbol_ids)}"
+            )
+        expected_empty = int(lab_data.get("empty_reference_form", -1))
+        if len(empty_reference_unresolved_ids) != expected_empty:
+            raise RuntimeError(
+                "lab report/inventory empty reference count 불일치: "
+                f"report={expected_empty}, "
+                f"inventory={len(empty_reference_unresolved_ids)}"
+            )
 
     audio_plan_fingerprint = None
     audio_plan_exclusion_ids: set[str] = set()
@@ -182,6 +277,7 @@ def prepare_review(
                 "notes": candidate["notes"],
             }
         )
+    candidate_counts = Counter(row["reason_code"] for row in rows)
     with atomic_text_writer(
         output_csv.resolve(), encoding="utf-8-sig", newline=""
     ) as (stream, _temp):
@@ -198,6 +294,15 @@ def prepare_review(
         "audit_report": file_fingerprint(audit_report, with_sha256=True),
         "quarantine_log": quarantine_fingerprint,
         "audio_recovery_plan": audio_plan_fingerprint,
+        "lab_report": lab_report_fingerprint,
+        "unresolved_symbol_inventory": unresolved_inventory_fingerprint,
+        "unresolved_symbol_count": len(unresolved_symbol_ids),
+        "partial_lab_unresolved_symbol_count": (
+            len(unresolved_symbol_ids) - len(empty_reference_unresolved_ids)
+        ),
+        "empty_reference_unresolved_symbol_count": len(
+            empty_reference_unresolved_ids
+        ),
         "active_audio_pairing_issue_count": len(active_audio_issue_ids),
         "audio_plan_exclusion_count": len(audio_plan_exclusion_ids),
         "uncovered_audio_pairing_issue_count": len(uncovered_audio_issues),
@@ -205,6 +310,7 @@ def prepare_review(
             output_csv.resolve(), with_sha256=True
         ),
         "candidate_count": len(rows),
+        "candidate_counts_by_reason": dict(sorted(candidate_counts.items())),
         "automatic_approval_performed": False,
     }
     atomic_write_json(output_report.resolve(), result)
@@ -221,6 +327,7 @@ def main() -> int:
     parser.add_argument("--quarantine-log", type=Path)
     parser.add_argument("--input-contract-id")
     parser.add_argument("--audio-recovery-plan", type=Path)
+    parser.add_argument("--lab-report", type=Path, required=True)
     args = parser.parse_args()
     result = prepare_review(
         audit_report=args.audit_report,
@@ -231,6 +338,7 @@ def main() -> int:
         quarantine_log=args.quarantine_log,
         input_contract_id=args.input_contract_id,
         audio_recovery_plan=args.audio_recovery_plan,
+        lab_report=args.lab_report,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

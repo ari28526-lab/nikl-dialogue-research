@@ -1,0 +1,26 @@
+﻿{
+    "schema_version":  "mfa_full6y_approval_review_preparation.v1",
+    "status":  "researcher_review_required",
+    "created_at":  "2026-08-02T13:13:03.3722972+09:00",
+    "queue_id":  "mfa_r2_prod_2020_20260801",
+    "search_master_run_id":  "pre_mfa_v1_20260725",
+    "review_root":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801",
+    "years":  [
+                  "2020"
+              ],
+    "total_candidates":  1887,
+    "records":  [
+                    {
+                        "year":  "2020",
+                        "status":  "prepared_from_verified_evidence",
+                        "candidate_count":  1887,
+                        "input_contract_id":  "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    }
+                ],
+    "starts_mfa":  false,
+    "moves_wav":  false,
+    "approves_exclusions":  false,
+    "promotes_canonical_outputs":  false
+}

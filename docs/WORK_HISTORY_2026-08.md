@@ -633,3 +633,25 @@ shard 2–23을 재개하는 것이다.
   새 root와 같은 contract ID를 반환했다.
 - 복구 단계는 완료됐다. 다음 단계는 1,834건의 승인 제외 후보표 생성·연구자
   확인이며, MFA 자체는 아직 시작하지 않았다.
+
+### 2020 제외 후보의 미해결 기호 회계 보완 — 전수 계산 반복 없음
+
+- 첫 후보표 1,834건은 음원 복구 불가·모호 발화만 포함했으나, 완료된 LAB
+  보고서에는 WAV가 있으면서 정렬 문자열이 완전히 빈 미해결 기호 발화 53건이
+  별도로 있었다. 이를 승인표에 넣지 않으면 MFA 입력과 승인 제외 양쪽에서
+  암묵적으로 빠지는 결함을 승인 전에 발견했다.
+- 기존 전수 LAB/WAV 검사를 다시 실행하지 않았다. audit·복구계획·LAB 보고서·
+  미해결 기호 인벤토리의 계약 ID·합계·SHA-256을 읽기 전용으로 검증해 결합했다.
+- 최종 후보는 `audio_pairing_unresolved` 1,834건과
+  `empty_reference_unresolved_symbol` 53건, 합계 1,887건이다.
+- 미해결 기호 6,211건 중 부분 한글 LAB이 있는 6,158건은 제외하지 않았다.
+  `pron_reference_status=unresolved_symbol`이 post-MFA
+  `utterance_alignment.csv.gz`로 그대로 전달되는 회귀시험을 추가했다.
+- 첫 1,834건 검토 root 5개 파일/896,389 bytes는 삭제하지 않고
+  `outputs/reviews/archive/..._pre_symbol_accounting_20260802`로 이동했다.
+- Gate B 전 2020 전용 큐의 `...mfa_r2_prod_2020_20260801/2020`만 활성본으로
+  고정했다. 이는 `start_2020_mfa_after_review.ps1`의 기본 큐 ID와 일치한다.
+  새 finalize 스크립트는 출력이 있으면 덮어쓰지 않으므로 후보표 반복 생성을
+  막는다. 자동 승인과 MFA는 수행하지 않았다.
+- 결정 근거:
+  `docs/decisions/DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md`

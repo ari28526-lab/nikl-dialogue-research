@@ -20,6 +20,7 @@ $files = @(
     (Join-Path $root 'scripts\prepare_remaining_mfa_approval_reviews.ps1'),
     (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
+    (Join-Path $root 'scripts\finalize_2020_mfa_review_from_verified_evidence.ps1'),
     (Join-Path $root 'scripts\mfa_wav_corpus.ps1'),
     (Join-Path $root 'scripts\run_2020_wav_id_recovery.ps1'),
     (Join-Path $root 'scripts\show_2020_wav_id_recovery_status.ps1'),
@@ -504,6 +505,10 @@ foreach ($path in $files) {
             'gates.session_folders_present',
             'gates.csv_wav_duration_correspondence',
             'uncovered_audio_pairing_issue_count',
+            'unresolved_symbol_inventory',
+            'partial_lab_unresolved_symbol_count',
+            'empty_reference_unresolved_symbol_count',
+            '기존 검토표는 미해결 기호/LAB 회계가 없어',
             '기존 검토표는 현행 6-tier/음원 대응 계약에 맞지 않아',
             '자동 덮어쓰기 금지',
             'starts_mfa = $false',
@@ -528,10 +533,46 @@ foreach ($path in $files) {
             '--skip-morph-source-audit',
             '[string]$AudioRecoveryPlan',
             "'--audio-recovery-plan'",
+            "'--lab-report'",
             '$reviewArgs'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("연도 승인표 준비의 음원 가드 누락: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'finalize_2020_mfa_review_from_verified_evidence.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'pre_symbol_accounting_20260802',
+            'mfa_r2_prod_2020_20260801',
+            '--lab-report',
+            '--audio-recovery-plan',
+            '[int]$manifest.candidate_count -ne 1887',
+            '$audioCount -ne 1834',
+            '$emptyCount -ne 53',
+            '$partialCount -ne 6158',
+            '최종 검토 폴더가 비어 있지 않아 덮어쓰지 않음',
+            'no_full_lab_or_wav_rescan = $true',
+            'no_automatic_approval = $true',
+            'no_mfa_started = $true'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("2020 증거 결합 가드 누락: $required")
+            }
+        }
+        foreach ($forbidden in @(
+            'realign_eojeol_build_corpus.py',
+            'audit_mfa_year_readiness.py',
+            'quarantine_bad_wavs.py',
+            'run_mfa_year_queue_safe.ps1',
+            'mfa align'
+        )) {
+            if ($text.Contains($forbidden)) {
+                $failures.Add("2020 증거 결합기가 전수/MFA 작업을 호출함: $forbidden")
             }
         }
     }

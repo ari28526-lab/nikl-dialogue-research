@@ -80,6 +80,38 @@ foreach ($year in $Years) {
         ) {
             throw "$year 기존 검토 manifest identity/status 불일치"
         }
+        $manifestFields = @($data.PSObject.Properties.Name)
+        foreach ($requiredField in @(
+            'lab_report',
+            'unresolved_symbol_inventory',
+            'unresolved_symbol_count',
+            'partial_lab_unresolved_symbol_count',
+            'empty_reference_unresolved_symbol_count',
+            'candidate_counts_by_reason'
+        )) {
+            if (
+                $requiredField -notin $manifestFields -or
+                $null -eq $data.$requiredField
+            ) {
+                throw (
+                    "$year 기존 검토표는 미해결 기호/LAB 회계가 없어 " +
+                    "승인할 수 없음: $requiredField"
+                )
+            }
+        }
+        if (
+            [int]$data.unresolved_symbol_count -ne
+            (
+                [int]$data.partial_lab_unresolved_symbol_count +
+                [int]$data.empty_reference_unresolved_symbol_count
+            ) -or
+            [int](
+                $data.candidate_counts_by_reason.
+                    empty_reference_unresolved_symbol
+            ) -ne [int]$data.empty_reference_unresolved_symbol_count
+        ) {
+            throw "$year 기존 검토표의 미해결 기호/LAB 합계 불일치"
+        }
         $auditPath = [string]$data.audit_report.path
         if (-not (Test-Path -LiteralPath $auditPath -PathType Leaf)) {
             throw "$year 기존 검토의 입력 감사 보고서 누락: $auditPath"

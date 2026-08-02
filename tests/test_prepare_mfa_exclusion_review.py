@@ -174,6 +174,125 @@ class PrepareMfaExclusionReviewTests(unittest.TestCase):
                     audio_recovery_plan=plan,
                 )
 
+    def test_empty_unresolved_lab_is_candidate_but_partial_lab_is_retained(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            (search / "2020").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success", "run_id": "T"}),
+                encoding="utf-8",
+            )
+            (search / "2020" / "S1.csv").write_text(
+                "utt_id,form,pron_reference_form\nU1,가,가\n",
+                encoding="utf-8",
+            )
+            audit = root / "audit.json"
+            audit.write_text(
+                json.dumps(
+                    {"years": [{"year": "2020", "issue_inventory": []}]}
+                ),
+                encoding="utf-8",
+            )
+            inventory = root / "unresolved.csv"
+            inventory.write_text(
+                "year,utt_id,pron_reference_status,lab_text\n"
+                "2020,U_EMPTY,unresolved_symbol,\n"
+                "2020,U_PARTIAL,unresolved_symbol,가 나\n",
+                encoding="utf-8",
+            )
+            lab_report = root / "lab.json"
+            lab_report.write_text(
+                json.dumps(
+                    {
+                        "status": "passed",
+                        "year": "2020",
+                        "input_contract_id": "INPUT_TEST",
+                        "pron_reference_unresolved": 2,
+                        "empty_reference_form": 1,
+                        "unresolved_symbol_inventory": str(inventory),
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "review.csv"
+            result = prepare_review(
+                audit_report=audit,
+                year="2020",
+                search_master_root=search,
+                output_csv=output,
+                output_report=root / "report.json",
+                input_contract_id="INPUT_TEST",
+                lab_report=lab_report,
+            )
+            self.assertEqual(result["candidate_count"], 1)
+            self.assertEqual(result["unresolved_symbol_count"], 2)
+            self.assertEqual(
+                result["partial_lab_unresolved_symbol_count"], 1
+            )
+            self.assertEqual(
+                result["empty_reference_unresolved_symbol_count"], 1
+            )
+            with output.open(encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+            self.assertEqual([row["utt_id"] for row in rows], ["U_EMPTY"])
+            self.assertEqual(
+                rows[0]["reason_code"],
+                "empty_reference_unresolved_symbol",
+            )
+            self.assertEqual(rows[0]["decision"], "pending")
+
+    def test_lab_report_inventory_count_mismatch_blocks_review(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            (search / "2020").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success", "run_id": "T"}),
+                encoding="utf-8",
+            )
+            (search / "2020" / "S1.csv").write_text(
+                "utt_id,form,pron_reference_form\nU1,가,가\n",
+                encoding="utf-8",
+            )
+            audit = root / "audit.json"
+            audit.write_text(
+                json.dumps(
+                    {"years": [{"year": "2020", "issue_inventory": []}]}
+                ),
+                encoding="utf-8",
+            )
+            inventory = root / "unresolved.csv"
+            inventory.write_text(
+                "year,utt_id,pron_reference_status,lab_text\n"
+                "2020,U_EMPTY,unresolved_symbol,\n",
+                encoding="utf-8",
+            )
+            lab_report = root / "lab.json"
+            lab_report.write_text(
+                json.dumps(
+                    {
+                        "status": "passed",
+                        "year": "2020",
+                        "input_contract_id": "INPUT_TEST",
+                        "pron_reference_unresolved": 2,
+                        "empty_reference_form": 1,
+                        "unresolved_symbol_inventory": str(inventory),
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RuntimeError, "unresolved count"):
+                prepare_review(
+                    audit_report=audit,
+                    year="2020",
+                    search_master_root=search,
+                    output_csv=root / "review.csv",
+                    output_report=root / "report.json",
+                    input_contract_id="INPUT_TEST",
+                    lab_report=lab_report,
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

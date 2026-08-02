@@ -318,6 +318,51 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 [("1", "두"), ("2", "사람이")],
             )
 
+    def test_unresolved_symbol_warning_is_preserved_in_companion_csv(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            output = root / "output"
+            self.make_db(db)
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(
+                search,
+                {
+                    "pron_reference_source": "form_rule_prediction",
+                    "pron_reference_status": "unresolved_symbol",
+                },
+            )
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+            )
+            self.assertEqual(report["status"], "success")
+            table = (
+                output
+                / "2021"
+                / "_tables"
+                / "utterance_alignment.csv.gz"
+            )
+            with gzip.open(
+                table, "rt", encoding="utf-8-sig", newline=""
+            ) as stream:
+                utterance = next(csv.DictReader(stream))
+            self.assertEqual(
+                utterance["pron_reference_status"], "unresolved_symbol"
+            )
+            self.assertEqual(
+                utterance["pron_reference_source"],
+                "form_rule_prediction",
+            )
+
     def test_failed_table_gate_does_not_promote_gzip_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

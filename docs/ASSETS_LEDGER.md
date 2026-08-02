@@ -122,3 +122,16 @@ D:\10_LAYERS\09_morph_search_v3_staging\morph_search_v3_20260801\2020\SOURCE_CON
 - 검증 보고서:
   `outputs/reports/SOURCE_CONTRACT_morph_search_v3_20260801_2020.json`
 - 상태: `passed`
+
+## 2026-08-02 2020 MFA 제외 최종 회계
+
+- 활성 검토 root:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020`
+- 추적 집계:
+  `outputs/reports/EVIDENCE_2020_mfa_exclusion_final_20260802.json`
+- 후보: `audio_pairing_unresolved` 1,834 +
+  `empty_reference_unresolved_symbol` 53 = 1,887
+- 제외하지 않고 경고 보존: 부분 LAB `unresolved_symbol` 6,158
+- 구 1,834건 표:
+  `outputs/reviews/archive/mfa_exclusions_queue_mfa_r2_prod_2020_20260801_pre_symbol_accounting_20260802`
+- 상태: 연구자 승인 대기, MFA 미시작

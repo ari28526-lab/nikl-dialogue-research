@@ -22,6 +22,7 @@
 | `METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md` | phone 기준의 연도간 동일성 |
 | `DECISION_incremental_unattended_year_MFA_20260801.md` | 연도별 checkpoint·실패 보존 |
 | `DECISION_2020_CSV_WAV_ID_recovery_20260801.md` | 2020 배포 PCM/WAV 발화 ID 밀림의 국소 복구·제외 gate |
+| `DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md` | 1,834 음원 미대응·53 빈 LAB의 명시 제외와 부분 LAB 6,158 경고 보존 |
 | `DECISION_workflow_reset_and_production_entrypoints_20260801.md` | 활성 문서·2020-only·source contract·Gate B |
 | `DESIGN_candidate_infrastructure_layers_2026-07-24.md` | 검색→수집→보조분석→수동판정 층 분리 |
 | `DESIGN_pronunciation_environment_search_2026-07-25.md` | 철자·규칙·사전·MFA 정보 분리 |

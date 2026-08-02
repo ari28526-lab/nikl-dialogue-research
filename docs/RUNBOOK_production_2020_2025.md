@@ -66,8 +66,9 @@ E: 독립 archive와 D: 파생 코퍼스를 만든다.
 & "C:\Users\ari30\research\2026_summer_research\scripts\run_2020_wav_id_recovery.ps1" -Apply -ApprovedBy "ari30"
 ```
 
-위 명령은 현재 완료됐다. 최종 계약 검증 없이 재생성할 때만 다시 사용하며,
-지금의 다음 사용자 단계는 아래 `prepare_2020_mfa_approval_review.ps1`이다.
+위 명령은 현재 완료됐다. 최종 계약 검증 없이 재생성할 때만 다시 사용한다.
+아래 `prepare_2020_mfa_approval_review.ps1`도 2026-08-02 전수 검증을 완료한
+이력 명령이며 지금 다시 실행하지 않는다.
 
 이 명령은 영향 129세션 중 원음 폴더가 있는 128세션을 E:에 세션별 ZIP+SHA
 manifest로 보존하고, 원음 폴더 자체가 없는 `SDRW2000000176`은 513발화 전부를
@@ -84,18 +85,27 @@ hardlink, 영향 세션은 독립 복사본을 사용한다. 모호·미해결 1
 & "C:\Users\ari30\research\2026_summer_research\scripts\show_2020_wav_id_recovery_status.ps1"
 ```
 
-복구 계약이 `passed`가 된 뒤에만 아래 제외 후보 명령을 실행한다. 기존 14행
-표는 승인하지 않는다.
+복구 계약이 `passed`가 된 뒤에만 제외 후보를 만든다. 기존 14행 표와 미해결
+기호 53건이 빠진 첫 1,834건 표는 승인하지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\prepare_2020_mfa_approval_review.ps1"
 ```
 
-복구 후 이 단계는 파생 WAV와 전수 LAB을 검증하고 복구 불가·모호한 2020
-후보표만 만든다.
-MFA, 자동 승인, 정본 승격을 하지 않는다. 연구자는 실제로 제외에 동의하는
-행만 `approved`로 바꾼다. 후보가 0건이어도 입력 계약에 결속된 0행 승인을
-남긴다.
+이 명령의 전수 검증은 2026-08-02 완료됐다. **지금 다시 실행하지 않는다.**
+검증 결과를 다시 계산하지 않고 결합한 최종 활성본은 다음이다.
+
+```text
+outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
+```
+
+최종 후보는 음원 미대응 1,834건과 빈 LAB 미해결 기호 53건, 합계 1,887건이다.
+부분 한글 LAB이 남은 미해결 기호 6,158건은 제외하지 않고
+`pron_reference_status=unresolved_symbol` 경고를 연결 CSV에 보존한다. 자세한
+근거는
+`docs/decisions/DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md`다.
+MFA, 자동 승인, 정본 승격은 아직 하지 않았다. 다음 사용자 행동은 두 제외
+범주에 대한 명시적 승인이다. 후보표 재생성 명령을 다시 실행하지 않는다.
 
 ### C. 2020 신규 MFA 시작
 

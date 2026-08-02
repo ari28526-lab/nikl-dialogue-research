@@ -96,6 +96,7 @@ $reviewArgs = @(
     '--year', $Year,
     '--search-master-root', $SearchMasterRoot,
     '--input-contract-id', $inputContractId,
+    '--lab-report', $labReport,
     '--quarantine-log', $wavInventory,
     '--output-csv', $reviewCsv,
     '--output-report', $reviewReport
