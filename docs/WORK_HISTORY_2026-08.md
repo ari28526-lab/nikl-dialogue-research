@@ -618,3 +618,18 @@ shard 2–23을 재개하는 것이다.
 - 합성 누락 세션 apply·재개, 전체 Python 304개, PowerShell 34개 검사를 통과했고
   실자료 재-dry-run은 128 ZIP 세션+누락 manifest 1개, corpus 868,603,
   제외 1,834, archive 3.148 GiB로 통과했다.
+
+### 수정 계약 apply 완료
+
+- 2026-08-02 09:58:09–10:24:46 KST에 수정 계약 apply가 완료됐다.
+- contract ID `eb64f80d9106d14c7b2a267811cdf2dc2fe29e890cc335a7029a8cca24a7375f`,
+  final contract와 APPLY 보고서 ID가 일치하고 status는 모두 `passed`다.
+- D: 파생 코퍼스 계약 WAV 868,603건을 별도 directory enumeration으로 다시
+  세어 868,603건과 정확히 일치했다. 세션 디렉터리는 2,232개다.
+- E:에는 128 ZIP, 129 manifest가 있으며 차이 1개는
+  `SDRW2000000176`의 `verified_absent` 증거다. ZIP 합계는 약 2.18 GiB이며
+  원음 비압축 기준은 3.148 GiB다.
+- 최종 lock은 해제됐고 source tree untouched=true다. 2020 corpus resolver도
+  새 root와 같은 contract ID를 반환했다.
+- 복구 단계는 완료됐다. 다음 단계는 1,834건의 승인 제외 후보표 생성·연구자
+  확인이며, MFA 자체는 아직 시작하지 않았다.

@@ -1,7 +1,7 @@
 # 2020 CSV–WAV 발화 ID 대응 복구 결정
 
 결정일: 2026-08-01 KST
-상태: `MFA BLOCKED — RECOVERY DRY-RUN PASSED; APPLY PENDING`
+상태: `RECOVERY APPLIED AND VERIFIED — MFA EXCLUSION REVIEW NEXT`
 
 ## 연구 목적과 위험
 
@@ -159,6 +159,27 @@ outputs/reports/PREFLIGHT_2020_wav_recovery_corpus_20260802.json
 세션에 포함 대상이 한 건이라도 있으면 계속 fail-closed한다. builder SHA가
 달라져 새 contract ID를 발급하며 구 계약의 ZIP 10개는 실패 근거로 자동
 삭제하거나 새 계약에 무근거 재사용하지 않는다.
+
+## 최종 적용 결과
+
+수정 계약 apply는 2026-08-02 09:58–10:24 KST에 완료됐다.
+
+- final contract: `passed`
+- contract ID: `eb64f80d9106d14c7b2a267811cdf2dc2fe29e890cc335a7029a8cca24a7375f`
+- 파생 WAV: 계약 868,603 / 독립 파일 계수 868,603
+- 파생 세션 디렉터리: 2,232
+- E: archive: ZIP 128개, manifest 129개
+- `verified_absent`: 1개 (`SDRW2000000176`)
+- 연구자 제외 검토 이월: 1,834
+- 원본 변경: 0, 종료 lock: 0
+- 2020 MFA resolver: `Recovered=True`, 새 파생 root 선택
+
+증거:
+
+```text
+outputs/reports/APPLY_2020_wav_recovery_corpus_20260802.json
+D:/20_AUDIO/04_wav_id_recovered_staging/contracts/2020.json
+```
 
 ## 다음 순서
 

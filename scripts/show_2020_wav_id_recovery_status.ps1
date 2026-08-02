@@ -66,7 +66,12 @@ if (Test-Path -LiteralPath $lock -PathType Leaf) {
         'not_started'
     }
     dry_run_status = if ($null -ne $preflight) {$preflight.status} else {$null}
-    corpus_contract_id = if ($null -ne $preflight) {
+    corpus_contract_id = if ($null -ne $contract -and $contract.status -eq 'passed') {
+        $contract.corpus_contract_id
+    } elseif ($null -ne $preflight) {
+        $preflight.contract.corpus_contract_id
+    } else {$null}
+    preflight_contract_id = if ($null -ne $preflight) {
         $preflight.contract.corpus_contract_id
     } else {$null}
     expected_corpus_wavs = if ($null -ne $preflight) {

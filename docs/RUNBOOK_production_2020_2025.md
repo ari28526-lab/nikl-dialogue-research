@@ -56,6 +56,8 @@ workflow 수정·시험
 2026-08-01 전수 감사에서 배포 PCM/WAV의 발화 번호 밀림이 확인되었다. 복구
 결정과 dry-run 수량은
 `docs/decisions/DECISION_2020_CSV_WAV_ID_recovery_20260801.md`를 따른다.
+2026-08-02 10:24 KST 복구 코퍼스 apply와 독립 전수 계수가 통과했다. 최종
+계약 ID는 `eb64f80d9106d14c7b2a267811cdf2dc2fe29e890cc335a7029a8cca24a7375f`다.
 고신뢰 remap 청취 검토는 12/12 통과했고, 복구 코퍼스 dry-run도 통과했다.
 원본 `D:\20_AUDIO\03_wav\individual`은 수정하지 않는다. 먼저 다음 명령으로
 E: 독립 archive와 D: 파생 코퍼스를 만든다.
@@ -63,6 +65,9 @@ E: 독립 archive와 D: 파생 코퍼스를 만든다.
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\run_2020_wav_id_recovery.ps1" -Apply -ApprovedBy "ari30"
 ```
+
+위 명령은 현재 완료됐다. 최종 계약 검증 없이 재생성할 때만 다시 사용하며,
+지금의 다음 사용자 단계는 아래 `prepare_2020_mfa_approval_review.ps1`이다.
 
 이 명령은 영향 129세션 중 원음 폴더가 있는 128세션을 E:에 세션별 ZIP+SHA
 manifest로 보존하고, 원음 폴더 자체가 없는 `SDRW2000000176`은 513발화 전부를
