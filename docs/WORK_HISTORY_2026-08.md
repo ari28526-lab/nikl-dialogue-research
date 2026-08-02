@@ -568,3 +568,32 @@ shard 2–23을 재개하는 것이다.
 - 다음 단계는 원본 변경 전 영향 세션 archive manifest·복구 적용 transaction·
   rollback 계약을 구현하고 dry-run으로 검증하는 것이다. 사용자가 새로 실행할
   PowerShell 명령은 아직 없다.
+
+### 복구 transaction 구현과 실제 전수 dry-run
+
+- 원 `D:\20_AUDIO\03_wav\individual`을 직접 재명명·덮어쓰기하지 않고
+  `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020`에 MFA 전용
+  파생 코퍼스를 만드는 방식으로 확정했다.
+- 영향 129세션의 원음은 apply 전에
+  `E:\READ_ONLY_ARCHIVE\2026_summer_research`에 세션별 ZIP과 WAV SHA-256
+  manifest로 보존한다. 초기 용량 계산에서 source orphan을 빼 3.0 GiB보다 작게
+  셌던 오류를 고쳐, 50,777 WAV/비압축 3.148 GiB를 archive 대상으로 확정했다.
+- 영향 없는 세션은 같은 D: 볼륨의 NTFS hardlink, 영향 세션은 독립 검증 복사로
+  만든다. 모호 92건과 미해결 1,742건은 파생 코퍼스에서 빼고 다음 제외 검토로
+  보낸다. 원본은 계속 불변이다.
+- 세션별 archive/build checkpoint, live PID lock, 불완전 partial의 stale 보존,
+  복사·ZIP 재읽기 SHA 검증, 최종 exact count 계약을 구현했다. 중단 후 재실행은
+  검증된 세션을 재사용하며 연도 전체를 처음부터 자동 재처리하지 않는다.
+- 첫 실자료 dry-run은 세션별 파일 조회가 느려 120초에 250/2,232세션만
+  진행됐다. 세션 단위 `scandir` inventory로 바꾼 뒤 60–63초에 전수 완료했다.
+- 최종 dry-run: 검색 870,437건, 출력 예정 868,603건, 제외 검토 1,834건,
+  파생 코퍼스 논리 53.96 GiB, archive 3.148 GiB, 사용자 승인 12/12,
+  `status=dry_run_passed`.
+- 2020 LAB 준비·MFA·정렬 감사·생산 표본은 passed 복구 계약의 WAV root만
+  사용하도록 공통 resolver에 연결했다. 계약 누락/변조 시 원 `03_wav`로
+  fallback하지 않는다. 2021–2025 경로는 기존 원자료를 유지한다.
+- 합성 apply 시험은 원본 SHA 불변, 영향 없는 hardlink, remap 독립 복사,
+  archive 전수 포함, 모호·미해결 누락, 재실행 재사용을 확인했다. 전체 Python
+  304개와 PowerShell 안전검사 34개 파일이 통과했다.
+- 실제 D:/E: apply와 MFA는 아직 시작하지 않았다. 다음 사용자 단계는 코드
+  커밋·푸시 뒤 RUNBOOK의 `run_2020_wav_id_recovery.ps1 -Apply` 한 줄이다.

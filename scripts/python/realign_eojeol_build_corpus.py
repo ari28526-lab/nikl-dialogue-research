@@ -1,7 +1,7 @@
-"""어절(語節) 전량 재정렬용 .lab 생성 — 제자리(in-place) 방식 (2020-2025).
+"""어절(語節) 전량 재정렬용 .lab 생성 — 선택된 MFA corpus 안에 작성.
 
-★ 원래 파이프라인(make_labs)과 동일하게 lab을 wav '옆에' 직접 쓴다. 하드링크 없음.
-   (하드링크 코퍼스 방식은 USB에서 느려 폐기 — 이 스크립트가 그걸 대체.)
+★ lab은 선택된 MFA corpus의 wav 옆에 직접 쓴다. 기본은 기존 individual root이며,
+   복구 계약이 있는 2020은 원본을 보존한 별도 corpus root를 명시한다.
 교정 요점: lab을 '형태소'가 아니라 '어절'로 만든다. pre-MFA search master의
 pron_reference_form을 우선 사용해 JSON 원전사에서 안전하게 복원된 숫자 읽기를
 보존하고, 미해결 숫자·기호는 추측하지 않는다. 어절별 한글만 MFA에 넘긴다.
@@ -108,7 +108,14 @@ def load_entries(d: Path) -> dict[str, int]:
         return {}
 
 
-def input_contract(search_master_root: Path, year: str) -> dict[str, str]:
+def input_contract(
+    search_master_root: Path,
+    year: str,
+    *,
+    wav_root: Path | None = None,
+    audio_corpus_contract: Path | None = None,
+) -> dict[str, object]:
+    wav_root = (wav_root or WAV_ROOT).resolve()
     meta_path = search_master_root / "_build_meta.json"
     if not meta_path.is_file():
         raise RuntimeError(f"pre-MFA build meta 없음: {meta_path}")
@@ -152,7 +159,43 @@ def input_contract(search_master_root: Path, year: str) -> dict[str, str]:
         ),
         "search_sessions": str(actual_sessions),
         "source_sessions": str(expected_sessions),
+        "wav_root": str(wav_root.resolve()),
     }
+    if audio_corpus_contract is not None:
+        contract_path = audio_corpus_contract.resolve()
+        try:
+            audio = json.loads(contract_path.read_text(encoding="utf-8-sig"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(
+                f"audio corpus contract 손상: {contract_path}: {exc}"
+            ) from exc
+        expected_output = (wav_root / year).resolve()
+        if (
+            audio.get("status") != "passed"
+            or str(audio.get("year")) != year
+            or not audio.get("source_wav_tree_untouched")
+            or Path(str(audio.get("output_year") or "")).resolve()
+            != expected_output
+            or not str(audio.get("corpus_contract_id") or "")
+        ):
+            raise RuntimeError(
+                f"audio corpus contract identity/status 불일치: {contract_path}"
+            )
+        payload.update(
+            {
+                "audio_corpus_contract_id": str(audio["corpus_contract_id"]),
+                "audio_corpus_contract_sha256": sha256_file(contract_path),
+                "audio_corpus_policy": str(audio.get("schema_version") or ""),
+            }
+        )
+    else:
+        payload.update(
+            {
+                "audio_corpus_contract_id": "source_identity",
+                "audio_corpus_contract_sha256": "",
+                "audio_corpus_policy": "original_same_id",
+            }
+        )
     canonical = json.dumps(
         payload,
         ensure_ascii=False,
@@ -285,9 +328,11 @@ def archive_stale_lab(
     year: str,
     session: str,
     input_contract_id: str,
+    wav_root: Path | None = None,
 ) -> Path:
+    wav_root = (wav_root or WAV_ROOT).resolve()
     source = lab_path.resolve()
-    allowed = (WAV_ROOT / year).resolve()
+    allowed = (wav_root / year).resolve()
     if allowed not in source.parents:
         raise RuntimeError(f"stale lab 보존 경계 위반: {source}")
     destination = (
@@ -311,9 +356,17 @@ def build_year(
     *,
     force_verify: bool = False,
     progress_jsonl: Path | None = None,
-) -> dict:
+    wav_root: Path | None = None,
+    audio_corpus_contract: Path | None = None,
+) -> dict[str, object]:
     search_master_root = search_master_root.resolve()
-    contract = input_contract(search_master_root, year)
+    wav_root = (wav_root or WAV_ROOT).resolve()
+    contract = input_contract(
+        search_master_root,
+        year,
+        wav_root=wav_root,
+        audio_corpus_contract=audio_corpus_contract,
+    )
     marker = STATE_ROOT / "done" / f"{year}.lab_input_done.json"
     if marker.is_file() and not force_verify:
         try:
@@ -425,15 +478,15 @@ def build_year(
                 sess = u.split(".")[0]
                 names = sess_cache.get(sess)
                 if names is None:
-                    names = load_entries(WAV_ROOT / year / sess)
+                    names = load_entries(wav_root / year / sess)
                     sess_cache[sess] = names
                 if f"{u}.wav" in names:
-                    wav_dir = WAV_ROOT / year / sess
+                    wav_dir = wav_root / year / sess
                 else:  # 평면(2025) 폴백
                     if flat_names is None:
-                        flat_names = load_entries(WAV_ROOT / year)
+                        flat_names = load_entries(wav_root / year)
                     if f"{u}.wav" in flat_names:
-                        wav_dir = WAV_ROOT / year
+                        wav_dir = wav_root / year
                         names = flat_names
                     else:
                         no_wav += 1
@@ -474,6 +527,7 @@ def build_year(
                             year=year,
                             session=sess,
                             input_contract_id=contract["input_contract_id"],
+                            wav_root=wav_root,
                         )
                         names.pop(lab_name, None)
                         archived_empty_lab += 1
@@ -536,7 +590,7 @@ def build_year(
         f"reference변경 {reference_changed:,} / 미해결기호 {unresolved:,}",
         flush=True,
     )
-    print(f"  코퍼스(=wav폴더): {WAV_ROOT / year}", flush=True)
+    print(f"  코퍼스(=wav폴더): {wav_root / year}", flush=True)
     elapsed_seconds = round(time.time() - t0, 3)
     finished_at = datetime.now().astimezone().isoformat()
     unresolved_inventory = unresolved_inventory_path(
@@ -627,6 +681,17 @@ def main() -> int:
         type=Path,
         help="시작·진행·완료를 append-only JSONL로 기록할 경로",
     )
+    ap.add_argument(
+        "--wav-root",
+        type=Path,
+        default=WAV_ROOT,
+        help="MFA corpus의 연도 폴더들을 포함하는 root",
+    )
+    ap.add_argument(
+        "--audio-corpus-contract",
+        type=Path,
+        help="별도 복구 corpus를 사용할 때의 passed contract",
+    )
     args = ap.parse_args()
     years = sorted(YEAR_DIRS) if args.year == "all" else [args.year]
     for y in years:
@@ -637,6 +702,8 @@ def main() -> int:
             args.search_master_root,
             force_verify=args.force_verify,
             progress_jsonl=args.progress_jsonl,
+            wav_root=args.wav_root,
+            audio_corpus_contract=args.audio_corpus_contract,
         )
     return 0
 

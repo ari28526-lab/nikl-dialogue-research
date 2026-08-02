@@ -31,6 +31,7 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $projectRoot 'config\paths.json'
 $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 |
     ConvertFrom-Json
+. (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 
 function Resolve-ConfiguredPath([string]$Value) {
     return [IO.Path]::GetFullPath(
@@ -203,6 +204,20 @@ try {
         $state.phase = 'approval_contract'
         Write-JsonAtomic $queueStatePath $queue
         Write-Host "===== $year 무인 연도 큐 =====" -ForegroundColor Cyan
+        try {
+            $yearWavSelection = Resolve-MfaWavCorpusForYear `
+                -Config $config -Year $year
+            $yearWavRoot = [string]$yearWavSelection.WavRoot
+        } catch {
+            $state.status = 'wav_corpus_contract_missing_or_invalid'
+            $state.phase = 'blocked_before_mfa'
+            $state.failed_reason = $_.Exception.Message
+            $state.updated_at = (Get-Date).ToString('o')
+            $blocked += 1
+            Write-JsonAtomic $queueStatePath $queue
+            if ($StopAfterBlockedYear) { break }
+            continue
+        }
 
         $approval = Find-Approval $ApprovedExclusionsRoot $year
         if ($null -eq $approval -and $PrepareMissingReviews) {
@@ -310,7 +325,7 @@ try {
                 Out-Null
             & $python (Join-Path $PSScriptRoot (
                 'python\audit_mfa_research_6tier_year.py'
-            )) --year $year --lab-root $wavRoot `
+            )) --year $year --lab-root $yearWavRoot `
                 --textgrid-root $finalRoot --acoustic-model $acoustic `
                 --approved-exclusions-contract $approval `
                 --input-contract-id $inputId `

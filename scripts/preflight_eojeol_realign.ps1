@@ -17,6 +17,7 @@ param(
 $ErrorActionPreference = 'Continue'
 $root = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $root "config\paths.json"
+. (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 try {
     $cfg = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
     function Expand-CfgPath($value) {
@@ -156,6 +157,19 @@ if ($PreferD -and $freeByDrive.ContainsKey('D')) {
 # [5] wav 코퍼스 — 연도별 존재·세션(=화자) 구조. 지연 열거라 첫 항목만 보고 즉시 반환(가벼움).
 Out-Line "[5] wav 코퍼스 (연도별 존재·세션 구조)"
 foreach ($y in $years) {
+    try {
+        $wavSelection = Resolve-MfaWavCorpusForYear -Config $cfg -Year $y
+        $wavRoot = [string]$wavSelection.WavRoot
+        if ($wavSelection.Recovered) {
+            OK (
+                "$y 복구 WAV contract=" +
+                $wavSelection.CorpusContractId.Substring(0, 12)
+            )
+        }
+    } catch {
+        FAIL "$y WAV corpus 계약 실패: $($_.Exception.Message)"
+        continue
+    }
     $yDir = Join-Path $wavRoot $y
     if (-not (Test-Path $yDir)) { FAIL "$y wav 루트 없음: $yDir"; continue }
     $flat = [IO.Directory]::EnumerateFiles($yDir, "*.wav") | Select-Object -First 1

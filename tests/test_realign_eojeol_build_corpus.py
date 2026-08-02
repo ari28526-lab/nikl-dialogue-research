@@ -195,6 +195,56 @@ class EojeolLabInputContractTests(unittest.TestCase):
             finally:
                 builder.RAW = old_raw
 
+    def test_audio_corpus_contract_changes_and_binds_input_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            raw = root / "raw"
+            wav_root = root / "recovered"
+            (search / "2020").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success"}), encoding="utf-8"
+            )
+            (search / "2020" / "S1.csv").write_text(
+                "utt_id,form\n", encoding="utf-8"
+            )
+            raw_year = raw / builder.YEAR_DIRS["2020"]
+            raw_year.mkdir(parents=True)
+            (raw_year / "S1.csv").write_text("utt_id,form\n", encoding="utf-8")
+            (wav_root / "2020").mkdir(parents=True)
+            audio_contract = root / "audio_contract.json"
+            audio_contract.write_text(
+                json.dumps(
+                    {
+                        "status": "passed",
+                        "year": "2020",
+                        "source_wav_tree_untouched": True,
+                        "output_year": str((wav_root / "2020").resolve()),
+                        "corpus_contract_id": "corpus-123",
+                        "schema_version": "wav_recovery_corpus.v1",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            old_raw = builder.RAW
+            try:
+                builder.RAW = raw
+                baseline = builder.input_contract(
+                    search, "2020", wav_root=wav_root
+                )
+                recovered = builder.input_contract(
+                    search,
+                    "2020",
+                    wav_root=wav_root,
+                    audio_corpus_contract=audio_contract,
+                )
+            finally:
+                builder.RAW = old_raw
+            self.assertNotEqual(
+                baseline["input_contract_id"], recovered["input_contract_id"]
+            )
+            self.assertEqual(recovered["audio_corpus_contract_id"], "corpus-123")
+
     def test_zero_usable_does_not_write_passed_marker(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

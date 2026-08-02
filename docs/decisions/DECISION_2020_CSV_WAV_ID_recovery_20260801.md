@@ -1,7 +1,7 @@
 # 2020 CSV–WAV 발화 ID 대응 복구 결정
 
 결정일: 2026-08-01 KST
-상태: `MFA BLOCKED — MINIMAL LISTENING REVIEW PASSED 12/12`
+상태: `MFA BLOCKED — RECOVERY DRY-RUN PASSED; APPLY PENDING`
 
 ## 연구 목적과 위험
 
@@ -116,12 +116,44 @@ outputs/2020_wav_id_recovery_review_20260802/REVIEW_DECISIONS.md
   MFA가 그대로 정렬할 수 있으므로, 승인 뒤 실제 격리되기 전에는 실행 gate가
   통과하지 않는다.
 
+## 복구 코퍼스 계약과 dry-run
+
+원본을 이름 변경하거나 덮어쓰는 방식은 폐기하고 별도 파생 코퍼스를 만들기로
+확정했다.
+
+- 원본(읽기 전용): `D:\20_AUDIO\03_wav\individual`
+- 파생 코퍼스: `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020`
+- 독립 archive: `E:\READ_ONLY_ARCHIVE\2026_summer_research\wav_id_recovery_2020_<contract>`
+- 최종 계약: `D:\20_AUDIO\04_wav_id_recovered_staging\contracts\2020.json`
+
+실자료 전수 dry-run 결과는 다음과 같다.
+
+- 검색 발화: 870,437, 세션: 2,232
+- 파생 코퍼스 예정 발화: 868,603
+- 연구자 제외 검토 예정: 1,834 (`ambiguous` 92 + `unresolved` 1,742)
+- 영향 세션 archive: 129세션, 50,777 WAV, 비압축 3.148 GiB
+- 파생 코퍼스 논리 크기: 53.96 GiB
+- 사용자 청취 결정: 12/12 `A_MATCHES_TARGET`
+- 원본 변경: 0, 실제 apply: 아직 0
+
+영향 없는 세션은 같은 D: 볼륨의 NTFS hardlink로 물리 중복을 줄인다. 영향
+세션은 E: ZIP의 WAV를 SHA-256으로 다시 읽어 검증한 뒤 수정 ID의 독립
+복사본을 만든다. 중단 시 세션별 checkpoint를 검증해 재개하며, 불완전 출력은
+삭제하지 않고 stale 영역으로 이동한다. 원본이 불변이므로 rollback은 파생
+코퍼스를 격리하는 것이며 원본 복원 작업은 필요 없다.
+
+dry-run 증거:
+
+```text
+outputs/reports/PREFLIGHT_2020_wav_recovery_corpus_20260802.json
+```
+
 ## 다음 순서
 
 ```text
-고신뢰 remap 최소 음성 표본 12건 확인
-  → H:에 영향 세션 원본 archive+hash manifest
-  → 고신뢰 remap만 적용
+고신뢰 remap 최소 음성 표본 12건 확인(완료)
+  → E:에 영향 세션 원본 archive+hash manifest
+  → D: 별도 파생 코퍼스에 고신뢰 remap 적용
   → 2020 CSV–WAV 전수 재감사
   → unresolved/ambiguous만 새 제외 후보표
   → 연구자 승인

@@ -15,13 +15,15 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (Join-Path $projectRoot 'config\paths.json') `
     -Raw -Encoding UTF8 | ConvertFrom-Json
+. (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 function Resolve-ConfiguredPath([string]$Value) {
     return [IO.Path]::GetFullPath(
         [Environment]::ExpandEnvironmentVariables($Value.Replace('/', '\'))
     )
 }
 $python = Resolve-ConfiguredPath ([string]$config.pipeline_python)
-$wavRoot = Join-Path (Resolve-ConfiguredPath ([string]$config.wav)) 'individual'
+$wavSelection = Resolve-MfaWavCorpusForYear -Config $config -Year $Year
+$wavRoot = [string]$wavSelection.WavRoot
 $morphRoot = Resolve-ConfiguredPath ([string]$config.textgrid_merged)
 $layers = Resolve-ConfiguredPath ([string]$config.layers)
 $stateRoot = Resolve-ConfiguredPath ([string]$config.mfa_state)
@@ -34,8 +36,17 @@ if (-not (Test-Path -LiteralPath $SearchMasterRoot)) {
 }
 
 # 같은 입력 계약의 기존 lab까지 전수 내용 검증한다. 원 corpus는 수정하지 않는다.
-& $python (Join-Path $pythonDir 'realign_eojeol_build_corpus.py') `
-    --year $Year --search-master-root $SearchMasterRoot --force-verify
+$labArgs = @(
+    (Join-Path $pythonDir 'realign_eojeol_build_corpus.py'),
+    '--year', $Year,
+    '--search-master-root', $SearchMasterRoot,
+    '--wav-root', $wavRoot,
+    '--force-verify'
+)
+if ($wavSelection.Recovered) {
+    $labArgs += @('--audio-corpus-contract', $wavSelection.ContractPath)
+}
+& $python @labArgs
 if ($LASTEXITCODE -ne 0) { throw "lab 입력 전수 검증 실패" }
 $labReport = Join-Path $stateRoot "logs\lab_build_${Year}_latest.json"
 $labData = Get-Content -LiteralPath $labReport -Raw -Encoding UTF8 |
@@ -77,7 +88,7 @@ if ($yearAudit.Count -ne 1) {
     throw "$Year 입력 감사 연도 결과가 정확히 1개가 아님"
 }
 & $python (Join-Path $pythonDir 'quarantine_bad_wavs.py') `
-    --year $Year --inventory-csv $wavInventory
+    --year $Year --root $wavRoot --inventory-csv $wavInventory
 if ($LASTEXITCODE -ne 0) { throw "불량 WAV dry-run inventory 실패" }
 $reviewArgs = @(
     (Join-Path $pythonDir 'prepare_mfa_exclusion_review.py'),

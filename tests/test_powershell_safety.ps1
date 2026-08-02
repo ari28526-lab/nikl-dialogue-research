@@ -20,6 +20,9 @@ $files = @(
     (Join-Path $root 'scripts\prepare_remaining_mfa_approval_reviews.ps1'),
     (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
+    (Join-Path $root 'scripts\mfa_wav_corpus.ps1'),
+    (Join-Path $root 'scripts\run_2020_wav_id_recovery.ps1'),
+    (Join-Path $root 'scripts\show_2020_wav_id_recovery_status.ps1'),
     (Join-Path $root 'scripts\run_stratified_mfa_pilot.ps1'),
     (Join-Path $root 'scripts\run_search_master.ps1'),
     (Join-Path $root 'scripts\initialize_common_pron_pilot.ps1'),
@@ -144,6 +147,10 @@ foreach ($path in $files) {
             'lab_input_contract_id',
             'mfa_models',
             'audit_mfa_year_readiness.py',
+            'Resolve-MfaWavCorpusForYear',
+            "'--wav-root', `$wavRoot",
+            "'--audio-corpus-contract'",
+            '--root $wavRoot --apply',
             '--gate-profile',
             '$trustedResumeTemp',
             "'analysis_ready_gates_pass'",
@@ -185,6 +192,36 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA 러너 필수 안전장치 누락: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'mfa_wav_corpus.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_wav_corpus_2020',
+            'mfa_wav_corpus_contract_2020',
+            "status -ne 'passed'",
+            'source_wav_tree_untouched',
+            'output_year'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("WAV corpus resolver safety token missing: $required")
+            }
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_2020_wav_id_recovery.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$Apply',
+            '[string]$ApprovedBy',
+            '--approved-by',
+            'git -C $projectRoot status --porcelain',
+            'build_wav_recovery_corpus.py',
+            'wav_recovery_archive',
+            'source(변경 금지)'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("2020 WAV recovery safety token missing: $required")
             }
         }
     }
@@ -1047,6 +1084,55 @@ try {
     $failures.Add(
         "MFA 프로세스 트리 동적 검사 실패: $($_.Exception.Message)"
     )
+}
+
+try {
+    . (Join-Path $root 'scripts\mfa_wav_corpus.ps1')
+    $wavContractTestRoot = Join-Path ([IO.Path]::GetTempPath()) (
+        'mfa_wav_contract_' + [guid]::NewGuid().ToString('N')
+    )
+    try {
+        $defaultRoot = Join-Path $wavContractTestRoot 'default'
+        $recoveredRoot = Join-Path $wavContractTestRoot 'recovered\individual'
+        $contractPath = Join-Path $wavContractTestRoot 'contracts\2020.json'
+        New-Item -ItemType Directory -Force -Path (
+            Join-Path $recoveredRoot '2020'
+        ) | Out-Null
+        New-Item -ItemType Directory -Force -Path (
+            Split-Path -Parent $contractPath
+        ) | Out-Null
+        [ordered]@{
+            status = 'passed'
+            year = '2020'
+            source_wav_tree_untouched = $true
+            corpus_contract_id = 'test-contract'
+            output_year = [IO.Path]::GetFullPath(
+                (Join-Path $recoveredRoot '2020')
+            )
+        } | ConvertTo-Json | Set-Content -LiteralPath $contractPath `
+            -Encoding UTF8
+        $testConfig = [pscustomobject]@{
+            wav = $defaultRoot
+            mfa_wav_corpus_2020 = $recoveredRoot
+            mfa_wav_corpus_contract_2020 = $contractPath
+        }
+        $resolved2020 = Resolve-MfaWavCorpusForYear `
+            -Config $testConfig -Year '2020'
+        $resolved2021 = Resolve-MfaWavCorpusForYear `
+            -Config $testConfig -Year '2021'
+        if (-not $resolved2020.Recovered -or
+            $resolved2020.CorpusContractId -ne 'test-contract' -or
+            $resolved2021.Recovered -or
+            $resolved2021.CorpusContractId -ne 'source_identity') {
+            throw '연도별 WAV corpus 선택 결과 불일치'
+        }
+    } finally {
+        if (Test-Path -LiteralPath $wavContractTestRoot) {
+            Remove-Item -LiteralPath $wavContractTestRoot -Recurse -Force
+        }
+    }
+} catch {
+    $failures.Add("WAV corpus resolver 동적 검사 실패: $($_.Exception.Message)")
 }
 
 if ($failures.Count -gt 0) {

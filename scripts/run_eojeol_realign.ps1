@@ -155,6 +155,7 @@ if (-not [string]::IsNullOrWhiteSpace($SearchMasterRoot)) {
 }
 
 $configPath = Join-Path $root "config\paths.json"
+. (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 try {
     $cfg = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
     function Expand-CfgPath($value) {
@@ -1473,6 +1474,19 @@ Say ("작업 드라이브 정책: " + $(if ($PreferD) {
 
 foreach ($y in $years) {
     Say "===== $y 시작 ====="
+    try {
+        $wavSelection = Resolve-MfaWavCorpusForYear -Config $cfg -Year $y
+        $wavRoot = [string]$wavSelection.WavRoot
+    } catch {
+        Say "!! $y WAV corpus 계약 확인 실패: $($_.Exception.Message)"
+        exit 1
+    }
+    Say (
+        "$y WAV corpus: $wavRoot / contract=" +
+        $wavSelection.CorpusContractId.Substring(
+            0, [Math]::Min(12, $wavSelection.CorpusContractId.Length)
+        )
+    )
 
     # 1) 검증된 pre-MFA search master의 reference form으로 lab을 만들고
     #    입력 계약 ID를 얻는다. 계약 marker가 같으면 재실행은 즉시 반환한다.
@@ -1484,8 +1498,14 @@ foreach ($y in $years) {
         (Join-Path $pydir "realign_eojeol_build_corpus.py"),
         '--year', $y,
         '--search-master-root', $searchMasterRoot,
+        '--wav-root', $wavRoot,
         '--progress-jsonl', $labHeartbeatFile
     )
+    if ($wavSelection.Recovered) {
+        $labArguments += @(
+            '--audio-corpus-contract', $wavSelection.ContractPath
+        )
+    }
     if ($ForceVerifyLabInput) { $labArguments += '--force-verify' }
     & $py @labArguments
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
@@ -1795,7 +1815,8 @@ foreach ($y in $years) {
         # 1.5) 깨진 wav 격리 (2026-07-18): 0바이트 wav 1개가 MFA 로딩 '말미'에 전체를
         #   실패시킴(7/17·7/18 두 차례, 각 5h+ 손실). 연도당 ~5분 보험.
         Say "$y [1.5/3] 깨진 wav 스캔·격리 (0바이트 등)..."
-        & $py (Join-Path $pydir "quarantine_bad_wavs.py") --year $y --apply
+        & $py (Join-Path $pydir "quarantine_bad_wavs.py") `
+            --year $y --root $wavRoot --apply
         if ($LASTEXITCODE -ne 0) { Say "!! $y wav 스캔 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
         $quarantineLog = Join-Path $stateRoot "quarantine\$y\quarantine_log.csv"
         if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {

@@ -46,8 +46,8 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
   승인 제외 계약, 연도 큐 구현.
 - 2020 `morph_search.v3`: 23/23 성공, 870,437발화, 7개 연도표 생성,
   중복 0·기호 coverage 일치·현재 lock 없음.
-- workflow reset과 음원 대응 gate 반영 뒤 Python 298개 및 PowerShell
-  안전검사 31개 파일 통과.
+- workflow reset과 음원 대응 gate·복구 코퍼스 계약 반영 뒤 Python 304개 및
+  PowerShell 안전검사 34개 파일 통과.
 
 ## 실제 미완료
 
@@ -90,9 +90,15 @@ contract와 2020 `morph_search.v3` 23/23을 완료했다. 검색은 2026-08-01
 다른 6세션의 시작/끝 12건을 뽑아 A=제안 WAV, B=현재 같은 ID WAV로 묶었고,
 복사본 24개의 원본 대비 SHA-256을 검증했다. 연구자 청취 결과는 12/12 모두
 A 제안 음원이 대상 전사와 일치했다. 이는 층화 표본이 고신뢰 규칙을 지지한다는
-근거이며 14,221건 전수 수동 확인으로 표현하지 않는다. 현재 사용자 작업은 없고,
-다음 코드 단계는 영향 원음 archive manifest와 고신뢰 remap 적용·rollback 계약을
-구현하는 것이다. MFA와 WAV 복구 적용은 아직 시작하지 않았다.
+근거이며 14,221건 전수 수동 확인으로 표현하지 않는다.
+
+복구 transaction·재개·rollback 계약과 2020 MFA 입력 전용 경로를 구현했다.
+실자료 dry-run은 검색 870,437건, 파생 코퍼스 868,603건, 제외 검토 1,834건,
+영향 archive 50,777 WAV/3.148 GiB를 확인해 `dry_run_passed`였다. 원 D: WAV는
+바뀌지 않았고 실제 apply도 아직 시작하지 않았다. 다음 사용자 작업은 RUNBOOK의
+`run_2020_wav_id_recovery.ps1 -Apply` 한 줄이다. 이 계약이 `passed`가 되지
+않으면 2020 LAB/제외 후보/MFA 경로가 원본 WAV로 조용히 되돌아가지 않고
+fail-closed한다.
 
 검토 묶음:
 `outputs/2020_wav_id_recovery_review_20260802/00_READ_ME_FIRST.md`

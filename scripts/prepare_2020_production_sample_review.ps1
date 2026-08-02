@@ -11,6 +11,7 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
 ) -Raw -Encoding UTF8 | ConvertFrom-Json
+. (Join-Path $PSScriptRoot 'mfa_wav_corpus.ps1')
 function Resolve-ConfiguredPath([string]$Value) {
     return [IO.Path]::GetFullPath(
         [Environment]::ExpandEnvironmentVariables($Value.Replace('/', '\'))
@@ -19,7 +20,9 @@ function Resolve-ConfiguredPath([string]$Value) {
 $python = Resolve-ConfiguredPath ([string]$config.pipeline_python)
 $stateRoot = Resolve-ConfiguredPath ([string]$config.mfa_state)
 $layers = Resolve-ConfiguredPath ([string]$config.layers)
-$wavRoot = Join-Path (Resolve-ConfiguredPath ([string]$config.wav)) 'individual'
+$wavRoot = [string](
+    Resolve-MfaWavCorpusForYear -Config $config -Year '2020'
+).WavRoot
 $reportRoot = Join-Path $projectRoot "outputs\reports\mfa_year_queue_$QueueId\2020"
 $reviewRoot = Join-Path $projectRoot "outputs\reviews\mfa_production_2020_$QueueId"
 $queueState = Join-Path $stateRoot "year_queue\$QueueId\queue_state.json"

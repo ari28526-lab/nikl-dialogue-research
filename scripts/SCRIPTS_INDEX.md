@@ -189,6 +189,8 @@
 | prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. 현 6-tier에 쓰지 않는 구 형태소 TextGrid는 제외하고 CSV–WAV 대응 복구 전에는 fail-closed. WAV 이동·자동 승인 없음 | 2020 음원 복구 뒤 재실행 |
 | plan_wav_duration_recovery.py | 기존 감사에서 영향 세션만 골라 CSV 순서와 WAV 밀리초 길이의 연속 일치로 `identity/remap/ambiguous/unresolved/orphan` 읽기 전용 계획표 생성. 자동 적용 금지 | 2020 129세션 dry-run 완료 |
 | build_wav_recovery_review_bundle.py | 고신뢰 remap을 짧은·중간·긴 연속 일치 구간에서 결정적으로 표본화하고 A=제안 WAV/B=현재 같은 ID WAV 복사본·전사·SHA manifest·단계별 안내를 한 폴더에 생성. 원본 WAV 변경 없음 | 2020 6세션·12건·24 WAV, 복사 SHA 불일치 0 |
+| build_wav_recovery_corpus.py / run_2020_wav_id_recovery.ps1 | 12/12 청취 승인과 plan SHA를 결속하고 영향 129세션을 E: 세션별 ZIP+SHA로 먼저 검증한 뒤 D: 별도 2020 MFA 코퍼스를 구성. 영향 없는 세션은 hardlink, 영향 세션은 독립 복사, 모호·미해결은 제외 검토로 분리. 세션 checkpoint·lock·stale 보존·최종 전수 count 계약으로 중단 재개 및 fail-closed 보장 | 실자료 dry-run 870,437→868,603, 제외 검토 1,834, archive 50,777 WAV/3.148 GiB; apply 대기 |
+| mfa_wav_corpus.ps1 / show_2020_wav_id_recovery_status.ps1 | 2020은 passed 복구 계약의 파생 WAV root만 허용하고 2021–2025는 기존 연도 root를 사용. LAB 준비·MFA·독립 감사·생산 표본에서 같은 resolver를 공유하며 계약이 없거나 변조되면 원본으로 fallback하지 않음. 상태판은 진행·lock·계약을 읽기 전용 표시 | PowerShell 5.1 안전검사 통과 |
 | audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사 | 합성 full-year fixture 통과 |
 | verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
 | preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·생산연도 연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 생산연도 review schema와 구 파일럿 schema 합성 exact gate 통과; `preflight_2020_gate_b.ps1`에 배선 |
@@ -198,7 +200,7 @@
 | prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |
 | start_full_mfa_after_review.ps1 | 지정 연도의 승인 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | 내부 공통 진입점; 직접 기본값 사용 금지, full clean/자동승인/정본승격 없음 |
 | verify_production_source_contract.ps1 | morph_search와 MFA가 같은 동결 `_build_meta.json` SHA·run ID·연도 입력을 사용했음을 `SOURCE_CONTRACT.json`으로 생성/검증 | 원자료 읽기 전용, 2020 검색·MFA·Gate B wrapper에 강제 |
-| resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | **현재 첫 계산 사용자 진입점** |
+| resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | 2020 검색표 23/23 완료 |
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |
 | mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC의 5세션 이상 결정 표본에서 WAV/LAB/6-tier 연결·가용성만 검토하고 수정 불가 identity에 묶인 승인 JSON 생성 | 실제 실현 판정 요청/수행 금지, 자동 승인 없음 |
 | preflight_2020_gate_b.ps1 | 2020 source contract·기계 audit·marker·retained DB·DB 표본·생산 연구자 승인을 결합해 2021 진입 허가 | `allow_remaining_years` fail-closed |

@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-01 KST
+최종 갱신: 2026-08-02 KST
 
 이 문서가 전수 작업의 유일한 실행 정본이다. 구 RUNBOOK·MONITOR·PILOT의
 명령이 이 문서와 다르면 이 문서가 우선한다.
@@ -56,14 +56,35 @@ workflow 수정·시험
 2026-08-01 전수 감사에서 배포 PCM/WAV의 발화 번호 밀림이 확인되었다. 복구
 결정과 dry-run 수량은
 `docs/decisions/DECISION_2020_CSV_WAV_ID_recovery_20260801.md`를 따른다.
-고신뢰 remap 표본 확인·H: archive·국소 적용·전수 재감사 전에는 아래 명령을
-다시 실행하거나 기존 14행 표를 승인하지 않는다.
+고신뢰 remap 청취 검토는 12/12 통과했고, 복구 코퍼스 dry-run도 통과했다.
+원본 `D:\20_AUDIO\03_wav\individual`은 수정하지 않는다. 먼저 다음 명령으로
+E: 독립 archive와 D: 파생 코퍼스를 만든다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\run_2020_wav_id_recovery.ps1" -Apply -ApprovedBy "ari30"
+```
+
+이 명령은 영향 129세션 원음을 E:에 세션별 ZIP+SHA manifest로 보존하고,
+2020 MFA 전용 파생 코퍼스를 D:에 만든다. 영향 없는 파일은 검증된 NTFS
+hardlink, 영향 세션은 독립 복사본을 사용한다. 모호·미해결 1,834건은 파생
+코퍼스에서 제외해 다음 연구자 제외 검토로 보낸다. 중단되면 완료 세션을 검증해
+재사용하므로 처음부터 다시 만들지 않는다.
+
+읽기 전용 상태판:
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\show_2020_wav_id_recovery_status.ps1"
+```
+
+복구 계약이 `passed`가 된 뒤에만 아래 제외 후보 명령을 실행한다. 기존 14행
+표는 승인하지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\prepare_2020_mfa_approval_review.ps1"
 ```
 
-복구 후 이 단계는 전수 LAB을 검증하고 복구 불가·모호한 2020 후보표만 만든다.
+복구 후 이 단계는 파생 WAV와 전수 LAB을 검증하고 복구 불가·모호한 2020
+후보표만 만든다.
 MFA, 자동 승인, 정본 승격을 하지 않는다. 연구자는 실제로 제외에 동의하는
 행만 `approved`로 바꾼다. 후보가 0건이어도 입력 계약에 결속된 0행 승인을
 남긴다.
