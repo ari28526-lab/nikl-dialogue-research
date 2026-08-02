@@ -38,6 +38,7 @@ class WavRecoveryCorpusDryRunTests(unittest.TestCase):
             archive = root / "archive"
             session = "S1"
             unaffected_session = "S2"
+            missing_session = "S3"
             year = "2020"
             (search / year).mkdir(parents=True)
             (search / "_build_meta.json").write_text(
@@ -69,6 +70,17 @@ class WavRecoveryCorpusDryRunTests(unittest.TestCase):
                     source / year / unaffected_session / f"{utt_id}.wav",
                     200 + index,
                 )
+            missing_ids = [
+                f"{missing_session}.1.1.1",
+                f"{missing_session}.1.1.2",
+            ]
+            with (search / year / f"{missing_session}.csv").open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=["utt_id", "form"])
+                writer.writeheader()
+                for utt_id in missing_ids:
+                    writer.writerow({"utt_id": utt_id, "form": utt_id})
 
             plan = root / "plan.csv"
             fields = [
@@ -97,6 +109,21 @@ class WavRecoveryCorpusDryRunTests(unittest.TestCase):
             plan_rows[-1]["status"] = "target_unresolved"
             plan_rows[-1]["source_utt_id"] = ""
             plan_rows[-1]["source_wav"] = ""
+            for target in missing_ids:
+                plan_rows.append(
+                    {
+                        "year": year,
+                        "session": missing_session,
+                        "target_utt_id": target,
+                        "source_utt_id": "",
+                        "status": "target_unresolved",
+                        "block_length": "0",
+                        "target_duration_seconds": "0.1",
+                        "source_duration_seconds": "",
+                        "duration_residual_seconds": "",
+                        "source_wav": "",
+                    }
+                )
             with plan.open("w", encoding="utf-8-sig", newline="") as stream:
                 writer = csv.DictWriter(stream, fieldnames=fields)
                 writer.writeheader()
@@ -147,9 +174,9 @@ class WavRecoveryCorpusDryRunTests(unittest.TestCase):
             )
 
             self.assertEqual(report["status"], "dry_run_passed")
-            self.assertEqual(report["scan"]["search_utterances"], 16)
+            self.assertEqual(report["scan"]["search_utterances"], 18)
             self.assertEqual(report["scan"]["corpus_entries"], 14)
-            self.assertEqual(report["scan"]["omitted_for_review"], 2)
+            self.assertEqual(report["scan"]["omitted_for_review"], 4)
             self.assertEqual(
                 report["scan"]["mapping_counts"]["remap_high_confidence"], 12
             )
@@ -188,10 +215,30 @@ class WavRecoveryCorpusDryRunTests(unittest.TestCase):
             )
             self.assertTrue(os.path.samefile(unaffected_output, unaffected_source))
             self.assertFalse((output / year / session / f"{ids[-1]}.wav").exists())
+            self.assertTrue((output / year / missing_session).is_dir())
+            self.assertEqual(
+                list((output / year / missing_session).glob("*.wav")), []
+            )
             with zipfile.ZipFile(
                 Path(applied["archive_root"]) / "sessions" / f"{session}.zip"
             ) as archived:
                 self.assertEqual(len(archived.namelist()), 14)
+            missing_manifest = json.loads(
+                (
+                    Path(applied["archive_root"])
+                    / "session_manifests"
+                    / f"{missing_session}.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(missing_manifest["status"], "verified_absent")
+            self.assertEqual(missing_manifest["file_count"], 0)
+            self.assertFalse(
+                (
+                    Path(applied["archive_root"])
+                    / "sessions"
+                    / f"{missing_session}.zip"
+                ).exists()
+            )
             reused = apply_recovery(
                 preflight=report,
                 year=year,

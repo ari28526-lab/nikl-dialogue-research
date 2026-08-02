@@ -64,7 +64,9 @@ E: 독립 archive와 D: 파생 코퍼스를 만든다.
 & "C:\Users\ari30\research\2026_summer_research\scripts\run_2020_wav_id_recovery.ps1" -Apply -ApprovedBy "ari30"
 ```
 
-이 명령은 영향 129세션 원음을 E:에 세션별 ZIP+SHA manifest로 보존하고,
+이 명령은 영향 129세션 중 원음 폴더가 있는 128세션을 E:에 세션별 ZIP+SHA
+manifest로 보존하고, 원음 폴더 자체가 없는 `SDRW2000000176`은 513발화 전부를
+제외 검토 대상으로 유지하면서 `verified_absent` manifest를 남긴다. 이어서
 2020 MFA 전용 파생 코퍼스를 D:에 만든다. 영향 없는 파일은 검증된 NTFS
 hardlink, 영향 세션은 독립 복사본을 사용한다. 모호·미해결 1,834건은 파생
 코퍼스에서 제외해 다음 연구자 제외 검토로 보낸다. 중단되면 완료 세션을 검증해

@@ -274,6 +274,8 @@ def scan_corpus(
             {
                 "session": session,
                 "affected": session in affected_sessions,
+                "source_session_exists": source_session.is_dir(),
+                "source_wav_files": len(source_entries),
                 "counts": dict(sorted(session_counts.items())),
             }
         )
@@ -372,6 +374,14 @@ def dry_run(
         scan=scan,
     )
     archive_bytes = int(scan["affected_unique_source_bytes"])
+    affected_session_rows = [
+        row for row in scan["sessions"] if bool(row["affected"])
+    ]
+    missing_source_sessions = [
+        str(row["session"])
+        for row in affected_session_rows
+        if not bool(row["source_session_exists"])
+    ]
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "dry_run_passed",
@@ -386,7 +396,14 @@ def dry_run(
                 archive_base
                 / f"wav_id_recovery_{year}_{contract['corpus_contract_id'][:12]}"
             ),
-            "archive_format": "one ZIP per affected session",
+            "archive_format": (
+                "one ZIP per existing affected source session; "
+                "verified_absent manifest for missing source session"
+            ),
+            "archive_existing_source_sessions": (
+                len(affected_session_rows) - len(missing_source_sessions)
+            ),
+            "archive_missing_source_sessions": missing_source_sessions,
             "archive_uncompressed_bytes": archive_bytes,
             "archive_uncompressed_gib": round(archive_bytes / (1024**3), 3),
             "output_year": str((output_wav_root / year).resolve()),
@@ -507,9 +524,47 @@ def archive_session(
     session: str,
     source_session: Path,
     archive_root: Path,
+    allow_missing_source_session: bool = False,
 ) -> dict[str, object]:
     zip_path = archive_root / "sessions" / f"{session}.zip"
     manifest_path = archive_root / "session_manifests" / f"{session}.json"
+    source_session_exists = source_session.is_dir()
+
+    if not source_session_exists:
+        if not allow_missing_source_session:
+            raise RuntimeError(f"영향 세션 WAV 폴더 누락: {source_session}")
+        if zip_path.exists():
+            raise RuntimeError(
+                f"누락 세션에 기존 ZIP이 있어 자동 수용 불가: {session}"
+            )
+        if manifest_path.is_file():
+            manifest = read_json(manifest_path)
+            if (
+                manifest.get("status") != "verified_absent"
+                or manifest.get("session") != session
+                or int(manifest.get("file_count") or -1) != 0
+                or manifest.get("files") != []
+            ):
+                raise RuntimeError(f"누락 세션 archive manifest 검증 실패: {session}")
+            return manifest
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        manifest = {
+            "schema_version": "wav_recovery_session_archive.v1",
+            "status": "verified_absent",
+            "session": session,
+            "source_session": str(source_session.resolve()),
+            "source_session_exists": False,
+            "created_at": now_iso(),
+            "file_count": 0,
+            "source_bytes": 0,
+            "zip_path": None,
+            "zip_bytes": 0,
+            "zip_sha256": None,
+            "files": [],
+        }
+        atomic_write_json(manifest_path, manifest)
+        return manifest
+
     if zip_path.is_file() and manifest_path.is_file():
         manifest = read_json(manifest_path)
         if (
@@ -582,6 +637,7 @@ def archive_session(
         "status": "verified",
         "session": session,
         "source_session": str(source_session.resolve()),
+        "source_session_exists": True,
         "created_at": now_iso(),
         "file_count": len(records),
         "source_bytes": sum(int(item["bytes"]) for item in records),
@@ -628,11 +684,16 @@ def corpus_entries_for_session(
 ) -> list[CorpusEntry]:
     session = csv_path.stem
     source_session = source_wav_root / year / session
-    source_entries = {
-        entry.name: Path(entry.path)
-        for entry in os.scandir(source_session)
-        if entry.is_file() and entry.name.lower().endswith(".wav")
-    }
+    try:
+        source_entries = {
+            entry.name: Path(entry.path)
+            for entry in os.scandir(source_session)
+            if entry.is_file() and entry.name.lower().endswith(".wav")
+        }
+    except FileNotFoundError:
+        source_entries = {}
+    except OSError as exc:
+        raise RuntimeError(f"세션 WAV 폴더 읽기 실패: {source_session}") from exc
     source_session_key = os.path.normcase(os.path.abspath(source_session))
     entries: list[CorpusEntry] = []
     with csv_path.open(encoding="utf-8-sig", newline="") as stream:
@@ -692,6 +753,7 @@ def build_session(
     marker_root: Path,
     stale_root: Path,
     archive_manifest: dict[str, object] | None,
+    affected_session: bool,
 ) -> dict[str, object]:
     session_dir = partial_year / session
     marker_path = marker_root / f"{session}.json"
@@ -759,7 +821,7 @@ def build_session(
         "schema_version": "wav_recovery_session_checkpoint.v1",
         "status": "complete",
         "session": session,
-        "affected": bool(entries and entries[0].affected_session),
+        "affected": affected_session,
         "mapping_sha256": mapping_sha,
         "wav_files": len(entries),
         "logical_bytes": logical_bytes,
@@ -826,6 +888,10 @@ def apply_recovery(
 
     plan_rows, plan_by_target = read_plan(plan_path, year)
     affected_sessions = sorted({row["session"] for row in plan_rows})
+    affected_session_set = set(affected_sessions)
+    scan_by_session = {
+        str(row["session"]): row for row in preflight["scan"]["sessions"]
+    }
     archive_root = archive_base / f"wav_id_recovery_{year}_{contract_id[:12]}"
     transaction_root = output_wav_root.parent / "_transactions" / contract_id
     partial_year = transaction_root / "partial" / year
@@ -844,10 +910,21 @@ def apply_recovery(
     with application_lock(lock_path, contract_id):
         archive_manifests: dict[str, dict[str, object]] = {}
         for index, session in enumerate(affected_sessions, 1):
+            scan_session = scan_by_session.get(session)
+            if scan_session is None:
+                raise RuntimeError(f"dry-run 세션 증거 누락: {session}")
+            source_session_exists = bool(scan_session["source_session_exists"])
+            if not source_session_exists:
+                count_keys = set(dict(scan_session["counts"]))
+                if not count_keys or not count_keys.issubset(EXCLUDED_STATUSES):
+                    raise RuntimeError(
+                        "원본 세션 누락인데 corpus 포함 대상이 있음: " + session
+                    )
             archive_manifests[session] = archive_session(
                 session=session,
                 source_session=source_wav_root / year / session,
                 archive_root=archive_root,
+                allow_missing_source_session=not source_session_exists,
             )
             if index % 10 == 0 or index == len(affected_sessions):
                 print(
@@ -858,6 +935,7 @@ def apply_recovery(
                     progress_jsonl,
                     {
                         "event": "archive_progress",
+                        "corpus_contract_id": contract_id,
                         "current": index,
                         "total": len(affected_sessions),
                     },
@@ -878,7 +956,7 @@ def apply_recovery(
                 csv_path=csv_path,
                 source_wav_root=source_wav_root,
                 plan_by_target=plan_by_target,
-                affected_sessions=set(affected_sessions),
+                affected_sessions=affected_session_set,
             )
             marker = build_session(
                 session=session,
@@ -887,6 +965,7 @@ def apply_recovery(
                 marker_root=marker_root,
                 stale_root=stale_root,
                 archive_manifest=archive_manifests.get(session),
+                affected_session=session in affected_session_set,
             )
             total_wavs += int(marker["wav_files"])
             total_bytes += int(marker["logical_bytes"])
@@ -902,6 +981,7 @@ def apply_recovery(
                     progress_jsonl,
                     {
                         "event": "corpus_progress",
+                        "corpus_contract_id": contract_id,
                         "current": index,
                         "total": len(search_files),
                         "wav_files": total_wavs,
@@ -931,7 +1011,8 @@ def apply_recovery(
                 "manifest_sha256": sha256_file(
                     archive_root / "session_manifests" / f"{session}.json"
                 ),
-                "zip_sha256": archive_manifests[session]["zip_sha256"],
+                "status": archive_manifests[session]["status"],
+                "zip_sha256": archive_manifests[session].get("zip_sha256"),
             }
             for session in affected_sessions
         ]
@@ -959,7 +1040,10 @@ def apply_recovery(
         atomic_write_json(transaction_root / "APPLIED_MANIFEST.json", result)
         append_progress(
             progress_jsonl,
-            {"event": "apply_completed", "contract_id": contract_id},
+            {
+                "event": "apply_completed",
+                "corpus_contract_id": contract_id,
+            },
         )
         return result
 

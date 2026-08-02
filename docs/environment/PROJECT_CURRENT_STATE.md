@@ -95,10 +95,17 @@ A 제안 음원이 대상 전사와 일치했다. 이는 층화 표본이 고신
 복구 transaction·재개·rollback 계약과 2020 MFA 입력 전용 경로를 구현했다.
 실자료 dry-run은 검색 870,437건, 파생 코퍼스 868,603건, 제외 검토 1,834건,
 영향 archive 50,777 WAV/3.148 GiB를 확인해 `dry_run_passed`였다. 원 D: WAV는
-바뀌지 않았고 실제 apply도 아직 시작하지 않았다. 다음 사용자 작업은 RUNBOOK의
+바뀌지 않았다. 첫 apply는 아래 누락 세션에서 안전 중단됐고 수정 계약의 apply는
+아직 시작하지 않았다. 다음 사용자 작업은 RUNBOOK의
 `run_2020_wav_id_recovery.ps1 -Apply` 한 줄이다. 이 계약이 `passed`가 되지
 않으면 2020 LAB/제외 후보/MFA 경로가 원본 WAV로 조용히 되돌아가지 않고
 fail-closed한다.
+
+첫 apply는 10/129세션 archive 뒤 원음 폴더가 배포본에 없는
+`SDRW2000000176`에서 안전 중단됐다. 이 세션 513건은 전부 미해결·제외 대상이며
+포함 WAV는 0건이다. 누락 자체를 `verified_absent` manifest로 보존하고 포함
+대상이 있으면 중단하는 새 계약으로 수정·시험했다. 구 계약의 E: ZIP 10개는
+실패 근거로 보존하며, D: 원본과 최종 파생 코퍼스에는 변경이 없다.
 
 검토 묶음:
 `outputs/2020_wav_id_recovery_review_20260802/00_READ_ME_FIRST.md`

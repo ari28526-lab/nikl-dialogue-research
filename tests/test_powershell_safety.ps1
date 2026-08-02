@@ -227,6 +227,17 @@ foreach ($path in $files) {
             }
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'show_2020_wav_id_recovery_status.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'corpus_contract_id',
+            '$expectedContractId'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("2020 WAV recovery dashboard token missing: $required")
+            }
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'preflight_eojeol_realign.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(

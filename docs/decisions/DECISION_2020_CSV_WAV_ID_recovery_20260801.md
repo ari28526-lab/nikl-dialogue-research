@@ -134,7 +134,7 @@ outputs/2020_wav_id_recovery_review_20260802/REVIEW_DECISIONS.md
 - 영향 세션 archive: 129세션, 50,777 WAV, 비압축 3.148 GiB
 - 파생 코퍼스 논리 크기: 53.96 GiB
 - 사용자 청취 결정: 12/12 `A_MATCHES_TARGET`
-- 원본 변경: 0, 실제 apply: 아직 0
+- 원본 변경: 0, 최종 apply 완료: 아직 0
 
 영향 없는 세션은 같은 D: 볼륨의 NTFS hardlink로 물리 중복을 줄인다. 영향
 세션은 E: ZIP의 WAV를 SHA-256으로 다시 읽어 검증한 뒤 수정 ID의 독립
@@ -147,6 +147,18 @@ dry-run 증거:
 ```text
 outputs/reports/PREFLIGHT_2020_wav_recovery_corpus_20260802.json
 ```
+
+첫 apply는 기존 계약에서 10/129세션 archive를 검증 완료한 뒤
+`SDRW2000000176` 원음 폴더 누락에서 안전 중단됐다. 이 세션의 513발화는 모두
+이미 `target_unresolved`이며 파생 코퍼스 포함 대상은 0건이다. dry-run은 이를
+올바르게 제외했지만 archive 함수가 모든 영향 세션에 물리 ZIP이 있다고 가정한
+구현 오류였다. D: 원본 변경 0, E: 완료 ZIP 10개/약 176 MiB는 그대로 보존했다.
+
+수정 계약은 원음이 존재하는 128세션만 ZIP으로 보존하고, 위 1세션에는
+`verified_absent`, file_count 0, ZIP 없음이 명시된 manifest를 만든다. 누락
+세션에 포함 대상이 한 건이라도 있으면 계속 fail-closed한다. builder SHA가
+달라져 새 contract ID를 발급하며 구 계약의 ZIP 10개는 실패 근거로 자동
+삭제하거나 새 계약에 무근거 재사용하지 않는다.
 
 ## 다음 순서
 

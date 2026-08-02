@@ -599,3 +599,22 @@ shard 2–23을 재개하는 것이다.
   304개와 PowerShell 안전검사 34개 파일이 통과했다.
 - 실제 D:/E: apply와 MFA는 아직 시작하지 않았다. 다음 사용자 단계는 코드
   커밋·푸시 뒤 RUNBOOK의 `run_2020_wav_id_recovery.ps1 -Apply` 한 줄이다.
+
+### 첫 apply 안전 중단 — 원음 폴더 누락 1세션 계약 보완
+
+- 첫 apply는 E: archive 10/129세션을 검증한 뒤
+  `D:\20_AUDIO\03_wav\individual\2020\SDRW2000000176` 폴더가 없어 중단됐다.
+  원 D: 삭제·변경은 없고 lock과 절전 guard는 정상 해제됐다.
+- 해당 세션의 search 513행은 모두 이미 `target_unresolved`라 파생 코퍼스 포함
+  대상은 0건이다. dry-run은 이 513행을 제외했지만 archive 단계가 물리 폴더가
+  없는 세션에도 ZIP을 요구한 것이 직접 원인이었다.
+- E:에 완료된 구 계약 ZIP 10개(약 176 MiB)와 manifest 10개는 실패 증거로
+  보존했다. 새 builder SHA/contract ID에 무근거 재사용하거나 자동 삭제하지 않는다.
+- 수정본은 원음이 존재하는 128세션은 ZIP+SHA로, 누락 1세션은
+  `verified_absent`/0파일/ZIP 없음 manifest로 기록한다. 누락 세션에 포함 대상이
+  있으면 여전히 즉시 중단한다.
+- 진행 JSONL의 모든 사건에 contract ID를 넣고 상태판이 현재 dry-run 계약의
+  사건만 표시하게 해 구 실패 진행률 10/129가 새 실행 상태처럼 보이지 않게 했다.
+- 합성 누락 세션 apply·재개, 전체 Python 304개, PowerShell 34개 검사를 통과했고
+  실자료 재-dry-run은 128 ZIP 세션+누락 manifest 1개, corpus 868,603,
+  제외 1,834, archive 3.148 GiB로 통과했다.

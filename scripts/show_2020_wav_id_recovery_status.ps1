@@ -22,17 +22,25 @@ $report = Join-Path $projectRoot (
 $lock = Join-Path (Split-Path -Parent $outputRoot) (
     'locks\wav_recovery_2020.lock'
 )
-$latest = $null
-if (Test-Path -LiteralPath $progress -PathType Leaf) {
-    $line = Get-Content -LiteralPath $progress -Encoding UTF8 -Tail 1
-    if (-not [string]::IsNullOrWhiteSpace($line)) {
-        $latest = $line | ConvertFrom-Json
-    }
-}
 $preflight = $null
 if (Test-Path -LiteralPath $report -PathType Leaf) {
     $preflight = Get-Content -LiteralPath $report -Raw -Encoding UTF8 |
         ConvertFrom-Json
+}
+$latest = $null
+if (
+    $null -ne $preflight -and
+    (Test-Path -LiteralPath $progress -PathType Leaf)
+) {
+    $expectedContractId = [string]$preflight.contract.corpus_contract_id
+    $records = @(Get-Content -LiteralPath $progress -Encoding UTF8 | ForEach-Object {
+        if (-not [string]::IsNullOrWhiteSpace($_)) {
+            try { $_ | ConvertFrom-Json } catch {}
+        }
+    })
+    $latest = $records | Where-Object {
+        [string]$_.corpus_contract_id -eq $expectedContractId
+    } | Select-Object -Last 1
 }
 $contract = $null
 if (Test-Path -LiteralPath $contractPath -PathType Leaf) {
@@ -58,6 +66,9 @@ if (Test-Path -LiteralPath $lock -PathType Leaf) {
         'not_started'
     }
     dry_run_status = if ($null -ne $preflight) {$preflight.status} else {$null}
+    corpus_contract_id = if ($null -ne $preflight) {
+        $preflight.contract.corpus_contract_id
+    } else {$null}
     expected_corpus_wavs = if ($null -ne $preflight) {
         $preflight.scan.corpus_entries
     } else {$null}
