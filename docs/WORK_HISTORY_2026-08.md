@@ -761,3 +761,7 @@ shard 2–23을 재개하는 것이다.
   상세 방법론 결정은
   `docs/decisions/DECISION_2020_post_mfa_alignment_missing_gate_20260802.md`에
   기록했다.
+- 사용자가 원격에서도 바로 들을 수 있도록 같은 검토 묶음 37파일/1,480,094
+  bytes를 `C:\Users\ari30\Dropbox\MFA_2020_POST_ALIGNMENT_REVIEW_20260803`에
+  복사했다. 원본과 복사본의 파일별 SHA-256 37/37 일치를 확인한 뒤 `.partial`
+  폴더를 최종 이름으로 승격했으며, MFA DB와 로컬 검토 원본은 변경하지 않았다.
