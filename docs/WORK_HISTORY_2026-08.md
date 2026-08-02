@@ -673,3 +673,31 @@ shard 2–23을 재개하는 것이다.
   단일 진입점 원칙과 달라 즉시 수정했다. `start_2020_mfa_after_review.ps1`가
   내부에서 같은 preflight를 수행하고 `GO`일 때만 시작하므로 정상 사용자 단계는
   한 줄이며, `PreflightOnly`는 문제 진단용 선택 옵션으로만 남긴다.
+## 2026-08-02 — 생산 전 문서·D: legacy 정리
+
+- 사용자는 D:에 원자료·CSV·현재 공통사전·앞으로 필요한 생산 자산만 남기고
+  과거 산출물을 다른 드라이브에 과감히 archive하도록 승인했다.
+- D: 309.08GiB, E: 1.84TiB, H: 93.04GiB 여유를 확인해 E:를 archive 대상으로
+  선택하고 H:는 제외했다. 활성 MFA/Python/7z 작업과 lock은 없었다.
+- 7월 말 E: 압축 archive 5항목과 D: prune 보고서를 재확인했다. 파일
+  2,238,237개, 55.883GiB가 이미 검증·정리돼 같은 작업을 반복하지 않았다.
+- 현재 `common_pron_mfa_r2_20260728`, 원 WAV/CSV/search master, 2020 복구
+  코퍼스·승인 계약은 정리 allowlist에서 제외했다.
+- 구 공통사전 r1/A-B/pilot과 `mfa_eojeol` pilot을 항목별 E: archive로 옮기는
+  재개형 스크립트와 상태판을 추가했다. archive 검증은 삭제 전 최초 1회로
+  제한하고 생산 MFA/CSV gate와 구분했다.
+- 첫 실행은 Windows PowerShell 5.1이 BOM 없는 UTF-8을 잘못 읽어 archive 생성
+  전에 파싱 실패했다. D:/E: 변경 0건을 확인하고 UTF-8 BOM·구문검사를 추가했다.
+- 공통발음 full6y pilot에는 MFA가 만든 symlink가 있어 7z의 비압축 바이트가
+  원본 Length 합보다 커졌다. 파일 수·CRC와 reparse 근거를 기록하는 방식으로
+  수정했다. `mfa_eojeol\pilots`에는 끊어진 임시 `.ark` symlink 12개가 있어
+  링크 자체를 보존하는 `-snl`로 수정했다. 실패 시 원본은 남고 성공 항목만
+  정리됐다.
+- 문서 정본 혼동을 줄이기 위해 `docs`의 구 진입문서 7개와 7월 작업일지,
+  종료된 decision/RUNBOOK/MONITOR/PILOT 33개를 `docs/archive`로 이동했다.
+  현행 decision 24개와 정본 5개만 활성 색인에 남겼다.
+- 상세 이동표: `docs/archive/ARCHIVE_MANIFEST_20260802.md`.
+- 수백만 개 TextGrid를 사용자 PowerShell에서 장시간 archive할 때 화면 꺼짐은
+  허용하되 시스템 절전으로 작업이 중단되지 않도록 Windows execution-state
+  guard를 추가했다. 성공·실패 어느 경우에도 `finally`에서 정상 전원 정책으로
+  복원한다.

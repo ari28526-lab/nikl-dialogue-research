@@ -1,0 +1,470 @@
+﻿{
+    "schema_version":  "legacy_d_workspace_archive.v1",
+    "status":  "selection_completed",
+    "started_at":  "2026-08-02T13:54:34.9914057+09:00",
+    "source_drive":  "D: DATA_SSD",
+    "archive_drive":  "E:",
+    "current_production_assets_targeted":  false,
+    "prune_after_verified":  true,
+    "items":  [
+                  {
+                      "key":  "common_pron_archive",
+                      "source":  "D:\\mfa_common_pron\\archive",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_archive.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T13:54:35.2304864+09:00",
+                      "source_files":  74,
+                      "source_bytes":  77110242,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  true,
+                      "archive_files":  74,
+                      "archive_uncompressed_bytes":  77110242,
+                      "archive_bytes":  16470433,
+                      "archive_sha256":  "df7b5d58132d39f9e870d5b4d2822a42fe4591a311a36e927739eac1d2ab68eb",
+                      "verified_at":  "2026-08-02T13:54:38.5942337+09:00",
+                      "pruned_at":  "2026-08-02T13:54:38.7047831+09:00"
+                  },
+                  {
+                      "key":  "common_pron_archive_obsolete",
+                      "source":  "D:\\mfa_common_pron\\archive_obsolete",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_archive_obsolete.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T13:54:38.7482185+09:00",
+                      "source_files":  102,
+                      "source_bytes":  78029939,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "common_pron_mfa_r2_20260728_pre_code_contract_20260728_1644/work/g2p_temp/jamo_ls/jamo_ls_model_input/jamo_ls_model_input.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "5521db938df037b7ca5b92227784e67fdee4397b2ff503f9c90b639f8efba297"
+                                              },
+                                              {
+                                                  "relative_path":  "common_pron_mfa_r2_20260728_pre_ipa_reader_fix_b25194e/work/g2p_temp/jamo_ls/jamo_ls_model_input/jamo_ls_model_input.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "b069cc4de4a033a0c2840dcd5598cb9cae641708304654b5b165867e3de8bc0b"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "archive_files":  102,
+                      "archive_uncompressed_bytes":  78029939,
+                      "archive_bytes":  16484316,
+                      "archive_sha256":  "ae97112210e35a7797ce1ba6026874cdf37f924f6b9d4af0d5105540c11fa284",
+                      "verified_at":  "2026-08-02T13:54:41.5768873+09:00",
+                      "pruned_at":  "2026-08-02T13:54:41.7779297+09:00"
+                  },
+                  {
+                      "key":  "common_pron_r1",
+                      "source":  "D:\\mfa_common_pron\\releases\\common_pron_mfa_r1_20260728",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_mfa_r1_20260728.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T13:54:41.8212273+09:00",
+                      "source_files":  42,
+                      "source_bytes":  39826866,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_142132/shard_00001_verification_failed/oov_00001/oov_00001/oov_00001.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "968b67be0e0eaab41dff90e211155ef436b548f5d34dca87361a61281f8f0f94"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "archive_files":  42,
+                      "archive_uncompressed_bytes":  39826866,
+                      "archive_bytes":  8478756,
+                      "archive_sha256":  "02fa20d67e3a468f082b271933540345543004711c1087726beba7e22d21e027",
+                      "verified_at":  "2026-08-02T13:54:43.5403445+09:00",
+                      "pruned_at":  "2026-08-02T13:54:43.6276193+09:00"
+                  },
+                  {
+                      "key":  "common_pron_full6y_pilot",
+                      "source":  "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_pilot_full6y_20260728.7z",
+                      "status":  "failed",
+                      "started_at":  "2026-08-02T13:54:43.6511442+09:00",
+                      "source_files":  1070,
+                      "source_bytes":  345894727,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "05_ab_corpus/ab_stress_control_20260728_01/g2p_temp/pron_forms/sample_attested_pron_forms/sample_attested_pron_forms.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "ea302691c09ff2ede16365140112ce8742369273c36ada94cd45444b2216f992"
+                                              },
+                                              {
+                                                  "relative_path":  "05_ab_corpus/ab_stress_control_20260728_01/g2p_temp/words/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "1c414a3b2fbc5b8e92a12aad2262e1d24dbd0cb26de11b4dafa1445fd4f36bf7"
+                                              },
+                                              {
+                                                  "relative_path":  "06_ab_results/ab_stress_control_20260728_01/A/temp/align/corpus/corpus.db",
+                                                  "bytes":  5505024,
+                                                  "sha256":  "824a5c6135db8bd66ca1ce552009c474580913f700bf908f067e2f9da287fd72"
+                                              },
+                                              {
+                                                  "relative_path":  "06_ab_results/ab_stress_control_20260728_01/B/temp/align/corpus/corpus.db",
+                                                  "bytes":  5500928,
+                                                  "sha256":  "b559625a3a222f7e770939d1aaa4d9be88b72f57a25f9fa613aa2fb8d608b7d6"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/archive_failed/20260728_105423/sample_words_g2p_temp/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "c5c8356570e1738bd3ecfc82177e97c5ff9c9c8d654c318cb49ad40fbd349e04"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/g2p_temp/pron_forms/sample_attested_pron_forms/sample_attested_pron_forms.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "ea302691c09ff2ede16365140112ce8742369273c36ada94cd45444b2216f992"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/g2p_temp/words/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "b1ac35d191f762b047f0e1747b8f6cd27f2d30cc343100bf1b2865944a00c623"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "failure_reason":  "archive 내부 파일 수/바이트 불일치: D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728"
+                  },
+                  {
+                      "key":  "common_pron_full6y_pilot",
+                      "source":  "D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_pilot_full6y_20260728.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T14:00:48.2691403+09:00",
+                      "source_files":  1070,
+                      "source_bytes":  345894727,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "05_ab_corpus/ab_stress_control_20260728_01/g2p_temp/pron_forms/sample_attested_pron_forms/sample_attested_pron_forms.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "ea302691c09ff2ede16365140112ce8742369273c36ada94cd45444b2216f992"
+                                              },
+                                              {
+                                                  "relative_path":  "05_ab_corpus/ab_stress_control_20260728_01/g2p_temp/words/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "1c414a3b2fbc5b8e92a12aad2262e1d24dbd0cb26de11b4dafa1445fd4f36bf7"
+                                              },
+                                              {
+                                                  "relative_path":  "06_ab_results/ab_stress_control_20260728_01/A/temp/align/corpus/corpus.db",
+                                                  "bytes":  5505024,
+                                                  "sha256":  "824a5c6135db8bd66ca1ce552009c474580913f700bf908f067e2f9da287fd72"
+                                              },
+                                              {
+                                                  "relative_path":  "06_ab_results/ab_stress_control_20260728_01/B/temp/align/corpus/corpus.db",
+                                                  "bytes":  5500928,
+                                                  "sha256":  "b559625a3a222f7e770939d1aaa4d9be88b72f57a25f9fa613aa2fb8d608b7d6"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/archive_failed/20260728_105423/sample_words_g2p_temp/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "c5c8356570e1738bd3ecfc82177e97c5ff9c9c8d654c318cb49ad40fbd349e04"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/g2p_temp/pron_forms/sample_attested_pron_forms/sample_attested_pron_forms.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "ea302691c09ff2ede16365140112ce8742369273c36ada94cd45444b2216f992"
+                                              },
+                                              {
+                                                  "relative_path":  "archive_failed/20260728_110830/dependent_sample_before_dictionary_probability_fix/g2p_temp/words/sample_words/sample_words.db",
+                                                  "bytes":  446464,
+                                                  "sha256":  "b1ac35d191f762b047f0e1747b8f6cd27f2d30cc343100bf1b2865944a00c623"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "reparse_entries":  24,
+                      "symlink_followed_byte_delta":  390140,
+                      "archive_files":  1070,
+                      "archive_uncompressed_bytes":  346284867,
+                      "archive_bytes":  177031674,
+                      "archive_sha256":  "1a6fd1fc4e3eab02bd22c832a7bad720194dddf67fc89280715d8848bf01aa06",
+                      "verified_at":  "2026-08-02T14:01:06.6603748+09:00",
+                      "pruned_at":  "2026-08-02T14:01:08.3206274+09:00"
+                  },
+                  {
+                      "key":  "common_pron_ab_review",
+                      "source":  "D:\\mfa_common_pron\\REVIEW_AB_6_20260728",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\common_pron_REVIEW_AB_6_20260728.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T14:01:08.3459853+09:00",
+                      "source_files":  20,
+                      "source_bytes":  841042,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  true,
+                      "archive_files":  20,
+                      "archive_uncompressed_bytes":  841042,
+                      "archive_bytes":  436002,
+                      "archive_sha256":  "62493d87d4a42b7cac81db36627939e9a23d3d416c6716a9b4ce0a2163999b5a",
+                      "verified_at":  "2026-08-02T14:01:08.8067007+09:00",
+                      "pruned_at":  "2026-08-02T14:01:08.8480216+09:00"
+                  },
+                  {
+                      "key":  "mfa_legacy_pilot",
+                      "source":  "D:\\mfa_eojeol\\pilot",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\mfa_eojeol_legacy_pilot.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T14:01:08.8716453+09:00",
+                      "source_files":  65894,
+                      "source_bytes":  1424958502,
+                      "database_sha256":  [
+
+                                          ],
+                      "database_hashing":  true,
+                      "archive_files":  65894,
+                      "archive_uncompressed_bytes":  1424958502,
+                      "archive_bytes":  736376673,
+                      "archive_sha256":  "9578497368e25568f586c341ca713d124abf1f1ea769e7423415515312247bd7",
+                      "verified_at":  "2026-08-02T14:04:43.6125437+09:00",
+                      "pruned_at":  "2026-08-02T14:06:15.8821888+09:00"
+                  },
+                  {
+                      "key":  "mfa_legacy_pilots",
+                      "source":  "D:\\mfa_eojeol\\pilots",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\mfa_eojeol_legacy_pilots.7z",
+                      "status":  "failed",
+                      "started_at":  "2026-08-02T14:06:15.9479733+09:00",
+                      "source_files":  3114,
+                      "source_bytes":  6614587142,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2020/2020.db",
+                                                  "bytes":  206630912,
+                                                  "sha256":  "1fcd51ae219a1120b4864b4b1c2099947e8df2301af298e504e412b9b7577eda"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2021/2021.db",
+                                                  "bytes":  206626816,
+                                                  "sha256":  "e12113e127dd56c0246fb45a1bd6861a7976c491b92baff12a03aee332b3b62f"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2022/2022.db",
+                                                  "bytes":  206635008,
+                                                  "sha256":  "0f10d0085d2632bc7c0d4bcfefae0a0b1e92ac96ff830669ae07bf7c9e64799d"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2023/2023.db",
+                                                  "bytes":  206680064,
+                                                  "sha256":  "4a94b6e2dafb82d44a65754f4d7335bf763262b10d7b548455a1c1ff35ca83fa"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2024/2024.db",
+                                                  "bytes":  206696448,
+                                                  "sha256":  "04a1db5df3516fdc117aa49426a97c3e381cfed2ca0eefa218c7fe46d2d98e96"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2025/2025.db",
+                                                  "bytes":  206688256,
+                                                  "sha256":  "df58ebf576496fb945114c1519e8ad70f861c0a61a935191d19c299214eb5102"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2020/2020/2020.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "813e086005fa450f99754ea9f3de7797a12b5525c9ce857eca7bf9cfe766ea87"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2021/2021/2021.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "f409a9d9456323d1c431a6f6e322491bb7f32433cc48f85bc4a9521ff40d5fb6"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2022/2022/2022.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "6a1977e3e5fce69528420aa70627028e67b5f3d9fd96af1aad76df0edb9c8643"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2023/2023/2023.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "d31c29561d22fcb4e4816264b1145ad8628726472c51c8fbacac023ad65c9523"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/validate_2020/2020/2020.db",
+                                                  "bytes":  4755456,
+                                                  "sha256":  "761905e2d55f997f275d8ed04444fc465c2b59bec1ddae525fe1e3bfcccaff19"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/archive_failed/20260724_223837/align_orphan_temp/2023/2023/2023.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "473bc3e2b393d1247ca10fd87bc5b63a2e8784ac5d4f5f4f396f51469f3651b8"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/archive_failed/20260724_223930/align_default_temp/2023/2023/2023.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "a387cd3814933b219d7405bcdd354b0fc4ed7c0566664641b39aea9c08a7696f"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2020/2020/2020.db",
+                                                  "bytes":  4808704,
+                                                  "sha256":  "72e7bca5def3a9de89c1002c2fd63c10830c5cf240a02608e4df3a4283821d62"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2021/2021/2021.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "fd5f07915114fc8179256e50aa998ff92307791856a1a891fbcd4ff6963c637c"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2022/2022/2022.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "fdd5d03953f35fb1e758888b8194984cd4d0abe71fa40ead0a91876084026ee3"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2024/2024/2024.db",
+                                                  "bytes":  4943872,
+                                                  "sha256":  "d6841273d1024b7b77e4be965d74d3bedae6a3c06c6befa348a4e912c2eb5cee"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2025/2025/2025.db",
+                                                  "bytes":  4882432,
+                                                  "sha256":  "cb91d706c203963d66d6ef728926047217e0fa42a1f2850a28ff55c3eb748290"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_retry_beam100_400_2023/2023/2023.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "0800e1190fd486e6dc1097b3b01259cc2591d5f326b84859e05e0d2816a65f3f"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/retry_probe_2023/2023/2023.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "3c45cab77fd378f7bcf02b2ba61e86076a4b3b12ce56f28336024364bbb08e9b"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "failure_reason":  "7z 생성 실패(exit=1): D:\\mfa_eojeol\\pilots"
+                  },
+                  {
+                      "key":  "mfa_legacy_pilots",
+                      "source":  "D:\\mfa_eojeol\\pilots",
+                      "archive":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\legacy_d_workspace_20260802\\mfa_eojeol_legacy_pilots.7z",
+                      "status":  "pruned",
+                      "started_at":  "2026-08-02T14:17:55.7546076+09:00",
+                      "source_files":  3114,
+                      "source_bytes":  6614587142,
+                      "database_sha256":  [
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2020/2020.db",
+                                                  "bytes":  206630912,
+                                                  "sha256":  "1fcd51ae219a1120b4864b4b1c2099947e8df2301af298e504e412b9b7577eda"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2021/2021.db",
+                                                  "bytes":  206626816,
+                                                  "sha256":  "e12113e127dd56c0246fb45a1bd6861a7976c491b92baff12a03aee332b3b62f"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2022/2022.db",
+                                                  "bytes":  206635008,
+                                                  "sha256":  "0f10d0085d2632bc7c0d4bcfefae0a0b1e92ac96ff830669ae07bf7c9e64799d"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2023/2023.db",
+                                                  "bytes":  206680064,
+                                                  "sha256":  "4a94b6e2dafb82d44a65754f4d7335bf763262b10d7b548455a1c1ff35ca83fa"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2024/2024.db",
+                                                  "bytes":  206696448,
+                                                  "sha256":  "04a1db5df3516fdc117aa49426a97c3e381cfed2ca0eefa218c7fe46d2d98e96"
+                                              },
+                                              {
+                                                  "relative_path":  "r2_infrastructure/mfa_r2_infra_pilot_20260730/temp/2025/2025.db",
+                                                  "bytes":  206688256,
+                                                  "sha256":  "df58ebf576496fb945114c1519e8ad70f861c0a61a935191d19c299214eb5102"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2020/2020/2020.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "813e086005fa450f99754ea9f3de7797a12b5525c9ce857eca7bf9cfe766ea87"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2021/2021/2021.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "f409a9d9456323d1c431a6f6e322491bb7f32433cc48f85bc4a9521ff40d5fb6"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2022/2022/2022.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "6a1977e3e5fce69528420aa70627028e67b5f3d9fd96af1aad76df0edb9c8643"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/align_2023/2023/2023.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "d31c29561d22fcb4e4816264b1145ad8628726472c51c8fbacac023ad65c9523"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_20260724/temp/validate_2020/2020/2020.db",
+                                                  "bytes":  4755456,
+                                                  "sha256":  "761905e2d55f997f275d8ed04444fc465c2b59bec1ddae525fe1e3bfcccaff19"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/archive_failed/20260724_223837/align_orphan_temp/2023/2023/2023.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "473bc3e2b393d1247ca10fd87bc5b63a2e8784ac5d4f5f4f396f51469f3651b8"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/archive_failed/20260724_223930/align_default_temp/2023/2023/2023.db",
+                                                  "bytes":  4853760,
+                                                  "sha256":  "a387cd3814933b219d7405bcdd354b0fc4ed7c0566664641b39aea9c08a7696f"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2020/2020/2020.db",
+                                                  "bytes":  4808704,
+                                                  "sha256":  "72e7bca5def3a9de89c1002c2fd63c10830c5cf240a02608e4df3a4283821d62"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2021/2021/2021.db",
+                                                  "bytes":  4812800,
+                                                  "sha256":  "fd5f07915114fc8179256e50aa998ff92307791856a1a891fbcd4ff6963c637c"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2022/2022/2022.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "fdd5d03953f35fb1e758888b8194984cd4d0abe71fa40ead0a91876084026ee3"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2024/2024/2024.db",
+                                                  "bytes":  4943872,
+                                                  "sha256":  "d6841273d1024b7b77e4be965d74d3bedae6a3c06c6befa348a4e912c2eb5cee"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_2025/2025/2025.db",
+                                                  "bytes":  4882432,
+                                                  "sha256":  "cb91d706c203963d66d6ef728926047217e0fa42a1f2850a28ff55c3eb748290"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/align_retry_beam100_400_2023/2023/2023.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "0800e1190fd486e6dc1097b3b01259cc2591d5f326b84859e05e0d2816a65f3f"
+                                              },
+                                              {
+                                                  "relative_path":  "year10_speaker5/pilot_year10_speaker5_v2_20260724/temp/retry_probe_2023/2023/2023.db",
+                                                  "bytes":  4866048,
+                                                  "sha256":  "3c45cab77fd378f7bcf02b2ba61e86076a4b3b12ce56f28336024364bbb08e9b"
+                                              }
+                                          ],
+                      "database_hashing":  true,
+                      "reparse_entries":  84,
+                      "symlink_followed_byte_delta":  49168,
+                      "archive_files":  3114,
+                      "archive_uncompressed_bytes":  6614636310,
+                      "archive_bytes":  1716915928,
+                      "archive_sha256":  "97625a8dbfbc08901a50596fb2cc2bb00eed816502caba44a738f7e92d5735c1",
+                      "verified_at":  "2026-08-02T14:22:43.7761372+09:00",
+                      "pruned_at":  "2026-08-02T14:22:51.3751325+09:00"
+                  }
+              ],
+    "failure_history":  [
+                            {
+                                "failed_at":  "2026-08-02T13:55:03.6267840+09:00",
+                                "error":  "archive 내부 파일 수/바이트 불일치: D:\\mfa_common_pron\\releases\\common_pron_pilot_full6y_20260728"
+                            },
+                            {
+                                "failed_at":  "2026-08-02T14:10:41.2127075+09:00",
+                                "error":  "7z 생성 실패(exit=1): D:\\mfa_eojeol\\pilots"
+                            }
+                        ],
+    "error":  null,
+    "failed_at":  null,
+    "last_resumed_at":  "2026-08-02T14:17:46.9611543+09:00",
+    "current_selection":  "small",
+    "last_completed_at":  "2026-08-02T14:22:51.4159030+09:00"
+}

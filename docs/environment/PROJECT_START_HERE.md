@@ -1,92 +1,65 @@
-# 프로젝트 시작 안내
+# 프로젝트 시작 안내 — 현재 정본
 
-> **가장 먼저 읽을 문서:**
-> [PROJECT_CURRENT_STATE.md](PROJECT_CURRENT_STATE.md)
->
-> 긴 대화, 새 세션, context compaction 뒤에는 최근 대화만으로 작업을
-> 재구성하지 않는다. 현재 상태 정본과 실제 상태판을 대조한 뒤 명령을
-> 제안하고, 큰 단계가 끝나면 정본의 완료 상태와 바로 다음 작업을
-> 갱신한다.
+최종 갱신: 2026-08-02 KST
 
-현재 프로젝트 root:
+이 저장소에서 새 작업을 시작할 때는 아래 문서만 순서대로 읽는다.
+
+1. [PROJECT_CURRENT_STATE.md](PROJECT_CURRENT_STATE.md) — 지금 완료된 것과 다음 한 단계
+2. [../RUNBOOK_production_2020_2025.md](../RUNBOOK_production_2020_2025.md) — 전수 생산의 유일한 실행 절차
+3. [../ASSETS_LEDGER.md](../ASSETS_LEDGER.md) — D:/E:/저장소 자산의 현재 위치
+4. [../decisions/_INDEX.md](../decisions/_INDEX.md) — 현행 방법론 결정과 역사 기록의 구분
+
+프로젝트 root는 다음이다.
 
 ```text
 C:\Users\ari30\research\2026_summer_research
 ```
 
-## 초기 환경 기록
-
-> ⚠️ **낡은 문서.** 아래 경로·폴더구조는 초기(Codex·Dropbox 시절) 기준이라
-> 현재와 다르다. 정본은 프로젝트가 `C:\Users\ari30\research\2026_summer_research`로
-> 이전됐고, 시작 안내는 [../README.md](../README.md)(문서 색인)와 루트 `README.md`가
-> 대신한다. 이 문서는 초기 환경 설계 기록으로만 보존.
-
-이하 내용은 `C:\Users\ari30\Dropbox\000_2026_summer_research`를 사용하던
-초기 환경 설계 기록으로만 보존한다.
-
-## 이 폴더의 역할
-
-이 폴더는 실제 연구 프로젝트의 중심 폴더입니다. 기존 Codex 설정 폴더는 설치 기록과 검증 기록을 남겨둔 장소이고, 이 Dropbox 폴더는 앞으로 분석 파일과 프로젝트 산출물을 모아둘 장소입니다.
-
-## 폴더 구조
+## 연구 흐름
 
 ```text
-000_2026_summer_research
-├─ 000_START_HERE.md
-├─ AGENTS.md
-├─ README.md
-├─ docs
-│  ├─ environment
-│  ├─ decisions
-│  └─ references
-├─ data
-│  ├─ 00_external_paths
-│  ├─ 01_pilot_samples
-│  ├─ 02_intermediate
-│  └─ 03_analysis_ready
-├─ scripts
-│  ├─ R
-│  ├─ python
-│  └─ powershell
-├─ qmd
-├─ notebooks
-├─ work
-│  ├─ bareun
-│  ├─ mfa-pilot
-│  ├─ praat-textgrid
-│  ├─ r
-│  └─ python
-├─ outputs
-│  ├─ figures
-│  ├─ tables
-│  └─ reports
-├─ logs
-└─ archive
+동결 CSV·형태소/Roman 검색층
+  → 공통 Jamo r2로 2020–2025 전부 MFA 신규 정렬
+  → 6-tier TextGrid와 연도별 동반 CSV/Parquet
+  → 형태소·표기상 환경으로 후보 검색 및 WAV·TextGrid 수집
+  → 선별 자료에 KOINA·이어붙이기·wav2vec2 보조층
+  → 연구자가 음성·TextGrid를 보고 실제 실현 여부 판정
 ```
 
-## 다음에 Codex에게 시킬 때 첫 문장
+MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. 형태소 정보도
+검색·연결 정보이며 음향적 형태소 경계를 자동 주장하지 않는다.
 
-```text
-C:\Users\ari30\Dropbox\000_2026_summer_research 폴더에서 작업해줘.
-먼저 AGENTS.md와 docs/environment/PROJECT_START_HERE.md를 읽고,
-언어학 연구 환경 설정을 기준으로 시작해줘.
-```
+## 현재 생산 계약
 
-## 외장하드 자료를 연결했을 때
+- 2020–2025 모두 같은 Korean MFA acoustic v3.3.0, Jamo G2P v3.2.0,
+  `common_pron_mfa_r2_20260728`로 다시 정렬한다.
+- TextGrid 정본 형식은 6-tier다:
+  `words / phones_mfa / phoneme_r_auto / utterance / utterance_orth_r /
+  morph_analysis_utt`.
+- pre-MFA 검색층은 연도별 7표, post-MFA 동반층은 연도별 4표다.
+- CSV, 원 WAV/JSON, 공통사전 r2, 입력·승인·제외·모델 계약은 D: 또는 저장소에
+  유지한다. 구 산출물은 E: 검증 archive로 이동한다.
+- 새 파일럿이나 과거 검토를 반복하지 않는다. 생산 계약 자체가 바뀔 때만 새
+  설계 검토를 연다.
 
-1. 외장하드의 실제 경로를 `data/00_external_paths/external-data-paths.md`에 기록합니다.
-2. 원자료는 건드리지 않습니다.
-3. 작은 pilot 샘플만 `data/01_pilot_samples`에 복사합니다.
-4. 전사 정규화 결과는 `data/02_intermediate`에 둡니다.
-5. 분석 직전의 정리된 표는 `data/03_analysis_ready`에 둡니다.
-6. TextGrid, MFA 결과, 그림, 표, 보고서는 `outputs`나 `work`에 둡니다.
+## 문서 사용 규칙
 
-## 아직 비워둔 것
+- 현재 실행 명령은 `RUNBOOK_production_2020_2025.md`만 따른다.
+- `docs/archive`, `docs/reviews`, `WORK_HISTORY_*`, 구 `PLAN/RUNBOOK/MONITOR/PILOT`
+  문서는 오류·시행착오·방법론 근거다. 현재 다음 단계로 해석하지 않는다.
+- 현재 상태 문서는 누적 일지가 아니다. 상태가 바뀌면 짧게 교체하고, 상세 과정은
+  `WORK_HISTORY_2026-08.md`에 남긴다.
+- 대량 파일 이동·삭제는 archive manifest, 파일 수·바이트, CRC/SHA 검증 뒤에만
+  수행한다.
 
-- 실제 연구 질문
-- 외장하드 자료 경로
-- Bareun API key
-- 모두의 말뭉치 파일 구조
-- 첫 pilot 샘플
+## 환경
 
-이 항목들은 자료가 준비되면 하나씩 채우면 됩니다.
+- 파이프라인 Python: `C:\Users\ari30\miniforge3\envs\mfa\python.exe`
+- MFA conda: `C:\Users\ari30\miniforge3\Scripts\conda.exe`
+- R: `C:\Program Files\R\R-4.6.1\bin\x64\Rscript.exe`
+- Quarto: `C:\Users\ari30\AppData\Local\Programs\Quarto\bin\quarto.cmd`
+- Bareun secret은 프로젝트 밖 `C:\Users\ari30\Documents\Codex\_secrets\bareun`
+  에만 둔다.
+
+제한된 Codex shell에서 AppData Python이 보이지 않는 결과만으로 설치 부재를
+판정하지 않는다. 필요하면 `scripts/check_python_environment.ps1`로 확인한다.

@@ -1,0 +1,2184 @@
+# 작업 내역 (2026-07-08 ~ 07-31) — 역사 기록
+
+앞선 1기(겨울~3월: 어휘목록 53만·MFA 정렬 449만·검색 시스템)는
+`PROJECT_SUMMARY.md` 참조. 아래는 2기(7월) 상세.
+
+## 7/8-9 — 재가동·형태소 재분석 착수
+- 중단된 프로젝트 상태 파악 (문서 기반), 2025년 JSON 압축 해제 (2,927파일)
+- 바른(Bareun) 클라우드 API 환경 확인, 파일럿 120발화 검증 (품질 우수)
+- **1차 전체 재분석 시작**: `bareun_dialogue_full.py` — 발화별 형태소
+  (어절 경계 보존 형식), 파일 단위 체크포인트
+- A2 의미번호(`assign_sense_layer.py`)·A3 빈도사전 스크립트 작성·검증
+- 연구 설계 확정: **A단계(자료 구축)/B단계(현상별 분석) 분리**,
+  D: 재편 계획, 경로 중앙관리(config/paths.json) 도입
+
+## 7/9-10 — 텍스트 레이어 완성
+- 바른 무료 일일한도 초과 → 유료 플랜(월 300만 어절) 1개월 전환
+- **1차 완료: 17,156파일·분석대상 5,103,356발화·형태소 토큰 5,096만** —
+  후속 전수 감사에서 원본 JSON 5,157,997행 중 `form` 빈 54,641행은
+  `iter_utterances()` 입력 정책으로 제외됐음을 확인
+- A2 의미번호 전체 부여 (내용어 78%→보완 후 90%; 방법·신뢰도 기록)
+- A3 빈도사전 (RAM 대비 연도분할 count→merge): 형태소 165,920항·어절
+  857,443항 + MP/LS 비교·로마자·IPA·어원(우리말샘)·KoFREN 통합
+- A3b 의미별 빈도표, A4 메타데이터 인덱스(사용역·주제·화자),
+  A5 층화 빈도(성별×연령×사용역, 층 합계 교차검증 통과)
+- **D: 전면 이행**: 00_RAW/10_LAYERS/20_AUDIO/90_ARCHIVE (생애주기 구조),
+  전 스크립트 경로 일괄 갱신
+
+## 7/10-14 — 2025 음성 파이프라인
+- PCM 59.6GB 해제 → 발화별 WAV 587,174 변환·검증 → 바른 분할 기준
+  .lab 587,110 생성
+- MFA 정렬 트러블슈팅 연쇄 해결: soundfile DLL 파손(재설치),
+  한국어 재토큰화 요구(→ --no_tokenization, 방법론상으로도 타당),
+  sqlite 잠금(→ WAL 전환+패치), **MFA export 교착(→ 정렬 DB에서
+  직접 생성하는 자체 스크립트 merge_textgrid_v2.py로 우회)**
+- 화자 설정을 기존 연도와 통일(세션=화자), 모델 동일성 검증
+  (전 연도 korean_mfa v3.0 같은 파일 — 논문 기재 가능)
+- **2025 표준 TextGrid 585,889개 생성** (정렬 커버리지 99.79%)
+
+## 7/14 — 인벤토리·다층위 발견
+- **전수 커버리지 인벤토리**: 6개년 발화별 wav·TextGrid 대조 —
+  전체 99.44% (2023만 96.98%, 재정렬 여부 보류 결정 대기)
+- 다층위 2025의 실체 확인: 문어 13,907+구어 16,439문장, MP·WSD·DP·
+  SRL·ZA 레이어 — **구어부가 우리 2024 발화의 부분집합**(ID 100% 일치)
+- 다층위 빈도표 3종(2025년판 규준, 어절 33.7만 토큰) 구축
+- NIKL 공식 설명 PDF 15종 등록, 공식 수치·인용 확보
+
+## 7/15 — 통일·검증·연계·운율·GitHub
+- **tier 통일 완결**: 2020-2024 구판(6-tier)을 표준 3-tier로 전량
+  재생성(retrofit) 후 스왑 — 여섯 연도 동일 체계, 구판 아카이브
+- **공식 주석 대비 검증**: 형태소 F1 0.929(동일문장 기준), 의미번호
+  76.4%(단의어 100% — 우리말샘 체계 변동 없음 판정)
+- gold 레이어 수입(구문·의미역·조응, 16,439발화) → "프리미엄 표본"
+- 빈도사전에 freq_ML2025 컬럼 통합 (규준 5종 체제 완성)
+- A6 fetch 유틸(검색→wav+TextGrid), 정렬 품질통계 587,174행 구출
+- **운율 파일럿**: 500발화 Colab 실행 성공 — IP/AP·경계성조·F0·
+  Momel 목표점 + prosody tier TextGrid (청취 검증 대기, 규칙 v0)
+- 프리미엄 16,439 운율 표본 준비 (premium_all.zip → G:)
+- ㄴ삽입 환경 정의 초안 (phenomena/34_n_insertion — 검토 대기)
+- 파일 정돈(임시파일 아카이브, mfa_temp 삭제) 및 **GitHub 이행**:
+  리포 생성(private, ari28526-lab/nikl-dialogue-research), 정본을
+  research 폴더로 이사, 초기 커밋 60파일
+
+## 7/16-17 — 어절 전량 재정렬 착수 (목적 B: 4-tier)
+- **1차 정렬의 구조적 결함 확정**: phones가 형태소 고립형(것을=[걷을], 연음
+  미반영) → 형태음운 변이 분석 불가. 아카이브 전수 검토로 재활용 불가 판정
+  → **어절 lab 전량 재정렬 결정** (RUNBOOK_MFA_eojeol_realign)
+- 파이프라인 작성: 어절 lab 제자리 생성 → MFA → 4-tier 병합(기존 형태소
+  경계 재사용). 파일럿 3차 성공: 14.2발화/s, **USB I/O 병목 판정** →
+  temp·중간산출 C: 이전, conda run→mfa.exe 직접 호출 교정
+- 본실행 1차(7/17): lab 9.5h + MFA 로딩 1h52m 만에 원인불명 실패 —
+  traceback 유실 사고
+
+## 7/18 — 3연속 실패의 원인 규명 (각각 다른 층위)
+- **stderr 캡처 도입**: MFA는 traceback을 로그 닫힌 뒤 콘솔에만 출력 →
+  러너를 Start-Process 리다이렉트+1분 하트비트로 전환 (원인 영구 보존)
+- **★백신 착오 발견**: 실백신은 AhnLab V3(Defender 비활성) — Defender
+  제외가 무효였음. V3 예외 등록 → lab 스킵 9.5h→12분 실증
+- **2차 실패 원인 확정**: 0바이트 wav 4개(SDRW2000000521 연속 구간, 변환
+  산물) — MFA는 로딩 말미에 전체 raise. `quarantine_bad_wavs.py` 신설
+  (전수 크기 스캔·격리), 러너에 연도별 자동 격리 단계 추가
+- MFA 이어가기(재시도 시 temp 재사용→실패 시 --clean 폴백) 도입
+- **기기 이전 결정**: 외장 SSD 1TB + i5-1240P 노트북 (근거·절차 런북 기록)
+
+## 7/19 — ★1화자 사고 → 구조 재정비로 전환 (사용자 방침)
+- 3차 실행: 로딩 9.4h 완주 후 로그에서 **`Found 1 speaker across 870158
+  files` 발견** — 평면 코퍼스라 MFA가 연도 전체를 화자 1명으로 오인
+  (SAT·CMVN 무력화 + 1job 강등). 파일럿(세션 구조 복사본)이 못 잡던 함정
+- 사용자 결정: 2020 무리하지 않고 **HDD를 최종 구조로 정돈 후 SSD 이전**
+- **세션 재구성 완료**(사용자 콘솔, 밤): 평면 4개년(2020·21·22·25) →
+  세션 하위폴더. 6개년 감사 통과(루트 잔여 0, 세션 17,155개)
+- 체계 정비: `DATA_LAYOUT.md`(전 폴더 실측 지도+발화 좌표계),
+  `locate_utt.py`(발화 ID→전 레이어 경로), fetch_audio 재작성(locate 일원화·
+  4-tier 우선), 복사 러너(`copy_hdd_to_ssd.ps1`, 역방향 백업 겸용),
+  러너 이식성(홈 기준 경로·num_jobs 자동·평면 가드)
+- A단계 전반 점검: align.py 패치 의혹 종결(원본과 diff 0), 1차는 세션=화자
+  였음 확인(morphemes tier 1화자 우려 해소), 운율 파일럿·검색은 4-tier 후
+  재실행/신규 작성으로 순번 확정
+- 다음: 7/20 오후 HDD→SSD 복사 → SSD를 D:로 → 미니 PC에서 재정렬 재개
+  (기기 이전은 열린 카드)
+
+## 7/22-23 — 2021 완주 + ★G2P 부재 발견(방법론 재검토)
+- 2021 정렬 완주(3.26h, 137만 발화 중 오류 184건=0.01%) → export 단계에서
+  진짜 완료("Done!") 직후 워치독이 CPU 저하를 교착으로 오판해 강제종료(temp만
+  소실, 실제 출력 1,372,068건 무사 확인 → 수동 병합으로 복구). 워치독을
+  "Done!" 신호 감지 시 안 죽이게 수정
+- 병합 스크립트 재검증 중 새 발견: `realign_eojeol_merge_output.py`가
+  `_speakers.csv`(화자 메타)를 세션 파일로 오인해 6개년 공통 KeyError —
+  필터 추가로 수정(2021 병합 성공, 형태소tier없음 1건)
+- 사용자 요청으로 QC 표본(2020·2021 각 2건, wav+TextGrid+원본CSV) 추출 →
+  **phones tier의 30~75%가 "spn"(음소 없음)** 발견. 원인: MFA 발음사전
+  고정 21,009단어, G2P 미사용으로 활용형(교착어 특성상 무한) 전부 OOV.
+  하필 이 프로젝트가 되살리려던 활용형 연음이 핵심 피해 대상 — 2020·2021
+  산출물의 핵심 목적 달성 여부 의심. korean_mfa G2P 모델(v3.0.0) 존재 확인,
+  파일럿 검증 후 재작업 여부 결정하기로 합의(미실행)
+- 발음정보 CSV 부재 문제 추가 발견: 발화단위 발음이 있는 줄 알았던 게 실제로는
+  형태소타입별 사전(조인 안 됨)뿐이었음 → 1기(작년 겨울)
+  `01_nikl_dialogue_enriched.csv`(4.7GB, 발화단위 pronunciation·roman 포함)를
+  1기 노트북 분석으로 재발견, Google Drive에 위치(이 기기 미연결, 클라우드라
+  안전 추정) — 2025 미포함·구버전 바른·자체 G2P 검증 필요라는 한계 확인
+- 당시 사용자 결정 기록: 2025+최신 바른 재분석 검토(유료 플랜 해지 보류),
+  예측 발음열+MFA phones·시간정보 이원 구축, 1기 CSV를 SSD로 백업 예정.
+  최종 실현 여부는 사람의 수동 판정으로 별도 구축. 2022~2025 재정렬은 보류
+  (G2P 파일럿 검증 후 진행 방향 재결정)
+
+## 7/23 — 검색 마스터 설계 확정 + ★reference 미이전 발견(체계 교정)
+- **검색 마스터 레이어 설계 확정** (`DESIGN_search_master_layer.md`): 발화 1행
+  CSV에 사회변수+형태소+철자열+예측발음열, 어절 정렬(` | `), roman_mfa 체계,
+  세션 CSV+연도/전체 Parquet. 결정 4건(사용자) + A3 빈도사전 정합 검토
+  (IPA 변환표=정본 토큰집합, 로마자 3종 혼재 실측→정규화 방침)
+- **1기 산출물 실측 대조**: Drive enriched CSV(4.96GB, 표본 3k 분석) —
+  original_form(form과 31.2% 상이)·start/end·note가 기존 레이어에 누락이었음
+  → 마스터에 추가. 어휘목록 v1(Dropbox→D: 복사, 130만 행) 발음 100% 보유
+  확인 → 예측발음 조회부 원천으로 채택
+- **★reference 4종(사전 v2·MP·LS·다층위) SSD 미이전 발견** — 7/20 이전이
+  Tier1 우선이었는데 '전량 이전'으로 인식 불일치, 문서도 이를 소리내어
+  알리지 않음. HDD 유일본 상태. → **예방 체계 수립**: `ASSETS_LEDGER.md`
+  (실측 기반 자산 정본) 신설, CLAUDE.md 규칙 8~10 추가(전량 기본·실측 선언·
+  한줄명령 금지), `preflight_search_master.py` 신설(파일럿 차단 요소 없음 판정)
+- G: 연결 실측 확인 → 1기 CSV 백업은 robocopy 한 줄로 (gdown 불필요)
+- 다음: 새 세션에서 파일럿 (`HANDOFF_pilot_search_master.md` 참조)
+
+## 핵심 수치 총괄
+| 항목 | 값 |
+|---|---|
+| 분석대상 발화 / 형태소 토큰 | 5,103,356 / 50,955,889 |
+| 표준 TextGrid | 585만 (6개년, 커버리지 99.44%) |
+| 빈도사전 | 형태소 165,920항·어절 857,443항 (+의미별·층화·분산도) |
+| 검증 | 형태소 F1 0.929, 의미번호 76.4% (단의어 100%) |
+| 프리미엄 표본 | 16,439발화 (구문·의미역 gold + 운율 진행 중) |
+
+## 미해결 (2026-07-15 기준)
+TODO_A단계.md 참조 — 사용자 필수: 운율 청취 검증, ㄴ삽입 definition
+검토, 바른 구독 해지. 결정 대기: 2023 재정렬(보류 권고), 산출물 G: 백업(승인 대기).
+
+## 2026-07-23 (오후) — 검색 마스터 v1 파일럿 + MFA G2P 검증 (Claude 세션)
+
+- **검색 마스터 v1 구현·파일럿**: `predict_pron.py`(필수 규칙 G2P, 단위테스트 30/30),
+  `build_search_master.py`(세션 CSV·검증 내장). 2020 3세션·1,297발화 검증 통과.
+- **사용자 결정 확정 반영**: 용언 어간+어미 경음화 ON, ㄹ비음화 OFF(보류), 표기 4단
+  위계(음소 공백/음절 `_`/형태소 `+`/어절 `|`), 자리표시 `∅`, tagged_roman 정본 on
+  (ㄴ삽입 검색용 `[자음]/N… + (I|Y)`).
+- **MFA G2P 파일럿 성공**: g2p korean_mfa 다운로드. `mfa align --g2p_model_path korean_mfa`
+  로 2020 SDRW2000000001(479발화) 재정렬 → **phones spn 27.5%→0.0%**, 것을=[거슬]
+  (k ʌ sʰ ɨ ɭ) 시간정렬 확인. `measure_spn.py`·`build_g2p_pilot_corpus.py`.
+- **align.py 버그 수정**: 7/21 패치 print의 em-dash(—)가 cp949 콘솔서 UnicodeEncodeError
+  로 export 직전 crash → `—`→`--` 2곳 수정. `run_eojeol_realign.ps1`에 `--g2p_model_path
+  korean_mfa` 추가(전량 재정렬 대비).
+- **stitch_session.py**: 원본 연속 녹음 부재 대비 — 발화 클립을 utt_id 순 이어붙여
+  연속 wav+정렬 TextGrid 재구성. 9발화 데모 검증.
+- 다음 세션용 핸드오프: `docs/HANDOFF_search_master_session2.md`. 남은 것: v1 CSV 전량
+  생성(밤샘, HDD 불필요) → MFA G2P 전량 재정렬(~4일). HDD는 7/24 13:00, reference 회수용(독립).
+
+### 2026-07-23 14:20–14:47 — search master 전량 생성
+
+- `D:\10_LAYERS\05_search_master`에 2020–2025 전량 생성 완료:
+  17,156세션·5,103,356행, JSON 결측 0, 어절 수 불일치 0.
+- 이 산출물은 2026-07-24 메타 ID 수정 전 버전이므로 2023년 네 세션의 문서
+  메타가 `미상`이다.
+- `predict_pron.py`가 규칙 기반만 구현되어 lexicon 예외 발음은 미반영이고,
+  coverage 세 열도 계산되지 않았다. 따라서 파일 존재와 구조적 완결은 확인됐지만
+  연구용 최종 정본으로 승격하기 전 감사·보완이 필요하다.
+
+## 2026-07-24 — 대량 MFA·CSV 전 안전성 감사와 파이프라인 강화
+
+- 사용자 요청에 따라 MFA G2P 전량 재정렬과 search master **전량 재생성**은
+  시작하지 않고, 먼저 기존 코드·오류 이력·D:/프로젝트 역할을 전수 감사.
+  수정 전 핵심
+  코드 11개를 `archive/code_pre_bulk_20260724`에 SHA256 manifest와 함께 보존.
+- 누적 시행착오를 F01–F27로 정리. 과거의 traceback 유실·V3 착오·0바이트
+  WAV·1화자 사고·MFA export/SQLite/거짓 성공·워치독 오살·G2P 부재뿐 아니라
+  이번 감사에서 exit 0, 부분 CSV skip, overwrite 유실, 경로 혼재를 추가 확인.
+- 공통 원자 출력 계층 도입: `.partial` 기록→fsync→스키마·ID·행수 검증→
+  `os.replace`; 기존 정식 파일은 `_archive/<run_id>`에 먼저 보존. Git commit,
+  Python·OS·옵션·경로·합계를 JSON manifest에 기록.
+- MFA 러너를 preflight 기본 실행, JSON marker, 실패 temp 보존, 검증 후 정리,
+  치명 분기 `exit 1`로 강화. MFA 3.4.0 설치본의 필수 수동 패치 7종을
+  AST/소스 hash로 검증하는 `verify_mfa_install.py` 추가. 실제 preflight는
+  모델·패치·세션구조·디스크 포함 FAIL 0/WARN 0.
+- **★메타 ID 충돌 발견·복구**: `file_meta.csv`가 17,156행이라 정상처럼
+  보였으나 2023 JSON 4개의 최상위 `id`가 직전 세션으로 잘못 기입되어 중복 4,
+  실제 메타 누락 4였음. 원본 파일명 stem과 내부 doc/utterance ID는 일치하므로
+  stem을 조인 정본으로 채택하고 잘못된 값은 `source_top_id`에 보존.
+- D: 원본 JSON은 수정하지 않고 구 `file_meta.csv`를
+  `_archive/metadata_fix_top_id_20260724`에 보존한 뒤 17,156행을 원자 재생성.
+  형태분석–메타 ID 집합 17,156개 완전 일치 확인. 누락됐던
+  `SDRW2300000445` 216발화 검색 CSV 파일럿에서 메타/화자/JSON 결측 0,
+  어절 불일치 0으로 통과.
+- 자동 검사: Python unittest 18/18, PowerShell BOM·AST 안전 검사 3/3,
+  MFA 패치 7/7, 예측발음 selftest 30/30 통과. 세부 결과는
+  `outputs/reports/PILOT_pre_bulk_validation_2026-07-24.md`.
+- 중간 커밋과 원격 푸시:
+  `5587604`(기준선), `f49eeef`(CSV 안전화), `69babb4`(MFA 안전화),
+  `d77474a`(메타 복구). 작업 브랜치 `agent/harden-pre-bulk-pipelines`.
+- 다음 게이트: 기존 전량 CSV의 행·메타·lexicon·coverage 감사와 연도별 MFA
+  소표본. G2P phones는 연구자가 음성 구간을 찾기 위한 대략적 분절이며 현상의
+  자동 실현 판정값이 아니다. 실패·`spn`·시간 경계·파일 대응을 확인한 뒤
+  연도별 실행 여부를 결정한다.
+
+## 2026-07-25 — 층화 MFA 수동 검토 반영
+
+- 사용자가 Dropbox 점검본에서 연도별 핵심 발화 7개를 Praat로 검토하고
+  TextGrid 외곽 경계 가시성, 숫자 `1`의 발음 정보 소실, 파일 탐색성 문제를
+  보고했다. 스크린샷과 메모는 `6_review`에 보존.
+- 회수 발화 `SDRW2300001955.1.1.164`는 누락이 아니라
+  `2023\SD2302149` 화자 폴더와 연도별 통합 CSV에 존재함을 확인했다.
+- TextGrid tier의 구조적 0/xmax 경계와 화면의 빈 interval 경계를 구분했다.
+  원 MFA 라벨·시간은 유지하고, 이후 생성본의 `utterance`만 첫–마지막 유표
+  어절 범위에 놓아 근거 있는 앞뒤 padding이 보이도록 수정했다.
+- 기존 `1층으로`의 form 기반 `∅` 열은 감사용으로 보존하면서,
+  원전사 `일 층으로`가 placeholder를 실제로 줄일 때만 채택하는
+  `pron_reference_*` 출처 추적 열을 추가했다. 근거 없는 기호는
+  `unresolved_symbol`로 명시한다.
+- 2023 목표 세션 371/371행 격리 재생성 통과. 목표 발화는 한글·roman·IPA
+  reference를 회복했고, 특수 전사 1행만 미해결로 명시됐다.
+- 연도별로 같은 basename의 WAV·lab·6-tier TextGrid·발화 CSV를 한 폴더에
+  모으는 점검 bundle 빌더를 추가했다. 60발화 실자료 검증 통과.
+- 발화자뿐 아니라 같은 원본 JSON document의 전체 화자와 현재 화자를 제외한
+  공동 참여자 ID를 `dialogue_speaker_ids`·`co_speaker_ids`로 추가했다.
+  직접 수신자 정보는 원자료에 없으므로 상대 후보로만 해석한다. 2023 목표 세션
+  371행에서 연결 오류 0.
+- Dropbox 정식 bundle의 디렉터리 원자 rename이 WinError 5로 차단된 사례를
+  기록하고, `.INCOMPLETE`→전 파일 SHA256 대조→완료 표지 제거의 검증 복사
+  fallback을 추가했다. 검증 후 staging 디렉터리 정리만 동기화 lock으로
+  실패하는 경우는 완료본을 실패로 되돌리지 않고 비치명 정리 경고로 분리했다.
+
+## 2026-07-25 — MFA 파일럿 연구자 검토 Excel
+
+- 사용자가 60개 파일럿을 쉽게 판정할 수 있는 시트를 요청했다.
+- `Spreadsheets` 전용 artifact runtime이 현재 세션에 로드되지 않아 사용자가
+  `openpyxl` 우회를 명시적으로 승인했다. MFA Python 환경에 openpyxl 3.1.5와
+  et-xmlfile 2.0.0을 설치했다.
+- `build_mfa_pilot_review_workbook.py`를 추가했다. 원본 INDEX를 별도 시트로
+  보존하고, 검토입력 드롭다운·WAV/TextGrid/CSV/LAB 상대경로 링크·연도별
+  진행률 수식·두 우선 사례 표시를 생성한다.
+- 필수 열·고유 발화·관련 파일 존재를 먼저 검사하고 `.partial.xlsx`를 다시
+  열어 시트·행·수식·드롭다운·링크를 확인한 뒤에만 최종 파일로 교체한다.
+- 설계와 해석 제한은
+  `docs/decisions/DESIGN_mfa_pilot_review_workbook_2026-07-25.md`에 기록했다.
+- 생성본을 다시 열어 60행·240개 링크·4종 드롭다운·2개 우선 사례·수식을
+  검사하고 프로젝트 보존본과 Dropbox 공식본의 SHA256 일치를 확인했다.
+- Excel 16.0 COM 자동 렌더링은 `Workbooks.Open`에서 실패했다. 검증용으로
+  시작된 제목 없는 Excel 프로세스는 종료했으며, 첫 수동 열기에서 화면 배치와
+  상대경로 링크를 확인하도록 제한을 기록했다.
+
+## 2026-07-25 — 발음 원천 추적과 음운·형태 환경 검색 설계
+
+- 대표 발화 `SDRW2200000836.1.1.61`을 원본 JSON, search master, Bareun,
+  A2 의미 레이어, 통합 사전 v1/v2, 규칙 발음, MFA 2-tier, 4-tier 및
+  점검용 6-tier까지 역추적했다.
+- 원본 JSON의 `form`과 `original_form`은 모두 `꽃에 모양은 어땠어?`이며
+  별도 발음 전사 필드는 없다. 점검 TextGrid의 `pron_reference`는 JSON
+  전사가 아니라 `predict_pron.py`의 규칙 기반 파생값이다.
+- A2에는 8형태소가 있으나 현재 TextGrid `morphemes`에는
+  `꽃|에|모양|은|어땠어` 5라벨만 있어, 구형 words tier를 현재 Bareun
+  형태소와 1:1 대응하는 것으로 해석할 수 없음을 확인했다.
+- 통합 사전 v2가 `pron_1/pron_2/pron_g2p`와 MFA 로마자·표준사전 대응 열을
+  모두 가진 것을 확인했다. 다만 중복행, 다의 발음, Bareun–사전 품사 불일치,
+  활용형 합성 문제가 있어 단순 CSV 조인이나 최소 의미번호 자동 선택은
+  부적합하다.
+- 발화·어절·형태소·형태경계·파일 인덱스·후보·수동 판정을 분리하고
+  `utt_id/eojeol_idx/morph_idx/boundary_id/candidate_id`로 연결하는 설계를
+  `docs/decisions/DESIGN_pronunciation_environment_search_2026-07-25.md`에
+  기록했다. D: 원자료나 기존 CSV/TextGrid는 변경하지 않았다.
+
+## 2026-07-25 — Python 경로 오진 정정과 환경 점검 고정
+
+- 제한된 Codex shell에서 AppData의 Python 3.13 절대경로가
+  `Test-Path=False`·명령 없음으로 보여 설치가 없다고 잘못 보고했다.
+- 읽기 전용 권한으로 재검증한 결과 전역 Python 3.13.14, py launcher,
+  사용자 PATH, MFA 환경의 pipeline Python 3.13.14가 모두 정상임을 확인했다.
+  설치·PATH 변경은 하지 않았다.
+- `scripts/check_python_environment.ps1`을 추가해 전역 Python, launcher,
+  PATH, `config/paths.json`의 `pipeline_python`을 한 번에 검사하고,
+  `access_denied`를 `missing`과 구분하도록 했다.
+- `AGENTS.md`의 오래된 Dropbox 프로젝트 root를 현재 research root로 고치고,
+  제한된 Codex shell의 거짓 음성을 Python 삭제로 판단하지 않는 규칙과
+  프로젝트 helper의 `pipeline_python` 우선 원칙을 기록했다.
+
+## 2026-07-25 — 점검 TextGrid 양끝 경계·형태소 tier v3
+
+- 구 수동 검토본과 새 60개 점검본을 tier별로 전수 재검사했다. 새 점검본도
+  유표 정렬이 시간축 끝에 붙어 10발화는 왼쪽, 3발화는 오른쪽 가시적 빈
+  경계가 없음을 확인했다.
+- 원 MFA 라벨 시간을 임의로 줄이지 않고, 점검 WAV 사본 좌우에 0.05초 PCM
+  무음을 추가한 뒤 모든 TextGrid 시간을 같은 양만큼 이동하도록 review bundle
+  builder를 보완했다. 원 D: WAV·TextGrid는 변경하지 않았다.
+- `phones`를 `phones_mfa`, 구 형태소 분절을 `morphemes_legacy`로 명시하고,
+  현재 Bareun 형태소열을 어절 구간에 표시하는 `morph_analysis`를 추가했다.
+- 60개 WAV가 16 kHz·mono·16-bit PCM임을 확인하고 중앙 frame 원본 일치,
+  양끝 0값, 7-tier, 전 tier 좌우 0.05초 빈 interval을 전수 검증했다.
+- `morph_analysis`는 24개 all-slot, 28개 labeled-slot 정렬, 복잡 사례 8개는
+  근거 없는 오정렬 대신 발화 전체 fallback과 경고로 처리했다.
+- 발음·검색 설계 문서를 pre-MFA 언어 마스터→MFA→post-MFA 시간 인덱스→
+  KOINA·수동 판정 순서로 바로잡고, enriched lexicon의 무발음 664,596행을
+  legacy G2P와 `urimal_id`로 100% 일의 보완할 수 있음을 기록했다.
+
+## 2026-07-25 — 점검 TextGrid 최소 4-tier v4
+
+- 사용자가 7-tier가 기본 수동 검토에 과도하다고 지적해, 기술적으로 검증된
+  v3는 중간 실험 기록으로 보존하고 기본 점검본을 4-tier로 축소했다.
+- 기본 tier를 `words / phones_mfa / morph_analysis / utterance_info`로
+  확정했다. `utterance_info` 한 label에 발화 ID, form, 철자 로마자, 규칙
+  발음 한글·로마자를 출처 표지와 함께 넣었다.
+- `original_form`과 숫자·기호 보완 reference는 form과 다를 때만 같은 label에
+  추가한다. 형태소별 철자 로마자와 사전 예외 발음은 CSV/Parquet 정본에
+  보존하고 TextGrid tier를 늘리지 않는다.
+- 새 로컬 경로에서 6개년 각 10개, 총 60발화를 재생성했다. 4-tier·좌우
+  0.05초 빈 경계·원 WAV 중앙 PCM·`UTT/FORM/ORTH_R/RULE_H/RULE_R`
+  검색 표지를 전수 통과했다.
+- 원 `words/phones` 120개 tier의 의미를 padding 제거 뒤 재대조했다.
+  형태소 어절 매핑은 all-slot 24, labeled-slot 28, 안전 fallback 8이었다.
+- 원 D: run, 기존 CSV/TextGrid, v3 묶음은 수정하거나 덮어쓰지 않았다.
+- 첫 v4 검토 엑셀 생성은 작성기가 제거된 구식
+  `original_form_align_status/pron_reference_align_status`를 필수로 요구해
+  중단됐다. v4의 `morph_analysis_align_status/utterance_info_schema`를
+  인식하고 워크북 위치에서 bundle까지의 상대 링크를 계산하도록 고쳤다.
+- Dropbox에 새 `9_review_by_year_minimal_v4_20260725` 묶음과
+  `MFA_pilot_review_v4_20260725.xlsx`를 만들었다. 엑셀은 60행, 5개 시트,
+  240개 파일 링크, 4개 드롭다운 규칙을 재열기 검증했다.
+
+## 2026-07-25 — 대량 MFA 직전 입력계약·무인 실행 안전장치
+
+- 실환경 6개년 MFA preflight를 다시 실행해 설치 패치 7종, 세 모델, D:
+  `DATA_SSD`, 세션 폴더, C: 47.8GB·D: 333.3GB를 확인했다. 최초 결과는
+  FAIL 0/WARN 0이었다.
+- 기존 전량 러너가 Bareun `form`만 lab에 써 숫자·기호를 제거할 수 있고,
+  C:\mfa_tmp\2020의 0.68GB 중간 DB에는 어떤 입력으로 만들었는지 계약이
+  없음을 발견했다. 이 상태의 즉시 재개는 금지했다.
+- `realign_eojeol_build_corpus.py`를 새 pre-MFA search master의
+  `pron_reference_form` 기반으로 바꿨다. build meta SHA256·세션 coverage·
+  source field를 입력 계약으로 묶고, 첫 실행은 기존 nonzero lab도 실제
+  내용을 읽어 전수 비교한다.
+- 현재 reference에서 한글이 0자인데 구 lab이 남아 있으면 stale 전사를
+  MFA가 재사용하지 않도록 `archive_stale_labs/<contract>/...`로 복원 가능하게
+  옮긴다.
+- 숫자 `1`이 원전사 `일`로 안전하게 회복된 합성 사례에서 구 lab을 원자
+  재작성하고, 같은 계약 재실행은 marker로 재개하는 회귀검사를 추가했다.
+- 3세션 pilot search master를 전량 입력처럼 넘긴 실험은
+  `search=3/source=2232` coverage FAIL로 정확히 차단됐다.
+- `run_eojeol_realign.ps1`은 다른 입력의 temp를 삭제하지 않고
+  `archive_stale_temp`로 옮기며, 완료 marker에도 input contract를 요구한다.
+  2021은 C: 55GB, 다른 신규 연도는 45GB 문턱을 적용한다.
+- `run_pre_mfa_bulk_safe.ps1`을 추가했다. versioned pre-MFA CSV staging을
+  전량 생성한 뒤 2020부터 연도별로 실행하고, 실패 시 다음 연도를 중단한다.
+  PID lock·transcript·요약 JSON을 남기며 기존 CSV/TextGrid를 자동 승격하지
+  않는다.
+- 이어붙이기는 전량 정렬 입력이 아니라 후보 추출 뒤의 온디맨드 검토 산출물로
+  유지한다. 연결 시간은 원 세션 시간이 아니므로 발화별 offset manifest가
+  필요하다는 점을 새 런북에 명시했다.
+- `stitch_session.py`가 실제로 offset manifest를 쓰도록 보완했다. 기본
+  0.05초 경계 무음, `phones_mfa/morphemes_legacy` 명칭, padded review
+  TextGrid 길이 불일치 차단, 기존 출력 보호를 추가했다. 대표 발화
+  `SDRW2200000836.1.1.61` 앞뒤 2개씩 총 5발화를 연결해 WAV/TextGrid
+  10.89초 일치와 발화별 환산 좌표를 확인했다.
+
+## 2026-07-25 — 대량 MFA D: 우선 용량 정책
+
+- 대량 실행 직전 용량을 재확인했다. C: 47.5GB는 일반 연도 시작 문턱
+  45GB보다 2.5GB만 많아 Windows·Dropbox 변동을 감당할 무인 실행 여유로는
+  부족하다고 판정했다. D:는 `DATA_SSD`, 여유 333.3GB였다.
+- 기존 search master는 4.19GB이고, 기존 TextGrid 각 5,000개 표본은 평균
+  3.03KB(2020)·4.38KB(2021)였다. 510만 발화 신규 staging과 연도별 temp
+  peak를 합쳐도 D: 추가량은 보수적으로 약 100GB 이내로 보아 200GB 이상
+  완충 공간을 확보했다.
+- `run_pre_mfa_bulk_safe.ps1`, `run_eojeol_realign.ps1`,
+  `preflight_eojeol_realign.ps1`에 `-PreferD`를 연결했다. 신규 MFA temp와
+  원출력은 D:에서 시작하고, 2021 55GB/그 밖 45GB 미만이면 실행 전에
+  차단한다.
+- 동일 입력계약으로 이미 계산된 resume temp는 무조건 다른 드라이브로 옮기지
+  않는다. MFA DB의 절대경로 의존 가능성과 수시간 재계산을 피하기 위해 원래
+  드라이브에서만 이어가며, 계약이 없거나 다른 temp는 기존 원칙대로 삭제하지
+  않고 `archive_stale_temp`에 보존한다.
+- 실제 `-PreferD -Year 2021` preflight에서
+  `D: 333.3GB >= 55GB`를 확인했다. 2020 파일럿 search master를 일부러
+  지정했으므로 2021 입력 coverage는 FAIL했고, 이를 전량 통과로 기록하지
+  않았다.
+- PowerShell BOM·AST·필수 D 우선 전달 검사 5/5와 Python unittest 41/41을
+  통과했다. 정식 무인 명령은 기존 RunId에 `-PreferD`를 붙인다.
+
+## 2026-07-25~26 — 2020 pre-MFA·MFA 전 단계 완주와 의도적 일시정지
+
+- `pre_mfa_v1_20260725`로 510만행 pre-MFA CSV를 동결한 뒤 2020
+  lab·MFA·4-tier 병합을 처음부터 끝까지 실행했다.
+- MFA는 lab 869,840개 중 TextGrid 866,196개를 만들었다(99.58%).
+  3,644개는 기본 beam 10과 retry beam 40에서도 난정렬로 남아,
+  전체 재실행이 아니라 residual ID 부분 재시도 대상으로 분리했다.
+- lab−staging 차집합을 전수 계산해 3,644 ID를
+  `outputs/tables/2020_mfa_missing_textgrid_ids_20260726.csv`로 고정했다.
+  반대 차집합·중복 ID는 0이고, 215세션의 3,644건 모두 WAV가 존재한다.
+- MFA export는 00:30~16:27 약 15시간 57분 걸렸다. 4개 batch/worker를
+  의도한 코드에서 실제 export worker는 하나만 생존해 사실상 순차
+  처리됐으며, 2021 전에 고칠 최우선 병목으로 기록했다.
+- 4-tier 병합은 866,196개를 전부 새로 만들고 실패·form 누락·morpheme
+  누락 0으로 끝났다. 독립 전수 열거도 866,196개·0바이트 0이었고,
+  15개 균등 표본의 네 tier 좌우 0→duration 연속 경계가 통과했다.
+- 2020 완료 뒤 run별 emergency pause 요청으로 2021 child를 config 접근
+  전에 exit 75로 차단했다. 2021 temp/output/staging/marker는 모두 없다.
+- 기존 wrapper가 이 정상 pause를 `failed`로 기록한 상태모델 결함을 확인해
+  `-PauseAfterYear`와 `status=paused` 처리를 추가했다.
+- 원자료와 기존 `06_textgrid_eojeol` 정본은 수정·승격하지 않았다.
+  2020 결과는 `07_textgrid_eojeol_g2p_staging\2020`에 있다.
+- 상세 근거·시간·디스크·시행착오는
+  `decisions/MONITOR_pre_mfa_bulk_pre_mfa_v1_20260725.md`, 병목과
+  최소 재실행 설계는
+  `decisions/AUDIT_2020_pre_mfa_full_pipeline_2026-07-26.md`에 정리했다.
+- 수정 후 PowerShell 안전성 검사 5/5와 Python unittest 42/42를 다시
+  통과했다.
+
+## 2026-07-26 — 남은 연도 감사·MFA export 병목 제거·2021 GO 판정
+
+- 2021–2025의 동결 pre-MFA CSV, WAV, 현재 lab, 과거 source PCM 위험을
+  원자료 비변경으로 감사했다. 2021은 1,373,521 usable lab 중 기존
+  1,335,015개 내용 일치, 38,320개 reference-form 불일치, 186개 누락으로
+  확인했으며 실행기가 원자 재작성·생성하게 했다.
+- 2023 WAV 누락 923, 2025 빈 입력의 stale lab 9, 연도별 PCM 없음/짧음
+  위험을 별도 추적 항목으로 고정했다. 이들은 전량 실행 차단과 사후 난정렬
+  원인 분류를 구분해 다룬다.
+- 2020 raw TextGrid export가 15시간 57분 걸린 근본 원인을
+  `multiprocessing.Queue`의 큰 batch feeder와 고정 1초 종료 신호 사이의
+  경쟁으로 확정했다. blocking get+worker별 sentinel 패치를 만들고 설치
+  전 소스를 SHA256 manifest와 함께 `archive/mfa_install_patches`에 보존했다.
+- MFA가 interval을 SQLite에 모은 뒤 raw 2-tier export를 선택적으로 생략하고
+  곧바로 4-tier를 쓰는 `export_mfa_db_4tier.py`를 추가했다. 기본 MFA 동작은
+  환경변수를 쓰지 않으면 변하지 않는다.
+- 실제 3,330개와 21,965개 MFA 파일럿을 실행했다. 21,962개 성공분을 기존
+  built-in export+merge와 전수 대조해 tier 이름·라벨·모든 시작/끝 시간이
+  완전히 같고 난정렬 3개도 동일함을 확인했다.
+- 세션별 form 로딩과 4 worker를 적용한 direct 출력은 21,962개에
+  73.983초였다. partial staging, 99% coverage/accounting gate, 실패 시
+  DB·partial 보존, QC 전 DB 기본 보존을 연도별 러너와 wrapper에 연결했다.
+- 2021 최종 preflight는 FAIL 0/WARN 0, D: 319GB, 세션 4,143/4,143,
+  MFA 패치 10/10이었다. 예상 18–23시간이라 연구자가 09:00까지 부재한 밤에는
+  전량을 시작하지 않고, 오전에 2021 한 연도만 direct 경로로 시작하도록
+  GO 명령을 기록했다.
+- PowerShell 실행기 5개 파일의 안전성 검사와 Python unittest 50개가 모두
+  통과했다. 상세 근거는
+  `decisions/AUDIT_remaining_MFA_years_and_direct_DB_export_2026-07-26.md`와
+  `outputs/reports/RECOMMENDATION_2021_MFA_go_no_go_20260726.md`에 있다.
+
+## 2026-07-27 — 2021 direct 전량 감시와 2022 선행 안전 개선
+
+- `pre_mfa_v1_20260725`의 2021 한 연도를 08:27 시작했다. lab 입력계약
+  단계는 4,143세션, 기존 내용 일치 1,335,015, 불일치 재작성 38,320,
+  신규 186, WAV 누락 0으로 약 14분 40초에 끝나 사전 감사와 일치했다.
+- MFA는 4,143 speakers·1,416,216 files를 인식했다. corpus loading은
+  약 30분이었고, 이후 G2P worker 4개의 CPU가 계속 증가했다. 긴
+  `Generating pronunciations`를 로그 무변화만으로 교착 처리하지 않았으며
+  D: 여유는 317.84GB를 유지했다.
+- 기존 heartbeat가 컴퓨터의 모든 `mfa/python` CPU를 합산해 별도 Python
+  작업이 있으면 교착을 놓칠 수 있음을 발견했다. Windows Toolhelp snapshot으로
+  실제 MFA descendant tree의 CPU·RAM·PID·Python 수만 기록하도록 고치고,
+  현재 MFA의 launcher 1·주 Python 1·worker 4로 동적 회귀검사했다.
+- 10:34경 G2P worker 하나가 먼저 정상 종료하면서 live CPU 합계가
+  14,050.94초에서 11,343.92초로 내려가는 관측 왜곡을 확인했다. 남은 worker
+  3개의 CPU는 계속 증가하고 stderr 오류는 없었다. 다음 실행용 runner는 종료된
+  worker의 마지막 CPU를 retired 합계에 보존해 `tree_cpu_seconds`가 역행하지
+  않게 했고, live·retired 값을 별도 필드로 기록한다. worker 종료와 PID 재사용
+  수열을 재현한 동적 시험 및 PowerShell 안전성 검사를 통과했다.
+- 다음 실행부터 lab 단계도 append-only JSONL로 시작·진행·완료·marker 재사용,
+  처리 행·속도·ETA를 남긴다. usable lab 0건인데 성공 marker를 먼저 쓰던
+  기존 순서를 발견해 0건 gate 뒤에만 성공 marker를 쓰도록 교정했다.
+- final 4-tier 완료 뒤 사용할 `audit_mfa_4tier_year.py`를 추가했다. lab/WAV와
+  TextGrid ID, tier 순서, 0–xmax 연속성, gap/overlap, 핵심 label, WAV
+  duration, 누락 CSV를 독립 전수 검사한다. 운영본의 원시간과 패딩된 연구자
+  점검 사본의 0.05초 가시 경계를 구분한다.
+- 사용자가 말한 “수정 전보다 느림”의 비교 기준을 2020 run으로 잘못 해석한
+  뒤 바로잡았다. `archive/code_pre_bulk_20260724`의 `e1075ee` 코드와
+  7월 16–24일 로그를 대조해, 수정 전 30–60초 lab 단계는 기존 파일을 내용
+  확인 없이 skip했고 2분 MFA 완료 표시는 병합 실패·거짓 성공 가능 상태였음을
+  문서화했다. 최초 전량 lab은 오히려 9시간 30분, 다른 clean 실행은 약
+  19시간 뒤 watchdog 오살로 끝났다.
+- 수정 전 대비 시간 분석은
+  `decisions/ANALYSIS_runtime_pre_hardening_vs_current_20260727.md`, 현재
+  실행 실측은 `decisions/MONITOR_2021_pre_mfa_v1_20260727.md`, 2022
+  개선 gate는 `decisions/PLAN_2022_improved_MFA_after_2020_2021.md`에
+  분리했다.
+- 새 독립 QC의 정상·누락·WAV duration 불일치·tier gap 테스트를 포함해
+  Python unittest 55개와 PowerShell 안전성 검사를 통과했다.
+- 2022를 2021 완료 문구만 보고 시작하지 않도록
+  `preflight_next_year_after_qc.py`를 추가했다. 2021 전수 QC·align/merge
+  marker·direct 보고서·temp 계약·보존 DB·누락 CSV를 입력계약과 수량으로
+  결합 검증한 뒤에만 2022 자체 preflight로 넘어간다. 정상 fixture와 계약
+  불일치·DB/direct 보고서 누락·손상 숫자의 fail-closed 시험 4개를 통과했다.
+- Colab 가속 가능성을 공식 문서와 실컴퓨터 사양으로 검토했다. 현재 컴퓨터는
+  Intel N200·논리 프로세서 4개이고 MFA도 `-j 4`라 job 수 확대 여지는 거의
+  없다. hosted Colab은 로컬 외장 SSD를 직접 읽지 못하고, local runtime은
+  현 하드웨어에서 실행돼 속도가 같으며 GPU 선택도 MFA를 자동 가속하지 않는다.
+  2022 이후 가속 후보는 `DATA_SSD`를 더 강한 로컬 컴퓨터에 직접 연결하고
+  동일 표본·commit·모델·패치로 벤치마크하는 방식으로 기록했다.
+- 기기 변경 없는 대안도 재검토했다. 설치 MFA 소스에서 연도별 정규화가
+  사전에 없는 고유 OOV 집합을 Pynini worker queue로 보내고, 새 연도 DB마다
+  이를 다시 계산함을 확인했다. 2022–2025 공통 OOV를 한 번 G2P해 원 사전과
+  분리된 versioned 확장사전으로 cache하는 방안을 최우선 파일럿으로 정했다.
+  2021 inline G2P와 발음·phone set·TextGrid 시간경계가 동등해야만 채택한다.
+  현재 전원 계획은 균형 조정이고 C: 여유는 47.85GB라, 2021 중 설정 변경과
+  C: temp 전환은 하지 않는다. Defender 제외도 기존 광범위 스크립트를 바로
+  쓰지 않고 generated 경로만 좁게 대상으로 만든 뒤 명시 승인받도록 했다.
+- 11:23–11:28에는 공통 사전의 성격과 현재 2021 중단 여부를 다시 검토했다.
+  설치 MFA 3.4.0 소스상 전체 G2P 함수 반환 뒤에야 새 pronunciation을 DB에
+  bulk insert·commit하므로 현재 실행을 끊어도 부분 G2P를 안전하게 얻지 못한다.
+  현재 입력계약에도 dictionary/G2P/acoustic fingerprint가 없어 새 사전으로
+  같은 temp DB를 resume할 수 없다. 따라서 2021은 baseline으로 완주하되,
+  사용자의 방법론 결정을 반영해 2020–2025 공통 발음 자원을 단순 G2P cache가
+  아니라 G2P 판본·우리말샘 `pron_1/2` 예외·출처·선택정책을 함께 고정하는
+  정본으로 설계하기로 했다.
+- 공통 자원은 출처 보존 registry, search CSV용 발음 index, MFA용 파생
+  dictionary로 분리한다. 현재 동등 cache 정책 A와 사전 예외·변이 포함 정책
+  B를 파일럿하고, B가 채택되면 기존 DB·TextGrid를 baseline archive로 남긴
+  채 2020·2021을 같은 release로 먼저 재정렬한 뒤 2022–2025에 적용한다.
+  상세 설계는
+  `decisions/DESIGN_common_pronunciation_lexicon_2020_2025_20260727.md`에
+  남겼다.
+- 다른 도구에 GitHub 주소를 주어 전체 CSV·MFA 코드를 리뷰받을 수 있도록
+  `reviews/HANDOFF_external_review_CSV_MFA_20260727.md`를 만들었다. 리뷰
+  범위는 JSON·Bareun·메타→search master→발음·로마자→lab/WAV→MFA DB→
+  4-tier TextGrid→재개·전수 QC이며, 실제 commit SHA·검토 파일·심각도·
+  파일:행·재현 근거·연구 영향·수정안·시험을 갖춘 Markdown 원문으로
+  돌려받도록 했다.
+- 커밋 `ce421db` 대상 외부 리뷰를 336행 원문 그대로
+  `reviews/incoming/EXTERNAL_REVIEW_CSV_MFA_ce421db_20260727.md`에 보존하고,
+  finding별 수용·수정·보류 판정을
+  `reviews/TRIAGE_external_review_CSV_MFA_ce421db_20260727.md`에 남겼다.
+  리뷰의 P1 두 건과 모델 fingerprint 부재를 2022 차단 조건으로 수용하되,
+  빈 형태소 tier를 최종 성공으로 조용히 취급하라는 권고는 연구 흐름에 맞게
+  `정렬 export 성공`과 `analysis-ready`를 분리하는 정책으로 수정했다.
+- 현재 설치된 `korean_mfa` acoustic/dictionary/G2P 파일과
+  MFA 3.4.0·Pynini 2.1.7을 읽기 전용 해시해
+  `outputs/reports/MFA_MODEL_FINGERPRINT_baseline_20260727.json`에 고정했다.
+  기존 2020·2021 marker는 소급 변조하지 않고 별도 baseline 증빙으로 연결한다.
+- F29형 발화 번호 밀림을 잡도록 `audit_mfa_year_readiness.py`에 세션 중앙
+  padding 제거 후 잔차 0.025초·대응률/검사 coverage 98% gate를 추가했다.
+  같은 감사에 예상 usable lab의 형태소 원천 TextGrid 존재 전수검사와
+  strict exit 1, 발화별 issue inventory도 추가했다.
+- 2021 형태소 원천 감사의 첫 시도는 일반 search master root를 지정해
+  build meta status 없음으로 fail-closed 됐다. 현재 temp 계약에서 실제
+  `pre_mfa_v1_20260725` staging root를 읽어 재실행했고, 4,143세션
+  1,373,920행을 570.354초에 감사했다. usable 1,373,521건 중
+  원천 TextGrid 누락은 1,109건/61세션이었으며 1,017건은 네 세션에
+  집중됐다.
+- 이 실측으로 기존 direct exporter가 약 20시간 뒤 말단에서 연도 전체를
+  실패시킬 조건을 사전에 확인했다. exporter는 정렬/파일 생성 성공을
+  보존하되 `morphology_complete=false`,
+  `analysis_ready_status=blocked_morphology`와 누락 ID 전수를 남기도록
+  교정했다. partial resume에서도 기존 빈 tier를 누락 0건으로 오인하지 않고,
+  개별 export 예외의 발화 ID·오류도 기록한다. 독립 4-tier QC와 다음 연도
+  gate는 계속 형태소 결측을 거부한다.
+- 새 duration·형태소·strict exit·alignment contract·export resume/예외
+  회귀시험을 포함해 Python unittest 66개와 PowerShell 안전성 검사가
+  통과했다.
+- 2021 형태소 원천 누락 1,109건을 7월 16일
+  `source_pcm_check.csv`와 `utt_id`로 다시 조인했다. 전부 과거 잔여분과
+  일치했으며 원본짧음 1,091, PCM없음 1, 원본정상 17, 미분류 0이었다.
+  네 세션 1,017건을 포함한 1,092건은 배포 원음 결함으로 음성분석 제외,
+  17건은 새 어절 정렬 뒤 형태소 경계 표적 회수 후보로 분리했다.
+- 이 연결을 사람의 일회성 PowerShell 계산에 의존하지 않도록
+  `classify_mfa_input_issues.py`를 만들었다. 감사 JSON과 과거 PCM 근거 CSV를
+  SHA256으로 고정하고 발화별 action CSV·요약 JSON을 원자적으로 생성한다.
+  두 분류 회귀시험을 통과했고, 실제 1,109행 결과는
+  `outputs/reports/CLASSIFY_morph_source_missing_2021_pre_mfa_v1_20260727.*`
+  에 저장했다.
+- 외부 리뷰의 후속 안전 항목을 현재 2021 실행과 간섭하지 않는 범위에서
+  구현했다. 정규화 메타 헤더 검사 거짓 통과를 막고 fresh/resume의
+  `category_norm` 결측 집계를 통일했으며, search audit는 계획 상태와 자료
+  무결성 gate를 분리해 무결성 실패에 기본 exit 1을 반환한다.
+- 미해결 숫자·기호 발화는 다음 lab build부터 발화 ID·원문·기준 form·실제
+  부분 lab을 계약별 CSV로 원자 기록한다. 정책 자체는 소표본 A/B 전까지
+  한글 부분 유지로 동결했다. 새 기능보다 먼저 만들어진 2021 marker를
+  재사용하더라도 inventory가 없거나 손상됐으면 search CSV만 읽어 복구하고
+  lab/WAV는 건드리지 않는다. 고아 lab hard gate는 기존 구현과 합성시험이
+  이미 있어 중복 구현하지 않았다.
+- `locate_utt.py`의 격리 경로를 `paths.json`과 세션 하위 구조로 고치고 평면
+  레거시를 보존했다. direct marker 직후 crash에서는 marker 삭제·전량 재정렬을
+  안내하지 않고 DB·partial·final staging을 보존한 marker 복구로 안내한다.
+- 다음 실행용 MFA heartbeat는 `Done!` 뒤에도 `phase=finalizing`을 기록하며,
+  다음 연도 QC 보고서는 direct-DB 전용임을 명시한다. readiness audit의
+  source PCM 기본 경로도 `paths.json`으로 통일했다.
+- 2021 MFCC가 주 Python 내부 job worker를 사용해 별도 Python/실행 파일 수와
+  0바이트 `feats.*`만으로 진행 여부를 판정할 수 없음을 설치된 MFA 3.4.0
+  소스와 실측 CPU로 확인했다. 다음 runner의 process-tree heartbeat에
+  `tree_thread_count`를 추가했고 PowerShell 동적 안전성 검사로 현재
+  프로세스 tree의 thread 수가 1 이상 기록되는지 고정했다.
+- 2021 first-pass는 stderr 진행바가 없어 실제 `align.1–4.log`의
+  `Processing` 행을 세어 21:09 46.21%, 21:25 62.45%의 균등 진행을
+  확인했다. 다음 runner에는 파일별 byte offset·미완성 행 carry를 보존하는
+  `alignment_processed`·`alignment_retried`·job별 heartbeat를 추가했다.
+  첫 PowerShell 행 단위 구현은 70.8MB 실자료에서 30초를 넘겨 폐기했고,
+  64KiB C# 증분 스캐너는 첫 스캔 7.5초·후속 1,852건 67ms였다. 로그
+  교체·부분행·job별 누적 회귀시험을 포함한 PowerShell 안전성 검사를
+  통과했으며, 이 계측값은 성공 gate와 분리했다.
+- 위 후속 수정까지 전체 Python unittest **82개**와 PowerShell 실행기 5개
+  정적 안전성 검사가 통과했다. 현재 2021 marker의 Git 판본을 바꾸지 않기
+  위해 HEAD/remote는 `6ef6527`에 유지하고, 후속 변경은 2021 완료·전수 QC
+  뒤 커밋한다.
+- 규칙 발음 P2-03도 현재 환경에서 다시 재현했다. selftest 30/30은 통과하지만
+  `굳히다/닫히다/묻히다→구티다/다티다/무티다`, 겹받침+ㅎ의
+  `앉히다/넓히다/밝히다/읽히다→안히다/널히다/박히다/익히다`가 나왔다.
+  이는 MFA lab이 아니라 검색용 예상 발음층의 판본 오류이므로 현재 정렬은
+  유지하고, 공통 발음 자원 설계에 새 rule version·대조 회귀표·CSV staging
+  재생성 조건으로 기록했다.
+- 형태소 원천 누락 중 처음에 `원본정상`이라 회수 후보로 둔 17건을 동결
+  search CSV의 `dur`·`pron_reference_form`과 다시 대조했다. WAV/CSV 길이는
+  0.301–0.707초인데 한글 전사는 18–52음절로, 발화율 환산값이
+  47.0–119.3음절/s였다. 이는 실제 발음 실현 판정이 아니라 source segment와
+  전사가 물리적으로 대응할 수 없는 자료 무결성 오류다.
+- 분류기를 v2로 올려 관련 61개 세션만 읽고, 최소 10음절이면서
+  40음절/s 이상인 극단값만 `source_segment_text_duration_impossible`로
+  기록하도록 했다. 결과는 PCM 짧음 1,091·PCM 없음 1·segment–전사
+  비대응 17, 총 1,109건 분석 제외·미분류 0으로 갱신했다. 원문은 보고서에
+  복제하지 않고 duration·음절/어절 수·비율·근거만 보존한다.
+- 같은 극단값 검사를 형태소 결측 1,109건에만 한정하지 않고 연도별 readiness의
+  전체 search 행에 적용했다. CSV–WAV 길이가 서로 맞아도 전사–segment 자체가
+  물리적으로 대응할 수 없으면 `source_segment_text_duration_plausible` gate가
+  다음 전량 실행을 차단한다. 보고서에는 원문 없이 ID·duration·음절 수·비율만
+  남기며, 합성 20음절/0.4초 발화가 길이 대응 gate는 통과하지만 이 새 gate에서
+  실패하는 회귀시험을 고정했다.
+- runner는 신규 계산에는 `analysis` profile을 요구해 위 물리 불일치와 형태소
+  회수 후보를 차단한다. 반면 동일 입력·정렬 계약의 기존 temp가 검증되면
+  `execution` profile로 재개해 수시간 계산된 DB 복구를 막지 않는다. 같은
+  계약의 align/merge marker가 모두 있으면 입력 감사를 다시 돌리기 전에 즉시
+  건너뛴다. 두 profile과 실제 판정을 marker에 함께 기록한다.
+- 독립 4-tier 감사는 이 분류 CSV의 SHA256을 기록하고
+  `exclude_source_audio_unusable`만 analysis coverage 분모에서 제외한다.
+  raw coverage·누락·제외 TextGrid 오류는 계속 별도 집계한다. 회수 후보나
+  미분류가 하나라도 남으면 99% coverage와 무관하게 hard fail한다.
+- 다음 연도 gate도 direct report의 `morpheme_tier_missing`을 무조건 0으로
+  요구하지 않고, 독립 감사에 고정된 분류 CSV SHA·분류 수·미해결 0과
+  대조한다. 분류 근거가 없거나 direct 누락 수보다 적으면 fail-closed다.
+- 개수만 같은 다른 발화 분류표가 우연히 통과할 여지를 추가로 막았다.
+  direct report의 `morpheme_tier_missing_inventory`가 누락 수와 정확히
+  일치하고 중복·공백이 없으며, 그 ID 집합 전체가 SHA256으로 동결된 분류표
+  ID 집합에 포함될 때만 2022 선행 gate가 통과한다. 같은 누락 수에 다른
+  발화 ID를 넣은 회귀시험을 추가했고 관련 시험 7개가 통과했다.
+- 공개 `slplab/wav2vec2-xls-r-300m_phone-mfa_korean`을 별도 검토했다.
+  새 딥러닝 학습 없이 추론은 가능하지만 낭독체 학습·MFA 계열 label·CTC
+  후보 시간이라는 한계 때문에 canonical MFA나 연구자 실현 판정을 대체하지
+  않는다. CSV로 추린 ㄴ 삽입 등 표적 발화의 검토 우선순위를 만드는 별도
+  `wav2vec_phone_candidate` 후보층으로만 30–50개 소표본을 검증하고, 격리
+  환경·model revision/SHA256·수동 판정 대비 precision/recall·처리율을
+  통과하기 전에는 설치·전량 적용하지 않는 결정을
+  `NOTE_wav2vec2_phone_candidate_layer_20260727.md`에 기록했다.
+- 사용자는 wav2vec2를 전량 MFA 대체로 쓰지 않고, 향후 CSV 검색으로 표적
+  구간을 추린 뒤 해당 부분에만 소표본으로 적용하는 순서를 채택했다.
+- 21:42 D:는 953.85GB 중 292.85GB(30.7%)가 남아 현재 2021 실행에는
+  충분하지만, 연도별 full temp 누적은 피하기로 했다. 2021 전수 QC와 2022
+  선행 gate까지 통과한 뒤 DB·계약·로그·final 4-tier는 보존하고 재계산
+  가능한 대형 feature/graph/alignment 작업물만 exact manifest dry-run과
+  사용자 승인 후 정리하는 계획을
+  `PLAN_2021_post_QC_storage_cleanup_20260727.md`에 기록했다.
+- 2021 first-pass는 22:08:32에 끝났다. MFCC·final feature와 같은
+  1,372,438건을 모두 처리했고, 재시도 21,885건(1.595%), job 종료 요약의
+  개별 정렬 실패 570건(0.0415%), Python·PowerShell 예외와 traceback 0건이다.
+  실패 570건은 final DB·direct export·TextGrid 누락 inventory와 ID 단위로
+  대조한다. 이후 SQLite 반영을 거쳐 22:12부터 lattice의 phone·word 경계
+  수집 단계로 정상 전환되었으며, 실행 중 temp는 삭제하지 않았다.
+- phone·word 경계 수집 중 파일은 정상 증가했지만 22:18 시스템 available
+  memory가 442–536MB, commit이 19.63–19.65/23.75GB, page input이
+  790–3,011 pages/s로 나타났다. Python working set은 약 2.18–2.22GB였고
+  처리율은 유지됐다. 이를 2022의 interval collect 메모리·paging 병목으로
+  기록하고, 파일 증분과 시스템 메모리 계측을 다음 runner 관측 항목으로
+  추가할 계획이다. 저메모리만으로 실행을 중단하거나 temp를 정리하지 않는다.
+- 다음 runner heartbeat에 process private memory, Windows API 기반 시스템
+  available/commit, interval CSV 행·byte·mtime, word 발화 전환 수와
+  first-pass 대비 참고 진행률을 구현했다. 부분행·append·파일 교체 합성시험과
+  PowerShell 안전성 검사 5개 파일이 통과했다. 2021 실자료의 첫 약 682MB
+  스캔은 8.7초, 3초 증분은 53.6ms였다.
+- 설치된 MFA 3.4.0 소스를 확인한 결과 SQLite interval collect는 발화별
+  결과를 즉시 두 CSV에 스트리밍하고, 완료 뒤 `sqlite3 .import`와
+  `INSERT ... SELECT`를 수행한다. 22:29 word 경계 보유 발화는
+  262,453건으로 first-pass 처리량의 19.12%였고, Python private memory는
+  6.25GB에서 안정됐다. CSV 수집 뒤 DB 적재 구간이 별도로 남음을 시간 예측과
+  완료 판정에 반영했다.
+- 2021 QC 뒤 D: 정리를 정확한 파일 manifest로 준비하기 위해 삭제 기능이
+  없는 `inventory_mfa_storage.py`를 추가했다. 2021 QC·2022 선행 gate·
+  retained DB를 요구하고, SQLite journal/WAL/SHM·미분류 파일·symlink·
+  경로 불일치가 있으면 차단한다. `.ark/.scp`와 interval CSV만 후보로 삼고
+  로그·dictionary·DB·작은 모델/설정은 보존한다. 통과해도 사용자 검토
+  상태일 뿐 apply 기능은 없으며, 합성 차단·보존·무삭제 4개 시험이 통과했다.
+- 2021 MFA는 7월 28일 01:59 종료코드 0으로 끝났다. MFA 자체 시간은
+  62,149.774초였고 first-pass 처리 1,372,438, 재시도 21,885, 최종 개별
+  정렬 실패 570이었다. direct DB 4-tier는 6,360.292초에 1,371,868개를
+  만들고 form 누락·파일 생성 실패 없이 03:45 final staging과 marker를
+  기록했다.
+- post-MFA LAB 재검사는 같은 입력계약의 `lab_reused` 경로였고 LAB 내용을
+  재작성하지 않았다. readiness 전수 감사에서 LAB 1,373,521/1,373,521이
+  동결 CSV와 일치했다. 형태소 원천 누락 1,109건은 PCM 짧음 1,091,
+  PCM 없음 1, segment–전사 물리 불일치 17로 모두 분류했다.
+- 2021 final 4-tier 1,371,868개를 tier 순서·0–xmax 연속 coverage·gap/
+  overlap·핵심 라벨·WAV duration 1ms 기준으로 전수 검사했다. invalid 0,
+  hard failure 0, 분석 가능 coverage 99.9604%였다. 전체 LAB 누락
+  1,653은 source unusable 1,109와 분석 가능 정렬 실패 544로 정확히
+  분리됐고 MFA의 570은 후자 544와 source 제외 중 DB 실패 26의 합이었다.
+- `2021.db` 12,455,149,568바이트를 read-only full
+  `PRAGMA integrity_check`로 4,255.2초 검사해 `ok`를 얻었다. 정렬 성공
+  4,139세션 가운데 결정적으로 뽑은 24세션을 새
+  `verify_mfa_db_4tier_sample.py`로 별도 scratch에 재생성해 final과
+  tier·라벨·모든 시간·SHA256이 24/24 같음을 확인했다.
+- 2020도 같은 감사기로 소급 검사했다. LAB 869,840, final 866,196,
+  invalid 0, source unusable 14, 분석 가능 난정렬 3,630, coverage
+  99.5827%였다. readiness에서는 LAB 내용 100% 일치와 별개로 duration
+  대응 실패 59세션·15,074행을 기록했다. `D:\mfa_tmp\2020`과 DB가 이미
+  없어 integrity와 DB 재추출 검증은 할 수 없었고, 이후 연도 DB 보존
+  정책의 근거로 남겼다.
+- 2020 raw export 약 15시간 57분+merge 1시간 43분과 2021 direct export
+  1시간 46분을 비교해 final 생성 단계가 약 10배, 약 15시간 54분
+  단축됐음을 확정했다. 본 MFA의 G2P·feature·alignment·interval collect와
+  사후 full integrity는 별도 병목으로 계속 관리한다.
+- 2021 독립 QC·marker·계약·direct 보고서·DB·누락 분류를 묶은 2022
+  선행 gate가 20/20 통과했고, 2022 자체 PowerShell preflight도 FAIL 0/
+  WARN 0이었다. 2022는 기술적으로 GO지만 공통 G2P/우리말샘 예외 발음
+  파생사전 파일럿 여부가 남아 방법론 HOLD로 두었고 전량 실행은 시작하지
+  않았다.
+- 저장공간 dry-run 첫 실행은 콘솔 CP949의 긴 대시 출력 오류와 확장자 없는
+  Kaldi `alignment/tree` 미분류를 드러냈다. UTF-8 간결 출력과 exact-path
+  보존 정책·회귀시험을 추가한 뒤 blocker 0으로 재실행했다. 2021 temp
+  43.883GiB 중 재계산 가능한 31.365GiB/63파일만 후보, DB·재현 근거
+  12.519GiB/42파일은 보존으로 분류했다. 실제 삭제·이동은 0건이다.
+- wav2vec2 phone 모델은 CSV·음운형태 환경 검색으로 후보를 좁힌 뒤 해당
+  부분에만 소표본 적용하고 canonical MFA나 연구자의 실현 판정을 대체하지
+  않는다는 결정을 7월 28일 다시 확인했다.
+- 최종 수치·분모·tier 경계·속도·DB 증거·D: dry-run·2022 명령은
+  `outputs/reports/RESULT_2021_pre_mfa_full_pipeline_20260728.md`와
+  `docs/decisions/AUDIT_2020_2021_MFA_comparison_and_2022_gate_20260728.md`
+  에 정본으로 기록했다.
+- 최종 후속 변경은 Python unittest 88개, PowerShell 실행기 5개 안전성
+  검사, `git diff --check`, 20260728 QC JSON 10개 파싱을 모두 통과했다.
+- 7월 28일 오전, 사용자가 공통 발음의 범위를 다시 확인해
+  **2020–2025 전체 동결 코퍼스 vocabulary**를 모집단으로 확정했다.
+  소표본은 사전 구축이 아니라 정책 A/B 정렬 품질 검증에만 쓴다.
+- D:에 `common_pron_pilot_full6y_20260728` 격리 release를 만들고,
+  17,156세션·5,103,356발화행을 MFA lab과 같은 규칙으로 전수 스캔했다.
+  어절 출현은 27,847,068개, 6개년 합집합 고유 어절은 881,237개였다.
+  vocabulary CSV는 29,383,023바이트이며 SHA256은
+  `3a6ecbe3a18508dd6807e6d5c8b3ced2179420e2e9fa93967a085daecce25319`다.
+- enriched 1,165,157행과 legacy 1,296,777행을 전수 감사했다.
+  enriched의 `pron_1/2` 무발음 664,596행은 모두 같은 `urimal_id`의
+  legacy `pron_g2p` 하나에 연결됐고 미대응은 0이었다. legacy
+  `pron_g2p`는 우리말샘 등재 발음이 아니라 과거 기계 생성 보완값으로
+  분리한다.
+- 과거 lexicon `*_roman_mfa`와 현재 MFA 3.4.0 `korean_mfa`
+  dictionary/acoustic phone alphabet이 같지 않아 직접 사전 삽입을
+  금지했다. 사전 한글 발음을 현재 G2P phone으로 옮기는 변환 동등성과
+  phone set 밖 기호 0건을 다음 hard gate로 둔다.
+- 파일럿 준비 release는 약 28.035MiB만 사용해 D: 여유가
+  264.146GiB에서 264.119GiB로 변했다. 2021의 31.365GiB 정리 후보는
+  삭제하지 않았고, DB·재현 근거도 그대로 보존했다.
+- 공통 발음 초기화·전수 vocabulary·사전 감사 코드와 테스트는
+  `14cc43e`로 중간 commit/push했고, 로컬 PowerShell cache `Microsoft/`는
+  삭제하지 않고 Git 추적 대상에서만 제외했다.
+- 후속 문서·보고서까지 포함해 Python unittest 91개, PowerShell 안전성
+  6개 파일, JSON 파싱, `git diff --check`를 통과했다.
+- 사용자는 `slplab/wav2vec2-xls-r-300m_phone-mfa_korean`을 MFA 개선
+  보조층으로 채택하되, CTC 정렬을 만들더라도 기존 MFA `phones`·시간열·
+  canonical CSV/TextGrid를 바꾸지 않고 별도 append-only 결과와 연구자
+  점검 사본에만 추가하도록 확정했다.
+- 현재 공통 발음 상태가 실제 A/B `.dict` 완성이 아니라 6개년 vocabulary와
+  발음 원천 감사 완료임을 재확인했다. 따라서 2020 재실행과 2022 전량을
+  모두 보류하고 registry→현재 phone 변환 gate→정책 A/B 사전→동일 표본
+  파일럿→연구자 검토 순서를 먼저 밟는다.
+- 정책 A가 baseline과 전수 동등하면 2020·2021을 다시 돌리지 않고 2022로
+  진행한다. 정책 B가 허용 발음 후보를 바꾸고 채택되면 기존 결과를
+  baseline archive로 보존하고 새 run ID로 2020→2021→2022–2025 순서로
+  실행한다. 결정과 gate는
+  `decisions/PLAN_common_pron_AB_then_year_order_20260728.md`에 기록했다.
+- 공통 발음 A/B 실행을 위해 `common_pron_ab_pilot.py`와
+  `run_common_pron_ab_pilot.ps1`을 구현했다. registry는 6개년 vocabulary
+  전수를 사용하되, 파일럿 G2P는 선택된 60발화에 필요한 어절·사전 발음에만
+  한정해 채택 전 수시간 중복 계산을 피한다.
+- 정책 A는 base+표본 OOV current G2P 1-best, 정책 B는 A에 exact-word
+  `pron_1/2`를 합집합으로 추가한다. MFA 3.4 inline 소스의
+  `num_pronunciations=1`, `strict_graphemes=True`를 재현하고 A/B 입력
+  WAV·lab SHA256 동일, phone inventory 밖 기호 0, 기존 canonical 비변경을
+  gate로 고정했다.
+- 합성 fixture에서 registry 원천 분리, 정책 A 보존·B 변이 추가,
+  release 경계 차단, phone edit distance, A/B WAV·lab SHA256 동일 복사
+  5개 시험이 통과했다. 실제 명령과 수동 검토 순서는
+  `decisions/RUNBOOK_common_pron_AB_pilot_20260728.md`에 기록했다.
+- 전체 Python unittest 96개, PowerShell 안전성 검사 7개 파일,
+  Python/PowerShell 구문과 `git diff --check`가 통과했다. 실제 설치된
+  G2P 4단어 smoke test에서는 기본값이 복수 후보를 낼 수 있음을 확인해,
+  inline MFA 소스와 같은 `--num_pronunciations 1`을 실행기에 명시했다.
+- 공통 발음 A/B 최초 실행은 6개년 전체 vocabulary `881,237`개를 사용한
+  registry `199,119`행과 60발화 A/B 입력까지 만든 뒤 표본 G2P에서
+  중단됐다. lexicon과 A/B align은 시작 전이어서 원자료·기존 2020/2021
+  canonical 결과와 TextGrid 부분 산출에는 손상이 없었다.
+- 동일 317개 어절의 G2P를 독립 재현해 `num_jobs=1` 63.93초,
+  `num_jobs=4` 63.16초로 각각 317/317행 성공했다. 원인은 G2P나 병렬도가
+  아니라 Windows PowerShell 5.1이 MFA의 정상 stderr progress를
+  `ErrorRecord`로 바꾸고 전역 `Stop`이 이를 중단한 것이었다.
+- MFA 호출 경계에서만 `Continue`로 낮추고 실제 exit code를 즉시 보존한
+  뒤 preference를 복구하도록 수정했다. PowerShell 7파일·Python 96개·
+  `git diff --check`가 다시 통과했으며, 같은 RunId의 marker/hash 기반
+  재개와 부분 temp archive 방침은
+  `decisions/MONITOR_common_pron_AB_pilot_20260728.md`에 기록했다.
+- 로깅 수정 뒤 G2P 317/317과 사전 발음 24/24는 완료됐지만 파생사전
+  phone gate가 기본 `korean_mfa.dict`의 확률 숫자를 phone으로 읽은
+  parser 오류를 차단했다. 실제 기본 사전은 단어 뒤 선택적
+  발음확률·뒤침묵확률·앞침묵/비침묵 보정 4열을 가진다.
+- MFA 3.4 parser 계약을 따라 확률열과 phone을 분리하고, A/B 기본
+  21,009행의 순서·확률·phone을 그대로 보존하도록 수정했다. 실제 표본
+  smoke test에서 A는 OOV 190행을 더한 21,199행, B는 우리말샘 변이
+  15행을 더한 21,214행이었고 phone inventory 밖 기호는 0이었다.
+- 새 변이는 확률을 임의 추정하지 않고 MFA 기본값 1.0인 무확률 행으로
+  추가한다. 따라서 현재 A/B는 변이 availability 파일럿이며 확률 보정은
+  채택 뒤 별도 결정이다. `궹장히`는 phone 변환 실패를 명시적으로
+  기록하고 B에 넣지 않았다.
+- schema 2 재실행에서 A와 B 모두 default beam 60/60, alignment error
+  0, 연도별 10/10, `spn=0`, 4-tier QC를 통과했다. A는 38.165초, B는
+  34.464초였고 확대 beam은 필요 없었다.
+- 사전 원천 기준 stress 30개 중 current phone으로도 실제 B 변이가 남은
+  것은 20개였고 매년 3–4개였다. 나머지 10개는
+  `stress_screened_no_effect`로, control 30개는 별도로 보고하도록 비교
+  gate를 수정했다. 실제 phone열 변화는 `있다`, `그것`, `수가` 3발화,
+  control 변화는 0이었다.
+- phone열이 같은 control에서도 동일-index 경계가 7/30발화, 최대 70ms
+  달라져 별도 MFA 실행의 경험적 잡음 기준으로 기록했다. 경계 변화만으로
+  B를 채택하지 않고 수동 WAV/TextGrid 검토를 유지한다.
+- 11:19 공통 발음 A/B 자동 단계를 완료했다. 실제 A/B corpus 120파일쌍
+  SHA 불일치 0, 최종 TextGrid 120개 parse/tier-domain 실패 0, 실제 사전
+  기본 21,009행 prefix 동일, registry 숫자 phone 0, 비교 링크 누락 0을
+  독립 전수 확인했다.
+- 자동 완료와 정책 채택을 분리했다. 수동 검토 순서와 세 phone 변화
+  발화, control 경계 잡음, 다음 결정지는
+  `outputs/reports/RESULT_common_pron_AB_pilot_20260728.md`에 정본으로
+  기록했다.
+- 사용자가 우선 3발화를 직접 검토했다. `있다`는 B가 더 낫고, `그것`은 둘
+  다 무난하되 A가 유성음을 조금 더 반영했으며, `수가`는 A가 더 낫고 B의
+  `수까`가 부적절하다고 판정했다. 판정 원문을
+  `outputs/reports/MANUAL_REVIEW_common_pron_AB_first3_20260728.csv`에
+  보존했다.
+- search master 형태소를 결합해 원인을 확인했다. `있다`는
+  `있/VX+다/EF`, `그것`은 `그것/NP`였지만, `수가`는 사전 표제어
+  `수가/NNG`가 아니라 `수/NNB+가/JKS`였다. 따라서 exact-word만으로
+  우리말샘 후보를 모든 동철 어절에 활성화하는 정책 B는 생산 정책으로
+  기각하고, 사전 후보 자체는 검색용 참고층에 보존하기로 했다.
+- 공통 발음 자원을 `pronunciation_registry`–`eojeol_pronunciation_types`–
+  `eojeol_occurrences`–backend 파생사전으로 분리했다. 2,784만 어절마다 긴
+  발음 문자열을 반복하지 않고 `표면형+형태소 signature` type에 사전·G2P
+  후보를 한 번 저장하고, 발화별 어절은 `type_id`와 문맥·경계만 연결한다.
+  후보 검색 CSV에서는 필요한 발음열을 다시 펼쳐 제공하되 이를 실제 실현
+  판정으로 간주하지 않는다.
+- 30 stress 발화의 사전 후보 110행을 occurrence에 결합한 결과 128행 중
+  엄격 occurrence 후보 73행, 참고 전용 55행이었다. `lab/tagged` 수가
+  달랐던 7발화는 목표 표면형을 복원하는 형태소 그룹이 정확히 하나일 때만
+  45행을 `unique_surface_recovery`로 회수했다. 전 occurrence 감사 전에는
+  어떤 plain-word 사전 후보도 전역 활성화하지 않는다.
+- 위 계약을 `config/common_pronunciation_resource_contract.json`,
+  `scripts/python/common_pronunciation_contract.py`,
+  `scripts/python/audit_common_pron_occurrence_matches.py`와 단위시험으로
+  구현하고, 결과를
+  `outputs/reports/PILOT_common_pron_occurrence_match_20260728.csv` 및
+  manifest에 고정했다. 위치-only 초판은
+  `archive/common_pron_occurrence_match_pre_surface_recovery_20260728`에
+  보존했다.
+- 6개년 동결 CSV의 총 음성 길이는 3,808.128시간으로 실측했다. Intel N200
+  4C/4T·RAM 8GB·CUDA 없음인 현재 기기에서 wav2vec2 phone 전량 추론은
+  현실적이지 않으므로, CSV로 연구 후보를 검색한 뒤 선택 발화에만
+  append-only 보조열로 실행한다. MFA phones나 연구자의 실제 실현 판정을
+  덮어쓰지 않는다.
+- `exphon/kfaligner`의 README와 `align.py`를 검토했다. 설치 뒤 오프라인
+  사용과 한국어 전용 교차검증 가능성은 있으나, HTK/Linux 의존, 공용
+  `./tmp` 삭제, 공유 사전 변경, 반환코드 미검사, OOV silent skip,
+  0–xmax 경계 불일치와 모델 provenance 부족 때문에 현재 MFA를 대체하지
+  않는다. 격리 temp·OOV 0·exit code·phone adapter·경계 QC를 보완한
+  30발화 이하의 `experimental_offline_comparator`로만 검토한다.
+- 최종 역할·승격 기준·기술 비교는
+  `docs/decisions/DECISION_common_pronunciation_resource_v2_20260728.md`를
+  정본으로 삼는다.
+- 사용자 결정에 따라 KFaligner/HTK는 MFA보다 낫다는 근거가 없는 현재
+  설치·보완·A/B 테스트를 진행하지 않고 `reference_only_not_planned`로
+  낮췄다. 앞선 comparator 검토는 기술 감사 이력으로만 보존한다.
+- MFA 생산 baseline은 `기본 korean_mfa 사전 + 관측 OOV의 고정 G2P
+  1-best`로 확정했다. G2P는 `spn` 방지를 위한 필수 coverage 층이며,
+  우리말샘 발음은 형태소 전 occurrence 감사 뒤에만 선택적 복수 후보로
+  추가한다. 전량 MFA 전 lab token OOV 0, G2P 실패·phone inventory·사전
+  무손상·SHA256 manifest를 hard gate로 둔다.
+- 공통 발음 `r1`을 60발화와 6개년×5화자 표본에서 검증한 뒤 신규 전량은
+  2022부터 시작한다. 2020·2021은 기존 G2P phone과 r1의 관측 token별
+  동등성을 먼저 비교하고, 동등하면 보존하며 실제 차이가 있는 범위만
+  재정렬하기로 했다.
+- occurrence 감사 manifest의 `lab/tagged` 어절 수 불일치 7발화가 모두
+  미해결인 것처럼 읽히던 counter 이름을
+  `utterance:lab_tagged_count_mismatch`로 바로잡았다. 결과 CSV SHA256은
+  수정 전후 동일했고, 구 manifest는
+  `archive/common_pron_occurrence_match_pre_counter_rename_20260728`에
+  보존했다.
+- 사용자가 “phone 결과가 같음”이 아니라 논문 방법론에서 2020–2025에
+  같은 기준을 썼다고 말할 수 있어야 한다고 명확히 했다. 동일성을 같은
+  phone inventory, MFA/acoustic/G2P 판본, 기본사전/OOV 규칙, 어절
+  정규화와 4-tier 계약으로 조작화했다.
+- 생산 `common_pron_mfa_r1`은 기본 `korean_mfa.dict` 원문 21,009행과
+  동일 `korean_mfa` G2P 1-best/strict의 관측 OOV만 포함하고, 우리말샘
+  변이는 0개로 고정했다. 881,237 고유 어절 중 OOV 866,691개를 25,000개
+  단위 35 shard로 준비했으며 장시간 G2P는 아직 시작하지 않았다.
+- 2020·2021은 즉시 다시 정렬하지 않는다. 2020 최종 4-tier 866,196개
+  word–phone 전수, archive 부분 DB 내부 후보 전수, 2021 완성 DB 관측
+  어절 후보 집합 전수의 세 gate가 mismatch 0일 때만 2022에 공통사전을
+  허용한다. 기본 동작은 2020·2021 공통사전 재실행을 차단하며 의도적
+  override가 있어야 한다.
+- 2020 archive DB는 `quick_check=ok`이나 word/phone interval 0인 부분본임을
+  재확인했다. 다만 2020·2021 DB의 연구 phone은 non-silence 109개+
+  `sil`+`spn`으로 같고, 2021에만 더 있는 `#11/#12`는 FST
+  disambiguation symbol이다. 부분 DB는 보조 증거로만 쓰고 전체 결과는
+  TextGrid 전수로 증명한다.
+- 첫 PrepareOnly에서 MFA 사전의 1보다 큰 침묵 보정값을 phone으로 오인한
+  자체 parser 오류를 새 inventory gate가 차단했다. G2P output은 0개였다.
+  설치된 MFA 3.4.0 `utils.parse_dictionary_file`과 대조해 최대 네 숫자
+  열을 정확히 분리했고, 기본 사전 phone의 acoustic inventory 이탈 0을
+  실측한 뒤 13:27 PrepareOnly를 성공시켰다. 구 준비본은
+  `D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_method_contract_20260728_132528`
+  에 보존했다.
+- 모델 해시는 acoustic
+  `46f7a73a…451a4d`, 기본사전 `75683f4d…78150b`, G2P
+  `6938db05…ad0344`, phone inventory 110개 목록
+  `9b66a3b6…b493e`로 고정했다. 상세 주장 범위·전수 gate·논문용 문장은
+  `docs/decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md`
+  에 기록했다.
+- 구현·방법론 문서를 commit `0c20e41`로 만들고
+  `origin/agent/harden-pre-bulk-pipelines`에 푸시했다. 커밋 전
+  PrepareOnly manifest가 이전 Git 해시를 가리키는 것도 재현성 결함으로
+  보고 해당 준비본을
+  `D:\mfa_common_pron\archive\common_pron_mfa_r1_20260728_pre_commit_0c20e41_20260728_133547`
+  에 보존한 뒤 다시 준비했다. 최신 manifest는 full commit
+  `0c20e41621777dba9c6f61e73fd330a5ce667175`, OOV 866,691, 35 shard,
+  output shard 0, lock 없음이다.
+- 13:38 사용자 PowerShell에서 장시간 실행을 시작했으나 첫 shard 직전,
+  미완료 산출물 검색 결과가 0개일 때 PowerShell StrictMode가 `$null.Count`
+  를 허용하지 않아 즉시 중단됐다. lock 없음, output shard 0, log 0,
+  work item 0을 확인해 G2P 미시작·원천/준비본 무손상을 확정했다.
+  `Where-Object` 결과를 바깥 `@(...)`로 한 번 더 감싸 빈 결과도 명시적
+  0개 배열이 되게 수정하고, 같은 회귀를 막는 PowerShell 정적 검사를
+  추가했다.
+
+## 2026-07-28 오후 — r1 숨은 `spn` 차단과 최신 Jamo 기준 재설정
+
+- r1 shard 1은 MFA exit 0이었지만 strict 음절 grapheme 누락 때문에
+  25,000개 중 24,966개만 만들었다. shard coverage 검증기가 이를 성공으로
+  승인하지 않고 output·log·temp를 `archive_failed`에 보존한 뒤 중단했다.
+- 구 음절 G2P는 전체 OOV 866,691개 중 5,176개를 처리하지 못했다. 2021
+  DB에서 대표 10개가 실제 phone이 아닌 `spn`이었음을 확인해, 과거
+  2020·2021의 “완료”가 G2P 완전성을 뜻하지 않았음을 기록했다.
+- sunk cost를 배제하고 공식 Hugging Face
+  `MontrealCorpusTools/korean_mfa` commit `0091ffa...`의 acoustic
+  v3.3.0, Jamo G2P v3.2.0, 같은 dictionary를 전 연도 새 기준으로
+  선택했다. acoustic–G2P phone 107개가 동일하다.
+- MFA 내장 `model download --force`는 exit 0인데 파일 SHA가 구버전과
+  같았고, 첫 HF clone은 Windows CRLF 때문에 OpenFST가 `0\r` label을
+  거부했다. LF clone과 version·commit·SHA gate로 둘 다 차단했다.
+- 최신 묶음을 deterministic zip/dictionary로 D:에 동결하고, acoustic
+  표준 load와 Jamo 10단어 10/10 및 directory–zip 출력 SHA 일치를
+  확인했다. 기계 manifest는
+  `outputs/reports/korean_mfa_latest_jamo_bundle_20260728.json`이다.
+- 최신 Jamo의 구 OOV 전수 grapheme 감사에서는 종성 `ᆳ`을 포함한 4개만
+  남았다. 다른 모델 또는 최종 `spn`을 섞지 않고 `ᆳ→ᆯ+ᆺ` Jamo 완전분해
+  뒤 같은 rewriter를 쓰며, 공통사전 missing=0·spn=0 전에는 연도별 MFA를
+  시작하지 않는다.
+- D:를 유일한 메인으로 유지하고 새 E: 외장 HDD는 구 2020·2021
+  TextGrid·DB/temp·실패 clone 약 55.9GiB의 `READ_ONLY_ARCHIVE`로만
+  사용한다. 복사·zero-diff·파일 수·바이트·DB SHA 검증 뒤에만 명시적
+  prune을 허용하는 별도 실행기를 추가했다.
+- 독립 코드 리뷰를 위해 최신 결정문과 severity·재현법·연구 영향·수정 후
+  검증을 강제하는 리뷰 프롬프트를 `docs/reviews`에 마련했다.
+
+## 2026-07-28 오후 — 외부 리뷰 반영과 r2 실행 계약
+
+- 외부 리뷰 commit을 가져와 BLOCKER/HIGH를 실제 코드로 반영했다.
+  설치 모델 이름이 아니라 공식 commit `0091ffa...`의 acoustic v3.3.0,
+  Jamo G2P v3.2.0, dictionary 세 실물 SHA를 실행 직전에 검증한다.
+- 구 결과와 mismatch 0을 새 기준 채택 조건으로 삼던 r1 동등성 gate를
+  폐기했다. 구 2020·2021과의 모든 차이를 원인별 inventory로 남긴 뒤
+  연구자가 승인하는 r2 adoption 계약으로 교체했다.
+- 공통사전 인자를 생략하면 inline G2P로 돌아가던 기본 동작을 차단했다.
+  legacy inline은 과거 재현용 명시 옵션만 허용한다. 연도별 DB와 최종
+  TextGrid phone tier 모두 `spn=0`을 완료 조건으로 추가했다.
+- 직접 `run_eojeol_realign.ps1`을 실행해도 bulk lock을 취득하고, 공통
+  G2P lock과 양방향 상호 배제한다. 신규 temp/output은 D:만 사용한다.
+- `ᆳ` 4어절은 같은 Jamo rewriter 입력에만 `ᆳ→ᆯ+ᆺ`을 적용하고 원
+  표층키로 복원한다. 다른 미지원 grapheme는 prepare에서 중단한다.
+  4건 후보는 missing=0·spn=0·inventory 이탈=0을 통과했지만 연구자
+  검토표는 pending이므로 final r2 사전은 아직 없다.
+- 최신 기본사전으로 다시 계산한 실제 수치는 관측 어절 881,237,
+  기본사전 포함 관측어 14,545, OOV 866,692, 표준 G2P 866,688,
+  U+11B3 rewrite 4, 25,000단어 단위 표준 shard 35개다. 구 r1보다
+  OOV가 1개 늘어난 것은 세 동결 파일을 최신 동일 묶음으로 바꾼 데 따른
+  입력 차이이며 manifest에 기록했다.
+- 수백만 작은 파일을 E:에 loose robocopy하던 작업을 중단하고 항목별
+  7z 보존으로 전환했다. 첫 실물 검증에서 7-Zip 옵션 순서 오류를 exit 1로
+  안전 차단한 뒤 수정했다. 실패 clone 52파일·172,573,000바이트는 CRC,
+  내부 파일 수/바이트, archive SHA256
+  `dda0bc70...1a1558a`를 통과했다. D: 원본 삭제는 지원하지 않는다.
+- Python 단위 테스트 145개와 PowerShell 안전성 검사 12개가 모두
+  통과했다. 코드 준비, r2 준비, r2 실물, 연도별 사용 승인을 문서와
+  실행 gate에서 서로 다른 상태로 유지한다.
+- 리뷰 반영 코드는 commit `7c7e9d7`로
+  `origin/agent/harden-pre-bulk-pipelines`에 푸시했다. 커밋 전 생성한
+  r2 후보는 `archive_obsolete`에 보존하고, 커밋된 코드 SHA 계약으로
+  같은 입력·4건 후보를 다시 만들었다. 현재 verified 표준 shard는
+  0/35이며 final dictionary·difference inventory·adoption은 모두
+  미생성이다.
+- 16:56 장시간 r2 실행 직전 기존 4행 검토표 비교가 실패했다. 실제
+  G2P 후보는 동일했고 표준 shard는 시작 전이었다. 원인은 검토표
+  reader가 IPA phone에도 NFKC를 적용해 `sʰ→sh`, `tɕʰ→tɕh`,
+  `pʲ→pj`로 내부 비교한 것이었다. IPA 열은 정규화하지 않고 strip만
+  하도록 수정하고 modifier-letter 회귀검사를 추가했다.
+
+## 2026-07-28 17:08 공통사전 r2 실행 모니터링 시작
+
+- 사용자의 요청으로 공통발음사전 MFA r2 완료까지의 모니터링을 goal로
+  등록했다. 점검 범위는 shard 진행률, 오류·재시도, 처리 속도와 병목,
+  D: 여유 공간, 잠금 생존, shard 검증 보고서, 최종 산출물 gate이다.
+- 17:08 실행 잠금(PID 6668)과 `g2p_oov_00001.log`가 생성되었고,
+  shard 1/35가 실제로 처리되기 시작했다. D: 여유 공간은 263.15 GiB였다.
+- 첫 상태 확인에서 완료 shard가 아직 0개인 정상 초기 상태인데도
+  상태판이 빈 `Measure-Object` 결과의 `.Sum` 속성을 읽어
+  `PropertyNotFoundStrict`로 실패하는 경계조건 오류를 발견했다.
+- 본 G2P 프로세스와 산출물은 건드리지 않고 읽기 전용 상태판만 수정했다.
+  완료 보고서를 명시적으로 순회해 합계를 0부터 누적하도록 바꾸었으며,
+  같은 초기 상태 처리가 제거되지 않도록 PowerShell 안전성 검사에
+  회귀 조건을 추가했다.
+- 수정 직후 상태판은 `phase=g2p_running`, verified shard 0/35,
+  current shard 1, invalid report 0, lock alive, 1,922 standard rows로
+  정상 응답했다. 초기 속도 9.21 words/s와 ETA는 첫 shard 초기화 비용이
+  포함되므로 다음 shard 완료 전에는 방법론적 성능 수치로 사용하지 않는다.
+
+## 2026-07-28 17:54 첫 표준 shard 검증
+
+- 안정화 이후 모니터링 주기는 사용자의 판단에 따라 30분으로 조정했다.
+  shard 전환, invalid report, 잠금 소실, 출력 정체가 관측될 때만 추가
+  세부 점검을 한다.
+- shard 1은 17:43:59에 `success`로 검증됐다. 입력 25,000어휘와 출력
+  25,000어휘가 일치하며 missing=0, extras=0, `spn_words=0`,
+  acoustic phone inventory 이탈=0이다.
+- 검증 보고서는 입력 SHA
+  `963ac160...25bed`, 출력 SHA `6e5bb15e...44b00`, 동결 acoustic SHA
+  `94bd6cc5...159c`와 runtime Git `8caff67c...6d7`을 기록한다.
+- shard 1 출력 생성은 17:08:42부터 17:43:53까지 약 35분 11초가
+  걸렸고 실측 처리율은 약 11.84 words/s이다. 17:54에는 shard 2가
+  7,889행까지 진행되어 전체 32,893/866,692(3.795%)였다.
+- 이 PC는 논리 프로세서 4개이며 실행 중 네 Python 프로세스의 CPU가
+  지속적으로 증가했다. `--num_jobs 4`는 CLI 파서에서 인식됨을 확인했고
+  현재 처리 중 CPU 활용도도 높으므로, 진행 중단과 작업자 수 변경의
+  실익이 입증되지 않았다. 동일 실행을 유지한다.
+
+## 2026-07-28 19:52–20:52 shard 5 no-path 발견과 보완
+
+- shard 1–4는 각 25,000행, 합계 100,000행이 missing=0, extras=0,
+  `spn=0`, acoustic inventory 이탈=0으로 검증됐다.
+- shard 5는 G2P가 `Done`과 exit 0을 반환했지만 25,000개 입력 중
+  24,999개만 출력했다. 완전성 gate가 이를 거짓 성공으로 승인하지 않고
+  멈췄다. lock은 정상 해제됐고 partial output·log는 원 위치에 보존됐다.
+- 누락어는 `읊어`였다. 동일 동결 Jamo 모델의 단어 하나 재현에서도
+  exit 0과 0바이트 출력이 반복되어 deterministic FST no-path로
+  판정했다.
+- 국립국어원 공식 `읊어[을퍼]`, 프로젝트 규칙 예측 `을퍼`, 같은 동결
+  모델의 `을퍼 → ɨ ɭ pʰ ʌ`, acoustic inventory 포함이 일치했다.
+- 알려진 `읊-` no-path 후보 24개는 검토표로 만들되 자동 승인하지
+  않는다. 사용자는 `읊어 → 을퍼 → ɨ ɭ pʰ ʌ` 한 후보만 명시 승인했고
+  D: 검토 CSV와 별도 결정 JSON에 범위를 기록했다.
+- 보수기는 승인 전 partial을 한 바이트도 바꾸지 않으며, 승인 뒤에도
+  기존 모델 생성행을 유지하고 누락 키만 추가한다. 원 partial SHA
+  backup, 승인행 snapshot, 원자 교체, 전체 shard 재검증을 강제한다.
+- 새 미승인 no-path 때문에 밤사이 장시간 계산 전체가 반복 중단되지
+  않도록 실행 정책을 개선했다. 해당 partial과 시도 보고서는 보존하고
+  다음 shard 계산을 계속하되, 미승인/미등록 누락이 남으면 final 사전과
+  연도별 MFA만 차단한다. 일반 파일 손상이나 phone inventory 이탈은
+  계속 즉시 중단한다.
+- 직접 승인 기록 명령은 파일 저장을 완료한 뒤 IPA `ɨ`의 CP949 콘솔
+  출력에서만 실패 표시가 났다. 실제 승인 CSV·JSON 저장을 확인했고,
+  helper stdout을 UTF-8로 고정해 성공 후 거짓 오류 표시를 방지했다.
+- 5번 보수 직후 상태판이 기존 24,999행까지 새 세션 처리량으로 세어
+  4,750 words/s의 거짓 속도를 표시했다. 보수 manifest와 output SHA를
+  결합해 승인 보수 shard는 ETA 표본에서 제외하고, 이후 실제 6번
+  증분만으로 속도를 계산하도록 고쳤다. 20:59 실측 표시는 8.22 words/s다.
+- 장시간 shard 실행 중 동결 builder는 변경하지 않고, final 직후 적용할
+  별도 no-path 방법론 supplement를 구현했다. 후보 raw G2P가 release와
+  같은 acoustic·Jamo G2P·frozen pin을 썼는지, partial backup·승인
+  snapshot·repair manifest·최종 shard SHA가 일치하는지 다시 검증한다.
+  G2P cache에서는 승인 보수행의 출처만 교정하고 phone과 final
+  dictionary는 불변으로 유지한다. supplement SHA를 포함한 production
+  contract ID를 만들며 두 번째 실행은 byte-identical한 멱등 동작이다.
+  adoption contract에도 이 supplement와 repair manifest 변조 차단을
+  추가했다.
+- 상세 방법론과 주장 범위는
+  `docs/decisions/DECISION_common_pron_G2P_no_path_fallback_20260728.md`
+  에 기록했다.
+
+## 2026-07-29 08:22 야간 r2 점검
+
+- verified shard는 25/35, 현재 29번 20,617행, 모든 미검증 partial을
+  포함한 관측 진행률은 83.146%였다. lock PID 5464는 살아 있고 D:
+  여유는 263.11GiB, invalid report는 0이다.
+- 8·12·15번에서 각각 `읊을`, `읊는`, `읊은` 한 단어씩 동결 Jamo
+  FST no-path가 발생했다. 설계대로 각 24,999행 partial과 시도 보고서를
+  보존하고 다음 shard로 계속해 야간 계산은 중단되지 않았다. 미등록
+  누락어는 0이다.
+- 후보는 `읊을→을플→ɨ ɭ pʰ ɨ ɭ`,
+  `읊는→음는→ɨ m n ɨ n`, `읊은→을픈→ɨ ɭ pʰ ɨ n`이다. 세 후보 모두
+  아직 `pending`이며 자동 승인하지 않았다. 국립국어원 표준 발음법
+  제18항은 `읊는[음는]`을 직접 예시하고, 공식 연수 교재는
+  `읊은[을픈]`을 제시한다. `읊을[을플]`은 제14항의 겹받침+모음 시작
+  어미 연음 적용 후보이므로 함께 연구자 검토를 기다린다.
+- 29번 output 수정시각이 한 스냅샷에서 약 24분 전으로 보여 정체 여부를
+  별도 측정했다. 10초 동안 네 G2P worker의 CPU가 각각
+  7.88–8.09초 증가하고 행 수도 20,617→21,825로 늘어 실제 계산이
+  정상임을 확인했다. 디스크 정체나 dead worker가 아니다.
+- 상태판에 승인 대기 shard뿐 아니라 정확한 대기 단어도 표시하도록
+  읽기 전용 필드를 추가했다.
+- 08:28 shard 29가 끝나며 저빈도 `읊-` 활용형 20개가 추가 no-path로
+  확인됐다. shard 8·12·15의 세 단어와 합쳐 미승인 후보는 23개이며,
+  이미 승인·보수한 `읊어`까지 포함하면 사전 진단 후보 24개가 모두 실제
+  전수 위치에서 설명됐다. 미등록 누락어는 여전히 0이다. shard 29는
+  24,980행 partial과 20개 정확한 누락 목록을 보존하고 shard 30으로
+  계속 진행했다.
+- 23개를 포괄 자동 승인하지 않는다. 특히 `읊고→읍꼬`를 같은 모델에
+  넣은 후보 phone `ɨː m k͈ o`는 예상되는 `읍꼬`의 폐쇄음과 달라
+  대체 재철자 입력을 별도 소표본으로 검토해야 한다. 전수 G2P와 CPU를
+  경쟁시키지 않기 위해 이 진단은 장시간 계산 종료 뒤 수행한다.
+
+## 2026-07-29 09:03 r2 정기 점검과 특수 표층형 추적 준비
+
+- verified shard는 26/35로 늘었고 30번을 완료한 뒤 31번 188행을
+  계산 중이다. 모든 미검증 partial을 포함한 관측 생성은
+  750,169/866,692어절(86.555%)이다.
+- 08:33 점검 뒤 약 29분 34초 동안 21,248행이 증가해 실측 약
+  11.98 words/s이며 상태판 장기 평균 12.06 words/s와 일치한다.
+  ETA는 11:44 전후로 유지돼 새 병목 신호가 없다.
+- lock PID 5464는 살아 있고 현재 output/log의 마지막 수정은 점검
+  34초 전이다. invalid report 0, D: 여유 263.10GiB다.
+- 승인 대기는 shard 8·12·15·29의 알려진 `읊-` 23개로 변함없고,
+  후보 원장 밖 미등록 누락은 0개다. 따라서 계산에는 개입하지 않았다.
+- Jamo ㄽ 4개 검토표도 예비 확인했다. 현재 same-model 후보는
+  `외곬을/외곬의`의 된소리 연음 및 표층키 복원 적합성을 보증하지
+  못하고, `외곬수적인/천구백칤비육`은 원전사 확인이 필요하므로 네
+  행 모두 pending을 유지했다.
+- `trace_common_pron_special_occurrences.py`를 추가했다. 동결
+  search-master를 공통 vocabulary와 같은 토큰화로 한 번만 읽고,
+  일치 발화의 form/original/pron_reference·화자·시간·note와 원본
+  JSON을 결합한다. target 누락, session/utt 누락, 핵심 전사·식별자
+  불일치와 기존 산출물 덮어쓰기를 차단한다.
+- 합성 원본 추적 테스트 4개와 기존 Jamo 복원 계약을 합친 관련 테스트
+  17개가 통과했다. 실제 5.1백만 행 원본 추적은 D: 읽기 경합을 피하려고
+  전수 G2P 계산 종료 뒤 한 번만 실행한다.
+
+## 2026-07-29 09:24 창 종료 뒤 실행·개발 상태 복구 점검
+
+- 사용자가 실수로 작업 창을 닫은 뒤에도 공통사전 실행기 lock PID
+  5464와 그 아래 G2P controller·worker 4개가 살아 있음을 확인했다.
+  VS Code 터미널과 공통사전 생성은 서로 독립되어 있어 창 종료 때문에
+  전수 계산이 중단되거나 처음부터 다시 시작되지 않았다.
+- shard 31은 09:03의 188행에서 09:24의 15,131행까지 증가했다.
+  verified shard는 26/35, 전체 관측 생성은
+  765,112/866,692어절(88.280%), 장기 처리율은 12.05 words/s,
+  ETA는 11:45 전후다. invalid report와 미등록 누락어는 모두 0이고
+  D: 여유는 263.10GiB다.
+- 종료 직전 미커밋 상태였던 Jamo ㄽ 승인 phone 계약 보강 7개 파일은
+  작업 트리에 그대로 남아 있었다. 모델 후보와 연구자 승인 phone을
+  별도 산출물로 보존하고, 후보를 교정할 때 동결 acoustic inventory,
+  근거 출처, 연구 메모를 모두 요구하도록 final·adoption gate를
+  강화했다.
+- 중단됐던 검증을 처음부터 다시 실행해 Python 회귀시험 167개와
+  PowerShell 안전검사 12개가 모두 통과했으며 `git diff --check`도
+  통과했다. 실행 중인 D: shard와 release 산출물에는 쓰거나
+  재시작하지 않았다.
+
+## 2026-07-29 09:57 r2 정기 점검
+
+- shard 31이 검증 완료돼 verified shard는 27/35가 됐고, shard 32는
+  14,392행까지 진행했다. 전체 관측 생성은
+  789,373/866,692어절(91.079%)이다.
+- 09:27 점검 뒤 약 30분 21초 동안 22,675행이 늘어 실측 처리율은
+  약 12.45 words/s다. 장기 평균 12.06 words/s와 일치하고 ETA는
+  11:44 전후로 유지돼 병목 악화가 없다.
+- 열린 shard의 NTFS 수정시각이 한 스냅샷에서 09:38로 보였으나,
+  36초 뒤 행 수가 14,392→14,831로 439행 증가하고 수정시각도
+  09:57로 갱신됐다. 열린 파일의 수정시각 지연일 뿐 정체가 아니므로
+  프로세스를 중단하지 않았다.
+- invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절과 shard
+  8·12·15·29는 변함없다. lock PID 5464는 살아 있고 D: 여유는
+  263.10GiB다.
+
+## 2026-07-29 10:26 r2 정기 점검
+
+- shard 32가 검증 완료돼 verified shard는 28/35가 됐고, shard 33은
+  11,062행까지 진행했다. 전체 관측 생성은
+  811,043/866,692어절(93.579%)이다.
+- 09:57 점검 뒤 약 28분 33초 동안 21,670행이 늘어 실측 처리율은
+  약 12.65 words/s다. 장기 평균은 12.07 words/s, ETA는 11:43
+  전후로 오히려 약간 앞당겨져 병목 신호가 없다.
+- shard 33의 열린 파일 수정시각이 10:11로 보였지만 11.9초 사이
+  11,308→11,447행으로 139행 증가했다. 이전과 같은 NTFS 수정시각
+  지연이며 계산은 정상이다.
+- invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절·4개
+  shard는 변함없다. lock PID 5464는 살아 있고 D: 여유는
+  263.10GiB다.
+
+## 2026-07-29 10:55 r2 정기 점검
+
+- shard 33이 검증 완료돼 verified shard는 29/35가 됐고, shard 34는
+  7,409행까지 진행했다. 전체 관측 생성은
+  832,390/866,692어절(96.042%)이다.
+- 직전 점검 뒤 약 28분 58초 동안 21,347행이 늘어 실측 처리율은
+  약 12.28 words/s다. 장기 평균은 12.08 words/s, ETA는 11:43
+  전후로 유지된다.
+- 열린 파일 수정시각은 10:45였지만 약 11.8초 사이
+  7,569→7,708행으로 139행 증가했다. worker와 lock PID 5464는
+  살아 있고 정체가 아니다.
+- invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절·4개
+  shard는 변함없으며 D: 여유는 263.10GiB다.
+
+## 2026-07-29 11:24 r2 마지막 shard 진입
+
+- shard 34가 검증 완료돼 verified shard는 30/35가 됐고, 마지막
+  shard 35는 3,344행까지 진행했다. 전체 관측 생성은
+  853,325/866,692어절(98.458%)이다.
+- 직전 점검 뒤 약 28분 44초 동안 20,935행이 늘어 실측 처리율은
+  약 12.14 words/s다. 장기 평균 12.08 words/s와 일치하며 계산 종료
+  ETA는 11:43 전후다.
+- invalid report 0, 미등록 누락어 0, 알려진 승인 대기 23어절·4개
+  shard는 변함없다. lock PID 5464는 살아 있고 D: 여유는
+  263.10GiB다. 마지막 shard 종료 뒤 final이 잘못 실행되지 않고
+  승인 대기 상태로 안전 종료하는지 다음 점검에서 확인한다.
+
+## 2026-07-29 11:42–11:45 전수 계산 종료 감사
+
+- 마지막 shard 35는 16,688/16,688어절, missing·extra·`spn`·acoustic
+  inventory 이탈 모두 0으로 11:42에 검증됐다.
+- 성공 report 31개를 상태판과 별도로 다시 합산한 결과 입력과 출력이
+  각각 정확히 766,688어절로 일치했다. 승인 대기 partial 네 개의
+  99,977행을 더하면 866,665행이고 Jamo ㄽ 후보 4행을 포함한 관측
+  생성은 866,669/866,692어절이다. 차이 23개는 검토표에 등록된
+  `읊-` 활용형과 정확히 같다.
+- phase는 `g2p_review_blocked_not_running`으로 전환됐고 PID 5464는
+  종료, lock 파일은 해제됐다. final manifest·차이 inventory·adoption은
+  모두 pending이며 연도별 MFA 허가는 false다. 이는 의도한 안전
+  중단이며 재계산 실패가 아니다.
+- invalid report 0, 미등록 누락 0, D: 여유 263.10GiB다. stdout 마지막
+  메시지도 승인 대기 shard 8·12·15·29만 밝히고 partial 보수 뒤 같은
+  명령으로 재개하라고 기록했다.
+
+## 2026-07-29 11:46–11:55 Jamo ㄽ 원본 추적과 same-model probe
+
+- `trace_common_pron_special_occurrences.py`로 동결 search-master
+  5,103,356행을 한 번 스캔했다. 네 target은 각각 한 번씩 발견됐고
+  원본 JSON 세 파일의 form·original·식별자 일치가 4/4, mismatch
+  0이었다. 산출물은 D: r2 release의
+  `03_review/jamo_ls_source_occurrences_20260729.csv`와 manifest다.
+- `외곬수적인`은 원본도 같은 표기지만 발음 기준이 `외골수저긴`이고,
+  `천구백칤비육`은 `1976년` placeholder의 비정상 original form임을
+  확인했다. 두 행은 단순 ㄽ phone 문제가 아니라 원전사·숫자 복원
+  예외다.
+- `외곬을`과 `외곬의`는 동일 2025 화자의 실제 글자 설명 발화이며,
+  공식 `[외골쓸]`, 원칙 `[외골씌]`·허용 `[외골쎄]` 후보를 청취와
+  대조해야 한다.
+- 동결 Jamo G2P v3.2.0에 13개 소표본을 넣어 재현 가능한 입력과 출력을
+  `config/common_pron_review_probes_20260729.txt`,
+  `outputs/reports/common_pron_review_probes_20260729.dict`에 보존했다.
+  입력·출력 SHA256은 각각 `770aa96...e849863`,
+  `41a2e684...2bd4a`다.
+- `읍꼬`가 잘못 `ɨː m k͈ o`를 내지만 `읍`, `꼬`, 대리입력 `읖꼬`는
+  기대한 `ɨ p̚`, `k͈ o`, `ɨ p̚ k͈ o`를 냈다. 공식
+  `읊고[읍꼬]`와도 대조되므로 same-model 후보를 자동 승인하면
+  안 된다는 실제 반례다.
+
+## 2026-07-29 no-path 승인 phone 계약 보강
+
+- no-path 검토표도 모델 후보 `pron_phones_mfa`와 최종 연구자 승인
+  `approved_pron_phones_mfa`를 분리하도록 v2로 보강했다. 후보와 다른
+  phone은 근거·notes·동결 acoustic inventory 검증을 모두 요구한다.
+- shard repair는 승인열만 사용하고 model candidate·approved phone을
+  manifest에 함께 보존한다. method supplement와 G2P cache source는
+  same-model fallback과 manual same-inventory override를 구분한다.
+- 기존 `읊어` 구형 승인표와 보수 snapshot은 후보와 승인 phone이 같은
+  것으로 읽기 호환된다. 실제 D: 구형 24행 검토표와 1행 snapshot을
+  읽기 전용 검증한 결과 승인 1, 승인 phone 1, manual override 0이며
+  phone은 변하지 않았다.
+- 관련 회귀시험 19개와 별도 manual override provenance 시험이
+  통과했다. 이어 전체 Python unittest **170개**, PowerShell 안전검사
+  **12개**, `git diff --check`도 모두 통과했다.
+
+## 2026-07-29 12:32 no-path 검토표 v2 이관
+
+- 코드 기준점 `4bae24a`를 원격 브랜치에 먼저 push한 뒤 D: 실물 검토표를
+  v1에서 v2로 이관했다. 이관 전에 기존 CSV와 manifest를
+  `03_review/archive_schema_v1_20260729/`에 별도 보존했다.
+- v1 CSV의 SHA256은
+  `412fbaae9ff3923e647dc52c2de8517b17f79ac781c246fe605f94f69ced819e`,
+  v2 CSV의 SHA256은
+  `8f36ad3e958e06ac01411ff36d0bf57654978d59cdaff2c4aa0a33c68c913de6`이다.
+- 이관 후 후보 24행, 기존 승인 1행(`읊어`), 대기 23행, manual
+  override 0행임을 다시 확인했다. 승인 phone과 원 shard는 바뀌지
+  않았고, 최종 사전·연도별 MFA gate도 계속 닫혀 있다.
+
+## 2026-07-29 12:39–13:18 예외 전수 근거 연결과 연구자 검토표
+
+- no-path 대기 표층형 23개를 동결 search-master 5,103,356행에서
+  공통 vocabulary와 같은 토큰화로 전수 역추적했다. 실제 발화는
+  27행이며 23개 target을 모두 찾았고, 원본 JSON 19개와
+  form·original·식별자가 27/27 정확히 일치했다. 미발견·원본
+  불일치·미등록 누락은 0이다.
+- 추적 CSV와 manifest는
+  `outputs/reports/common_pron_no_path_occurrences_20260729.*`에
+  기록했다. CSV SHA256은
+  `d67fa42d427f4aec4f11a3f4c3fbf795982508ad80f5bcbd097a6b6cb5fdb128`다.
+- Jamo ㄽ 4행과 no-path 27발화를 합쳐 31개 검토 occurrence를
+  구성했다. 겹치는 발화를 한 번만 복사한 결과 검토 WAV는 29개,
+  총 3,879,874바이트다. 원본/검토본 SHA256은 29/29 모두 같고
+  원본은 수정되지 않았다. D: 검토 bundle은
+  `03_review/researcher_review_bundle_20260729/`이며 occurrence CSV
+  SHA256은
+  `27b88d8019a0ad4c8956b386b5b56ac61920cb1d70722e96bb54ca18999e0128`,
+  manifest SHA256은
+  `0fb564df09ce55927e31b2cd144331711d0e75745574c8766365d19795964ed4`다.
+- 외골수·1976 후보를 같은 동결 Jamo G2P v3.2.0의 1-best로 별도
+  probe했다. 입력은
+  `config/common_pron_review_probes_addendum_20260729.txt`, 출력은
+  `outputs/reports/common_pron_review_probes_addendum_20260729.dict`다.
+  출력 SHA256은
+  `d8f622957de03a9f95577b7462957e7ba0a3c06e7c4a91ae4d3c9d4060a6abe7`다.
+- 규범·어휘부·원음 판단을 분리해 권고를 만들었다. no-path 23개 중
+  22개는 same-model 후보 승인 권고이고, `읊고`는 동결 모델의
+  `읍꼬→ɨː m k͈ o` 오류 때문에 동일 107-phone inventory의
+  `ɨ p̚ k͈ o`를 수동 승인해야 한다. Jamo 네 건은
+  `외곬을` 수동 phone, `외곬의` 원칙/허용 발음 청취 선택,
+  `외곬수적인` 원표기 correction+청취, `천구백칤비육` 숫자
+  placeholder correction으로 구분했다. 어떤 항목도 자동 승인하지
+  않았다.
+- 연구자 인터페이스
+  `outputs/common_pron_r2_review_20260729/`
+  `common_pron_r2_researcher_review_20260729_v5.xlsx`를 최종 검토본으로
+  만들었다.
+  7개 시트, 검토 27행, 근거 발화 31행, WAV 링크 89개
+  (검토표 27 + 발화표 검토본/원본 62), 자동 수식 54개이며 모든
+  결정은 `pending`이다. phone 열은 IPA 기호가 보이도록 Noto Sans를
+  썼고, 후보/승인 phone과 source correction/발음 승인을 분리했다.
+  workbook SHA256은
+  `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
+  생성기 SHA256은
+  `79324e5b5edffb47090e03c3fd3811b25865a2dad911dee19c42be3ca6cb9a5a`다.
+  manifest에는 생성기 SHA, openpyxl 3.1.5, Noto Sans 사용을
+  명시했다. 생성기·근거를 commit `093ce31`에 먼저 고정한 뒤 v5를
+  다시 생성해 manifest의 runtime commit과 실제 코드 기준점을
+  일치시켰다. 초기판과 레이아웃 QA 중간판 v2·v3·v4는 같은 폴더에
+  보존해 덮어쓰지 않았다.
+- Excel COM은 이 실행 환경에서 새 workbook과 기존 workbook 모두
+  동일한 `0x800A03EC`로 열리지 않았고 artifact-tool loader도
+  제공되지 않았다. 따라서 openpyxl 왕복 구조검증과 별도
+  Pillow PNG 렌더러로 7개 시트 12개 범위를 시각 점검했다. IPA
+  폰트, 병합, 색상, 입력/수식 영역, 링크 표시를 확인했다.
+- 독립 검사에서 시트 7개, 검토 27행, 근거 31행, 모든 decision
+  `pending`, 수식 54개, source link 27개, WAV link 89개,
+  데이터검증 `R2:R28`, 오류 수식 0, manifest/workbook SHA 일치를
+  확인했다. 전체 Python unittest **177개**, PowerShell 안전검사
+  **12개**, `git diff --check`가 모두 통과했다.
+- 13:03 상태판은 `g2p_review_blocked_not_running`,
+  866,669/866,692(99.997%), verified shard 31/35, invalid report 0,
+  unknown missing 0, D: 여유 263.09GiB다. final·difference inventory·
+  adoption은 pending이고 연도별 MFA 허가는 false다. 연구자 승인
+  전에는 repair나 final을 실행하지 않는다.
+
+## 2026-07-29 13:21–13:33 연구자 작성본 수입 계약
+
+- 깨끗한 v5를 직접 수정하면 원본과 작성본을 독립 비교할 수 없으므로
+  사용자가 먼저 `..._FILLED.xlsx`로 다른 이름 저장한 뒤 R
+  `researcher_decision`, S `researcher_custom_phone`, U
+  `researcher_notes`만 입력하는 계약으로 고정했다.
+- `validate_common_pron_researcher_review_xlsx.py`를 추가했다. 작성본의
+  7개 sheet·차원·병합·table·data validation과 R/S/U 외 1,860개
+  셀·수식·hyperlink를 clean template과 대조한다. template 자체를
+  작성본으로 넘기거나 불변 셀 하나라도 바뀌면 거부한다.
+- 결정은 pending/권고 승인/대안 승인/직접 승인/hold/reject만
+  허용한다. 직접 phone과 모든 수동·대안·correction 결정은 notes를
+  요구한다. `sil`, `spn`, frozen acoustic inventory 밖 phone은
+  승인 발음으로 사용할 수 없다.
+- 실제 동결 acoustic ZIP smoke test에서 공용 inventory loader가
+  107개 lexical phone에 정렬 전용 `sil`, `spn`을 더해 109개를
+  반환한다는 차이를 발견했다. 모델 bundle의 연구 phone 계약은
+  두 특수기호를 제외한 107개,
+  SHA256
+  `6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d`
+  이므로 검증기도 같은 기준으로 대조하고 두 기호는 계속 금지한다.
+- 실제 미작성 v5 사본은 불변 계약과 107-phone SHA를 통과했지만
+  `incomplete_pending`, pending 27, `ready_for_apply=false`가 됐고
+  decision/correction CSV는 생성되지 않았다.
+- `work`의 명시적 합성 사본에만 27개 권고 승인을 넣은 end-to-end
+  smoke test에서는 `ready_for_apply=true`, 정규화 결정 27행,
+  `외곬수적인/천구백칤비육` correction registry 2행이 생성됐다.
+  이 합성 결과는 연구자 승인이 아니며 D: review ledger·shard·원자료
+  쓰기는 모두 0이다.
+- validator 회귀시험 7개를 포함한 전체 Python unittest **184개**,
+  PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
+
+## 2026-07-29 13:33–13:43 검증 결정의 원장 적용 transaction
+
+- `apply_common_pron_researcher_decisions.py`를 추가했다. 입력은
+  validator의 `ready_for_apply` manifest·정규화 결정 27행·correction
+  2행뿐이며, 현재 no-path/Jamo 원장이 clean v5 생성 시 fingerprint와
+  달라졌으면 어떤 쓰기도 하지 않는다.
+- no-path는 기존 승인 `읊어` 1행을 후보·승인 의미 그대로 보존하고
+  pending 23행만 승인한다. Jamo 4행은 legacy 5열을 읽되 적용안은
+  후보/승인/evidence를 분리한 7열 `SPECIAL_REVIEW_FIELDS`로 만든다.
+  모든 후보 phone과 승인 phone을 frozen lexical 107-phone으로 다시
+  검사한다.
+- 기본 실행은 `validated_dry_run`, writes 0이다. 실제 적용에는
+  `--apply`가 필요하며 runner와 같은
+  `D:\mfa_common_pron\locks\<release>.lock`을 배타적으로 생성한다.
+  lock을 잡은 뒤 입력 fingerprint를 다시 읽어 TOCTOU 변경을
+  차단한다.
+- 실제 적용 전 두 원장과 validation/template/decision/correction
+  근거를 release의 고유 transaction 폴더에 SHA256 동등 복사한다.
+  제안 원장을 별도 작성·재읽기한 뒤 각 목적지에 `os.replace`로
+  승격한다. 두 번째 원장·correction·최종 manifest 중 하나라도
+  실패하면 두 원장을 archive에서 원자 복구하고 failure manifest를
+  남긴다.
+- 합성 fixture 시험 5개에서 dry-run 무쓰기, 기존 runner lock 차단,
+  no-path 24행(기존 1+신규 23)·Jamo 4행 적용, 같은 승인본 재실행
+  멱등성, 두 번째 승격 강제 실패 뒤 양쪽 SHA 복구를 확인했다.
+- 앞서 만든 `SYNTHETIC_DO_NOT_USE` 승인본으로 실제 D: 두 원장에
+  `--apply` 없는 end-to-end dry-run을 했다. 27개 결정·기존 `읊어`
+  보존·23+4 승인안·correction 2행·107-phone SHA를 모두 통과했다.
+  실행 전후 두 원장의 SHA256과 mtime이 같았고 transaction/correction
+  파일 수 0→0, lock false→false였다. 즉 D: 원장·shard·raw corpus
+  쓰기는 0이며 합성 승인을 실제 승인으로 사용하지 않았다.
+- transaction 회귀시험 5개를 포함한 전체 Python unittest **189개**,
+  PowerShell 안전검사 **12개**, `git diff --check`가 모두 통과했다.
+
+## 2026-07-29 연구자 결정 증거 archive와 adoption v3
+
+- 실제 원장 적용 전에 validation manifest·template manifest·정규화
+  결정·correction뿐 아니라 clean v5, 연구자 FILLED workbook, 동결
+  model bundle까지 transaction의 `decision_evidence` 아래에 각각
+  SHA256 동등 복사하도록 강화했다. 적용 manifest가 이 일곱 증거의
+  fingerprint를 직접 참조하므로 이후 C: 작업본이 이동해도 D: release
+  안에서 승인 당시 입력을 감사할 수 있다.
+- `build_common_pron_mfa_adoption.py`를
+  `common_pron_mfa_adoption.v3`로 올렸다. 새 필수 입력은
+  `common_pron_researcher_decision_application.v1` manifest다. 단순
+  파일 존재가 아니라 다음 연쇄를 모두 다시 읽어 대조한다.
+  1. archived validation이 `ready_for_apply`, 결정 27행,
+     correction 2행인지
+  2. 정규화 no-path 23행과 적용 원장의 신규 23행이 후보·승인 phone
+     수준에서 같은지
+  3. 기존 승인 `읊어`를 포함한 no-path 24행이 최종 supplement와
+     repair별 승인 snapshot에 모두 동일하게 들어갔는지
+  4. 신규 23행이 실제 적용 원장 fingerprint를 사용해 shard를
+     보수했는지
+  5. Jamo ㄽ 원장 4행과 최종 승인 dictionary의 phone이 같은지
+  6. `외곬수적인→외골수적인`,
+     `천구백칤비육→천구백칠십육` correction 두 행의 승인 phone이
+     최종 Jamo phone과 같은지
+- 최종 연구자 승인 계약도
+  `common_pron_mfa_researcher_approval.v2`로 올려 common manifest와
+  difference inventory뿐 아니라 decision application SHA와
+  correction registry SHA를 명시해야 한다. 따라서 승인 workbook이
+  검증됐더라도 application·repair·correction 중 하나가 빠지거나
+  바뀌면 연도별 MFA는 허용되지 않는다.
+- `build_mfa_alignment_contract.py`, `run_eojeol_realign.ps1`와
+  PowerShell 안전검사의 소비 기준도 adoption v3로 동시에 갱신했다.
+  새 archive/application/approval 변조 회귀시험을 포함한 전체 Python
+  unittest **192개**와 PowerShell 안전검사 **12개**가 통과했다.
+- 원격 검토를 위해 기존 D: 근거 bundle을 다시 확인했다.
+  occurrence 31행, 고유 발화/WAV 29개이며 기존 manifest의 원본/복사본
+  SHA 동등성 기록을 보존한다. 이 컴퓨터의 Windows 바탕화면은
+  `OneDrive\바탕 화면`이므로 코퍼스 WAV 29개를 바탕화면에 복사하면
+  OneDrive로 전송될 수 있다. 사용자가 Dropbox 이동을 요청했어도
+  별도 OneDrive 전송 승인은 없으므로 휴대용 폴더/ZIP 생성은 보류했고,
+  원본과 기존 D: bundle은 변경하지 않았다.
+- 이후 사용자가 명시적으로 Dropbox root 저장을 요청해
+  `C:\Users\ari30\Dropbox\MFA_R2_REVIEW_20260729`을 새로 만들었다.
+  clean v5의 작성용 복사본, 휴대용 안내문, clean template manifest,
+  occurrence 31행, audio manifest와 `wav` 29개를 넣었다. 중복 발화를
+  한 번만 둔 WAV 총량은 3,879,874바이트, 전체 package는
+  3,967,869바이트다. workbook·occurrence·audio manifest SHA는 각각
+  `508fbe78e5fa9e686ef8c28a66f98615d9bf5ed3e5a8215e174b20cbca24ca25`,
+  `27b88d8019a0ad4c8956b386b5b56ac61920cb1d70722e96bb54ca18999e0128`,
+  `0fb564df09ce55927e31b2cd144331711d0e75745574c8766365d19795964ed4`
+  로 기존 증거와 같다.
+- 연결표의 29개 고유 `original_wav`를 다시 읽어 expected SHA와
+  Dropbox 복사본을 전수 대조했다. 원본 존재 29/29, 원본 SHA 일치
+  29/29, Dropbox SHA 일치 29/29이며 raw corpus 쓰기는 0이다.
+  workbook의 D: 절대경로 링크가 다른 컴퓨터에서 열리지 않을 때는
+  `wav\<year>\<session_id>\<utt_id>.wav`를 사용하도록 별도 안내문에
+  기록했다. ZIP 중복본은 만들지 않아 Dropbox 전송량을 불필요하게
+  늘리지 않았다.
+
+## 2026-07-29 15:13–15:22 연구자 27건 일괄 권고 승인
+
+- 사용자가 대화에서 27개를 모두 `approve_recommended`로 명시 승인했다.
+  사용자가 Excel을 다시 수작업하지 않아도 같은 결정을 감사할 수 있게
+  clean v5는 그대로 두고 Dropbox에
+  `02_MFA_R2_REVIEW_FILLED_ALL_RECOMMENDED.xlsx`를 별도로 만들었다.
+  R열 27행만 권고 승인으로 기록하고 S custom phone은 27행 모두
+  비웠으며, U열에는
+  `2026-07-29 사용자 명시 결정: 27개 모두 workbook 권고 발음을 승인함.`
+  을 27행에 동일하게 남겼다. 작성본 SHA256은
+  `ab4297135197b6532e7c1e77d711e439f46ed7975fe9caae518e0c9f635ed2f8`
+  이다.
+- Dropbox 작성본을 프로젝트
+  `outputs/common_pron_r2_review_20260729/validated_user_approval_20260729/`
+  에 SHA 동등 고정 복사했다. clean v5와의 검증에서 불변 셀 1,860개,
+  editable 81칸 경계, sheet/병합/table/data validation/수식/link가
+  통과했다. 결과는 `ready_for_apply=true`,
+  `approve_recommended=27`, pending/hold/reject/error 0,
+  correction registry 2행이다. frozen lexical phone은 107개,
+  SHA256
+  `6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d`
+  로 다시 확인했다. 정규화 결정 CSV SHA는
+  `8913cf9fec4a0e4ffc5dd5d1e57cb7298946d54c7a933b1df92c18d188acbf68`,
+  correction CSV SHA는
+  `f263067dc50f41f2013ad96185d8c26c7873c03f7a536fdf88303950b87d21ec`
+  이다.
+- `발음검토!A1:U28`을 다시 렌더링해 27개 R열 결정, 빈 S열,
+  U열 승인 근거가 기존 서식 안에서 보이는지 확인했다. 이 편집은
+  결정값과 notes만 채웠고 연구 데이터·권고 phone·수식·서식은
+  바꾸지 않았다.
+- 실제 승인본을 대상으로 D: 쓰기 0 dry-run을 먼저 수행했다.
+  no-path/Jamo 원장 SHA, lock, transaction 수가 전후 같았다. 이후
+  `review_ab4297135197` transaction을 실제 적용했다. 기존 `읊어`
+  1행을 보존하고 no-path 신규 23행을 더해 승인 24/pending 0,
+  Jamo 승인 4, correction 2행이 됐다.
+- transaction은 두 원장 원본과 clean/filled workbook, model bundle,
+  validation/template manifest, decision/correction CSV의 일곱 근거를
+  먼저 archive했다. 출력 no-path/Jamo/correction SHA는 각각
+  `23979184e53ca7b983997b6b1caaf2bedf83f2245ee685813a7daed97640cf3d`,
+  `c64cc053179e3b0049fa721440b528238d71cf3390b1ae6a7120fb412408d499`,
+  `f263067dc50f41f2013ad96185d8c26c7873c03f7a536fdf88303950b87d21ec`
+  이다. 적용 manifest는
+  `03_review/decision_application_review_ab4297135197.manifest.json`이며
+  lock은 해제됐다. 이 단계의 raw corpus·G2P shard·final dictionary
+  변경은 모두 0이다.
+
+## 2026-07-29 15:26–15:40 r2 prepare 코드 계약 재검증
+
+- 연구자 결정 적용 뒤 r2 runner를 재개했으나 shard 처리 전에
+  `prepare manifest 생성기 코드 계약 불일치`로 안전 중단됐다. 원인은
+  2026-07-28 prepare 당시 builder 전체 파일 SHA와, 이후 Jamo 연구자
+  승인·최종화 로직을 강화한 현재 builder 전체 파일 SHA가 달라진
+  것이었다. prepare 생성 로직의 변경이나 기존 데이터 손상은 아니다.
+  실패 실행은 output shard, final dictionary, raw corpus를 쓰지 않았고
+  lock도 남기지 않았다.
+- 안전장치를 생략하거나 기존 manifest의 SHA를 덮어쓰지 않았다.
+  현재 builder로 prepare를 프로젝트 `work`의 격리 경로에서 다시
+  실행했다. 어휘 881,237, OOV 866,692, 표준 어휘 866,688,
+  U+11B3 rewrite 4, 입력 shard 35라는 count가 기존과 같았다.
+- 기존/격리 prepare의 입력 5종, 정책·G2P·phone·어휘 계약,
+  OOV inventory, grapheme audit, Jamo 보조파일 3종 및 35개 입력
+  shard의 행 수·byte 수·SHA256을 전수 비교했다. 차이는 **0건**이다.
+  고정 증거는
+  `outputs/common_pron_prepare_revalidation_20260729/`에 남겼다.
+- `common_pron_prepare_code_transitions.json` registry를 추가했다.
+  기존 prepare builder
+  `c93648bd045047b0daa22cb0ce6b94e1f5fcb966e1fddd29de1d8ae4c5d361b3`
+  에서 현재 builder
+  `b477c9b49620d8a829cc0e390359a142d4535c694b3bd1719bc4fb5d22e7f420`
+  으로 넘어갈 때 이 특정 release contract와 격리 evidence manifest의
+  fingerprint, 모든 prepare 산출물의 바이트 동등성을 실행 시 다시
+  검증한다. 등록되지 않은 코드 변경이나 evidence 변조는 계속
+  fail-closed다.
+- 최종 release manifest에는 prepare builder와 finalize builder를
+  분리해서 기록하도록 했다. 따라서 논문 방법론상 기존 prepare
+  산출물을 어느 코드로 만들었는지와, 연구자 승인 뒤 최종 사전을
+  어느 코드로 조립했는지를 각각 추적할 수 있다.
+- 전환 성공과 evidence의 shard SHA 변조 차단 회귀시험을 추가했다.
+  관련 lexicon unittest 16개가 통과했고, 실제 D: prepare manifest에
+  대한 read-only 재검증도 통과했다. 전체 Python unittest **193개**와
+  PowerShell 안전검사 **12개**도 통과했다.
+
+## 2026-07-29 15:42–15:46 r2 실물 완성 및 difference audit 사전 차단 보정
+
+- commit `0e62a66` 코드로 r2 runner를 재개했다. 기존 검증본 31개는
+  다시 계산하지 않았고, 연구자 승인 no-path 23개가 분포한 shard
+  8·12·15·29만 기존 partial 출력에 보수했다. 네 shard 모두 입력/출력
+  coverage, `spn=0`, acoustic phone inventory 이탈 0을 다시 통과했다.
+- 최종 표준 shard는 35/35, 관측 OOV는 866,692/866,692,
+  missing/extras/`spn`/inventory outside 모두 0이다. 최종 사전
+  `common_pron_mfa_r2.dict`는 37,671,240바이트, G2P cache는
+  85,538,430바이트이며 release manifest status는 `success`다.
+- 2020·2021 difference inventory를 시작했으나 전수 파일을 읽기 전에
+  즉시 안전 중단됐다. 감사 코드가 r1의 세 핵심 G2P 필드와 manifest
+  전체 dict의 완전 일치만 허용해, r2가 추가한 model/Jamo/no-path
+  안전계약을 잘못 거부한 것이 원인이다. baseline DB·TextGrid와 r2
+  산출물에 대한 쓰기는 0이며 실패 stdout/stderr는 release logs에
+  보존했다.
+- 감사 계약을 “핵심 세 필드는 정확히 동일해야 하고 추가 안전 필드는
+  허용”하도록 바로잡았다. r2 deterministic no-path가 존재하면 동일
+  동결 모델, 연구자 승인, 기존 모델 발음 대체 0, final `spn` 금지를
+  추가로 강제한다. 핵심값 변경과 no-path 완화는 계속 차단한다.
+  관련 unittest 10개 및 실제 r2 release read-only preflight가 통과했다.
+  전체 Python unittest **195개**, PowerShell 안전검사 **12개**도
+  통과했다.
+
+## 2026-07-29 16:49–17:02 difference inventory 중단 복구 설계
+
+- 15:51에 시작한 전수 difference inventory 프로세스가 예상치 못한
+  시스템/세션 중단 뒤 사라진 것을 확인했다. traceback과 최종
+  JSON/CSV가 모두 없어 코드가 보고 가능한 예외로 종료된 것이 아니라
+  프로세스가 외부에서 강제 종료된 상태다. r2 release manifest,
+  37,671,240바이트 최종 사전, 85,538,430바이트 G2P cache의 SHA를
+  다시 계산해 manifest와 모두 일치함을 확인했다. adoption은 없고
+  `allow_yearly_mfa=false`다.
+- 연결 드라이브는 D: `DATA_SSD` 여유 262.97GiB, E: 여유
+  1,855.55GiB, H: `SAMSUNG` 여유 93.04GiB다. 약 55.9GiB pre-Jamo
+  archive는 E:가 적합하지만 difference inventory와 동시에 D:를
+  읽으면 I/O 병목이 생기므로 아직 시작하지 않았다.
+- `audit_common_pron_mfa_equivalence.py`에 2020 TextGrid batch
+  checkpoint를 추가했다. 기본 2,000파일마다 counts·차이·마지막
+  상대경로·누적 `path/size/mtime` prefix SHA를 원자 저장한다.
+  재실행에서는 완료 prefix를 다시 열어 분석하지 않되, 경로 수와
+  prefix SHA가 같을 때만 재사용한다. 입력이 바뀌거나 checkpoint와
+  공통사전/QC SHA가 다르면 fail-closed다.
+- 완주한 2020 checkpoint도 보존하므로 이후 2020 partial DB나 2021
+  DB 단계에서 중단되더라도 866,196 TextGrid 분석을 다시 하지 않는다.
+  인위적으로 두 번째 batch에서 중단한 회귀시험에서 첫 batch만
+  checkpoint에 남고 재실행이 나머지만 처리함을 확인했다. 완료본
+  재사용과 완료 prefix 변조 차단도 별도로 통과했다.
+- 새 `run_common_pron_difference_inventory.ps1`은 D: 라벨·여유공간,
+  r2 final hard gate, baseline 증거, G2P/MFA/자체 배타 lock, 기존
+  최종 산출물 쌍과 SHA를 검사한다. PowerShell 창에서 실행하면 진행을
+  화면과 고유 log에 동시에 남기고 중단 시 checkpoint를 보존한다.
+  실행 thread에만 `ES_SYSTEM_REQUIRED`를 설정해 무인 실행 중 Windows
+  시스템 절전을 억제하고 finally에서 정상 상태로 복원한다. 화면은
+  꺼질 수 있다. 결과가 완성돼도 adoption과 연도별 MFA는 자동
+  승인하지 않는다.
+- 읽기 전용 상태판에 difference checkpoint 행 수·진행률·lock 생존과
+  `difference_inventory_running`,
+  `difference_inventory_interrupted_resumable`,
+  `difference_inventory_ready_researcher_approval` phase를 추가했다.
+  전체 Python unittest **197개**와 PowerShell 안전검사 **13개**가
+  통과했다.
+
+## 2026-07-29 17:07–17:12 무인 재실행 관측과 여섯 연도 재정렬 재확정
+
+- 사용자는 구 2020·2021 결과와 r2의 차이가 작더라도 2020–2025
+  여섯 연도를 모두 동일 r2 기준으로 다시 MFA한다는 결정을 재확인했다.
+  difference inventory는 재사용 판정 gate가 아니라 전환 영향을
+  기록하는 감사일 뿐이다. 이를
+  `DECISION_r2_realign_all_six_years_20260729.md`에 별도 확정했다.
+- 무인 runner는 68,000/866,196 TextGrid checkpoint까지 진행했으나,
+  읽기 전용 상태 확인과 checkpoint `os.replace`가 Windows 공유 잠금
+  순간 충돌해 `PermissionError`로 종료됐다. 68,000파일 checkpoint와
+  실패 직전 staged partial은 모두 보존됐고 원자료·r2 사전·최종
+  JSON/CSV 변경은 0이다.
+
+## 2026-07-29 22:10 현재 상태 정본과 archive 경로 재발 방지
+
+- 긴 대화와 context compaction 뒤 최근 대화만 따라가면서, 이미
+  압축 archive로 전환한 결정을 놓치고 사용 중단된 loose-file
+  Robocopy 스크립트를 한 차례 잘못 안내했다. 사용자가 실행 전에
+  지적해 실제 loose copy와 원본 변경은 발생하지 않았다.
+- 근본 해결책으로
+  `docs/environment/PROJECT_CURRENT_STATE.md`를 단일 현재 상태 정본으로
+  만들었다. 연구 목적·불변 원칙, 최신 Jamo r2 기준, 완료 상태,
+  바로 다음 명령, adoption 이후 6개년 재정렬 순서와 세션 복구 절차를
+  기록했다.
+- 모든 실질 작업 전에 읽는
+  `docs/environment/PROJECT_START_HERE.md`의 첫 지시가 이 상태 정본을
+  가리키도록 고쳤고 `docs/README.md` 문서 색인 최상단에도 추가했다.
+- 구 `archive_pre_jamo_outputs_to_external.ps1`은 실행 즉시 사용 중단
+  오류를 내도록 차단했다. 정본은
+  `archive_pre_jamo_outputs_compressed.ps1`이며 E:에 항목별 7z를
+  생성하고 CRC, 파일 수·비압축 바이트, 모든 DB 전후 SHA, archive
+  SHA를 검증하며 D: 원본 삭제 기능은 없다.
+- 현재 충돌 가능한 MFA/Python/conda/robocopy/7z 프로세스가 없고,
+  오늘 밤 작업은 E: 압축 archive 하나만 실행한다.
+- 상태판의 JSON 읽기를 `FileShare.ReadWrite | FileShare.Delete`로
+  바꿔 원자 교체를 방해하지 않게 했다. 공통 `promote_staged`도
+  일시적 `PermissionError`만 최대 약 5.5초 지수 backoff 재시도하며,
+  다른 오류나 지속 잠금은 계속 실패하고 staged 파일을 보존한다.
+- 실제 규모에서 checkpoint가 68,000파일에 약 8MiB로 커지는 것을
+  관측했다. 매 2,000파일마다 전체 누적 상태를 다시 쓰는 병목을
+  피하도록 기본 저장 주기를 10 batch, 즉 20,000파일로 조정했다.
+  중단 시 최대 20,000파일만 재분석하며 기존 68,000 checkpoint는
+  그대로 재사용할 수 있다. transient 공유 잠금 재시도 시험을 포함한
+  전체 Python unittest **198개**, PowerShell 안전검사 **13개**가
+  통과했고 상태판은 `difference_inventory_interrupted_resumable`과
+  68,000/866,196을 정상 표시했다.
+
+## 2026-07-30 09:00–10:50 archive 검증 정리, adoption v3, 연구 데이터 계약
+
+### E: 압축 archive와 D: 구 산출물 정리
+
+- E: 압축 archive가
+  `E:\READ_ONLY_ARCHIVE\2026_summer_research\pre_jamo_compressed_20260728`
+  에서 `status=success`로 완료됐다. 2020 TextGrid 866,196개,
+  2021 TextGrid 1,371,868개, 2021 MFA DB/temp, stale temp, 실패한
+  모델 clone을 항목별 7z로 보존했다. 원 약 55.883GiB, archive 약
+  12.294GiB이며 CRC, 내부 파일 수·비압축 bytes, 모든 DB SHA와 archive
+  SHA가 일치했다.
+- 사용자에게 정확한 다섯 D: 경로와 복구 가능한 E: archive를 설명하고
+  명시 승인을 받은 뒤
+  `prune_pre_jamo_outputs_after_compressed_archive.ps1`을 만들었다.
+  기본 dry-run, exact allowlist, `-Apply`와 고정 승인 토큰, reparse point
+  거부, 삭제 직전 archive 재해시·원 파일 수/bytes·DB SHA 재검증을
+  강제했다.
+- 첫 적용은 기본 report 경로에서 `$PSScriptRoot`를 param 기본값으로
+  평가한 문제로 **삭제 전 안전 중단**됐다. 두 번째 적용은
+  `OrderedDictionary`에 `Measure-Object`를 직접 사용한 count 계산 문제로
+  다시 **삭제 전 안전 중단**됐다. 각각 경로 계산을 본문으로 옮기고
+  `.Values`를 명시하도록 고친 뒤 재실행했다. 이 두 시행착오에서 파일
+  삭제는 0건이었다.
+- 최종 적용은 모든 검증을 다시 통과한 뒤 승인한 다섯 경로만 정리했다.
+  보고서는
+  `outputs/reports/PRUNE_pre_jamo_after_compressed_archive_20260730.json`,
+  status는 `success`이다. 원시 corpus는 변경하지 않았고 D: 여유는
+  323.56GiB가 됐다.
+
+### 연구자 승인 계약과 adoption v3 완성
+
+- 이미 사용자가 명시 승인한 27개 예외를 새로 판단하지 않고, workbook
+  validation, 결정 적용 transaction, 6개년 전면 재정렬 결정문, 완료된
+  difference inventory의 SHA를 다시 연결하는
+  `build_common_pron_researcher_approval.py`를 추가했다.
+- 첫 adoption 실행은 `application/final no-path candidate rows mismatch`로
+  안전 중단됐다. 조사 결과 발음 불일치가 아니라 no-path 기록 형식의
+  세대 차이였다. repair v2는 최종 승인 phone을 `pron_phones_mfa`에,
+  모델 후보를 `model_candidate_pron_phones_mfa`에 보존하지만 현재
+  review는 모델 후보와 승인 phone을 각각
+  `pron_phones_mfa`/`approved_pron_phones_mfa`에 둔다. legacy v1은
+  후보=승인을 암시하되 새 필드가 없다.
+- 모델 후보와 승인 phone의 의미를 먼저 정규화해 비교하도록 adoption
+  builder를 보완했다. final dictionary, phone, method supplement,
+  release manifest와 difference inventory는 수정하지 않았다.
+- 최종
+  `00_contract\adoption_contract.json`은
+  `schema_version=common_pron_mfa_adoption.v3`, `status=passed`,
+  `allow_yearly_mfa=true`, `legacy_inline_g2p_default=false`로 생성됐다.
+  adoption SHA는
+  `611f021bb2c051fb21cfffe9dd948f15dd980cd4c2566e29cc363f6bc6c9c081`
+  이다.
+
+### 코드가 아니라 연구 입력·출력을 먼저 고정
+
+- 사용자의 지적에 따라 r2 실행 검토의 중심을 코드 동작에서 연구 데이터
+  계약으로 옮겼다.
+  `WORKFLOW_r2_MFA_research_data_contract_20260730.md`에 원시자료,
+  동결 pre-MFA 입력, 공통 발음 계약, 연도별 DB/interval/TextGrid/QC,
+  최종 검색 CSV/Parquet, 후보 bundle, KOINA/stitch/wav2vec2,
+  연구자 판정의 역할과 조인을 한 흐름으로 정리했다.
+- 동결 `pre_mfa_v1_20260725`가 MFA 입력에는 충분하지만 형태소별·어절별
+  철자 로마자, 우리말샘 보조 발음, 화자/대화 참여자, post-MFA 보조열을
+  모두 갖춘 최종 연구 검색 CSV는 아니라는 점을 명시했다.
+- 운영 4-tier는 현재 호환 이름
+  `words/phones/morphemes/utterance`를 유지하되, `phones`는 의미상
+  MFA 보조 분절이고 `morphemes`는 legacy 형태소 경계 출처임을 고정했다.
+  모든 tier의 0–xmax 연속 빈 interval과 운영본 무padding 원칙도 출력
+  계약에 포함했다.
+- 상위 `run_pre_mfa_bulk_safe.ps1`이 하위 러너의 2020·2021 전면 재실행
+  승인 플래그를 전달하지 못하는 불일치를 발견했다.
+  `-AllowBaselineCommonPronRerun`을 상위에 추가하고, 공통 r2가 있는
+  2020·2021에서만 명시적으로 허용하며 다른 연도·구방식에서는 거부하도록
+  고쳤다. lock과 summary에도 이 결정을 기록한다.
+- 외부 도구가 GitHub 주소만으로 연구 목적·입출력·조인·실패복구·방법
+  동일성을 리뷰하도록
+  `PROMPT_external_review_r2_MFA_research_workflow_20260730.md`를 만들었다.
+  외부 리뷰 전에는 2020 MFA를 시작하지 않는다.
+
+### 검증
+
+- 전체 Python unittest **202개** 통과
+- PowerShell 안전검사 **14개 파일** 통과
+- 상위 runner의 2020 승인 플래그 누락과 2022 오용이 각각 exit 1로
+  차단되는 동작 probe 통과
+- 읽기 전용 상태판:
+  `Phase=yearly_mfa_approved`, shard 35/35, difference 866,196/866,196,
+  lock 없음, final/adoption 통과, `allow_yearly_mfa=true`
+
+## 2026-07-30 — 외부 workflow 리뷰 반영과 6개년 r2 인프라 수용 파일럿
+
+### 연구 단계의 범위를 다시 고정
+
+- 사용자가 실제 연구에서 수행할 순서는 형태소·표기 환경 검색 → 대응
+  WAV/TextGrid 수집 → KOINA 등 운율 정보 결합 → 연구자의 음성·TextGrid
+  직접 판정이다.
+- 이번 파일럿은 ㄴ 삽입 등 구체적 음운 실현을 판정하지 않는다. CSV–WAV–
+  TextGrid 연결, 같은 공통사전·음향모델, 4-tier 구조·경계, DB 재수출,
+  phone inventory, 검토 편의성을 확인하는 인프라 수용 단계다.
+- `phones`는 MFA 정렬·탐색 보조이며 실제 실현 판정값이 아니다.
+
+### 외부 리뷰 조치와 legacy 전환
+
+- 커밋 `3839872` 대상 외부 리뷰의 `GO AFTER FIXES` 판정을 원문으로
+  보존하고, finding별 구현·실물·시험 상태를
+  `RESOLUTION_external_review_r2_MFA_research_workflow_20260730.md`에
+  분리 기록했다.
+- r2 marker를 거부하던 두 preflight의 발음 모드 계약을 고치고 legacy
+  정상·r2 정상·미지값 거부 회귀시험을 추가했다.
+- 구 2020/2021 align/merge marker 4개는 삭제하지 않고
+  `D:\mfa_eojeol\done\archive_stale\r2_transition_20260730_legacy_markers`
+  로 보존 격리했다. 유효한 LAB 입력 marker는 유지했고, JSON 보고서를
+  `outputs/reports/ARCHIVE_legacy_mfa_markers_for_r2_20260730.json`에 남겼다.
+- LAB 입력은 `pron_reference_form`으로 고정하고, 숫자·기호·외국어 전용
+  어절 탈락을 숨기지 않도록
+  `source_eojeol_index → mfa_word_index|null` 대응표를 manifest에 넣었다.
+- 선택된 30개 세션 CSV는 파일별 SHA와 aggregate SHA
+  `c9de8400588339dc1962d9f6a3758220ff23b9501572f4d75f71723baa3be655`
+  로 동결했다.
+
+### 파일럿 구성과 안전 중단
+
+- D: 격리 실행 루트:
+  `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730`
+- 표본: 2020–2025 연도당 10발화, 실제 5화자·서로 다른 5세션,
+  화자당 2발화.
+- 최종 검토본은 모든 기계 gate 뒤에만
+  `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730` 한 폴더의
+  `연도__utt_id` 평면 파일로 만들도록 했다.
+- 초기 시행착오 네 건은 모두 원시자료·기존 정본·Dropbox를 변경하기 전에
+  안전 중단됐다.
+  1. 숨은 PowerShell CP949에서 IPA 출력 실패
+  2. 러너의 `state/logs/temp`를 부분 표본으로 오인
+  3. PowerShell 5.1이 MFA 정상 stderr INFO를 오류로 승격
+  4. MFA 내부의 미사용 예약 `<unk> → spn` pronunciation 행을 실제
+     정렬 `spn` interval로 오인
+- 네 번째 문제는 DB를 읽기 전용으로 확인해 실제 `spn` phone interval이
+  0임을 증명했다. gate를 실제 `phone_interval JOIN phone` 기준으로
+  고치고, 완료된 2020 DB를 버리지 않은 채 후속 export·감사만 다시
+  실행했다.
+
+### 현재 연도별 실측
+
+- 2020: 정렬 10/10, direct DB 4-tier 10/10, 구조 감사 invalid 0,
+  형태소 tier 누락 0, 실제 `spn=0`, inventory 이탈 0,
+  DB 재수출 5세션 tier/byte exact 5/5.
+- 2021: 기계 QC 통과. 허용 phone 109, 관측 phone 46,
+  inventory 이탈 0, 실제 `spn=0`.
+- 2022: 13:26:13 KST 기계 QC 통과.
+- 2023: 13:42:57 KST 기계 QC 통과.
+- 2024: 14:00:27 KST 기계 QC 통과.
+- 2025: 14:00:27 KST에 같은 계약으로 시작했고 14:17:04 KST에
+  기계 QC를 통과.
+- PowerShell 통합 stdout에서 IPA가 깨져 보였지만 2021 JSON 원본은 정상
+  UTF-8이었다. 후속 실행용 러너의 console/native pipeline 인코딩을
+  UTF-8로 고정했다.
+
+### 연구자 검토와 다음 연도 gate 보강
+
+- Dropbox 패키저는 단독 실행에서도 연도별 machine marker, 5세션 DB
+  재수출 표본, 6개년 방법 감사를 다시 검사한다. 복사 전후 SHA를 비교하고
+  기존·부분 폴더는 덮어쓰지 않는다.
+- `REVIEW.xlsx`는 openpyxl 우회로 만들되 CSV/XLSX SHA와 구조를 별도
+  template manifest에 기록한다.
+- 작성 XLSX는 새 validator가 검토 열 여섯 개만 허용하고 발화·화자·파일
+  연결 열을 원본 CSV와 전수 대조한다. 승인·수정 필요·미완·불일치를
+  기계가독 보고서로 구분한다.
+- 다음 연도 preflight는 DB 재수출 표본과 연구자 승인 보고서를 필수
+  입력으로 받아 같은 DB·input/alignment contract일 때만 통과하도록
+  보완했다. 보고서 부재·다른 DB·미승인 회귀시험을 추가했다.
+
+### 중간 검증
+
+- 신규·변경 핵심 Python 회귀시험 36개 통과
+- PowerShell 안전검사 16개 파일 통과
+- 전체 unittest와 최종 변경 감사는 6개년 파일럿 종료 뒤 다시 수행한다.
+
+### 6개년 기계 완료와 방법 동일성 감사
+
+- 2025가 2026-07-30 14:17:04 KST에 기계 QC를 통과해
+  `state\2020.machine_done.json`부터 `2025.machine_done.json`까지
+  6/6 marker가 생성됐다.
+- 여섯 연도 모두 연도당 TextGrid 10/10, 실제 `spn` phone interval 0,
+  허용 inventory 밖 phone 0을 확인했다.
+- `logs\cross_year_method_audit.json`은 `status=passed`,
+  기대/관측 연도 6/6, 방법 계약 불일치 0, 같은 phone 생성 기준과
+  허용 inventory 참을 기록했다.
+- 관측 phone 집합은 표본 어휘에 따라 달라도 되며, 동일 모델·공통사전·
+  input/tier 계약과 같은 허용 inventory의 부분집합이라는 방법론 기준을
+  적용했다.
+
+### Dropbox 마지막 rename 실패와 검증 복구
+
+- 모든 payload 복사와 manifest 생성 뒤, Dropbox가 partial 디렉터리 handle을
+  잠가 마지막 `os.replace`만 `WinError 32`로 실패했다. 장기 runner는
+  정렬과 교차 감사를 이미 끝냈고, D: 결과·원시 corpus·공통사전 손상은
+  없었다.
+- partial에는 244개 파일이 완성돼 있었다. WAV/TextGrid/LAB/행별 CSV 각
+  60개와 지원 파일 3개를 전수 재해시해 목적지·현재 원본·machine marker·
+  DB 재수출 표본·6개년 감사 불일치 0을 확인했다.
+- v1 manifest가 partial 절대경로를 기록해 정상 rename 뒤 낡는 설계 결함을
+  함께 발견했다. 패키저를 상대경로 schema v2와 제한 시간 rename 재시도로
+  교정하고, 전용 복구기는 prior manifest SHA와 복구 이유를 보존하도록
+  했다.
+- 14:27:50 KST에
+  `C:\Users\ari30\Dropbox\MFA_R2_INFRA_PILOT_20260730`으로 안전 승격했다.
+  보고서:
+  `outputs/reports/RECOVER_mfa_r2_pilot_bundle_20260730.json`.
+
+### 연구자 검토표와 최종 전달 감사
+
+- openpyxl로 `REVIEW.xlsx`를 만들고 같은 Dropbox 평면 폴더에 두었다.
+- 최종 파일 246개, 60발화·15열·2시트·240 상대 파일 링크·2 dropdown·
+  검토 table을 다시 열어 검증했다.
+- `AUDIT_mfa_r2_pilot_review_delivery_20260730.json`은
+  `status=passed`, 연구자 검토 `pending`, 실제 음운 실현 판정
+  `false`를 기록한다.
+- 기계 인프라 파일럿은 통과했지만 전수 MFA는 아직 시작하지 않는다.
+  사용자가 연결·tier·경계·CSV 검색 편의성을 검토하고 기계가독
+  `approved` 보고서를 만든 뒤에만 2020 r2 전수 실행으로 전환한다.
+- 최종 코드 검증은 Python unittest 222개와 PowerShell 안전검사 16개
+  파일을 모두 통과했고, 핵심 스크립트 compile과 `git diff --check`도
+  통과했다.
+
+### REVIEW.xlsx 15개 열의 연구·운영 의미 문서화
+
+- 사용자가 각 열이 무엇을 나타내는지뿐 아니라, 직접 요청한 것인지,
+  왜 필요한지, 이후 어떻게 활용되는지까지 기록해 달라고 요청했다.
+- `GUIDE_mfa_r2_infrastructure_review_columns_20260730.md`를 추가해
+  15개 열을 불변 식별자·연구자 판정·상대 파일 링크로 나누고, 열별
+  의미·생성 출처·요청 배경·통과/문제 기준·후속 활용·편집 금지를
+  명시했다.
+- 사용자가 직접 요청한 개념과 안전한 운영을 위해 파생한 열을 구분했다.
+  경계는 구조적 0–xmax와 가시적 사용성 경계를 나누고, CSV 파일은 전량
+  검색본이 아닌 한 발화 snapshot임을 명확히 했다.
+- 현재 pilot 승인과 전수 연도별 연구자 gate를 분리하고, MFA phone·사전
+  발음·실제 음운 실현 판정을 혼동하지 않도록 금지 범위를 기록했다.
+
+### 연구자 1번 발화 검토와 전역 이슈 코드화
+
+- 연구자가 `SDRW2000000510.1.1.98`의 WAV·LAB·CSV·TextGrid 연결,
+  발화 내용, word/phone 정렬, 양끝 경계를 직접 확인했다.
+- 연결과 경계는 대체로 사용할 수 있었으나, `morphemes`가 형태소 tagging
+  없이 legacy 시간경계를 중복 표시해 형태소 음향경계처럼 보이는 문제가
+  확인됐다.
+- 60개 TextGrid를 읽기 전용으로 대조했다.
+  - legacy 4-tier 구성 60/60
+  - `words`와 `morphemes` 라벨 순서를 직접 비교할 수 있는 파일 6개
+  - 그 6개 중 시간경계까지 완전히 같은 파일 0개
+  - 구조 또는 시간이 다른 파일 60개
+  - 비교 가능한 경계의 최대 차이 0.245초
+- 60개 행별 CSV는 헤더가 하나로 일치하고 `search__tagged`와
+  `search__tagged_roman`이 전부 존재했지만, 형태소 첫/끝·좌우 환경을
+  정규화한 `morph_tokens/morph_boundaries`는 전부 없었다.
+- 반복 문제를 `G-TIER-01`, `G-CSV-01`로 고정했다. 목표 TextGrid는
+  `words/phones_mfa/morph_analysis/utterance_info`, 셋째 tier는
+  `0–xmax` 단일 tagging 구간으로 결정했다.
+- 이 결정은 MFA phone 기준·공통사전·정렬 DB를 바꾸지 않는다. 기존 pilot
+  DB와 CSV에서 출력만 다시 만들어 동등성을 확인하는 문제다.
+
+### REVIEW.xlsx 전역 이슈 사전입력
+
+- 사용자가 Excel을 저장하고 닫은 뒤 수정 전 파일을
+  `archive/mfa_r2_review/REVIEW_before_global_prefill_20260730_173905.xlsx`
+  로 보관했다. 원본과 백업 SHA-256이 일치했다.
+- `prefill_mfa_r2_review_global_issues.py`를 추가해 기존 연구자 입력이 있는
+  행을 덮어쓰지 않도록 선행조건을 두었다.
+- 1번 상세 입력은 그대로 두고 2–60번 59행에 다음을 입력했다.
+  - `tier_structure_status=문제있음`
+  - `csv_searchability_status=문제있음`
+  - `overall_infrastructure_decision=수정 후 재검토`
+  - notes=`[전역 G-TIER-01, G-CSV-01]`
+- 2–60번의 `linkage_status`와 `boundary_status`는 연구자가 개별 확인할 수
+  있도록 `미검토`로 남겼다.
+- 재로딩 뒤 1번 행·불변 식별/파일 열, 59행 입력값, 240 하이퍼링크,
+  2 dropdown, 열 너비·style ID, `A1:O61` table, 수식 오류 0을 확인했다.
+- Dropbox의 `REVIEW.xlsx`는 수정 전 SHA가 그대로일 때만 검증본으로
+  교체했고 최종 SHA-256은
+  `0802b6a0d5c590d8d5f818dfcac23ad4bb6b506cc8004746322ad69196d75d9a`다.
+- 전용 artifact 편집 런타임은 이 세션에 제공되지 않아, 사용자가 이전에
+  명시적으로 승인한 openpyxl 우회 경로를 사용했다. Excel COM 시각
+  렌더링은 `Workbooks.Open` 단계에서 지원되지 않았으나, 값·구조·스타일·
+  링크·dropdown·table을 독립 재로딩으로 검증했다.
+- 상세 결정과 재검토 gate는
+  `DECISION_mfa_r2_review_global_issues_20260730.md`에 기록했다.
+
+### TextGrid 발화 수준 로마자·형태소 검색 tier 재검토
+
+- 사용자가 원한 것은 형태소별 시간을 억지로 나눈 tier가 아니라,
+  TextGrid 안에서 발화 전체의 철자 로마자와 형태소 표기를 검색할 수 있는
+  utterance 수준 tier임을 다시 명확히 했다.
+- 따라서 `morph_analysis`를 word slot에 배치하는 구현도 일단 중지했다.
+  형태소 시간경계를 주장하지 않으면서 Praat 검색과 가독성을 확보하는
+  3/4/5-tier 대안을 먼저 검토한다.
+- 내부 잠정 우선안은
+  `words/phones_mfa/utterance/utterance_search` 4-tier다.
+  `utterance_search`에는 `[ORTH_R]`, `[MORPH]`, `[MORPH_R]` 표지를 둔다.
+- label의 정확한 한 줄 문법, label 시간 범위, 규칙·사전 발음 포함 여부,
+  510만 발화의 크기·I/O 영향을 확정하기 전에는 코드를 수정하거나 60발화를
+  재생성하지 않는다.
+- 다른 도구가 GitHub 주소만으로 설계를 검토할 수 있도록
+  `PROMPT_external_review_TextGrid_utterance_search_tier_20260730.md`에
+  연구 흐름, 현재 실측 문제, 후보안, 변경 금지 기준, 필수 검토 질문,
+  요구 답변 형식을 정리했다.
+
+### 형태소·음절·분절 단위 로마자 위치 검색 외부 리뷰 요청
+
+- TextGrid 4-tier 외부 리뷰는
+  `words/phones_mfa/utterance/utterance_search`를 권장했으나,
+  `morph_tokens/morph_boundaries`를 나중 개선으로 분류했다.
+- 연구자는 형태소별 시작·내부·끝의 로마자, 음절 내 초성·중성·종성,
+  형태소·어절 경계의 좌우 환경 검색이 핵심이라고 재확인했다.
+- 현행 `tagged_roman`의 `공백 / _ / + / | / /POS` 위계는 표시에는
+  유용하지만, 위치 단위의 모호성, 가변 길이 로마자 토큰, 무음 초성 `ㅇ`,
+  품사 표지와 마지막 분절의 결합, 예약문자·왕복 검증 문제가 남는다.
+- D: 동결 pre-MFA CSV를 읽기 전용으로 확인했다. 2020–2025 각 연도 표본은
+  모두 48열이며 `form_roman`, `tagged`, `tagged_roman`, `align_warn`,
+  `n_eojeol`을 포함했다. 대표 발화
+  `SDRW2200000836.1.1.61`의 값도 문서 예시와 일치했다.
+- 따라서 구조화 색인은 기존 동결 CSV에서 파생할 수 있으며, 원 JSON이나
+  Bareun 분석을 무조건 다시 실행해야 하는 문제는 아니다. 전수 값 완전성은
+  별도 preflight로 검증해야 한다.
+- 외부 도구가 GitHub 주소만으로 이 문제를 독립 검토하도록
+  `PROMPT_external_review_morph_roman_position_schema_20260731.md`를
+  작성했다. 대안 A/B/C, 형식 문법, `morph_tokens/morph_syllables/
+  morph_boundaries`, 무음 초성, Unicode·escaping, 510만 발화 저장 방식,
+  검증 gate와 MFA 병행 순서를 요구한다.
+- 리뷰 결과를 받기 전에는 직렬화 문법을 코드에 동결하거나 60발화
+  TextGrid를 재수출하지 않는다.
+- 사용자는 기존 `tagged_roman` 표기를 지나치게 보존할 필요가 없다고
+  명확히 했다. 외부 리뷰 프롬프트에 현행 표기는 비교·감사용 기준선일 뿐이며,
+  연구 정합성·검색 정확성·장기 재현성에 더 나은 v2 또는 전면 재설계가
+  있으면 기존판을 archive·versioning하고 새 표기를 채택할 수 있다고
+  추가했다.
+
+### 외부 리뷰 반영과 형태소 위치 검색·TextGrid 수정본 파일럿
+
+- 외부 리뷰 판정의 핵심인 정규화 표, idx+count 위치, literal 표기,
+  versioning과 4-tier TextGrid를 채택했다.
+- 리뷰의 `segment=syllable slot` 동일시는 연구 언어학 정본으로 그대로
+  채택하지 않았다. 겹받침·복합 모음의 슬롯과 구성 자모를 구분하기 위해
+  `morph_units`와 선택 파생 `orth_components`를 만들었다.
+- 완성형 음절 외에도 독립 자모와 기호가 검색에서 사라지지 않도록 unit을
+  `hangul/jamo/literal`로 명시했다.
+- `morph_schema.py`, `build_morph_position_tables.py`,
+  `textgrid_labels.py`, `research_textgrid.py`,
+  `export_mfa_db_research_4tier.py`,
+  `audit_mfa_research_schema_pilot.py`,
+  `package_mfa_research_schema_review.py`를 추가했다.
+- 활성 TextGrid 표준을
+  `words/phones_mfa/utterance/utterance_search`로 동결했다.
+  `utterance_search`에는 `[UTT]/[ORTH_R]/[MORPH]/[MORPH_R]`와 필요한
+  경우에만 `[NOTE]`를 둔다. 형태소의 거짓 음향 경계는 만들지 않는다.
+- 기존 60발화 MFA DB를 읽기 전용으로 재사용했다. 새 MFA 정렬은 없었고
+  구 exporter와 산출물도 덮어쓰지 않았다.
+- D: 산출:
+  `D:\mfa_eojeol\pilots\r2_infrastructure\mfa_r2_infra_pilot_20260730\
+  research_schema_v1_20260731`
+- 60발화 구조화 표는 morph token 548, unit 809
+  (hangul 757/jamo 25/literal 27), boundary 488, orth component 1,847행이다.
+- 자동 gate는 중복 ID·parse error·v2 재생성 불일치·음절 재조합 불일치·
+  경계 count 불일치가 모두 0이었다.
+- 새 TextGrid 유효성 60/60, DB의 기존 word/phone과 의미 동등성 60/60,
+  CSV와 TextGrid `[MORPH]/[MORPH_R]` 동등성 60/60을 통과했다.
+- 연구자가 반복 없이 확인할 수 있도록 연도별 2발화, 총 12발화의
+  Dropbox 묶음을 만들었다:
+  `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_20260731`.
+- 묶음에는 발화당 WAV/TextGrid/LAB/CSV, 구조화 표 4종, README,
+  `REVIEW.csv`, 3-sheet `REVIEW.xlsx`, manifest를 넣었다. 48개 링크,
+  dropdown, 파일 크기·SHA, WAV/TextGrid duration과 양끝 0.05초 경계를
+  검증했다.
+- Dropbox 동기화가 최종 폴더 rename을 잠근 1회 실패는 partial manifest와
+  모든 파일 SHA/크기, workbook 링크를 재검증하는 복구 경로로 안전
+  승격했다. 원본·기존 결과를 삭제하거나 수정하지 않았다.
+- 전용 artifact-tool 의존성 로더는 이 환경에서 제공되지 않아, 사용자가
+  이전에 승인한 openpyxl 생성과 프로젝트의 PIL sheet renderer를 사용했다.
+  `검토/열_안내/변경_요약` 세 시트를 렌더링해 잘림·가독성을 확인했다.
+- 새 모듈 compile과 신규·관련 기존 회귀시험 31개가 통과했다.
+- 상세 리뷰 triage와 다음 gate는
+  `docs/reviews/RESOLUTION_design_review_morph_roman_position_schema_20260731.md`
+  에 기록했다. 현재는 기계 파일럿 통과이며 연구자 12발화 수용 전에는
+  2020 전수 MFA를 시작하지 않는다.
+
+### 12발화 첫 수동 검토에서 padding gate 거짓 통과 발견·교정
+
+- 연구자가 첫 발화 `SDRW2000000510.1.1.98`을 Praat에서 확인하면서
+  `words/phones_mfa`에는 0.05초 경계가 보이지만
+  `utterance/utterance_search`에는 보이지 않는다고 지적했다.
+- 실제 TextGrid를 대조한 결과 위 두 tier는 `0–1.21초` 빈 interval 하나로
+  합쳐져 있었고 0.05초 endpoint가 없었다. 기존 validator는 label 앞뒤의
+  빈 시간만 확인했기 때문에 이를 잘못 통과시켰다.
+- writer가 요청된 padding endpoint에서 모든 tier를 명시적으로 분할하게
+  하고, validator가 네 tier 각각의 정확한 좌우 endpoint와 바깥 빈 label을
+  검사하도록 강화했다. 경계 없는 긴 빈 interval의 실패 회귀시험도
+  추가했다.
+- 새 Dropbox manifest를 `mfa_research_schema_review_bundle.v2`로 올리고
+  TextGrid 12/12에서 네 tier 좌우 명시 경계를 독립 재검증했다. 파일
+  SHA-256 불일치는 0건, workbook 링크는 48/48이다.
+- 사용자가 이미 입력한 1번 행 `WAV_LAB_일치=정상`은 이전 workbook의
+  `utt_id`를 기준으로 새 workbook에 승계했다. 나머지 판정은 비어 있다.
+- 기존판은 삭제하지 않고
+  `C:\Users\ari30\Dropbox\MFA_RESEARCH_SCHEMA_REVIEW_12_v1_ARCHIVE_20260731`
+  로 보존했으며, 수정본은 원래 검토 주소에 다시 만들었다.
+
+### MORPH_R·형태소 위치 스키마의 음운론적 시험
+
+- 연구자가 `[MORPH_R]`를 다양한 음운론적 경우에도 검색 표기로 쓸 수
+  있는지 물어, 표시 문자열과 구조화 검색 표를 구분해 시험했다.
+- 현대 한글 11,172음절 전수 왕복, 19초성·21중성·28종성, 복합모음 7종,
+  겹받침 11종, 경음·격음, 무음 초성 ㅇ, 독립 자모, 형태소·어절 위치,
+  ㄴ 삽입 유사 경계, 한글/라틴·예약문자 구분 fixture를 추가했다.
+- 시험 중 종성에 올 수 없는 독립 `ㄸ·ㅃ·ㅉ`가 기존 독립 자모 변환에서
+  실패하는 사각지대를 발견했다. 기존 ㄴ→n·ㄹ→l 표기는 유지하면서
+  종성표에 없는 자음만 onset 로마자로 fallback하도록 보완했다.
+- 실제 60발화에서는 무음 초성 183, 개음절 480, 폐음절 277, 복합모음 24,
+  겹받침 7, 독립 자모 25, literal 27, intra/inter 형태소 경계 251/237을
+  확인했다. 단순 ㄴ 삽입 유사 환경은 10건이었다.
+- 결론은 `[MORPH_R]`가 Praat 보조 검색·사람 확인에는 적합하지만 정밀
+  음운환경 검색의 정본은 아니라는 것이다. 정밀 검색은
+  `morph_units/morph_boundaries/orth_components`에서 수행하고 실제 실현은
+  연구자가 판정한다.
+- 상세 수치와 사용 한계는
+  `docs/reviews/TEST_morph_roman_phonological_matrix_20260731.md`에 기록했다.
+
+### 60발화 조합 검색 → 연결 산출물 데모
+
+- 연구자가 `[MORPH_R]` 표시만 보는 것으로 충분하지 않고, 실제 조합
+  검색이 어떤 후보와 연결 파일을 내는지 확인해야 한다고 지적했다.
+- `build_morph_combined_search_demo.py`를 추가해 60발화의 구조화 표에서
+  다음 7검색을 실제 실행했다: ㄴ 삽입 유사 철자 환경, 형태소+POS+위치,
+  겹받침, 복합모음, 독립 자모, literal+정렬 경고, 어절 사이 좌우 환경.
+- 전체 적중은 Q1 10행, Q2 7행, Q3 7행, Q4 24행, Q5 25행, Q6 6행,
+  Q7 17행이다. 현재 12발화 bundle에서 검색별 최대 2건을 뽑아 대표
+  결과 13행을 만들었다.
+- `COMBINED_SEARCH_DEMO.xlsx`에는 `검색_결과/검색식_안내/세부_근거`
+  세 시트, 조건·연결·표시 이해·판정 dropdown과 WAV/TextGrid/CSV 상대링크
+  39개가 있다. 동반 catalog/results CSV와 별도 manifest/README도 만들었다.
+- Dropbox의 기존 12발화 폴더에 다섯 파일만 추가했다. 원 payload와
+  `REVIEW.xlsx`는 바꾸지 않았다. 복사 전후 SHA, 7검색·13행·39링크를
+  재검증했다.
+- 내일 검토 순서는
+  `docs/reviews/GUIDE_morph_combined_search_demo_20260731.md`에 기록했다.
+  실제 음운 실현은 이 데모의 판정 대상이 아니다.
+
+### MFA phone의 검색용 로마자 음소 보조층 파일럿
+
+- 사용자는 MFA IPA phone을 실제 검색에서 쓰기 쉽도록 로마자 넓은 범주와
+  철자·예측발음을 참조한 음소 후보로 기계 대응하되, 원 `phones_mfa`를
+  바꾸지 않는 추가 보조층을 요청했다.
+- MFA phone은 음성을 독립 전사한 실제 변이음 관찰값이 아니라
+  사전/G2P 경로의 forced-alignment 결과임을 다시 구분했다. 따라서
+  `phone_class_r_auto`와 `phoneme_lexical_r_auto` 모두 실제 실현 판정이
+  아니며 `realization_judgment=not_performed`를 고정했다.
+- 동결 acoustic v3.3.0 `meta.json`의 비침묵 phone 107개와 22
+  `phone_groups`를 직접 읽고, 한국어 평음/격음/경음 대립을 보존하는
+  프로젝트 로마자 매핑을 만들었다. `sil/spn`을 합친 허용 interval
+  inventory 109개와 `<eps>`까지 포함한 내부 mapping 110개를 구분했다.
+- `phoneme_roman.py`, `build_phoneme_roman_pilot.py`와 회귀시험 6개를
+  추가했다. 복합 중성은 component로 펼치고, 초성/종성 위치 차이와
+  대체·삽입·탈락을 결정적 DP 상태로 노출한다.
+- 실제 60발화에서 관측 phone 74종, 유표 interval 1,625개,
+  correspondence 1,683행을 생성했다. exact 1,421,
+  position-compatible 151, model-group-only 29, substitution 16,
+  phone-only 8, reference-only 58이었다.
+- 첫 실자료 실행은 2024 한 파일에서 원본 tier의 1 μs 허용 gap을
+  재직렬화가 새 interval로 만드는 것을 감지하고 중단했다. 네 tier 원문을
+  byte 보존하고 다섯 번째 tier만 append하는 방식으로 고쳤다.
+- 두 번째 실행은 2025 `SARW2500000414.1.1.2`의 raw `2사람이` 1어절과
+  원전사 회복 `두 사람이` 2어절 때문에 `form_roman` 12대 실제 MFA 입력
+  13어절 불일치를 감지하고 중단했다. raw 철자는 보존하되 시간 투영은
+  LAB과 같은 `pron_reference_form_roman`을 쓰도록 근거열을 분리했다.
+- 최종 실행은 기존 네 tier 의미·경계·label 불변 60/60, 선택적
+  `phoneme_r_auto` 5-tier 60/60을 통과했다. D: 정본은
+  `phoneme_roman_aux_v1_20260731`에 있고, Dropbox 기존 12발화 폴더에는
+  새 이름의 5-tier 12개, `PHONEME_ROMAN_PILOT.xlsx`, CSV, README,
+  전달 manifest만 추가했다. 기존 REVIEW와 payload는 수정하지 않았다.
+- workbook 네 시트를 재로딩하고 36링크·2 dropdown·오류 셀 0을 검사한
+  뒤 전 시트를 PIL로 렌더링했다. 미리보기의 IPA 결합기호 glyph 한계는
+  있었지만 원 workbook Unicode 값과 구조는 보존됐다.
+- 최종 directory rename 전 `.partial` 경로가 첫 manifest의 output path에
+  남은 것을 사후 점검에서 발견했다. SHA·bytes는 맞았고 실물에는 영향이
+  없었다. 생성기는 최종 예상경로를 기록하도록 고치고,
+  `verify_phoneme_roman_pilot.py`로 CSV 행수, 60개 기존 4-tier 불변,
+  phone/phoneme 경계 동등성, D/Dropbox workbook SHA를 다시 검사해
+  `PILOT_VERIFICATION_V2.json`을 만들었다. 구 manifest는 시행착오 증거로
+  보존했다.
+- 결정과 한계는
+  `DECISION_auto_phoneme_roman_aux_layer_20260731.md`, 아침 순서는
+  `GUIDE_phoneme_roman_pilot_20260731.md`에 기록했다.

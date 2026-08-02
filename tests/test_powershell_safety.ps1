@@ -35,6 +35,8 @@ $files = @(
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1'),
     (Join-Path $root 'scripts\archive_legacy_mfa_markers_for_r2.ps1'),
+    (Join-Path $root 'scripts\archive_legacy_d_workspace_20260802.ps1'),
+    (Join-Path $root 'scripts\show_legacy_d_archive_status.ps1'),
     (Join-Path $root 'scripts\run_mfa_r2_infrastructure_pilot.ps1'),
     (Join-Path $root (
         'scripts\prune_pre_jamo_outputs_after_compressed_archive.ps1'

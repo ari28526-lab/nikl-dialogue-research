@@ -1,71 +1,79 @@
-# 데이터 배치도 (DATA LAYOUT) — 2026-07-19 실측 기준
+# 데이터 배치도 — r2 생산 기준
 
-D:(현 HDD → 7/20부터 외장 SSD가 정본) 전체 폴더의 구조·용도·열람성 지도.
-**규약: 발화 단위 파일(wav/lab/TextGrid)은 반드시 `{연도}/{세션}/` 아래에 둔다.**
-- 이유 ①: MFA가 화자를 폴더 구조로 추론(하위폴더=화자) — 평면이면 연도 전체가
-  화자 1명으로 잡혀 정렬 품질·병렬이 붕괴 (★1화자 사고, 2026-07-19).
-- 이유 ②: 한 폴더 수십만 파일은 탐색기로 열 수 없음. 세션 단위(수백 개)면 열림.
-- 강제 장치: `run_eojeol_realign.ps1` 평면 가드(재구성 없인 MFA 진입 불가),
-  `restructure_wav_sessions.py`(평면→세션 이동, 멱등).
+최종 갱신: 2026-08-02 KST
 
-## D:\ 최상위
-| 폴더 | 내용 | 구조 (실측) | 비고 |
-|---|---|---|---|
-| `00_RAW` | 원본·참조 (**불변 — 수정 금지**) | 아래 상세 | 재구성 대상 아님 |
-| `10_LAYERS` | 분석 레이어(바른 CSV·의미·빈도사전·gold) | `01_bareun_raw/{연도판본}/{세션}.csv` 등 | 세션당 CSV 1개 — 열람 문제없음 |
-| `20_AUDIO` | 음성·정렬 산출 | 아래 상세 | |
-| `30_PHENOMENA` | 현상별 분석(B단계) | 현상별 소규모 | |
-| `90_ARCHIVE` | 구판·폐기물 보존 | 구판 6-tier 등 | HDD 보존, SSD 이전은 Tier2 선택 |
-| `mfa_eojeol` | 재정렬 작업 상태(마커·로그·격리) | `done/` `logs/` `quarantine/{연도}/` | 작고 중요 — Tier1 |
+자산의 존재·완료 상태는 [ASSETS_LEDGER.md](ASSETS_LEDGER.md)가 정본이다. 이
+문서는 현재 생산에서 사용하는 좌표와 폴더 역할만 설명한다.
 
-## 00_RAW 상세 (불변)
-| 경로 | 내용 | 구조 |
-|---|---|---|
-| `dialogue_audio\modu_corpus_dialogue_audio\{연도}_pcm` | **원본 음성 PCM** | 연도별 폴더(세션당 파일) — 열람 가능 |
-| `dialogue_audio\*.zip` | 배포 zip 원본 | 파일 수 개 |
-| `dialogue_json` | 전사 JSON 원본 | 연도별 |
-| `reference` | 사전·MP·LS·다층위 참조 | 자료별 |
+## D: DATA_SSD
 
-## 20_AUDIO 상세
-| 경로 | 내용 | 구조 (실측) | 열람성 |
-|---|---|---|---|
-| `03_wav\individual\{연도}` | 발화별 wav+어절 lab (585만) | **세션 폴더** ← 평면 연도(2020·2021·2022·2025 실측)는 7/20 SSD 복사 시 재구성. 2023·2024는 이미 세션 구조 | 재구성 후 OK |
-| `03_wav\merged` | (빈 폴더 — 구식 잔재) | 비어 있음 | 삭제 가능 |
-| `05_mfa_output\{연도}` | 1차 정렬 원출력 (형태소 고립형 — 재활용 불가 판정) | 세션 폴더 ✓ | OK |
-| `06_textgrid_merged\{연도}\{세션}` | 표준 3-tier TextGrid (병합의 형태소 출처, 읽기전용) | 세션 폴더 ✓ (6개년 실측) | OK |
-| `06_textgrid_eojeol\{연도}\{세션}` | ★어절 4-tier (신규 주 레이어) | 세션 폴더 (병합 스크립트가 세션 단위 생성) | OK |
-| `korean_mfa 사전 등` | 정렬 부속 파일 | 파일 수 개 | OK |
-
-## 작업 폴더 (데이터 아님, 재생성 가능)
-| 경로 | 내용 |
-|---|---|
-| `{작업드라이브}\mfa_tmp` | MFA temp (연도당 ~26GB, --clean으로 순환) |
-| `{작업드라이브}\mfa_eojeol_out` | MFA 원출력 (병합 후 연도별 삭제) |
-
-## 발화 좌표계 (현상별 검색의 기반 — 7/20 재구성 후 6개년 완전 동일)
+```text
+D:\
+├─ 00_RAW                         원 JSON·reference, 수정 금지
+├─ 10_LAYERS
+│  ├─ 01_bareun_raw               연도·세션 형태소 CSV
+│  ├─ 05_search_master            동결 510만 발화 입력
+│  └─ 09_morph_search_v3_staging  pre-MFA 조합검색 7표
+├─ 20_AUDIO
+│  ├─ 03_wav                      원 WAV·LAB, 수정 금지
+│  ├─ 04_wav_id_recovered_staging 2020 MFA 전용 파생 WAV
+│  └─ 08_textgrid_research_v2_staging
+│                                  신규 r2 6-tier·동반표
+├─ mfa_common_pron
+│  └─ releases\common_pron_mfa_r2_20260728
+│                                  현재 공통 Jamo r2
+├─ mfa_eojeol                     marker·lock·log·계약
+├─ mfa_tmp                        D: 선택 시 연도별 MFA 임시 DB
+└─ mfa_eojeol_out                 legacy export 폴백 경로
 ```
-발화 ID   = {세션ID}.{n}.{n}.{발화번호}     예: SDRW2000000521.1.1.175
-세션 ID   = 발화 ID의 첫 '.' 앞            예: SDRW2000000521
-연도      = 세션 ID 5–6번째 글자           예: SDRW'20'.. → 2020, SARW'25'.. → 2025
-파일 위치 = {레이어 루트}\{연도}\{세션}\{발화ID}.{확장자}   ← 모든 발화 레이어 동일 depth 2
-```
-- depth 통일 실측(7/19): 세션 폴더 내부는 발화 파일 직접(추가 중첩 없음).
-- **재구성 완료(7/19 밤, HDD에서)** — 6개년 전부 루트 잔여 0. 연도별 세션 폴더
-  수(복사 검증 참조값): 2020 **2,231** · 2021 **4,143** · 2022 **2,654** ·
-  2023 **1,973** · 2024 **3,227** · 2025 **2,927** (합 17,155).
-- 예외적 이름: `01_bareun_raw`의 연도 폴더는 판본 포함(`NIKL_DIALOGUE_2020_v1.4` 등)
-  — 판본 기록은 재현성 정보라 유지, 코드는 YEAR_DIRS 매핑으로 흡수.
-- **조회 도구**: `python scripts\python\locate_utt.py {발화ID} ...` — 발화 ID만으로
-  wav·lab·4-tier·형태소 TextGrid·전사 CSV·격리 여부까지 경로+존재를 한 번에 출력
-  (6개년 실검증 완료). 현상별 후보 목록 검증·청취 확인 때 폴더 열 필요 없음.
-  코드에서는 `from locate_utt import locate`.
 
-## 대용량 폴더 열람 요령
-1. **세션 구조가 되면 탐색기로 그냥 열림** — 연도 폴더(세션 2천여 개), 세션
-   폴더(파일 수백 개) 모두 문제없는 크기. 평면 87만 개가 문제였던 것.
-2. USB HDD 자체의 느림도 컸음 — SSD에서는 폴더 열기 체감 즉시.
-3. 특정 파일 확인은 폴더를 열지 않아도 됨: **Everything**(voidtools, 무료)을
-   설치하면 NTFS 인덱스로 파일명 즉시 검색 → 우클릭 '폴더 열기'. 대안:
-   PowerShell `[IO.Directory]::EnumerateFiles(경로, "이름패턴*")` (지연 열거라 즉답).
-4. 폴더 크기·파일 수 집계는 탐색기 속성 대신 스크립트로(훨씬 빠름):
-   `robocopy 대상 NULL /L /E /NFL /NDL /NJH /BYTES` 요약 참조.
+구 `06_textgrid_merged`와 `06_textgrid_eojeol`은 현 6-tier direct-DB 생산의 입력이
+아니다. E: archive 후 D:에서 정리하며, 상세 이력은
+`archive/ARCHIVE_MANIFEST_20260802.md`에 둔다.
+
+## C: 저장소
+
+```text
+C:\Users\ari30\research\2026_summer_research
+├─ config      경로·schema
+├─ scripts     재현 가능한 실행기
+├─ docs        현재 정본과 방법론
+├─ outputs     작은 보고서·검토표·manifest
+├─ logs        실행 로그
+└─ work        재생성 가능한 임시 작업
+```
+
+대형 WAV·TextGrid·MFA DB는 Git에 넣지 않는다.
+
+## E: archive
+
+```text
+E:\READ_ONLY_ARCHIVE\2026_summer_research\<archive_id>
+```
+
+과거 산출물은 항목별 압축본과 manifest를 함께 둔다. archive 검증 전에는 D:
+대응 원본을 없애지 않는다. E: archive는 현재 생산 입력으로 자동 선택하지 않는다.
+
+## 발화 좌표
+
+```text
+utt_id     = SDRW2000000521.1.1.175
+session_id = 첫 점 앞 SDRW2000000521
+year       = session ID의 연도 코드 → 2020
+발화 파일  = <root>\<year>\<session_id>\<utt_id>.<ext>
+```
+
+2020은 원 배포 WAV의 ID 밀림 때문에 MFA에서만
+`04_wav_id_recovered_staging\individual\2020`을 사용한다. 2021–2025는 원
+`03_wav\individual\<year>`을 사용한다. resolver는 2020 passed contract가 없으면
+원 WAV로 조용히 fallback하지 않는다.
+
+## 연구 출력 좌표
+
+- 원자료 좌표: 발화·어절·형태소·기호 검색 7표
+- MFA 좌표: word/phone interval과 6-tier TextGrid
+- post-MFA 좌표: 발화·word·phone·QC 동반표 4개
+- 연구자 판정 좌표: 선별 bundle의 수동 실현 여부·KOINA·보조모델
+
+이 좌표들을 하나의 시간경계로 합치지 않는다. `morph_analysis_utt`는 발화 전체
+span에 표시하는 형태소 검색 문자열이지 자동 음향 형태소 경계가 아니다.

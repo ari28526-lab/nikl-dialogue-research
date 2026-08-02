@@ -1,13 +1,14 @@
 # 연구 인프라 문서 색인
 
-이 폴더의 활성 문서는 네 개다. 새 세션과 외부 도구는 이 순서로 읽는다.
+새 세션과 외부 도구는 아래 다섯 문서만 이 순서로 읽는다.
 
 | 순서 | 문서 | 역할 |
 |---:|---|---|
-| 1 | [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | 현재 완료·미완료·안전 정지점 |
-| 2 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
-| 3 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/외장 HDD/저장소 실물 위치 정본 |
-| 4 | 이 문서 | 문서 역할과 역사 기록의 위치 |
+| 1 | [environment/PROJECT_START_HERE.md](environment/PROJECT_START_HERE.md) | 연구 흐름·문서 사용 규칙 |
+| 2 | [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | 현재 완료·미완료·안전 정지점 |
+| 3 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
+| 4 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/E:/저장소 실물 위치 정본 |
+| 5 | 이 문서 | 정본과 역사 기록의 경계 |
 
 ## 고정 연구 계약
 
@@ -24,14 +25,16 @@
 - 결과·기계 증거: `outputs/reports/`
 - 외부 리뷰 원문: `reviews/incoming/`
 - 리뷰 조치: `reviews/RESOLUTION_*.md`, `reviews/TRIAGE_*.md`
-- 시간순 시행착오: `WORK_HISTORY_*.md`, `WORKLOG_*.md`
+- 8월 시행착오: `WORK_HISTORY_2026-08.md`
+- 7월 시행착오: `archive/work_history/WORK_HISTORY_2026-07.md`
 - 환경: `environment/ENVIRONMENT_NOTES_INDEX.md`
 
 ## 역사 문서 규칙
 
-`WORKFLOW.md`, `TODO_A단계.md`, `HANDOFF_*.md`, 구 RUNBOOK·MONITOR·PILOT은
-삭제하지 않지만 현재 실행 지침으로 사용하지 않는다. 현재 명령과 충돌하면
-반드시 `RUNBOOK_production_2020_2025.md`가 우선한다.
+구 `WORKFLOW/TODO/HANDOFF/GUIDE/PROJECT_SUMMARY`는
+`archive/pre_production_legacy/`에, 종료된 결정·RUNBOOK·MONITOR·PILOT은
+`archive/decisions_pre_production/`에 원문 보존했다. 현재 실행 지침으로
+사용하지 않는다.
 
 workflow reset 이전의 누적 현재 상태는
 [archive/PROJECT_CURRENT_STATE_20260801_full.md](archive/PROJECT_CURRENT_STATE_20260801_full.md)에

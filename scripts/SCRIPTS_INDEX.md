@@ -71,6 +71,8 @@
 | archive_pre_jamo_outputs_to_external.ps1 | **사용 중단·기본 실행 차단.** 수백만 작은 파일의 loose Robocopy 방식이므로 실행 시 압축 스크립트를 안내하고 즉시 중단 |
 | archive_pre_jamo_outputs_compressed.ps1 | 수백만 작은 파일의 loose 복사 병목을 피해 항목별 7z로 E:에 보존. CRC 전수검사, 원본/내부 파일 수·바이트, 모든 DB 전후 SHA, archive SHA를 기록하며 원본 삭제 기능 없음 |
 | prune_pre_jamo_outputs_after_compressed_archive.ps1 | E: 압축 archive 성공 manifest·현재 archive SHA·D: 원본 파일 수/바이트·모든 DB SHA를 삭제 전에 전수 재검증하고, 명시적 `-Apply`+고정 승인 토큰에서만 정확한 5개 pre-Jamo allowlist를 정리. 기본은 삭제 0 dry-run |
+| archive_legacy_d_workspace_20260802.ps1 | 현재 r2·원자료·CSV를 제외한 구 공통사전/파일럿/`06_textgrid_*` exact allowlist를 E: 항목별 7z로 보존. 최초 count/bytes·CRC·archive SHA 뒤 승인 token에서만 항목별 D: prune; PS5 `-PreflightOnly`, symlink `-snl`, 성공 항목 재사용 |
+| show_legacy_d_archive_status.ps1 | legacy D: archive manifest의 항목별 상태·원본/압축 GiB·D:/E: 여유를 읽기 전용으로 표시 |
 | finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
 | _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
 

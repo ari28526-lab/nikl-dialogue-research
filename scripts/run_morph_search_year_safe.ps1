@@ -1,4 +1,4 @@
-<#
+﻿<#
 한 연도의 조합검색 CSV.gz를 shard checkpoint 방식으로 생성한다.
 
 - 기존 pre-MFA search master는 읽기 전용이다.

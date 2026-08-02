@@ -56,6 +56,16 @@ Python verification rule:
 - Prefer `config/paths.json` key `pipeline_python` for reproducible project
   helper scripts. Use the MFA conda command for MFA itself.
 
+Windows PowerShell 5.1 compatibility rule:
+
+- Save every `.ps1` as UTF-8 with BOM; `.editorconfig` is authoritative.
+- Do not use `+=` for JSON/pipeline values that can unwrap to a scalar
+  `PSCustomObject`; normalize with `@(...)` and accumulate in a typed List.
+- Before giving the user a long-running PowerShell command, run both
+  `tests/test_powershell_safety.ps1` and
+  `tests/test_powershell_runtime_compat.ps1` under Windows PowerShell 5.1,
+  then run the target script's `-PreflightOnly` mode when it exists.
+
 ## Safety And Data Rules
 
 - Do not print API keys or copy secret values into chat, logs, scripts, notebooks, or Quarto documents.
