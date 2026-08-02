@@ -669,3 +669,7 @@ shard 2–23을 재개하는 것이다.
   `approved_exclusions.json`에 기록했다.
 - 독립 계약 validate는 approved 1,887, ID 차이 0, pending SHA 보존을 확인했다.
   승인 기록 생성은 MFA·WAV·LAB·정본을 변경하지 않았다.
+- 승인 뒤 `PreflightOnly`를 별도 필수 단계로 안내한 것은 workflow reset의
+  단일 진입점 원칙과 달라 즉시 수정했다. `start_2020_mfa_after_review.ps1`가
+  내부에서 같은 preflight를 수행하고 `GO`일 때만 시작하므로 정상 사용자 단계는
+  한 줄이며, `PreflightOnly`는 문제 진단용 선택 옵션으로만 남긴다.

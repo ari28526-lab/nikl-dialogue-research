@@ -20,4 +20,5 @@
 - `approved_exclusions.json`: 입력 계약에 결속된 MFA 제외 계약
 
 자동 승인, MFA 정렬, WAV 이동, 정본 승격은 수행하지 않았다. 다음 단계는
-2020 MFA 시작 전 preflight다.
+내부 preflight를 포함한 2020 단일 시작 wrapper 한 줄이다. 별도
+`PreflightOnly` 실행은 필수가 아니다.

@@ -107,25 +107,19 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 두 제외 범주 1,887건은 2026-08-02 연구자 `ari30`이 명시 승인했고, 원 pending
 표와 별도 승인본·승인 기록·입력 계약 결속 제외 계약을 보존했다. 자동 승인은
 하지 않았다. 후보표 재생성 명령을 다시 실행하지 않는다. 다음 사용자 행동은
-아래 C단계의 `PreflightOnly` 확인이다.
+아래 C단계의 2020 단일 시작 wrapper 한 줄이다.
 
 ### C. 2020 신규 MFA 시작
-
-먼저 MFA를 시작하지 않는 최종 preflight만 실행한다.
-
-```powershell
-& "C:\Users\ari30\research\2026_summer_research\scripts\start_2020_mfa_after_review.ps1" -ApprovedBy "ari30" -PreflightOnly
-```
-
-정확히 `GO`임을 확인한 뒤 같은 명령에서 `-PreflightOnly`만 빼 2020 신규 MFA를
-시작한다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_2020_mfa_after_review.ps1" -ApprovedBy "ari30"
 ```
 
-wrapper는 2020 검색표 완료, 같은 `_build_meta` SHA, 승인 계약, 공통사전,
-저장공간, repository test를 확인한다. 정확히 GO일 때만 2020 한 연도를 시작한다.
+이 wrapper 한 줄이 내부에서 2020 검색표 완료, 같은 `_build_meta` SHA, 승인 계약,
+공통사전, 저장공간, repository test를 먼저 확인한다. 정확히 `GO`일 때만 2020
+한 연도를 시작하고, 하나라도 실패하면 MFA를 시작하지 않고 보고서만 남긴다.
+`-PreflightOnly`는 진단만 따로 반복해야 할 특별한 경우의 선택 옵션이지 정상
+생산 절차의 별도 필수 단계가 아니다.
 
 완료 상태 `machine_qc_passed_human_review_pending`은 기계 QC가 통과했지만 아직
 정본 승격이나 다음 연도 허가가 아니라는 뜻이다.

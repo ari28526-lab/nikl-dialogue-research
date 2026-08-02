@@ -117,7 +117,8 @@ A 제안 음원이 대상 전사와 일치했다. 이는 층화 표본이 고신
 archive했고 Gate B 전 2020 전용 큐의 2020 폴더만 활성본이다. 2026-08-02
 13:27 KST에 연구자 `ari30`이 두 범주 1,887건을 모두 명시 승인했다. 원 pending
 표, 별도 승인본, 승인 기록, 입력 계약 결속 제외 계약을 모두 보존했다. 현재
-다음 단계는 2020 MFA 시작 전 `PreflightOnly`다. 아직 MFA 정렬은 시작하지 않았다.
+다음 단계는 내부 preflight를 포함한 2020 단일 시작 wrapper 한 줄이다. 별도
+`PreflightOnly` 단계는 필수가 아니다. 아직 MFA 정렬은 시작하지 않았다.
 
 검토 묶음:
 `outputs/2020_wav_id_recovery_review_20260802/00_READ_ME_FIRST.md`
