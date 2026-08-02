@@ -218,7 +218,9 @@ foreach ($path in $files) {
             'git -C $projectRoot status --porcelain',
             'build_wav_recovery_corpus.py',
             'wav_recovery_archive',
-            'source(변경 금지)'
+            'source(변경 금지)',
+            'Enable-WavRecoverySleepGuard',
+            'Disable-WavRecoverySleepGuard'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("2020 WAV recovery safety token missing: $required")

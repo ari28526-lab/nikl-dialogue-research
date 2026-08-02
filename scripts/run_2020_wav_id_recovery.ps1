@@ -15,6 +15,30 @@ function Resolve-ConfiguredPath([string]$Value) {
         [Environment]::ExpandEnvironmentVariables($Value.Replace('/', '\'))
     )
 }
+
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class WavRecoverySleepGuard {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern uint SetThreadExecutionState(uint esFlags);
+}
+'@
+function Enable-WavRecoverySleepGuard {
+    # ES_CONTINUOUS | ES_SYSTEM_REQUIRED; the display may turn off.
+    $result = [WavRecoverySleepGuard]::SetThreadExecutionState(
+        [uint32]2147483649
+    )
+    if ($result -eq 0) {
+        throw 'Windows 절전 억제 설정 실패'
+    }
+}
+function Disable-WavRecoverySleepGuard {
+    # ES_CONTINUOUS only: restore the thread's normal execution state.
+    [void][WavRecoverySleepGuard]::SetThreadExecutionState(
+        [uint32]2147483648
+    )
+}
 $python = Resolve-ConfiguredPath ([string]$config.pipeline_python)
 $sourceWavRoot = Join-Path (
     Resolve-ConfiguredPath ([string]$config.wav)
@@ -71,6 +95,7 @@ if ($Apply) {
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $transcript) |
     Out-Null
 Start-Transcript -LiteralPath $transcript | Out-Null
+$sleepGuardEnabled = $false
 try {
     Write-Host (
         "2020 WAV-ID recovery: mode=" + $(if ($Apply) {'APPLY'} else {'DRY-RUN'})
@@ -78,6 +103,11 @@ try {
     Write-Host "source(변경 금지): $sourceWavRoot"
     Write-Host "derived corpus: $outputWavRoot"
     Write-Host "independent archive: $archiveBase"
+    if ($Apply) {
+        Enable-WavRecoverySleepGuard
+        $sleepGuardEnabled = $true
+        Write-Host 'Windows system sleep guard: enabled' -ForegroundColor Cyan
+    }
     $arguments = @(
         $builder,
         '--year', '2020',
@@ -120,5 +150,8 @@ try {
     }
     Write-Host "[OK] report: $report" -ForegroundColor Green
 } finally {
+    if ($sleepGuardEnabled) {
+        Disable-WavRecoverySleepGuard
+    }
     Stop-Transcript | Out-Null
 }

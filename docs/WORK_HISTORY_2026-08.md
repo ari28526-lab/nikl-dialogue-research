@@ -584,6 +584,8 @@ shard 2–23을 재개하는 것이다.
 - 세션별 archive/build checkpoint, live PID lock, 불완전 partial의 stale 보존,
   복사·ZIP 재읽기 SHA 검증, 최종 exact count 계약을 구현했다. 중단 후 재실행은
   검증된 세션을 재사용하며 연도 전체를 처음부터 자동 재처리하지 않는다.
+- 무인 실행 중 Windows system sleep을 억제하고 apply 종료 시 정상 상태로
+  복원한다. 화면 끄기는 막지 않는다.
 - 첫 실자료 dry-run은 세션별 파일 조회가 느려 120초에 250/2,232세션만
   진행됐다. 세션 단위 `scandir` inventory로 바꾼 뒤 60–63초에 전수 완료했다.
 - 최종 dry-run: 검색 870,437건, 출력 예정 868,603건, 제외 검토 1,834건,
