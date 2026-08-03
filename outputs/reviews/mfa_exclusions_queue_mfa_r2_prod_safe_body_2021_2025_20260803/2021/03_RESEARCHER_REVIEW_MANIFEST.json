@@ -1,0 +1,55 @@
+{
+  "schema_version": "mfa_exclusion_review_candidates.v1",
+  "status": "pending_researcher_review",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2021\\01_input_audit_unapproved.json",
+    "bytes": 409626,
+    "mtime_ns": 1785745339191705100,
+    "sha256": "77edcef7da9322f2fccece06b1bd8b29355057d6b34388ffa5a92507a6817a06"
+  },
+  "quarantine_log": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2021\\02_bad_wav_candidates.csv",
+    "bytes": 68,
+    "mtime_ns": 1785745366978094900,
+    "sha256": "11fcfd9f30d1549240295b61e86575738ba21865650462417197474404f674ff"
+  },
+  "audio_recovery_plan": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PLAN_2021_safe_body_session_quarantine_20260803.csv",
+    "bytes": 856940,
+    "mtime_ns": 1785767894706225000,
+    "sha256": "f1ab192623c8611ce18195524de3475eabad526aa47c04ad1a8179e7e8db2949"
+  },
+  "lab_report": {
+    "path": "D:\\mfa_eojeol\\logs\\lab_build_2021_latest.json",
+    "bytes": 1418,
+    "mtime_ns": 1785744710994322500,
+    "sha256": "f815e1d0d361d7362a3870f06fa107bda9408a83f506b7c5d43e032e1c2a5a59"
+  },
+  "unresolved_symbol_inventory": {
+    "path": "D:\\mfa_eojeol\\logs\\lab_build_2021_1bda84ba0ce0_unresolved_symbols.csv",
+    "bytes": 3831951,
+    "mtime_ns": 1785744710971619900,
+    "sha256": "19da898fb271c639f771c50fff9285982365110c1a8aff3ea069846924eaf6ce"
+  },
+  "unresolved_symbol_count": 17394,
+  "partial_lab_unresolved_symbol_count": 16995,
+  "empty_reference_unresolved_symbol_count": 399,
+  "active_audio_pairing_issue_count": 1005,
+  "audio_plan_exclusion_count": 1025,
+  "uncovered_audio_pairing_issue_count": 0,
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 412772,
+    "mtime_ns": 1785767948754702900,
+    "sha256": "2dee1853a755ac04292685f2874cf910941e4d29035d9592ead6effc6f968ccd"
+  },
+  "candidate_count": 1488,
+  "candidate_counts_by_reason": {
+    "audio_pairing_unresolved": 1025,
+    "empty_reference_unresolved_symbol": 399,
+    "text_duration_impossible": 64
+  },
+  "automatic_approval_performed": false
+}

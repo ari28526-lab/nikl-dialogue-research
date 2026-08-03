@@ -20,7 +20,7 @@
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |
 | `D:\20_AUDIO\08_textgrid_research_v2_staging\2020` | 2020 신규 r2 6-tier·동반표 출력 | TextGrid 868,187개·독립 감사 성공·Gate B 통과 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 현재 공통 Jamo r2 사전 | 보존, 연도별 MFA 필수 |
-| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 현재 생산 상태; 구 2021 활성 상태 9개 archive 완료, 새 2021 상태 미생성 |
+| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 구 2021 활성 상태 archive 완료; 2021–2025 LAB report 준비, 새 MFA marker·DB는 미생성 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
 
@@ -84,8 +84,11 @@ C:\Users\ari30\research\2026_summer_research
 - 생산 표본: 24/24 연구자 승인, 실제 실현 판정은 수행하지 않음
 - Gate B: 16/16 core check 통과, 실패 0, `allow_remaining_years=true`
 
-다음 생산 단계는 2020을 재실행하지 않고 2021–2025 연도별 제외 후보표를
-준비한 뒤 승인된 연도 큐를 시작하는 것이다. 실행 명령은
+2021–2025 LAB·pending 제외 후보표와 safe-body 5행 요약은 완료됐다. 저장소의
+현행 검토 root는
+`outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803`이며,
+검색 4,232,919 중 안전 본체 4,120,627, 후보 112,292다. 다음 생산 단계는
+세 범주 연구자 승인 뒤 2021 한 연도만 시작하는 것이다. 실행 명령은
 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.
 
 2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. 구 완료표시는 E:로

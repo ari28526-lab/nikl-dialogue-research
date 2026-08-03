@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
-from build_wav_recovery_corpus import apply_recovery, dry_run  # noqa: E402
+from build_wav_recovery_corpus import apply_recovery, dry_run, scan_corpus  # noqa: E402
 from pipeline_common import sha256_file  # noqa: E402
 
 
@@ -29,6 +29,44 @@ def write_wav(path: Path, frames: int) -> None:
 
 
 class WavRecoveryCorpusDryRunTests(unittest.TestCase):
+    def test_scan_rejects_source_reused_by_identity_and_remap(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            source = root / "source"
+            year = "2023"
+            session = "S"
+            (search / year).mkdir(parents=True)
+            with (search / year / f"{session}.csv").open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=["utt_id", "form"])
+                writer.writeheader()
+                writer.writerow({"utt_id": "S.1", "form": "하나"})
+                writer.writerow({"utt_id": "S.2", "form": "둘"})
+            write_wav(source / year / session / "S.1.wav", 100)
+            write_wav(source / year / session / "S.2.wav", 200)
+            plan = {
+                "year": year,
+                "session": session,
+                "target_utt_id": "S.2",
+                "source_utt_id": "S.1",
+                "status": "remap_high_confidence",
+                "block_length": "3",
+                "target_duration_seconds": "0.1",
+                "source_duration_seconds": "0.1",
+                "duration_residual_seconds": "0",
+                "source_wav": str(source / year / session / "S.1.wav"),
+            }
+            with self.assertRaisesRegex(RuntimeError, "둘 이상의 target"):
+                scan_corpus(
+                    year=year,
+                    search_master_root=search,
+                    source_wav_root=source,
+                    plan_rows=[plan],
+                    plan_by_target={"S.2": plan},
+                )
+
     def test_reviewed_plan_builds_fail_closed_dry_run(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

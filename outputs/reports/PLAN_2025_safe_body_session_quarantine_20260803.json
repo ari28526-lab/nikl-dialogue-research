@@ -1,0 +1,59 @@
+{
+  "schema_version": "wav_failed_session_quarantine_plan.v1",
+  "status": "dry_run_plan_only",
+  "year": "2025",
+  "created_at": "2026-08-03T23:38:19+09:00",
+  "mutates_wav": false,
+  "approves_exclusions": false,
+  "starts_mfa": false,
+  "failed_session_count": 17,
+  "failed_sessions": [
+    "SDRW2500000056",
+    "SDRW2500000226",
+    "SDRW2500000238",
+    "SDRW2500000448",
+    "SDRW2500000460",
+    "SDRW2500000531",
+    "SDRW2500000552",
+    "SDRW2500000556",
+    "SDRW2500000652",
+    "SDRW2500000825",
+    "SDRW2500000874",
+    "SDRW2500001094",
+    "SDRW2500001111",
+    "SDRW2500001139",
+    "SDRW2500001372",
+    "SDRW2500001377",
+    "SDRW2500001908"
+  ],
+  "failed_session_rows": 4012,
+  "active_audio_issue_count": 3733,
+  "additional_session_quarantine_count": 282,
+  "final_audio_exclusion_count": 4015,
+  "uncovered_audio_issue_count": 0,
+  "base_plan_status_counts": {
+    "ambiguous_short_match": 22,
+    "identity_high_confidence": 718,
+    "source_orphan": 3711,
+    "target_unresolved": 3711
+  },
+  "output_plan_status_counts": {
+    "identity_high_confidence": 436,
+    "source_orphan": 3711,
+    "target_unresolved": 4015
+  },
+  "safe_to_auto_apply": false,
+  "next_step": "범주 요약 연구자 승인 뒤 안전 본체 MFA",
+  "audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2025\\01_input_audit_unapproved.json",
+    "bytes": 1409965,
+    "mtime_ns": 1785763425805420400,
+    "sha256": "d2fcd047b450a1394cedee227df93dc8f0a79e3bde15515f3f2a9a8bd30983e5"
+  },
+  "base_plan": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2025\\02a_wav_duration_recovery_plan.csv",
+    "bytes": 952618,
+    "mtime_ns": 1785763435107564200,
+    "sha256": "4516daa7f3513439429c7616479c5bcff4586f79a915416e5a054e24a5e1f5ff"
+  }
+}

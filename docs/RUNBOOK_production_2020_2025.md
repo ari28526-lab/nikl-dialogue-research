@@ -38,13 +38,13 @@ workflow 수정·시험
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
 
-## 현재 시작점 — 2020 Gate B 통과, 2021 준비
+## 현재 시작점 — 2020 Gate B 통과, 2021–2025 범주 승인 대기
 
 2020은 신규 공통 Jamo r2 MFA, 6-tier 868,187개, gzip 동반표 4개, 독립 전수
 감사, DB 재생성 표본 24/24, 연구자 생산 표본 24/24 및 Gate B까지 완료됐다.
 Gate B의 16개 core check는 모두 통과했고 `allow_remaining_years=true`다.
-2020 계산·export·검토 명령은 **다시 실행하지 않는다.** 2021은 아직 시작하지
-않았다.
+2020 계산·export·검토 명령은 **다시 실행하지 않는다.** 2021–2025 후보표는
+완료됐고 아직 어느 연도도 MFA를 시작하지 않았다.
 
 2021 진입 전 구 결과·상태 정리도 완료됐다. 구 2021–2025 TextGrid와 2021
 MFA DB/temp는 E:의 기존 검증 archive에 있고 D: 연도 결과 폴더는 0개다. D:에
@@ -53,7 +53,7 @@ MFA DB/temp는 E:의 기존 검증 archive에 있고 D: 연도 결과 폴더는 
 정상 실행에서 전수 내용 검증 후 일치분만 재사용한다. 과거 정렬 완료 상태를 새
 Jamo r2 결과로 오인해 건너뛰지 않는다.
 
-현재 첫 행동은 2021–2025의 승인 제외 후보표만 준비하는 다음 명령이다.
+아래 후보표 준비 명령은 이미 완료된 이력 명령이다.
 
 이 후보표는 이미 끝낸 2020 후보표를 다시 만드는 작업이 아니다. 현재 보존된
 현행 승인표는 2020뿐이며, 2021–2025는 각 연도에서 손상 WAV·CSV–WAV 대응 불가
@@ -71,11 +71,33 @@ Jamo r2 결과로 오인해 건너뛰지 않는다.
 `mfa_r2_prod_2020_export_20260803`만 허용하며 구 queue ID는 보고서를 쓰기 전에
 거부한다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
 
+현재 검토 정본은 다음 5행 범주 요약이다.
+
+```text
+outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/
+  CATEGORY_SUMMARY_2021_2025.md
+  CATEGORY_SUMMARY_2021_2025.csv
+  CATEGORY_SUMMARY_2021_2025.json
+```
+
+세 범주는 음원 대응 불명, 빈 발음 참조, 원전 시간상 불가능한 전사다. 총
+4,232,919발화 중 112,292개를 본체에서 제외하면 4,120,627개가 안전 본체다.
+제외 후보 때문에 연도 전체를 보류하지 않는다. 연구자 범주 승인 뒤 안전 본체를
+연도별로 먼저 정렬하고, 검증된 회수분은 별도 shard로 추가한다. 자세한 결정은
+`docs/decisions/DECISION_year_safe_body_first_recovery_later_20260803.md`다.
+
+행 단위 duration mismatch만 제외하면 session gate를 크게 실패한 세션 안의
+우연한 길이 일치를 안전 발화로 오인할 수 있다. 현행 요약은 실패 세션 전 행을
+격리하고, gate 통과 세션에서는 실제 issue 행만 격리한 보수적 정본이다. 구
+73,356행 요약은 승인하거나 실행에 사용하지 않는다.
+
 연도 입력 감사에서 CSV–WAV duration/header 문제가 발견되면 준비기는
 `wav_duration_recovery_plan.v2` 읽기 전용 계획을 함께 만든다. 이는 음원을
 자동 교체하거나 제외를 승인하는 단계가 아니다. 감사에서 문제가 없던 same-ID
 파일을 보존하고 실제 issue만 분류하며, 고신뢰 remap이 필요하거나 정상 발화가
-제외로 확대되면 중단한다. 복구 불가능으로 분류된 행만 연구자 승인 후보가 된다.
+제외로 확대되면 중단한다. 복구 검토 중인 행도 안전 본체 단계에서는 승인 제외
+후보로 유지한다. 나중에 고신뢰 회수분을 별도 staging/shard로 추가하므로 본체
+MFA를 다시 돌리지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
@@ -200,14 +222,16 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 ### E. Gate B와 2021–2025
 
 2020 연구자 보고서 승인과 Gate B는 2026-08-03 완료됐다. 최종 상태는
-`passed`, 실패 0, `allow_remaining_years=true`다. 이제 2021–2025 제외 후보표를
-준비한다.
+`passed`, 실패 0, `allow_remaining_years=true`다. 2021–2025 제외 후보표와
+5행 범주 요약도 준비됐다. 아래 명령은 완료 이력이며 반복하지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\prepare_remaining_mfa_approval_reviews.ps1"
 ```
 
-남은 연도의 제외 후보를 확인해 승인한 뒤 다음 wrapper를 사용한다.
+5개년 세 범주의 개수와 뜻을 확인해 명시 승인한 뒤 다음 wrapper를 사용한다.
+현행 wrapper는 의도적으로 **2021 한 연도만** 처리한다. 2021의 기계 QC·생산
+표본 연구자 승인·다음 연도 gate가 끝나기 전 2022를 받지 않는다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"

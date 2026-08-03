@@ -139,8 +139,17 @@ def validate_review(
         for row in decision_rows
         if isinstance(row, dict)
     }
-    if len(manifest_rows) != 12 or len(decision_rows) != 12:
-        raise RuntimeError("최소 청취 검토가 정확히 12건이 아님")
+    selection = manifest.get("selection_contract")
+    expected_rows = 12
+    if isinstance(selection, dict):
+        expected_rows = int(selection.get("review_rows") or 0)
+    if expected_rows < 12:
+        raise RuntimeError("청취 검토 계약이 최소 12건보다 작음")
+    if len(manifest_rows) != expected_rows or len(decision_rows) != expected_rows:
+        raise RuntimeError(
+            f"청취 검토 수 불일치: expected={expected_rows}, "
+            f"manifest={len(manifest_rows)}, decisions={len(decision_rows)}"
+        )
     if manifest_ids != decision_ids or "" in manifest_ids:
         raise RuntimeError("청취 manifest와 판정 ID 집합 불일치")
     if any(
@@ -166,8 +175,8 @@ def validate_review(
             f"{len(invalid_review_targets)}"
         )
     return {
-        "review_rows": 12,
-        "a_matches_target": 12,
+        "review_rows": expected_rows,
+        "a_matches_target": expected_rows,
         "review_manifest_sha256": sha256_file(review_manifest_path),
         "review_decisions_sha256": sha256_file(review_decisions_path),
         "plan_sha256": plan_hash,
@@ -206,6 +215,7 @@ def scan_corpus(
     seen_targets: set[str] = set()
     counts: Counter[str] = Counter()
     source_bytes = 0
+    used_source_targets: dict[str, str] = {}
     affected_source_files: dict[str, int] = {}
     session_summaries: list[dict[str, object]] = []
     for index, csv_path in enumerate(files, 1):
@@ -266,6 +276,14 @@ def scan_corpus(
                     raise RuntimeError(
                         f"source WAV 누락: {source_session / source_name}"
                     )
+                source_key = os.path.normcase(os.path.abspath(source_entry.path))
+                previous_target = used_source_targets.get(source_key)
+                if previous_target is not None and previous_target != target:
+                    raise RuntimeError(
+                        "하나의 source WAV가 둘 이상의 target에 배정됨: "
+                        f"{previous_target}, {target} <- {source_entry.path}"
+                    )
+                used_source_targets[source_key] = target
                 size = source_entry.stat().st_size
                 source_bytes += size
                 counts[status] += 1
@@ -302,6 +320,7 @@ def scan_corpus(
         "plan_status_counts": dict(sorted(status_counts.items())),
         "logical_source_bytes": source_bytes,
         "logical_source_gib": round(source_bytes / (1024**3), 3),
+        "unique_corpus_source_files": len(used_source_targets),
         "affected_unique_source_files": len(affected_source_files),
         "affected_unique_source_bytes": sum(affected_source_files.values()),
         "sessions": session_summaries,

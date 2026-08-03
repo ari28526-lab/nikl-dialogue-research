@@ -46,8 +46,8 @@ C:\Users\ari30\research\2026_summer_research
 대형 WAV·TextGrid·MFA DB는 Git에 넣지 않는다.
 
 2020은 `08_textgrid_research_v2_staging\2020`에 TextGrid 868,187개와 동반표
-4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021–2025는 아직
-생산 전이다.
+4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021–2025는 LAB와
+safe-body 제외 후보표까지 완료됐지만 신규 MFA 결과는 아직 없다.
 
 ## E: archive
 

@@ -64,6 +64,42 @@ class PlanWavDurationRecoveryTests(unittest.TestCase):
                 self.assertEqual(by_target[utt_id]["source_utt_id"], utt_id)
             self.assertEqual(by_target["U.4"]["status"], "target_unresolved")
 
+    def test_coarser_quantum_can_recover_shifted_near_equal_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            wav_dir = Path(temporary)
+            # U.1은 끼어든 짧은 조각이고 실제 U.1~U.4 음성은 WAV 번호가
+            # 하나씩 밀렸다. 길이가 각각 1 ms 달라 1 ms token은 다르지만
+            # 5 ms 민감도 분석에서는 하나의 긴 연속열로 일치한다.
+            write_wav(wav_dir / "U.1.wav", 0.05)
+            for source_index, seconds in enumerate(
+                (1.002, 2.002, 3.002, 4.002), start=2
+            ):
+                write_wav(wav_dir / f"U.{source_index}.wav", seconds)
+            csv_rows = [
+                {"utt_id": f"U.{index}", "dur": f"{index}.001"}
+                for index in range(1, 5)
+            ]
+
+            rows = MODULE.plan_session(
+                year="2023",
+                session="U",
+                csv_rows=csv_rows,
+                wav_dir=wav_dir,
+                padding_seconds=0,
+                duration_quantum_ms=5,
+                affected_target_ids={row["utt_id"] for row in csv_rows},
+            )
+            mapped = [
+                row for row in rows
+                if row["status"] == "remap_high_confidence"
+            ]
+            self.assertEqual(len(mapped), 4)
+            self.assertEqual(
+                [row["source_utt_id"] for row in mapped],
+                ["U.2", "U.3", "U.4", "U.5"],
+            )
+            self.assertTrue(all(row["block_length"] == 4 for row in mapped))
+
 
 if __name__ == "__main__":
     unittest.main()

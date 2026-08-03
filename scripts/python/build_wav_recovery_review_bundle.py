@@ -156,9 +156,11 @@ def copy_verified(source: Path, destination: Path) -> dict[str, object]:
     }
 
 
-def write_guide(path: Path, review_rows: list[dict[str, object]]) -> None:
+def write_guide(
+    path: Path, review_rows: list[dict[str, object]], *, year: str
+) -> None:
     lines = [
-        "# 2020 WAV ID 복구 최소 청취 검토",
+        f"# {year} WAV ID 복구 층화 청취 검토",
         "",
         "목적: 길이 연속열이 제안한 고신뢰 재매핑이 실제 음성과 전사에서도 맞는지 확인합니다.",
         "원본 WAV는 수정하지 않았고, 이 폴더에는 해시 검증한 복사본만 있습니다.",
@@ -186,6 +188,7 @@ def write_guide(path: Path, review_rows: list[dict[str, object]]) -> None:
                 f"- 제안: `{row['proposed_audio_file']}`",
                 f"- 현재: `{row['current_audio_file']}`",
                 f"- 근거: 연속 일치 {row['block_length']}개, ID 오프셋 {row['id_offset']:+d}",
+                f"- 증거 등급: {row['recovery_evidence_tier']}",
                 "",
             ]
         )
@@ -195,10 +198,12 @@ def write_guide(path: Path, review_rows: list[dict[str, object]]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--year", required=True)
     parser.add_argument("--plan-csv", type=Path, required=True)
     parser.add_argument("--search-master-root", type=Path, required=True)
     parser.add_argument("--wav-root", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--groups-per-band", type=int, default=2)
     args = parser.parse_args()
 
     output_dir = args.output_dir.resolve()
@@ -215,14 +220,14 @@ def main() -> int:
         if all(
             (
                 args.wav_root
-                / "2020"
+                / args.year
                 / group.session
                 / f"{endpoint['target_utt_id']}.wav"
             ).is_file()
             for endpoint in (group.rows[0], group.rows[-1])
         )
     ]
-    selected_groups = select_groups(groups, per_band=2)
+    selected_groups = select_groups(groups, per_band=args.groups_per_band)
     source_to_target = {
         (row["session"], row["source_utt_id"]): row["target_utt_id"]
         for row in plan_rows
@@ -234,7 +239,9 @@ def main() -> int:
 
     for group in selected_groups:
         if group.session not in session_rows:
-            search_csv = args.search_master_root / "2020" / f"{group.session}.csv"
+            search_csv = (
+                args.search_master_root / args.year / f"{group.session}.csv"
+            )
             rows = read_csv(search_csv)
             session_rows[group.session] = {row["utt_id"]: row for row in rows}
         row_by_id = session_rows[group.session]
@@ -246,7 +253,7 @@ def main() -> int:
             if target is None:
                 raise RuntimeError(f"search master 대상 발화 누락: {target_id}")
             current_path = (
-                args.wav_root / "2020" / group.session / f"{target_id}.wav"
+                args.wav_root / args.year / group.session / f"{target_id}.wav"
             ).resolve()
             proposed_path = Path(plan_row["source_wav"]).resolve()
             if not current_path.is_file():
@@ -289,6 +296,9 @@ def main() -> int:
                     "duration_residual_seconds": float(
                         plan_row["duration_residual_seconds"]
                     ),
+                    "recovery_evidence_tier": plan_row.get(
+                        "recovery_evidence_tier", ""
+                    ),
                     "proposed_audio_file": f"audio/{proposed_name}",
                     "current_audio_file": f"audio/{current_name}",
                     "current_audio_predicted_target_utt_id": predicted_current_target,
@@ -301,13 +311,16 @@ def main() -> int:
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "created_at": now_iso(),
-        "purpose": "human audit of high-confidence 2020 WAV-ID remap before recovery",
+        "purpose": (
+            f"human audit of high-confidence {args.year} WAV-ID remap before recovery"
+        ),
+        "year": args.year,
         "source_files_untouched": True,
         "plan_csv": str(args.plan_csv.resolve()),
         "plan_csv_sha256": sha256_file(args.plan_csv.resolve()),
         "selection_contract": {
             "bands": ["SHORT_3_10", "MEDIUM_11_80", "LONG_81_PLUS"],
-            "groups_per_band": 2,
+            "groups_per_band": args.groups_per_band,
             "positions_per_group": ["START", "END"],
             "review_rows": len(review_rows),
         },
@@ -315,7 +328,7 @@ def main() -> int:
         "copied_files": file_records,
     }
     atomic_write_json(output_dir / "REVIEW_MANIFEST.json", manifest)
-    write_guide(output_dir / "00_READ_ME_FIRST.md", review_rows)
+    write_guide(output_dir / "00_READ_ME_FIRST.md", review_rows, year=args.year)
     print(f"[OK] review rows={len(review_rows)} audio_files={len(file_records)}")
     print(output_dir)
     return 0

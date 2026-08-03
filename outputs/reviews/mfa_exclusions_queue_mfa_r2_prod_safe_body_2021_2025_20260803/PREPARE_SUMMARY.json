@@ -1,0 +1,62 @@
+﻿{
+    "schema_version":  "mfa_full6y_approval_review_preparation.v1",
+    "status":  "researcher_review_required",
+    "created_at":  "2026-08-03T23:42:08.0073801+09:00",
+    "queue_id":  "mfa_r2_prod_safe_body_2021_2025_20260803",
+    "search_master_run_id":  "pre_mfa_v1_20260725",
+    "review_root":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803",
+    "years":  [
+                  "2021",
+                  "2022",
+                  "2023",
+                  "2024",
+                  "2025"
+              ],
+    "total_candidates":  112292,
+    "records":  [
+                    {
+                        "year":  "2021",
+                        "status":  "existing_review_preserved",
+                        "candidate_count":  1488,
+                        "input_contract_id":  "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    },
+                    {
+                        "year":  "2022",
+                        "status":  "existing_review_preserved",
+                        "candidate_count":  1231,
+                        "input_contract_id":  "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2022\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2022\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    },
+                    {
+                        "year":  "2023",
+                        "status":  "existing_review_preserved",
+                        "candidate_count":  103930,
+                        "input_contract_id":  "9496ea5c895fd4f913ba6d747c04d224a38c27b217483657ce265b544c07a089",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2023\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2023\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    },
+                    {
+                        "year":  "2024",
+                        "status":  "existing_review_preserved",
+                        "candidate_count":  1610,
+                        "input_contract_id":  "5c2f9c76a697d168b9ccac4dfd16deb7f9bb04d78311f202dececaca26af3b6e",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2024\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2024\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    },
+                    {
+                        "year":  "2025",
+                        "status":  "existing_review_preserved",
+                        "candidate_count":  4033,
+                        "input_contract_id":  "68436e670449c322786115e2a8aff756385cf2f39adafb18c5502bbf74bd5102",
+                        "review_csv":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2025\\03_RESEARCHER_REVIEW.csv",
+                        "manifest":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2025\\03_RESEARCHER_REVIEW_MANIFEST.json"
+                    }
+                ],
+    "starts_mfa":  false,
+    "moves_wav":  false,
+    "approves_exclusions":  false,
+    "promotes_canonical_outputs":  false
+}

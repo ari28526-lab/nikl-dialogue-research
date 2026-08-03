@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
-    [string]$QueueId = 'mfa_r2_prod_2021_2025_20260803'
+    [string]$QueueId = 'mfa_r2_prod_safe_body_2021_2025_20260803'
 )
 $ErrorActionPreference = 'Stop'
 $gateQueueId = 'mfa_r2_prod_2020_export_20260803'

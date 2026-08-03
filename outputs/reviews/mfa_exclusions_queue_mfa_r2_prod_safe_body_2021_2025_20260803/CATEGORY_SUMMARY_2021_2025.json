@@ -1,0 +1,175 @@
+{
+  "schema_version": "mfa_exclusion_category_summary.v1",
+  "status": "pending_researcher_category_approval",
+  "created_at": "2026-08-03T23:39:29+09:00",
+  "mutates_inputs": false,
+  "approves_exclusions": false,
+  "starts_mfa": false,
+  "years": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "totals": {
+    "search_rows": 4232919,
+    "safe_body_rows": 4120627,
+    "candidate_count": 112292,
+    "audio_pairing_unresolved": 111425,
+    "empty_reference_unresolved_symbol": 788,
+    "text_duration_impossible": 79
+  },
+  "rows": [
+    {
+      "year": "2021",
+      "search_rows": 1373920,
+      "safe_body_rows": 1372432,
+      "candidate_count": 1488,
+      "audio_pairing_unresolved": 1025,
+      "empty_reference_unresolved_symbol": 399,
+      "text_duration_impossible": 64,
+      "candidate_pct": 0.1083,
+      "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+      "decision": "pending_researcher_category_approval",
+      "candidate_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW_MANIFEST.json",
+        "bytes": 2501,
+        "mtime_ns": 1785767948779654700,
+        "sha256": "98caf9264e1b58928e4f753b1c7edaa5e61c6bd35f96a5dc1ed803e175cea2b3"
+      },
+      "candidate_csv": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW.csv",
+        "bytes": 412772,
+        "mtime_ns": 1785767948754702900,
+        "sha256": "2dee1853a755ac04292685f2874cf910941e4d29035d9592ead6effc6f968ccd"
+      },
+      "audit_report": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2021\\01_input_audit_unapproved.json",
+        "bytes": 409626,
+        "mtime_ns": 1785745339191705100,
+        "sha256": "77edcef7da9322f2fccece06b1bd8b29355057d6b34388ffa5a92507a6817a06"
+      }
+    },
+    {
+      "year": "2022",
+      "search_rows": 866359,
+      "safe_body_rows": 865128,
+      "candidate_count": 1231,
+      "audio_pairing_unresolved": 974,
+      "empty_reference_unresolved_symbol": 252,
+      "text_duration_impossible": 5,
+      "candidate_pct": 0.1421,
+      "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+      "decision": "pending_researcher_category_approval",
+      "candidate_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2022\\03_RESEARCHER_REVIEW_MANIFEST.json",
+        "bytes": 2496,
+        "mtime_ns": 1785767949210489900,
+        "sha256": "381db5507f09cafdb79e38cb2bcde196410c1ca008ca2f33dff96f2cb9d2fac8"
+      },
+      "candidate_csv": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2022\\03_RESEARCHER_REVIEW.csv",
+        "bytes": 345440,
+        "mtime_ns": 1785767949184611500,
+        "sha256": "5c8bce373eb78f838d026cd1845978ae3ce89a2512b578e26095ce96745859bc"
+      },
+      "audit_report": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2022\\01_input_audit_unapproved.json",
+        "bytes": 360240,
+        "mtime_ns": 1785750825749852500,
+        "sha256": "3f0d2e42b853d22de146435f36720919914928ff539766d70fdb5077ca533f93"
+      }
+    },
+    {
+      "year": "2023",
+      "search_rows": 677262,
+      "safe_body_rows": 573332,
+      "candidate_count": 103930,
+      "audio_pairing_unresolved": 103828,
+      "empty_reference_unresolved_symbol": 101,
+      "text_duration_impossible": 1,
+      "candidate_pct": 15.3456,
+      "input_contract_id": "9496ea5c895fd4f913ba6d747c04d224a38c27b217483657ce265b544c07a089",
+      "decision": "pending_researcher_category_approval",
+      "candidate_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2023\\03_RESEARCHER_REVIEW_MANIFEST.json",
+        "bytes": 2511,
+        "mtime_ns": 1785767952906710800,
+        "sha256": "832996fe041b0fc410d4b7d17b313562ce31e87ddfbf650aae509e5ff19c4bf1"
+      },
+      "candidate_csv": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2023\\03_RESEARCHER_REVIEW.csv",
+        "bytes": 29066678,
+        "mtime_ns": 1785767952643609800,
+        "sha256": "334a410d21543111a5b8006ff8070e5d3e0703d477ab01b4fb4f2fff2661e4a5"
+      },
+      "audit_report": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2023\\01_input_audit_unapproved.json",
+        "bytes": 24279207,
+        "mtime_ns": 1785754815827473300,
+        "sha256": "be7cd92a561727e4ca60bdd3dc4470cbe4e0f0b0d5f94dc2640263a0017225e8"
+      }
+    },
+    {
+      "year": "2024",
+      "search_rows": 728257,
+      "safe_body_rows": 726647,
+      "candidate_count": 1610,
+      "audio_pairing_unresolved": 1583,
+      "empty_reference_unresolved_symbol": 22,
+      "text_duration_impossible": 5,
+      "candidate_pct": 0.2211,
+      "input_contract_id": "5c2f9c76a697d168b9ccac4dfd16deb7f9bb04d78311f202dececaca26af3b6e",
+      "decision": "pending_researcher_category_approval",
+      "candidate_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2024\\03_RESEARCHER_REVIEW_MANIFEST.json",
+        "bytes": 2497,
+        "mtime_ns": 1785767953432626900,
+        "sha256": "a91a39fb9cec0ad5c04cfacf4e7af4f57566d288743c15d0e00f3129295ada56"
+      },
+      "candidate_csv": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2024\\03_RESEARCHER_REVIEW.csv",
+        "bytes": 449901,
+        "mtime_ns": 1785767953408736600,
+        "sha256": "b634828a69d413a380d0f279575d9b2ccfba6e64565e21c89f77d904585e8a4c"
+      },
+      "audit_report": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2024\\01_input_audit_unapproved.json",
+        "bytes": 134320,
+        "mtime_ns": 1785759381226617400,
+        "sha256": "5644f80663ab397b3ada02b3cb7bab79369366296c18cbccbe9cd0720dbbb9fe"
+      }
+    },
+    {
+      "year": "2025",
+      "search_rows": 587121,
+      "safe_body_rows": 583088,
+      "candidate_count": 4033,
+      "audio_pairing_unresolved": 4015,
+      "empty_reference_unresolved_symbol": 14,
+      "text_duration_impossible": 4,
+      "candidate_pct": 0.6869,
+      "input_contract_id": "68436e670449c322786115e2a8aff756385cf2f39adafb18c5502bbf74bd5102",
+      "decision": "pending_researcher_category_approval",
+      "candidate_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2025\\03_RESEARCHER_REVIEW_MANIFEST.json",
+        "bytes": 2498,
+        "mtime_ns": 1785767953914763900,
+        "sha256": "ccdfb155310a0a4ebd25b5e1d15280ac55ab59f3064ad889662e50050f5baa6f"
+      },
+      "candidate_csv": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2025\\03_RESEARCHER_REVIEW.csv",
+        "bytes": 1127207,
+        "mtime_ns": 1785767953873407500,
+        "sha256": "a2ca88ba5bda3cc5879d466c180b890ee20da3e6a4afc1a0e0bc028615290bc0"
+      },
+      "audit_report": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2025\\01_input_audit_unapproved.json",
+        "bytes": 1409965,
+        "mtime_ns": 1785763425805420400,
+        "sha256": "d2fcd047b450a1394cedee227df93dc8f0a79e3bde15515f3f2a9a8bd30983e5"
+      }
+    }
+  ]
+}

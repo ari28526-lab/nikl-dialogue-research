@@ -5,7 +5,9 @@ param(
     [ValidateNotNullOrEmpty()]
     [string]$ApprovedBy,
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
-    [string]$QueueId = 'mfa_r2_prod_2021_2025_20260803',
+    [string]$QueueId = 'mfa_r2_prod_safe_body_2021_2025_20260803',
+    [ValidateSet('2021')]
+    [string]$Year = '2021',
     [switch]$PreflightOnly
 )
 $ErrorActionPreference = 'Stop'
@@ -19,7 +21,7 @@ $args = @(
     '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $start,
     '-ApprovedBy', $ApprovedBy,
     '-QueueId', $QueueId,
-    '-YearsCsv', '2021,2022,2023,2024,2025'
+    '-YearsCsv', $Year
 )
 if ($PreflightOnly) { $args += '-PreflightOnly' }
 & powershell.exe @args

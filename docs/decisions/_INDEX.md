@@ -39,6 +39,8 @@
 | `DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md` | 1,887 제외와 6,158 경고 보존 |
 | `DECISION_2020_TextGrid_outer_edges_and_audio_unusable_20260803.md` | 2020 전수 tier 바깥 경계 감사·검토본 패딩·청취 불가 3건 |
 | `DECISION_2020_production_complete_gate_b_20260803.md` | 2020 r2·6-tier·독립 QC·24표본 승인·Gate B 완료와 2021 안전 정지점 |
+| `DECISION_2023_JSON_PCM_segment_id_mismatch_20260803.md` | 2023 배포 JSON 발화와 PCM/WAV 분절 ID 불일치의 원인·보수적 복구 기준 |
+| `DECISION_year_safe_body_first_recovery_later_20260803.md` | 2021–2025 same-ID 안전 본체 우선 정렬·회수분 후속 shard·최종 제외 원칙 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구

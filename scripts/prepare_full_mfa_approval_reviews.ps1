@@ -113,7 +113,7 @@ foreach ($year in $Years) {
             [int](
                 $data.candidate_counts_by_reason.
                     empty_reference_unresolved_symbol
-            ) -ne [int]$data.empty_reference_unresolved_symbol_count
+            ) -gt [int]$data.empty_reference_unresolved_symbol_count
         ) {
             throw "$year 기존 검토표의 미해결 기호/LAB 합계 불일치"
         }

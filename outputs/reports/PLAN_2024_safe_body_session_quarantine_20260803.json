@@ -1,0 +1,48 @@
+{
+  "schema_version": "wav_failed_session_quarantine_plan.v1",
+  "status": "dry_run_plan_only",
+  "year": "2024",
+  "created_at": "2026-08-03T23:38:19+09:00",
+  "mutates_wav": false,
+  "approves_exclusions": false,
+  "starts_mfa": false,
+  "failed_session_count": 6,
+  "failed_sessions": [
+    "SDRW2400000277",
+    "SDRW2400000282",
+    "SDRW2400001691",
+    "SDRW2400001997",
+    "SDRW2400002296",
+    "SDRW2400002873"
+  ],
+  "failed_session_rows": 1558,
+  "active_audio_issue_count": 331,
+  "additional_session_quarantine_count": 1252,
+  "final_audio_exclusion_count": 1583,
+  "uncovered_audio_issue_count": 0,
+  "base_plan_status_counts": {
+    "ambiguous_short_match": 1,
+    "identity_high_confidence": 4940,
+    "source_orphan": 330,
+    "target_unresolved": 330
+  },
+  "output_plan_status_counts": {
+    "identity_high_confidence": 3688,
+    "source_orphan": 330,
+    "target_unresolved": 1583
+  },
+  "safe_to_auto_apply": false,
+  "next_step": "범주 요약 연구자 승인 뒤 안전 본체 MFA",
+  "audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2024\\01_input_audit_unapproved.json",
+    "bytes": 134320,
+    "mtime_ns": 1785759381226617400,
+    "sha256": "5644f80663ab397b3ada02b3cb7bab79369366296c18cbccbe9cd0720dbbb9fe"
+  },
+  "base_plan": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2024\\02a_wav_duration_recovery_plan.csv",
+    "bytes": 1018037,
+    "mtime_ns": 1785759389236464000,
+    "sha256": "d24f0f55f2114e2b2ec6f25634e6437524b908f70d908606d152ba2a49ac3d29"
+  }
+}

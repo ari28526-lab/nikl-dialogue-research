@@ -76,6 +76,15 @@ data/03_analysis_ready/
 /outputs/reports/archive/**
 /outputs/reviews/archive/**
 
+# 2021–2025 제외 후보의 전수 입력감사 payload는 수십 MB 로컬 근거로 보존한다.
+# 작은 후보 manifest·범주 요약·계획 요약은 Git에 추적한다.
+/outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803/*/01_input_audit_unapproved.json
+# 최초 행 단위 queue는 로컬 역사 근거로만 보존한다. 2021의 이미 추적된 기준선은
+# 유지하고, 이후 생성된 구 후보 payload는 현행 safe-body queue와 섞지 않는다.
+/outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803/202[2-5]/**
+/outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803/CATEGORY_SUMMARY_2021_2025.*
+/outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803/PREPARE_SUMMARY.json
+
 # 2020 post-MFA 검토 전달본은 로컬 SHA 근거로 보존하되 payload는 Git 제외
 /outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/*
 !/outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/MANIFEST.json
@@ -86,3 +95,4 @@ data/03_analysis_ready/
 !outputs/reviews/mfa_post_alignment_2020_mfa_r2_prod_2020_20260802/02_RESEARCHER_DECISIONS.csv
 !outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020/03_RESEARCHER_REVIEW.csv
 !outputs/reviews/mfa_production_2020_mfa_r2_prod_2020_export_20260803/03_RESEARCHER_REVIEW.csv
+!outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/CATEGORY_SUMMARY_2021_2025.csv

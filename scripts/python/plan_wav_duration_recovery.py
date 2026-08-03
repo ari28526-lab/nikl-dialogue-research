@@ -51,8 +51,16 @@ def utterance_sort_key(utt_id: str) -> tuple[object, ...]:
     return tuple(int(part) if part.isdigit() else part for part in parts)
 
 
-def duration_token(seconds: float) -> int:
-    return round(seconds * 1000)
+def duration_token(seconds: float, quantum_ms: int = 1) -> int:
+    """Return a duration token at an explicit millisecond resolution.
+
+    The production default remains exact-to-1 ms. Coarser values are only for
+    sensitivity analyses and do not by themselves authorize a recovery.
+    """
+
+    if quantum_ms < 1:
+        raise ValueError("duration quantum must be at least 1 ms")
+    return round(seconds * 1000 / quantum_ms)
 
 
 def plan_session(
@@ -64,6 +72,7 @@ def plan_session(
     padding_seconds: float = 0.01,
     minimum_high_confidence_run: int = 3,
     direct_identity_tolerance_seconds: float = 0.025,
+    duration_quantum_ms: int = 1,
     affected_target_ids: set[str] | None = None,
 ) -> list[dict[str, object]]:
     targets = []
@@ -85,9 +94,12 @@ def plan_session(
                 continue
             sources.append((path.stem, seconds, path))
 
-    target_tokens = [duration_token(seconds) for _utt, seconds in targets]
+    target_tokens = [
+        duration_token(seconds, duration_quantum_ms)
+        for _utt, seconds in targets
+    ]
     source_tokens = [
-        duration_token(seconds - padding_seconds)
+        duration_token(seconds - padding_seconds, duration_quantum_ms)
         for _utt, seconds, _path in sources
     ]
     # 같은 발화 ID의 WAV 길이가 직접 맞으면 이것이 가장 강한 보존 근거다.
@@ -230,6 +242,7 @@ def main() -> int:
     parser.add_argument("--output-csv", type=Path, required=True)
     parser.add_argument("--output-report", type=Path, required=True)
     parser.add_argument("--padding-seconds", type=float, default=0.01)
+    parser.add_argument("--duration-quantum-ms", type=int, default=1)
     parser.add_argument("--minimum-high-confidence-run", type=int, default=3)
     parser.add_argument(
         "--direct-identity-tolerance-seconds", type=float, default=0.025
@@ -274,6 +287,7 @@ def main() -> int:
                 direct_identity_tolerance_seconds=(
                     args.direct_identity_tolerance_seconds
                 ),
+                duration_quantum_ms=args.duration_quantum_ms,
                 affected_target_ids=affected_by_session[session],
             )
         )
@@ -326,6 +340,7 @@ def main() -> int:
         "search_master_root": str(args.search_master_root.resolve()),
         "wav_root": str(args.wav_root.resolve()),
         "padding_seconds": args.padding_seconds,
+        "duration_quantum_ms": args.duration_quantum_ms,
         "minimum_high_confidence_run": args.minimum_high_confidence_run,
         "direct_identity_tolerance_seconds": (
             args.direct_identity_tolerance_seconds
