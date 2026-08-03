@@ -71,7 +71,7 @@ Windows PowerShell 5.1 compatibility rule:
 - Do not print API keys or copy secret values into chat, logs, scripts, notebooks, or Quarto documents.
 - Keep Bareun secrets outside this Dropbox project folder.
 - Treat external-drive corpus data as source data. Do not modify raw corpus files unless explicitly asked.
-- For Modu corpus and MFA work, always build and validate a small pilot subset before bulk processing.
+- For Modu corpus and MFA work, require a validated pilot or a passed prior-year production gate before bulk processing. Do not repeat a pilot when the frozen contract is unchanged; 2020 Gate B is the pilot/production gate for 2021–2025.
 - Keep large generated files out of Dropbox when practical; store only scripts, notes, small samples, final reports, and selected outputs here.
 - Put transient files in `work`, reusable scripts in `scripts`, final results in `outputs`, and logs in `logs`.
 

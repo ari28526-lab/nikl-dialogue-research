@@ -977,3 +977,45 @@ shard 2–23을 재개하는 것이다.
   check가 모두 통과했고 `failed_checks=[]`였다. 최종
   `GATE_B_2020_TO_2021.json`은 `status=passed`,
   `allow_remaining_years=true`다. 이 시점에는 2021을 시작하지 않았다.
+
+### 2021 진입 전 저장소 정본·archive 정리
+
+- VS Code의 Source Control `185`는 push 실패가 아니라 tracked 변경 0,
+  untracked 산출물 185개 표시였다. 145개는 검토 폴더, 19개는 보고서였고 전체
+  9.059MiB였다.
+- 2020 최종 TextGrid 868,187개, 보존 DB, 결합 제외 계약, 동반표, 독립 감사,
+  생산 표본 승인, Gate B는 보호 목록으로 고정하고 이동·수정하지 않았다.
+- 현재 생산 전에 끝난 로컬 파일럿 5폴더를
+  `outputs/archive/pre_2021_local_20260803`으로 이동했다. 각 폴더의 이동 전후
+  파일 수·바이트·결정적 트리 SHA-256이 모두 같았다.
+- 구 기기 설정, 반복 검토를 유도하던 단계별 학습노트, 구 Dropbox root 결정문
+  3개를 `docs/archive/pre_2021_cleanup_20260803`으로 이동했다. 구 3-tier·잔여 재정렬,
+  일회성 이행, 병목 파일럿 코드 13개는
+  `scripts/archive/pre_2021_legacy_20260803`으로 이동했다. 현행 Jamo r2,
+  6-tier exporter, 연도 큐, 감사 및 Gate B 코드는 유지했다.
+- Git에는 Gate B·독립 감사·DB 표본·연구자 결정 등 작은 재현 근거만 남기고,
+  WAV·TextGrid·LAB·미리보기·중복 검토 payload와 진행 JSONL은 로컬 보존/무시로
+  분리했다. 상세 manifest는
+  `docs/archive/ARCHIVE_MANIFEST_pre_2021_20260803.md`다.
+
+### 2021–2025 구 실행 결과·상태 정리
+
+- 새 2021 실행과 과거 산출물이 섞이지 않도록 D:의 구 TextGrid, MFA temp/output,
+  marker, log 및 E: archive를 읽기 전용으로 대조했다. 2022–2025의 구 merged
+  TextGrid와 2021의 구 TextGrid·MFA DB/temp는 이미 E:에서 검증 완료됐고 대응
+  D: 연도 폴더는 0개였다.
+- 활성 상태에 남은 구 2021 로그·LAB 완료표시·입력계약 9개, 4,208,271 bytes를
+  exact allowlist로 제한해
+  `E:\READ_ONLY_ARCHIVE\2026_summer_research\pre_2021_active_state_20260803`에
+  압축했다. 7-Zip test가 통과했고 압축본은 458,443 bytes, SHA-256은
+  `fb4ccb859a60b9833960d38ba97330a530fbd89be0b820e08e32ebf004edbc39`다.
+  검증 뒤 활성 사본 9개를 정리했으며 남은 활성 구 상태는 0개다.
+- 구 2021 align/merge marker 2개는 이미 `archive_stale`에 격리된 감사 증거이므로
+  유지했다. 기존 2021 `.lab` 약 133만 건은 모델 산출물이 아니라 동결 CSV 기반
+  입력이므로 보존했다. 완료표시를 제거했기 때문에 새 실행은 이를 건너뛰지 않고
+  전수 재검증하고 불일치 파일만 다시 쓴다.
+- 2020 최종 6-tier 868,187개, 보존 DB, Gate B, 원본 WAV/CSV, 공통 Jamo r2,
+  `morph_search.v3`는 변경하지 않았다. 사후 보호 경로와 2021 LAB 존재를 다시
+  확인했다. 실행·근거 보고서는
+  `scripts/archive/pre_2021_cleanup_20260803/archive_pre_2021_active_state_20260803.ps1`과
+  `outputs/reports/ARCHIVE_pre_2021_active_state_20260803.json`이다.

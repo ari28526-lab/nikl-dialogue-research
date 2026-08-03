@@ -28,6 +28,10 @@
 - 8월 시행착오: `WORK_HISTORY_2026-08.md`
 - 7월 시행착오: `archive/work_history/WORK_HISTORY_2026-07.md`
 - 환경: `environment/ENVIRONMENT_NOTES_INDEX.md`
+- 2020 완료·Gate B 결정:
+  `decisions/DECISION_2020_production_complete_gate_b_20260803.md`
+- 2021 진입 전 archive manifest:
+  `archive/ARCHIVE_MANIFEST_pre_2021_20260803.md`
 
 ## 역사 문서 규칙
 

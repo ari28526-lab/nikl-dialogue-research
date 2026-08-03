@@ -1,0 +1,153 @@
+{
+  "schema_version": "mfa_research_6tier_year_audit.v1",
+  "status": "success",
+  "year": "2020",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "alignment_contract_id": "8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc",
+  "lab_root": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual",
+  "textgrid_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging",
+  "approved_exclusions_contract": {
+    "schema_version": "mfa_approved_exclusions.v1",
+    "status": "approved",
+    "year": "2020",
+    "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+    "approved_by": "ari30",
+    "approved_at": "2026-08-03T12:23:10.0860931+09:00",
+    "created_at": "2026-08-03T12:23:35.239050+09:00",
+    "review_csv": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803\\2020\\03_RESEARCHER_REVIEW.csv",
+      "bytes": 664801,
+      "mtime_ns": 1785727415207678000,
+      "sha256": "8ab466ca3353da4b792f076dcd79df0c34f913a7aa999181a7638b1843865af1"
+    },
+    "row_count": 2250,
+    "counts": {
+      "audio_pairing_unresolved|alignment_and_analysis": 1834,
+      "audio_unusable|alignment_and_analysis": 3,
+      "empty_reference_unresolved_symbol|alignment_and_analysis": 53,
+      "mfa_alignment_missing|alignment_and_analysis": 360
+    },
+    "policy": {
+      "automatic_approval_forbidden": true,
+      "unknown_missing_is_hard_failure": true,
+      "contract_bound_to_input_contract_id": true
+    }
+  },
+  "coverage_pct": 100.0,
+  "hard_failure_counts": {
+    "duplicate_lab_ids": 0,
+    "duplicate_textgrid_ids": 0,
+    "missing_textgrid_ids": 0,
+    "extra_textgrid_ids": 0,
+    "invalid_textgrids": 0,
+    "spn_intervals": 0,
+    "phone_outside_inventory": 0,
+    "table_manifest_error": 0,
+    "utterance_table_id_mismatch": 0,
+    "duplicate_utterance_table_ids": 0,
+    "duplicate_word_keys": 0,
+    "duplicate_phone_keys": 0,
+    "invalid_word_key_order": 0,
+    "invalid_phone_key_order": 0,
+    "excluded_table_id_mismatch": 0,
+    "duplicate_excluded_table_ids": 0,
+    "analysis_only_without_textgrid": 0,
+    "manifest_utterance_count_mismatch": 0,
+    "manifest_word_count_mismatch": 0,
+    "manifest_phone_count_mismatch": 0,
+    "manifest_excluded_count_mismatch": 0
+  },
+  "counts": {
+    "active_lab_ids": 868550,
+    "expected_textgrid_ids": 868187,
+    "textgrid_ids": 868187,
+    "approved_exclusions": 2250,
+    "approved_alignment_exclusions": 2250,
+    "approved_analysis_only_exclusions": 0,
+    "utterance_table_rows": 868187,
+    "word_table_rows": 4973795,
+    "phone_table_rows": 19101192,
+    "excluded_table_rows": 2250
+  },
+  "reason_counts": {},
+  "inventories": {
+    "missing_textgrid_ids": [],
+    "extra_textgrid_ids": [],
+    "invalid_textgrid_ids": [],
+    "phone_outside_inventory": []
+  },
+  "table_manifest": {
+    "schema_version": "mfa_research_companion_tables.v2",
+    "status": "success",
+    "year": "2020",
+    "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+    "alignment_contract_id": "8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc",
+    "textgrid_schema_version": "research_textgrid.v2",
+    "phoneme_schema_version": "phoneme_roman_aux.v1",
+    "roman_system_version": "roman_mfa.v1",
+    "lab_input_version": "eojeol_v4_pron_reference_form_with_token_map",
+    "token_map_version": "source_eojeol_to_mfa_word.v1",
+    "index_base": 1,
+    "position_contract": "source eojeol (form/tagged) and MFA reference eojeol (pron_reference_form) are separate domains",
+    "archived_stale_partials": [],
+    "logical_sidecar_policy": "annual compressed normalized tables keyed by utt_id; per-utterance CSV only in selected candidate bundles",
+    "approved_exclusions_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803\\2020\\approved_exclusions.json",
+      "bytes": 1076,
+      "mtime_ns": 1785727415242497400,
+      "sha256": "10169a95569554a33774af5048ae1b9fe8d4d936005cda224c5902c03433e6c2"
+    },
+    "column_schema": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\research_companion_tables_schema_v2.json",
+      "bytes": 4708,
+      "mtime_ns": 1785557495874050100,
+      "sha256": "f3560108bfebaa7462f1ef49262173de59e014040d716775ef739d7c0b268811"
+    },
+    "csv_contract": {
+      "delimiter": ",",
+      "lineterminator": "\\n",
+      "null": "",
+      "boolean_true": "true",
+      "boolean_false": "false"
+    },
+    "compression_contract": {
+      "format": "gzip",
+      "mtime": 0
+    },
+    "tables": {
+      "utterances": {
+        "path": "utterance_alignment.csv.gz",
+        "bytes": 194296437,
+        "mtime_ns": 1785736160323213900,
+        "sha256": "92ffa6167f93b0472bb6653625687f5dad97724fd6c434a6f396120606126eeb"
+      },
+      "words": {
+        "path": "word_intervals_mfa.csv.gz",
+        "bytes": 138413601,
+        "mtime_ns": 1785736160326161900,
+        "sha256": "a07e0af614f795095ad6c40a3afa6673a9397b1cce4f91baedf7ad96e51161a3"
+      },
+      "phones": {
+        "path": "phone_intervals_mfa.csv.gz",
+        "bytes": 316620899,
+        "mtime_ns": 1785736160329396100,
+        "sha256": "4a86a4d8a1795902fbeaafae9a1eb70778626f254ed94d3f64860b68c7485595"
+      },
+      "excluded": {
+        "path": "excluded_utterances.csv.gz",
+        "bytes": 15348,
+        "mtime_ns": 1785736160333433900,
+        "sha256": "04759b9bc930b2fcd6b2836c6781ce918b91a9e767c5a9b2c717a72f97f26536"
+      }
+    },
+    "counts": {
+      "excluded_utterances": 2250,
+      "phone_intervals": 19101192,
+      "utterances": 868187,
+      "word_intervals": 4973795
+    }
+  },
+  "table_manifest_error": "",
+  "missing_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_2020_export_20260803\\2020\\01_id_inventory.csv",
+  "elapsed_seconds": 1694.055
+}

@@ -38,44 +38,41 @@ workflow 수정·시험
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
 
-## 현재 시작점 — 2020 보존 DB export
+## 현재 시작점 — 2020 Gate B 통과, 2021 준비
 
-2020 신규 MFA 계산은 이미 끝났다. 보존 DB의 실제 미정렬 363 ID를 원 후보표와
-전수 대조했고, pre-MFA 1,887건과 post-MFA 363건을 합친 2,250건 승인 계약도
-완성했다. 따라서 아래 A–C는 완료 이력이며 **다시 실행하지 않는다.** 지금은
-다음 한 줄로 시작한다.
+2020은 신규 공통 Jamo r2 MFA, 6-tier 868,187개, gzip 동반표 4개, 독립 전수
+감사, DB 재생성 표본 24/24, 연구자 생산 표본 24/24 및 Gate B까지 완료됐다.
+Gate B의 16개 core check는 모두 통과했고 `allow_remaining_years=true`다.
+2020 계산·export·검토 명령은 **다시 실행하지 않는다.** 2021은 아직 시작하지
+않았다.
 
-먼저 읽기·검증만 수행한다.
+2021 진입 전 구 결과·상태 정리도 완료됐다. 구 2021–2025 TextGrid와 2021
+MFA DB/temp는 E:의 기존 검증 archive에 있고 D: 연도 결과 폴더는 0개다. D:에
+남았던 구 2021 로그·완료표시·입력계약 9개도 E:에 CRC·SHA 검증 보관했다.
+기존 2021 `.lab`은 입력 재사용을 위해 남겼지만 구 완료표시는 제거했으므로 아래
+정상 실행에서 전수 내용 검증 후 일치분만 재사용한다. 과거 정렬 완료 상태를 새
+Jamo r2 결과로 오인해 건너뛰지 않는다.
+
+현재 첫 행동은 2021–2025의 승인 제외 후보표만 준비하는 다음 명령이다.
 
 ```powershell
-& "C:\Users\ari30\research\2026_summer_research\scripts\resume_2020_export_after_post_mfa_review.ps1" `
-  -ApprovedBy "ari30" `
-  -ApprovePostMfa363 `
-  -PreflightOnly
+& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_remaining_mfa_approval_reviews.ps1"
 ```
 
-결과가 `GO`이면 `-PreflightOnly`만 빼고 실행한다.
+이 명령은 Gate B를 다시 읽고 후보표만 만들며 MFA를 시작하거나 자동 승인하지
+않는다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
 
 ```powershell
-& "C:\Users\ari30\research\2026_summer_research\scripts\resume_2020_export_after_post_mfa_review.ps1" `
-  -ApprovedBy "ari30" `
-  -ApprovePostMfa363
+& "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```
 
-이 wrapper는 `D:\mfa_eojeol\done\2020.direct_db_ready`와
-`D:\mfa_tmp\2020\2020.db`의 입력·정렬 계약을 다시 확인한다. 같은 checkpoint면
-MFA를 건너뛰고 6-tier·동반표 export와 후속 기계 QC부터 재개한다. full clean,
-전수 재정렬, 자동 정본 승격, 2021 자동 진입은 하지 않는다.
-
-2026-08-03 첫 실제 재개는 구 입력 gate가 post-MFA 승인 363건의 LAB·WAV
-존재를 잘못 차단해 export 전에 종료됐다. DB와 checkpoint는 보존됐고 출력은
-생성되지 않았다. 현재 코드는 같은 checkpoint와 DB 미정렬 exact-ID를 함께
-검증하도록 교정됐으므로 위 실제 실행 명령을 그대로 다시 사용한다. 구 큐 폴더나
-DB를 삭제하지 않는다.
+두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
+`outputs/reports/GATE_B_2020_TO_2021.json`과
+`docs/decisions/DECISION_2020_production_complete_gate_b_20260803.md`에 고정했다.
 
 ## 3. 단계별 사용자 행동
 
-### A. 2020 검색표
+### A. 2020 검색표 — 완료 이력, 재실행 금지
 
 코드·시험이 커밋된 뒤 다음 wrapper 하나만 실행한다.
 
@@ -161,7 +158,7 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 완료 상태 `machine_qc_passed_human_review_pending`은 기계 QC가 통과했지만 아직
 정본 승격이나 다음 연도 허가가 아니라는 뜻이다.
 
-### D. 2020 생산 표본 연구자 확인
+### D. 2020 생산 표본 연구자 확인 — 완료 이력, 재실행 금지
 
 기계 QC 완료 뒤 검토표를 만든다.
 
@@ -187,7 +184,8 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 
 ### E. Gate B와 2021–2025
 
-2020 연구자 보고서가 승인되면 Gate B를 통과시킨 뒤 2021–2025 제외 후보표를
+2020 연구자 보고서 승인과 Gate B는 2026-08-03 완료됐다. 최종 상태는
+`passed`, 실패 0, `allow_remaining_years=true`다. 이제 2021–2025 제외 후보표를
 준비한다.
 
 ```powershell

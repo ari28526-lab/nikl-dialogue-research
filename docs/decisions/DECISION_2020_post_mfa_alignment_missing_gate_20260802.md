@@ -96,3 +96,11 @@ post-MFA 363건은 MFA에 투입된 뒤 정렬되지 않은 발화이므로 LAB�
 읽은 미정렬 ID와 `audio_unusable`·`mfa_alignment_missing` 승인 ID가 정확히
 같을 때만 export 재개 gate를 통과시킨다. 이 조건 중 하나라도 다르면 계속
 fail-closed한다.
+
+## 2026-08-03 종결
+
+승인된 363건과 보존 DB 미정렬 ID의 exact-match를 유지한 채 868,187개 정렬
+성공 발화를 같은 DB에서 6-tier로 export했다. 독립 감사·24개 DB 표본·24개
+연구자 생산 표본과 Gate B가 모두 통과했으므로 이 gate는 해결 완료다. 2020
+전수 MFA 재실행은 하지 않는다. 최종 판정은
+`DECISION_2020_production_complete_gate_b_20260803.md`를 따른다.

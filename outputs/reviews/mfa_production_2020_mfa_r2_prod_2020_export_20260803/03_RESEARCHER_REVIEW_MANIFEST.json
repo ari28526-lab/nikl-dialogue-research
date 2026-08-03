@@ -1,0 +1,282 @@
+{
+  "schema_version": "mfa_production_year_review_manifest.v1",
+  "status": "pending_researcher_review",
+  "created_at": "2026-08-03T15:21:11+09:00",
+  "year": "2020",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "alignment_contract_id": "8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc",
+  "database": "D:\\mfa_tmp\\2020\\2020.db",
+  "sample_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_2020_export_20260803\\2020\\02_db_sample.json",
+    "bytes": 1252,
+    "mtime_ns": 1785737960742339100,
+    "sha256": "6eff68391956677dbc92bfea376ef08d873883f96639a0566b333d2153aad450"
+  },
+  "sample_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_2020_export_20260803\\2020\\02_db_sample.csv",
+    "bytes": 10128,
+    "mtime_ns": 1785737960734324900,
+    "sha256": "b38c9567738e66c7254716a4ee5c1e358cb4f8cb52f95bf49a7b5c836c42a783"
+  },
+  "alignment_contract": {
+    "path": "D:\\mfa_eojeol\\alignment_contracts\\2020.json",
+    "bytes": 3697,
+    "mtime_ns": 1785730440801562400,
+    "sha256": "c102e507ec6a118f5e992ccaf6b754ffcf76c36e75a26af8b7cec0d660350179"
+  },
+  "review_csv_template": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2020_mfa_r2_prod_2020_export_20260803\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 8650,
+    "mtime_ns": 1785738071499254100,
+    "sha256": "63801a9f3b250e422a5097472766431aceb934e2bdc4d7c04564e2d5ec674727"
+  },
+  "row_identities": [
+    {
+      "review_order": "1",
+      "year": "2020",
+      "session": "SDRW2000000277",
+      "speaker_id": "SD2000391",
+      "utt_id": "SDRW2000000277.1.1.385",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000277\\SDRW2000000277.1.1.385.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000277\\SDRW2000000277.1.1.385.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000277\\SDRW2000000277.1.1.385.TextGrid"
+    },
+    {
+      "review_order": "2",
+      "year": "2020",
+      "session": "SDRW2000000272",
+      "speaker_id": "SD2000384",
+      "utt_id": "SDRW2000000272.1.1.358",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000272\\SDRW2000000272.1.1.358.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000272\\SDRW2000000272.1.1.358.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000272\\SDRW2000000272.1.1.358.TextGrid"
+    },
+    {
+      "review_order": "3",
+      "year": "2020",
+      "session": "SDRW2000000226",
+      "speaker_id": "SD2002195",
+      "utt_id": "SDRW2000000226.1.1.53",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000226\\SDRW2000000226.1.1.53.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000226\\SDRW2000000226.1.1.53.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000226\\SDRW2000000226.1.1.53.TextGrid"
+    },
+    {
+      "review_order": "4",
+      "year": "2020",
+      "session": "SDRW2000000087",
+      "speaker_id": "SD2000135",
+      "utt_id": "SDRW2000000087.1.1.261",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000087\\SDRW2000000087.1.1.261.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000087\\SDRW2000000087.1.1.261.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000087\\SDRW2000000087.1.1.261.TextGrid"
+    },
+    {
+      "review_order": "5",
+      "year": "2020",
+      "session": "SDRW2000000615",
+      "speaker_id": "SD2000751",
+      "utt_id": "SDRW2000000615.1.1.203",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000615\\SDRW2000000615.1.1.203.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000615\\SDRW2000000615.1.1.203.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000615\\SDRW2000000615.1.1.203.TextGrid"
+    },
+    {
+      "review_order": "6",
+      "year": "2020",
+      "session": "SDRW2000001747",
+      "speaker_id": "SD2002135",
+      "utt_id": "SDRW2000001747.1.1.224",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001747\\SDRW2000001747.1.1.224.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001747\\SDRW2000001747.1.1.224.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001747\\SDRW2000001747.1.1.224.TextGrid"
+    },
+    {
+      "review_order": "7",
+      "year": "2020",
+      "session": "SDRW2000000045",
+      "speaker_id": "SD2000067",
+      "utt_id": "SDRW2000000045.1.1.56",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000045\\SDRW2000000045.1.1.56.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000045\\SDRW2000000045.1.1.56.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000045\\SDRW2000000045.1.1.56.TextGrid"
+    },
+    {
+      "review_order": "8",
+      "year": "2020",
+      "session": "SDRW2000001814",
+      "speaker_id": "SD2002236",
+      "utt_id": "SDRW2000001814.1.1.315",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001814\\SDRW2000001814.1.1.315.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001814\\SDRW2000001814.1.1.315.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001814\\SDRW2000001814.1.1.315.TextGrid"
+    },
+    {
+      "review_order": "9",
+      "year": "2020",
+      "session": "SDRW2000001511",
+      "speaker_id": "SD2001811",
+      "utt_id": "SDRW2000001511.1.1.156",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001511\\SDRW2000001511.1.1.156.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001511\\SDRW2000001511.1.1.156.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001511\\SDRW2000001511.1.1.156.TextGrid"
+    },
+    {
+      "review_order": "10",
+      "year": "2020",
+      "session": "SDRW2000001649",
+      "speaker_id": "SD2001996",
+      "utt_id": "SDRW2000001649.1.1.289",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001649\\SDRW2000001649.1.1.289.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001649\\SDRW2000001649.1.1.289.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001649\\SDRW2000001649.1.1.289.TextGrid"
+    },
+    {
+      "review_order": "11",
+      "year": "2020",
+      "session": "SDRW2000002000",
+      "speaker_id": "SD2002474",
+      "utt_id": "SDRW2000002000.1.1.37",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000002000\\SDRW2000002000.1.1.37.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000002000\\SDRW2000002000.1.1.37.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000002000\\SDRW2000002000.1.1.37.TextGrid"
+    },
+    {
+      "review_order": "12",
+      "year": "2020",
+      "session": "SDRW2000001066",
+      "speaker_id": "SD2001215",
+      "utt_id": "SDRW2000001066.1.1.315",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001066\\SDRW2000001066.1.1.315.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001066\\SDRW2000001066.1.1.315.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001066\\SDRW2000001066.1.1.315.TextGrid"
+    },
+    {
+      "review_order": "13",
+      "year": "2020",
+      "session": "SDRW2000000144",
+      "speaker_id": "SD2000219",
+      "utt_id": "SDRW2000000144.1.1.154",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000144\\SDRW2000000144.1.1.154.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000144\\SDRW2000000144.1.1.154.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000144\\SDRW2000000144.1.1.154.TextGrid"
+    },
+    {
+      "review_order": "14",
+      "year": "2020",
+      "session": "SDRW2000001547",
+      "speaker_id": "SD2001874",
+      "utt_id": "SDRW2000001547.1.1.108",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001547\\SDRW2000001547.1.1.108.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001547\\SDRW2000001547.1.1.108.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001547\\SDRW2000001547.1.1.108.TextGrid"
+    },
+    {
+      "review_order": "15",
+      "year": "2020",
+      "session": "SDRW2000000901",
+      "speaker_id": "SD2001042",
+      "utt_id": "SDRW2000000901.1.1.171",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000901\\SDRW2000000901.1.1.171.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000901\\SDRW2000000901.1.1.171.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000901\\SDRW2000000901.1.1.171.TextGrid"
+    },
+    {
+      "review_order": "16",
+      "year": "2020",
+      "session": "SDRW2000000118",
+      "speaker_id": "SD2000180",
+      "utt_id": "SDRW2000000118.1.1.40",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000118\\SDRW2000000118.1.1.40.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000118\\SDRW2000000118.1.1.40.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000118\\SDRW2000000118.1.1.40.TextGrid"
+    },
+    {
+      "review_order": "17",
+      "year": "2020",
+      "session": "SDRW2000000713",
+      "speaker_id": "SD2000848",
+      "utt_id": "SDRW2000000713.1.1.320",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000713\\SDRW2000000713.1.1.320.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000713\\SDRW2000000713.1.1.320.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000713\\SDRW2000000713.1.1.320.TextGrid"
+    },
+    {
+      "review_order": "18",
+      "year": "2020",
+      "session": "SDRW2000002015",
+      "speaker_id": "SD2002490",
+      "utt_id": "SDRW2000002015.1.1.299",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000002015\\SDRW2000002015.1.1.299.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000002015\\SDRW2000002015.1.1.299.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000002015\\SDRW2000002015.1.1.299.TextGrid"
+    },
+    {
+      "review_order": "19",
+      "year": "2020",
+      "session": "SDRW2000000699",
+      "speaker_id": "SD2000833",
+      "utt_id": "SDRW2000000699.1.1.18",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000699\\SDRW2000000699.1.1.18.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000699\\SDRW2000000699.1.1.18.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000699\\SDRW2000000699.1.1.18.TextGrid"
+    },
+    {
+      "review_order": "20",
+      "year": "2020",
+      "session": "SDRW2000001631",
+      "speaker_id": "SD2001973",
+      "utt_id": "SDRW2000001631.1.1.165",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001631\\SDRW2000001631.1.1.165.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001631\\SDRW2000001631.1.1.165.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001631\\SDRW2000001631.1.1.165.TextGrid"
+    },
+    {
+      "review_order": "21",
+      "year": "2020",
+      "session": "SDRW2000001838",
+      "speaker_id": "SD2002268",
+      "utt_id": "SDRW2000001838.1.1.265",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001838\\SDRW2000001838.1.1.265.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001838\\SDRW2000001838.1.1.265.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001838\\SDRW2000001838.1.1.265.TextGrid"
+    },
+    {
+      "review_order": "22",
+      "year": "2020",
+      "session": "SDRW2000000647",
+      "speaker_id": "SD2000782",
+      "utt_id": "SDRW2000000647.1.1.79",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000647\\SDRW2000000647.1.1.79.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000647\\SDRW2000000647.1.1.79.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000647\\SDRW2000000647.1.1.79.TextGrid"
+    },
+    {
+      "review_order": "23",
+      "year": "2020",
+      "session": "SDRW2000000258",
+      "speaker_id": "SD2002411",
+      "utt_id": "SDRW2000000258.1.1.57",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000258\\SDRW2000000258.1.1.57.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000000258\\SDRW2000000258.1.1.57.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000000258\\SDRW2000000258.1.1.57.TextGrid"
+    },
+    {
+      "review_order": "24",
+      "year": "2020",
+      "session": "SDRW2000001886",
+      "speaker_id": "SD2002345",
+      "utt_id": "SDRW2000001886.1.1.102",
+      "wav_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001886\\SDRW2000001886.1.1.102.wav",
+      "lab_path": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual\\2020\\SDRW2000001886\\SDRW2000001886.1.1.102.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020\\SDRW2000001886\\SDRW2000001886.1.1.102.TextGrid"
+    }
+  ],
+  "counts": {
+    "rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24
+  },
+  "realization_judgment_requested": false,
+  "automatic_approval_performed": false
+}

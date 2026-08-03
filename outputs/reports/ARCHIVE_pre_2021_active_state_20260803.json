@@ -1,0 +1,125 @@
+﻿{
+    "schema_version":  "pre_2021_active_state_archive.v1",
+    "status":  "success",
+    "checked_at":  "2026-08-03T16:23:24.1208871+09:00",
+    "apply_requested":  true,
+    "scope":  "legacy_active_state_for_2021_only",
+    "archive_root":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_2021_active_state_20260803",
+    "archive_path":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pre_2021_active_state_20260803\\pre_2021_active_state_20260803.7z",
+    "policy":  {
+                   "source_allowlist_count":  9,
+                   "raw_wav_modified":  false,
+                   "csv_modified":  false,
+                   "retained_lab_inputs_modified":  false,
+                   "common_pronunciation_modified":  false,
+                   "morph_search_v3_modified":  false,
+                   "production_2020_modified":  false,
+                   "legacy_2021_active_files_removed_after_verified_archive":  true
+               },
+    "retained_lab_root":  "D:\\20_AUDIO\\03_wav\\individual\\2021",
+    "protected_paths":  [
+                            "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020",
+                            "D:\\mfa_tmp\\2020\\2020.db",
+                            "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\GATE_B_2020_TO_2021.json"
+                        ],
+    "source_files":  [
+                         {
+                             "source":  "D:\\mfa_eojeol\\done\\2021.lab_input_done.json",
+                             "relative_path":  "mfa_eojeol\\done\\2021.lab_input_done.json",
+                             "bytes":  909,
+                             "mtime":  "2026-07-28T03:48:32.5567453+09:00",
+                             "sha256":  "5826e68d25845cfe3be28fd50b721e6bc99d84345c749b4c23ab83802a879b5e",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\input_contracts\\2021.json",
+                             "relative_path":  "mfa_eojeol\\input_contracts\\2021.json",
+                             "bytes":  385,
+                             "mtime":  "2026-07-28T03:45:51.4993661+09:00",
+                             "sha256":  "cada52bdf94ca1942923b033b2c7ca7fcb78e97cc663968b0bc29e8906fc5c16",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_g2p_2021_20260727_082721.json",
+                             "relative_path":  "mfa_eojeol\\logs\\direct_db_export_2021_eojeol_g2p_2021_20260727_082721.json",
+                             "bytes":  3819,
+                             "mtime":  "2026-07-28T03:45:16.6679754+09:00",
+                             "sha256":  "7b11c2bfdfdf26c3c2b947b8d7bd1014886d0b74c05e7d741110e7493e3e3fb8",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\lab_2021_post_mfa_inventory_20260728_heartbeat.jsonl",
+                             "relative_path":  "mfa_eojeol\\logs\\lab_2021_post_mfa_inventory_20260728_heartbeat.jsonl",
+                             "bytes":  265,
+                             "mtime":  "2026-07-28T03:48:32.5637485+09:00",
+                             "sha256":  "74e45d1aeef94c654dec9cfe346f80d8d36e260e1f929372176dc897342c6ca0",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\lab_build_2021_ef22e9b38901_unresolved_symbols.csv",
+                             "relative_path":  "mfa_eojeol\\logs\\lab_build_2021_ef22e9b38901_unresolved_symbols.csv",
+                             "bytes":  3831951,
+                             "mtime":  "2026-07-28T03:48:32.5468836+09:00",
+                             "sha256":  "19da898fb271c639f771c50fff9285982365110c1a8aff3ea069846924eaf6ce",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\lab_build_2021_latest.json",
+                             "relative_path":  "mfa_eojeol\\logs\\lab_build_2021_latest.json",
+                             "bytes":  909,
+                             "mtime":  "2026-07-28T03:48:32.5597451+09:00",
+                             "sha256":  "5826e68d25845cfe3be28fd50b721e6bc99d84345c749b4c23ab83802a879b5e",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\mfa_2021_eojeol_g2p_2021_20260727_082721_heartbeat.jsonl",
+                             "relative_path":  "mfa_eojeol\\logs\\mfa_2021_eojeol_g2p_2021_20260727_082721_heartbeat.jsonl",
+                             "bytes":  365519,
+                             "mtime":  "2026-07-28T01:59:15.8965893+09:00",
+                             "sha256":  "7a75b95c55df8b685312d2383e44f116a84dc207c5dea3201e0e4b8fbf0191ec",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log",
+                             "relative_path":  "mfa_eojeol\\logs\\mfa_2021_stderr.log",
+                             "bytes":  2196,
+                             "mtime":  "2026-07-28T01:58:29.4240192+09:00",
+                             "sha256":  "f096c7f4e83da7f5cc9660d370db075930b0359f242f99d82a71aef2a9c59f5b",
+                             "action":  "archive_then_remove_active_copy"
+                         },
+                         {
+                             "source":  "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log.prev",
+                             "relative_path":  "mfa_eojeol\\logs\\mfa_2021_stderr.log.prev",
+                             "bytes":  2318,
+                             "mtime":  "2026-07-23T06:59:49.8977845+09:00",
+                             "sha256":  "b50da3e1819ef2d271da03f48344724b9c0110374abcc77143c4aede21206150",
+                             "action":  "archive_then_remove_active_copy"
+                         }
+                     ],
+    "previously_archived_legacy_markers":  [
+                                               {
+                                                   "path":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2021.align_done",
+                                                   "bytes":  727,
+                                                   "sha256":  "bd1e6e588debae8ee3877c94300e7db6aeeed96b5c52f5458887058d68fd71b3",
+                                                   "action":  "retain_existing_archive_in_place"
+                                               },
+                                               {
+                                                   "path":  "D:\\mfa_eojeol\\done\\archive_stale\\r2_transition_20260730_legacy_markers\\2021.merge_done",
+                                                   "bytes":  998,
+                                                   "sha256":  "5daea2a8bba07ef6f2ed23131b9a958590e4a45d84bbbfb34400986fa1b9e990",
+                                                   "action":  "retain_existing_archive_in_place"
+                                               }
+                                           ],
+    "empty_partial_contract":  {
+                                   "path":  "D:\\20_AUDIO\\07_textgrid_eojeol_g2p_staging\\_partial_direct_db\\ef22e9b38901a3dd0797cd9664cd72c1d04f496e2ad775cbd9b5f3f99292c3fe",
+                                   "exists":  true,
+                                   "file_count":  0,
+                                   "action":  "remove_empty_directory_after_archive"
+                               },
+    "archive_bytes":  458443,
+    "archive_sha256":  "fb4ccb859a60b9833960d38ba97330a530fbd89be0b820e08e32ebf004edbc39",
+    "archive_test":  "passed",
+    "completed_at":  "2026-08-03T16:23:26.1680476+09:00",
+    "active_sources_remaining":  0,
+    "production_2020_rechecked":  true
+}

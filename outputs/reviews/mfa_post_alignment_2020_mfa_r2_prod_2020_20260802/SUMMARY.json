@@ -1,0 +1,133 @@
+{
+  "schema_version": "mfa_post_alignment_review.v1",
+  "status": "pending_researcher_review",
+  "year": "2020",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "auto_approval_performed": false,
+  "mfa_database_modified": false,
+  "full_year_mfa_rerun_required": false,
+  "candidate_count": 363,
+  "candidate_session_count": 82,
+  "top_sessions": [
+    {
+      "session_id": "SDRW2000000257",
+      "candidate_count": 200
+    },
+    {
+      "session_id": "SDRW2000000514",
+      "candidate_count": 28
+    },
+    {
+      "session_id": "SDRW2000002165",
+      "candidate_count": 17
+    },
+    {
+      "session_id": "SDRW2000002164",
+      "candidate_count": 9
+    },
+    {
+      "session_id": "SDRW2000002210",
+      "candidate_count": 8
+    },
+    {
+      "session_id": "SDRW2000000219",
+      "candidate_count": 6
+    },
+    {
+      "session_id": "SDRW2000000181",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2000001694",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2000002180",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2000002187",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2000000541",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001095",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001407",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001419",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001445",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001613",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001685",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001823",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000001988",
+      "candidate_count": 2
+    },
+    {
+      "session_id": "SDRW2000002171",
+      "candidate_count": 2
+    }
+  ],
+  "pilot_count": 16,
+  "existing_approved_exclusion_count": 1887,
+  "artifacts": {
+    "details": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_alignment_2020_mfa_r2_prod_2020_20260802\\01_CANDIDATE_DETAILS.csv",
+      "bytes": 115384,
+      "mtime_ns": 1785682733324139100,
+      "sha256": "0d3706ce2f5d448a6c803e8aa957cf8cca9edb9a3303a26a8dbe3ea1d56bf1b3"
+    },
+    "decisions": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_alignment_2020_mfa_r2_prod_2020_20260802\\02_RESEARCHER_DECISIONS.csv",
+      "bytes": 116158,
+      "mtime_ns": 1785682733328557700,
+      "sha256": "18ddc73311149baf2c1968dc4f8787e5cb852fcfca616f6bc795ab1213e863ae"
+    },
+    "pilot_review": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_alignment_2020_mfa_r2_prod_2020_20260802\\03_AUDIO_LAB_PILOT_REVIEW.csv",
+      "bytes": 7855,
+      "mtime_ns": 1785682733499564400,
+      "sha256": "e8254312ec7c4a5b5bafeba2087c3cc0fd40ab001b5c92a0f461214f126850bf"
+    },
+    "export_report": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\DIAG_2020_exact_id_reconciliation_after_fix.json",
+      "bytes": 13880,
+      "mtime_ns": 1785682577189403100,
+      "sha256": "c86d46660bbc59157fd6dae97c135e06f9b992eedc815c9b049d8dce5eee23bb"
+    },
+    "database": {
+      "path": "D:\\mfa_tmp\\2020\\2020.db",
+      "bytes": 6348247040,
+      "mtime_ns": 1785679437503040300
+    },
+    "approved_exclusions_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_20260801\\2020\\approved_exclusions.json",
+      "bytes": 965,
+      "mtime_ns": 1785644876233052300,
+      "sha256": "67f90bb7f0631ca1f7bd01f3bf6a43e6d713cb9539400e3a5dac6df95535ea37"
+    }
+  },
+  "researcher_question": "Check the pilot for WAV/LAB pairing, especially the dominant session; then approve exclusion or request targeted recovery."
+}

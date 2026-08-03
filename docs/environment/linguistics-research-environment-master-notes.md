@@ -1,7 +1,12 @@
 # 언어학 연구 환경 마스터 노트
 
 작성일: 2026-07-07  
-현재 작업공간: `C:\Users\ari30\Documents\Codex\2026-07-06\d`
+환경 재확인: 2026-07-25
+현재 프로젝트 정본: `C:\Users\ari30\research\2026_summer_research`
+
+이 문서의 `C:\Users\ari30\Documents\Codex\2026-07-06\d` 경로는 환경을 처음
+구축한 당시의 역사 경로다. 현재 실행 순서와 생산 상태는
+`PROJECT_START_HERE.md`와 `PROJECT_CURRENT_STATE.md`를 우선한다.
 
 이 문서는 Python, R, Quarto, brms/Stan, 바른 형태소 분석기, Praat/음성 분석, R 언어학 패키지, Montreal Forced Aligner(MFA)를 나중에 다른 기기에서 다시 세팅하거나 Codex에게 이어서 작업을 맡길 때 참조하기 위한 마스터 기록이다.
 

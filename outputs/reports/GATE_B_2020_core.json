@@ -1,0 +1,93 @@
+{
+  "schema_version": "mfa_research_6tier_next_year_gate.v1",
+  "supported_export_mode": "direct_db_research_6tier_v1",
+  "status": "passed",
+  "checked_at": "2026-08-03T15:47:19+09:00",
+  "prior_year": "2020",
+  "next_year": "2021",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "alignment_contract_id": "8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc",
+  "checks": [
+    {
+      "name": "audit_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_2020_export_20260803\\2020\\01_year_audit.json"
+    },
+    {
+      "name": "align_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\done\\2020.align_done"
+    },
+    {
+      "name": "merge_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\done\\2020.merge_done"
+    },
+    {
+      "name": "temp_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\input_contracts\\2020.json"
+    },
+    {
+      "name": "sample_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_2020_export_20260803\\2020\\02_db_sample.json"
+    },
+    {
+      "name": "review_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2020_mfa_r2_prod_2020_export_20260803\\04_RESEARCHER_APPROVAL.json"
+    },
+    {
+      "name": "audit_research_6tier_success",
+      "status": "passed",
+      "detail": "status=success, coverage=100.0"
+    },
+    {
+      "name": "exact_contract_identity",
+      "status": "passed",
+      "detail": "input=['7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840'], alignment=['8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc']"
+    },
+    {
+      "name": "marker_export_mode",
+      "status": "passed",
+      "detail": "align=direct_db_research_6tier_v1, merge=direct_db_research_6tier_v1"
+    },
+    {
+      "name": "final_root_identity",
+      "status": "passed",
+      "detail": "audit=D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020, expected=D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2020"
+    },
+    {
+      "name": "search_master_identity",
+      "status": "passed",
+      "detail": "recorded=['D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725']"
+    },
+    {
+      "name": "retained_alignment_db",
+      "status": "passed",
+      "detail": "db=D:\\mfa_tmp\\2020\\2020.db, temp_status=direct_merge_completed_temp_retained_for_qc"
+    },
+    {
+      "name": "db_sample_equivalence",
+      "status": "passed",
+      "detail": "compared=24, semantic=24, sessions=24"
+    },
+    {
+      "name": "researcher_infrastructure_review",
+      "status": "passed",
+      "detail": "schema=mfa_production_year_researcher_review.v1, status=approved, contract={'year': '2020', 'alignment_contract_id': '8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc', 'lab_input_contract_id': '7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840', 'database': 'D:\\\\mfa_tmp\\\\2020\\\\2020.db'}"
+    },
+    {
+      "name": "direct_export_exact_gate",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\logs\\direct_db_export_2020_eojeol_commonpron_2020_20260803_130738.json"
+    },
+    {
+      "name": "companion_manifest_contract",
+      "status": "passed",
+      "detail": "status=success"
+    }
+  ],
+  "failed_checks": []
+}

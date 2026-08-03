@@ -113,6 +113,19 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
+2021 진입 전 저장소 정리에서 2020 완성 자산은 보호한 채 구 문서 3개, 구 코드
+13개, 완료 파일럿 5폴더를 archive했다. 이동 전후 파일럿의 파일 수·바이트·트리
+SHA가 같았다. 근거는
+`docs/archive/ARCHIVE_MANIFEST_pre_2021_20260803.md`다.
+
+외부 작업공간도 정리했다. 기존 E: archive를 대조한 결과 구 2021 TextGrid·DB와
+구 2021–2025 `06_textgrid_merged`는 이미 검증 보관·D: 정리 완료 상태였다. 남아
+있던 구 2021 활성 로그·완료표시·입력계약 9개(4,208,271 bytes)는
+`E:\READ_ONLY_ARCHIVE\2026_summer_research\pre_2021_active_state_20260803`에
+7-Zip test와 SHA-256 검증 후 보관했고 활성 사본은 0개다. 기존 2021 `.lab`은
+재사용 입력으로 보존했지만 구 완료표시는 제거했으므로, 새 2021 실행에서 전수
+재검증된다. 2021–2025 새 정렬 결과 폴더는 아직 0개다.
+
 ## 활성 정본
 
 - 문서 색인: `docs/README.md`

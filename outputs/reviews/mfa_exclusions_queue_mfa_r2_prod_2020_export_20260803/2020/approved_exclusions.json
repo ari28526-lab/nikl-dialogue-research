@@ -1,0 +1,27 @@
+{
+  "schema_version": "mfa_approved_exclusions.v1",
+  "status": "approved",
+  "year": "2020",
+  "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-03T12:23:10.0860931+09:00",
+  "created_at": "2026-08-03T12:23:35.239050+09:00",
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803\\2020\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 664801,
+    "mtime_ns": 1785727415207678000,
+    "sha256": "8ab466ca3353da4b792f076dcd79df0c34f913a7aa999181a7638b1843865af1"
+  },
+  "row_count": 2250,
+  "counts": {
+    "audio_pairing_unresolved|alignment_and_analysis": 1834,
+    "audio_unusable|alignment_and_analysis": 3,
+    "empty_reference_unresolved_symbol|alignment_and_analysis": 53,
+    "mfa_alignment_missing|alignment_and_analysis": 360
+  },
+  "policy": {
+    "automatic_approval_forbidden": true,
+    "unknown_missing_is_hard_failure": true,
+    "contract_bound_to_input_contract_id": true
+  }
+}

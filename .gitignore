@@ -34,6 +34,7 @@ renv/library/
 # Logs can be large; remove this line if you decide to version logs.
 logs/*.log
 logs/*.json
+logs/*.jsonl
 logs/build_search_master_*.txt
 
 # 저작권·재배포권 문제 (2026-07-14 추가)
@@ -65,5 +66,23 @@ data/03_analysis_ready/
 !outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/03_RESEARCHER_REVIEW.csv
 !outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/04_RESEARCHER_APPROVED.csv
 *.TextGrid
+*.lab
 *.tmp
 *.db
+
+# 2021 진입 전 로컬 archive와 구 검토 payload (정본 보고서는 별도 추적)
+/outputs/archive/pre_2021_local_20260803/**
+!/outputs/archive/pre_2021_local_20260803/README.md
+/outputs/reports/archive/**
+/outputs/reviews/archive/**
+
+# 2020 post-MFA 검토 전달본은 로컬 SHA 근거로 보존하되 payload는 Git 제외
+/outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/*
+!/outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/MANIFEST.json
+!/outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/00_REVIEW.csv
+!/outputs/reviews/MFA_2020_REVIEW_SIMPLE_V2_20260803/01_RESEARCHER_APPROVED_AUDIO_UNUSABLE_EXCLUSIONS.csv
+
+# 방법론 재현에 필요한 승인 결정표만 CSV 기본 제외에서 복원
+!outputs/reviews/mfa_post_alignment_2020_mfa_r2_prod_2020_20260802/02_RESEARCHER_DECISIONS.csv
+!outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020/03_RESEARCHER_REVIEW.csv
+!outputs/reviews/mfa_production_2020_mfa_r2_prod_2020_export_20260803/03_RESEARCHER_REVIEW.csv

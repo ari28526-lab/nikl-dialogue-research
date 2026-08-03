@@ -1,0 +1,33 @@
+{
+  "schema_version": "mfa_production_year_researcher_review.v1",
+  "status": "approved",
+  "approved_at": "2026-08-03T15:47:05+09:00",
+  "approved_by": "ari30",
+  "year": "2020",
+  "allow_next_year_mfa": true,
+  "realization_judgment_performed": false,
+  "automatic_approval_performed": false,
+  "counts": {
+    "rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24
+  },
+  "year_contract": {
+    "year": "2020",
+    "alignment_contract_id": "8e7accaaadef9e0716540b9512280419f494d5e2285a008b4fd01a0f31c8cfcc",
+    "lab_input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",
+    "database": "D:\\mfa_tmp\\2020\\2020.db"
+  },
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2020_mfa_r2_prod_2020_export_20260803\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 8674,
+    "mtime_ns": 1785739600545427200,
+    "sha256": "1d8b0d2e15157348f5e6a07cd4adbea435eaede120050352d63036d306c1ae5c"
+  },
+  "review_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2020_mfa_r2_prod_2020_export_20260803\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 14927,
+    "mtime_ns": 1785738071510816300,
+    "sha256": "514258035cd047852f87d04f7d2c77da9d8ae366065b08965bfa10cd67380543"
+  }
+}

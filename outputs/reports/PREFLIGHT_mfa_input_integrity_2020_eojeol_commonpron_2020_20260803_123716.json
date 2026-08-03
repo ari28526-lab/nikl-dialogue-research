@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-03T12:44:13+0900",
+  "read_only": true,
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "search_master_build_status": "success",
+  "wav_root": "D:\\20_AUDIO\\04_wav_id_recovered_staging\\individual",
+  "morph_textgrid_root": null,
+  "strict": true,
+  "gate_profile": "execution",
+  "approved_exclusions_contract": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803\\2020\\approved_exclusions.json",
+  "years": [
+    {
+      "year": "2020",
+      "status": "audited",
+      "read_only": true,
+      "compare_lab_content": false,
+      "wav_duration_audit_enabled": true,
+      "morph_source_audit_enabled": false,
+      "approved_alignment_exclusion_count": 2250,
+      "csv_files": 2232,
+      "elapsed_seconds": 522.444,
+      "counts": {
+        "approved_alignment_active_pair": 363,
+        "approved_alignment_excluded": 2250,
+        "duration_expected": 868187,
+        "duration_inspected": 868187,
+        "duration_matched": 868187,
+        "duration_residual_mismatch": 0,
+        "duration_sessions_checked": 2231,
+        "duration_sessions_fully_excluded": 1,
+        "duration_sessions_passed": 2231,
+        "expected_lab_nonzero": 868187,
+        "expected_usable_lab": 868187,
+        "lab_files": 868550,
+        "lab_not_expected": 0,
+        "lab_not_expected_with_wav": 0,
+        "pron_reference_unresolved": 6154,
+        "reference_form_changed": 17153,
+        "search_rows": 870437,
+        "search_sessions": 2232,
+        "speaker_missing": 685,
+        "text_duration_rows_checked": 868187,
+        "wav_files": 868603,
+        "wav_not_in_search_master": 0
+      },
+      "known_source_pcm_risks": {
+        "PCM없음": 14
+      },
+      "top_risky_sessions": [
+        {
+          "session": "SDRW2000000257",
+          "issue_count": 200
+        },
+        {
+          "session": "SDRW2000000514",
+          "issue_count": 28
+        },
+        {
+          "session": "SDRW2000002165",
+          "issue_count": 17
+        },
+        {
+          "session": "SDRW2000002164",
+          "issue_count": 9
+        },
+        {
+          "session": "SDRW2000002210",
+          "issue_count": 8
+        },
+        {
+          "session": "SDRW2000000219",
+          "issue_count": 6
+        },
+        {
+          "session": "SDRW2000000181",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2000001694",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2000002180",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2000002187",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2000000541",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001095",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001407",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001419",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001445",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001613",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001685",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001823",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000001988",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000002171",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000002183",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2000000057",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000109",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000115",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000120",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000180",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000194",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000285",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000309",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2000000336",
+          "issue_count": 1
+        }
+      ],
+      "examples": {
+        "approved_alignment_active_pair": [
+          "SDRW2000000057.1.1.70",
+          "SDRW2000000109.1.1.149",
+          "SDRW2000000115.1.1.149",
+          "SDRW2000000120.1.1.296",
+          "SDRW2000000180.1.1.67",
+          "SDRW2000000181.1.1.179",
+          "SDRW2000000181.1.1.188",
+          "SDRW2000000181.1.1.291",
+          "SDRW2000000194.1.1.214",
+          "SDRW2000000219.1.1.59",
+          "SDRW2000000219.1.1.84",
+          "SDRW2000000219.1.1.92",
+          "SDRW2000000219.1.1.112",
+          "SDRW2000000219.1.1.118",
+          "SDRW2000000219.1.1.120",
+          "SDRW2000000257.1.1.5",
+          "SDRW2000000257.1.1.6",
+          "SDRW2000000257.1.1.7",
+          "SDRW2000000257.1.1.8",
+          "SDRW2000000257.1.1.9"
+        ]
+      },
+      "duration_audit": {
+        "policy": {
+          "residual_tolerance_seconds": 0.025,
+          "session_match_min_pct": 98.0,
+          "session_inspection_coverage_min_pct": 98.0,
+          "session_padding_allowed_seconds": [
+            -0.025,
+            0.5
+          ]
+        },
+        "coverage_pct_distribution": {
+          "min": 100.0,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "match_pct_distribution": {
+          "min": 100.0,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "padding_seconds_distribution": {
+          "min": 0.01,
+          "median": 0.01,
+          "max": 0.01
+        },
+        "failed_sessions": []
+      },
+      "text_duration_audit": {
+        "policy": {
+          "minimum_hangul_syllables": 10,
+          "impossible_hangul_syllables_per_second": 40.0,
+          "logged_fields": [
+            "utt_id",
+            "csv_duration_seconds",
+            "hangul_syllables",
+            "hangul_syllables_per_second"
+          ],
+          "raw_transcript_logged": false
+        },
+        "impossible_count": 0
+      },
+      "morph_source_issues": [],
+      "issue_inventory": [],
+      "gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_inputs_inactive": false,
+        "source_segment_text_duration_plausible": true,
+        "all_morph_sources_ready": true,
+        "morph_source_inventory_classified": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_inputs_inactive": false,
+        "morph_source_inventory_classified": true
+      },
+      "analysis_ready_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_inputs_inactive": false,
+        "morph_source_inventory_classified": true,
+        "source_segment_text_duration_plausible": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates_pass": false,
+      "analysis_ready_gates_pass": false,
+      "all_gates_pass": false
+    }
+  ],
+  "selected_gate_result_key": "execution_gates_pass",
+  "all_years_pass": false
+}

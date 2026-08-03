@@ -1,0 +1,283 @@
+{
+  "schema_version": "simple_post_mfa_review_bundle.v2",
+  "status": "success",
+  "created_at": "2026-08-03T11:50:23.007100+09:00",
+  "year": "2020",
+  "review_count": 16,
+  "missing_alignment_count": 12,
+  "aligned_control_count": 4,
+  "prefilled_match_orders": [
+    1,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "excluded_audio_unusable_orders": [
+    2,
+    3,
+    4
+  ],
+  "review_edge_padding_seconds_requested": 0.05,
+  "researcher_review_evidence": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_2020_REVIEW_SIMPLE_20260803\\00_REVIEW.csv.xlsx",
+    "bytes": 12682,
+    "mtime_ns": 1785724144000000000,
+    "sha256": "41bc6cd433add52248ef5fcf875238bf89d19d0b4d9ea60b0858c92c1826750b"
+  },
+  "post_mfa_candidates_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_alignment_2020_mfa_r2_prod_2020_20260802\\02_RESEARCHER_DECISIONS.csv",
+    "bytes": 116158,
+    "mtime_ns": 1785682733328557700,
+    "sha256": "18ddc73311149baf2c1968dc4f8787e5cb852fcfca616f6bc795ab1213e863ae"
+  },
+  "approved_audio_unusable_exclusion_count": 3,
+  "approved_audio_unusable_utt_ids": [
+    "SDRW2000000257.1.1.231",
+    "SDRW2000000257.1.1.39",
+    "SDRW2000000257.1.1.97"
+  ],
+  "database_open_mode": "read_only_query_only",
+  "database_fingerprint_before": {
+    "path": "D:\\mfa_tmp\\2020\\2020.db",
+    "bytes": 6348247040,
+    "mtime_ns": 1785679437503040300
+  },
+  "database_fingerprint_after": {
+    "path": "D:\\mfa_tmp\\2020\\2020.db",
+    "bytes": 6348247040,
+    "mtime_ns": 1785679437503040300
+  },
+  "database_size_mtime_unchanged": true,
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_alignment_2020_mfa_r2_prod_2020_20260802\\03_AUDIO_LAB_PILOT_REVIEW.csv",
+    "bytes": 7855,
+    "mtime_ns": 1785682733499564400,
+    "sha256": "e8254312ec7c4a5b5bafeba2087c3cc0fd40ab001b5c92a0f461214f126850bf"
+  },
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "acoustic_model": {
+    "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+    "bytes": 61381974,
+    "mtime_ns": 1785218533319897400,
+    "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+  },
+  "items": [
+    {
+      "review_order": 1,
+      "utt_id": "SDRW2000000257.1.1.100",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "ea53f474476d3190bfbfe3fc71f4c5234c9dc61047d07a6953391c3c1bf1ac32",
+      "review_wav_sha256": "972737fa4385d354697d10cf647f4d2ce74b6869ecbb9fe6f6d044efb7d5e97f",
+      "source_wav_duration_seconds": 2.679,
+      "review_wav_duration_seconds": 2.779,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "33384bf527fa0aeb94aca4f03be7ee12af5d9039e74df0a4cd5936f4a73a6ea1",
+      "copied_lab_sha256": "33384bf527fa0aeb94aca4f03be7ee12af5d9039e74df0a4cd5936f4a73a6ea1",
+      "textgrid": null
+    },
+    {
+      "review_order": 2,
+      "utt_id": "SDRW2000000257.1.1.231",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "345ebf06f8213a600c65944780e20da9900f33d7950e25e313d5d821f32a8ae5",
+      "review_wav_sha256": "b1959d3bb352b361c0ab4dacf71ed388e8b63ea129933bb1b4923555c2ab11e8",
+      "source_wav_duration_seconds": 1.35,
+      "review_wav_duration_seconds": 1.45,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "1b5f1fb190e6de880a1454c48ecf821f7c1e730a341a485347e0d68ef53efe24",
+      "copied_lab_sha256": "1b5f1fb190e6de880a1454c48ecf821f7c1e730a341a485347e0d68ef53efe24",
+      "textgrid": null
+    },
+    {
+      "review_order": 3,
+      "utt_id": "SDRW2000000257.1.1.39",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "8007469af047d5ec6a98943688a668a8723d57e2ef06d76795495903f832d53d",
+      "review_wav_sha256": "20866990e7a1e6343514084b4aac20cfeb3059d15136eb82ade183d174a5382a",
+      "source_wav_duration_seconds": 4.21,
+      "review_wav_duration_seconds": 4.31,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "fb4e7187fa704eacc16e04ffc5ecdfc81062068d0905b5ba53c3ebd035a5fb77",
+      "copied_lab_sha256": "fb4e7187fa704eacc16e04ffc5ecdfc81062068d0905b5ba53c3ebd035a5fb77",
+      "textgrid": null
+    },
+    {
+      "review_order": 4,
+      "utt_id": "SDRW2000000257.1.1.97",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "44667ad86f29f1074b3e399fd99179e187afdc0f2753f8d6b08f1eb7791a4d19",
+      "review_wav_sha256": "fbe0aabbb3ffa538f776164817eed52748690f63eb971990d05d7382d39f3206",
+      "source_wav_duration_seconds": 1.77,
+      "review_wav_duration_seconds": 1.87,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "4ce183b24bbe996120ec0ca38ef559f42c2d80725cfb8495c484083e679e6e94",
+      "copied_lab_sha256": "4ce183b24bbe996120ec0ca38ef559f42c2d80725cfb8495c484083e679e6e94",
+      "textgrid": null
+    },
+    {
+      "review_order": 5,
+      "utt_id": "SDRW2000000514.1.1.169",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "7c206cdad04715e1c681ae472ed470afd3ddd07bda27a99edb2562d444d003ff",
+      "review_wav_sha256": "58fb18f928d8f92708c1de3f01536444151611eef91a0a34d9639eea3e725c1e",
+      "source_wav_duration_seconds": 4.479,
+      "review_wav_duration_seconds": 4.579,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "8418c728458dd6c586398b827a8620ce8161d5b3b0a62b231c2a0b78f31d51c5",
+      "copied_lab_sha256": "8418c728458dd6c586398b827a8620ce8161d5b3b0a62b231c2a0b78f31d51c5",
+      "textgrid": null
+    },
+    {
+      "review_order": 6,
+      "utt_id": "SDRW2000002165.1.1.139",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "53bb1cc1b9361f57bee57d5637e9a5a920c461bda8340770925dc09b8c9ee6f6",
+      "review_wav_sha256": "061bfb532e105eb4590a617ad108471bc1738f08106625f06e3b7291cf034f61",
+      "source_wav_duration_seconds": 1.571,
+      "review_wav_duration_seconds": 1.671,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "c3880c43b854a159bf537e8c7178345c0b7ebc0ed73369bcb05098c1eb0de962",
+      "copied_lab_sha256": "c3880c43b854a159bf537e8c7178345c0b7ebc0ed73369bcb05098c1eb0de962",
+      "textgrid": null
+    },
+    {
+      "review_order": 7,
+      "utt_id": "SDRW2000002164.1.1.123",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "b30244385bc9cf03d6247a27900b55cc8a7f3145ee829824fbe2edc2b441a407",
+      "review_wav_sha256": "ffa212c53f12ef08446782e55a58ab1a4d47feaa26a4108eaa2b3048ae2609fc",
+      "source_wav_duration_seconds": 2.484,
+      "review_wav_duration_seconds": 2.584,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "ae9bb68e73939585a9a2372596befcf121c3adfb22ab89071923573f5404095f",
+      "copied_lab_sha256": "ae9bb68e73939585a9a2372596befcf121c3adfb22ab89071923573f5404095f",
+      "textgrid": null
+    },
+    {
+      "review_order": 8,
+      "utt_id": "SDRW2000002210.1.1.101",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "83c5bb86ec51a549eb861184ec335aac0b98f87aae1409237b72d6a809c43c61",
+      "review_wav_sha256": "7e00a33132463303c45e02463b9a51063e73f439f09097d94b118e7cc0179b69",
+      "source_wav_duration_seconds": 3.009,
+      "review_wav_duration_seconds": 3.109,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "b85976605b6e1429ecf899f9aa384e9d78966352dc65f5a4bb1075ac0566eeb6",
+      "copied_lab_sha256": "b85976605b6e1429ecf899f9aa384e9d78966352dc65f5a4bb1075ac0566eeb6",
+      "textgrid": null
+    },
+    {
+      "review_order": 9,
+      "utt_id": "SDRW2000000219.1.1.112",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "2932c277b9b2a62bfd7bb2d769b8e5937ca2f7468ad2843ec00847109e48f9e7",
+      "review_wav_sha256": "5bacf7e55c12f1c77af3231524ffcfc4d2fed8971b1f17d940d3a06a5208713d",
+      "source_wav_duration_seconds": 2.649,
+      "review_wav_duration_seconds": 2.749,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "79ade335fa8d2fd5d2473ece55f71e56bd4aada7dd90ba1a62f429da5dbf5e1a",
+      "copied_lab_sha256": "79ade335fa8d2fd5d2473ece55f71e56bd4aada7dd90ba1a62f429da5dbf5e1a",
+      "textgrid": null
+    },
+    {
+      "review_order": 10,
+      "utt_id": "SDRW2000000181.1.1.179",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "0258f417addc326f03d8b0122e0d0cb0977ee1fc8d6cebc74a3eb835194c028f",
+      "review_wav_sha256": "e6babe2befe8a48b81a5c48acd35746a661e66fded0d9c26ddab21c6b5a4fe98",
+      "source_wav_duration_seconds": 2.707,
+      "review_wav_duration_seconds": 2.807,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "38973f8e632e1c3b56df24497261ad52d2f5dcec52770e78b2c78b387a762d81",
+      "copied_lab_sha256": "38973f8e632e1c3b56df24497261ad52d2f5dcec52770e78b2c78b387a762d81",
+      "textgrid": null
+    },
+    {
+      "review_order": 11,
+      "utt_id": "SDRW2000001694.1.1.183",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "79e64b26d0d5f2e817c1e3f67f10dff24a1515ccf327011438a961f89e593b87",
+      "review_wav_sha256": "877a3219d31d500ac184e20a43191af07c776fca61c29b3cfa7d9ea741456e7f",
+      "source_wav_duration_seconds": 2.556,
+      "review_wav_duration_seconds": 2.656,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "4d2467a32141af5f09ec65f68660bffb8da03f91f6d5884081b87009d6b42ae1",
+      "copied_lab_sha256": "4d2467a32141af5f09ec65f68660bffb8da03f91f6d5884081b87009d6b42ae1",
+      "textgrid": null
+    },
+    {
+      "review_order": 12,
+      "utt_id": "SDRW2000002180.1.1.155",
+      "status": "missing_word_or_phone_intervals",
+      "source_wav_sha256": "24d72262e57d66715a6630f1e8ce8a0407847c1299002d4b99c163e136624ef9",
+      "review_wav_sha256": "9a9085e8e65fe634323742f102cd7de96053a15bfa61ac7d57386f4b58b5394b",
+      "source_wav_duration_seconds": 3.376,
+      "review_wav_duration_seconds": 3.476,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "5a3d9d1043cef862a473546ba60b8f37c27f1714d8b005513c0e8164ca9e8f0a",
+      "copied_lab_sha256": "5a3d9d1043cef862a473546ba60b8f37c27f1714d8b005513c0e8164ca9e8f0a",
+      "textgrid": null
+    },
+    {
+      "review_order": 13,
+      "utt_id": "SDRW2000000257.1.1.1",
+      "status": "aligned_control",
+      "source_wav_sha256": "7b8f3cf95393e80c3fdd08a4c4347675e2664853a162df29165368bb35634636",
+      "review_wav_sha256": "8c1c71be099d9efcdcf99eaf6fb2e256a92eeaafe3751b5476709a9d5001f7e3",
+      "source_wav_duration_seconds": 1.751,
+      "review_wav_duration_seconds": 1.851,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "573aba51e4751c8f2a474a88cc6c7ce10882ce41f31bad418c86fbf12013ee75",
+      "copied_lab_sha256": "573aba51e4751c8f2a474a88cc6c7ce10882ce41f31bad418c86fbf12013ee75",
+      "textgrid": "13__SDRW2000000257.1.1.1__CURRENT_MFA_6TIER.TextGrid"
+    },
+    {
+      "review_order": 14,
+      "utt_id": "SDRW2000000257.1.1.249",
+      "status": "aligned_control",
+      "source_wav_sha256": "60df8e761937af21392e397ad4b4a320f4a964f761fbafdc73423e299f31e3b5",
+      "review_wav_sha256": "9372c4b8913870b734941bbc5b8c7b41728d1b6cb82be58b6a6c39d16213f44d",
+      "source_wav_duration_seconds": 0.857,
+      "review_wav_duration_seconds": 0.957,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "29dcf5abee27c48e074393c0aa7b76a6b1a06818ae73e0241f2b4220d3e3cb21",
+      "copied_lab_sha256": "29dcf5abee27c48e074393c0aa7b76a6b1a06818ae73e0241f2b4220d3e3cb21",
+      "textgrid": "14__SDRW2000000257.1.1.249__CURRENT_MFA_6TIER.TextGrid"
+    },
+    {
+      "review_order": 15,
+      "utt_id": "SDRW2000000257.1.1.376",
+      "status": "aligned_control",
+      "source_wav_sha256": "67af6481920f43ba7c8ea8589837973aaeacc72a05d774a174f819a276079c80",
+      "review_wav_sha256": "4502e9c51ae724e720903e0409c4aaa5059e7f2ffc54d2ca40da738eb20db113",
+      "source_wav_duration_seconds": 1.718,
+      "review_wav_duration_seconds": 1.818,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "612f4195a2c5ce1f7d16fa2dd007cfd7f599df319ff816c784ddb72b487c3bb7",
+      "copied_lab_sha256": "612f4195a2c5ce1f7d16fa2dd007cfd7f599df319ff816c784ddb72b487c3bb7",
+      "textgrid": "15__SDRW2000000257.1.1.376__CURRENT_MFA_6TIER.TextGrid"
+    },
+    {
+      "review_order": 16,
+      "utt_id": "SDRW2000000257.1.1.99",
+      "status": "aligned_control",
+      "source_wav_sha256": "33c5e2336406e4351a8ba093e73400f26111091c158e269a786ca7940ae72af2",
+      "review_wav_sha256": "9b325402574fb87e25aa5ae5db0ca79a4a38427acfca789eedee63472d45e11d",
+      "source_wav_duration_seconds": 1.387,
+      "review_wav_duration_seconds": 1.487,
+      "review_edge_padding_seconds": 0.05,
+      "source_lab_sha256": "ce681f1674d4bafa13abde2171954d6b2e9e55c23691864a8399fb0002e1dc50",
+      "copied_lab_sha256": "ce681f1674d4bafa13abde2171954d6b2e9e55c23691864a8399fb0002e1dc50",
+      "textgrid": "16__SDRW2000000257.1.1.99__CURRENT_MFA_6TIER.TextGrid"
+    }
+  ]
+}

@@ -18,10 +18,10 @@
 | `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020 23/23 완료; 2021–2025 미완료 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |
-| `D:\20_AUDIO\08_textgrid_research_v2_staging` | 신규 r2 6-tier·동반표 출력 | 생산 전/미생성 |
+| `D:\20_AUDIO\08_textgrid_research_v2_staging\2020` | 2020 신규 r2 6-tier·동반표 출력 | TextGrid 868,187개·독립 감사 성공·Gate B 통과 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 현재 공통 Jamo r2 사전 | 보존, 연도별 MFA 필수 |
-| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 현재 생산 상태, 보존 |
-| `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 미정렬; export/QC 전 삭제 금지 |
+| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 현재 생산 상태; 구 2021 활성 상태 9개 archive 완료, 새 2021 상태 미생성 |
+| `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
 
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
@@ -42,6 +42,7 @@ E:\READ_ONLY_ARCHIVE\2026_summer_research
 | `wav_id_recovery_2020_eb64f80d9106` | 2020 WAV ID 복구 전 영향 세션 | 128 ZIP + 129 manifest, 계약 passed |
 | `wav_id_recovery_2020_eba4f3c7debf` | 첫 복구 계약의 안전 중단 증거 | 역사·실패 근거로 보존 |
 | `legacy_d_workspace_20260802` | 구 공통사전 r1/A-B/파일럿과 구 `06_textgrid_*` | 2026-08-02 완료; TextGrid 8항목 7,341,358파일/33.297GiB를 2.226GiB로 검증 보존 후 D: 정리 |
+| `pre_2021_active_state_20260803` | D:에 남았던 구 2021 로그·LAB 완료표시·입력계약 9개 | 4,208,271 bytes → 458,443-byte 7z; CRC·SHA 검증 성공, 활성 사본 0 |
 
 archive는 원자료 정본이 아니라 과거 산출물의 재현·감사 근거다. E: archive가
 검증되기 전에는 대응하는 D: 경로를 제거하지 않는다.
@@ -75,9 +76,17 @@ C:\Users\ari30\research\2026_summer_research
   `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020/`
   — pre-MFA 1,887 + post-MFA 363(청취 불가 3 + 정렬 실패 360) = 2,250;
   보존 DB의 실제 미정렬 ID와 exact match
+- TextGrid·동반표: `D:\20_AUDIO\08_textgrid_research_v2_staging\2020`에
+  868,187개 export 완료. utterance 868,187, word 4,973,795,
+  phone 19,101,192, excluded 2,250행이며 독립 감사 하드 실패 0
 - TextGrid 경계: 2020 DB 868,187/868,187 word-phone 바깥 경계 일치;
-  전수 6-tier 실물은 아직 export 전
+  모든 tier가 0–xmax를 연속적으로 덮음
+- 생산 표본: 24/24 연구자 승인, 실제 실현 판정은 수행하지 않음
+- Gate B: 16/16 core check 통과, 실패 0, `allow_remaining_years=true`
 
-다음 생산 단계는 기존 MFA를 재실행하지 않고 보존 DB에서 2020 6-tier와
-동반표를 export하고 독립 QC·Gate B를 통과하는 것이다. 실행 명령은
+다음 생산 단계는 2020을 재실행하지 않고 2021–2025 연도별 제외 후보표를
+준비한 뒤 승인된 연도 큐를 시작하는 것이다. 실행 명령은
 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.
+
+2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. 구 완료표시는 E:로
+보냈으므로 다음 2021 실행은 기존 LAB을 전수 재검증하고 불일치만 재작성한다.

@@ -63,3 +63,9 @@ MFA/G2P phone을 실제 실현 판정값으로 취급하지 않는다.
 
 스크립트 역할은 `scripts/SCRIPTS_INDEX.md`, 결정 상태는
 `docs/decisions/_INDEX.md`를 사용한다.
+
+## 현재 안전 정지점
+
+2020은 신규 r2 MFA·6-tier 868,187개·독립 감사·24개 생산 표본 승인·Gate B를
+완료했다. 2021은 미시작이다. 2020 wrapper와 파일럿을 다시 실행하지 말고,
+`prepare_remaining_mfa_approval_reviews.ps1`부터 현재 RUNBOOK 순서만 따른다.

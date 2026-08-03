@@ -1,4 +1,17 @@
-# 스크립트 색인 (scripts/python) — 2026-07-14
+# 스크립트 색인 — 최종 갱신 2026-08-03
+
+## 현재 생산 진입점
+
+| 순서 | wrapper | 상태 |
+|---:|---|---|
+| 1 | `prepare_remaining_mfa_approval_reviews.ps1` | 2020 Gate B 통과 뒤 2021–2025 제외 후보표만 준비; MFA·자동승인 없음 |
+| 2 | `start_remaining_mfa_after_2020_gate.ps1 -ApprovedBy ari30` | 연구자 승인 뒤 2021–2025 연도 큐 시작; 2020 재포함 금지 |
+| 상태 | `show_mfa_year_queue_status.ps1` | 읽기 전용 큐·lock·D: 상태판 |
+
+2020 생산과 Gate B는 완료됐다. `resume_2020_*`, `start_2020_*`, 2020 검토
+wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하지 않는다. 구
+3-tier·잔여 재정렬·이행·병목 파일럿 13개는
+`archive/pre_2021_legacy_20260803/`로 이동했다.
 
 ## 2026-08-01 조합검색 v3 전수 진입
 
@@ -32,7 +45,7 @@
 |---|---|---|
 | extract_2025_pcm.py | PCM zip 해제 (재개 지원) | 실행 완료 |
 | pcm_to_wav_2025.py | PCM→WAV 587,174개 (병렬, 재개) | 실행 완료 |
-| make_labs_2025.py | MFA용 .lab 생성 (바른 형태소 분할, S태그 제외) | ⚠구식 — 형태소 lab 방식 폐기(어절 재정렬로 대체), 재실행 금지 |
+| `archive/pre_2021_legacy_20260803/python/make_labs_2025.py` | MFA용 형태소 .lab 생성 | archive — 형태소 lab 방식 폐기, 재실행 금지 |
 | merge_textgrid_v2.py | **표준 3-tier TextGrid 생성** — MFA 정렬 DB에서 직접 내보내기 (MFA export 교착 우회) | 실행 완료 |
 
 ## 인프라
@@ -73,8 +86,9 @@
 | prune_pre_jamo_outputs_after_compressed_archive.ps1 | E: 압축 archive 성공 manifest·현재 archive SHA·D: 원본 파일 수/바이트·모든 DB SHA를 삭제 전에 전수 재검증하고, 명시적 `-Apply`+고정 승인 토큰에서만 정확한 5개 pre-Jamo allowlist를 정리. 기본은 삭제 0 dry-run |
 | archive_legacy_d_workspace_20260802.ps1 | 현재 r2·원자료·CSV를 제외한 구 공통사전/파일럿/`06_textgrid_*` exact allowlist를 E: 항목별 7z로 보존. 최초 count/bytes·CRC·archive SHA 뒤 승인 token에서만 항목별 D: prune; PS5 `-PreflightOnly`, symlink `-snl`, 성공 항목 재사용 |
 | show_legacy_d_archive_status.ps1 | legacy D: archive manifest의 항목별 상태·원본/압축 GiB·D:/E: 여유를 읽기 전용으로 표시 |
-| finish_migration.py | D: 구조 이행 마무리 (1회용, 보존) |
-| _update_paths.py | 이행 시 경로 일괄 치환 (1회용, 보존) |
+| `archive/pre_2021_cleanup_20260803/archive_pre_2021_active_state_20260803.ps1` | 새 2021 실행 전에 exact allowlist의 구 2021 로그·완료표시·입력계약 9개만 E: 7z로 보관. 7-Zip test·SHA 뒤 활성 사본을 정리하고 2020 완성본·원본 WAV/CSV·기존 LAB·공통사전·검색표는 보호 | 2026-08-03 실행 완료; archive SHA `fb4ccb85…bc39`, 활성 사본 0; 재실행 금지 |
+| `archive/pre_2021_legacy_20260803/python/finish_migration.py` | D: 구조 이행 마무리 (archive, 재실행 금지) |
+| `archive/pre_2021_legacy_20260803/python/_update_paths.py` | 구 경로 일괄 치환 (archive, 재실행 금지) |
 
 ## 검증·연계 (2026-07-14~15 추가)
 | 스크립트 | 역할 | 상태 |
@@ -89,14 +103,14 @@
 ## MFA 정렬 실패분 재정렬 (2020-2025, 2026-07-15)
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
-| realign_build_corpus.py | 정렬 실패 발화만 코퍼스 구성 (lab 재생성 + wav 하드링크) | ⚠구식 — 어절 전량 재정렬로 대체(잔여분 회수 불필요), 재실행 금지 |
-| realign_export_quality.py | MFA 작업DB → 품질통계 CSV (사후 필터용, merge 전 실행) | 파일럿 검증 |
-| realign_merge_output.py | 재정렬 원출력 → 표준 3-tier → 06_textgrid_merged (기존 보존) | 검증 |
-| realign_summary.py | 연도별 원래실패/회수/미회수 요약표 | 실행 완료 |
-| realign_residual_build.py | 1차 후 잔여(정상wav 미회수)만 재시도 코퍼스 구성 | 실행 완료 |
-| realign_residual_finalize.py | 잔여 재시도(빔 300/1000) 산출 병합+품질 append | 실행 완료 |
-| run_realign_all.ps1 | 6개년 일괄 실행기(align→품질→병합→요약), 한 줄 실행 | 실행 완료 |
-| check_source_pcm.py | 미회수 발화의 원본 PCM 실측 → 재추출 가능/불가 확정 | 실행 완료 |
+| `archive/pre_2021_legacy_20260803/python/realign_build_corpus.py` | 구 정렬 실패 발화 코퍼스 구성 | archive, 재실행 금지 |
+| `archive/pre_2021_legacy_20260803/python/realign_export_quality.py` | 구 MFA 작업DB 품질통계 | archive |
+| `archive/pre_2021_legacy_20260803/python/realign_merge_output.py` | 구 재정렬 결과의 3-tier 병합 | archive |
+| `archive/pre_2021_legacy_20260803/python/realign_summary.py` | 구 잔여 재정렬 요약 | archive |
+| `archive/pre_2021_legacy_20260803/python/realign_residual_build.py` | 구 잔여 재시도 코퍼스 | archive |
+| `archive/pre_2021_legacy_20260803/python/realign_residual_finalize.py` | 구 잔여 재시도 병합 | archive |
+| `archive/pre_2021_legacy_20260803/powershell/run_realign_all.ps1` | 구 6개년 잔여 정렬 실행기 | archive, 재실행 금지 |
+| `archive/pre_2021_legacy_20260803/python/check_source_pcm.py` | 구 미회수 PCM 실측 | archive |
 | build_mfa_missing_textgrid_inventory.py | 연도별 usable lab − 검증된 staging TextGrid 차집합을 발화 ID·세션·lab·WAV 존재 여부 CSV/JSON으로 원자 저장 | 2020 난정렬 3,644건 inventory 생성용 |
 
 절차·명령·최종결과(25,244/26,979=93.6% 회수, 커버리지 99.94%):
@@ -111,24 +125,24 @@
 | export_mfa_db_4tier.py | MFA SQLite의 word/phone interval과 기존 형태소경계·동결 form을 직접 4-tier로 병렬 출력. partial 재개·coverage/accounting gate. 정렬 export 성공과 형태소 analysis-ready를 분리하고 원천 누락 전수 ID·개별 예외를 보고. `spn`은 미사용 예약 pronunciation 행이 아니라 실제 phone interval만 센다 | 21,962개 built-in 결과와 라벨·시간 전수 동일; r2 2020 파일럿 10/10·실제 spn 0 |
 | compare_textgrid_tiers.py | 두 TextGrid 트리의 파일집합·tier명·라벨·모든 시간경계를 전수 비교 | 3,330개·21,962개 direct 동등성 검증 |
 | audit_mfa_year_readiness.py | 연도별 CSV–WAV–lab 수량·내용·빈 입력·source PCM 위험을 원자료 비변경으로 감사. 세션 padding 제거 CSV dur↔WAV header 잔차 0.025초/98% 대응 gate, 전체 행의 극단적 전사량↔duration 물리 불일치 analysis gate, 예상 usable lab의 형태소 원천 존재, strict exit·발화 inventory 포함. post-MFA active 제외는 동일 `direct_db_ready` 계약과 DB 미정렬 exact-ID가 함께 맞을 때만 허용 | 신규 계산은 analysis profile, 동일 계약 temp/DB 재개는 execution profile. 2020 실자료 active 363=DB 미정렬 363, 미허용 0 진단 통과 |
-| classify_mfa_input_issues.py | 형태소 원천 누락 inventory를 과거 PCM 근거와 동결 search CSV의 duration·한글 음절 수에 1:1 조인. PCM 결함과 물리적으로 불가능한 전사–segment 대응을 발화별 근거 CSV/요약 JSON으로 분리 | 2021 1,109/1,109 분류: PCM 짧음 1,091·PCM 없음 1·PCM 정상이나 47.0–119.3음절/s인 segment 불일치 17, 미분류 0 |
-| inventory_mfa_storage.py | 독립 QC·다음 연도 gate 통과 뒤 MFA temp의 보존/정리 후보를 exact file manifest로 산정하는 삭제 없는 dry-run. DB transaction·미분류·symlink·계약 불일치 fail-closed, DB SHA256 선택 지원 | 2021 실자료 blocker 0: 총 43.883GiB 중 31.365GiB 후보·12.519GiB 보존, 삭제 0. Kaldi `alignment/tree` 보존·Windows UTF-8 출력 회귀시험 포함 |
+| classify_mfa_input_issues.py | 형태소 원천 누락 inventory를 과거 PCM 근거와 동결 search CSV의 duration·한글 음절 수에 1:1 조인. PCM 결함과 물리적으로 불가능한 전사–segment 대응을 발화별 근거 CSV/요약 JSON으로 분리 | 구 2021 정렬의 역사 진단 1,109/1,109 분류 근거; 새 r2 생산 완료로 간주하지 않음 |
+| inventory_mfa_storage.py | 독립 QC·다음 연도 gate 통과 뒤 MFA temp의 보존/정리 후보를 exact file manifest로 산정하는 삭제 없는 dry-run. DB transaction·미분류·symlink·계약 불일치 fail-closed, DB SHA256 선택 지원 | 구 2021 temp의 역사 계측은 E: archive에 보존; 새 2021 r2 temp에는 QC 뒤 별도 실행 |
 | build_mfa_alignment_contract.py | lab 입력계약+acoustic/dictionary/G2P SHA256+MFA/Pynini/Python 판본으로 경로 독립 `alignment_contract_id` 생성 | 전 연도 direct runner 기본 경로에 배선, 내용/경로/계약 변화 회귀시험 통과 |
-| audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, tier·0–xmax·gap/overlap·label·WAV duration을 hard gate로 검사. 분류 CSV SHA를 고정해 source unusable만 analysis 분모에서 제외하고 raw 통계는 보존 | 2020 866,196/866,196·99.5827%, 2021 1,371,868/1,371,868·99.9604%, invalid/hard failure 0 |
-| verify_mfa_db_4tier_sample.py | 정렬 성공 발화에서 서로 다른 세션의 결정적 표본을 골라 read-only DB에서 별도 scratch 4-tier를 다시 만들고 final과 tier·라벨·시간·SHA256 대조. stale scratch 차단 | 2021 정렬 성공 4,139세션 중 24세션, tier/byte exact 24/24; 합성 2시험 통과 |
+| audit_mfa_4tier_year.py | 연도별 final 4-tier를 lab·WAV와 독립 전수 대조. ID coverage·중복·누락 CSV, tier·0–xmax·gap/overlap·label·WAV duration을 hard gate로 검사. 분류 CSV SHA를 고정해 source unusable만 analysis 분모에서 제외하고 raw 통계는 보존 | 구 2020/2021 4-tier 감사 근거; 현 생산 정본은 6-tier 감사이며 구 결과를 새 완료로 간주하지 않음 |
+| verify_mfa_db_4tier_sample.py | 정렬 성공 발화에서 서로 다른 세션의 결정적 표본을 골라 read-only DB에서 별도 scratch 4-tier를 다시 만들고 final과 tier·라벨·시간·SHA256 대조. stale scratch 차단 | 구 2021 24/24 결과는 역사 근거; 새 2021 r2 완료 증거가 아님 |
 | preflight_next_year_after_qc.py | 다음 연도 MFA 전에 직전 `direct_db_4tier` 연도의 독립 4-tier 감사·align/merge marker·direct 보고서·temp 입력계약·보존 SQLite DB·누락 CSV뿐 아니라 DB 재수출 표본과 연구자 인프라 승인 보고서를 같은 DB·input/alignment contract로 결합 검증. built-in 연도는 별도 QC 분기 | 계약 불일치·DB/direct/표본/연구자 보고서 누락·다른 DB·미승인·손상 숫자·다른 ID 분류 fail-closed 회귀시험 |
 | patch_mfa_export_queue.py | MFA export queue 종료 경쟁을 blocking get+worker별 sentinel로 교정하고 설치 전 소스 archive | 3,330/21,965 실제 MFA 검증 |
 | patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
-| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA·모델 정렬 계약, marker·archive·PreferD, descendant CPU/working-set/private/process/thread, 시스템 available/commit, alignment-log 및 phone·word interval CSV 증분 처리량 heartbeat. `-UseDirectDbExport`는 partial 4-tier를 검증 승격하고 DB를 QC 전 보존 | 2020 보수 경로 완료; 2021 live에는 옛 판본 유지, 다음 실행용 관측 합성·실자료 검사 통과 |
+| run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA·모델 정렬 계약, marker·archive·PreferD, descendant CPU/working-set/private/process/thread, 시스템 available/commit, alignment-log 및 phone·word interval CSV 증분 처리량 heartbeat. `-UseDirectDbExport`는 partial 출력을 검증 승격하고 DB를 QC 전 보존 | 2020 Jamo r2 완료; 2021–2025 미시작. 구 2021 활성 marker는 archive되어 다음 실행에서 기존 LAB을 전수 재검증 |
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
-| run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→4-tier. r2 manifest/adoption 필수, `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary. 2020·2021 r2 전수 재실행은 상·하위 러너 모두 명시적 `-AllowBaselineCommonPronRerun`을 요구하고 다른 연도에서 플래그를 거부 | r2 외부 workflow 리뷰 뒤 2020 시작 대기 |
+| run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→검증 export. r2 manifest/adoption 필수, `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary. 2020·2021 r2 전수 재실행은 상·하위 러너 모두 명시적 `-AllowBaselineCommonPronRerun`을 요구하고 다른 연도에서 플래그를 거부 | 2020 완료; 2021–2025는 Gate B wrapper를 통해서만 시작 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 필수 패치의 AST/소스 구조와 SHA256 기록 | 10/10 통과 |
 | quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
 | restructure_wav_sessions.py | 평면 연도 wav/lab → 세션 하위폴더 재구성 (★1화자 사고 근본 해결, dry-run 기본, 멱등) | 합성 검증 완료 |
 | locate_utt.py | 발화 ID → 전 레이어 경로·존재 조회. `mfa_state`의 세션형 quarantine 우선·평면 레거시 폴백 (현상별 검색·청취 검증용, import 가능) | 세션형·평면형 격리 회귀검사, 6개년 실검증 완료 |
 | build_pilot_corpus.py | 병목 계측용 소표본 코퍼스 (2020 50세션 복사+lab, D: 유지) | 작성 완료 |
-| run_pilot_bottleneck.ps1 | **병목 계측 파일럿** — CPU%·디스크 샘플러 + 소표본 MFA, 발화/s·ETA 실측 | 실행 대기 |
+| `archive/pre_2021_legacy_20260803/powershell/run_pilot_bottleneck.ps1` | 구 병목 계측 파일럿 | archive, 현 생산에 불필요 |
 | setup_mfa_speed_once.ps1 | 1회 시스템 설정 (Defender 제외·절전 해제, ★관리자★) | 실행 대기 |
 | build_stratified_mfa_pilot.py | 연도별 실제 `speaker_id` 5명×2발화를 5개 세션에서 선택. 동결 `pron_reference_form` LAB과 `source_eojeol_index→mfa_word_index` 명시 대응표, 선택 세션 CSV의 파일별·aggregate SHA256을 함께 동결하고 WAV 길이 대응이 불량한 세션은 근거와 함께 제외 | r2 schema 3 파일럿 6개년 60발화 입력 구성·검증 완료 |
 | finalize_stratified_mfa_pilot.py | 파일럿 MFA 원출력에 기존 형태소 경계를 결합해 4-tier 생성, WAV–TextGrid 및 CSV–WAV 길이 잔차·tier·누락·`spn` 발화별 전수 QC | v2 2020 10/10 통과 |
@@ -208,13 +222,13 @@
 | preflight_mfa_year_queue.ps1 | 공통사전·adoption·D 라벨/용량·live lock·기존 MFA preflight·연도별 lab/승인 계약·정적 안전검사·선택적 전체 Python 테스트·Git 추적 변경을 결합해 전수 큐 시작 전 GO/NO-GO JSON 생성 | MFA·승인·정본 승격 수행 안 함 |
 | prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |
 | start_full_mfa_after_review.ps1 | 지정 연도의 승인 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | 내부 공통 진입점; 직접 기본값 사용 금지, full clean/자동승인/정본승격 없음 |
-| resume_2020_export_after_post_mfa_review.ps1 | 2020 결합 2,250건 계약과 `direct_db_ready`를 재검증한 뒤 내부 큐를 정확한 review root로 호출한다. 같은 계약의 보존 DB이면 MFA를 건너뛰고 6-tier·동반표 export부터 재개 | 현재 2020 유일 진입점; `-PreflightOnly` 지원, full clean·자동 승격 없음 |
+| resume_2020_export_after_post_mfa_review.ps1 | 2020 결합 2,250건 계약과 보존 DB에서 6-tier·동반표 export를 재개한 이력 wrapper | 2020 완료 근거로 보존; 정상 절차 재실행 금지 |
 | verify_production_source_contract.ps1 | morph_search와 MFA가 같은 동결 `_build_meta.json` SHA·run ID·연도 입력을 사용했음을 `SOURCE_CONTRACT.json`으로 생성/검증 | 원자료 읽기 전용, 2020 검색·MFA·Gate B wrapper에 강제 |
 | resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | 2020 검색표 23/23 완료 |
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |
-| mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC의 5세션 이상 결정 표본에서 WAV/LAB/6-tier 연결·가용성만 검토하고 수정 불가 identity에 묶인 승인 JSON 생성 | 실제 실현 판정 요청/수행 금지, 자동 승인 없음 |
-| preflight_2020_gate_b.ps1 | 2020 source contract·기계 audit·marker·retained DB·DB 표본·생산 연구자 승인을 결합해 2021 진입 허가 | `allow_remaining_years` fail-closed |
-| prepare_remaining_mfa_approval_reviews.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤에만 2021–2025 제외표 준비 또는 남은 연도 큐 시작 | 2020 재포함 금지 |
+| mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC 표본의 WAV/LAB/6-tier 연결·가용성과 수정 불가 identity 승인 JSON 생성 | 2020 24/24 승인 완료; 실제 실현 판정 미수행; 재실행 금지 |
+| preflight_2020_gate_b.ps1 | 2020 source·audit·marker·DB·표본·연구자 승인을 결합한 fail-closed gate | 2026-08-03 16/16 통과, 실패 0 |
+| prepare_remaining_mfa_approval_reviews.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤 2021–2025 제외표 준비 또는 남은 연도 큐 시작 | **현재 생산 진입점**; 2020 재포함 금지 |
 | research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
 | build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |
 | benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |

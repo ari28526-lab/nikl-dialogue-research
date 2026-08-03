@@ -38,6 +38,7 @@
 | `DECISION_2020_CSV_WAV_ID_recovery_20260801.md` | 2020 WAV ID 밀림 복구와 파생 코퍼스 |
 | `DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md` | 1,887 제외와 6,158 경고 보존 |
 | `DECISION_2020_TextGrid_outer_edges_and_audio_unusable_20260803.md` | 2020 전수 tier 바깥 경계 감사·검토본 패딩·청취 불가 3건 |
+| `DECISION_2020_production_complete_gate_b_20260803.md` | 2020 r2·6-tier·독립 QC·24표본 승인·Gate B 완료와 2021 안전 정지점 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구
@@ -52,7 +53,8 @@
 
 ## 구조
 
-- `000_project_folder_structure.md`: 저장소 기본 구조
+- 현재 저장소·D:/E: 구조: `../DATA_LAYOUT.md`, `../ASSETS_LEDGER.md`
+- 구 Dropbox root 구조 결정: `../archive/pre_2021_cleanup_20260803/000_project_folder_structure.md`
 - 역사 결정: `../archive/decisions_pre_production/`
 - 외부 리뷰 원문·조치: `../reviews/`
 - 상세 시행착오: `../WORK_HISTORY_2026-08.md`와
