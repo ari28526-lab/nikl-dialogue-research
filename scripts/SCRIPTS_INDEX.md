@@ -192,6 +192,7 @@
 | audit_mfa_db_tier_edges.py | 전수 6-tier export 전에 보존 MFA DB의 유표 word·phone 바깥 발화 경계를 읽기 전용 집계해 검토본 표시 문제와 생산 시간계약을 분리 | 2020 정렬 성공 868,187/868,187 word-phone 시작·끝 일치 |
 | inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
 | mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
+| finalize_post_mfa_alignment_exclusions.py | 기존 pre-MFA 승인 계약과 보존 DB의 정확한 post-MFA 미정렬 ID를 결합한다. 16표본 결정·원 후보 SHA·DB ID 집합·명시 승인 token을 검증하고 원본을 덮어쓰지 않은 새 계약을 만든다 | 2020: 1,887 + 363(청취 불가 3 + 정렬 실패 360) = 2,250 승인, DB exact match |
 | prepare_mfa_exclusion_review.py / prepare_mfa_year_exclusion_review.ps1 | 입력 감사와 불량 WAV dry-run inventory에서 `pending` 검토표를 만들고 전수 lab을 force-verify. 현 6-tier에 쓰지 않는 구 형태소 TextGrid는 제외하고 CSV–WAV 대응 복구 전에는 fail-closed. WAV 이동·자동 승인 없음 | 2020 음원 복구 뒤 재실행 |
 | finalize_2020_mfa_review_from_verified_evidence.ps1 | 완료된 2020 LAB/WAV 전수 검증을 반복하지 않고 audit·복구계획·미해결 기호 inventory의 계약 ID·합계·SHA를 결합해 Gate B 전 2020 전용 큐의 최종 승인표를 생성. 1,834 음원 미대응과 빈 LAB 53을 후보로, 부분 LAB 6,158은 경고 보존으로 분리하며 기존 출력 덮어쓰기·자동승인·MFA를 금지 | 2020 최종 승인표 1회 생성용 |
 | approve_mfa_exclusion_categories.py | 연구자가 명시한 범주 집합이 후보표의 실제 범주와 정확히 일치할 때만 pending 원본을 보존한 별도 승인 CSV·승인 문구/SHA 기록·input contract 결속 제외 계약을 생성. 일부 범주 누락·후보 변조·기존 출력 덮어쓰기·자동승인·MFA 시작을 차단 | 2020 두 범주 1,887건 명시 승인 기록 완료 |
@@ -207,6 +208,7 @@
 | preflight_mfa_year_queue.ps1 | 공통사전·adoption·D 라벨/용량·live lock·기존 MFA preflight·연도별 lab/승인 계약·정적 안전검사·선택적 전체 Python 테스트·Git 추적 변경을 결합해 전수 큐 시작 전 GO/NO-GO JSON 생성 | MFA·승인·정본 승격 수행 안 함 |
 | prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |
 | start_full_mfa_after_review.ps1 | 지정 연도의 승인 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | 내부 공통 진입점; 직접 기본값 사용 금지, full clean/자동승인/정본승격 없음 |
+| resume_2020_export_after_post_mfa_review.ps1 | 2020 결합 2,250건 계약과 `direct_db_ready`를 재검증한 뒤 내부 큐를 정확한 review root로 호출한다. 같은 계약의 보존 DB이면 MFA를 건너뛰고 6-tier·동반표 export부터 재개 | 현재 2020 유일 진입점; `-PreflightOnly` 지원, full clean·자동 승격 없음 |
 | verify_production_source_contract.ps1 | morph_search와 MFA가 같은 동결 `_build_meta.json` SHA·run ID·연도 입력을 사용했음을 `SOURCE_CONTRACT.json`으로 생성/검증 | 원자료 읽기 전용, 2020 검색·MFA·Gate B wrapper에 강제 |
 | resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | 2020 검색표 23/23 완료 |
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |

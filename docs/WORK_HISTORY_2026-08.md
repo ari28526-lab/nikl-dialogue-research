@@ -836,5 +836,34 @@ shard 2–23을 재개하는 것이다.
   `outputs/reports/AUDIT_2020_FULL_DB_TIER_EDGES_20260803.json`이다. 같은 V2와
   그림 폴더를 Dropbox에 각각 84파일과 5파일로 복사해 파일별 SHA-256 일치를
   확인했다. 구 Dropbox 검토본과 연구자 Excel 증거는 덮어쓰지 않았다.
-- 나머지 360개 미정렬 발화는 16표본 결과만으로 자동 승인하지 않았다. 별도
-  범주 승인 전까지 pending이며, 현 DB와 checkpoint는 변경되지 않았다.
+- 이 시점에는 나머지 360개 미정렬 발화를 자동 승인하지 않고 별도 연구자 결정을
+  기다렸다. 현 DB와 checkpoint는 변경하지 않았다.
+
+### 2020 post-MFA 363건 확정·보존 DB export 인수인계 정리
+
+- 연구자는 연결 표본 검토 뒤 보존 DB를 유지하고 인프라 구축을 계속하도록
+  지시했다. 승인 프로그램은 원 post-MFA 후보 363 ID를
+  `D:\mfa_tmp\2020\2020.db`에서 다시 읽은 미정렬 ID와 전수 대조했고 차이 0을
+  확인했다.
+- 청취 불가 3건을 `audio_unusable`, 나머지 360건을
+  `mfa_alignment_missing`으로 기록했다. 기존 pre-MFA 1,887건과 결합한 최종
+  승인 계약은 2,250건이다. 자동 승인으로 가장하지 않고 연구자명·시각·승인
+  문구·원 후보/검토본/DB fingerprint를 manifest에 고정했다.
+- 결합 계약은
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020`
+  에 새로 만들었으며 기존 1,887건 계약과 pending 363표를 덮어쓰지 않았다.
+  `full_year_mfa_rerun_required=false`, `resume_from_retained_db=true`다.
+- 현재 진입점을 `resume_2020_export_after_post_mfa_review.ps1` 하나로 줄였다.
+  `direct_db_ready`의 DB·입력 계약을 먼저 확인하고, 같은 checkpoint이면 신규 MFA
+  계산을 건너뛰어 6-tier·동반표 export와 후속 기계 QC부터 재개한다.
+- 연구 검색용 생산 TextGrid 계약을 다시 명시했다. 한글 발화,
+  `utterance_orth_r`, `morph_analysis_utt` 레이블은 같은 유표 word span에 놓이며
+  세 tier 경계가 같다. 모든 tier는 빈 interval을 포함해 0–xmax를 연속적으로
+  덮는다. 형태소 문자열을 음향적 형태소 경계로 분할하지 않는다.
+- 로컬 구 검토본
+  `outputs/reviews/MFA_2020_REVIEW_SIMPLE_20260803` 83파일/1,328,922 bytes는
+  `outputs/reviews/archive/MFA_2020_REVIEW_SIMPLE_V1_20260803`으로 옮겼다.
+  수정 전 그림 감사 5파일/211,280 bytes는
+  `outputs/reports/archive/MFA_2020_TIER_BOUNDARY_AUDIT_PRE_FIX_20260803`으로
+  옮겼다. V2와 수정 후 감사는 활성 근거로 유지했다. Dropbox는 수정하지 않았고
+  연구자가 root의 임시 검토 폴더를 직접 삭제하기로 했다.

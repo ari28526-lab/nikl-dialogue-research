@@ -23,13 +23,14 @@
 - 자연 무음 없음: 14,454
 
 따라서 파일마다 빈 바깥 구간의 존재가 다른 것은 원음 차이이며 tier 손상이나
-누락이 아니다. 생산 exporter는 다음 계약을 파일마다 검증한다.
+누락이 아니다. 핵심은 검토 화면 모양이 아니라 **연구 검색용 생산 tier의 경계
+계약**이다. 생산 exporter는 다음 계약을 파일마다 검증한다.
 
 - 모든 6개 tier는 0--xmax를 빈틈없이 덮는다.
-- `words`와 발화 수준 3개 tier의 바깥 발화 경계가 같다.
+- `utterance`, `utterance_orth_r`, `morph_analysis_utt`의 유표 레이블은
+  같은 첫–마지막 유표 word span을 사용한다. 세 검색 tier의 경계는 완전히 같다.
 - `phones_mfa`와 `phoneme_r_auto`의 모든 경계가 같다.
-- 2020 DB에서는 word와 phone의 바깥 발화 경계도 전수 일치하므로 결과적으로
-  6개 tier의 발화 시작·끝 경계가 모두 일치한다.
+- 2020 DB에서는 유표 word와 phone의 바깥 발화 경계도 전수 일치한다.
 
 2020 전수 6-tier 실물은 아직 내보내기 전이다. 그러므로 이미 잘못 생성된 전수
 TextGrid를 수정하는 상황이 아니며, 이 전수 감사와 exporter gate를 통과한 뒤
@@ -39,9 +40,10 @@ TextGrid를 수정하는 상황이 아니며, 이 전수 감사와 exporter gate
 
 1. 생산 TextGrid와 동반표는 원음의 `source_time`을 유지한다. 원음에 없는
    0.05초를 전수 생산 자료에 넣지 않는다.
-2. 자연 무음이 없으면 tier 바깥 테두리 0 또는 xmax가 곧 발화 경계다. 검색은
-   CSV/Parquet의 `utt_id`와 형태소·로마자 열을 기본으로 하고 TextGrid는 같은
-   시간대의 정렬 문맥으로 사용한다.
+2. 자연 무음이 없으면 tier 바깥 테두리 0 또는 xmax가 곧 발화 경계다.
+   TextGrid 안에서는 한글 발화·철자 Roman·형태소 분석 문자열이 같은 유표
+   발화 span에 있으므로 서로 조합해 검색할 수 있다. CSV/Parquet는 대량 검색과
+   `utt_id` 연결의 정본이고 TextGrid는 같은 시간대의 정렬 문맥이다.
 3. 연구자가 Praat에서 경계를 쉽게 확인하는 **검토용 복사본에만** WAV 좌우
    0.05초 무음을 추가하고 모든 tier를 같이 이동한다. 모든 tier에 0.05초와
    `xmax-0.05` 경계를 강제한다. 원시간은
@@ -68,9 +70,11 @@ tier가 좌우 0.05초 검토 경계를 모두 통과했다.
 `41bc6cd433add52248ef5fcf875238bf89d19d0b4d9ea60b0858c92c1826750b`이며,
 정확한 3행 승인표와 함께 manifest에 묶었다.
 
-나머지 표본 13개는 연결이 맞다고 확인됐다. 그러나 이 표본 결과만으로 검토하지
-않은 나머지 360개 정렬 실패 발화를 자동 승인하지 않는다. 해당 360개는 별도
-범주 승인 전까지 pending으로 유지한다.
+나머지 표본 13개는 연결이 맞다고 확인됐다. 이후 연구자는 같은 보존 DB를
+유지하고 진도를 내도록 지시했다. DB에서 다시 읽은 미정렬 363 ID와 원 후보표가
+정확히 같음을 확인한 뒤, 청취 불가 3건은 `audio_unusable`, 나머지 360건은
+`mfa_alignment_missing`으로 명시 승인했다. 기존 pre-MFA 1,887건과 합친 최종
+계약은 2,250건이며 전수 MFA 재실행은 하지 않는다.
 
 ## 산출물
 
@@ -78,9 +82,9 @@ tier가 좌우 0.05초 검토 경계를 모두 통과했다.
 - Python tier 그림·검사: `outputs/reports/MFA_2020_TIER_BOUNDARY_AUDIT_FIXED_20260803`
 - 2020 전수 DB 경계 감사:
   `outputs/reports/AUDIT_2020_FULL_DB_TIER_EDGES_20260803.json`
-- Dropbox 전달본:
-  `C:\Users\ari30\Dropbox\MFA_2020_REVIEW_SIMPLE_V2_20260803`
-- Dropbox 그림:
-  `C:\Users\ari30\Dropbox\MFA_2020_TIER_BOUNDARY_AUDIT_FIXED_20260803`
+- 결합 승인 계약:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020`
+- Dropbox 전달본은 임시 열람 사본이었다. 로컬 근거와 SHA가 보존됐으므로
+  연구자가 Dropbox root에서 삭제해도 생산 계약에는 영향이 없다.
 
 검토본 생성 전후 MFA DB 크기와 mtime은 같았고, MFA 재정렬은 수행하지 않았다.

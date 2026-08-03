@@ -70,11 +70,14 @@ C:\Users\ari30\research\2026_summer_research
 - 부분 LAB 미해결 기호 6,158: 제외하지 않고 동반 CSV 경고로 보존
 - 연구자 승인: 2026-08-02 `ari30`, 두 범주 모두 승인
 - MFA 상태: 2020 신규 r2 계산 완료; 보존 DB 868,187 정렬 성공·363 미정렬
-- post-MFA 연결 QC: 16표본 완료, 13 match + 3 `audio_unusable`; 나머지
-  미정렬 360건은 범주 승인 전 pending
+- post-MFA 연결 QC: 16표본 완료, 13 match + 3 `audio_unusable`
+- 결합 승인 계약:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020/`
+  — pre-MFA 1,887 + post-MFA 363(청취 불가 3 + 정렬 실패 360) = 2,250;
+  보존 DB의 실제 미정렬 ID와 exact match
 - TextGrid 경계: 2020 DB 868,187/868,187 word-phone 바깥 경계 일치;
   전수 6-tier 실물은 아직 export 전
 
-다음 생산 단계는 미정렬 360건의 범주를 확정한 뒤 보존 DB에서 2020 6-tier와
+다음 생산 단계는 기존 MFA를 재실행하지 않고 보존 DB에서 2020 6-tier와
 동반표를 export하고 독립 QC·Gate B를 통과하는 것이다. 실행 명령은
 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.

@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-02 KST
+최종 갱신: 2026-08-03 KST
 
 이 문서가 전수 작업의 유일한 실행 정본이다. 구 RUNBOOK·MONITOR·PILOT의
 명령이 이 문서와 다르면 이 문서가 우선한다.
@@ -37,6 +37,35 @@ workflow 수정·시험
 
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
+
+## 현재 시작점 — 2020 보존 DB export
+
+2020 신규 MFA 계산은 이미 끝났다. 보존 DB의 실제 미정렬 363 ID를 원 후보표와
+전수 대조했고, pre-MFA 1,887건과 post-MFA 363건을 합친 2,250건 승인 계약도
+완성했다. 따라서 아래 A–C는 완료 이력이며 **다시 실행하지 않는다.** 지금은
+다음 한 줄로 시작한다.
+
+먼저 읽기·검증만 수행한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\resume_2020_export_after_post_mfa_review.ps1" `
+  -ApprovedBy "ari30" `
+  -ApprovePostMfa363 `
+  -PreflightOnly
+```
+
+결과가 `GO`이면 `-PreflightOnly`만 빼고 실행한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\resume_2020_export_after_post_mfa_review.ps1" `
+  -ApprovedBy "ari30" `
+  -ApprovePostMfa363
+```
+
+이 wrapper는 `D:\mfa_eojeol\done\2020.direct_db_ready`와
+`D:\mfa_tmp\2020\2020.db`의 입력·정렬 계약을 다시 확인한다. 같은 checkpoint면
+MFA를 건너뛰고 6-tier·동반표 export와 후속 기계 QC부터 재개한다. full clean,
+전수 재정렬, 자동 정본 승격, 2021 자동 진입은 하지 않는다.
 
 ## 3. 단계별 사용자 행동
 
@@ -109,13 +138,15 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 하지 않았다. 후보표 재생성 명령을 다시 실행하지 않는다. 다음 사용자 행동은
 아래 C단계의 2020 단일 시작 wrapper 한 줄이다.
 
-### C. 2020 신규 MFA 시작
+### C. 2020 최초 신규 MFA 시작 — 완료 이력, 재실행 금지
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_2020_mfa_after_review.ps1" -ApprovedBy "ari30"
 ```
 
-이 wrapper 한 줄이 내부에서 2020 검색표 완료, 같은 `_build_meta` SHA, 승인 계약,
+이 wrapper는 2026-08-02 최초 계산에 사용한 이력 명령이다. 현재는 위의
+`resume_2020_export_after_post_mfa_review.ps1`만 사용한다. 최초 wrapper는 내부에서
+2020 검색표 완료, 같은 `_build_meta` SHA, 승인 계약,
 공통사전, 저장공간, repository test를 먼저 확인한다. 정확히 `GO`일 때만 2020
 한 연도를 시작하고, 하나라도 실패하면 MFA를 시작하지 않고 보고서만 남긴다.
 `-PreflightOnly`는 진단만 따로 반복해야 할 특별한 경우의 선택 옵션이지 정상

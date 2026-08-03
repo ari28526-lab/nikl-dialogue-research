@@ -70,3 +70,19 @@ word/phone interval이 없다. 특히 다음과 같이 세션 집중이 크다.
 검토 결과 WAV/LAB가 맞으면 표적 재정렬 가능성과 명시적 제외를 비교한다.
 매핑 불일치가 확인되면 영향 세션만 입력 복구하고 보존 DB/부분 결과를 근거로
 해당 범위만 다시 계산한다.
+
+## 2026-08-03 검토 완료와 재개 판정
+
+- 연결 표본 16건: 13 `match`, 3 `audio_unusable`
+- 보존 DB 재조회 미정렬 ID와 원 post-MFA 후보표: 363/363 exact match
+- post-MFA 승인: `audio_unusable` 3 + `mfa_alignment_missing` 360 = 363
+- 최종 결합 승인: pre-MFA 1,887 + post-MFA 363 = 2,250
+- 계약 위치:
+  `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020`
+
+표본 13건이 360건 각각의 음질을 대표한다고 주장한 것이 아니다. 363건 전체는
+동일한 기계적 상태, 즉 승인된 입력에는 존재하지만 기본·retry 정렬 뒤에도
+word/phone interval이 없는 발화로 전수 확인했다. 연구자가 인프라 구축을
+계속하도록 명시 결정했으므로 이 범주를 결과에서 투명하게 제외하고, 실패 ID와
+사유는 동반 제외표에 모두 남긴다. 정렬 성공 868,187건은 같은 DB에서 내보내며
+연도 전체 MFA를 다시 계산하지 않는다.

@@ -52,12 +52,14 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
   word+phone interval이 있고 363발화는 post-MFA 미정렬이다. 보존 DB는
   `D:\mfa_tmp\2020\2020.db`, checkpoint marker는
   `D:\mfa_eojeol\done\2020.direct_db_ready`다.
+- 2020 결합 제외 계약 2,250건을 확정했다. pre-MFA 1,887건과 보존 DB의 정확한
+  post-MFA 미정렬 ID 363건(청취 불가 3 + `mfa_alignment_missing` 360)을
+  결합했으며, 전수 MFA 재실행 없이 같은 DB에서 export하도록 동결했다.
 
 ## 실제 미완료
 
 - 2021–2025 검색표.
-- 2020 미정렬 363건 중 청취 불가 3건은 `audio_unusable`로 승인 기록했다.
-  나머지 360건의 범주 결정 뒤 6-tier·동반표·독립 QC를 수행한다.
+- 2020 6-tier·동반표 export, 독립 QC, 생산 표본 확인과 Gate B.
 - 2021–2025 신규 r2 MFA와 연도별 승인 제외 계약.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
@@ -82,7 +84,9 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 
 2020 전수 MFA 계산은 완료됐고 DB는 보존됐다. 16표본 WAV·LAB·동결 CSV 연결
 QC도 완료됐다. 연구자는 13개를 `match`, 소리가 들리지 않는 3개를
-`audio_unusable`로 판정했다. 이 검토는 실제 음운 실현 판정이 아니라
+`audio_unusable`로 판정했다. 보존 DB에서 다시 읽은 미정렬 ID 363개가 원
+후보표와 정확히 같음을 확인한 뒤, 나머지 360개는
+`mfa_alignment_missing`으로 승인했다. 이 검토는 실제 음운 실현 판정이 아니라
 post-MFA 인프라 QC다.
 
 수정 전달본은
@@ -92,16 +96,21 @@ Python 그림 감사에서 4/4 TextGrid × 6/6 tier가 통과했다. 생산 DB�
 변경하지 않았다.
 
 또한 생산 전수 문제 여부를 확인하기 위해 보존 DB의 정렬 성공 868,187발화를
-읽기 전용 전수 감사했다. word와 phone의 바깥 발화 시작·끝은
-868,187/868,187(100%) 일치했다. 파일마다 자연 무음의 유무가 다른 것은 원음
-차이이며, 생산 TextGrid는 source time을 유지한다. 전수 6-tier 실물은 아직
-export 전이므로 잘못 생성된 전수본을 고치는 상황도 아니다.
+읽기 전용 전수 감사했다. word와 phone의 바깥 **유표 발화** 시작·끝은
+868,187/868,187(100%) 일치했다. 생산 exporter는 `utterance`,
+`utterance_orth_r`, `morph_analysis_utt`의 검색 레이블을 이 동일한 유표 word
+span에 놓고 세 tier의 경계를 강제로 같게 검증한다. 모든 tier는 빈 interval을
+포함해 0–xmax를 연속적으로 덮는다. 파일마다 자연 무음의 유무가 다른 것은 원음
+차이이며, 생산 TextGrid는 source time을 유지한다. 형태소 문자열을 음향적
+형태소 경계로 잘못 분할하지 않는다. 전수 6-tier 실물은 아직 export 전이다.
 
 다음 순서만 유지한다.
 
-1. 청취 불가 3건 승인 기록을 유지하고 나머지 미정렬 360건의 범주를 확정한다.
-2. 보존 DB에서 2020 6-tier·동반표·독립 QC·생산 표본 확인을 마친다.
-3. 2020 Gate B 뒤 2021–2025 연도별 큐를 연다.
+1. `resume_2020_export_after_post_mfa_review.ps1 -PreflightOnly`로 결합 계약과
+   보존 DB 재개 조건을 확인한다.
+2. 같은 wrapper의 실제 실행으로 MFA를 다시 계산하지 않고 2020
+   6-tier·동반표·독립 QC를 보존 DB에서 생성한다.
+3. 생산 표본 확인과 2020 Gate B 뒤 2021–2025 연도별 큐를 연다.
 
 검토 묶음과 전수 경계 감사는 DB를 읽기 전용으로 수행했고, 생성 전후 DB 크기와
 mtime이 같았다. 2021 gate는 아직 열지 않았다. 상세 과정은
