@@ -114,8 +114,15 @@ span에 놓고 세 tier의 경계를 강제로 같게 검증한다. 모든 tier�
 
 1단계는 2026-08-03 12:31 KST에 `GO`로 통과했다. 당시 D: 여유는 343.5GB였고
 공통 Jamo r2·109-phone·2,250건 승인·보존 DB·저장소 320시험이 통과했다. 실제
-export는 시작하지 않았다. 따라서 현재 사용자 행동은 같은 wrapper에서
-`-PreflightOnly`만 빼고 실행하는 것이다.
+export는 시작하지 않았다. 첫 실제 재개는 기존 입력 gate가 post-MFA 승인
+363건의 LAB·WAV 존재를 pre-MFA 제외의 잔존으로 잘못 해석해 export 전
+차단됐다. DB·checkpoint는 보존됐고 6-tier 출력은 생성되지 않았다.
+
+gate는 이제 일반 실행의 엄격성을 유지하면서, 현재 입력·정렬 계약과 일치하는
+`direct_db_ready`와 그 DB의 실제 미정렬 ID가 `audio_unusable` 및
+`mfa_alignment_missing` 승인 ID와 exact-match할 때만 active 363건을 허용한다.
+실자료 진단은 승인 363=DB 미정렬 363, 미승인 active 0, gate 통과였고 저장소
+321시험이 통과했다. 현재 사용자 행동은 같은 wrapper를 다시 실행하는 것이다.
 
 검토 묶음과 전수 경계 감사는 DB를 읽기 전용으로 수행했고, 생성 전후 DB 크기와
 mtime이 같았다. 2021 gate는 아직 열지 않았다. 상세 과정은

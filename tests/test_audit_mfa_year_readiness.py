@@ -1,4 +1,6 @@
 import csv
+import json
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -13,6 +15,7 @@ from audit_mfa_year_readiness import (  # noqa: E402
     audit_session_durations,
     audit_year,
     main,
+    validate_retained_db_checkpoint,
 )
 
 
@@ -339,7 +342,96 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
             self.assertFalse(
                 result["gates"]["approved_alignment_inputs_inactive"]
             )
+            self.assertFalse(
+                result["gates"][
+                    "approved_alignment_active_pairs_authorized"
+                ]
+            )
             self.assertFalse(result["analysis_ready_gates_pass"])
+
+            resumed = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                known_pcm=None,
+                approved_alignment_exclusions={"S1.bad"},
+                approved_active_alignment_exclusions={"S1.bad"},
+            )
+            self.assertFalse(
+                resumed["gates"]["approved_alignment_inputs_inactive"]
+            )
+            self.assertTrue(
+                resumed["gates"][
+                    "approved_alignment_active_pairs_authorized"
+                ]
+            )
+            self.assertTrue(resumed["execution_gates_pass"])
+
+    def test_retained_checkpoint_requires_exact_db_missing_ids(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2020.db"
+            connection = sqlite3.connect(db)
+            connection.executescript(
+                """
+                CREATE TABLE file(id INTEGER PRIMARY KEY, name TEXT);
+                CREATE TABLE utterance(
+                    id INTEGER PRIMARY KEY, file_id INTEGER, ignored INTEGER
+                );
+                CREATE TABLE word_interval(
+                    id INTEGER PRIMARY KEY, utterance_id INTEGER
+                );
+                CREATE TABLE phone_interval(
+                    id INTEGER PRIMARY KEY, utterance_id INTEGER
+                );
+                INSERT INTO file VALUES (1, 'ALIGNED'), (2, 'MISS');
+                INSERT INTO utterance VALUES (1, 1, 0), (2, 2, 0);
+                INSERT INTO word_interval VALUES (1, 1);
+                INSERT INTO phone_interval VALUES (1, 1);
+                """
+            )
+            connection.commit()
+            connection.close()
+            marker = root / "2020.direct_db_ready"
+            marker.write_text(
+                json.dumps(
+                    {
+                        "year": "2020",
+                        "stage": "direct_db_ready",
+                        "details": {
+                            "computation_complete": True,
+                            "input_contract_id": "INPUT",
+                            "alignment_contract_id": "ALIGN",
+                            "alignment_db": str(db),
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            rows = {
+                "MISS": {
+                    "reason_code": "mfa_alignment_missing",
+                    "exclusion_scope": "alignment_and_analysis",
+                }
+            }
+            allowed, evidence = validate_retained_db_checkpoint(
+                checkpoint_path=marker,
+                year="2020",
+                input_contract_id="INPUT",
+                alignment_contract_id="ALIGN",
+                exclusion_rows=rows,
+            )
+            self.assertEqual(allowed, {"MISS"})
+            self.assertTrue(evidence["db_missing_ids_exact_match"])
+            with self.assertRaises(RuntimeError):
+                validate_retained_db_checkpoint(
+                    checkpoint_path=marker,
+                    year="2020",
+                    input_contract_id="INPUT",
+                    alignment_contract_id="WRONG",
+                    exclusion_rows=rows,
+                )
 
     def test_fully_approved_missing_session_is_not_an_active_gate_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

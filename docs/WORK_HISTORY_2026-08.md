@@ -873,3 +873,22 @@ shard 2–23을 재개하는 것이다.
   320시험이 모두 통과해 최종 상태는 `GO`였다. 보고서는
   `outputs/reports/PREFLIGHT_mfa_year_queue_mfa_r2_prod_2020_export_20260803_after_review.json`이며
   이 검사에서는 MFA·export를 시작하지 않았다.
+
+### 2020 첫 export 재개 차단과 post-MFA active 제외 gate 교정
+
+- 12:37 KST 실제 재개는 LAB 계약 확인과 WAV 길이 전수 검사까지 정상 통과했지만,
+  기존 `approved_alignment_inputs_inactive` gate가 결합 계약의 post-MFA 363건도
+  “승인했으므로 입력에서 없어야 하는 발화”로 해석해 12:52에 안전 중단했다.
+  상태는 `post_mfa_export_failed_db_preserved`였고 전수 MFA 재계산·6-tier 생성은
+  없었다.
+- 실패 보고서 자체에서 870,437 source, 2,250 승인, 868,187 export 대상,
+  WAV 길이 868,187/868,187 일치, residual 오류 0을 확인했다. 실패 원인은 자료가
+  아니라 pre-MFA와 post-MFA 제외 단계의 의미를 합치지 못한 gate였다.
+- 일반 신규 실행에서는 active 승인 제외를 계속 차단한다. 오직 현재
+  `direct_db_ready`의 연도·입력 계약·정렬 계약·보존 DB를 확인하고, DB의 실제
+  word/phone 미정렬 ID와 계약의 `audio_unusable`·`mfa_alignment_missing` ID가
+  exact-match할 때만 해당 active pair를 허용하도록 수정했다.
+- 실자료 정책 진단에서 승인 active 363, 관측 active 363, 허용 363, 미허용 0,
+  DB exact-match, execution gate 모두 통과했다. Python 321시험과 PowerShell
+  안전/Windows 5.1 호환성 검사도 통과했다. 다음 실행은 같은 보존 DB export
+  wrapper의 재개이며 full clean은 금지한다.

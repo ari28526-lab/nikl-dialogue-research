@@ -1605,6 +1605,27 @@ foreach ($y in $years) {
         continue
     }
 
+    # 입력 감사 전에 보존 DB checkpoint를 현재 입력·정렬 계약에 결속한다.
+    # 이 검증이 통과한 post-MFA export 재개에서만 DB의 미정렬 ID와 exact-match한
+    # active 승인 제외를 허용한다. 신규 MFA에는 이 예외를 절대 전달하지 않는다.
+    $directDbReadyMark = Join-Path $doneDir "$y.direct_db_ready"
+    $directDbReady = (
+        $UseDirectDbExport -and
+        (Read-DoneMarker $directDbReadyMark $y 'direct_db_ready' `
+            $inputContractId $alignmentContractId)
+    )
+    if (
+        $UseDirectDbExport -and
+        (Test-Path -LiteralPath $directDbReadyMark) -and
+        -not $directDbReady
+    ) {
+        Say (
+            "!! $y direct_db_ready가 현재 입력·정렬 계약과 불일치 " +
+            "— 자동 재정렬 금지: $directDbReadyMark"
+        )
+        exit 1
+    }
+
     # 신규 계산에는 analysis-ready를 요구하되, 같은 계약의 수시간짜리 temp를
     # 재개할 때는 이미 계산된 DB를 버리지 않도록 execution gate를 적용한다.
     # 후자의 분석 제외·복구 판정은 final 독립 QC에서 다시 강제한다.
@@ -1668,6 +1689,12 @@ foreach ($y in $years) {
         $integrityArguments += @(
             '--approved-exclusions-contract', $ApprovedExclusionsContract,
             '--input-contract-id', $inputContractId
+        )
+    }
+    if ($directDbReady) {
+        $integrityArguments += @(
+            '--retained-db-checkpoint', $directDbReadyMark,
+            '--alignment-contract-id', $alignmentContractId
         )
     }
     & $py @integrityArguments
@@ -1761,23 +1788,6 @@ foreach ($y in $years) {
 
     # 2) MFA 정렬 — 완료 마커 있으면 건너뜀. 진행바가 화면에 실시간.
     $doneMark = Join-Path $doneDir "$y.align_done"
-    $directDbReadyMark = Join-Path $doneDir "$y.direct_db_ready"
-    $directDbReady = (
-        $UseDirectDbExport -and
-        (Read-DoneMarker $directDbReadyMark $y 'direct_db_ready' `
-            $inputContractId $alignmentContractId)
-    )
-    if (
-        $UseDirectDbExport -and
-        (Test-Path -LiteralPath $directDbReadyMark) -and
-        -not $directDbReady
-    ) {
-        Say (
-            "!! $y direct_db_ready가 현재 입력·정렬 계약과 불일치 " +
-            "— 자동 재정렬 금지: $directDbReadyMark"
-        )
-        exit 1
-    }
     if (Read-DoneMarker $doneMark $y 'align' $inputContractId `
             $alignmentContractId) {
         Say "$y [2/3] MFA 이미 완료(.done) — 건너뜀"

@@ -24,6 +24,7 @@ import csv
 import json
 import os
 import re
+import sqlite3
 import statistics
 import time
 import wave
@@ -39,6 +40,9 @@ from realign_eojeol_build_corpus import MISSING, form_to_lab
 csv.field_size_limit(10_000_000)
 
 YEARS = ("2020", "2021", "2022", "2023", "2024", "2025")
+POST_MFA_ACTIVE_REASON_CODES = frozenset(
+    {"audio_unusable", "mfa_alignment_missing"}
+)
 REQUIRED_COLUMNS = {
     "utt_id",
     "form",
@@ -48,6 +52,94 @@ REQUIRED_COLUMNS = {
     "sex",
     "dur",
 }
+
+
+def validate_retained_db_checkpoint(
+    *,
+    checkpoint_path: Path,
+    year: str,
+    input_contract_id: str,
+    alignment_contract_id: str,
+    exclusion_rows: dict[str, dict[str, str]],
+) -> tuple[set[str], dict[str, object]]:
+    """보존 DB의 미정렬 ID와 post-MFA 승인 ID를 exact-match한다."""
+
+    try:
+        checkpoint = json.loads(
+            checkpoint_path.read_text(encoding="utf-8-sig")
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"direct_db_ready 읽기 실패: {checkpoint_path}: {exc}"
+        ) from exc
+    details = checkpoint.get("details")
+    if not isinstance(details, dict):
+        raise RuntimeError("direct_db_ready details 누락")
+    if (
+        str(checkpoint.get("year")) != year
+        or checkpoint.get("stage") != "direct_db_ready"
+        or not bool(details.get("computation_complete"))
+        or str(details.get("input_contract_id")) != input_contract_id
+        or str(details.get("alignment_contract_id"))
+        != alignment_contract_id
+    ):
+        raise RuntimeError("direct_db_ready 연도/입력/정렬 계약 불일치")
+    db_path = Path(str(details.get("alignment_db") or "")).resolve()
+    if not db_path.is_file():
+        raise RuntimeError(f"보존 alignment DB 없음: {db_path}")
+
+    authorized = {
+        utt_id
+        for utt_id, row in exclusion_rows.items()
+        if row.get("exclusion_scope") == "alignment_and_analysis"
+        and row.get("reason_code") in POST_MFA_ACTIVE_REASON_CODES
+    }
+    if not authorized:
+        raise RuntimeError("checkpoint 재개용 post-MFA 승인 ID가 0건")
+    connection = sqlite3.connect(
+        f"file:{db_path.as_posix()}?mode=ro", uri=True, timeout=120
+    )
+    connection.execute("PRAGMA query_only=ON")
+    try:
+        db_missing = {
+            str(row[0])
+            for row in connection.execute(
+                """
+                SELECT f.name
+                FROM utterance u
+                JOIN file f ON f.id = u.file_id
+                WHERE u.ignored = 0
+                  AND (
+                    NOT EXISTS (
+                        SELECT 1 FROM word_interval wi
+                        WHERE wi.utterance_id = u.id
+                    )
+                    OR NOT EXISTS (
+                        SELECT 1 FROM phone_interval pi
+                        WHERE pi.utterance_id = u.id
+                    )
+                  )
+                """
+            )
+        }
+    finally:
+        connection.close()
+    if authorized != db_missing:
+        raise RuntimeError(
+            "post-MFA 승인 ID와 보존 DB 미정렬 ID 불일치: "
+            f"approved={len(authorized)} db={len(db_missing)}"
+        )
+    return authorized, {
+        "path": str(checkpoint_path.resolve()),
+        "status": "validated",
+        "year": year,
+        "input_contract_id": input_contract_id,
+        "alignment_contract_id": alignment_contract_id,
+        "alignment_db": str(db_path),
+        "authorized_active_exclusions": len(authorized),
+        "allowed_reason_codes": sorted(POST_MFA_ACTIVE_REASON_CODES),
+        "db_missing_ids_exact_match": True,
+    }
 
 DURATION_RESIDUAL_TOLERANCE_SECONDS = 0.025
 SESSION_DURATION_MATCH_MIN_PCT = 98.0
@@ -352,10 +444,16 @@ def audit_year(
     known_pcm_records: dict[str, dict[str, str]] | None = None,
     lab_workers: int = 8,
     approved_alignment_exclusions: set[str] | None = None,
+    approved_active_alignment_exclusions: set[str] | None = None,
 ) -> dict:
     """한 연도를 읽기 전용으로 전수 감사한다."""
     source_dir = search_master_root / year
     approved_alignment_exclusions = approved_alignment_exclusions or set()
+    approved_active_alignment_exclusions = (
+        approved_active_alignment_exclusions or set()
+    )
+    if not approved_active_alignment_exclusions <= approved_alignment_exclusions:
+        raise ValueError("active 허용 ID는 승인 alignment 제외의 부분집합이어야 함")
     csv_files = sorted(
         path
         for path in source_dir.glob("*.csv")
@@ -480,6 +578,14 @@ def audit_year(
                         counts["approved_alignment_excluded"] += 1
                         if utt_id in wav_ids and utt_id in lab_ids:
                             counts["approved_alignment_active_pair"] += 1
+                            if utt_id in approved_active_alignment_exclusions:
+                                counts[
+                                    "approved_alignment_authorized_active_pair"
+                                ] += 1
+                            else:
+                                counts[
+                                    "approved_alignment_unauthorized_active_pair"
+                                ] += 1
                             risky_sessions[session] += 1
                             _add_example(
                                 examples,
@@ -715,6 +821,9 @@ def audit_year(
         "approved_alignment_exclusion_count": len(
             approved_alignment_exclusions
         ),
+        "approved_active_alignment_exclusion_count": len(
+            approved_active_alignment_exclusions
+        ),
         "csv_files": len(csv_files),
         "elapsed_seconds": round(elapsed, 3),
         "counts": dict(sorted(counts.items())),
@@ -817,6 +926,11 @@ def audit_year(
         "approved_alignment_inputs_inactive": (
             counts["approved_alignment_active_pair"] == 0
         ),
+        "approved_alignment_active_pairs_authorized": (
+            counts["approved_alignment_unauthorized_active_pair"] == 0
+            and counts["approved_alignment_authorized_active_pair"]
+            == len(approved_active_alignment_exclusions)
+        ),
         "source_segment_text_duration_plausible": (
             counts["source_segment_text_duration_impossible"] == 0
         ),
@@ -848,7 +962,7 @@ def audit_year(
         "no_dangerous_unexpected_labs",
         "all_expected_labs_ready",
         "no_fatal_tiny_wav",
-        "approved_alignment_inputs_inactive",
+        "approved_alignment_active_pairs_authorized",
         "morph_source_inventory_classified",
     )
     analysis_gate_names = (
@@ -925,6 +1039,8 @@ def main() -> int:
     parser.add_argument("--lab-workers", type=int, default=8)
     parser.add_argument("--approved-exclusions-contract", type=Path)
     parser.add_argument("--input-contract-id")
+    parser.add_argument("--retained-db-checkpoint", type=Path)
+    parser.add_argument("--alignment-contract-id")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -934,6 +1050,19 @@ def main() -> int:
         )
     if args.approved_exclusions_contract and len(args.years) != 1:
         raise SystemExit("승인 제외 계약 감사에서는 연도 1개만 지정")
+    if bool(args.retained_db_checkpoint) != bool(args.alignment_contract_id):
+        raise SystemExit(
+            "--retained-db-checkpoint와 --alignment-contract-id는 함께 지정"
+        )
+    if args.retained_db_checkpoint and (
+        args.approved_exclusions_contract is None
+        or args.gate_profile != "execution"
+        or len(args.years) != 1
+    ):
+        raise SystemExit(
+            "보존 DB active 제외 허용은 단일 연도 execution profile과 "
+            "승인 계약에서만 가능"
+        )
 
     meta_path = args.search_master_root / "_build_meta.json"
     try:
@@ -966,10 +1095,12 @@ def main() -> int:
             if args.approved_exclusions_contract is None
             else str(args.approved_exclusions_contract.resolve())
         ),
+        "retained_db_checkpoint": None,
         "years": [],
     }
     for year in args.years:
         approved_alignment_exclusions: set[str] = set()
+        approved_active_alignment_exclusions: set[str] = set()
         if args.approved_exclusions_contract is not None:
             _contract, exclusion_rows = load_exclusion_contract(
                 args.approved_exclusions_contract,
@@ -981,6 +1112,18 @@ def main() -> int:
                 for utt_id, row in exclusion_rows.items()
                 if row["exclusion_scope"] == "alignment_and_analysis"
             }
+            if args.retained_db_checkpoint is not None:
+                (
+                    approved_active_alignment_exclusions,
+                    checkpoint_evidence,
+                ) = validate_retained_db_checkpoint(
+                    checkpoint_path=args.retained_db_checkpoint,
+                    year=year,
+                    input_contract_id=args.input_contract_id,
+                    alignment_contract_id=args.alignment_contract_id,
+                    exclusion_rows=exclusion_rows,
+                )
+                report["retained_db_checkpoint"] = checkpoint_evidence
         report["years"].append(
             audit_year(
                 year=year,
@@ -998,6 +1141,9 @@ def main() -> int:
                 lab_workers=args.lab_workers,
                 approved_alignment_exclusions=(
                     approved_alignment_exclusions
+                ),
+                approved_active_alignment_exclusions=(
+                    approved_active_alignment_exclusions
                 ),
             )
         )
