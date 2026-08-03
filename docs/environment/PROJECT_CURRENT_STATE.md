@@ -117,11 +117,14 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
-2021–2025의 `morph_search.v3` 7표는 아직 0/5년이다. 이 표는 MFA 입력용
+2021–2025의 완성된 `morph_search.v3` 7표는 아직 0/5년이다. 2021 작업은
+2026-08-04 08:24 KST에 시작했고 shard checkpoint 방식으로 실행 중이다. 이
+표는 MFA 입력용
 search master와 달리 연구자가 형태소·표기 환경을 조합 검색하는 최종 pre-MFA
 층이다. 각 연도 MFA 전에 `prepare_production_year_before_mfa.ps1`로 생성·재개하고
 source contract를 확정한다. MFA 시작기는 해당 연도 manifest 성공이 없으면
-fail-closed한다.
+fail-closed한다. 현재 값은 `show_production_year_pre_mfa_status.ps1 -Year 2021`로
+확인하며 문서의 관측 시점 숫자보다 이 상태판을 우선한다.
 
 2021 진입 전 저장소 정리에서 2020 완성 자산은 보호한 채 구 문서 3개, 구 코드
 13개, 완료 파일럿 5폴더를 archive했다. 이동 전후 파일럿의 파일 수·바이트·트리

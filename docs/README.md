@@ -8,7 +8,8 @@
 | 2 | [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | 현재 완료·미완료·안전 정지점 |
 | 3 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
 | 4 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/E:/저장소 실물 위치 정본 |
-| 5 | 이 문서 | 정본과 역사 기록의 경계 |
+| 5 | [environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md) | 리밋·새 대화 뒤 로컬 checkpoint 재개 |
+| 6 | 이 문서 | 정본과 역사 기록의 경계 |
 
 ## 고정 연구 계약
 

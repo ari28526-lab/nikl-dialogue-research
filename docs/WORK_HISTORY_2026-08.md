@@ -1159,3 +1159,14 @@ shard 2–23을 재개하는 것이다.
 - 실행 여부를 추측하지 않도록 shard 진행률, lock/PID, annual manifest,
   source contract와 D: 여유를 한 번에 보여주는 읽기 전용
   `show_production_year_pre_mfa_status.ps1`도 추가했다.
+
+## 2026-08-04 — Codex 리밋·새 대화 연속성 고정
+
+- 사용자가 계정을 또 만들어야 하는지 우려해, 새 계정 생성이 아니라 같은 계정의
+  한도 초기화 또는 새 대화 뒤 재개하는 절차를
+  `CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`로 고정했다.
+- 로컬 PowerShell은 Codex 대화와 독립적으로 계속되므로, 새 대화는 먼저 Git과
+  읽기 전용 상태판을 확인한다. `partial`, DB, shard, lock은 임의 삭제하거나
+  상태 확인 전에 재실행하지 않는다.
+- 새 대화용 최소 프롬프트를 문서화하고 `PROJECT_START_HERE.md`에서 바로
+  연결했다. 채팅 기억보다 manifest·현재 D:·Git commit을 우선한다.

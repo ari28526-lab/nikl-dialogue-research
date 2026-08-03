@@ -9,6 +9,11 @@
 3. [../ASSETS_LEDGER.md](../ASSETS_LEDGER.md) — D:/E:/저장소 자산의 현재 위치
 4. [../decisions/_INDEX.md](../decisions/_INDEX.md) — 현행 방법론 결정과 역사 기록의 구분
 
+Codex 리밋, 앱 종료, 계정 재로그인 또는 새 대화 뒤에는
+[CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md)를
+추가로 읽고, 실행 중인 로컬 작업을 재시작하기 전에 상태판을 확인한다. 새 계정을
+만드는 절차가 아니다.
+
 프로젝트 root는 다음이다.
 
 ```text
