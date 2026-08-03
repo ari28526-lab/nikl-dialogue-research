@@ -87,6 +87,53 @@ $yearAudit = @(
 if ($yearAudit.Count -ne 1) {
     throw "$Year 입력 감사 연도 결과가 정확히 1개가 아님"
 }
+
+# 음원 대응 issue가 있으면 우선 읽기 전용 복구계획을 만든다. 같은 ID·길이가
+# 정상인 발화는 유지하고 실제 issue만 unresolved/ambiguous로 분류한다. 고신뢰
+# remap이 있으면 이 단계는 적용하지 않고 아래 후보표 생성기가 fail-closed한다.
+$effectiveAudioRecoveryPlan = $AudioRecoveryPlan
+$audioPairingIssueNames = @(
+    'duration_residual_mismatch',
+    'duration_wav_missing',
+    'duration_wav_too_small',
+    'wav_header_unreadable'
+)
+$audioIssueIds = @(
+    $yearAudit[0].issue_inventory |
+        Where-Object {
+            [string]$_.issue -in $audioPairingIssueNames
+        } |
+        ForEach-Object { [string]$_.utt_id } |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Sort-Object -Unique
+)
+if (
+    $audioIssueIds.Count -gt 0 -and
+    [string]::IsNullOrWhiteSpace($effectiveAudioRecoveryPlan)
+) {
+    $autoPlan = Join-Path $OutputRoot '02a_wav_duration_recovery_plan.csv'
+    $autoPlanReport = Join-Path (
+        $OutputRoot
+    ) '02a_wav_duration_recovery_plan.json'
+    & $python (Join-Path $pythonDir 'plan_wav_duration_recovery.py') `
+        --year $Year --audit-report $auditReport `
+        --search-master-root $SearchMasterRoot --wav-root $wavRoot `
+        --output-csv $autoPlan --output-report $autoPlanReport
+    if ($LASTEXITCODE -ne 0) {
+        throw "음원 대응 읽기 전용 계획 생성 실패"
+    }
+    $autoPlanData = Get-Content -LiteralPath $autoPlanReport `
+        -Raw -Encoding UTF8 | ConvertFrom-Json
+    if (
+        [string]$autoPlanData.status -ne 'dry_run_plan_only' -or
+        [int64]$autoPlanData.active_audio_issue_count -ne
+            [int64]$audioIssueIds.Count -or
+        [int64]$autoPlanData.unexpected_exclusion_count -ne 0
+    ) {
+        throw "음원 대응 계획의 issue 보존/정상 발화 비확대 계약 불일치"
+    }
+    $effectiveAudioRecoveryPlan = $autoPlan
+}
 & $python (Join-Path $pythonDir 'quarantine_bad_wavs.py') `
     --year $Year --root $wavRoot --inventory-csv $wavInventory
 if ($LASTEXITCODE -ne 0) { throw "불량 WAV dry-run inventory 실패" }
@@ -101,8 +148,8 @@ $reviewArgs = @(
     '--output-csv', $reviewCsv,
     '--output-report', $reviewReport
 )
-if (-not [string]::IsNullOrWhiteSpace($AudioRecoveryPlan)) {
-    $audioPlanPath = [IO.Path]::GetFullPath($AudioRecoveryPlan)
+if (-not [string]::IsNullOrWhiteSpace($effectiveAudioRecoveryPlan)) {
+    $audioPlanPath = [IO.Path]::GetFullPath($effectiveAudioRecoveryPlan)
     if (-not (Test-Path -LiteralPath $audioPlanPath -PathType Leaf)) {
         throw "audio recovery plan 없음: $audioPlanPath"
     }

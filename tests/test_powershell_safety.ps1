@@ -577,6 +577,25 @@ foreach ($path in $files) {
     ) {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
+            'plan_wav_duration_recovery.py',
+            'active_audio_issue_count',
+            'unexpected_exclusion_count',
+            'dry_run_plan_only',
+            '$effectiveAudioRecoveryPlan'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "연도 후보표 음원 issue 자동분류 계약 누락 ${path}: $required"
+                )
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prepare_mfa_year_exclusion_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
             '--skip-morph-source-audit',
             '[string]$AudioRecoveryPlan',
             "'--audio-recovery-plan'",

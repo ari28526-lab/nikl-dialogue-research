@@ -20,7 +20,7 @@ from pathlib import Path
 from pipeline_common import atomic_text_writer, atomic_write_json, file_fingerprint
 
 
-SCHEMA_VERSION = "wav_duration_recovery_plan.v1"
+SCHEMA_VERSION = "wav_duration_recovery_plan.v2"
 RELEVANT_ISSUES = {
     "duration_residual_mismatch",
     "duration_wav_missing",
@@ -63,6 +63,8 @@ def plan_session(
     wav_dir: Path,
     padding_seconds: float = 0.01,
     minimum_high_confidence_run: int = 3,
+    direct_identity_tolerance_seconds: float = 0.025,
+    affected_target_ids: set[str] | None = None,
 ) -> list[dict[str, object]]:
     targets = []
     for row in csv_rows:
@@ -88,22 +90,75 @@ def plan_session(
         duration_token(seconds - padding_seconds)
         for _utt, seconds, _path in sources
     ]
+    # 같은 발화 ID의 WAV 길이가 직접 맞으면 이것이 가장 강한 보존 근거다.
+    # 세션 안에 일부 불량 WAV가 있다는 이유로 정상 same-ID 파일까지 sequence
+    # matcher의 unresolved로 넓히지 않는다. 연속 길이 matching은 direct identity가
+    # 성립하지 않는 target에 대해서만 remap 후보를 제공한다.
+    source_index_by_utt = {
+        source_utt: source_index
+        for source_index, (source_utt, _seconds, _path) in enumerate(sources)
+    }
+    direct_matches: dict[int, int] = {}
+    mapped_sources: set[int] = set()
+    for target_index, (target_utt, target_seconds) in enumerate(targets):
+        source_index = source_index_by_utt.get(target_utt)
+        if source_index is None:
+            if affected_target_ids is not None and target_utt not in affected_target_ids:
+                raise RuntimeError(
+                    "감사상 정상 발화의 same-ID WAV가 복구계획에서 누락됨: "
+                    f"{target_utt}"
+                )
+            continue
+        _source_utt, source_seconds, _source_path = sources[source_index]
+        residual = source_seconds - target_seconds - padding_seconds
+        audit_says_unaffected = (
+            affected_target_ids is not None
+            and target_utt not in affected_target_ids
+        )
+        if audit_says_unaffected or (
+            affected_target_ids is None
+            and abs(residual) <= direct_identity_tolerance_seconds
+        ):
+            direct_matches[target_index] = source_index
+            mapped_sources.add(source_index)
+
     matcher = difflib.SequenceMatcher(
         a=target_tokens, b=source_tokens, autojunk=False
     )
     mapped_targets: dict[int, tuple[int, int]] = {}
-    mapped_sources: set[int] = set()
     for block in matcher.get_matching_blocks():
         if block.size == 0:
             continue
         for offset in range(block.size):
             target_index = block.a + offset
             source_index = block.b + offset
+            if target_index in direct_matches or source_index in mapped_sources:
+                continue
             mapped_targets[target_index] = (source_index, block.size)
             mapped_sources.add(source_index)
 
     rows: list[dict[str, object]] = []
     for target_index, (target_utt, target_seconds) in enumerate(targets):
+        direct_source_index = direct_matches.get(target_index)
+        if direct_source_index is not None:
+            source_utt, source_seconds, source_path = sources[direct_source_index]
+            rows.append(
+                {
+                    "year": year,
+                    "session": session,
+                    "target_utt_id": target_utt,
+                    "source_utt_id": source_utt,
+                    "status": "identity_high_confidence",
+                    "block_length": 1,
+                    "target_duration_seconds": round(target_seconds, 6),
+                    "source_duration_seconds": round(source_seconds, 6),
+                    "duration_residual_seconds": round(
+                        source_seconds - target_seconds - padding_seconds, 6
+                    ),
+                    "source_wav": str(source_path.resolve()),
+                }
+            )
+            continue
         mapping = mapped_targets.get(target_index)
         if mapping is None:
             rows.append(
@@ -176,6 +231,9 @@ def main() -> int:
     parser.add_argument("--output-report", type=Path, required=True)
     parser.add_argument("--padding-seconds", type=float, default=0.01)
     parser.add_argument("--minimum-high-confidence-run", type=int, default=3)
+    parser.add_argument(
+        "--direct-identity-tolerance-seconds", type=float, default=0.025
+    )
     args = parser.parse_args()
 
     audit = json.loads(args.audit_report.read_text(encoding="utf-8-sig"))
@@ -185,14 +243,16 @@ def main() -> int:
     ]
     if len(year_reports) != 1:
         raise RuntimeError("감사 보고서 연도 결과가 정확히 1개가 아님")
-    sessions = sorted(
-        {
-            str(issue.get("session") or "").strip()
-            for issue in year_reports[0].get("issue_inventory", [])
-            if str(issue.get("issue") or "") in RELEVANT_ISSUES
-            and str(issue.get("session") or "").strip()
-        }
-    )
+    affected_by_session: dict[str, set[str]] = {}
+    for issue in year_reports[0].get("issue_inventory", []):
+        if str(issue.get("issue") or "") not in RELEVANT_ISSUES:
+            continue
+        session = str(issue.get("session") or "").strip()
+        utt_id = str(issue.get("utt_id") or "").strip()
+        if not session or not utt_id:
+            raise RuntimeError("audio pairing issue에 session/utt_id가 없음")
+        affected_by_session.setdefault(session, set()).add(utt_id)
+    sessions = sorted(affected_by_session)
     if not sessions:
         raise RuntimeError("복구 계획 대상 세션이 0개임")
 
@@ -211,6 +271,10 @@ def main() -> int:
                 wav_dir=args.wav_root / args.year / session,
                 padding_seconds=args.padding_seconds,
                 minimum_high_confidence_run=args.minimum_high_confidence_run,
+                direct_identity_tolerance_seconds=(
+                    args.direct_identity_tolerance_seconds
+                ),
+                affected_target_ids=affected_by_session[session],
             )
         )
         if index % 25 == 0 or index == len(sessions):
@@ -224,6 +288,33 @@ def main() -> int:
         writer.writerows(output_rows)
 
     status_counts = Counter(str(row["status"]) for row in output_rows)
+    affected_ids = set().union(*affected_by_session.values())
+    affected_rows = {
+        str(row["target_utt_id"]): row
+        for row in output_rows
+        if str(row["target_utt_id"]) in affected_ids
+    }
+    missing_affected = sorted(affected_ids - set(affected_rows))
+    if missing_affected:
+        raise RuntimeError(
+            "audio pairing issue가 복구계획에서 누락됨: "
+            f"{missing_affected[:20]}"
+        )
+    affected_status_counts = Counter(
+        str(row["status"]) for row in affected_rows.values()
+    )
+    exclusion_statuses = {"ambiguous_short_match", "target_unresolved"}
+    unexpected_exclusions = sorted(
+        str(row["target_utt_id"])
+        for row in output_rows
+        if str(row["status"]) in exclusion_statuses
+        and str(row["target_utt_id"]) not in affected_ids
+    )
+    if unexpected_exclusions:
+        raise RuntimeError(
+            "감사상 정상 발화가 복구 제외로 확대됨: "
+            f"{unexpected_exclusions[:20]}"
+        )
     result = {
         "schema_version": SCHEMA_VERSION,
         "status": "dry_run_plan_only",
@@ -236,9 +327,17 @@ def main() -> int:
         "wav_root": str(args.wav_root.resolve()),
         "padding_seconds": args.padding_seconds,
         "minimum_high_confidence_run": args.minimum_high_confidence_run,
+        "direct_identity_tolerance_seconds": (
+            args.direct_identity_tolerance_seconds
+        ),
         "session_count": len(sessions),
         "row_count": len(output_rows),
         "status_counts": dict(sorted(status_counts.items())),
+        "active_audio_issue_count": len(affected_ids),
+        "active_audio_issue_status_counts": dict(
+            sorted(affected_status_counts.items())
+        ),
+        "unexpected_exclusion_count": len(unexpected_exclusions),
         "safe_to_auto_apply": False,
         "next_step": (
             "고신뢰 remap도 표본 음성 확인과 원본 archive 계약 뒤 별도 적용"

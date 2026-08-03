@@ -1,61 +1,68 @@
+import importlib.util
 import sys
 import tempfile
 import unittest
 import wave
 from pathlib import Path
 
-SCRIPT_DIR = Path(__file__).resolve().parents[1] / "scripts" / "python"
-sys.path.insert(0, str(SCRIPT_DIR))
 
-from plan_wav_duration_recovery import plan_session  # noqa: E402
+ROOT = Path(__file__).resolve().parents[1]
+PYTHON_DIR = ROOT / "scripts" / "python"
+sys.path.insert(0, str(PYTHON_DIR))
+SPEC = importlib.util.spec_from_file_location(
+    "plan_wav_duration_recovery",
+    PYTHON_DIR / "plan_wav_duration_recovery.py",
+)
+MODULE = importlib.util.module_from_spec(SPEC)
+assert SPEC.loader is not None
+SPEC.loader.exec_module(MODULE)
 
 
 def write_wav(path: Path, seconds: float) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    rate = 16_000
     with wave.open(str(path), "wb") as stream:
         stream.setnchannels(1)
         stream.setsampwidth(2)
-        stream.setframerate(16_000)
-        stream.writeframes(b"\0\0" * round(seconds * 16_000))
+        stream.setframerate(rate)
+        stream.writeframes(b"\0\0" * round(seconds * rate))
 
 
 class PlanWavDurationRecoveryTests(unittest.TestCase):
-    def test_long_shift_is_remap_and_short_match_stays_ambiguous(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            wav_dir = Path(tmp) / "wav"
-            expected = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
-            observed = [1.0, 9.0, 4.0, 5.0, 6.0]
-            rows = [
-                {"utt_id": f"S1.{index}", "dur": str(duration)}
-                for index, duration in enumerate(expected, 1)
+    def test_direct_identity_survives_unrelated_bad_wav(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            wav_dir = Path(temporary)
+            # WAV에는 exporter padding 0.01초가 더 있다고 가정한다.
+            write_wav(wav_dir / "U.1.wav", 1.01)
+            write_wav(wav_dir / "U.2.wav", 2.01)
+            write_wav(wav_dir / "U.3.wav", 3.01)
+            write_wav(wav_dir / "U.4.wav", 0.10)
+            # CSV 순서가 자연 정렬과 달라도 same-ID+duration은 보존돼야 한다.
+            csv_rows = [
+                {"utt_id": "U.2", "dur": "2.0"},
+                {"utt_id": "U.1", "dur": "1.0"},
+                {"utt_id": "U.3", "dur": "3.0"},
+                {"utt_id": "U.4", "dur": "4.0"},
             ]
-            for index, duration in enumerate(observed, 1):
-                write_wav(wav_dir / f"S1.{index}.wav", duration + 0.01)
 
-            result = plan_session(
-                year="2020",
-                session="S1",
-                csv_rows=rows,
+            rows = MODULE.plan_session(
+                year="2021",
+                session="U",
+                csv_rows=csv_rows,
                 wav_dir=wav_dir,
+                affected_target_ids={"U.4"},
             )
             by_target = {
                 row["target_utt_id"]: row
-                for row in result
+                for row in rows
                 if row["target_utt_id"]
             }
-            self.assertEqual(
-                by_target["S1.1"]["status"], "ambiguous_short_match"
-            )
-            self.assertEqual(
-                by_target["S1.4"]["status"], "remap_high_confidence"
-            )
-            self.assertEqual(by_target["S1.4"]["source_utt_id"], "S1.3")
-            self.assertEqual(
-                by_target["S1.2"]["status"], "target_unresolved"
-            )
-            self.assertTrue(
-                any(row["status"] == "source_orphan" for row in result)
-            )
+
+            for utt_id in ("U.1", "U.2", "U.3"):
+                self.assertEqual(
+                    by_target[utt_id]["status"], "identity_high_confidence"
+                )
+                self.assertEqual(by_target[utt_id]["source_utt_id"], utt_id)
+            self.assertEqual(by_target["U.4"]["status"], "target_unresolved")
 
 
 if __name__ == "__main__":

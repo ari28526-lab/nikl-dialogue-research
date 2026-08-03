@@ -71,6 +71,12 @@ Jamo r2 결과로 오인해 건너뛰지 않는다.
 `mfa_r2_prod_2020_export_20260803`만 허용하며 구 queue ID는 보고서를 쓰기 전에
 거부한다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
 
+연도 입력 감사에서 CSV–WAV duration/header 문제가 발견되면 준비기는
+`wav_duration_recovery_plan.v2` 읽기 전용 계획을 함께 만든다. 이는 음원을
+자동 교체하거나 제외를 승인하는 단계가 아니다. 감사에서 문제가 없던 same-ID
+파일을 보존하고 실제 issue만 분류하며, 고신뢰 remap이 필요하거나 정상 발화가
+제외로 확대되면 중단한다. 복구 불가능으로 분류된 행만 연구자 승인 후보가 된다.
+
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```

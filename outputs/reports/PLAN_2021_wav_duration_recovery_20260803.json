@@ -1,0 +1,31 @@
+{
+  "schema_version": "wav_duration_recovery_plan.v2",
+  "status": "dry_run_plan_only",
+  "year": "2021",
+  "mutates_wav": false,
+  "audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_2021_2025_20260803\\2021\\01_input_audit_unapproved.json",
+    "bytes": 409626,
+    "mtime_ns": 1785745339191705100,
+    "sha256": "77edcef7da9322f2fccece06b1bd8b29355057d6b34388ffa5a92507a6817a06"
+  },
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "wav_root": "D:\\20_AUDIO\\03_wav\\individual",
+  "padding_seconds": 0.01,
+  "minimum_high_confidence_run": 3,
+  "direct_identity_tolerance_seconds": 0.025,
+  "session_count": 12,
+  "row_count": 5412,
+  "status_counts": {
+    "identity_high_confidence": 3173,
+    "source_orphan": 1234,
+    "target_unresolved": 1005
+  },
+  "active_audio_issue_count": 1005,
+  "active_audio_issue_status_counts": {
+    "target_unresolved": 1005
+  },
+  "unexpected_exclusion_count": 0,
+  "safe_to_auto_apply": false,
+  "next_step": "고신뢰 remap도 표본 음성 확인과 원본 archive 계약 뒤 별도 적용"
+}
