@@ -867,3 +867,9 @@ shard 2–23을 재개하는 것이다.
   `outputs/reports/archive/MFA_2020_TIER_BOUNDARY_AUDIT_PRE_FIX_20260803`으로
   옮겼다. V2와 수정 후 감사는 활성 근거로 유지했다. Dropbox는 수정하지 않았고
   연구자가 root의 임시 검토 폴더를 직접 삭제하기로 했다.
+- 코드·시험·정본 문서를 commit `362fcc0`으로 GitHub에 푸시한 뒤, Windows
+  PowerShell 5.1에서 현재 wrapper의 `-PreflightOnly`를 실행했다. 공통사전,
+  acoustic/G2P, 109-phone, D: 343.5GB, 입력·승인 계약, 보존 checkpoint, Python
+  320시험이 모두 통과해 최종 상태는 `GO`였다. 보고서는
+  `outputs/reports/PREFLIGHT_mfa_year_queue_mfa_r2_prod_2020_export_20260803_after_review.json`이며
+  이 검사에서는 MFA·export를 시작하지 않았다.
