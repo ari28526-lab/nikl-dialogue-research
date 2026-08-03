@@ -917,3 +917,29 @@ shard 2–23을 재개하는 것이다.
   export 완료로 판정하지 않았다. 14:28부터 네 gzip 동반표의 atomic partial이
   생성되어 현재는 단일 프로세스의 동반표 직렬화 단계이다. D: 여유 공간은
   335.45 GiB이고 실제 오류 문자열은 없다.
+- 14:49:55 direct-DB export가 성공 종료되어 부분 폴더가
+  `D:\20_AUDIO\08_textgrid_research_v2_staging\2020`으로 원자적 승격됐다.
+  export report는 `ready_with_approved_exclusions`, `created=868187`,
+  `approved_excluded=363`, `spn_intervals=0`이다. 동반표 manifest도 `success`이며
+  utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행을 기록한다.
+  큐는 14:49:56 자동으로 `independent_machine_qc`로 전환됐고, PID 14544가 최종
+  staging의 TextGrid 전수 구조·phone inventory·동반표 fingerprint/ID 계약을
+  4 workers로 독립 감사하기 시작했다. 이 시점은 export 완료이지 Gate B 완료는
+  아니다.
+- 독립 감사는 1,694.055초 뒤 `success`로 끝났다. 누락·초과·중복·invalid
+  TextGrid, `spn`, phone inventory 이탈, 동반표 schema/fingerprint/ID/순서/중복,
+  manifest count 불일치 등 하드 실패 항목은 모두 0이다. active LAB 868,550개에서
+  승인 정렬 제외 2,250건 중 active 363건을 빼 기대한 TextGrid 868,187개와 실제
+  868,187개가 exact-match했다. 동반표의 utterance 868,187, word 4,973,795,
+  phone 19,101,192, excluded 2,250행도 독립 재계수와 일치했다.
+- DB에서 독립 재생성한 24개 표본은 최종 TextGrid와 semantic 24/24 및 byte
+  24/24 exact-match했다. 큐는 15:20에
+  `machine_qc_complete_human_review_pending`, 2020은
+  `machine_qc_passed_human_review_pending`으로 끝났고 lock과 QC 프로세스는
+  정상 해제됐다. D: 여유 공간은 334.33 GiB이다.
+- Gate B용 공식 연구자 검토표 24행(24세션·24화자)을 생성했다. 파일 찾기를
+  반복하지 않도록 같은 검토 폴더에 번호순 WAV·LAB·TextGrid 72개와 해당
+  search-master 원행을 합친 `REVIEW_CONTEXT.csv`, `README_REVIEW.md`를 추가했다.
+  payload는 1,650,228 bytes이고 누락 0, 각 복사본 SHA-256 일치, Gate B 입력인
+  `03_RESEARCHER_REVIEW.csv` SHA-256도 manifest와 일치해 패키징 전후 불변이다.
+  자동 승인은 하지 않았다.
