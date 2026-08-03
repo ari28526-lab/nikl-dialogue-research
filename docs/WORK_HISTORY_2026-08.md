@@ -943,3 +943,11 @@ shard 2–23을 재개하는 것이다.
   payload는 1,650,228 bytes이고 누락 0, 각 복사본 SHA-256 일치, Gate B 입력인
   `03_RESEARCHER_REVIEW.csv` SHA-256도 manifest와 일치해 패키징 전후 불변이다.
   자동 승인은 하지 않았다.
+- 사용자 요청으로 검토 폴더를 프로젝트 공식 원본은 보존한 채 Dropbox root의
+  `mfa_production_2020_mfa_r2_prod_2020_export_20260803`에 복사했다. 최초 임시
+  폴더→최종 폴더 rename 중 Dropbox 동기화가 LAB 한 파일을 잠가 75/76개만
+  이동했으므로 성공으로 간주하지 않고 누락 inventory를 다시 계산했다. 남은
+  `02_SDRW2000000272.1.1.358.lab`을 원본에서 보완한 뒤 76개, 1,727,574 bytes,
+  상대경로·크기·SHA-256 불일치 0을 확인했다. 우리가 만든 빈 `.partial`은 제거했고
+  프로젝트 Gate B 입력 원본은 그대로 남겼다. Dropbox에서 편집한 뒤에는 identity
+  열을 고정한 채 `decision`·`notes`만 공식 검토표로 반영해야 한다.
