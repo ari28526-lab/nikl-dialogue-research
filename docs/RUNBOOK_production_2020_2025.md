@@ -99,6 +99,15 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/
 후보로 유지한다. 나중에 고신뢰 회수분을 별도 staging/shard로 추가하므로 본체
 MFA를 다시 돌리지 않는다.
 
+범주 승인 뒤에는 pending 후보표 112,292행을 직접 고치지 않는다. 승인 문구를
+그대로 보존하는 `approve_remaining_mfa_exclusion_categories.ps1`가 별도 승인
+CSV·승인 기록·입력 계약 결속 제외 계약을 5개 연도에 생성한다. 이 단계는 MFA를
+시작하지 않는다. 그 다음 아래 시작 진입점은 2021만 허용한다.
+
+승인 기록 생성은 대화에서 세 범주와 후속 shard 원칙을 연구자가 명시 승인한
+뒤 수행한다. `-PreflightOnly`는 계약을 만들지 않고 후보 SHA·범주·수를 다시
+검사한다. 계약 생성 성공 후에만 다음 명령으로 2021을 시작한다.
+
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```

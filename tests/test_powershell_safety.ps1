@@ -19,6 +19,9 @@ $files = @(
     (Join-Path $root 'scripts\approve_2020_production_sample_review.ps1'),
     (Join-Path $root 'scripts\preflight_2020_gate_b.ps1'),
     (Join-Path $root 'scripts\prepare_remaining_mfa_approval_reviews.ps1'),
+    (Join-Path $root (
+        'scripts\approve_remaining_mfa_exclusion_categories.ps1'
+    )),
     (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\finalize_2020_mfa_review_from_verified_evidence.ps1'),

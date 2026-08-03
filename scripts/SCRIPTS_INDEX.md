@@ -5,7 +5,8 @@
 | 순서 | wrapper | 상태 |
 |---:|---|---|
 | 1 | `prepare_remaining_mfa_approval_reviews.ps1` | 2020 Gate B 통과 뒤 아직 없는 2021–2025 연도별 제외 후보표만 준비; 2020 반복·MFA·자동승인 없음 |
-| 2 | `start_remaining_mfa_after_2020_gate.ps1 -ApprovedBy ari30` | 연구자 승인 뒤 2021–2025 연도 큐 시작; 2020 재포함 금지 |
+| 2 | `approve_remaining_mfa_exclusion_categories.ps1` | 연구자 명시 승인 뒤 세 범주의 5개년 제외 계약만 기록; MFA 시작 없음 |
+| 3 | `start_remaining_mfa_after_2020_gate.ps1 -ApprovedBy ari30` | 승인 계약 뒤 2021만 시작; 2020 재포함·2022 선행 실행 금지 |
 | 상태 | `show_mfa_year_queue_status.ps1` | 읽기 전용 큐·lock·D: 상태판 |
 
 `mfa_year_selection.ps1`은 Windows PowerShell 5.1의 `-File` 경계에서 연도 배열이
@@ -234,7 +235,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |
 | mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC 표본의 WAV/LAB/6-tier 연결·가용성과 수정 불가 identity 승인 JSON 생성 | 2020 24/24 승인 완료; 실제 실현 판정 미수행; 재실행 금지 |
 | preflight_2020_gate_b.ps1 | 2020 source·audit·marker·DB·표본·연구자 승인을 결합한 fail-closed gate. 최종 queue `mfa_r2_prod_2020_export_20260803`만 허용하고 구 ID는 canonical 보고서 쓰기 전에 차단 | 2026-08-03 재검증 16/16 통과, 실패 0; stale-ID 무변경 거부 시험 통과 |
-| prepare_remaining_mfa_approval_reviews.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤 2021–2025 제외표를 준비하되, 시작 wrapper는 직전 연도 연구자 gate를 건너뛰지 않도록 현재 2021 한 연도만 허용 | **현재 생산 진입점**; 2020 재포함·2022–2025 선행 실행 금지 |
+| prepare_remaining_mfa_approval_reviews.ps1 / approve_remaining_mfa_exclusion_categories.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤 2021–2025 제외표를 준비하고, 연구자가 명시 승인한 세 범주를 원본 후보표와 분리된 5개년 계약으로 기록한 뒤, 시작 wrapper는 직전 연도 연구자 gate를 건너뛰지 않도록 현재 2021 한 연도만 허용 | **현재 생산 진입점**; 승인 wrapper는 MFA를 시작하지 않으며 2020 재포함·2022–2025 선행 실행 금지 |
 | research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
 | build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |
 | benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |
