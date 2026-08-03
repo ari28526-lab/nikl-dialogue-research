@@ -951,3 +951,29 @@ shard 2–23을 재개하는 것이다.
   상대경로·크기·SHA-256 불일치 0을 확인했다. 우리가 만든 빈 `.partial`은 제거했고
   프로젝트 Gate B 입력 원본은 그대로 남겼다. Dropbox에서 편집한 뒤에는 identity
   열을 고정한 채 `decision`·`notes`만 공식 검토표로 반영해야 한다.
+
+### 2020 생산 표본 24개 연구자 승인·파일 가장자리 경계 판정·Gate B 통과
+
+- 연구자는 공식 생산 표본 24개를 모두 확인해 WAV·LAB·TextGrid가 같은 발화이고,
+  정렬은 대체로 맞으며, 6개 tier가 정상이고 검색 정보가 이해된다고 승인했다.
+  이 검토는 검색·정렬 인프라 QC이며 실제 음운 실현 판정은 수행하지 않았다.
+- 공식 검토표와 Dropbox 검토표에서 identity·맥락 열은 그대로 두고 24행의
+  `decision`만 `pending`에서 `approved`로 반영했다. 두 최종 CSV의 SHA-256은
+  `1d8b0d2e15157348f5e6a07cd4adbea435eaede120050352d63036d306c1ae5c`로
+  같고 자동 승인으로 기록하지 않았다.
+- 승인 기록은
+  `outputs/reviews/mfa_production_2020_mfa_r2_prod_2020_export_20260803/04_RESEARCHER_APPROVAL.json`이다.
+  상태는 `approved`, 승인 시각은 `2026-08-03T15:47:05+09:00`, 24행·24세션·
+  24화자이며 `allow_next_year_mfa=true`, `realization_judgment_performed=false`다.
+- 육안상 경계가 없어 보인 `SDRW2000001747.1.1.224`,
+  `SDRW2000001814.1.1.315`, `SDRW2000002000.1.1.37`,
+  `SDRW2000001838.1.1.265`의 실제 TextGrid를 확인했다. 모든 6개 tier는 빈
+  interval을 포함해 0–xmax를 연속적으로 덮고, 세 검색 tier의 유표 span은
+  `words` 유표 span과 정확히 같았다. 발화 구간이 0초나 xmax와 겹칠 때 Praat의
+  파일 테두리가 곧 경계이므로 별도 내부선이 보이지 않는 현상이다. 검색 누락이나
+  시간정보 손실이 아니며 산출물 수정은 하지 않았다.
+- `approve_2020_production_sample_review.ps1` 뒤
+  `preflight_2020_gate_b.ps1`을 실행했다. `GATE_B_2020_core.json`의 16개 core
+  check가 모두 통과했고 `failed_checks=[]`였다. 최종
+  `GATE_B_2020_TO_2021.json`은 `status=passed`,
+  `allow_remaining_years=true`다. 이 시점에는 2021을 시작하지 않았다.

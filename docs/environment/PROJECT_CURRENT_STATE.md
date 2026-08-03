@@ -55,11 +55,17 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 - 2020 결합 제외 계약 2,250건을 확정했다. pre-MFA 1,887건과 보존 DB의 정확한
   post-MFA 미정렬 ID 363건(청취 불가 3 + `mfa_alignment_missing` 360)을
   결합했으며, 전수 MFA 재실행 없이 같은 DB에서 export하도록 동결했다.
+- 2020 최종 6-tier 868,187개와 동반표를 보존 DB에서 export했다. 독립 전수 감사와
+  DB 재생성 표본 24/24 semantic·byte exact-match를 통과했다.
+- 연구자가 24개 생산 표본에서 WAV·LAB·TextGrid 동일 발화, 정렬의 전반적 타당성,
+  6개 tier 및 검색 정보의 이해 가능성을 확인했다. 이는 인프라 QC이며 실제 음운
+  실현 판정은 수행하지 않았다.
+- 2020 Gate B는 2026-08-03에 16/16 core check, 실패 0으로 `passed`였으며
+  `allow_remaining_years=true`다.
 
 ## 실제 미완료
 
 - 2021–2025 검색표.
-- 2020 6-tier·동반표 export, 독립 QC, 생산 표본 확인과 Gate B.
 - 2021–2025 신규 r2 MFA와 연도별 승인 제외 계약.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
@@ -82,51 +88,29 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 
 ## 현재 안전 정지점
 
-2020 전수 MFA 계산은 완료됐고 DB는 보존됐다. 16표본 WAV·LAB·동결 CSV 연결
-QC도 완료됐다. 연구자는 13개를 `match`, 소리가 들리지 않는 3개를
-`audio_unusable`로 판정했다. 보존 DB에서 다시 읽은 미정렬 ID 363개가 원
-후보표와 정확히 같음을 확인한 뒤, 나머지 360개는
-`mfa_alignment_missing`으로 승인했다. 이 검토는 실제 음운 실현 판정이 아니라
-post-MFA 인프라 QC다.
+2020 신규 정렬·6-tier export·동반표·독립 감사·24개 생산 표본 연구자 확인·
+Gate B가 모두 완료됐다. 최종 TextGrid는
+`D:\20_AUDIO\08_textgrid_research_v2_staging\2020`의 868,187개다. 동반표는
+utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
+독립 감사의 하드 실패는 0이다. Gate B 보고서는
+`outputs/reports/GATE_B_2020_TO_2021.json`, core 보고서는
+`outputs/reports/GATE_B_2020_core.json`이다.
 
-수정 전달본은
-`C:\Users\ari30\Dropbox\MFA_2020_REVIEW_SIMPLE_V2_20260803`이다. 검토본에만
-WAV 좌우 0.05초 무음을 붙이고 모든 6개 tier에 같은 좌우 경계를 넣었다.
-Python 그림 감사에서 4/4 TextGrid × 6/6 tier가 통과했다. 생산 DB와 원음은
-변경하지 않았다.
+연구자는 공식 24개 표본을 모두 검토해 같은 발화, 정렬 대체로 맞음, 6개 tier
+정상, 검색 정보 이해 가능으로 승인했다. 승인 기록은
+`outputs/reviews/mfa_production_2020_mfa_r2_prod_2020_export_20260803/04_RESEARCHER_APPROVAL.json`이며
+`allow_next_year_mfa=true`, `realization_judgment_performed=false`다.
 
-또한 생산 전수 문제 여부를 확인하기 위해 보존 DB의 정렬 성공 868,187발화를
-읽기 전용 전수 감사했다. word와 phone의 바깥 **유표 발화** 시작·끝은
-868,187/868,187(100%) 일치했다. 생산 exporter는 `utterance`,
-`utterance_orth_r`, `morph_analysis_utt`의 검색 레이블을 이 동일한 유표 word
-span에 놓고 세 tier의 경계를 강제로 같게 검증한다. 모든 tier는 빈 interval을
-포함해 0–xmax를 연속적으로 덮는다. 파일마다 자연 무음의 유무가 다른 것은 원음
-차이이며, 생산 TextGrid는 source time을 유지한다. 형태소 문자열을 음향적
-형태소 경계로 잘못 분할하지 않는다. 전수 6-tier 실물은 아직 export 전이다.
+육안상 일부 경계가 없어 보인 네 표본도 실제 TextGrid 값을 확인했다. 모든 tier는
+빈 interval을 포함해 0–xmax를 연속적으로 덮고, 세 검색 tier의 유표 span은
+`words`의 유표 span과 정확히 같다. 발화 시작·끝이 파일의 0초 또는 xmax와
+일치하면 Praat에서 별도 내부 세로선이 보이지 않을 뿐이다. 이는 시간정보 손실이나
+검색 결함이 아니다. 생산 source time과 파일 가장자리 경계를 유지하며 인공 내부
+경계를 추가하지 않는다.
 
-다음 순서만 유지한다.
-
-1. `resume_2020_export_after_post_mfa_review.ps1 -PreflightOnly`로 결합 계약과
-   보존 DB 재개 조건을 확인한다.
-2. 같은 wrapper의 실제 실행으로 MFA를 다시 계산하지 않고 2020
-   6-tier·동반표·독립 QC를 보존 DB에서 생성한다.
-3. 생산 표본 확인과 2020 Gate B 뒤 2021–2025 연도별 큐를 연다.
-
-1단계는 2026-08-03 12:31 KST에 `GO`로 통과했다. 당시 D: 여유는 343.5GB였고
-공통 Jamo r2·109-phone·2,250건 승인·보존 DB·저장소 320시험이 통과했다. 실제
-export는 시작하지 않았다. 첫 실제 재개는 기존 입력 gate가 post-MFA 승인
-363건의 LAB·WAV 존재를 pre-MFA 제외의 잔존으로 잘못 해석해 export 전
-차단됐다. DB·checkpoint는 보존됐고 6-tier 출력은 생성되지 않았다.
-
-gate는 이제 일반 실행의 엄격성을 유지하면서, 현재 입력·정렬 계약과 일치하는
-`direct_db_ready`와 그 DB의 실제 미정렬 ID가 `audio_unusable` 및
-`mfa_alignment_missing` 승인 ID와 exact-match할 때만 active 363건을 허용한다.
-실자료 진단은 승인 363=DB 미정렬 363, 미승인 active 0, gate 통과였고 저장소
-321시험이 통과했다. 현재 사용자 행동은 같은 wrapper를 다시 실행하는 것이다.
-
-검토 묶음과 전수 경계 감사는 DB를 읽기 전용으로 수행했고, 생성 전후 DB 크기와
-mtime이 같았다. 2021 gate는 아직 열지 않았다. 상세 과정은
-`docs/WORK_HISTORY_2026-08.md`에 보존한다. 실행 명령은
+현재 안전 정지점은 **2020 Gate B 통과, 2021 미시작**이다. 다음 실행은 별도 사용자
+지시 뒤 2021의 연도별 입력·제외 계약 preflight부터 시작한다. 상세 과정은
+`docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
 ## 활성 정본
