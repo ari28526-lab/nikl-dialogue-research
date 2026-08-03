@@ -4,9 +4,13 @@
 
 | 순서 | wrapper | 상태 |
 |---:|---|---|
-| 1 | `prepare_remaining_mfa_approval_reviews.ps1` | 2020 Gate B 통과 뒤 2021–2025 제외 후보표만 준비; MFA·자동승인 없음 |
+| 1 | `prepare_remaining_mfa_approval_reviews.ps1` | 2020 Gate B 통과 뒤 아직 없는 2021–2025 연도별 제외 후보표만 준비; 2020 반복·MFA·자동승인 없음 |
 | 2 | `start_remaining_mfa_after_2020_gate.ps1 -ApprovedBy ari30` | 연구자 승인 뒤 2021–2025 연도 큐 시작; 2020 재포함 금지 |
 | 상태 | `show_mfa_year_queue_status.ps1` | 읽기 전용 큐·lock·D: 상태판 |
+
+`mfa_year_selection.ps1`은 Windows PowerShell 5.1의 `-File` 경계에서 연도 배열이
+문자열 하나로 뭉개지는 것을 막는 공용 정규화기다. 외부 wrapper는 `YearsCsv`를
+넘기고 내부 runner만 검증된 배열을 사용한다.
 
 2020 생산과 Gate B는 완료됐다. `resume_2020_*`, `start_2020_*`, 2020 검토
 wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하지 않는다. 구

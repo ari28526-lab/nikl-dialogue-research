@@ -6,6 +6,7 @@ $files = @(
     (Join-Path $root 'scripts\run_eojeol_realign.ps1'),
     (Join-Path $root 'scripts\run_pre_mfa_bulk_safe.ps1'),
     (Join-Path $root 'scripts\run_mfa_year_queue_safe.ps1'),
+    (Join-Path $root 'scripts\mfa_year_selection.ps1'),
     (Join-Path $root 'scripts\show_mfa_year_queue_status.ps1'),
     (Join-Path $root 'scripts\preflight_mfa_year_queue.ps1'),
     (Join-Path $root 'scripts\prepare_full_mfa_approval_reviews.ps1'),
@@ -507,8 +508,31 @@ foreach ($path in $files) {
         if (-not $text.Contains('mfa_r2_prod_2020_export_20260803')) {
             $failures.Add("remaining-years entrypoint lacks frozen Gate B queue: $path")
         }
+        if (-not $text.Contains('-YearsCsv')) {
+            $failures.Add("remaining-years entrypoint lacks PS5-safe YearsCsv: $path")
+        }
+        if ($text.Contains('-Years 2021,2022,2023,2024,2025')) {
+            $failures.Add("remaining-years entrypoint uses broken native array syntax: $path")
+        }
         if ($text.Contains("'2020'")) {
             $failures.Add("remaining-years entrypoint includes 2020: $path")
+        }
+    }
+    if ((Split-Path $path -Leaf) -in @(
+        'prepare_full_mfa_approval_reviews.ps1',
+        'start_full_mfa_after_review.ps1',
+        'preflight_mfa_year_queue.ps1',
+        'run_mfa_year_queue_safe.ps1'
+    )) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[string]$YearsCsv',
+            'Resolve-MfaYearSelection',
+            'mfa_year_selection.ps1'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("PS5 연도 선택 계약 누락 ${path}: $required")
+            }
         }
     }
     if (
@@ -529,6 +553,8 @@ foreach ($path in $files) {
             'unresolved_symbol_inventory',
             'partial_lab_unresolved_symbol_count',
             'empty_reference_unresolved_symbol_count',
+            '$yearReviewArgs',
+            'IsNullOrWhiteSpace($AudioRecoveryPlan)',
             '기존 검토표는 미해결 기호/LAB 회계가 없어',
             '기존 검토표는 현행 6-tier/음원 대응 계약에 맞지 않아',
             '자동 덮어쓰기 금지',

@@ -12,5 +12,5 @@ $gateQueueId = 'mfa_r2_prod_2020_export_20260803'
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
     Join-Path $PSScriptRoot 'prepare_full_mfa_approval_reviews.ps1'
-) -QueueId $QueueId -Years 2021,2022,2023,2024,2025
+) -QueueId $QueueId -YearsCsv '2021,2022,2023,2024,2025'
 exit $LASTEXITCODE

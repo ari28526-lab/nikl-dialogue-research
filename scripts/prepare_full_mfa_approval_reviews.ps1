@@ -13,11 +13,16 @@ param(
     [string]$SearchMasterRunId = 'pre_mfa_v1_20260725',
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [string]$YearsCsv = '',
     [string]$ReviewRoot = '',
     [string]$AudioRecoveryPlan = ''
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'mfa_year_selection.ps1')
+$Years = @(
+    Resolve-MfaYearSelection -Years $Years -YearsCsv $YearsCsv
+)
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
@@ -157,10 +162,17 @@ foreach ($year in $Years) {
     }
 
     Write-Host "===== $year 승인 후보표 준비 =====" -ForegroundColor Cyan
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
-        Join-Path $PSScriptRoot 'prepare_mfa_year_exclusion_review.ps1'
-    ) -Year $year -SearchMasterRoot $searchMasterRoot `
-        -OutputRoot $yearRoot -AudioRecoveryPlan $AudioRecoveryPlan
+    $yearReviewArgs = @(
+        '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+        (Join-Path $PSScriptRoot 'prepare_mfa_year_exclusion_review.ps1'),
+        '-Year', $year,
+        '-SearchMasterRoot', $searchMasterRoot,
+        '-OutputRoot', $yearRoot
+    )
+    if (-not [string]::IsNullOrWhiteSpace($AudioRecoveryPlan)) {
+        $yearReviewArgs += @('-AudioRecoveryPlan', $AudioRecoveryPlan)
+    }
+    & powershell.exe @yearReviewArgs
     if ($LASTEXITCODE -ne 0) {
         throw "$year 승인 후보표 준비 실패; 기존 원자료는 변경하지 않음"
     }

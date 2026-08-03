@@ -15,6 +15,7 @@ param(
     [string]$SearchMasterRunId = 'pre_mfa_v1_20260725',
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [string]$YearsCsv = '',
     [Parameter(Mandatory=$true)]
     [string]$CommonPronManifest,
     [Parameter(Mandatory=$true)]
@@ -27,6 +28,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'mfa_year_selection.ps1')
+$Years = @(
+    Resolve-MfaYearSelection -Years $Years -YearsCsv $YearsCsv
+)
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $projectRoot 'config\paths.json'
 $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 |

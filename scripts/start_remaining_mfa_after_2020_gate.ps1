@@ -19,7 +19,7 @@ $args = @(
     '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $start,
     '-ApprovedBy', $ApprovedBy,
     '-QueueId', $QueueId,
-    '-Years', '2021', '2022', '2023', '2024', '2025'
+    '-YearsCsv', '2021,2022,2023,2024,2025'
 )
 if ($PreflightOnly) { $args += '-PreflightOnly' }
 & powershell.exe @args

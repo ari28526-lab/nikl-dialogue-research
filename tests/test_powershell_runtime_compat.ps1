@@ -51,6 +51,29 @@ if ($archiveScript -match '\$history\s*\+=') {
     $failures.Add('archive failure_history에 PS5 scalar += 사용 금지')
 }
 
+. (Join-Path $root 'scripts\mfa_year_selection.ps1')
+$csvYears = @(
+    Resolve-MfaYearSelection -YearsCsv '2021,2022,2023,2024,2025'
+)
+if (($csvYears -join ',') -ne '2021,2022,2023,2024,2025') {
+    $failures.Add('YearsCsv PS5 연도 배열 복원 회귀')
+}
+$arrayYears = @(
+    Resolve-MfaYearSelection -Years @('2021','2022')
+)
+if (($arrayYears -join ',') -ne '2021,2022') {
+    $failures.Add('직접 Years 배열 정규화 회귀')
+}
+$duplicateRejected = $false
+try {
+    $null = Resolve-MfaYearSelection -YearsCsv '2021,2021'
+} catch {
+    $duplicateRejected = $true
+}
+if (-not $duplicateRejected) {
+    $failures.Add('YearsCsv 중복 연도 차단 회귀')
+}
+
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Error $_ }
     exit 1

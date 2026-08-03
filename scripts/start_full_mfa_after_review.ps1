@@ -19,6 +19,7 @@ param(
     [string]$SearchMasterRunId = 'pre_mfa_v1_20260725',
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
+    [string]$YearsCsv = '',
     [string]$ReviewRoot = '',
     [string]$CommonPronManifest = (
         'D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\' +
@@ -35,6 +36,10 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $env:PYTHONUTF8 = '1'
+. (Join-Path $PSScriptRoot 'mfa_year_selection.ps1')
+$Years = @(
+    Resolve-MfaYearSelection -Years $Years -YearsCsv $YearsCsv
+)
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
@@ -116,8 +121,7 @@ $preflightArgs = @(
     (Join-Path $PSScriptRoot 'preflight_mfa_year_queue.ps1'),
     '-QueueId', $QueueId,
     '-SearchMasterRunId', $SearchMasterRunId,
-    '-Years'
-) + @($Years) + @(
+    '-YearsCsv', (@($Years) -join ','),
     '-CommonPronManifest', $CommonPronManifest,
     '-CommonPronAdoptionContract', $CommonPronAdoptionContract,
     '-ApprovedExclusionsRoot', $ReviewRoot,
@@ -157,8 +161,7 @@ $queueArgs = @(
     (Join-Path $PSScriptRoot 'run_mfa_year_queue_safe.ps1'),
     '-QueueId', $QueueId,
     '-SearchMasterRunId', $SearchMasterRunId,
-    '-Years'
-) + @($Years) + @(
+    '-YearsCsv', (@($Years) -join ','),
     '-CommonPronManifest', $CommonPronManifest,
     '-CommonPronAdoptionContract', $CommonPronAdoptionContract,
     '-ApprovedExclusionsRoot', $ReviewRoot,
