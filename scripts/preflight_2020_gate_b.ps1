@@ -2,12 +2,19 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
-    [string]$QueueId = 'mfa_r2_prod_2020_20260801',
+    [string]$QueueId = 'mfa_r2_prod_2020_export_20260803',
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
     [string]$SearchMasterRunId = 'pre_mfa_v1_20260725',
     [string]$Output = ''
 )
 $ErrorActionPreference = 'Stop'
+$requiredQueueId = 'mfa_r2_prod_2020_export_20260803'
+if ($QueueId -ne $requiredQueueId) {
+    throw (
+        "2020 Gate B는 최종 생산 queue만 허용: " +
+        "expected=$requiredQueueId, actual=$QueueId"
+    )
+}
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'

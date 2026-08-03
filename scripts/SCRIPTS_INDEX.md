@@ -227,7 +227,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | 2020 검색표 23/23 완료 |
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |
 | mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC 표본의 WAV/LAB/6-tier 연결·가용성과 수정 불가 identity 승인 JSON 생성 | 2020 24/24 승인 완료; 실제 실현 판정 미수행; 재실행 금지 |
-| preflight_2020_gate_b.ps1 | 2020 source·audit·marker·DB·표본·연구자 승인을 결합한 fail-closed gate | 2026-08-03 16/16 통과, 실패 0 |
+| preflight_2020_gate_b.ps1 | 2020 source·audit·marker·DB·표본·연구자 승인을 결합한 fail-closed gate. 최종 queue `mfa_r2_prod_2020_export_20260803`만 허용하고 구 ID는 canonical 보고서 쓰기 전에 차단 | 2026-08-03 재검증 16/16 통과, 실패 0; stale-ID 무변경 거부 시험 통과 |
 | prepare_remaining_mfa_approval_reviews.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤 2021–2025 제외표 준비 또는 남은 연도 큐 시작 | **현재 생산 진입점**; 2020 재포함 금지 |
 | research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
 | build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |

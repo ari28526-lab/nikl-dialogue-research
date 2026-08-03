@@ -487,7 +487,9 @@ foreach ($path in $files) {
             'mfa_production_year_review.py',
             'verify_production_source_contract.ps1',
             'allow_remaining_years = [bool]$passed',
-            "--prior-year 2020 --next-year 2021"
+            "--prior-year 2020 --next-year 2021",
+            "mfa_r2_prod_2020_export_20260803",
+            'if ($QueueId -ne $requiredQueueId)'
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("2020 Gate B safety token missing: $required")
@@ -501,6 +503,9 @@ foreach ($path in $files) {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         if (-not $text.Contains('preflight_2020_gate_b.ps1')) {
             $failures.Add("remaining-years entrypoint bypasses Gate B: $path")
+        }
+        if (-not $text.Contains('mfa_r2_prod_2020_export_20260803')) {
+            $failures.Add("remaining-years entrypoint lacks frozen Gate B queue: $path")
         }
         if ($text.Contains("'2020'")) {
             $failures.Add("remaining-years entrypoint includes 2020: $path")

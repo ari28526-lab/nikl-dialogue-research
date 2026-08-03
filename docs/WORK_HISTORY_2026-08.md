@@ -1019,3 +1019,23 @@ shard 2–23을 재개하는 것이다.
   확인했다. 실행·근거 보고서는
   `scripts/archive/pre_2021_cleanup_20260803/archive_pre_2021_active_state_20260803.ps1`과
   `outputs/reports/ARCHIVE_pre_2021_active_state_20260803.json`이다.
+
+### 2021–2025 진입 직전 Gate B 구 queue 기본값 차단
+
+- 2021–2025 목표를 시작하며 Gate B를 다시 실행했을 때
+  `preflight_2020_gate_b.ps1`의 기본 `QueueId`가 구
+  `mfa_r2_prod_2020_20260801`을 가리키는 것을 발견했다. 실제 2020 완성
+  TextGrid·DB·승인 자료는 손상되지 않았지만, 존재하지 않는 구 감사·승인 경로를
+  읽어 canonical Gate B 보고서 3개가 일시적으로 `failed`로 갱신됐다. 이 상태에서
+  2021 계산은 시작하지 않았다.
+- Gate B가 허용하는 queue를 최종 생산 ID
+  `mfa_r2_prod_2020_export_20260803` 하나로 동결했다. 남은 연도 후보표 준비기와
+  시작 wrapper도 이 ID를 명시 전달해 기본값 의존을 없앴다.
+- 구 queue ID를 고의로 전달했을 때 exit 1로 거부되고 세 canonical Gate 보고서의
+  SHA-256이 변하지 않는 것을 확인했다. 이어 최종 queue로 다시 실행해 source
+  contract, 연구자 24/24 승인, 6-tier 감사, 보존 DB, DB 재수출 24/24,
+  companion manifest를 포함한 core 16/16과 최종 `allow_remaining_years=true`를
+  복원·재확인했다.
+- PowerShell 5.1 안전·런타임 검사를 함께 통과했다. 이 수정은 2020 산출물이나
+  phone 기준을 바꾸지 않고, 잘못된 과거 queue로 Gate 근거가 덮이는 재발만
+  차단한다.

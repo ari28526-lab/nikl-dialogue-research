@@ -60,7 +60,9 @@ Jamo r2 결과로 오인해 건너뛰지 않는다.
 ```
 
 이 명령은 Gate B를 다시 읽고 후보표만 만들며 MFA를 시작하거나 자동 승인하지
-않는다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
+않는다. Gate B는 최종 2020 생산 queue
+`mfa_r2_prod_2020_export_20260803`만 허용하며 구 queue ID는 보고서를 쓰기 전에
+거부한다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"

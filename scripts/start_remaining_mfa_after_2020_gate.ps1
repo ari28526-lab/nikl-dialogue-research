@@ -9,9 +9,10 @@ param(
     [switch]$PreflightOnly
 )
 $ErrorActionPreference = 'Stop'
+$gateQueueId = 'mfa_r2_prod_2020_export_20260803'
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
     Join-Path $PSScriptRoot 'preflight_2020_gate_b.ps1'
-)
+) -QueueId $gateQueueId
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $start = Join-Path $PSScriptRoot 'start_full_mfa_after_review.ps1'
 $args = @(
