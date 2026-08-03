@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-02 KST
+최종 갱신: 2026-08-03 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -37,6 +37,7 @@
 | `DECISION_incremental_unattended_year_MFA_20260801.md` | 연도·shard checkpoint와 국소 재개 |
 | `DECISION_2020_CSV_WAV_ID_recovery_20260801.md` | 2020 WAV ID 밀림 복구와 파생 코퍼스 |
 | `DECISION_2020_MFA_exclusion_symbol_accounting_20260802.md` | 1,887 제외와 6,158 경고 보존 |
+| `DECISION_2020_TextGrid_outer_edges_and_audio_unusable_20260803.md` | 2020 전수 tier 바깥 경계 감사·검토본 패딩·청취 불가 3건 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구

@@ -1,0 +1,160 @@
+{
+  "schema_version": "mfa_db_tier_edge_audit.v1",
+  "status": "success",
+  "observed_at": "2026-08-03T11:59:21.339721+09:00",
+  "database": {
+    "path": "D:\\mfa_tmp\\2020\\2020.db",
+    "bytes": 6348247040,
+    "mtime_ns": 1785679437503040300
+  },
+  "tolerance_seconds": 1e-06,
+  "production_contract": {
+    "time_basis": "source_time_no_artificial_padding",
+    "all_tiers_cover_0_to_xmax": true,
+    "words_and_utterance_level_outer_speech_edges": "same_by_exporter_construction",
+    "phones_mfa_and_phoneme_r_auto_edges": "same_by_exporter_construction",
+    "review_padding_is_not_a_production_time_change": true
+  },
+  "counts": {
+    "aligned_utterances": 868187,
+    "phone_natural_blank_both": 650259,
+    "phone_natural_blank_left_only": 75165,
+    "phone_natural_blank_right_only": 128309,
+    "phone_no_natural_blank": 14454,
+    "word_natural_blank_both": 650259,
+    "word_natural_blank_left_only": 75165,
+    "word_natural_blank_right_only": 128309,
+    "word_no_natural_blank": 14454,
+    "word_phone_end_equal": 868187,
+    "word_phone_outer_edges_equal": 868187,
+    "word_phone_start_equal": 868187
+  },
+  "word_phone_outer_edges_equal_percent": 100.0,
+  "examples": {
+    "word_phone_outer_edge_mismatch": [],
+    "no_natural_blank": [
+      {
+        "utt_id": "SDRW2000000001.1.1.273",
+        "duration_seconds": 1.634,
+        "word_span": [
+          0.0,
+          1.6339999437332153
+        ],
+        "phone_span": [
+          0.0,
+          1.6339999437332153
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.50",
+        "duration_seconds": 1.664,
+        "word_span": [
+          0.0,
+          1.6640000343322754
+        ],
+        "phone_span": [
+          0.0,
+          1.6640000343322754
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.56",
+        "duration_seconds": 0.569,
+        "word_span": [
+          0.0,
+          0.5690000057220459
+        ],
+        "phone_span": [
+          0.0,
+          0.5690000057220459
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.237",
+        "duration_seconds": 0.594,
+        "word_span": [
+          0.0,
+          0.593999981880188
+        ],
+        "phone_span": [
+          0.0,
+          0.593999981880188
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.376",
+        "duration_seconds": 0.918,
+        "word_span": [
+          0.0,
+          0.9179999828338623
+        ],
+        "phone_span": [
+          0.0,
+          0.9179999828338623
+        ]
+      }
+    ],
+    "natural_blank_both": [
+      {
+        "utt_id": "SDRW2000000001.1.1.23",
+        "duration_seconds": 1.862,
+        "word_span": [
+          0.5799999833106995,
+          1.7200000286102295
+        ],
+        "phone_span": [
+          0.5799999833106995,
+          1.7200000286102295
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.435",
+        "duration_seconds": 2.126,
+        "word_span": [
+          0.3400000035762787,
+          1.8300000429153442
+        ],
+        "phone_span": [
+          0.3400000035762787,
+          1.8300000429153442
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.369",
+        "duration_seconds": 1.331,
+        "word_span": [
+          0.12999999523162842,
+          1.2699999809265137
+        ],
+        "phone_span": [
+          0.12999999523162842,
+          1.2699999809265137
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.425",
+        "duration_seconds": 2.423,
+        "word_span": [
+          0.029999999329447746,
+          2.2300000190734863
+        ],
+        "phone_span": [
+          0.029999999329447746,
+          2.2300000190734863
+        ]
+      },
+      {
+        "utt_id": "SDRW2000000001.1.1.59",
+        "duration_seconds": 1.357,
+        "word_span": [
+          0.25999999046325684,
+          1.0499999523162842
+        ],
+        "phone_span": [
+          0.25999999046325684,
+          1.0499999523162842
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # 자산 대장 — 현재 생산 기준
 
-최종 갱신: 2026-08-02 KST
+최종 갱신: 2026-08-03 KST
 
 이 문서는 현재 필요한 자산의 위치만 기록한다. 2026-07-24 전체 인벤토리는
 [archive/ASSETS_LEDGER_20260724_full.md](archive/ASSETS_LEDGER_20260724_full.md)에
@@ -21,7 +21,8 @@
 | `D:\20_AUDIO\08_textgrid_research_v2_staging` | 신규 r2 6-tier·동반표 출력 | 생산 전/미생성 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 현재 공통 Jamo r2 사전 | 보존, 연도별 MFA 필수 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 현재 생산 상태, 보존 |
-| `D:\mfa_tmp`, `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
+| `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 미정렬; export/QC 전 삭제 금지 |
+| `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
 
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
 WAV–TextGrid–metadata 연결표, 승인·제외·미해결 기호표는 모두 연구 인프라의
@@ -68,7 +69,12 @@ C:\Users\ari30\research\2026_summer_research
 - 승인 제외: 음원 미대응 1,834 + 빈 LAB 미해결 기호 53 = 1,887
 - 부분 LAB 미해결 기호 6,158: 제외하지 않고 동반 CSV 경고로 보존
 - 연구자 승인: 2026-08-02 `ari30`, 두 범주 모두 승인
-- MFA 상태: 아직 미시작
+- MFA 상태: 2020 신규 r2 계산 완료; 보존 DB 868,187 정렬 성공·363 미정렬
+- post-MFA 연결 QC: 16표본 완료, 13 match + 3 `audio_unusable`; 나머지
+  미정렬 360건은 범주 승인 전 pending
+- TextGrid 경계: 2020 DB 868,187/868,187 word-phone 바깥 경계 일치;
+  전수 6-tier 실물은 아직 export 전
 
-다음 생산 명령은 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)의
-2020 단일 시작 wrapper다. archive I/O와 MFA를 동시에 실행하지 않는다.
+다음 생산 단계는 미정렬 360건의 범주를 확정한 뒤 보존 DB에서 2020 6-tier와
+동반표를 export하고 독립 QC·Gate B를 통과하는 것이다. 실행 명령은
+[RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.

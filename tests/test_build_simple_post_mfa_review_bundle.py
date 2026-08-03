@@ -4,6 +4,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+import wave
 import zipfile
 from pathlib import Path
 
@@ -12,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from build_simple_post_mfa_review_bundle import build_bundle  # noqa: E402
+from mfa_exclusion_contract import REVIEW_FIELDS  # noqa: E402
 from pipeline_common import sha256_file  # noqa: E402
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
 
@@ -112,7 +114,11 @@ class SimplePostMfaReviewBundleTests(unittest.TestCase):
         ):
             wav = media / f"{utt_id}.wav"
             lab = media / f"{utt_id}.lab"
-            wav.write_bytes(b"RIFFfixture" + bytes([order]))
+            with wave.open(str(wav), "wb") as stream:
+                stream.setnchannels(1)
+                stream.setsampwidth(2)
+                stream.setframerate(16000)
+                stream.writeframes((bytes([order, 0])) * 16000)
             lab.write_text(text, encoding="utf-8")
             rows.append(
                 {
@@ -158,6 +164,7 @@ class SimplePostMfaReviewBundleTests(unittest.TestCase):
                 acoustic_model=acoustic,
                 output_root=output,
                 prefill_match_orders={1},
+                edge_padding_seconds=0.05,
             )
 
             self.assertEqual(sha256_file(db), before)
@@ -168,7 +175,7 @@ class SimplePostMfaReviewBundleTests(unittest.TestCase):
             self.assertFalse((output / "01__S1.1__CURRENT_MFA_6TIER.TextGrid").exists())
             tg = output / "02__S1.2__CURRENT_MFA_6TIER.TextGrid"
             duration, tiers = parse_mfa_textgrid(tg)
-            self.assertEqual(duration, 1.0)
+            self.assertEqual(duration, 1.1)
             self.assertEqual(list(tiers), [
                 "words",
                 "phones_mfa",
@@ -184,6 +191,71 @@ class SimplePostMfaReviewBundleTests(unittest.TestCase):
             self.assertEqual(rows[0]["decision"], "match")
             self.assertEqual(rows[1]["decision"], "pending")
             self.assertEqual(rows[0]["search_csv_file"], "01__S1.1__SEARCH.csv")
+            for intervals in tiers.values():
+                self.assertEqual(intervals[0], (0.0, 0.05, ""))
+                self.assertEqual(intervals[-1], (1.05, 1.1, ""))
+            with wave.open(str(output / "01__S1.1.wav"), "rb") as stream:
+                self.assertEqual(stream.getnframes(), 17600)
+                samples = stream.readframes(stream.getnframes())
+            self.assertEqual(samples[:1600], b"\x00" * 1600)
+            self.assertEqual(samples[-1600:], b"\x00" * 1600)
+
+    def test_records_researcher_approved_audio_unusable_exclusion(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2020.db"
+            search = root / "search"
+            acoustic = root / "acoustic.zip"
+            output = root / "bundle"
+            self.make_db(db)
+            self.make_search(search)
+            review = self.make_review(root)
+            self.make_acoustic(acoustic)
+            evidence = root / "review.xlsx"
+            evidence.write_bytes(b"researcher-evidence")
+            candidates = root / "candidates.csv"
+            with candidates.open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
+                writer.writeheader()
+                for utt_id in ("S1.1", "S1.2"):
+                    writer.writerow(
+                        {
+                            "year": "2020",
+                            "input_contract_id": "INPUT",
+                            "utt_id": utt_id,
+                            "reason_code": "mfa_alignment_missing",
+                            "exclusion_scope": "alignment_and_analysis",
+                            "evidence_path": "fixture",
+                            "decision": "pending",
+                            "notes": "fixture",
+                        }
+                    )
+
+            result = build_bundle(
+                review_csv=review,
+                db_path=db,
+                search_master_root=search,
+                acoustic_model=acoustic,
+                output_root=output,
+                prefill_match_orders={2},
+                exclude_audio_unusable_orders={1},
+                researcher_review_evidence=evidence,
+                post_mfa_candidates_csv=candidates,
+            )
+
+            self.assertEqual(
+                result["approved_audio_unusable_exclusion_count"], 1
+            )
+            with (
+                output
+                / "01_RESEARCHER_APPROVED_AUDIO_UNUSABLE_EXCLUSIONS.csv"
+            ).open(encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+            self.assertEqual(rows[0]["utt_id"], "S1.1")
+            self.assertEqual(rows[0]["reason_code"], "audio_unusable")
+            self.assertEqual(rows[0]["decision"], "approved")
 
 
 if __name__ == "__main__":

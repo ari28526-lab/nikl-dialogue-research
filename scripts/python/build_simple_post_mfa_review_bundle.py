@@ -16,6 +16,7 @@ import os
 import shutil
 import sqlite3
 import uuid
+import wave
 from datetime import datetime
 from pathlib import Path
 from typing import Mapping, Sequence
@@ -47,6 +48,10 @@ REVIEW_FIELDS = [
     "search_csv_file",
     "context_file",
     "current_mfa_textgrid",
+    "source_wav_duration_seconds",
+    "review_wav_duration_seconds",
+    "review_edge_padding_seconds",
+    "review_time_to_source",
     "decision",
     "notes",
 ]
@@ -113,6 +118,69 @@ def _write_csv(path: Path, fields: Sequence[str], rows: Sequence[Mapping]) -> No
         writer.writerows(rows)
 
 
+def _write_padded_wav(
+    source: Path, destination: Path, edge_padding_seconds: float
+) -> dict[str, float | int]:
+    if edge_padding_seconds <= 0:
+        raise ValueError("review edge padding은 0보다 커야 함")
+    with wave.open(str(source), "rb") as input_wav:
+        params = input_wav.getparams()
+        if params.comptype != "NONE":
+            raise ValueError(f"PCM WAV가 아님: {source}")
+        frames = input_wav.readframes(params.nframes)
+    padding_frames = max(1, round(edge_padding_seconds * params.framerate))
+    frame_size = params.nchannels * params.sampwidth
+    silence = b"\x00" * (padding_frames * frame_size)
+    with wave.open(str(destination), "wb") as output_wav:
+        output_wav.setparams(params)
+        output_wav.writeframes(silence)
+        output_wav.writeframes(frames)
+        output_wav.writeframes(silence)
+    actual_padding = padding_frames / params.framerate
+    return {
+        "padding_frames": padding_frames,
+        "padding_seconds": actual_padding,
+        "source_duration_seconds": params.nframes / params.framerate,
+        "review_duration_seconds": (
+            params.nframes + 2 * padding_frames
+        ) / params.framerate,
+    }
+
+
+def _pad_tier_data(
+    tier_data: Sequence[tuple[str, Sequence[tuple[float, float, str]]]],
+    *,
+    source_duration: float,
+    edge_padding_seconds: float,
+) -> tuple[float, list[tuple[str, list[tuple[float, float, str]]]]]:
+    review_duration = source_duration + 2 * edge_padding_seconds
+    padded: list[tuple[str, list[tuple[float, float, str]]]] = []
+    for name, intervals in tier_data:
+        shifted = [
+            (
+                float(begin) + edge_padding_seconds,
+                float(end) + edge_padding_seconds,
+                str(label),
+            )
+            for begin, end, label in intervals
+        ]
+        padded.append(
+            (
+                name,
+                [(0.0, edge_padding_seconds, "")]
+                + shifted
+                + [
+                    (
+                        edge_padding_seconds + source_duration,
+                        review_duration,
+                        "",
+                    )
+                ],
+            )
+        )
+    return review_duration, padded
+
+
 def _db_rows(
     connection: sqlite3.Connection, utt_ids: Sequence[str]
 ) -> dict[str, dict[str, object]]:
@@ -155,6 +223,7 @@ def _write_context(
     review_row: Mapping[str, str],
     search_row: Mapping[str, str],
     db_row: Mapping[str, object],
+    edge_padding_seconds: float,
 ) -> None:
     aligned = bool(db_row["word_present"] and db_row["phone_present"])
     lines = [
@@ -164,6 +233,11 @@ def _write_context(
         f"현재 MFA 상태: {'정렬 있음' if aligned else '정렬 없음'}",
         f"DB normalized_text: {db_row['normalized_text']}",
         f"검토표 expected_text: {review_row['normalized_text']}",
+        (
+            "검토 시간축: 원 WAV/TextGrid 좌우에 "
+            f"{edge_padding_seconds:.6f}초 무음을 함께 추가; "
+            f"source_time=review_time-{edge_padding_seconds:.6f}"
+        ),
         "",
         "[동결 search-master CSV의 해당 1행]",
     ]
@@ -181,6 +255,10 @@ def build_bundle(
     acoustic_model: Path,
     output_root: Path,
     prefill_match_orders: set[int] | None = None,
+    exclude_audio_unusable_orders: set[int] | None = None,
+    edge_padding_seconds: float = 0.05,
+    researcher_review_evidence: Path | None = None,
+    post_mfa_candidates_csv: Path | None = None,
 ) -> dict[str, object]:
     review_csv = review_csv.resolve()
     db_path = db_path.resolve()
@@ -188,6 +266,9 @@ def build_bundle(
     acoustic_model = acoustic_model.resolve()
     output_root = output_root.resolve()
     prefill_match_orders = set(prefill_match_orders or ())
+    exclude_audio_unusable_orders = set(exclude_audio_unusable_orders or ())
+    if edge_padding_seconds <= 0:
+        raise ValueError("edge_padding_seconds는 0보다 커야 함")
     for source in (review_csv, db_path, acoustic_model):
         if not source.is_file():
             raise FileNotFoundError(source)
@@ -198,8 +279,39 @@ def build_bundle(
 
     rows = _read_review_rows(review_csv)
     known_orders = {int(row["review_order"]) for row in rows}
-    if not prefill_match_orders <= known_orders:
+    if (
+        not prefill_match_orders <= known_orders
+        or not exclude_audio_unusable_orders <= known_orders
+    ):
         raise RuntimeError("prefill order가 review CSV 범위를 벗어남")
+    if prefill_match_orders & exclude_audio_unusable_orders:
+        raise RuntimeError("match와 audio-unusable exclusion order가 겹침")
+    evidence_fingerprint = None
+    if researcher_review_evidence is not None:
+        researcher_review_evidence = researcher_review_evidence.resolve()
+        if not researcher_review_evidence.is_file():
+            raise FileNotFoundError(researcher_review_evidence)
+        evidence_fingerprint = file_fingerprint(
+            researcher_review_evidence, with_sha256=True
+        )
+    candidate_fields: list[str] = []
+    candidate_rows: dict[str, dict[str, str]] = {}
+    candidate_fingerprint = None
+    if post_mfa_candidates_csv is not None:
+        post_mfa_candidates_csv = post_mfa_candidates_csv.resolve()
+        if not post_mfa_candidates_csv.is_file():
+            raise FileNotFoundError(post_mfa_candidates_csv)
+        with post_mfa_candidates_csv.open(
+            encoding="utf-8-sig", newline=""
+        ) as stream:
+            reader = csv.DictReader(stream)
+            candidate_fields = list(reader.fieldnames or ())
+            candidate_rows = {
+                str(row.get("utt_id", "")).strip(): dict(row) for row in reader
+            }
+        candidate_fingerprint = file_fingerprint(
+            post_mfa_candidates_csv, with_sha256=True
+        )
     years = {str(row["year"]).strip() for row in rows}
     if len(years) != 1:
         raise RuntimeError(f"한 묶음에는 한 연도만 허용: {sorted(years)}")
@@ -252,7 +364,9 @@ def build_bundle(
             lab_name = stem + ".lab"
             csv_name = stem + "__SEARCH.csv"
             context_name = stem + "__CONTEXT.txt"
-            shutil.copy2(source_wav, staging / wav_name)
+            padding = _write_padded_wav(
+                source_wav, staging / wav_name, edge_padding_seconds
+            )
             shutil.copy2(source_lab, staging / lab_name)
             _write_csv(staging / csv_name, list(search_row), [search_row])
             _write_context(
@@ -260,6 +374,7 @@ def build_bundle(
                 review_row=row,
                 search_row=search_row,
                 db_row=db_row,
+                edge_padding_seconds=float(padding["padding_seconds"]),
             )
 
             uid = int(db_row["utterance_id"])
@@ -288,10 +403,19 @@ def build_bundle(
                 if [name for name, _intervals in tier_data] != BASE_TIERS:
                     raise RuntimeError(f"6-tier 순서 오류: {utt_id}")
                 textgrid_name = stem + "__CURRENT_MFA_6TIER.TextGrid"
+                review_duration, padded_tier_data = _pad_tier_data(
+                    tier_data,
+                    source_duration=float(db_row["duration"]),
+                    edge_padding_seconds=float(padding["padding_seconds"]),
+                )
+                if abs(
+                    review_duration - float(padding["review_duration_seconds"])
+                ) > 1e-6:
+                    raise RuntimeError(f"WAV/DB duration 불일치: {utt_id}")
                 write_textgrid_exact(
                     staging / textgrid_name,
-                    duration=float(db_row["duration"]),
-                    tier_data=tier_data,
+                    duration=review_duration,
+                    tier_data=padded_tier_data,
                 )
                 status = "aligned_control"
                 question = "WAV·LAB·CSV가 같고 6-tier 정렬이 검토 가능한가?"
@@ -314,10 +438,15 @@ def build_bundle(
                 status = "missing_word_or_phone_intervals"
                 question = "WAV·LAB·CSV가 같은 발화인가? (TextGrid 없음은 현재 실패 상태)"
 
-            decision = "match" if order in prefill_match_orders else "pending"
-            notes = (
-                "사용자 청취 확인 완료" if order in prefill_match_orders else ""
-            )
+            if order in exclude_audio_unusable_orders:
+                decision = "exclude_audio_unusable"
+                notes = "연구자 청취: 소리 안 들림; 정렬·분석 제외"
+            elif order in prefill_match_orders:
+                decision = "match"
+                notes = "사용자 청취 확인 완료"
+            else:
+                decision = "pending"
+                notes = ""
             review_output.append(
                 {
                     "review_order": order,
@@ -331,6 +460,13 @@ def build_bundle(
                     "search_csv_file": csv_name,
                     "context_file": context_name,
                     "current_mfa_textgrid": textgrid_name,
+                    "source_wav_duration_seconds": f"{float(padding['source_duration_seconds']):.6f}",
+                    "review_wav_duration_seconds": f"{float(padding['review_duration_seconds']):.6f}",
+                    "review_edge_padding_seconds": f"{float(padding['padding_seconds']):.6f}",
+                    "review_time_to_source": (
+                        "source_time=review_time-"
+                        f"{float(padding['padding_seconds']):.6f}"
+                    ),
                     "decision": decision,
                     "notes": notes,
                 }
@@ -341,7 +477,16 @@ def build_bundle(
                     "utt_id": utt_id,
                     "status": status,
                     "source_wav_sha256": sha256_file(source_wav),
-                    "copied_wav_sha256": sha256_file(staging / wav_name),
+                    "review_wav_sha256": sha256_file(staging / wav_name),
+                    "source_wav_duration_seconds": padding[
+                        "source_duration_seconds"
+                    ],
+                    "review_wav_duration_seconds": padding[
+                        "review_duration_seconds"
+                    ],
+                    "review_edge_padding_seconds": padding[
+                        "padding_seconds"
+                    ],
                     "source_lab_sha256": sha256_file(source_lab),
                     "copied_lab_sha256": sha256_file(staging / lab_name),
                     "textgrid": textgrid_name or None,
@@ -354,6 +499,38 @@ def build_bundle(
         connection.close()
 
     _write_csv(staging / "00_REVIEW.csv", REVIEW_FIELDS, review_output)
+    approved_audio_unusable_rows: list[dict[str, str]] = []
+    if exclude_audio_unusable_orders:
+        if not candidate_rows or not candidate_fields:
+            shutil.rmtree(staging, ignore_errors=True)
+            raise RuntimeError(
+                "audio-unusable exclusion 기록에는 post-MFA candidate CSV가 필요함"
+            )
+        for row in review_output:
+            if int(row["review_order"]) not in exclude_audio_unusable_orders:
+                continue
+            utt_id = str(row["utt_id"])
+            candidate = dict(candidate_rows.get(utt_id) or {})
+            if not candidate:
+                shutil.rmtree(staging, ignore_errors=True)
+                raise RuntimeError(
+                    f"post-MFA candidate에 audio-unusable ID 없음: {utt_id}"
+                )
+            candidate["reason_code"] = "audio_unusable"
+            candidate["evidence_path"] = str(
+                researcher_review_evidence or review_csv
+            )
+            candidate["decision"] = "approved"
+            candidate["notes"] = (
+                "2026-08-03 researcher listening review: audio not audible; "
+                "exclude from alignment and analysis"
+            )
+            approved_audio_unusable_rows.append(candidate)
+        _write_csv(
+            staging / "01_RESEARCHER_APPROVED_AUDIO_UNUSABLE_EXCLUSIONS.csv",
+            candidate_fields,
+            approved_audio_unusable_rows,
+        )
     (staging / "00_START_HERE.txt").write_text(
         "2020 MFA 단순 검토 묶음\n\n"
         "1. 00_REVIEW.csv에서 번호 하나를 고릅니다.\n"
@@ -362,7 +539,9 @@ def build_bundle(
         "4. 13~16번은 같은 번호 TextGrid를 WAV와 함께 Praat에서 엽니다.\n"
         "5. 1~12번은 현재 정렬 실패 표본이므로 TextGrid가 없습니다. "
         "NO_CURRENT_TEXTGRID.txt가 그 상태를 설명합니다.\n"
-        "6. 00_REVIEW.csv의 decision만 match 또는 needs_attention으로 적고, "
+        "6. 점검 WAV와 TextGrid에는 모든 tier의 양끝 경계를 보이도록 좌우 "
+        "0.05초 무음을 함께 추가했습니다. 원시간은 review_time-0.05초입니다.\n"
+        "7. 00_REVIEW.csv의 decision만 match 또는 needs_attention으로 적고, "
         "필요할 때만 notes를 씁니다.\n\n"
         "이 검토는 음운 실현 판정이 아니라 WAV·전사·CSV·정렬 산출물의 "
         "연결 상태를 확인하는 인프라 QC입니다.\n",
@@ -375,7 +554,7 @@ def build_bundle(
         shutil.rmtree(staging, ignore_errors=True)
         raise RuntimeError("검토 묶음 생성 중 MFA DB fingerprint가 바뀜")
     manifest = {
-        "schema_version": "simple_post_mfa_review_bundle.v1",
+        "schema_version": "simple_post_mfa_review_bundle.v2",
         "status": "success",
         "created_at": datetime.now().astimezone().isoformat(),
         "year": year,
@@ -383,6 +562,18 @@ def build_bundle(
         "missing_alignment_count": missing_count,
         "aligned_control_count": aligned_count,
         "prefilled_match_orders": sorted(prefill_match_orders),
+        "excluded_audio_unusable_orders": sorted(
+            exclude_audio_unusable_orders
+        ),
+        "review_edge_padding_seconds_requested": edge_padding_seconds,
+        "researcher_review_evidence": evidence_fingerprint,
+        "post_mfa_candidates_csv": candidate_fingerprint,
+        "approved_audio_unusable_exclusion_count": len(
+            approved_audio_unusable_rows
+        ),
+        "approved_audio_unusable_utt_ids": [
+            row["utt_id"] for row in approved_audio_unusable_rows
+        ],
         "database_open_mode": "read_only_query_only",
         "database_fingerprint_before": db_before,
         "database_fingerprint_after": db_after,
@@ -414,6 +605,10 @@ def main() -> int:
     parser.add_argument("--acoustic-model", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--prefill-match-orders", default="")
+    parser.add_argument("--exclude-audio-unusable-orders", default="")
+    parser.add_argument("--edge-padding-seconds", type=float, default=0.05)
+    parser.add_argument("--researcher-review-evidence", type=Path)
+    parser.add_argument("--post-mfa-candidates-csv", type=Path)
     args = parser.parse_args()
     result = build_bundle(
         review_csv=args.review_csv,
@@ -422,6 +617,12 @@ def main() -> int:
         acoustic_model=args.acoustic_model,
         output_root=args.output_root,
         prefill_match_orders=_parse_orders(args.prefill_match_orders),
+        exclude_audio_unusable_orders=_parse_orders(
+            args.exclude_audio_unusable_orders
+        ),
+        edge_padding_seconds=args.edge_padding_seconds,
+        researcher_review_evidence=args.researcher_review_evidence,
+        post_mfa_candidates_csv=args.post_mfa_candidates_csv,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

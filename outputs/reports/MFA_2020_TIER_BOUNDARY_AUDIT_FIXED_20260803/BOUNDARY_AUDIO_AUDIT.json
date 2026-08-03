@@ -1,0 +1,643 @@
+{
+  "schema_version": "review_textgrid_boundary_audit.v1",
+  "status": "success",
+  "input_root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803",
+  "review_count": 16,
+  "textgrid_count": 4,
+  "digital_silence_count": 0,
+  "expected_padding_seconds": 0.05,
+  "items": [
+    {
+      "review_order": 1,
+      "utt_id": "SDRW2000000257.1.1.100",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\01__SDRW2000000257.1.1.100.wav",
+        "sha256": "972737fa4385d354697d10cf647f4d2ce74b6869ecbb9fe6f6d044efb7d5e97f",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 44464,
+        "duration_seconds": 2.779,
+        "peak": 9600,
+        "rms": 1426.963502,
+        "rms_dbfs": -27.22,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 2,
+      "utt_id": "SDRW2000000257.1.1.231",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\02__SDRW2000000257.1.1.231.wav",
+        "sha256": "b1959d3bb352b361c0ab4dacf71ed388e8b63ea129933bb1b4923555c2ab11e8",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 23200,
+        "duration_seconds": 1.45,
+        "peak": 14,
+        "rms": 3.42438,
+        "rms_dbfs": -79.617,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 3,
+      "utt_id": "SDRW2000000257.1.1.39",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\03__SDRW2000000257.1.1.39.wav",
+        "sha256": "20866990e7a1e6343514084b4aac20cfeb3059d15136eb82ade183d174a5382a",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 68960,
+        "duration_seconds": 4.31,
+        "peak": 163,
+        "rms": 9.134399,
+        "rms_dbfs": -71.095,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 4,
+      "utt_id": "SDRW2000000257.1.1.97",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\04__SDRW2000000257.1.1.97.wav",
+        "sha256": "fbe0aabbb3ffa538f776164817eed52748690f63eb971990d05d7382d39f3206",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 29920,
+        "duration_seconds": 1.87,
+        "peak": 13,
+        "rms": 3.498973,
+        "rms_dbfs": -79.43,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 5,
+      "utt_id": "SDRW2000000514.1.1.169",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\05__SDRW2000000514.1.1.169.wav",
+        "sha256": "58fb18f928d8f92708c1de3f01536444151611eef91a0a34d9639eea3e725c1e",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 73264,
+        "duration_seconds": 4.579,
+        "peak": 16386,
+        "rms": 727.457252,
+        "rms_dbfs": -33.073,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 6,
+      "utt_id": "SDRW2000002165.1.1.139",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\06__SDRW2000002165.1.1.139.wav",
+        "sha256": "061bfb532e105eb4590a617ad108471bc1738f08106625f06e3b7291cf034f61",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 26736,
+        "duration_seconds": 1.671,
+        "peak": 4376,
+        "rms": 512.206977,
+        "rms_dbfs": -36.12,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 7,
+      "utt_id": "SDRW2000002164.1.1.123",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\07__SDRW2000002164.1.1.123.wav",
+        "sha256": "ffa212c53f12ef08446782e55a58ab1a4d47feaa26a4108eaa2b3048ae2609fc",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 41344,
+        "duration_seconds": 2.584,
+        "peak": 4134,
+        "rms": 497.396298,
+        "rms_dbfs": -36.375,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 8,
+      "utt_id": "SDRW2000002210.1.1.101",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\08__SDRW2000002210.1.1.101.wav",
+        "sha256": "7e00a33132463303c45e02463b9a51063e73f439f09097d94b118e7cc0179b69",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 49744,
+        "duration_seconds": 3.109,
+        "peak": 4736,
+        "rms": 483.220075,
+        "rms_dbfs": -36.626,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 9,
+      "utt_id": "SDRW2000000219.1.1.112",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\09__SDRW2000000219.1.1.112.wav",
+        "sha256": "5bacf7e55c12f1c77af3231524ffcfc4d2fed8971b1f17d940d3a06a5208713d",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 43984,
+        "duration_seconds": 2.749,
+        "peak": 6284,
+        "rms": 801.604101,
+        "rms_dbfs": -32.23,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 10,
+      "utt_id": "SDRW2000000181.1.1.179",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\10__SDRW2000000181.1.1.179.wav",
+        "sha256": "e6babe2befe8a48b81a5c48acd35746a661e66fded0d9c26ddab21c6b5a4fe98",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 44912,
+        "duration_seconds": 2.807,
+        "peak": 728,
+        "rms": 54.877335,
+        "rms_dbfs": -55.521,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 11,
+      "utt_id": "SDRW2000001694.1.1.183",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\11__SDRW2000001694.1.1.183.wav",
+        "sha256": "877a3219d31d500ac184e20a43191af07c776fca61c29b3cfa7d9ea741456e7f",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 42496,
+        "duration_seconds": 2.656,
+        "peak": 3232,
+        "rms": 204.889197,
+        "rms_dbfs": -44.078,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 12,
+      "utt_id": "SDRW2000002180.1.1.155",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\12__SDRW2000002180.1.1.155.wav",
+        "sha256": "9a9085e8e65fe634323742f102cd7de96053a15bfa61ac7d57386f4b58b5394b",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 55616,
+        "duration_seconds": 3.476,
+        "peak": 2989,
+        "rms": 197.147518,
+        "rms_dbfs": -44.413,
+        "digital_silence": false
+      },
+      "textgrid": null
+    },
+    {
+      "review_order": 13,
+      "utt_id": "SDRW2000000257.1.1.1",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\13__SDRW2000000257.1.1.1.wav",
+        "sha256": "8c1c71be099d9efcdcf99eaf6fb2e256a92eeaafe3751b5476709a9d5001f7e3",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 29616,
+        "duration_seconds": 1.851,
+        "peak": 4787,
+        "rms": 1151.002169,
+        "rms_dbfs": -29.087,
+        "digital_silence": false
+      },
+      "textgrid": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\13__SDRW2000000257.1.1.1__CURRENT_MFA_6TIER.TextGrid",
+        "sha256": "2ce2e78457e6b0e21f8ff3fa397eb3841876e9462c02b129631463ae6c5b3a29",
+        "duration_seconds": 1.851,
+        "tier_count": 6,
+        "tier_names": [
+          "words",
+          "phones_mfa",
+          "phoneme_r_auto",
+          "utterance",
+          "utterance_orth_r",
+          "morph_analysis_utt"
+        ],
+        "tiers": [
+          {
+            "tier": "words",
+            "interval_count": 6,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phones_mfa",
+            "interval_count": 21,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phoneme_r_auto",
+            "interval_count": 21,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance",
+            "interval_count": 3,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance_orth_r",
+            "interval_count": 3,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "morph_analysis_utt",
+            "interval_count": 3,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.801,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          }
+        ],
+        "left_empty_edge_consistent": true,
+        "right_empty_edge_consistent": true,
+        "left_empty_edge_positions": [
+          0.05
+        ],
+        "right_empty_edge_positions": [
+          1.801
+        ],
+        "expected_padding_seconds": 0.05,
+        "expected_padding_all_tiers_passed": true,
+        "image": "13__SDRW2000000257.1.1.1__TIERS.png"
+      }
+    },
+    {
+      "review_order": 14,
+      "utt_id": "SDRW2000000257.1.1.249",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\14__SDRW2000000257.1.1.249.wav",
+        "sha256": "9372c4b8913870b734941bbc5b8c7b41728d1b6cb82be58b6a6c39d16213f44d",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 15312,
+        "duration_seconds": 0.957,
+        "peak": 3122,
+        "rms": 449.099943,
+        "rms_dbfs": -37.262,
+        "digital_silence": false
+      },
+      "textgrid": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\14__SDRW2000000257.1.1.249__CURRENT_MFA_6TIER.TextGrid",
+        "sha256": "cda78f8766d0f9606d179a303e4d2966fda2edc4e84bddda04eaa8d77e9c778c",
+        "duration_seconds": 0.957,
+        "tier_count": 6,
+        "tier_names": [
+          "words",
+          "phones_mfa",
+          "phoneme_r_auto",
+          "utterance",
+          "utterance_orth_r",
+          "morph_analysis_utt"
+        ],
+        "tiers": [
+          {
+            "tier": "words",
+            "interval_count": 5,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phones_mfa",
+            "interval_count": 7,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phoneme_r_auto",
+            "interval_count": 7,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance",
+            "interval_count": 5,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance_orth_r",
+            "interval_count": 5,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "morph_analysis_utt",
+            "interval_count": 5,
+            "left_empty_end": 0.05,
+            "right_empty_start": 0.907,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          }
+        ],
+        "left_empty_edge_consistent": true,
+        "right_empty_edge_consistent": true,
+        "left_empty_edge_positions": [
+          0.05
+        ],
+        "right_empty_edge_positions": [
+          0.907
+        ],
+        "expected_padding_seconds": 0.05,
+        "expected_padding_all_tiers_passed": true,
+        "image": "14__SDRW2000000257.1.1.249__TIERS.png"
+      }
+    },
+    {
+      "review_order": 15,
+      "utt_id": "SDRW2000000257.1.1.376",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\15__SDRW2000000257.1.1.376.wav",
+        "sha256": "4502e9c51ae724e720903e0409c4aaa5059e7f2ffc54d2ca40da738eb20db113",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 29088,
+        "duration_seconds": 1.818,
+        "peak": 10299,
+        "rms": 1992.305129,
+        "rms_dbfs": -24.322,
+        "digital_silence": false
+      },
+      "textgrid": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\15__SDRW2000000257.1.1.376__CURRENT_MFA_6TIER.TextGrid",
+        "sha256": "0ba915852742ad562952c835660c037339c7ef846913cf53e1e52087b602736e",
+        "duration_seconds": 1.818,
+        "tier_count": 6,
+        "tier_names": [
+          "words",
+          "phones_mfa",
+          "phoneme_r_auto",
+          "utterance",
+          "utterance_orth_r",
+          "morph_analysis_utt"
+        ],
+        "tiers": [
+          {
+            "tier": "words",
+            "interval_count": 10,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phones_mfa",
+            "interval_count": 26,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phoneme_r_auto",
+            "interval_count": 26,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance_orth_r",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "morph_analysis_utt",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.768,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          }
+        ],
+        "left_empty_edge_consistent": true,
+        "right_empty_edge_consistent": true,
+        "left_empty_edge_positions": [
+          0.05
+        ],
+        "right_empty_edge_positions": [
+          1.768
+        ],
+        "expected_padding_seconds": 0.05,
+        "expected_padding_all_tiers_passed": true,
+        "image": "15__SDRW2000000257.1.1.376__TIERS.png"
+      }
+    },
+    {
+      "review_order": 16,
+      "utt_id": "SDRW2000000257.1.1.99",
+      "wav": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\16__SDRW2000000257.1.1.99.wav",
+        "sha256": "9b325402574fb87e25aa5ae5db0ca79a4a38427acfca789eedee63472d45e11d",
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000,
+        "frame_count": 23792,
+        "duration_seconds": 1.487,
+        "peak": 6538,
+        "rms": 1167.997657,
+        "rms_dbfs": -28.96,
+        "digital_silence": false
+      },
+      "textgrid": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\MFA_2020_REVIEW_SIMPLE_V2_20260803\\16__SDRW2000000257.1.1.99__CURRENT_MFA_6TIER.TextGrid",
+        "sha256": "6d3eb36d645a7c26e89a669b242ac1fb6982a16dae1ba1f64e86ab472f92414a",
+        "duration_seconds": 1.487,
+        "tier_count": 6,
+        "tier_names": [
+          "words",
+          "phones_mfa",
+          "phoneme_r_auto",
+          "utterance",
+          "utterance_orth_r",
+          "morph_analysis_utt"
+        ],
+        "tiers": [
+          {
+            "tier": "words",
+            "interval_count": 5,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phones_mfa",
+            "interval_count": 12,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "phoneme_r_auto",
+            "interval_count": 12,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "utterance_orth_r",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          },
+          {
+            "tier": "morph_analysis_utt",
+            "interval_count": 4,
+            "left_empty_end": 0.05,
+            "right_empty_start": 1.437,
+            "first_label_empty": true,
+            "last_label_empty": true,
+            "expected_left_boundary_present": true,
+            "expected_right_boundary_present": true
+          }
+        ],
+        "left_empty_edge_consistent": true,
+        "right_empty_edge_consistent": true,
+        "left_empty_edge_positions": [
+          0.05
+        ],
+        "right_empty_edge_positions": [
+          1.437
+        ],
+        "expected_padding_seconds": 0.05,
+        "expected_padding_all_tiers_passed": true,
+        "image": "16__SDRW2000000257.1.1.99__TIERS.png"
+      }
+    }
+  ]
+}
