@@ -892,3 +892,22 @@ shard 2–23을 재개하는 것이다.
   DB exact-match, execution gate 모두 통과했다. Python 321시험과 PowerShell
   안전/Windows 5.1 호환성 검사도 통과했다. 다음 실행은 같은 보존 DB export
   wrapper의 재개이며 full clean은 금지한다.
+
+### 13:07–14:14 KST — 2020 보존 DB export 재개·중간 점검
+
+- 교정된 gate로 같은 큐 `mfa_r2_prod_2020_export_20260803`을 재개했다. 13:23에
+  `direct_db_ready` 체크포인트와 `D:\mfa_tmp\2020\2020.db`를 재검증한 뒤 전수
+  MFA 재계산 없이 13:30부터 DB→6-tier·동반표 직접 export에 진입했다.
+- 13:41:51에는 TextGrid 147,327/868,187(16.970%), 14:14:19에는
+  664,665/868,187(76.558%)를 부분 staging에서 직접 계수했다. 두 계측 사이 평균은
+  약 265.6개/초이며, 이는 정렬 계산과 TextGrid 직렬화를 분리하고 기존 DB를
+  재사용한 효과이다.
+- 14:13 기준 queue lock PID 15204와 상위 실행기·export PID 21656이 모두 살아
+  있고, D: 여유 공간은 337.74 GiB이다. parent 로그의 마지막 기록이 export 시작
+  시각인 것은 자식 exporter가 실행 중이기 때문이며, Traceback 또는 실제 오류는
+  관측되지 않았다. `duration failed sessions=`는 값이 빈 정상 통과 문장이라 오류
+  신호에서 제외한다.
+- 후속 코드를 미리 확인한 결과 독립 연도 감사는 active LAB에서 결합 승인
+  `alignment_and_analysis` ID를 빼 868,187개를 기대하고, companion `excluded`
+  표는 승인 2,250건 전체와 exact-match해야 한다. DB 표본 재생성 QC도 같은 제외
+  ID를 표본에서 제거하므로 현재 결합 계약과 일치한다.
