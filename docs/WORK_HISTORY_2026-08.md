@@ -911,3 +911,9 @@ shard 2–23을 재개하는 것이다.
   `alignment_and_analysis` ID를 빼 868,187개를 기대하고, companion `excluded`
   표는 승인 2,250건 전체와 exact-match해야 한다. DB 표본 재생성 QC도 같은 제외
   ID를 표본에서 제거하므로 현재 결합 계약과 일치한다.
+- 14:45:24 계측에서 부분 staging의 6-tier TextGrid가 목표치
+  868,187/868,187(100%)에 도달했다. 그러나 exporter PID 21656, queue lock과
+  상위 실행기가 계속 살아 있고 최종 manifest·export report가 아직 없으므로 전체
+  export 완료로 판정하지 않았다. 14:28부터 네 gzip 동반표의 atomic partial이
+  생성되어 현재는 단일 프로세스의 동반표 직렬화 단계이다. D: 여유 공간은
+  335.45 GiB이고 실제 오류 문자열은 없다.
