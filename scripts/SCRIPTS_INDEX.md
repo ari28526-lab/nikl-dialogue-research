@@ -28,6 +28,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `python/build_morph_search_year_sharded.py` | 동결 pre-MFA search master를 읽기 전용으로 받아 연도·session-file shard별 7개 형태/철자/기호 검색표를 만들고, 성공 shard SHA 재검증·결정적 gzip·연도 승격을 수행한다. 실패 partial은 보존한다. |
 | `run_morph_search_year_safe.ps1` | 한 연도만 허용하고 D: 공간·동결 입력 manifest·중복 lock을 검사한 뒤 위 builder를 실행한다. MFA·TextGrid·공통사전은 변경하지 않는다. |
 | `prepare_production_year_before_mfa.ps1` | 2021–2025 중 한 연도의 `morph_search.v3`를 생성/재개한 뒤 동결 search master SHA와 연도 manifest를 source contract로 결속한다. 원본·MFA·TextGrid는 바꾸지 않는다. |
+| `show_production_year_pre_mfa_status.ps1` | 연도별 shard 진행률·lock PID 생존·annual manifest·source contract·D: 여유를 표시하는 읽기 전용 상태판 | 실행·수정·자동 재개 없음 |
 | `show_morph_search_year_status.ps1` | 연도별 shard 진행률, schema, 연도 manifest와 table 행 수를 읽기 전용으로 표시한다. |
 | `python/collect_morph_search_regression_evidence.py` | 2020–2025 각 10발화의 두 독립 출력에서 42개 gzip SHA, 어절 좌표 mismatch, 기호 상태와 `2사람이→두` 근거를 감사한다. |
 

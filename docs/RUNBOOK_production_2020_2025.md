@@ -250,6 +250,12 @@ contract가 완료돼야 한다. 이는 동결 pre-MFA search master에서 파�
 & "C:\Users\ari30\research\2026_summer_research\scripts\prepare_production_year_before_mfa.ps1" -Year "2021"
 ```
 
+진행 확인은 별도 창에서 다음 읽기 전용 상태판을 사용한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\show_production_year_pre_mfa_status.ps1" -Year "2021"
+```
+
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```

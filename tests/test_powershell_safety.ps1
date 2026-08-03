@@ -24,6 +24,7 @@ $files = @(
     )),
     (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
     (Join-Path $root 'scripts\prepare_production_year_before_mfa.ps1'),
+    (Join-Path $root 'scripts\show_production_year_pre_mfa_status.ps1'),
     (Join-Path $root 'scripts\prepare_production_year_sample_review.ps1'),
     (Join-Path $root 'scripts\approve_production_year_sample_review.ps1'),
     (Join-Path $root 'scripts\preflight_production_next_year_gate.ps1'),
@@ -561,6 +562,28 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("pre-MFA year preparation safety token missing: $required")
             }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'show_production_year_pre_mfa_status.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'interrupted_or_paused_resumable',
+            'annual_tables_ready_source_contract_pending',
+            'lock_process_alive',
+            'drive_free_gib'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("pre-MFA status token missing: $required")
+            }
+        }
+        if ($text -match (
+            '(?im)^\s*(Remove-Item|Move-Item|Rename-Item|Stop-Process|' +
+            'Start-Process|Set-Content|Add-Content|Out-File|Tee-Object)\b'
+        )) {
+            $failures.Add('pre-MFA status dashboard contains mutation')
         }
     }
     if ((Split-Path $path -Leaf) -in @(

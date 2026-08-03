@@ -1156,3 +1156,6 @@ shard 2–23을 재개하는 것이다.
   checkpoint 생성/재개하고 source contract까지 검증하는
   `prepare_production_year_before_mfa.ps1`를 추가했다. 시작 wrapper도 현 연도
   검색 manifest 성공 없이는 MFA를 시작하지 않는다.
+- 실행 여부를 추측하지 않도록 shard 진행률, lock/PID, annual manifest,
+  source contract와 D: 여유를 한 번에 보여주는 읽기 전용
+  `show_production_year_pre_mfa_status.ps1`도 추가했다.
