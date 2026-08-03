@@ -176,6 +176,57 @@ $reportRoot = Join-Path $projectRoot (
 )
 $queueStatePath = Join-Path $queueRoot 'queue_state.json'
 $queueLock = Join-Path $stateRoot 'locks\mfa_year_queue.lock'
+$priorQueueStateArchive = $null
+if (Test-Path -LiteralPath $queueStatePath -PathType Leaf) {
+    $priorQueue = Read-Json $queueStatePath
+    $priorYears = @($priorQueue.years_requested)
+    if (
+        [string]$priorQueue.queue_id -ne $QueueId -or
+        ($priorYears -join ',') -ne (@($Years) -join ',')
+    ) {
+        throw (
+            '기존 queue state의 ID/연도 선택이 이번 실행과 다름; ' +
+            '새 ExecutionQueueId를 사용할 것'
+        )
+    }
+    $priorMachineComplete = (
+        [string]$priorQueue.status -eq
+            'machine_qc_complete_human_review_pending'
+    )
+    foreach ($year in $Years) {
+        $priorYearState = $priorQueue.years.PSObject.Properties[$year].Value
+        if (
+            $null -eq $priorYearState -or
+            [string]$priorYearState.status -ne
+                'machine_qc_passed_human_review_pending'
+        ) {
+            $priorMachineComplete = $false
+        }
+    }
+    if ($priorMachineComplete) {
+        throw (
+            '이 execution queue는 이미 기계 QC까지 완료됨; ' +
+            '연구자 표본 검토와 다음 연도 gate로 진행할 것'
+        )
+    }
+    $historyRoot = Join-Path $queueRoot 'history'
+    New-Item -ItemType Directory -Force -Path $historyRoot | Out-Null
+    $priorQueueStateArchive = Join-Path $historyRoot (
+        'queue_state_{0}_{1}.json' -f (
+            (Get-Date -Format 'yyyyMMdd_HHmmss'),
+            ([Guid]::NewGuid().ToString('N').Substring(0, 8))
+        )
+    )
+    Copy-Item -LiteralPath $queueStatePath `
+        -Destination $priorQueueStateArchive
+    $sourceHash = (Get-FileHash -Algorithm SHA256 `
+        -LiteralPath $queueStatePath).Hash
+    $archiveHash = (Get-FileHash -Algorithm SHA256 `
+        -LiteralPath $priorQueueStateArchive).Hash
+    if ($sourceHash -ne $archiveHash) {
+        throw '기존 queue state history SHA256 검증 실패'
+    }
+}
 New-Item -ItemType Directory -Force -Path (
     Split-Path -Parent $queueLock
 ) | Out-Null
@@ -224,6 +275,7 @@ $queue = [ordered]@{
     continue_after_blocked_year = (-not [bool]$StopAfterBlockedYear)
     researcher_approval_automatic = $false
     canonical_promotion_automatic = $false
+    prior_queue_state_archive = $priorQueueStateArchive
     started_at = (Get-Date).ToString('o')
     updated_at = (Get-Date).ToString('o')
     years = $yearStates

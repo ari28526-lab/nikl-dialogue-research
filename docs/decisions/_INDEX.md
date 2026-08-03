@@ -41,6 +41,7 @@
 | `DECISION_2020_production_complete_gate_b_20260803.md` | 2020 r2·6-tier·독립 QC·24표본 승인·Gate B 완료와 2021 안전 정지점 |
 | `DECISION_2023_JSON_PCM_segment_id_mismatch_20260803.md` | 2023 배포 JSON 발화와 PCM/WAV 분절 ID 불일치의 원인·보수적 복구 기준 |
 | `DECISION_year_safe_body_first_recovery_later_20260803.md` | 2021–2025 same-ID 안전 본체 우선 정렬·회수분 후속 shard·최종 제외 원칙 |
+| `DECISION_sequential_year_gate_and_queue_isolation_20260803.md` | 2021–2025 연도별 독립 실행 queue·직전 연도 6-tier/DB/연구자 gate·상태 history 보존 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구

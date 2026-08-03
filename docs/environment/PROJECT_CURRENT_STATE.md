@@ -117,6 +117,12 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
+2021–2025의 `morph_search.v3` 7표는 아직 0/5년이다. 이 표는 MFA 입력용
+search master와 달리 연구자가 형태소·표기 환경을 조합 검색하는 최종 pre-MFA
+층이다. 각 연도 MFA 전에 `prepare_production_year_before_mfa.ps1`로 생성·재개하고
+source contract를 확정한다. MFA 시작기는 해당 연도 manifest 성공이 없으면
+fail-closed한다.
+
 2021 진입 전 저장소 정리에서 2020 완성 자산은 보호한 채 구 문서 3개, 구 코드
 13개, 완료 파일럿 5폴더를 archive했다. 이동 전후 파일럿의 파일 수·바이트·트리
 SHA가 같았다. 근거는
@@ -141,6 +147,13 @@ canonical 보고서를 변경하기 전에 거부되며, 최종 queue로 Gate B 
 우연 일치를 안전 발화로 남길 수 있어 실행 정본에서 제외했다. 현행 queue는 실패
 세션 전 행을 격리하고 원본 WAV/CSV를 바꾸지 않는다. 2021–2025 후보 수는 각각
 1,488 / 1,231 / 103,930 / 1,610 / 4,033이며 자동 승인은 0건이다.
+
+승인 뒤 실제 MFA queue는 연도별로 분리한다.
+`mfa_r2_prod_safe_body_<YEAR>_20260803`이며 각 queue는 정확히 한 연도만
+처리한다. 2022–2025는 직전 연도의 source contract, 보존 DB, 6-tier·동반표
+독립 전수 감사, DB 표본 동등성, 최소 5세션 연구자 인프라 승인을 결합한 gate가
+통과해야 시작할 수 있다. 재개 전 기존 queue state는 SHA-256 검증 history로
+보존한다.
 
 ## 활성 정본
 

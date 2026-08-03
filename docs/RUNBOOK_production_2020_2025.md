@@ -242,6 +242,14 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_20260801/2020/
 현행 wrapper는 의도적으로 **2021 한 연도만** 처리한다. 2021의 기계 QC·생산
 표본 연구자 승인·다음 연도 gate가 끝나기 전 2022를 받지 않는다.
 
+승인과 별개로, 각 연도 MFA 전에 연구 검색용 `morph_search.v3` 7표와 source
+contract가 완료돼야 한다. 이는 동결 pre-MFA search master에서 파생되며 원본을
+바꾸지 않는다. 현재 2021–2025는 미생성 상태이므로 2021부터 실행한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_production_year_before_mfa.ps1" -Year "2021"
+```
+
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```
@@ -252,6 +260,41 @@ Gate B는 2020 audit, align/merge marker, retained DB, DB 표본 동등성, 연�
 
 2021–2025에서는 연도별 실패 상태·partial·DB를 보존하고 다음 조치를 분리한다.
 full-clean 재실행이나 정본 승격은 자동으로 하지 않는다.
+
+### F. 2021 이후 한 연도씩 전진
+
+실행 queue는 연도별로 분리한다.
+`mfa_r2_prod_safe_body_<YEAR>_20260803` 형식이며, 5개년 제외 승인 root와는
+별개다. 현 연도 기계 QC가 성공하면 먼저 다음 표본 준비기를 사용한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_production_year_sample_review.ps1" -Year "2021"
+```
+
+연구자는 생성된 표에서 같은 발화의 WAV·LAB·6-tier 연결, 정렬의 전반적 사용
+가능성, 6개 tier와 검색 정보의 이해 가능성을 확인한다. 실제 음운 실현 여부는
+판정하지 않는다. 모든 표본 확인 뒤 승인 기록을 만든다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\approve_production_year_sample_review.ps1" -Year "2021" -ApprovedBy "ari30"
+```
+
+그 다음에만 2022 한 연도를 시작할 수 있다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\start_next_mfa_year_after_gate.ps1" -Year "2022" -ApprovedBy "ari30"
+```
+
+2022→2023, 2023→2024, 2024→2025도 연도 숫자만 바꾸어 같은 순서로 처리한다.
+시작기는 직전 연도 gate를 내부에서 다시 실행한다. 실패하면 다음 MFA는 시작하지
+않고 source/core/composite gate 보고서를 남긴다.
+
+각 다음 연도도 MFA 시작 전에 같은 준비기로 검색표·source contract를 먼저
+완료한다. 예를 들어 2022는 다음과 같다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_production_year_before_mfa.ps1" -Year "2022"
+```
 
 ## 4. 정지·재개 원칙
 

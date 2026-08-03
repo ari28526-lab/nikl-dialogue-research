@@ -1137,3 +1137,22 @@ shard 2–23을 재개하는 것이다.
   때만 재사용하며 부분 산출물이나 다른 승인은 자동 덮어쓰지 않는다.
 - 범주 승인과 2021 실행을 분리했다. 승인 계약을 2021–2025에 미리 기록해도
   `start_remaining_mfa_after_2020_gate.ps1`는 여전히 2021만 시작할 수 있다.
+
+## 2026-08-03 — 2021–2025 연도별 gate와 실행 queue 분리
+
+- 2021 이후에도 2020과 같은 생산 관문을 반복할 수 있도록 표본 준비·승인,
+  직전 연도 gate, 다음 한 연도 시작의 공용 wrapper 4개를 추가했다.
+- 5개년 제외 승인 root는 공유하지만 실제 MFA queue는 연도별 ID로 분리했다.
+  따라서 2022 실행이 2021 `queue_state.json`을 덮어쓰지 않는다.
+- 동일 queue 재개 시 기존 state를 history로 복사하고 SHA-256을 재검증한다.
+  같은 queue ID에 다른 연도 선택을 넣으면 시작 전에 중단한다.
+- 이미 기계 QC까지 통과한 execution queue는 재실행하지 않고 연구자 표본
+  검토와 다음 연도 gate로 보내도록 중복 실행도 차단했다.
+- 다음 연도 gate는 source contract, align/merge marker, 보존 DB, 6-tier·동반표
+  전수 감사, DB 표본 재수출, 최소 5세션 연구자 인프라 승인을 결합한다. 실제
+  음운 실현 판정이나 자동 정본 승격은 수행하지 않는다.
+- 실측상 2021–2025 `morph_search.v3` 최종 7표는 아직 0/5년이었다. MFA만 먼저
+  완료하면 다음 연도 source gate에서 멈추므로, 각 연도 MFA 전에 검색표를
+  checkpoint 생성/재개하고 source contract까지 검증하는
+  `prepare_production_year_before_mfa.ps1`를 추가했다. 시작 wrapper도 현 연도
+  검색 manifest 성공 없이는 MFA를 시작하지 않는다.

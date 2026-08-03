@@ -1,8 +1,12 @@
-﻿<# Start 2021-2025 only after the exact 2020 Gate B passes. #>
+﻿#Requires -Version 5.1
+<# 직전 연도 생산 gate를 통과한 다음 한 연도만 시작한다. #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)]
-    [ValidateNotNullOrEmpty()]
+    [ValidateSet('2022','2023','2024','2025')]
+    [string]$Year,
+    [Parameter(Mandatory=$true)]
+    [ValidatePattern('^[A-Za-z0-9._-]+$')]
     [string]$ApprovedBy,
     [ValidatePattern('^[A-Za-z0-9._-]+$')]
     [string]$ApprovalQueueId = (
@@ -10,22 +14,22 @@ param(
     ),
     [ValidatePattern('^$|^[A-Za-z0-9._-]+$')]
     [string]$ExecutionQueueId = '',
-    [ValidateSet('2021')]
-    [string]$Year = '2021',
     [switch]$PreflightOnly
 )
 $ErrorActionPreference = 'Stop'
-$projectRoot = Split-Path -Parent $PSScriptRoot
+$priorByYear = @{
+    '2022' = '2021'; '2023' = '2022';
+    '2024' = '2023'; '2025' = '2024'
+}
+$PriorYear = [string]$priorByYear[$Year]
 if ([string]::IsNullOrWhiteSpace($ExecutionQueueId)) {
     $ExecutionQueueId = "mfa_r2_prod_safe_body_${Year}_20260803"
 }
-$reviewRoot = Join-Path $projectRoot (
-    "outputs\reviews\mfa_exclusions_queue_$ApprovalQueueId"
-)
-$gateQueueId = 'mfa_r2_prod_2020_export_20260803'
+$projectRoot = Split-Path -Parent $PSScriptRoot
+$priorQueueId = "mfa_r2_prod_safe_body_${PriorYear}_20260803"
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
-    Join-Path $PSScriptRoot 'preflight_2020_gate_b.ps1'
-) -QueueId $gateQueueId
+    Join-Path $PSScriptRoot 'preflight_production_next_year_gate.ps1'
+) -PriorYear $PriorYear -ExecutionQueueId $priorQueueId
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $sourceReport = Join-Path $projectRoot (
     "outputs\reports\PREFLIGHT_source_contract_${Year}_before_mfa.json"
@@ -40,9 +44,12 @@ if ($LASTEXITCODE -ne 0) {
     ) -ForegroundColor Red
     exit $LASTEXITCODE
 }
-$start = Join-Path $PSScriptRoot 'start_full_mfa_after_review.ps1'
+$reviewRoot = Join-Path $projectRoot (
+    "outputs\reviews\mfa_exclusions_queue_$ApprovalQueueId"
+)
 $args = @(
-    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $start,
+    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+    (Join-Path $PSScriptRoot 'start_full_mfa_after_review.ps1'),
     '-ApprovedBy', $ApprovedBy,
     '-QueueId', $ExecutionQueueId,
     '-ReviewRoot', $reviewRoot,

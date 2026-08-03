@@ -23,6 +23,11 @@ $files = @(
         'scripts\approve_remaining_mfa_exclusion_categories.ps1'
     )),
     (Join-Path $root 'scripts\start_remaining_mfa_after_2020_gate.ps1'),
+    (Join-Path $root 'scripts\prepare_production_year_before_mfa.ps1'),
+    (Join-Path $root 'scripts\prepare_production_year_sample_review.ps1'),
+    (Join-Path $root 'scripts\approve_production_year_sample_review.ps1'),
+    (Join-Path $root 'scripts\preflight_production_next_year_gate.ps1'),
+    (Join-Path $root 'scripts\start_next_mfa_year_after_gate.ps1'),
     (Join-Path $root 'scripts\prepare_mfa_year_exclusion_review.ps1'),
     (Join-Path $root 'scripts\finalize_2020_mfa_review_from_verified_evidence.ps1'),
     (Join-Path $root 'scripts\mfa_wav_corpus.ps1'),
@@ -371,6 +376,10 @@ foreach ($path in $files) {
             'machine_qc_passed_human_review_pending',
             '의도적으로 -AllowFullCleanRetry를 전달하지 않는다',
             'canonical_promotion_automatic = $false',
+            'prior_queue_state_archive',
+            '기존 queue state history SHA256 검증 실패',
+            '새 ExecutionQueueId를 사용할 것',
+            '이 execution queue는 이미 기계 QC까지 완료됨',
             'researcher_approval_automatic = $false',
             'Write-JsonAtomic',
             'mfa_year_queue.lock',
@@ -520,6 +529,39 @@ foreach ($path in $files) {
         if ($text.Contains("'2020'")) {
             $failures.Add("remaining-years entrypoint includes 2020: $path")
         }
+        if ((Split-Path $path -Leaf) -eq (
+            'start_remaining_mfa_after_2020_gate.ps1'
+        )) {
+            foreach ($required in @(
+                'verify_production_source_contract.ps1',
+                '-RequireMorphYearSuccess',
+                'prepare_production_year_before_mfa.ps1을 먼저 실행할 것.'
+            )) {
+                if (-not $text.Contains($required)) {
+                    $failures.Add("2021 start lacks morph source gate: $required")
+                }
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prepare_production_year_before_mfa.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'run_morph_search_year_safe.ps1',
+            'verify_production_source_contract.ps1',
+            '-Ensure',
+            '-RequireMorphYearSuccess',
+            'ProductionYearInputSleepGuard',
+            'Windows system sleep guard: enabled',
+            'Disable-ProductionYearInputSleepGuard',
+            'MFA·TextGrid·원본 WAV/CSV는 변경하지 않음'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("pre-MFA year preparation safety token missing: $required")
+            }
+        }
     }
     if ((Split-Path $path -Leaf) -in @(
         'prepare_full_mfa_approval_reviews.ps1',
@@ -536,6 +578,77 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("PS5 연도 선택 계약 누락 ${path}: $required")
             }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'prepare_production_year_sample_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'machine_qc_passed_human_review_pending',
+            '$requested.Count -ne 1',
+            'mfa_production_year_review.py',
+            "'prepare', '--year', `$Year",
+            '실제 음운 실현 판정은 이 gate의 대상이 아니다.'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("production review prepare safety token missing: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'approve_production_year_sample_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_production_year_review.py',
+            'approve --review-csv',
+            '04_RESEARCHER_APPROVAL.json',
+            '이 승인은 실제 음운 실현 판정이 아니다.'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("production review approval safety token missing: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'preflight_production_next_year_gate.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'verify_production_source_contract.ps1',
+            'mfa_production_year_review.py',
+            'preflight_next_year_after_qc.py',
+            'allow_next_year = [bool]$passed',
+            'if (-not $passed) { exit 1 }'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("generic next-year gate safety token missing: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'start_next_mfa_year_after_gate.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'preflight_production_next_year_gate.ps1',
+            "[ValidateSet('2022','2023','2024','2025')]",
+            'verify_production_source_contract.ps1',
+            '-RequireMorphYearSuccess',
+            "'-ReviewRoot', `$reviewRoot",
+            "'-YearsCsv', `$Year"
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("next-year start gate safety token missing: $required")
+            }
+        }
+        if ($text.Contains("'-YearsCsv', '2021,2022")) {
+            $failures.Add('next-year start can launch more than one year')
         }
     }
     if (
