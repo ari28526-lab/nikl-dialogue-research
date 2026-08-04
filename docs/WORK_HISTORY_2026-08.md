@@ -1378,6 +1378,9 @@ shard 2–23을 재개하는 것이다.
   추가했고 Windows PowerShell 5.1 안전성 45파일·호환성 52스크립트 검사를
   모두 통과했다. 현재 실행에는 이미 로드된 함수가 적용되므로 감시 읽기
   방식을 바꾸는 것으로 재발을 막고, 실행을 재시작하지 않는다.
+- 반복 점검도 같은 규칙을 따르도록 `show_active_mfa_progress.ps1`을 추가했다.
+  상태판은 활성 JSONL을 `FileShare.ReadWrite/Delete`로만 읽고 phase·처리량·오류·
+  watchdog·자원·최신 연도 queue를 표시하며 어떠한 상태도 변경하지 않는다.
 - 구조화된 근거는
   `outputs/reports/MONITOR_2021_mfa_alignment_initial_20260804.json`에 남겼다.
 

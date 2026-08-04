@@ -1016,6 +1016,26 @@ foreach ($path in $files) {
             $failures.Add('공통 MFA 상태판에 쓰기·제어 명령이 포함됨')
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'show_active_mfa_progress.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'Read-LastJsonLineShared',
+            '[IO.FileShare]::ReadWrite',
+            '[IO.FileShare]::Delete',
+            'heartbeat_stale_over_5_minutes',
+            'alignment_error_signals',
+            'watchdog_will_kill',
+            'live_tree_process_ids',
+            'queue_status'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("활성 MFA 상태판 안전장치 누락: $required")
+            }
+        }
+        if ($text.Contains('Get-Content -LiteralPath $heartbeatPath')) {
+            $failures.Add('활성 MFA 상태판이 heartbeat를 Get-Content로 잠금')
+        }
+    }
     if (
         (Split-Path $path -Leaf) -eq
             'archive_pre_jamo_outputs_to_external.ps1'

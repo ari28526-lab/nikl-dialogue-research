@@ -242,6 +242,14 @@ contract가 완료돼야 한다. 이는 동결 pre-MFA search master에서 파�
 & "C:\Users\ari30\research\2026_summer_research\scripts\show_production_year_pre_mfa_status.ps1" -Year "2021"
 ```
 
+MFA가 실제 계산에 들어간 뒤의 phase·정렬 수·오류·watchdog·자원은 다음
+공유 읽기 상태판으로 본다. 활성 heartbeat를 일반 `Get-Content`로 직접 열지
+않는다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\show_active_mfa_progress.ps1" -Year "2021"
+```
+
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
 ```
