@@ -338,3 +338,6 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
   같은 preflight를 재실행하고, GO일 때만 같은 DB에서 export를 재개한다. 근거는
   `outputs/reports/DIAG_2021_float32_terminal_roundoff_20260805.json`과
   `docs/decisions/DECISION_MFA_float32_terminal_boundary_normalization_20260805.md`다.
+- 수정·근거를 `f205d32`로 커밋·푸시한 뒤 03:10 KST v5 `PreflightOnly`를 다시
+  실행해 모든 hard gate와 전체 345개 테스트가 GO임을 확인했다. 실제 queue는 아직
+  시작하지 않았으며 GO 보고서를 커밋한 뒤 같은 v5 ID로 export만 재개한다.

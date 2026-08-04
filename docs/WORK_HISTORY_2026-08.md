@@ -1550,3 +1550,7 @@ shard 2–23을 재개하는 것이다.
   통과했다. 첫 v5 `PreflightOnly`는 데이터·계약·모델·공간·테스트가 모두 통과한 뒤
   미커밋 코드만 `tracked_code_committed=false`로 차단했다. 수정·NO_GO 근거를 먼저
   커밋하고 같은 preflight가 GO일 때만 보존 DB에서 export를 재개한다.
+- 수정·결정·실측 보고서와 NO_GO 증거를 `f205d32`로 커밋·푸시했다. 03:10 KST에
+  같은 v5 `PreflightOnly`를 재실행해 모델·공통사전·승인 계약·입력·DB 재개 상태·
+  저장공간·커밋·전체 345개 테스트가 모두 GO임을 확인했다. `PreflightOnly`이므로
+  이 시점에는 실제 queue나 MFA/export가 시작되지 않았다.

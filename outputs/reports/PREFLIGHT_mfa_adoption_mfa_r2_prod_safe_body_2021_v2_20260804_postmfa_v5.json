@@ -1,7 +1,7 @@
 {
   "schema_version": "mfa_r2_runtime_adoption_validation.v1",
   "status": "passed",
-  "validated_at": "2026-08-05T03:07:11+09:00",
+  "validated_at": "2026-08-05T03:10:08+09:00",
   "pronunciation_mode": "common_pron_mfa_r2_latest_jamo",
   "release_id": "common_pron_mfa_r2_20260728",
   "release_contract_id": "4d0999593366925b3d8448dd7da383c5f68cc8f9237c5e6b16aaec3e0217bab9",
