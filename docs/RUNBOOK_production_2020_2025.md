@@ -117,6 +117,12 @@ WAV/LAB 청취는 2021 최종 Gate 전으로 유예했다. 승인 작업본은
 실패한 `..._postmfa` queue ID는 재사용하지 않고 새 execution queue로
 `PreflightOnly`를 다시 통과한 뒤 같은 DB에서 export만 재개한다.
 
+교정 커밋 `5331e53` 푸시 후 새 queue
+`mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v2`의 `PreflightOnly`는
+`GO`였다. 정렬용 1,502건 계약으로 재구성한 alignment ID는 보존 marker의
+`5ff1865744c85d…`와 exact match했고, export/QC용 결합 계약은 2,037건으로
+별도 검증됐다.
+
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과
 `docs/decisions/DECISION_2020_production_complete_gate_b_20260803.md`에 고정했다.

@@ -273,6 +273,12 @@ pre-MFA 1,502건과 결합한 export/QC 계약은 2,037건이다. 첫 재개 시
 DB에서 export만 재개하며, 유예한 24표본 청취와 최종 Gate 전에는 2022를
 시작하지 않는다.
 
+교정 커밋 `5331e53`은 원격에 푸시됐다. 새 queue
+`mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v2`의 `PreflightOnly`는
+export/QC 2,037건과 정렬 1,502건을 별도로 검증해 `GO`였다. 1,502건으로
+재구성한 alignment ID도 보존 DB marker의 전체 SHA-256 `5ff1865744c85d…`와
+exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유가 없다.
+
 - 문서 색인: `docs/README.md`
 - 현재 상태: 이 문서
 - 생산 실행: `docs/RUNBOOK_production_2020_2025.md`

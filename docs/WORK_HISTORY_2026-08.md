@@ -1474,3 +1474,12 @@ shard 2–23을 재개하는 것이다.
 - Windows PowerShell 5.1 안전성 46파일·호환성 55스크립트, Python 전체
   340시험이 통과했다. 실제 재개는 코드 커밋·새 queue `PreflightOnly`가
   통과한 뒤에만 수행한다.
+- 교정 커밋 `5331e53`을 원격 브랜치에 푸시한 뒤 새 execution queue
+  `mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v2`의 `PreflightOnly`를
+  실행했다. export/QC 결합 계약 2,037건과 정렬 provenance 계약 1,502건이
+  각각 같은 input contract에 결속됐고 최종 상태는 `GO`였다.
+- 정렬 당시 1,502건 계약으로 alignment contract를 별도 임시 재구성한 값은
+  `5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd`로,
+  `2021.direct_db_ready` marker와 exact match였다. 이 검사는 MFA·DB를
+  수정하지 않았으며 결합 2,037건 계약이 정렬 identity에 들어가지 않음을
+  실제 파일 fingerprint로 확인했다.
