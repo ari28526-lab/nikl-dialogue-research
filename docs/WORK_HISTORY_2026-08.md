@@ -1341,3 +1341,18 @@ shard 2–23을 재개하는 것이다.
   `outputs/reports/OBSERVATION_2021_mfa_feature_generation_20260804.json`, 현행 결정은
   `docs/decisions/DECISION_2021_feature_generation_ignored_pending_20260804.md`에
   기록했다.
+
+## 2026-08-04 — 2021 training graph 완료와 실제 alignment 진입
+
+- training graph 단계는 14:11:49–14:49:52 KST에 진행됐다. 4개 job이 각각
+  약 4.67–4.71GB의 FST를 완성했고 합계는 18,760,162,775바이트(17.472GiB)다.
+  4개 graph log도 모두 완료되었으며 합계 158,218,463바이트다.
+- graph heartbeat 38개 동안 tree CPU는 13,607.02초에서 18,821.92초로
+  5,214.91초 증가했다. 최대 system commit은 84.6%, 최소 사용 가능 물리
+  메모리는 267.6MB였고 watchdog 중단 예정과 오류·traceback은 없었다.
+- 14:50:11 heartbeat에서 phase가 `align`, stderr가 `Generating alignments`로
+  전환됐다. 이때 commit은 72.0%, 사용 가능 메모리는 1,256.5MB로 회복됐고
+  4개 alignment log가 생성됐다. 따라서 재시작하거나 job 수를 바꾸지 않고
+  계속 실행한다.
+- 구조화된 근거는
+  `outputs/reports/MONITOR_2021_mfa_graph_to_align_20260804.json`에 남겼다.

@@ -1,0 +1,47 @@
+{
+  "schema_version": "mfa_phase_monitor.v1",
+  "status": "passed_phase_transition",
+  "year": "2021",
+  "run_id": "eojeol_commonpron_2021_20260804_114223",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804",
+  "phase": "compile_training_graphs_to_alignment",
+  "heartbeat_path": "D:\\mfa_eojeol\\logs\\mfa_2021_eojeol_commonpron_2021_20260804_114223_heartbeat.jsonl",
+  "stderr_path": "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log",
+  "graph_phase": {
+    "first_heartbeat": "2026-08-04T14:11:49.9760656+09:00",
+    "last_heartbeat": "2026-08-04T14:49:11.5134141+09:00",
+    "heartbeat_count": 38,
+    "tree_cpu_seconds_start": 13607.015625,
+    "tree_cpu_seconds_end": 18821.921875,
+    "tree_cpu_seconds_gain": 5214.90625,
+    "minimum_system_memory_available_mb": 267.6,
+    "maximum_system_commit_percent": 84.6,
+    "work_drive_free_gb_start": 316.2,
+    "work_drive_free_gb_end": 298.7,
+    "watchdog_will_kill_observed": false,
+    "error_or_traceback_observed": false
+  },
+  "graph_artifacts": {
+    "directory": "D:\\mfa_tmp\\2021\\alignment",
+    "fst_file_count": 4,
+    "fst_total_bytes": 18760162775,
+    "fst_total_gib": 17.472,
+    "graph_log_file_count": 4,
+    "graph_log_total_bytes": 158218463,
+    "jobs": [
+      {"job": 1, "fst_bytes": 4667023879, "completed_at": "2026-08-04T14:48:21+09:00"},
+      {"job": 2, "fst_bytes": 4682095701, "completed_at": "2026-08-04T14:49:52+09:00"},
+      {"job": 3, "fst_bytes": 4705049203, "completed_at": "2026-08-04T14:48:37+09:00"},
+      {"job": 4, "fst_bytes": 4705993992, "completed_at": "2026-08-04T14:49:24+09:00"}
+    ]
+  },
+  "alignment_phase": {
+    "first_heartbeat": "2026-08-04T14:50:11.5769658+09:00",
+    "stderr_tail": "INFO     Generating alignments...",
+    "alignment_log_file_count": 4,
+    "system_commit_percent": 72.0,
+    "system_memory_available_mb": 1256.5,
+    "work_drive_free_gb": 298.58
+  },
+  "decision": "그래프 4개가 모두 닫히고 실제 alignment 단계로 전환됐으므로 재시작하거나 job 수를 변경하지 않고 계속 실행한다."
+}
