@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  "production_source_contract_check.v1",
     "status":  "passed",
-    "checked_at":  "2026-08-04T10:22:37.4724065+09:00",
+    "checked_at":  "2026-08-04T11:26:23.9190259+09:00",
     "year":  "2021",
     "morph_run_id":  "morph_search_v3_20260801",
     "search_master_run_id":  "pre_mfa_v1_20260725",

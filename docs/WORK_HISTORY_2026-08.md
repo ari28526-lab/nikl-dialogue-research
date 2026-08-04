@@ -1268,3 +1268,9 @@ shard 2–23을 재개하는 것이다.
   이 보충 승인을 결합해 1,502행 새 계약을 만들었다. 승인 계약 SHA-256은
   `ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356`이며,
   승인 계보는 새 review root의 `05_APPROVAL_LINEAGE.md`에 고정했다.
+- 수정·승인 증거를 커밋 `05078a3`으로 원격에 푸시한 뒤, 새 approval/execution
+  queue ID `mfa_r2_prod_safe_body_2021_v2_20260804`로 `-PreflightOnly`를
+  실행했다. 11:27 KST에 2020 Gate B, 2021 source contract, 승인 1,502행,
+  공통 Jamo r2·109-phone, D: 322.9GiB, Python 335개와 PowerShell 안전·호환성
+  검사가 모두 통과해 최종 `GO`였다. 이 단계는 LAB를 옮기거나 MFA를 시작하지
+  않았다.

@@ -199,7 +199,15 @@ CSV duration 0 후보화와 immutable 후보표 병합을 단위시험으로 검
 후속 shard에서 회수 여부를 다룰 후보이며 자동 승인하지 않았다. 연구자 `ari30`은
 11:21 KST에 14건을 명시 승인했고, 기존 승인과 결합한 1,502행 계약 SHA는
 `ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356`이다.
-코드·승인 증거 커밋과 새 queue preflight를 통과하기 전에는 재실행하지 않는다.
+코드·승인 증거 커밋과 새 queue preflight 전까지는 재실행하지 않았으며, 구
+queue ID는 앞으로도 재사용하지 않는다.
+
+수정·승인 증거는 커밋 `05078a3`으로 원격에 푸시했다. 새 approval/execution
+queue ID `mfa_r2_prod_safe_body_2021_v2_20260804`의 `-PreflightOnly`는
+2026-08-04 11:27 KST에 최종 `GO`였다. 승인 1,502행, 2020 Gate B, 2021 source
+contract, 공통 Jamo r2·109-phone, D: 322.9GiB, Python 335개, PowerShell 5.1
+안전·호환성 검사가 통과했다. 이 관측에서는 MFA를 시작하지 않았다. 다음 동작은
+RUNBOOK에 기록한 새 ID의 2021 단일 연도 명령이며, 구 queue ID를 재사용하지 않는다.
 
 ## 활성 정본
 

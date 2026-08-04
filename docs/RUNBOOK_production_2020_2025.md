@@ -76,9 +76,17 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804/
 기존 1,488건은 변경하지 않았고 새 14건만 `audio_pairing_unresolved`로 더했다.
 연구자 `ari30`은 11:21 KST에 이 14건의 안전 본체 제외와 후속 shard 이월을
 명시 승인했고, 총 1,502행 `approved_exclusions.json`을 만들었다. 승인·코드·문서
-커밋과 Windows PowerShell 5.1 검사, 새 queue의 `-PreflightOnly`가 끝나기 전에는
-이전 시작 명령을 **재실행하지 않는다.** 재개 명령은 그 시점에 이 문서에 새
-ApprovalQueueId와 ExecutionQueueId로 기록한다.
+커밋과 Windows PowerShell 5.1 검사, 새 queue의 `-PreflightOnly`는 11:27 KST에
+모두 통과했다. 이전 queue ID는 재사용하지 않는다. 2021 재개는 다음 한 명령만
+사용한다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30" -ApprovalQueueId "mfa_r2_prod_safe_body_2021_v2_20260804" -ExecutionQueueId "mfa_r2_prod_safe_body_2021_v2_20260804" -Year "2021"
+```
+
+이 명령은 2021 한 연도만 시작한다. 승인된 1,502건의 파생 LAB를 먼저 가역
+보존하고, 같은 계약의 입력감사가 통과한 뒤에만 MFA가 시작된다. 실패한 구 queue와
+그 checkpoint는 삭제하지 않는다.
 
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과
