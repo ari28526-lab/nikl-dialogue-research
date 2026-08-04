@@ -811,6 +811,12 @@ def audit_year(
         for item in duration_sessions
         if item["padding_seconds"] is not None
     ]
+    authorized_active_pair_count = counts[
+        "approved_alignment_authorized_active_pair"
+    ]
+    unauthorized_active_pair_count = counts[
+        "approved_alignment_unauthorized_active_pair"
+    ]
     result = {
         "year": year,
         "status": "audited",
@@ -823,6 +829,10 @@ def audit_year(
         ),
         "approved_active_alignment_exclusion_count": len(
             approved_active_alignment_exclusions
+        ),
+        "approved_active_alignment_exclusion_inactive_count": (
+            len(approved_active_alignment_exclusions)
+            - authorized_active_pair_count
         ),
         "csv_files": len(csv_files),
         "elapsed_seconds": round(elapsed, 3),
@@ -927,9 +937,9 @@ def audit_year(
             counts["approved_alignment_active_pair"] == 0
         ),
         "approved_alignment_active_pairs_authorized": (
-            counts["approved_alignment_unauthorized_active_pair"] == 0
-            and counts["approved_alignment_authorized_active_pair"]
-            == len(approved_active_alignment_exclusions)
+            unauthorized_active_pair_count == 0
+            and authorized_active_pair_count
+            <= len(approved_active_alignment_exclusions)
         ),
         "source_segment_text_duration_plausible": (
             counts["source_segment_text_duration_impossible"] == 0

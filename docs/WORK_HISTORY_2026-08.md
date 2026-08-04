@@ -1483,3 +1483,20 @@ shard 2–23을 재개하는 것이다.
   `2021.direct_db_ready` marker와 exact match였다. 이 검사는 MFA·DB를
   수정하지 않았으며 결합 2,037건 계약이 정렬 identity에 들어가지 않음을
   실제 파일 fingerprint로 확인했다.
+
+## 2026-08-04 — 2021 보존 DB 재개 입력 게이트 역조건 교정
+
+- v2 queue는 LAB 4,143세션·1,371,883건 전수 내용 일치, 신규 0, 불일치 재작성 0을
+  확인하고 정렬 계약을 `5ff186…`로 정확히 복원했다.
+- 이후 읽기 전용 실행 감사는 4,143 CSV·1,373,920행, duration 대상 1,371,883건을
+  검사해 duration mismatch 0, tiny WAV 0, 위험한 예상 밖 LAB 0을 확인했다.
+- 단 하나의 실패는 `approved_alignment_active_pairs_authorized`였다. DB interval 누락과
+  exact-match된 승인 ID 511건의 LAB가 이미 제거돼 활성 쌍이 0인데도, 감사 코드가
+  활성 승인 쌍 수와 승인 ID 수의 완전 일치를 요구한 구현 오류였다.
+- 판정을 `미승인 활성 쌍 0`이고 `활성 승인 쌍이 승인 집합의 부분집합`인 조건으로
+  교정했다. DB 누락 ID exact-match는 그대로 유지한다. 따라서 안전 기준과 연구 계약은
+  낮아지지 않는다.
+- 관련 회귀 테스트를 추가했고 Python 전체 340개, PowerShell 안전 46파일,
+  Windows PowerShell 5.1 호환성 55스크립트가 모두 통과했다.
+- 실패 queue와 보고서는 시행착오 증거로 보존한다. 2021 DB checkpoint와 원자료,
+  2020 완성본은 변경하지 않았으며 새 queue에서 direct export만 재개한다.

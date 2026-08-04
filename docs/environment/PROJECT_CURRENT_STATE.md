@@ -285,3 +285,13 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 - 자산 위치: `docs/ASSETS_LEDGER.md`
 - 결정 색인: `docs/decisions/_INDEX.md`
 - 스크립트 색인: `scripts/SCRIPTS_INDEX.md`
+
+2021 post-MFA v2 재개는 2026-08-04 22:13 KST에 시작됐다. LAB 1,371,883건은
+신규 생성·불일치 재작성 없이 전수 일치했고, 정렬 provenance 계약은 보존 DB와 같은
+`5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd`로 복원됐다.
+22:42 KST 실행 입력 감사가 보존 DB 승인 ID 511건을 모두 활성 WAV+LAB 쌍이어야 한다고
+잘못 요구해 export 전에 안전 중단했다. 원본, 2020 완성본, 2021 DB와 checkpoint는
+변경되지 않았다. 감사 조건은 승인된 ID가 이미 비활성인 경우를 안전 상태로 인정하되
+미승인 활성 쌍은 계속 차단하도록 교정했고, Python 340개 및 Windows PowerShell 5.1
+안전 46파일·호환성 55스크립트 검사를 통과했다. 다음 실행은 새 queue ID로 동일 DB에서
+입력 감사를 다시 수행한 뒤 direct 6-tier export만 재개한다.

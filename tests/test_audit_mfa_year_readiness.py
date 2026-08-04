@@ -368,6 +368,38 @@ class AuditMfaYearReadinessTests(unittest.TestCase):
             )
             self.assertTrue(resumed["execution_gates_pass"])
 
+            # A post-MFA exclusion authorized by the retained DB can already
+            # have its LAB removed from the active corpus.  That is safer than
+            # leaving the pair active and must not make the resume gate fail.
+            (session_dir / "S1.bad.lab").unlink()
+            resumed_inactive = audit_year(
+                year="2021",
+                search_master_root=search,
+                wav_root=wav_root,
+                compare_lab_content=True,
+                known_pcm=None,
+                approved_alignment_exclusions={"S1.bad"},
+                approved_active_alignment_exclusions={"S1.bad"},
+            )
+            self.assertEqual(
+                resumed_inactive["counts"].get(
+                    "approved_alignment_active_pair", 0
+                ),
+                0,
+            )
+            self.assertEqual(
+                resumed_inactive[
+                    "approved_active_alignment_exclusion_inactive_count"
+                ],
+                1,
+            )
+            self.assertTrue(
+                resumed_inactive["gates"][
+                    "approved_alignment_active_pairs_authorized"
+                ]
+            )
+            self.assertTrue(resumed_inactive["execution_gates_pass"])
+
     def test_retained_checkpoint_requires_exact_db_missing_ids(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
