@@ -1,0 +1,3523 @@
+{
+  "schema_version": "mfa_textgrid_phone_only_silence_word_repair.v1",
+  "status": "success",
+  "year": "2021",
+  "db_path": "D:\\mfa_tmp\\2021\\2021.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "archive_root": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "source_companion_utterance_partial": {
+    "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\_tables\\.utterance_alignment.csv.gz.26692.partial",
+    "bytes": 371000658,
+    "mtime_ns": 1785882710432728800,
+    "sha256": "12fa7c400a65534794c494b4cc866a7c2b9855e94b2b9f36cf10fa76259220fc"
+  },
+  "source_mismatch_count": 19,
+  "candidate_count": 19,
+  "candidates": [
+    {
+      "utt_id": "SDRW2100000201.1.1.220",
+      "session": "SDRW2100000201",
+      "word_interval_id": 3067262,
+      "phone_interval_ids": [
+        11147310
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 17,
+          "begin": 10.6899995803833,
+          "end": 98.84,
+          "before": "봐요",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 16898,
+        "mtime_ns": 1785874930768938600,
+        "sha256": "060d5bc2ec79c7223a87a9a1557637e29d36ff2377b3106cdeffacc8d8d0319f"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.362",
+      "session": "SDRW2100000223",
+      "word_interval_id": 3672914,
+      "phone_interval_ids": [
+        13457951
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 10.430000305175781,
+          "end": 49.31,
+          "before": "좀",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "말씀해 주셔서 뭐 감사해요 저도 뭐 형에 대해서 좀"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "말씀해 주셔서 뭐 감사해요 저도 뭐 형에 대해서 좀"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "M A l _ SS EU m _ H AE | J U _ S YEO _ S EO | M WO | G A m _ S A _ H AE _ YO | J EO _ D O | M WO | H YEO ng _ E | D AE _ H AE _ S EO | J O m"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "M A l _ SS EU m _ H AE | J U _ S YEO _ S EO | M WO | G A m _ S A _ H AE _ YO | J EO _ D O | M WO | H YEO ng _ E | D AE _ H AE _ S EO | J O m"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "말씀하/VV + 아/EC | 주/VX + 시/EP + 어서/EC | 뭐/IC | 감사하/VV + 아요/EF | 저/NP + 도/JX | 뭐/IC | 형/NNG + 에/JKB | 대하/VV + 아서/EC | 좀/MAG"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "말씀하/VV + 아/EC | 주/VX + 시/EP + 어서/EC | 뭐/IC | 감사하/VV + 아요/EF | 저/NP + 도/JX | 뭐/IC | 형/NNG + 에/JKB | 대하/VV + 아서/EC | 좀/MAG"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+        "bytes": 14309,
+        "mtime_ns": 1785870654031365900,
+        "sha256": "212ff34079a0f2126f3357c3b2d1daa4f54dcc3db6551a562c2666419979d4bf"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000297.1.1.130",
+      "session": "SDRW2100000297",
+      "word_interval_id": 5472526,
+      "phone_interval_ids": [
+        20232208
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 18,
+          "begin": 6.090000152587891,
+          "end": 27.77,
+          "before": "엄청",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "뭔가 꺼려하면 어쩌지 이런 걱정을 잠깐 했었는데 오히려 나를 엄청"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "뭔가 꺼려하면 어쩌지 이런 걱정을 잠깐 했었는데 오히려 나를 엄청"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "M WO n _ G A | KK EO _ R YEO _ H A _ M YEO n | EO _ JJ EO _ J I | I _ R EO n | G EO k _ J EO ng _ EU l | J A m _ KK A n | H AE ss _ EO ss _ N EU n _ D E | O _ H I _ R YEO | N A _ R EU l | EO m _ CH EO ng"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "M WO n _ G A | KK EO _ R YEO _ H A _ M YEO n | EO _ JJ EO _ J I | I _ R EO n | G EO k _ J EO ng _ EU l | J A m _ KK A n | H AE ss _ EO ss _ N EU n _ D E | O _ H I _ R YEO | N A _ R EU l | EO m _ CH EO ng"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "뭐/NP + 이/VCP + ㄴ가/EF | 꺼리/VV + 어/EC | 하/VX + 면/EC | 어쩌/VV + 지/EF | 이런/MMD | 걱정/NNG + 을/JKO | 잠깐/MAG | 하/VV + 았었/EP + 는데/EC | 오히려/MAG | 나/NP + 를/JKO | 엄청/MAG"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "뭐/NP + 이/VCP + ㄴ가/EF | 꺼리/VV + 어/EC | 하/VX + 면/EC | 어쩌/VV + 지/EF | 이런/MMD | 걱정/NNG + 을/JKO | 잠깐/MAG | 하/VV + 았었/EP + 는데/EC | 오히려/MAG | 나/NP + 를/JKO | 엄청/MAG"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+        "bytes": 18705,
+        "mtime_ns": 1785860537217964500,
+        "sha256": "91d8fa1fb8a403e5814e9d81ed6dfa52ed1e762a07bb2c08d67d1fcb4edf8c4d"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000368.1.1.238",
+      "session": "SDRW2100000368",
+      "word_interval_id": 7796138,
+      "phone_interval_ids": [
+        28911825
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 11,
+          "begin": 2.6700000762939453,
+          "end": 17.37,
+          "before": "그랬더니",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "너 진짜 너무 심하구나 그랬어 그랬더니"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "너 진짜 너무 심하구나 그랬어 그랬더니"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "N EO | J I n _ JJ A | N EO _ M U | S I m _ H A _ G U _ N A | G EU _ R AE ss _ EO | G EU _ R AE ss _ D EO _ N I"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "N EO | J I n _ JJ A | N EO _ M U | S I m _ H A _ G U _ N A | G EU _ R AE ss _ EO | G EU _ R AE ss _ D EO _ N I"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "너/NP | 진짜/MAG | 너무/MAG | 심하/VA + 구나/EF | 그러/VV + 었/EP + 어/EF | 그러/VV + 었/EP + 더니/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "너/NP | 진짜/MAG | 너무/MAG | 심하/VA + 구나/EF | 그러/VV + 었/EP + 어/EF | 그러/VV + 었/EP + 더니/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+        "bytes": 11304,
+        "mtime_ns": 1785860642504918600,
+        "sha256": "567b6c1fe4abce15d094736da888c86006bf40f881a0d0a1de6950d4d9d0cd24"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.69",
+      "session": "SDRW2100000493",
+      "word_interval_id": 9380013,
+      "phone_interval_ids": [
+        34846649
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 14,
+          "begin": 6.909999847412109,
+          "end": 17.73,
+          "before": "테니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "그런데 웬만하면 친구면은 그래 너 기다려 줄 테니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "그런데 웬만하면 친구면은 그래 너 기다려 줄 테니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "G EU _ R EO n _ D E | WE n _ M A n _ H A _ M YEO n | CH I n _ G U _ M YEO n _ EU n | G EU _ R AE | N EO | G I _ D A _ R YEO | J U l | T E _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "G EU _ R EO n _ D E | WE n _ M A n _ H A _ M YEO n | CH I n _ G U _ M YEO n _ EU n | G EU _ R AE | N EO | G I _ D A _ R YEO | J U l | T E _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "그런데/MAJ | 웬만하/VA + 면/EC | 친구/NNG + 이/VCP + 면/EC + 은/JX | 그래/IC | 너/NP | 기다리/VV + 어/EC | 주/VX + ㄹ/ETM | 터/NNB + 이/VCP + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "그런데/MAJ | 웬만하/VA + 면/EC | 친구/NNG + 이/VCP + 면/EC + 은/JX | 그래/IC | 너/NP | 기다리/VV + 어/EC | 주/VX + ㄹ/ETM | 터/NNB + 이/VCP + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+        "bytes": 14834,
+        "mtime_ns": 1785860821621684700,
+        "sha256": "f250108ba9426f4972c2edf51930daceec315227ec0d3e7195064c918a8fbf80"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.102",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9492765,
+      "phone_interval_ids": [
+        35257648
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 38,
+          "begin": 27.969999313354492,
+          "end": 69.31,
+          "before": "쓰니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29007,
+        "mtime_ns": 1785874930940961400,
+        "sha256": "fa14598a82e75d4dbfa381531e50d9e485d19e6d5589bd88c3684ab765a6950a"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.106",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9497522,
+      "phone_interval_ids": [
+        35275476
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 16,
+          "begin": 7.829999923706055,
+          "end": 79.04,
+          "before": "그",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "그래도 그거 그 그 손을 한번 걷히는 게 그"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "그래도 그거 그 그 손을 한번 걷히는 게 그"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "G EU _ R AE _ D O | G EU _ G EO | G EU | G EU | S O n _ EU l | H A n _ B EO n | G EO t _ H I _ N EU n | G E | G EU"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "G EU _ R AE _ D O | G EU _ G EO | G EU | G EU | S O n _ EU l | H A n _ B EO n | G EO t _ H I _ N EU n | G E | G EU"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "그래도/NNG | 그거/NP | 그/IC | 그/IC | 손/NNG + 을/JKO | 한번/MAG | 걷히/VV + 는/ETM | 거/NNB + 이/JKS | 그/IC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "그래도/NNG | 그거/NP | 그/IC | 그/IC | 손/NNG + 을/JKO | 한번/MAG | 걷히/VV + 는/ETM | 거/NNB + 이/JKS | 그/IC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+        "bytes": 12639,
+        "mtime_ns": 1785861077380340900,
+        "sha256": "888f004718ce8e6f5dee5f88ddaea917bb3be3d393c8a920fbb691faf1f0e53e"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.205",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9494337,
+      "phone_interval_ids": [
+        35263585
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 21,
+          "begin": 6.21999979019165,
+          "end": 173.45,
+          "before": "둘째가",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20167,
+        "mtime_ns": 1785874930974408900,
+        "sha256": "5bf76fcae0f65fb2ee588fc538dbf422158aa0022829cf84942655cad748b3e1"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.218",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9494391,
+      "phone_interval_ids": [
+        35263790
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 25,
+          "begin": 11.960000038146973,
+          "end": 200.04,
+          "before": "달엔",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 22452,
+        "mtime_ns": 1785874931005478400,
+        "sha256": "9e1f69ab2bcd11626a5f4619ab06d77f460ed4c2c062c3c170463d7ecff050a0"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.230",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9873240,
+      "phone_interval_ids": [
+        36664533
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 10,
+          "begin": 3.490000009536743,
+          "end": 157.75,
+          "before": "그러니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "걔 집에 철봉 샀잖아 운동한다고 그러니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "걔 집에 철봉 샀잖아 운동한다고 그러니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "G YAE | J I p _ E | CH EO l _ B O ng | S A ss _ J A nh _ A | U n _ D O ng _ H A n _ D A _ G O | G EU _ R EO _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "G YAE | J I p _ E | CH EO l _ B O ng | S A ss _ J A nh _ A | U n _ D O ng _ H A n _ D A _ G O | G EU _ R EO _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "걔/NP | 집/NNG + 에/JKB | 철봉/NNG | 사/VV + 았/EP + 잖아/EF | 운동하/VV + ㄴ다고/EC | 그러/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "걔/NP | 집/NNG + 에/JKB | 철봉/NNG | 사/VV + 았/EP + 잖아/EF | 운동하/VV + ㄴ다고/EC | 그러/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+        "bytes": 11654,
+        "mtime_ns": 1785861079590100100,
+        "sha256": "0fd5b0248be3672ea7b82ea7e167b78dbec0895836f31f79c585680d22679244"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.232",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9869090,
+      "phone_interval_ids": [
+        36648858
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 6.03000020980835,
+          "end": 151.98,
+          "before": "없는데",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15363,
+        "mtime_ns": 1785874931077494700,
+        "sha256": "e99dc78981d2e668c241c511f9f307dc95094c3a3191a036af8fc4cbb6f925ef"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.76",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9870704,
+      "phone_interval_ids": [
+        36654912
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 25,
+          "begin": 13.239999771118164,
+          "end": 43.06,
+          "before": "해요",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "건강검진 하면 꼭 그 다른 비타민은 거론을 안 하는데 비타민 디는 꼭 얘기를 해요"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "건강검진 하면 꼭 그 다른 비타민은 거론을 안 하는데 비타민 디는 꼭 얘기를 해요"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "G EO n _ G A ng _ G EO m _ J I n | H A _ M YEO n | KK O k | G EU | D A _ R EU n | B I _ T A _ M I n _ EU n | G EO _ R O n _ EU l | A n | H A _ N EU n _ D E | B I _ T A _ M I n | D I _ N EU n | KK O k | YAE _ G I _ R EU l | H AE _ YO"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "G EO n _ G A ng _ G EO m _ J I n | H A _ M YEO n | KK O k | G EU | D A _ R EU n | B I _ T A _ M I n _ EU n | G EO _ R O n _ EU l | A n | H A _ N EU n _ D E | B I _ T A _ M I n | D I _ N EU n | KK O k | YAE _ G I _ R EU l | H AE _ YO"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "건강/NNG | 검진/NNG + 하/XSV + 면/EC | 꼭/MAG | 그/IC | 다른/MMD | 비타민/NNG + 은/JX | 거론/NNG + 을/JKO | 안/MAG | 하/VV + 는데/EC | 비타민/NNG | 디/NNG + 는/JX | 꼭/MAG | 얘기/NNG + 를/JKO | 하/VV + 아요/EF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "건강/NNG | 검진/NNG + 하/XSV + 면/EC | 꼭/MAG | 그/IC | 다른/MMD | 비타민/NNG + 은/JX | 거론/NNG + 을/JKO | 안/MAG | 하/VV + 는데/EC | 비타민/NNG | 디/NNG + 는/JX | 꼭/MAG | 얘기/NNG + 를/JKO | 하/VV + 아요/EF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+        "bytes": 23050,
+        "mtime_ns": 1785870978533997000,
+        "sha256": "147fa9e7dc5cde4a80c11e4da3d17411e5662faee4f1583407b8d766ecc647f6"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001270.1.1.257",
+      "session": "SDRW2100001270",
+      "word_interval_id": 868202,
+      "phone_interval_ids": [
+        3164735
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 10,
+          "begin": 2.7200000286102295,
+          "end": 14.83,
+          "before": "가지고",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "집 집이 어디 외출을 나가 가지고"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "집 집이 어디 외출을 나가 가지고"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "J I p | J I p _ I | EO _ D I | OE _ CH U l _ EU l | N A _ G A | G A _ J I _ G O"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "J I p | J I p _ I | EO _ D I | OE _ CH U l _ EU l | N A _ G A | G A _ J I _ G O"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "집집/NNG + 이/JKS | 어디/NP | 외출/NNG + 을/JKO | 나가/VV + 아/EC | 가지/VX + 고/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "집집/NNG + 이/JKS | 어디/NP | 외출/NNG + 을/JKO | 나가/VV + 아/EC | 가지/VX + 고/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+        "bytes": 9266,
+        "mtime_ns": 1785861874744772400,
+        "sha256": "fadc80e2e4d155c1571e1e79b0ad6764dcd837d31ae352ea21aa974578eefb8c"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001321.1.1.247",
+      "session": "SDRW2100001321",
+      "word_interval_id": 960648,
+      "phone_interval_ids": [
+        3507219
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 22,
+          "begin": 14.600000381469727,
+          "end": 28.59,
+          "before": "상태도",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "그래서 아스피린으로만 지금 버티고 있어서 뭐 추후에 어떻게 될지 몰라. 지금 건강검진 상태도"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "그래서 아스피린으로만 지금 버티고 있어서 뭐 추후에 어떻게 될지 몰라. 지금 건강검진 상태도"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "G EU _ R AE _ S EO | A _ S EU _ P I _ R I n _ EU _ R O _ M A n | J I _ G EU m | B EO _ T I _ G O | I ss _ EO _ S EO | M WO | CH U _ H U _ E | EO _ TT EO h _ G E | D OE l _ J I | M O l _ R A | J I _ G EU m | G EO n _ G A ng _ G EO m _ J I n | S A ng _ T AE _ D O"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "G EU _ R AE _ S EO | A _ S EU _ P I _ R I n _ EU _ R O _ M A n | J I _ G EU m | B EO _ T I _ G O | I ss _ EO _ S EO | M WO | CH U _ H U _ E | EO _ TT EO h _ G E | D OE l _ J I | M O l _ R A | J I _ G EU m | G EO n _ G A ng _ G EO m _ J I n | S A ng _ T AE _ D O"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "그래서/MAJ | 아스피린/NNP + 으로/JKB + 만/JX | 지금/MAG | 버티/VV + 고/EC | 있/VX + 어서/EC | 뭐/IC | 추후/NNG + 에/JKB | 어떻/VA + 게/EC | 되/VV + ㄹ지/EF | 모르/VV + 아/EF + ./SF | 지금/MAG | 건강/NNG | 검진/NNG | 상태/NNG + 도/JX"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "그래서/MAJ | 아스피린/NNP + 으로/JKB + 만/JX | 지금/MAG | 버티/VV + 고/EC | 있/VX + 어서/EC | 뭐/IC | 추후/NNG + 에/JKB | 어떻/VA + 게/EC | 되/VV + ㄹ지/EF | 모르/VV + 아/EF + ./SF | 지금/MAG | 건강/NNG | 검진/NNG | 상태/NNG + 도/JX"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+        "bytes": 23657,
+        "mtime_ns": 1785861937145100400,
+        "sha256": "ed16754022cb0a3ef47434ad780643384ef839afec1f7ac69e74b763a0155ba4"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001363.1.1.236",
+      "session": "SDRW2100001363",
+      "word_interval_id": 919019,
+      "phone_interval_ids": [
+        3351206
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 16,
+          "begin": 5.349999904632568,
+          "end": 37.98,
+          "before": "보니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "응. 나는 내 주변에 그러니까 항상 주변을 보니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "응. 나는 내 주변에 그러니까 항상 주변을 보니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "EU ng | N A _ N EU n | N AE | J U _ B YEO n _ E | G EU _ R EO _ N I _ KK A | H A ng _ S A ng | J U _ B YEO n _ EU l | B O _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "EU ng | N A _ N EU n | N AE | J U _ B YEO n _ E | G EU _ R EO _ N I _ KK A | H A ng _ S A ng | J U _ B YEO n _ EU l | B O _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "응/IC + ./SF | 나/NP + 는/JX | 나/NP + 의/JKG | 주변/NNG + 에/JKB | 그러니까/MAJ | 항상/MAG | 주변/NNG + 을/JKO | 보/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "응/IC + ./SF | 나/NP + 는/JX | 나/NP + 의/JKG | 주변/NNG + 에/JKB | 그러니까/MAJ | 항상/MAG | 주변/NNG + 을/JKO | 보/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+        "bytes": 13949,
+        "mtime_ns": 1785861988365011900,
+        "sha256": "9987068ca810305ba4f502d04e69e8c36ef2d617563e6cf76813eb43dfb03bca"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001363.1.1.238",
+      "session": "SDRW2100001363",
+      "word_interval_id": 923468,
+      "phone_interval_ids": [
+        3368680
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 12,
+          "begin": 5.289999961853027,
+          "end": 31.94,
+          "before": "같아",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "주변에는 대부분 다 그렇게 한 것 같아."
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "주변에는 대부분 다 그렇게 한 것 같아."
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "J U _ B YEO n _ E _ N EU n | D AE _ B U _ B U n | D A | G EU _ R EO h _ G E | H A n | G EO s | G A th _ A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "J U _ B YEO n _ E _ N EU n | D AE _ B U _ B U n | D A | G EU _ R EO h _ G E | H A n | G EO s | G A th _ A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "주변/NNG + 에/JKB + 는/JX | 대부분/NNG | 다/MAG | 그렇/VA + 게/EC | 하/VV + ㄴ/ETM | 것/NNB | 같/VA + 아/EF + ./SF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "주변/NNG + 에/JKB + 는/JX | 대부분/NNG | 다/MAG | 그렇/VA + 게/EC | 하/VV + ㄴ/ETM | 것/NNB | 같/VA + 아/EF + ./SF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+        "bytes": 11185,
+        "mtime_ns": 1785861988396106200,
+        "sha256": "a2fb9e99eb31648019d46366a87ba1e4bdbd30f7ea0035e5e90a44d4f61c19e0"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.207",
+      "session": "SDRW2100001387",
+      "word_interval_id": 964896,
+      "phone_interval_ids": [
+        3522324
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 20,
+          "begin": 7.920000076293945,
+          "end": 29.75,
+          "before": "하거든",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "좀 우리가 생각하지도 못했던 분야가 좀 성장하는 기회도 나는 얻었다고 생각을 하거든"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "좀 우리가 생각하지도 못했던 분야가 좀 성장하는 기회도 나는 얻었다고 생각을 하거든"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "J O m | U _ R I _ G A | S AE ng _ G A k _ H A _ J I _ D O | M O s _ H AE ss _ D EO n | B U n _ YA _ G A | J O m | S EO ng _ J A ng _ H A _ N EU n | G I _ H OE _ D O | N A _ N EU n | EO t _ EO ss _ D A _ G O | S AE ng _ G A k _ EU l | H A _ G EO _ D EU n"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "J O m | U _ R I _ G A | S AE ng _ G A k _ H A _ J I _ D O | M O s _ H AE ss _ D EO n | B U n _ YA _ G A | J O m | S EO ng _ J A ng _ H A _ N EU n | G I _ H OE _ D O | N A _ N EU n | EO t _ EO ss _ D A _ G O | S AE ng _ G A k _ EU l | H A _ G EO _ D EU n"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "좀/MAG | 우리/NP + 가/JKS | 생각하/VV + 지/EC + 도/JX | 못하/VX + 았/EP + 던/ETM | 분야/NNG + 가/JKS | 좀/MAG | 성장하/VV + 는/ETM | 기회/NNG + 도/JX | 나/NP + 는/JX | 얻/VV + 었/EP + 다고/EC | 생각/NNG + 을/JKO | 하/VV + 거든/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "좀/MAG | 우리/NP + 가/JKS | 생각하/VV + 지/EC + 도/JX | 못하/VX + 았/EP + 던/ETM | 분야/NNG + 가/JKS | 좀/MAG | 성장하/VV + 는/ETM | 기회/NNG + 도/JX | 나/NP + 는/JX | 얻/VV + 었/EP + 다고/EC | 생각/NNG + 을/JKO | 하/VV + 거든/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+        "bytes": 22559,
+        "mtime_ns": 1785862014730094000,
+        "sha256": "d09b21857e0a8398537705990c905f430c172f00c0d560f6932886f9c8a47cb3"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.269",
+      "session": "SDRW2100001387",
+      "word_interval_id": 968202,
+      "phone_interval_ids": [
+        3534309
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 5.599999904632568,
+          "end": 22.96,
+          "before": "보니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785874931132340300,
+        "sha256": "1cd6b34d9f6b2b73cbc37fa9191240620172325e69dd244e706d358eacbdd704"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    },
+    {
+      "utt_id": "SDRW2100003167.1.1.130",
+      "session": "SDRW2100003167",
+      "word_interval_id": 5630030,
+      "phone_interval_ids": [
+        20813087
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 8,
+          "begin": 1.7300000190734863,
+          "end": 14.229875,
+          "before": "나는지",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "그런 걸 보면 어떤 생각이 나는지"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "그런 걸 보면 어떤 생각이 나는지"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "G EU _ R EO n | G EO l | B O _ M YEO n | EO _ TT EO n | S AE ng _ G A k _ I | N A _ N EU n _ J I"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "G EU _ R EO n | G EO l | B O _ M YEO n | EO _ TT EO n | S AE ng _ G A k _ I | N A _ N EU n _ J I"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "그런/MMD | 거/NNB + ㄹ/JKO | 보/VV + 면/EC | 어떤/MMD | 생각/NNG + 이/JKS | 나/VV + 는지/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "그런/MMD | 거/NNB + ㄹ/JKO | 보/VV + 면/EC | 어떤/MMD | 생각/NNG + 이/JKS | 나/VV + 는지/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+        "bytes": 9509,
+        "mtime_ns": 1785864379892835500,
+        "sha256": "82e7e4fdf81aa4b2318c120965a962bb7fb7c07d66f0aa408763d5d785f706ba"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": true
+    }
+  ],
+  "records": [
+    {
+      "utt_id": "SDRW2100000201.1.1.220",
+      "session": "SDRW2100000201",
+      "word_interval_id": 3067262,
+      "phone_interval_ids": [
+        11147310
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 17,
+          "begin": 10.6899995803833,
+          "end": 98.84,
+          "before": "봐요",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              98.84,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              10.6899995803833,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 16898,
+        "mtime_ns": 1785874930768938600,
+        "sha256": "060d5bc2ec79c7223a87a9a1557637e29d36ff2377b3106cdeffacc8d8d0319f"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 16898,
+        "mtime_ns": 1785874930768938600,
+        "sha256": "060d5bc2ec79c7223a87a9a1557637e29d36ff2377b3106cdeffacc8d8d0319f"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 17201,
+        "mtime_ns": 1785884018469806100,
+        "sha256": "85195e95b14de1c0b01e81ecd09ecbaa824721f4dde6405210ce2f0b85336972"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.362",
+      "session": "SDRW2100000223",
+      "word_interval_id": 3672914,
+      "phone_interval_ids": [
+        13457951
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 10.430000305175781,
+          "end": 49.31,
+          "before": "좀",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "말씀해 주셔서 뭐 감사해요 저도 뭐 형에 대해서 좀"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "말씀해 주셔서 뭐 감사해요 저도 뭐 형에 대해서 좀"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "M A l _ SS EU m _ H AE | J U _ S YEO _ S EO | M WO | G A m _ S A _ H AE _ YO | J EO _ D O | M WO | H YEO ng _ E | D AE _ H AE _ S EO | J O m"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "M A l _ SS EU m _ H AE | J U _ S YEO _ S EO | M WO | G A m _ S A _ H AE _ YO | J EO _ D O | M WO | H YEO ng _ E | D AE _ H AE _ S EO | J O m"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.12999999523162842,
+              49.31,
+              "말씀하/VV + 아/EC | 주/VX + 시/EP + 어서/EC | 뭐/IC | 감사하/VV + 아요/EF | 저/NP + 도/JX | 뭐/IC | 형/NNG + 에/JKB | 대하/VV + 아서/EC | 좀/MAG"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.12999999523162842,
+              10.430000305175781,
+              "말씀하/VV + 아/EC | 주/VX + 시/EP + 어서/EC | 뭐/IC | 감사하/VV + 아요/EF | 저/NP + 도/JX | 뭐/IC | 형/NNG + 에/JKB | 대하/VV + 아서/EC | 좀/MAG"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+        "bytes": 14309,
+        "mtime_ns": 1785870654031365900,
+        "sha256": "212ff34079a0f2126f3357c3b2d1daa4f54dcc3db6551a562c2666419979d4bf"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+        "bytes": 14309,
+        "mtime_ns": 1785870654031365900,
+        "sha256": "212ff34079a0f2126f3357c3b2d1daa4f54dcc3db6551a562c2666419979d4bf"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.362.TextGrid",
+        "bytes": 14615,
+        "mtime_ns": 1785884018495010500,
+        "sha256": "3e1a656decf3716c204628b737a3071998fcbf08f830bf0411f10d4e7f6e2233"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000297.1.1.130",
+      "session": "SDRW2100000297",
+      "word_interval_id": 5472526,
+      "phone_interval_ids": [
+        20232208
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 18,
+          "begin": 6.090000152587891,
+          "end": 27.77,
+          "before": "엄청",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "뭔가 꺼려하면 어쩌지 이런 걱정을 잠깐 했었는데 오히려 나를 엄청"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "뭔가 꺼려하면 어쩌지 이런 걱정을 잠깐 했었는데 오히려 나를 엄청"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "M WO n _ G A | KK EO _ R YEO _ H A _ M YEO n | EO _ JJ EO _ J I | I _ R EO n | G EO k _ J EO ng _ EU l | J A m _ KK A n | H AE ss _ EO ss _ N EU n _ D E | O _ H I _ R YEO | N A _ R EU l | EO m _ CH EO ng"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "M WO n _ G A | KK EO _ R YEO _ H A _ M YEO n | EO _ JJ EO _ J I | I _ R EO n | G EO k _ J EO ng _ EU l | J A m _ KK A n | H AE ss _ EO ss _ N EU n _ D E | O _ H I _ R YEO | N A _ R EU l | EO m _ CH EO ng"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.41999998688697815,
+              27.77,
+              "뭐/NP + 이/VCP + ㄴ가/EF | 꺼리/VV + 어/EC | 하/VX + 면/EC | 어쩌/VV + 지/EF | 이런/MMD | 걱정/NNG + 을/JKO | 잠깐/MAG | 하/VV + 았었/EP + 는데/EC | 오히려/MAG | 나/NP + 를/JKO | 엄청/MAG"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.41999998688697815,
+              6.090000152587891,
+              "뭐/NP + 이/VCP + ㄴ가/EF | 꺼리/VV + 어/EC | 하/VX + 면/EC | 어쩌/VV + 지/EF | 이런/MMD | 걱정/NNG + 을/JKO | 잠깐/MAG | 하/VV + 았었/EP + 는데/EC | 오히려/MAG | 나/NP + 를/JKO | 엄청/MAG"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+        "bytes": 18705,
+        "mtime_ns": 1785860537217964500,
+        "sha256": "91d8fa1fb8a403e5814e9d81ed6dfa52ed1e762a07bb2c08d67d1fcb4edf8c4d"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+        "bytes": 18705,
+        "mtime_ns": 1785860537217964500,
+        "sha256": "91d8fa1fb8a403e5814e9d81ed6dfa52ed1e762a07bb2c08d67d1fcb4edf8c4d"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000297\\SDRW2100000297.1.1.130.TextGrid",
+        "bytes": 19002,
+        "mtime_ns": 1785884018519937500,
+        "sha256": "eb19c039425d54d2ad11f43cbd60820dc3a1f37298639d95933eeae60d0589cd"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000368.1.1.238",
+      "session": "SDRW2100000368",
+      "word_interval_id": 7796138,
+      "phone_interval_ids": [
+        28911825
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 11,
+          "begin": 2.6700000762939453,
+          "end": 17.37,
+          "before": "그랬더니",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "너 진짜 너무 심하구나 그랬어 그랬더니"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "너 진짜 너무 심하구나 그랬어 그랬더니"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "N EO | J I n _ JJ A | N EO _ M U | S I m _ H A _ G U _ N A | G EU _ R AE ss _ EO | G EU _ R AE ss _ D EO _ N I"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "N EO | J I n _ JJ A | N EO _ M U | S I m _ H A _ G U _ N A | G EU _ R AE ss _ EO | G EU _ R AE ss _ D EO _ N I"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.18000000715255737,
+              17.37,
+              "너/NP | 진짜/MAG | 너무/MAG | 심하/VA + 구나/EF | 그러/VV + 었/EP + 어/EF | 그러/VV + 었/EP + 더니/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.18000000715255737,
+              2.6700000762939453,
+              "너/NP | 진짜/MAG | 너무/MAG | 심하/VA + 구나/EF | 그러/VV + 었/EP + 어/EF | 그러/VV + 었/EP + 더니/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+        "bytes": 11304,
+        "mtime_ns": 1785860642504918600,
+        "sha256": "567b6c1fe4abce15d094736da888c86006bf40f881a0d0a1de6950d4d9d0cd24"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+        "bytes": 11304,
+        "mtime_ns": 1785860642504918600,
+        "sha256": "567b6c1fe4abce15d094736da888c86006bf40f881a0d0a1de6950d4d9d0cd24"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000368\\SDRW2100000368.1.1.238.TextGrid",
+        "bytes": 11595,
+        "mtime_ns": 1785884018564581900,
+        "sha256": "ae4e06290490ac2214be4182c544ce91dba7438e67f39b00d548d78a90521203"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.69",
+      "session": "SDRW2100000493",
+      "word_interval_id": 9380013,
+      "phone_interval_ids": [
+        34846649
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 14,
+          "begin": 6.909999847412109,
+          "end": 17.73,
+          "before": "테니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "그런데 웬만하면 친구면은 그래 너 기다려 줄 테니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "그런데 웬만하면 친구면은 그래 너 기다려 줄 테니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "G EU _ R EO n _ D E | WE n _ M A n _ H A _ M YEO n | CH I n _ G U _ M YEO n _ EU n | G EU _ R AE | N EO | G I _ D A _ R YEO | J U l | T E _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "G EU _ R EO n _ D E | WE n _ M A n _ H A _ M YEO n | CH I n _ G U _ M YEO n _ EU n | G EU _ R AE | N EO | G I _ D A _ R YEO | J U l | T E _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.7799999713897705,
+              17.73,
+              "그런데/MAJ | 웬만하/VA + 면/EC | 친구/NNG + 이/VCP + 면/EC + 은/JX | 그래/IC | 너/NP | 기다리/VV + 어/EC | 주/VX + ㄹ/ETM | 터/NNB + 이/VCP + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.7799999713897705,
+              6.909999847412109,
+              "그런데/MAJ | 웬만하/VA + 면/EC | 친구/NNG + 이/VCP + 면/EC + 은/JX | 그래/IC | 너/NP | 기다리/VV + 어/EC | 주/VX + ㄹ/ETM | 터/NNB + 이/VCP + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+        "bytes": 14834,
+        "mtime_ns": 1785860821621684700,
+        "sha256": "f250108ba9426f4972c2edf51930daceec315227ec0d3e7195064c918a8fbf80"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+        "bytes": 14834,
+        "mtime_ns": 1785860821621684700,
+        "sha256": "f250108ba9426f4972c2edf51930daceec315227ec0d3e7195064c918a8fbf80"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.69.TextGrid",
+        "bytes": 15128,
+        "mtime_ns": 1785884018601104700,
+        "sha256": "642a1f146e70ec7e13d7b06fd1fcc2b063ef2c218c9ec17b1327d5049d4fb856"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.102",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9492765,
+      "phone_interval_ids": [
+        35257648
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 38,
+          "begin": 27.969999313354492,
+          "end": 69.31,
+          "before": "쓰니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              69.31,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              27.969999313354492,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29007,
+        "mtime_ns": 1785874930940961400,
+        "sha256": "fa14598a82e75d4dbfa381531e50d9e485d19e6d5589bd88c3684ab765a6950a"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29007,
+        "mtime_ns": 1785874930940961400,
+        "sha256": "fa14598a82e75d4dbfa381531e50d9e485d19e6d5589bd88c3684ab765a6950a"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29307,
+        "mtime_ns": 1785884018651076800,
+        "sha256": "a013fa90fddef1d4678abc73c08283e6a96acc5b667fd37bdb560fb86e024793"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.106",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9497522,
+      "phone_interval_ids": [
+        35275476
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 16,
+          "begin": 7.829999923706055,
+          "end": 79.04,
+          "before": "그",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "그래도 그거 그 그 손을 한번 걷히는 게 그"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "그래도 그거 그 그 손을 한번 걷히는 게 그"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "G EU _ R AE _ D O | G EU _ G EO | G EU | G EU | S O n _ EU l | H A n _ B EO n | G EO t _ H I _ N EU n | G E | G EU"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "G EU _ R AE _ D O | G EU _ G EO | G EU | G EU | S O n _ EU l | H A n _ B EO n | G EO t _ H I _ N EU n | G E | G EU"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.6499999761581421,
+              79.04,
+              "그래도/NNG | 그거/NP | 그/IC | 그/IC | 손/NNG + 을/JKO | 한번/MAG | 걷히/VV + 는/ETM | 거/NNB + 이/JKS | 그/IC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.6499999761581421,
+              7.829999923706055,
+              "그래도/NNG | 그거/NP | 그/IC | 그/IC | 손/NNG + 을/JKO | 한번/MAG | 걷히/VV + 는/ETM | 거/NNB + 이/JKS | 그/IC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+        "bytes": 12639,
+        "mtime_ns": 1785861077380340900,
+        "sha256": "888f004718ce8e6f5dee5f88ddaea917bb3be3d393c8a920fbb691faf1f0e53e"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+        "bytes": 12639,
+        "mtime_ns": 1785861077380340900,
+        "sha256": "888f004718ce8e6f5dee5f88ddaea917bb3be3d393c8a920fbb691faf1f0e53e"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.106.TextGrid",
+        "bytes": 12939,
+        "mtime_ns": 1785884018685589300,
+        "sha256": "5a379112b6f44b9a60aa45fd7a0a6fe8df641d81beb2be474b6e5f70069ff8e4"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.205",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9494337,
+      "phone_interval_ids": [
+        35263585
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 21,
+          "begin": 6.21999979019165,
+          "end": 173.45,
+          "before": "둘째가",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1899999976158142,
+              173.45,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1899999976158142,
+              6.21999979019165,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20167,
+        "mtime_ns": 1785874930974408900,
+        "sha256": "5bf76fcae0f65fb2ee588fc538dbf422158aa0022829cf84942655cad748b3e1"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20167,
+        "mtime_ns": 1785874930974408900,
+        "sha256": "5bf76fcae0f65fb2ee588fc538dbf422158aa0022829cf84942655cad748b3e1"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20461,
+        "mtime_ns": 1785884018712954400,
+        "sha256": "e546be658ed788fa2fa6c2aadaeadd770c2719fa753faa22615bbb22d375a8ab"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.218",
+      "session": "SDRW2100000687",
+      "word_interval_id": 9494391,
+      "phone_interval_ids": [
+        35263790
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 25,
+          "begin": 11.960000038146973,
+          "end": 200.04,
+          "before": "달엔",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              11.960000038146973,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 22452,
+        "mtime_ns": 1785874931005478400,
+        "sha256": "9e1f69ab2bcd11626a5f4619ab06d77f460ed4c2c062c3c170463d7ecff050a0"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 22452,
+        "mtime_ns": 1785874931005478400,
+        "sha256": "9e1f69ab2bcd11626a5f4619ab06d77f460ed4c2c062c3c170463d7ecff050a0"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 22755,
+        "mtime_ns": 1785884018740006600,
+        "sha256": "f406e5a0652aa5825e344d8f86c9081e10abe6878ea57f573e0ef2e40ec8eb9c"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.230",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9873240,
+      "phone_interval_ids": [
+        36664533
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 10,
+          "begin": 3.490000009536743,
+          "end": 157.75,
+          "before": "그러니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "걔 집에 철봉 샀잖아 운동한다고 그러니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "걔 집에 철봉 샀잖아 운동한다고 그러니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "G YAE | J I p _ E | CH EO l _ B O ng | S A ss _ J A nh _ A | U n _ D O ng _ H A n _ D A _ G O | G EU _ R EO _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "G YAE | J I p _ E | CH EO l _ B O ng | S A ss _ J A nh _ A | U n _ D O ng _ H A n _ D A _ G O | G EU _ R EO _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20999999344348907,
+              157.75,
+              "걔/NP | 집/NNG + 에/JKB | 철봉/NNG | 사/VV + 았/EP + 잖아/EF | 운동하/VV + ㄴ다고/EC | 그러/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20999999344348907,
+              3.490000009536743,
+              "걔/NP | 집/NNG + 에/JKB | 철봉/NNG | 사/VV + 았/EP + 잖아/EF | 운동하/VV + ㄴ다고/EC | 그러/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+        "bytes": 11654,
+        "mtime_ns": 1785861079590100100,
+        "sha256": "0fd5b0248be3672ea7b82ea7e167b78dbec0895836f31f79c585680d22679244"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+        "bytes": 11654,
+        "mtime_ns": 1785861079590100100,
+        "sha256": "0fd5b0248be3672ea7b82ea7e167b78dbec0895836f31f79c585680d22679244"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.230.TextGrid",
+        "bytes": 11945,
+        "mtime_ns": 1785884018771077800,
+        "sha256": "7e732f8bfd7141d6d96c88f7dd0f3647e221f39a46a37decc10fa72133a2c4fb"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.232",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9869090,
+      "phone_interval_ids": [
+        36648858
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 6.03000020980835,
+          "end": 151.98,
+          "before": "없는데",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              1.100000023841858,
+              151.98,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              1.100000023841858,
+              6.03000020980835,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15363,
+        "mtime_ns": 1785874931077494700,
+        "sha256": "e99dc78981d2e668c241c511f9f307dc95094c3a3191a036af8fc4cbb6f925ef"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15363,
+        "mtime_ns": 1785874931077494700,
+        "sha256": "e99dc78981d2e668c241c511f9f307dc95094c3a3191a036af8fc4cbb6f925ef"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15657,
+        "mtime_ns": 1785884018796280400,
+        "sha256": "87e4529a78f45efa802c61e3a7d5fc9e180e4f92a669838824abaf9745df59d1"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.76",
+      "session": "SDRW2100000688",
+      "word_interval_id": 9870704,
+      "phone_interval_ids": [
+        36654912
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 25,
+          "begin": 13.239999771118164,
+          "end": 43.06,
+          "before": "해요",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "건강검진 하면 꼭 그 다른 비타민은 거론을 안 하는데 비타민 디는 꼭 얘기를 해요"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "건강검진 하면 꼭 그 다른 비타민은 거론을 안 하는데 비타민 디는 꼭 얘기를 해요"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "G EO n _ G A ng _ G EO m _ J I n | H A _ M YEO n | KK O k | G EU | D A _ R EU n | B I _ T A _ M I n _ EU n | G EO _ R O n _ EU l | A n | H A _ N EU n _ D E | B I _ T A _ M I n | D I _ N EU n | KK O k | YAE _ G I _ R EU l | H AE _ YO"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "G EO n _ G A ng _ G EO m _ J I n | H A _ M YEO n | KK O k | G EU | D A _ R EU n | B I _ T A _ M I n _ EU n | G EO _ R O n _ EU l | A n | H A _ N EU n _ D E | B I _ T A _ M I n | D I _ N EU n | KK O k | YAE _ G I _ R EU l | H AE _ YO"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10000000149011612,
+              43.06,
+              "건강/NNG | 검진/NNG + 하/XSV + 면/EC | 꼭/MAG | 그/IC | 다른/MMD | 비타민/NNG + 은/JX | 거론/NNG + 을/JKO | 안/MAG | 하/VV + 는데/EC | 비타민/NNG | 디/NNG + 는/JX | 꼭/MAG | 얘기/NNG + 를/JKO | 하/VV + 아요/EF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10000000149011612,
+              13.239999771118164,
+              "건강/NNG | 검진/NNG + 하/XSV + 면/EC | 꼭/MAG | 그/IC | 다른/MMD | 비타민/NNG + 은/JX | 거론/NNG + 을/JKO | 안/MAG | 하/VV + 는데/EC | 비타민/NNG | 디/NNG + 는/JX | 꼭/MAG | 얘기/NNG + 를/JKO | 하/VV + 아요/EF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+        "bytes": 23050,
+        "mtime_ns": 1785870978533997000,
+        "sha256": "147fa9e7dc5cde4a80c11e4da3d17411e5662faee4f1583407b8d766ecc647f6"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+        "bytes": 23050,
+        "mtime_ns": 1785870978533997000,
+        "sha256": "147fa9e7dc5cde4a80c11e4da3d17411e5662faee4f1583407b8d766ecc647f6"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.76.TextGrid",
+        "bytes": 23353,
+        "mtime_ns": 1785884018823104900,
+        "sha256": "93b26bf8fc43ae0cd23875b5d4e2a3637e7653cb5339970ff59f406ce442b06e"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001270.1.1.257",
+      "session": "SDRW2100001270",
+      "word_interval_id": 868202,
+      "phone_interval_ids": [
+        3164735
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 10,
+          "begin": 2.7200000286102295,
+          "end": 14.83,
+          "before": "가지고",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "집 집이 어디 외출을 나가 가지고"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "집 집이 어디 외출을 나가 가지고"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "J I p | J I p _ I | EO _ D I | OE _ CH U l _ EU l | N A _ G A | G A _ J I _ G O"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "J I p | J I p _ I | EO _ D I | OE _ CH U l _ EU l | N A _ G A | G A _ J I _ G O"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3100000023841858,
+              14.83,
+              "집집/NNG + 이/JKS | 어디/NP | 외출/NNG + 을/JKO | 나가/VV + 아/EC | 가지/VX + 고/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3100000023841858,
+              2.7200000286102295,
+              "집집/NNG + 이/JKS | 어디/NP | 외출/NNG + 을/JKO | 나가/VV + 아/EC | 가지/VX + 고/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+        "bytes": 9266,
+        "mtime_ns": 1785861874744772400,
+        "sha256": "fadc80e2e4d155c1571e1e79b0ad6764dcd837d31ae352ea21aa974578eefb8c"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+        "bytes": 9266,
+        "mtime_ns": 1785861874744772400,
+        "sha256": "fadc80e2e4d155c1571e1e79b0ad6764dcd837d31ae352ea21aa974578eefb8c"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001270\\SDRW2100001270.1.1.257.TextGrid",
+        "bytes": 9560,
+        "mtime_ns": 1785884018853003300,
+        "sha256": "2a2ddc33268531c91ffbfc048edca15a66a3b450880a1c53c721cd9356aadf1e"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001321.1.1.247",
+      "session": "SDRW2100001321",
+      "word_interval_id": 960648,
+      "phone_interval_ids": [
+        3507219
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 22,
+          "begin": 14.600000381469727,
+          "end": 28.59,
+          "before": "상태도",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "그래서 아스피린으로만 지금 버티고 있어서 뭐 추후에 어떻게 될지 몰라. 지금 건강검진 상태도"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "그래서 아스피린으로만 지금 버티고 있어서 뭐 추후에 어떻게 될지 몰라. 지금 건강검진 상태도"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "G EU _ R AE _ S EO | A _ S EU _ P I _ R I n _ EU _ R O _ M A n | J I _ G EU m | B EO _ T I _ G O | I ss _ EO _ S EO | M WO | CH U _ H U _ E | EO _ TT EO h _ G E | D OE l _ J I | M O l _ R A | J I _ G EU m | G EO n _ G A ng _ G EO m _ J I n | S A ng _ T AE _ D O"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "G EU _ R AE _ S EO | A _ S EU _ P I _ R I n _ EU _ R O _ M A n | J I _ G EU m | B EO _ T I _ G O | I ss _ EO _ S EO | M WO | CH U _ H U _ E | EO _ TT EO h _ G E | D OE l _ J I | M O l _ R A | J I _ G EU m | G EO n _ G A ng _ G EO m _ J I n | S A ng _ T AE _ D O"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.10999999940395355,
+              28.59,
+              "그래서/MAJ | 아스피린/NNP + 으로/JKB + 만/JX | 지금/MAG | 버티/VV + 고/EC | 있/VX + 어서/EC | 뭐/IC | 추후/NNG + 에/JKB | 어떻/VA + 게/EC | 되/VV + ㄹ지/EF | 모르/VV + 아/EF + ./SF | 지금/MAG | 건강/NNG | 검진/NNG | 상태/NNG + 도/JX"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.10999999940395355,
+              14.600000381469727,
+              "그래서/MAJ | 아스피린/NNP + 으로/JKB + 만/JX | 지금/MAG | 버티/VV + 고/EC | 있/VX + 어서/EC | 뭐/IC | 추후/NNG + 에/JKB | 어떻/VA + 게/EC | 되/VV + ㄹ지/EF | 모르/VV + 아/EF + ./SF | 지금/MAG | 건강/NNG | 검진/NNG | 상태/NNG + 도/JX"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+        "bytes": 23657,
+        "mtime_ns": 1785861937145100400,
+        "sha256": "ed16754022cb0a3ef47434ad780643384ef839afec1f7ac69e74b763a0155ba4"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+        "bytes": 23657,
+        "mtime_ns": 1785861937145100400,
+        "sha256": "ed16754022cb0a3ef47434ad780643384ef839afec1f7ac69e74b763a0155ba4"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.247.TextGrid",
+        "bytes": 23957,
+        "mtime_ns": 1785884018885094500,
+        "sha256": "4c5ac0f4bd5f5da7bd94a312e14b03095b24aa95cc66f4d4357bf8ec4b0fba8c"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001363.1.1.236",
+      "session": "SDRW2100001363",
+      "word_interval_id": 919019,
+      "phone_interval_ids": [
+        3351206
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 16,
+          "begin": 5.349999904632568,
+          "end": 37.98,
+          "before": "보니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "응. 나는 내 주변에 그러니까 항상 주변을 보니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "응. 나는 내 주변에 그러니까 항상 주변을 보니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "EU ng | N A _ N EU n | N AE | J U _ B YEO n _ E | G EU _ R EO _ N I _ KK A | H A ng _ S A ng | J U _ B YEO n _ EU l | B O _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "EU ng | N A _ N EU n | N AE | J U _ B YEO n _ E | G EU _ R EO _ N I _ KK A | H A ng _ S A ng | J U _ B YEO n _ EU l | B O _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.20000000298023224,
+              37.98,
+              "응/IC + ./SF | 나/NP + 는/JX | 나/NP + 의/JKG | 주변/NNG + 에/JKB | 그러니까/MAJ | 항상/MAG | 주변/NNG + 을/JKO | 보/VV + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.20000000298023224,
+              5.349999904632568,
+              "응/IC + ./SF | 나/NP + 는/JX | 나/NP + 의/JKG | 주변/NNG + 에/JKB | 그러니까/MAJ | 항상/MAG | 주변/NNG + 을/JKO | 보/VV + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+        "bytes": 13949,
+        "mtime_ns": 1785861988365011900,
+        "sha256": "9987068ca810305ba4f502d04e69e8c36ef2d617563e6cf76813eb43dfb03bca"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+        "bytes": 13949,
+        "mtime_ns": 1785861988365011900,
+        "sha256": "9987068ca810305ba4f502d04e69e8c36ef2d617563e6cf76813eb43dfb03bca"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.236.TextGrid",
+        "bytes": 14243,
+        "mtime_ns": 1785884018914297500,
+        "sha256": "039401a6c000103f751b55d482a5df3fec5388cf047834459a820dc8a066553f"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001363.1.1.238",
+      "session": "SDRW2100001363",
+      "word_interval_id": 923468,
+      "phone_interval_ids": [
+        3368680
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 12,
+          "begin": 5.289999961853027,
+          "end": 31.94,
+          "before": "같아",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "주변에는 대부분 다 그렇게 한 것 같아."
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "주변에는 대부분 다 그렇게 한 것 같아."
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "J U _ B YEO n _ E _ N EU n | D AE _ B U _ B U n | D A | G EU _ R EO h _ G E | H A n | G EO s | G A th _ A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "J U _ B YEO n _ E _ N EU n | D AE _ B U _ B U n | D A | G EU _ R EO h _ G E | H A n | G EO s | G A th _ A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5600000023841858,
+              31.94,
+              "주변/NNG + 에/JKB + 는/JX | 대부분/NNG | 다/MAG | 그렇/VA + 게/EC | 하/VV + ㄴ/ETM | 것/NNB | 같/VA + 아/EF + ./SF"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5600000023841858,
+              5.289999961853027,
+              "주변/NNG + 에/JKB + 는/JX | 대부분/NNG | 다/MAG | 그렇/VA + 게/EC | 하/VV + ㄴ/ETM | 것/NNB | 같/VA + 아/EF + ./SF"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+        "bytes": 11185,
+        "mtime_ns": 1785861988396106200,
+        "sha256": "a2fb9e99eb31648019d46366a87ba1e4bdbd30f7ea0035e5e90a44d4f61c19e0"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+        "bytes": 11185,
+        "mtime_ns": 1785861988396106200,
+        "sha256": "a2fb9e99eb31648019d46366a87ba1e4bdbd30f7ea0035e5e90a44d4f61c19e0"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001363\\SDRW2100001363.1.1.238.TextGrid",
+        "bytes": 11482,
+        "mtime_ns": 1785884018946473700,
+        "sha256": "d7a1ddab960423e7c591fe601f010dc47dd9ee5a67c0b5dedf3e83ee306ed431"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.207",
+      "session": "SDRW2100001387",
+      "word_interval_id": 964896,
+      "phone_interval_ids": [
+        3522324
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 20,
+          "begin": 7.920000076293945,
+          "end": 29.75,
+          "before": "하거든",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "좀 우리가 생각하지도 못했던 분야가 좀 성장하는 기회도 나는 얻었다고 생각을 하거든"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "좀 우리가 생각하지도 못했던 분야가 좀 성장하는 기회도 나는 얻었다고 생각을 하거든"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "J O m | U _ R I _ G A | S AE ng _ G A k _ H A _ J I _ D O | M O s _ H AE ss _ D EO n | B U n _ YA _ G A | J O m | S EO ng _ J A ng _ H A _ N EU n | G I _ H OE _ D O | N A _ N EU n | EO t _ EO ss _ D A _ G O | S AE ng _ G A k _ EU l | H A _ G EO _ D EU n"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "J O m | U _ R I _ G A | S AE ng _ G A k _ H A _ J I _ D O | M O s _ H AE ss _ D EO n | B U n _ YA _ G A | J O m | S EO ng _ J A ng _ H A _ N EU n | G I _ H OE _ D O | N A _ N EU n | EO t _ EO ss _ D A _ G O | S AE ng _ G A k _ EU l | H A _ G EO _ D EU n"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.1599999964237213,
+              29.75,
+              "좀/MAG | 우리/NP + 가/JKS | 생각하/VV + 지/EC + 도/JX | 못하/VX + 았/EP + 던/ETM | 분야/NNG + 가/JKS | 좀/MAG | 성장하/VV + 는/ETM | 기회/NNG + 도/JX | 나/NP + 는/JX | 얻/VV + 었/EP + 다고/EC | 생각/NNG + 을/JKO | 하/VV + 거든/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.1599999964237213,
+              7.920000076293945,
+              "좀/MAG | 우리/NP + 가/JKS | 생각하/VV + 지/EC + 도/JX | 못하/VX + 았/EP + 던/ETM | 분야/NNG + 가/JKS | 좀/MAG | 성장하/VV + 는/ETM | 기회/NNG + 도/JX | 나/NP + 는/JX | 얻/VV + 었/EP + 다고/EC | 생각/NNG + 을/JKO | 하/VV + 거든/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+        "bytes": 22559,
+        "mtime_ns": 1785862014730094000,
+        "sha256": "d09b21857e0a8398537705990c905f430c172f00c0d560f6932886f9c8a47cb3"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+        "bytes": 22559,
+        "mtime_ns": 1785862014730094000,
+        "sha256": "d09b21857e0a8398537705990c905f430c172f00c0d560f6932886f9c8a47cb3"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.207.TextGrid",
+        "bytes": 22853,
+        "mtime_ns": 1785884018980030900,
+        "sha256": "4f8ce009e9a98a5444a3eb5b7b84c207f4aee7adfd6b2d35e630105074d256db"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.269",
+      "session": "SDRW2100001387",
+      "word_interval_id": 968202,
+      "phone_interval_ids": [
+        3534309
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 15,
+          "begin": 5.599999904632568,
+          "end": 22.96,
+          "before": "보니까",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.5899999737739563,
+              22.96,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.5899999737739563,
+              5.599999904632568,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785874931132340300,
+        "sha256": "1cd6b34d9f6b2b73cbc37fa9191240620172325e69dd244e706d358eacbdd704"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785874931132340300,
+        "sha256": "1cd6b34d9f6b2b73cbc37fa9191240620172325e69dd244e706d358eacbdd704"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14387,
+        "mtime_ns": 1785884019015146000,
+        "sha256": "19a09df816a3a5694359403419adf325ef23c3ca67c7fe0bc4a525936fb8b552"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100003167.1.1.130",
+      "session": "SDRW2100003167",
+      "word_interval_id": 5630030,
+      "phone_interval_ids": [
+        20813087
+      ],
+      "phone_labels_after_silence_normalization": [
+        ""
+      ],
+      "tier_changes": [
+        {
+          "tier": "words",
+          "interval_index": 8,
+          "begin": 1.7300000190734863,
+          "end": 14.229875,
+          "before": "나는지",
+          "after": ""
+        },
+        {
+          "tier": "utterance",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "그런 걸 보면 어떤 생각이 나는지"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "그런 걸 보면 어떤 생각이 나는지"
+            ]
+          ]
+        },
+        {
+          "tier": "utterance_orth_r",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "G EU _ R EO n | G EO l | B O _ M YEO n | EO _ TT EO n | S AE ng _ G A k _ I | N A _ N EU n _ J I"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "G EU _ R EO n | G EO l | B O _ M YEO n | EO _ TT EO n | S AE ng _ G A k _ I | N A _ N EU n _ J I"
+            ]
+          ]
+        },
+        {
+          "tier": "morph_analysis_utt",
+          "change": "label support follows corrected lexical word span",
+          "before_nonempty_spans": [
+            [
+              0.3400000035762787,
+              14.229875,
+              "그런/MMD | 거/NNB + ㄹ/JKO | 보/VV + 면/EC | 어떤/MMD | 생각/NNG + 이/JKS | 나/VV + 는지/EC"
+            ]
+          ],
+          "after_nonempty_spans": [
+            [
+              0.3400000035762787,
+              1.7300000190734863,
+              "그런/MMD | 거/NNB + ㄹ/JKO | 보/VV + 면/EC | 어떤/MMD | 생각/NNG + 이/JKS | 나/VV + 는지/EC"
+            ]
+          ]
+        }
+      ],
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+        "bytes": 9509,
+        "mtime_ns": 1785864379892835500,
+        "sha256": "82e7e4fdf81aa4b2318c120965a962bb7fb7c07d66f0aa408763d5d785f706ba"
+      },
+      "old_policy_validation_passed": true,
+      "replacement_validation_pending": false,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_phone_only_silence_word_20260805\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+        "bytes": 9509,
+        "mtime_ns": 1785864379892835500,
+        "sha256": "82e7e4fdf81aa4b2318c120965a962bb7fb7c07d66f0aa408763d5d785f706ba"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003167\\SDRW2100003167.1.1.130.TextGrid",
+        "bytes": 9803,
+        "mtime_ns": 1785884019042043000,
+        "sha256": "003be4702053732c2e68a135a2e1479316b821f62c9a05f2bbbc7618f59f6ede"
+      },
+      "replacement_validation_passed": true
+    }
+  ],
+  "mutation_scope": "derived partial TextGrid only: one words label becomes blank and utterance/search label support follows the corrected lexical span; MFA word/phone times, phone labels, DB, WAV, LAB and CSV unchanged",
+  "repaired_count": 19,
+  "repaired_ids": [
+    "SDRW2100000201.1.1.220",
+    "SDRW2100000223.1.1.362",
+    "SDRW2100000297.1.1.130",
+    "SDRW2100000368.1.1.238",
+    "SDRW2100000493.1.1.69",
+    "SDRW2100000687.1.1.102",
+    "SDRW2100000687.1.1.106",
+    "SDRW2100000687.1.1.205",
+    "SDRW2100000687.1.1.218",
+    "SDRW2100000688.1.1.230",
+    "SDRW2100000688.1.1.232",
+    "SDRW2100000688.1.1.76",
+    "SDRW2100001270.1.1.257",
+    "SDRW2100001321.1.1.247",
+    "SDRW2100001363.1.1.236",
+    "SDRW2100001363.1.1.238",
+    "SDRW2100001387.1.1.207",
+    "SDRW2100001387.1.1.269",
+    "SDRW2100003167.1.1.130"
+  ]
+}

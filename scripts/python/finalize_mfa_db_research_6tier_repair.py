@@ -101,6 +101,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--failed-report", type=Path, required=True)
     parser.add_argument("--repair-manifest", type=Path, required=True)
+    parser.add_argument("--subsequent-repair-manifest", type=Path)
     parser.add_argument("--db", type=Path, required=True)
     parser.add_argument("--year", required=True)
     parser.add_argument("--search-master-root", type=Path, required=True)
@@ -214,6 +215,7 @@ def main() -> int:
         exporter.load_targeted_repair_resume(
             failed_report_path=args.failed_report,
             repair_manifest_path=args.repair_manifest,
+            subsequent_repair_manifest_path=args.subsequent_repair_manifest,
             db_path=db_path,
             year=year,
             search_master_root=search_root,

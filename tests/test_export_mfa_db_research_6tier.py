@@ -321,6 +321,56 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 word_rows = list(csv.DictReader(stream))
             self.assertEqual(word_rows[-1]["end_seconds"], "153.960000")
 
+    def test_phone_only_trailing_silence_does_not_duplicate_final_word(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            output = root / "output"
+            self.make_db(db)
+            connection = sqlite3.connect(db)
+            # MFA occasionally leaves the final lexical word_id on the
+            # trailing silence word interval.  The linked phone remains sil.
+            connection.execute(
+                "UPDATE word_interval SET word_id=1 WHERE id=3"
+            )
+            connection.commit()
+            connection.close()
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search)
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+            )
+            self.assertEqual(report["status"], "success")
+            self.assertEqual(
+                report["counts"][
+                    "phone_only_silence_word_intervals_normalized"
+                ],
+                1,
+            )
+            textgrid = output / "2021" / "S1" / "S1.1.TextGrid"
+            _duration, tiers = parse_mfa_textgrid(textgrid)
+            self.assertEqual(tiers["words"][-1][2], "")
+            table_root = output / "2021" / "_tables"
+            with gzip.open(
+                table_root / "utterance_alignment.csv.gz",
+                "rt",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                utterance = next(csv.DictReader(stream))
+            self.assertEqual(utterance["n_mfa_words_aligned"], "1")
+            self.assertEqual(utterance["lab_word_count_match"], "true")
+            self.assertEqual(utterance["word_label_sequence_match"], "true")
+
     def test_source_and_alignment_reference_positions_are_not_conflated(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -453,6 +503,14 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
             self.assertFalse((table_root / "word_intervals_mfa.csv.gz").exists())
             self.assertFalse((table_root / "phone_intervals_mfa.csv.gz").exists())
             self.assertFalse((table_root / "excluded_utterances.csv.gz").exists())
+            self.assertTrue((table_root / "TABLES_FAILURE.json").is_file())
+            failure = json.loads(
+                (table_root / "TABLES_FAILURE.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(failure["status"], "failed")
+            self.assertGreater(len(failure["errors"]), 0)
             self.make_search(search)
             recovered = export_database(
                 db_path=db,

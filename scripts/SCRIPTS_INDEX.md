@@ -254,6 +254,13 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |
 | collect_research_6tier_regression_evidence.py | 로컬 60발화·재출력·Parquet·10k 벤치 결과를 작은 추적 JSON으로 집계 | `outputs/reports/EVIDENCE_research_6tier_post_review_20260801.json` success |
 
+## 2021 checkpoint 국소 복구·QC (2026-08-05)
+
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| repair_mfa_textgrid_phone_only_silence_words.py | 동반표 실패에서 정확히 `LAB N : MFA N+1`인 발화를 선별하고, 추가 word interval에 연결된 phone이 전부 무음임을 DB에서 입증한다. 기존 파생 TextGrid를 SHA archive한 뒤 words 중복 표지만 비우고 검색 tier의 유표 span을 실제 lexical 끝에 맞춘다. phone·시간·텍스트·DB·WAV·LAB·CSV는 불변 | 2021 실자료 preflight 19/19, 적용 19/19 success |
+| resume_mfa_year_checkpoint_qc.ps1 | 성공한 direct export를 MFA/LAB/전수 생성 반복 없이 연도 staging으로 승격하고 독립 전수 감사·DB 표본 24건 재수출까지 연결. 정본 채택과 연구자 승인은 자동 수행하지 않음 | Windows PowerShell 5.1 안전·호환 검사 통과; 2021 성공 export 대기 |
+
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장

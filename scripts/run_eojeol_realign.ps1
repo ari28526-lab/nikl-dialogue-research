@@ -28,6 +28,7 @@ param(
     [string]$ExportApprovedExclusionsContract = "",
     [string]$DirectExportFailedReport = "",
     [string]$DirectExportRepairManifest = "",
+    [string]$DirectExportSubsequentRepairManifest = "",
     [string]$CommonPronEquivalenceReport = "",
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
@@ -50,6 +51,18 @@ if (
     Write-Error (
         "-DirectExportFailedReport와 -DirectExportRepairManifest는 " +
         "함께 지정해야 함"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace(
+        $DirectExportSubsequentRepairManifest
+    ) -and
+    [string]::IsNullOrWhiteSpace($DirectExportRepairManifest)
+) {
+    Write-Error (
+        "-DirectExportSubsequentRepairManifest에는 " +
+        "-DirectExportRepairManifest가 필수임"
     )
     exit 1
 }
@@ -2489,6 +2502,16 @@ foreach ($y in $years) {
                     '--failed-report', $DirectExportFailedReport,
                     '--repair-manifest', $DirectExportRepairManifest
                 )
+                if (
+                    -not [string]::IsNullOrWhiteSpace(
+                        $DirectExportSubsequentRepairManifest
+                    )
+                ) {
+                    $directExportArgs += @(
+                        '--subsequent-repair-manifest',
+                        $DirectExportSubsequentRepairManifest
+                    )
+                }
                 Say (
                     "$y [3/3-direct-repair] 통과한 전수 checkpoint를 " +
                     "재사용하고 동반표부터 재개"

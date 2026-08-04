@@ -23,6 +23,8 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
         tables = partial / "_tables"
         tables.mkdir(parents=True)
         table_records = {}
+        exclusions = root / "approved_exclusions.json"
+        exclusions.write_text("{}\n", encoding="utf-8")
         for name, filename in {
             "utterances": "utterance_alignment.csv.gz",
             "words": "word_intervals_mfa.csv.gz",
@@ -40,6 +42,9 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
             "year": "2021",
             "input_contract_id": "INPUT",
             "alignment_contract_id": "ALIGN",
+            "approved_exclusions_contract": file_fingerprint(
+                exclusions, with_sha256=True
+            ),
             "tables": table_records,
             "counts": {
                 "utterances": 2,
@@ -80,6 +85,10 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
         alignment_id = alignment["alignment_contract_id"]
         companion["alignment_contract_id"] = alignment_id
         atomic_write_json(tables / "TABLES_MANIFEST.json", companion)
+        base_repair = root / "base_repair.json"
+        later_repair = root / "later_repair.json"
+        base_repair.write_text('{"status":"success"}\n', encoding="utf-8")
+        later_repair.write_text('{"status":"success"}\n', encoding="utf-8")
         report = {
             "schema_version": "mfa_research_6tier_export.v1",
             "status": "success",
@@ -104,6 +113,14 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
                 "counts": {"active_lab_ids": 2},
             },
             "companion_tables": companion,
+            "resume_checkpoint": {
+                "targeted_repair_manifest": file_fingerprint(
+                    base_repair, with_sha256=True
+                ),
+                "subsequent_targeted_repair_manifest": file_fingerprint(
+                    later_repair, with_sha256=True
+                ),
+            },
         }
         contract = root / "alignment.json"
         ready = root / "ready.json"
@@ -160,6 +177,7 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
             "staging_root": final_root,
             "existing_final_root": root / "canonical",
             "input_integrity_report": integrity,
+            "approved_exclusions_contract": exclusions,
         }
 
     def test_promotes_and_is_idempotent_after_move(self):
@@ -192,6 +210,34 @@ class PromoteMfaDirectExportCheckpointTests(unittest.TestCase):
             data["models"]["acoustic"]["sha256"] = "changed"
             atomic_write_json(args["alignment_contract_path"], data)
             with self.assertRaisesRegex(RuntimeError, "recomputation mismatch"):
+                promote_checkpoint(**args)
+
+    def test_rejects_export_exclusion_contract_tampering(self):
+        with tempfile.TemporaryDirectory() as temp:
+            args = self.fixture(Path(temp))
+            args["approved_exclusions_contract"].write_text(
+                '{"changed": true}\n', encoding="utf-8"
+            )
+            with self.assertRaisesRegex(
+                RuntimeError, "approved export exclusions size mismatch"
+            ):
+                promote_checkpoint(**args)
+
+    def test_rejects_repair_manifest_tampering(self):
+        with tempfile.TemporaryDirectory() as temp:
+            args = self.fixture(Path(temp))
+            report = json.loads(
+                args["export_report_path"].read_text(encoding="utf-8")
+            )
+            repair = Path(
+                report["resume_checkpoint"][
+                    "subsequent_targeted_repair_manifest"
+                ]["path"]
+            )
+            repair.write_text('{"changed":true}\n', encoding="utf-8")
+            with self.assertRaisesRegex(
+                RuntimeError, "repair evidence size mismatch"
+            ):
                 promote_checkpoint(**args)
 
 

@@ -1,6 +1,6 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-04 KST
+최종 갱신: 2026-08-05 KST
 
 이 문서는 append-only 일지가 아니다. 현재 상태가 바뀌면 전체를 교체한다.
 이전 전체본은 `docs/archive/PROJECT_CURRENT_STATE_20260801_full.md`에 보존한다.
@@ -16,6 +16,26 @@
 
 MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실제 실현 판정,
 음소 전사 정답, 음운론적 분석 결과로 취급하지 않는다.
+
+## 2021 현재 실행 상태
+
+- 공통 Jamo r2 MFA 계산은 완료됐고 보존 DB는
+  `D:\mfa_tmp\2021\2021.db`다. 정렬 계약 ID는 `5ff1865744c85d…`이며
+  MFA·LAB·DB 계산을 다시 실행하지 않는다.
+- 6-tier 전수 생성·검증도 1,371,883건까지 완료됐다. 최종 동반표 검사에서
+  MFA DB가 후행 무음 `sil`에 마지막 어절 ID를 남긴 19발화를 발견해 안전
+  중단했다. 이는 실제 어절 추가나 phone 정렬 오류가 아니다.
+- 생산 규칙은 “연결된 phone이 하나 이상이고 전부 무음인 word interval은
+  시간·phone을 유지하고 `words` 표지만 빈칸으로 정규화”로 확정했다.
+  `utterance`, `utterance_orth_r`, `morph_analysis_utt`의 텍스트는 바꾸지 않고
+  유표 구간 끝만 실제 마지막 lexical word 끝에 맞춘다.
+- 2026-08-05에 해당 파생 TextGrid 19건을 SHA 보관한 뒤 원자 교체했다.
+  `phones_mfa`·`phoneme_r_auto`, DB, WAV, LAB, 원본 CSV, 2020 완성본은
+  변경하지 않았다. 적용 manifest는
+  `outputs/reports/REPAIR_2021_phone_only_silence_word_20260805.json`이다.
+- 다음 단계는 보존된 네 gzip partial을 새 규칙으로 다시 쓰는 동반표 전수
+  1회다. 그 뒤 checkpoint 승격, 독립 연도 전수 감사, DB 표본 24건 재수출,
+  연구자 표본 Gate를 수행한다. 이 Gate 전에는 2022를 시작하지 않는다.
 
 ## 동결된 생산 계약
 

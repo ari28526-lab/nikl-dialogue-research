@@ -261,7 +261,74 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
             )
             contract.write_text(json.dumps(contract_data), encoding="utf-8")
 
-            destination.write_bytes(b"tampered")
+            subsequent_archive = (
+                root / "archive2" / "2021" / "S1" / "U3.TextGrid"
+            )
+            subsequent_archive.parent.mkdir(parents=True, exist_ok=True)
+            subsequent_archive.write_bytes(destination.read_bytes())
+            source_partial = root / "2021_utterances.csv.gz.partial"
+            source_partial.write_bytes(b"complete closed gzip placeholder")
+            destination.write_bytes(b"second repair")
+            subsequent_manifest = root / "subsequent_repair.json"
+            subsequent_payload = {
+                "schema_version": (
+                    "mfa_textgrid_phone_only_silence_word_repair.v1"
+                ),
+                "status": "success",
+                "year": "2021",
+                "db_path": str(db),
+                "search_master_root": str(search),
+                "output_root": str(output),
+                "alignment_contract_id": alignment_id,
+                "input_contract_id": "INPUT",
+                "source_companion_utterance_partial": file_fingerprint(
+                    source_partial, with_sha256=True
+                ),
+                "source_mismatch_count": 1,
+                "candidate_count": 1,
+                "repaired_count": 1,
+                "repaired_ids": ["U3"],
+                "records": [
+                    {
+                        "utt_id": "U3",
+                        "destination": str(destination),
+                        "destination_before": file_fingerprint(
+                            subsequent_archive, with_sha256=True
+                        ),
+                        "destination_after": file_fingerprint(
+                            destination, with_sha256=True
+                        ),
+                        "archive_path": str(subsequent_archive),
+                        "archive_fingerprint": file_fingerprint(
+                            subsequent_archive, with_sha256=True
+                        ),
+                        "old_policy_validation_passed": True,
+                        "replacement_validation_passed": True,
+                    }
+                ],
+            }
+            subsequent_manifest.write_text(
+                json.dumps(subsequent_payload), encoding="utf-8"
+            )
+            chained = load_targeted_repair_resume(
+                failed_report_path=failed_report,
+                repair_manifest_path=repair_manifest,
+                subsequent_repair_manifest_path=subsequent_manifest,
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                alignment_contract_id=alignment_id,
+                input_contract_id="INPUT",
+                reconciliation=reconciliation,
+                source_utterance_count=3,
+            )
+            self.assertEqual(
+                chained[3]["subsequent_repaired_ids"], ["U3"]
+            )
+
             with self.assertRaisesRegex(
                 RuntimeError, "invalid targeted repair evidence"
             ):

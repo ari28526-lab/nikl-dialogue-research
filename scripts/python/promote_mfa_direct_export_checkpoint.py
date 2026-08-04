@@ -122,6 +122,7 @@ def promote_checkpoint(
     staging_root: Path,
     existing_final_root: Path,
     input_integrity_report: Path,
+    approved_exclusions_contract: Path,
     dry_run: bool = False,
 ) -> dict:
     require(year in {"2021", "2022", "2023", "2024", "2025"}, "unsupported year")
@@ -151,6 +152,27 @@ def promote_checkpoint(
     require(int(counts.get("alignment_missing", 0)) == 0, "export contains missing alignments")
     require(int(counts.get("search_row_missing", 0)) == 0, "export contains missing search rows")
     require(int(counts.get("spn_intervals", 0)) == 0, "export contains spn intervals")
+    resume = report.get("resume_checkpoint") or {}
+    repair_evidence: dict[str, dict[str, object]] = {}
+    for key in (
+        "targeted_repair_manifest",
+        "subsequent_targeted_repair_manifest",
+    ):
+        record = resume.get(key)
+        if record is None:
+            continue
+        require(isinstance(record, dict), f"invalid repair evidence: {key}")
+        path = Path(str(record.get("path", ""))).resolve()
+        require(path.is_file(), f"repair evidence missing: {key}")
+        require(
+            path.stat().st_size == int(record.get("bytes", -1)),
+            f"repair evidence size mismatch: {key}",
+        )
+        require(
+            sha256_file(path) == str(record.get("sha256", "")),
+            f"repair evidence SHA mismatch: {key}",
+        )
+        repair_evidence[key] = file_fingerprint(path, with_sha256=True)
     reconciliation = report.get("exact_id_reconciliation") or {}
     require(
         reconciliation.get("status") == "passed"
@@ -207,6 +229,23 @@ def promote_checkpoint(
     require(str(companion.get("year")) == year, "companion table year mismatch")
     require(str(companion.get("input_contract_id", "")) == input_id, "companion input ID mismatch")
     require(str(companion.get("alignment_contract_id", "")) == alignment_id, "companion alignment ID mismatch")
+    exclusion_record = companion.get("approved_exclusions_contract") or {}
+    approved_exclusions_contract = approved_exclusions_contract.resolve()
+    require(approved_exclusions_contract.is_file(), "approved export exclusions missing")
+    require(
+        same_path(exclusion_record.get("path"), approved_exclusions_contract),
+        "approved export exclusions path mismatch",
+    )
+    require(
+        approved_exclusions_contract.stat().st_size
+        == int(exclusion_record.get("bytes", -1)),
+        "approved export exclusions size mismatch",
+    )
+    require(
+        sha256_file(approved_exclusions_contract)
+        == str(exclusion_record.get("sha256", "")),
+        "approved export exclusions SHA mismatch",
+    )
     table_verification = verify_table_files(active_year_root, companion)
 
     textgrid_count = int(counts.get("created", 0)) + int(counts.get("validated_existing", 0))
@@ -308,6 +347,9 @@ def promote_checkpoint(
             "align_marker": str(align_marker_path.resolve()),
             "merge_marker": str(merge_marker_path.resolve()),
             "input_integrity_report": str(input_integrity_report.resolve()),
+            "approved_exclusions_contract": str(
+                approved_exclusions_contract
+            ),
         },
         "evidence": {
             "export_report": file_fingerprint(export_report_path, with_sha256=True),
@@ -316,6 +358,10 @@ def promote_checkpoint(
             "input_integrity_report": file_fingerprint(
                 input_integrity_report.resolve(), with_sha256=True
             ),
+            "approved_exclusions_contract": file_fingerprint(
+                approved_exclusions_contract, with_sha256=True
+            ),
+            "repair_manifests": repair_evidence,
         },
         "counts": {"textgrids": textgrid_count, "active_labs": lab_count},
         "table_verification": table_verification,
@@ -357,6 +403,9 @@ def main() -> int:
     parser.add_argument("--staging-root", type=Path, required=True)
     parser.add_argument("--existing-final-root", type=Path, required=True)
     parser.add_argument("--input-integrity-report", type=Path, required=True)
+    parser.add_argument(
+        "--approved-exclusions-contract", type=Path, required=True
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     result = promote_checkpoint(
@@ -373,6 +422,7 @@ def main() -> int:
         staging_root=args.staging_root,
         existing_final_root=args.existing_final_root,
         input_integrity_report=args.input_integrity_report,
+        approved_exclusions_contract=args.approved_exclusions_contract,
         dry_run=args.dry_run,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))

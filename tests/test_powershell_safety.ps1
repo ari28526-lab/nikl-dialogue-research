@@ -14,6 +14,7 @@ $files = @(
     (Join-Path $root (
         'scripts\resume_year_export_after_post_mfa_review.ps1'
     )),
+    (Join-Path $root 'scripts\resume_mfa_year_checkpoint_qc.ps1'),
     (Join-Path $root 'scripts\verify_production_source_contract.ps1'),
     (Join-Path $root 'scripts\resume_2020_morph_search.ps1'),
     (Join-Path $root 'scripts\prepare_2020_mfa_approval_review.ps1'),

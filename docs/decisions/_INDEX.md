@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-04 KST
+최종 갱신: 2026-08-05 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -47,6 +47,7 @@
 | `DECISION_MFA_float32_terminal_boundary_normalization_20260805.md` | MFA DB float32 종단시각과 WAV 프레임 duration의 미세 표현 차이만 동적 허용치로 0/xmax 정규화하고 TextGrid·동반표·보고서에 동일 반영하는 생산 정책 |
 | `DECISION_MFA_alignment_contract_semantic_checkpoint_identity_20260805.md` | 재실행 시각이 아닌 builder canonical identity로 정렬 계약 동일성을 재계산하고 같은 의미 계약 파일은 다시 쓰지 않는 checkpoint 정책 |
 | `DECISION_MFA_direct_export_checkpoint_promotion_20260805.md` | 성공한 direct export의 계약·DB·exact-ID·동반표 SHA를 재검증해 연도 staging만 비재계산 승격하고 독립 QC로 넘기는 정책 |
+| `DECISION_MFA_phone_only_silence_word_interval_20260805.md` | 전부 무음 phone만 연결된 word interval의 중복 어절 표지를 제거하되 시간·phone·텍스트·원본을 보존하는 정규화와 계층 repair 이력 정책 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구

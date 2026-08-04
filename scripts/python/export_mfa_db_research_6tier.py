@@ -43,7 +43,7 @@ from phoneme_roman import (
     load_acoustic_meta,
     model_group_lookup,
 )
-from pipeline_common import atomic_write_json, file_fingerprint
+from pipeline_common import atomic_text_writer, atomic_write_json, file_fingerprint
 from realign_eojeol_build_corpus import (
     LAB_INPUT_VERSION,
     MISSING,
@@ -368,6 +368,9 @@ def _session_intervals(
     utterance_ids: Sequence[int],
     word_labels: Mapping[int, str],
     phone_labels: Mapping[int, tuple[str, str]],
+    normalization_counts: Counter[str] | None = None,
+    *,
+    normalize_phone_only_silence_words: bool = True,
 ) -> tuple[dict[int, list[tuple]], dict[int, list[tuple]]]:
     marks = placeholders(len(utterance_ids))
     words: dict[int, list[tuple]] = defaultdict(list)
@@ -404,6 +407,40 @@ def _session_intervals(
                 int(word_interval_id) if word_interval_id is not None else None,
             )
         )
+
+    # MFA can attach a terminal silence phone to a word_interval whose
+    # word_id still points at the final lexical word.  Treating that row as
+    # lexical duplicates the final eojeol across the long trailing silence.
+    # Phone evidence is authoritative for this narrow classification: only
+    # intervals with at least one linked phone and no non-silence phone are
+    # blanked.  Times and phone intervals are never changed.
+    phones_by_word: dict[int, list[str]] = defaultdict(list)
+    for utterance_rows in phones.values():
+        for _interval_id, _begin, _end, label, word_interval_id in utterance_rows:
+            if word_interval_id is not None:
+                phones_by_word[int(word_interval_id)].append(str(label))
+    phone_only_silence_word_ids = {
+        word_interval_id
+        for word_interval_id, labels in phones_by_word.items()
+        if labels and all(not label.strip() for label in labels)
+    }
+    normalized = 0
+    if normalize_phone_only_silence_words and phone_only_silence_word_ids:
+        for uid, utterance_rows in list(words.items()):
+            rewritten: list[tuple] = []
+            for interval_id, begin, end, label in utterance_rows:
+                if (
+                    interval_id in phone_only_silence_word_ids
+                    and str(label).strip()
+                ):
+                    label = ""
+                    normalized += 1
+                rewritten.append((interval_id, begin, end, label))
+            words[uid] = rewritten
+    if normalization_counts is not None and normalized:
+        normalization_counts[
+            "phone_only_silence_word_intervals_normalized"
+        ] += normalized
     return words, phones
 
 
@@ -446,6 +483,7 @@ def export_session_textgrids(
     phone_mapper: PhoneMapper,
     alignment_exclusion_ids: set[str],
 ) -> dict[str, object]:
+    counts: Counter[str] = Counter()
     connection = open_readonly(db_path)
     try:
         search_rows = load_session_rows(search_master_root, year, session)
@@ -454,11 +492,11 @@ def export_session_textgrids(
             [row[0] for row in utterances],
             word_labels,
             phone_labels,
+            counts,
         )
     finally:
         connection.close()
 
-    counts: Counter[str] = Counter()
     failures: list[dict[str, str]] = []
     missing_search: list[str] = []
     missing_alignment: list[str] = []
@@ -699,6 +737,7 @@ def write_companion_tables(
                 [row[0] for row in utterances],
                 word_labels,
                 phone_labels,
+                counts,
             )
             for uid, utt_id, duration, wav_path, score in utterances:
                 search = search_rows.get(utt_id)
@@ -1078,6 +1117,39 @@ def write_companion_tables(
                 raw.close()
 
     if errors:
+        failure_csv = table_root / "TABLES_FAILURE.csv"
+        with atomic_text_writer(
+            failure_csv, encoding="utf-8-sig", newline=""
+        ) as (stream, _temporary):
+            writer = csv.DictWriter(
+                stream,
+                fieldnames=["utt_id", "error", "expected", "actual"],
+                extrasaction="ignore",
+                lineterminator="\n",
+            )
+            writer.writeheader()
+            writer.writerows(errors)
+        failure_report = {
+            "schema_version": "mfa_research_companion_tables_failure.v1",
+            "status": "failed",
+            "year": year,
+            "input_contract_id": input_contract_id,
+            "alignment_contract_id": alignment_contract_id,
+            "counts": dict(sorted(counts.items())),
+            "error_inventory_complete": len(errors) < 100,
+            "errors": errors,
+            "error_csv": file_fingerprint(failure_csv, with_sha256=True),
+            "preserved_partials": {
+                name: file_fingerprint(partial, with_sha256=False)
+                for name, (_stream, _writer, partial, _raw) in opened.items()
+                if partial.is_file()
+            },
+            "source_policy": (
+                "failed gzip partials are preserved and never promoted; "
+                "next attempt archives them before writing new partials"
+            ),
+        }
+        atomic_write_json(table_root / "TABLES_FAILURE.json", failure_report)
         raise RuntimeError(
             f"동반표 계약 불일치 {len(errors)}건: {errors[:3]}"
         )
@@ -1167,6 +1239,16 @@ def _fingerprint_matches(path: Path, expected: Mapping[str, object]) -> bool:
     )
 
 
+def _fingerprint_values_equal(
+    left: Mapping[str, object], right: Mapping[str, object]
+) -> bool:
+    return (
+        int(left.get("bytes", -1)) == int(right.get("bytes", -2))
+        and str(left.get("sha256", ""))
+        == str(right.get("sha256", "__missing__"))
+    )
+
+
 def _alignment_contract_semantically_matches(
     path: Path,
     expected_file: Mapping[str, object],
@@ -1207,6 +1289,7 @@ def load_targeted_repair_resume(
     *,
     failed_report_path: Path,
     repair_manifest_path: Path,
+    subsequent_repair_manifest_path: Path | None = None,
     db_path: Path,
     year: str,
     search_master_root: Path,
@@ -1228,16 +1311,119 @@ def load_targeted_repair_resume(
 
     failed_report_path = failed_report_path.resolve()
     repair_manifest_path = repair_manifest_path.resolve()
+    if subsequent_repair_manifest_path is not None:
+        subsequent_repair_manifest_path = subsequent_repair_manifest_path.resolve()
     if not failed_report_path.is_file():
         raise FileNotFoundError(failed_report_path)
     if not repair_manifest_path.is_file():
         raise FileNotFoundError(repair_manifest_path)
+    if (
+        subsequent_repair_manifest_path is not None
+        and not subsequent_repair_manifest_path.is_file()
+    ):
+        raise FileNotFoundError(subsequent_repair_manifest_path)
     previous = json.loads(failed_report_path.read_text(encoding="utf-8-sig"))
     repair = json.loads(repair_manifest_path.read_text(encoding="utf-8-sig"))
+    subsequent_repair = (
+        json.loads(
+            subsequent_repair_manifest_path.read_text(encoding="utf-8-sig")
+        )
+        if subsequent_repair_manifest_path is not None
+        else None
+    )
     if previous.get("status") != "failed":
         raise RuntimeError("resume source report is not a failed checkpoint")
     if repair.get("status") != "success":
         raise RuntimeError("targeted repair manifest is not successful")
+    subsequent_records_by_destination: dict[Path, Mapping[str, object]] = {}
+    if subsequent_repair is not None:
+        subsequent_checks = {
+            "schema_version": subsequent_repair.get("schema_version")
+            == "mfa_textgrid_phone_only_silence_word_repair.v1",
+            "status": subsequent_repair.get("status") == "success",
+            "year": str(subsequent_repair.get("year")) == year,
+            "db_path": _resolved_path_equal(
+                subsequent_repair.get("db_path"), db_path
+            ),
+            "search_master_root": _resolved_path_equal(
+                subsequent_repair.get("search_master_root"), search_master_root
+            ),
+            "output_root": _resolved_path_equal(
+                subsequent_repair.get("output_root"), output_root
+            ),
+            "alignment_contract_id": str(
+                subsequent_repair.get("alignment_contract_id", "")
+            )
+            == alignment_contract_id,
+            "input_contract_id": str(
+                subsequent_repair.get("input_contract_id", "")
+            )
+            == input_contract_id,
+        }
+        failed = sorted(
+            name for name, passed in subsequent_checks.items() if not passed
+        )
+        if failed:
+            raise RuntimeError(
+                "subsequent targeted repair identity mismatch: "
+                + ", ".join(failed)
+            )
+        source_partial = subsequent_repair.get(
+            "source_companion_utterance_partial"
+        ) or {}
+        source_partial_path = Path(str(source_partial.get("path", ""))).resolve()
+        if not _fingerprint_matches(source_partial_path, source_partial):
+            raise RuntimeError("subsequent repair source partial mismatch")
+        subsequent_records = list(subsequent_repair.get("records") or [])
+        subsequent_ids = [
+            str(record.get("utt_id", "")).strip()
+            for record in subsequent_records
+        ]
+        repaired_ids = [
+            str(value).strip()
+            for value in subsequent_repair.get("repaired_ids") or []
+        ]
+        expected_count = len(subsequent_records)
+        if (
+            expected_count <= 0
+            or int(subsequent_repair.get("source_mismatch_count", -1))
+            != expected_count
+            or int(subsequent_repair.get("candidate_count", -1))
+            != expected_count
+            or int(subsequent_repair.get("repaired_count", -1))
+            != expected_count
+            or any(not value for value in subsequent_ids)
+            or len(set(subsequent_ids)) != expected_count
+            or set(repaired_ids) != set(subsequent_ids)
+        ):
+            raise RuntimeError(
+                "subsequent repair manifest inventory is incomplete or ambiguous"
+            )
+        for record in subsequent_records:
+            utt_id = str(record.get("utt_id", "")).strip()
+            destination = Path(str(record.get("destination", ""))).resolve()
+            try:
+                destination.relative_to((output_root / year).resolve())
+            except ValueError as exc:
+                raise RuntimeError(
+                    f"subsequent repair destination outside year root: {destination}"
+                ) from exc
+            archive_path = Path(str(record.get("archive_path", ""))).resolve()
+            before = record.get("destination_before") or {}
+            archive = record.get("archive_fingerprint") or {}
+            after = record.get("destination_after") or {}
+            if (
+                destination in subsequent_records_by_destination
+                or not bool(record.get("old_policy_validation_passed"))
+                or not bool(record.get("replacement_validation_passed"))
+                or not _fingerprint_values_equal(before, archive)
+                or not _fingerprint_matches(archive_path, archive)
+                or not _fingerprint_matches(destination, after)
+            ):
+                raise RuntimeError(
+                    f"invalid subsequent targeted repair evidence: {utt_id}"
+                )
+            subsequent_records_by_destination[destination] = record
     identity_checks = {
         "year": str(previous.get("year")) == year
         and str(repair.get("year")) == year,
@@ -1334,14 +1520,25 @@ def load_targeted_repair_resume(
             destination.relative_to((output_root / year).resolve())
         except ValueError as exc:
             raise RuntimeError(f"repair destination outside year root: {destination}") from exc
+        base_after = record.get("destination_after") or {}
+        subsequent = subsequent_records_by_destination.get(destination)
+        current_matches_chain = _fingerprint_matches(destination, base_after)
+        if subsequent is not None:
+            current_matches_chain = (
+                str(subsequent.get("utt_id", "")).strip() == utt_id
+                and _fingerprint_values_equal(
+                    subsequent.get("destination_before") or {}, base_after
+                )
+                and _fingerprint_matches(
+                    destination, subsequent.get("destination_after") or {}
+                )
+            )
         if (
             not utt_id
             or utt_id in observed_record_ids
             or not bool(record.get("matches_pre_normalization_policy"))
             or not bool(record.get("replacement_validation_passed"))
-            or not _fingerprint_matches(
-                destination, record.get("destination_after") or {}
-            )
+            or not current_matches_chain
             or not _fingerprint_matches(
                 Path(str(record.get("archive_path", ""))).resolve(),
                 record.get("archive_fingerprint") or {},
@@ -1391,6 +1588,14 @@ def load_targeted_repair_resume(
         },
         "full_textgrid_revalidation_deferred_to_independent_year_audit": True,
     }
+    if subsequent_repair_manifest_path is not None:
+        resume["subsequent_targeted_repair_manifest"] = file_fingerprint(
+            subsequent_repair_manifest_path, with_sha256=True
+        )
+        resume["subsequent_repaired_ids"] = sorted(
+            str(record.get("utt_id", "")).strip()
+            for record in subsequent_repair.get("records") or []
+        )
     return totals, examples, max_adjustment, resume
 
 

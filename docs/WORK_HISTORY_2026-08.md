@@ -1625,3 +1625,29 @@ shard 2–23을 재개하는 것이다.
   같은 D: 안에서 연도 staging 폴더만 원자적으로 옮긴다.
 - 승격은 정본 채택이 아니며 독립 연도 전수 감사와 DB 표본 24건 검증을 생략하지
   않는다. 정상·중단 후 재개·동반표 변조·정렬 의미 변조 회귀시험이 통과했다.
+
+## 2026-08-05 — 동반표 최종 계약에서 발견한 후행 무음 중복 어절 19건
+
+- 06:28 KST 후처리는 MFA·LAB·TextGrid 전수 생성을 반복하지 않고 4,139세션의
+  동반표 4종을 끝까지 썼다. 약 3,814초 뒤 최종 계약에서 19발화가 각각
+  `lab_word_count_mismatch`와 `word_label_sequence_mismatch`를 내 안전 중단했다.
+  최종 gzip과 성공 보고서는 생성되지 않았고 닫힌 네 `.partial`과 12.7GB DB,
+  1,371,883개 TextGrid는 보존됐다. 2022는 시작되지 않았다.
+- 19건 모두 LAB N개 대 MFA N+1개였고, 끝의 추가 word 표지는 바로 앞 마지막
+  어절과 같았다. DB를 interval–phone 연결로 전수 대조하니 추가 interval은 실제
+  마지막 어절 끝부터 WAV xmax까지이고 연결 phone은 19/19 모두 `sil`이었다.
+  실제 추가 어절이나 phone 오류가 아니라 MFA DB가 후행 무음 word interval에
+  마지막 lexical `word_id`를 남긴 경우다.
+- exporter와 동반표에 공통 규칙을 추가했다. 연결 phone이 하나 이상이고 모두
+  무음인 word interval의 표지만 빈칸으로 만들며 시간과 phone은 바꾸지 않는다.
+  `utterance`·철자 Roman·형태소 텍스트도 유지하고 유표 span만 실제 lexical 끝에
+  맞춘다. 회귀시험은 동반표 count·sequence와 6-tier 결과를 함께 고정한다.
+- 실자료 읽기 전용 preflight는 정확히 19건을 찾았고 phone tier 변경 0건,
+  words 변경 19건, 세 검색 tier span 변경 각 19건을 확인했다. 이어 구 파생
+  TextGrid를 SHA 보관한 뒤 19/19를 원자 교체했다. 적용 manifest는
+  `outputs/reports/REPAIR_2021_phone_only_silence_word_20260805.json`이며 상태는
+  `success`다.
+- 앞선 float32 종단 repair와 새 repair가 겹치는 파일도 기존 기록을 변조하지 않고
+  SHA 사슬로 검증하도록 재개기를 확장했다. 다음 실행은 MFA나 TextGrid 전수를
+  반복하지 않고 네 동반표만 다시 쓴다. 그 뒤 연도 staging 승격·독립 전수 감사·
+  DB 표본 24건 재수출·연구자 표본 Gate를 거치며, 그 전에는 2022로 가지 않는다.
