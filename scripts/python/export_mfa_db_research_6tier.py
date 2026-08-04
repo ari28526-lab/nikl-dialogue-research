@@ -33,6 +33,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Callable, Mapping, Sequence
 
+from build_mfa_alignment_contract import recompute_alignment_contract_id
 from mfa_exclusion_contract import load_contract as load_exclusion_contract
 from morph_schema import canonicalize_tagged, orth_roman_v2, tagged_roman_v2
 from phoneme_roman import (
@@ -1166,6 +1167,42 @@ def _fingerprint_matches(path: Path, expected: Mapping[str, object]) -> bool:
     )
 
 
+def _alignment_contract_semantically_matches(
+    path: Path,
+    expected_file: Mapping[str, object],
+    *,
+    year: str,
+    input_contract_id: str,
+    alignment_contract_id: str,
+) -> bool:
+    """Validate the builder's canonical identity, not volatile audit time.
+
+    The alignment contract writer records ``recorded_at`` for provenance.
+    That value is intentionally excluded from ``alignment_contract_id`` and
+    may change when an otherwise identical checkpoint is reconstructed.
+    """
+
+    if not path.is_file() or not _resolved_path_equal(
+        expected_file.get("path"), path
+    ):
+        return False
+    try:
+        contract = json.loads(path.read_text(encoding="utf-8-sig"))
+        return (
+            contract.get("schema_version") == "mfa_alignment_contract.v1"
+            and contract.get("status") == "passed"
+            and str(contract.get("year")) == year
+            and str(contract.get("lab_input_contract_id", ""))
+            == input_contract_id
+            and str(contract.get("alignment_contract_id", ""))
+            == alignment_contract_id
+            and recompute_alignment_contract_id(contract)
+            == alignment_contract_id
+        )
+    except (OSError, ValueError, TypeError, RuntimeError):
+        return False
+
+
 def load_targeted_repair_resume(
     *,
     failed_report_path: Path,
@@ -1225,8 +1262,14 @@ def load_targeted_repair_resume(
     }
     failed_contract = previous.get("alignment_contract") or {}
     failed_acoustic = previous.get("acoustic_model") or {}
-    identity_checks["alignment_contract_file"] = _fingerprint_matches(
-        alignment_contract, failed_contract
+    identity_checks["alignment_contract_semantic_identity"] = (
+        _alignment_contract_semantically_matches(
+            alignment_contract,
+            failed_contract,
+            year=year,
+            input_contract_id=input_contract_id,
+            alignment_contract_id=alignment_contract_id,
+        )
     )
     identity_checks["acoustic_model_file"] = _fingerprint_matches(
         acoustic_model, failed_acoustic
@@ -1337,6 +1380,15 @@ def load_targeted_repair_resume(
         "prior_created": prior_created,
         "prior_failed": failed_count,
         "repaired_ids": sorted(failed_ids),
+        "alignment_contract_validation": {
+            "mode": "recomputed_builder_canonical_identity",
+            "prior_file_fingerprint": failed_contract,
+            "current_file_fingerprint": file_fingerprint(
+                alignment_contract, with_sha256=True
+            ),
+            "recomputed_contract_id": alignment_contract_id,
+            "volatile_recorded_at_ignored": True,
+        },
         "full_textgrid_revalidation_deferred_to_independent_year_audit": True,
     }
     return totals, examples, max_adjustment, resume

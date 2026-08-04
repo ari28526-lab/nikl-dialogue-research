@@ -1,4 +1,5 @@
 import json
+import hashlib
 import struct
 import sys
 import tempfile
@@ -47,12 +48,81 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
             for path, content in (
                 (db, b"db"),
                 (acoustic, b"acoustic"),
-                (contract, b"contract"),
                 (destination, b"repaired"),
                 (archive, b"legacy"),
             ):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(content)
+            contract_data = {
+                "schema_version": "mfa_alignment_contract.v1",
+                "status": "passed",
+                "recorded_at": "2026-08-05T00:00:00+09:00",
+                "year": "2021",
+                "lab_input_contract_id": "INPUT",
+                "runtime": {
+                    "python": "3.13.14",
+                    "montreal_forced_aligner": "3.4.0",
+                    "pynini": "2.1.7",
+                },
+                "models": {
+                    role: {
+                        "role": role,
+                        "requested_name": role,
+                        "path": str(root / f"{role}.model"),
+                        "filename": f"{role}.model",
+                        "bytes": index + 1,
+                        "mtime_ns": 1,
+                        "sha256": hashlib.sha256(role.encode()).hexdigest(),
+                    }
+                    for index, role in enumerate(
+                        ("acoustic", "dictionary", "g2p")
+                    )
+                },
+                "frozen_model_pin": {
+                    "commit": "PIN",
+                    "contract": {"sha256": "BUNDLE"},
+                    "models": {
+                        "dictionary": {"sha256": "BASE-DICTIONARY"}
+                    },
+                },
+                "common_pron_adoption_contract": {"sha256": "ADOPTION"},
+                "approved_exclusions_contract": {"sha256": "EXCLUSION"},
+                "pronunciation_mode": "common_pronunciation",
+            }
+            canonical_identity = {
+                "schema_version": "mfa_alignment_contract.v1",
+                "year": "2021",
+                "lab_input_contract_id": "INPUT",
+                "runtime": contract_data["runtime"],
+                "frozen_model_pin": {
+                    "commit": "PIN",
+                    "contract_sha256": "BUNDLE",
+                    "base_dictionary_sha256": "BASE-DICTIONARY",
+                },
+                "pronunciation_mode": "common_pronunciation",
+                "common_pron_adoption_sha256": "ADOPTION",
+                "approved_exclusions_sha256": "EXCLUSION",
+                "models": {
+                    role: {
+                        "requested_name": role,
+                        "bytes": index + 1,
+                        "sha256": hashlib.sha256(role.encode()).hexdigest(),
+                    }
+                    for index, role in enumerate(
+                        ("acoustic", "dictionary", "g2p")
+                    )
+                },
+            }
+            alignment_id = hashlib.sha256(
+                json.dumps(
+                    canonical_identity,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+            contract_data["alignment_contract_id"] = alignment_id
+            contract.write_text(json.dumps(contract_data), encoding="utf-8")
             search.mkdir()
             reconciliation = {
                 "status": "passed",
@@ -67,11 +137,12 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                 "db_path": str(db),
                 "search_master_root": str(search),
                 "output_root": str(output),
-                "alignment_contract_id": "ALIGN",
+                "alignment_contract_id": alignment_id,
                 "input_contract_id": "INPUT",
                 "alignment_contract": file_fingerprint(
                     contract, with_sha256=True
                 ),
+                "alignment_models": contract_data["models"],
                 "acoustic_model": file_fingerprint(
                     acoustic, with_sha256=True
                 ),
@@ -105,7 +176,7 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                 "year": "2021",
                 "db_path": str(db),
                 "output_root": str(output),
-                "alignment_contract_id": "ALIGN",
+                "alignment_contract_id": alignment_id,
                 "input_contract_id": "INPUT",
                 "source_failed_report": file_fingerprint(
                     failed_report, with_sha256=True
@@ -132,6 +203,11 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                 json.dumps(repair_payload), encoding="utf-8"
             )
 
+            # A normal checkpoint reconstruction changes recorded_at only.
+            # The file SHA differs, while its builder-derived identity stays.
+            contract_data["recorded_at"] = "2026-08-05T01:00:00+09:00"
+            contract.write_text(json.dumps(contract_data), encoding="utf-8")
+
             totals, examples, maximum, resume = load_targeted_repair_resume(
                 failed_report_path=failed_report,
                 repair_manifest_path=repair_manifest,
@@ -141,7 +217,7 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                 output_root=output,
                 acoustic_model=acoustic,
                 alignment_contract=contract,
-                alignment_contract_id="ALIGN",
+                alignment_contract_id=alignment_id,
                 input_contract_id="INPUT",
                 reconciliation=reconciliation,
                 source_utterance_count=3,
@@ -153,6 +229,37 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
             self.assertEqual(examples, [{"utt_id": "U3"}])
             self.assertEqual(maximum, 0.000003)
             self.assertEqual(resume["repaired_ids"], ["U3"])
+            self.assertTrue(
+                resume["alignment_contract_validation"][
+                    "volatile_recorded_at_ignored"
+                ]
+            )
+
+            contract_data["models"]["acoustic"]["requested_name"] = (
+                "tampered"
+            )
+            contract.write_text(json.dumps(contract_data), encoding="utf-8")
+            with self.assertRaisesRegex(
+                RuntimeError, "alignment_contract_semantic_identity"
+            ):
+                load_targeted_repair_resume(
+                    failed_report_path=failed_report,
+                    repair_manifest_path=repair_manifest,
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search,
+                    output_root=output,
+                    acoustic_model=acoustic,
+                    alignment_contract=contract,
+                    alignment_contract_id=alignment_id,
+                    input_contract_id="INPUT",
+                    reconciliation=reconciliation,
+                    source_utterance_count=3,
+                )
+            contract_data["models"]["acoustic"]["requested_name"] = (
+                "acoustic"
+            )
+            contract.write_text(json.dumps(contract_data), encoding="utf-8")
 
             destination.write_bytes(b"tampered")
             with self.assertRaisesRegex(
@@ -167,7 +274,7 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                     output_root=output,
                     acoustic_model=acoustic,
                     alignment_contract=contract,
-                    alignment_contract_id="ALIGN",
+                    alignment_contract_id=alignment_id,
                     input_contract_id="INPUT",
                     reconciliation=reconciliation,
                     source_utterance_count=3,

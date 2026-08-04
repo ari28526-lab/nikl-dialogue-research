@@ -1,5 +1,6 @@
 import csv
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -11,6 +12,8 @@ sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 from build_mfa_alignment_contract import (  # noqa: E402
     build_alignment_contract,
+    recompute_alignment_contract_id,
+    write_alignment_contract_if_changed,
 )
 from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
 
@@ -120,6 +123,38 @@ class MfaAlignmentContractTests(unittest.TestCase):
             self.assertEqual(
                 first["alignment_contract_id"],
                 second["alignment_contract_id"],
+            )
+            self.assertEqual(
+                recompute_alignment_contract_id(first),
+                first["alignment_contract_id"],
+            )
+
+    def test_identical_semantic_contract_preserves_existing_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output = root / "alignment.json"
+            first = self.make_contract(root, suffix="-stable")
+            self.assertTrue(write_alignment_contract_if_changed(output, first))
+            before = output.read_bytes()
+
+            second = json.loads(json.dumps(first))
+            second["recorded_at"] = "2099-01-01T00:00:00+09:00"
+            self.assertFalse(
+                write_alignment_contract_if_changed(output, second)
+            )
+            self.assertEqual(output.read_bytes(), before)
+
+            changed = self.make_contract(
+                root, lab_contract="lab-b", suffix="-changed"
+            )
+            self.assertTrue(
+                write_alignment_contract_if_changed(output, changed)
+            )
+            self.assertEqual(
+                json.loads(output.read_text(encoding="utf-8"))[
+                    "alignment_contract_id"
+                ],
+                changed["alignment_contract_id"],
             )
 
     def test_model_content_change_changes_identity(self):

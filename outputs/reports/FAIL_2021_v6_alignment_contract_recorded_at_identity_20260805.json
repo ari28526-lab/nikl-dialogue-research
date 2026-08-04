@@ -1,0 +1,48 @@
+{
+  "schema_version": "mfa_checkpoint_failure_record.v1",
+  "status": "safely_stopped",
+  "year": "2021",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v6",
+  "stopped_at": "2026-08-05T06:16:46+09:00",
+  "failed_gate": "targeted_repair_resume.alignment_contract_file",
+  "cause": "semantically identical alignment contract was rewritten with a new recorded_at value while resume required the prior whole-file SHA",
+  "prior_alignment_contract": {
+    "path": "D:\\mfa_eojeol\\alignment_contracts\\2021.json",
+    "bytes": 4050,
+    "sha256": "52176e384d635db7665e12c5ad76d14a1dd527acfc8ff95808d4ecdc7aeca662"
+  },
+  "current_alignment_contract": {
+    "path": "D:\\mfa_eojeol\\alignment_contracts\\2021.json",
+    "bytes": 4050,
+    "sha256": "a495bc78849de150ea986c45a1a6e26124355e21a4979c32f9dccd30276a7b9e",
+    "recorded_at": "2026-08-05T05:41:55+09:00"
+  },
+  "semantic_identity": {
+    "stored_alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+    "recomputed_alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+    "semantic_match": true
+  },
+  "completed_checks": {
+    "lab_sessions": 4143,
+    "active_lab_utterances": 1371883,
+    "lab_new": 0,
+    "lab_rewritten": 0,
+    "input_csv_rows": 1373920,
+    "bad_wav_count": 0,
+    "wav_count_scanned": 1416216,
+    "db_quick_check": "ok",
+    "db_source_utterances": 1372394,
+    "db_aligned_utterances": 1371883,
+    "word_intervals": 10572619,
+    "phone_intervals": 39296691,
+    "spn_intervals": 0
+  },
+  "preserved": [
+    "2020 completed production output",
+    "source WAV and CSV",
+    "2021 retained MFA database",
+    "2021 direct-export partial TextGrid checkpoint",
+    "19-file repair archive and manifest"
+  ],
+  "next_action": "resume companion tables from the v5 full-pass plus exact 19-file repair using recomputed semantic alignment identity; do not rerun MFA"
+}

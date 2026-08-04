@@ -15,6 +15,7 @@ import argparse
 import hashlib
 import json
 import platform
+from collections.abc import Mapping
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
@@ -23,6 +24,121 @@ from mfa_exclusion_contract import load_contract
 from verify_frozen_mfa_bundle import verify_frozen_bundle
 
 SCHEMA_VERSION = "mfa_alignment_contract.v1"
+
+
+def alignment_identity_from_contract(
+    contract: Mapping[str, object],
+) -> dict[str, object]:
+    """Rebuild the exact canonical identity used by the contract builder.
+
+    Audit-only fields such as ``recorded_at``, paths and mtimes deliberately
+    do not participate in the identity.  Model contents, runtime versions,
+    the input contract, the frozen bundle and the approved exclusion
+    contract do participate.
+    """
+
+    models = contract.get("models")
+    frozen = contract.get("frozen_model_pin")
+    if not isinstance(models, Mapping) or not isinstance(frozen, Mapping):
+        raise RuntimeError("alignment contract model/frozen identity missing")
+    frozen_contract = frozen.get("contract")
+    frozen_models = frozen.get("models")
+    if not isinstance(frozen_contract, Mapping) or not isinstance(
+        frozen_models, Mapping
+    ):
+        raise RuntimeError("alignment contract frozen fingerprints missing")
+    frozen_dictionary = frozen_models.get("dictionary")
+    if not isinstance(frozen_dictionary, Mapping):
+        raise RuntimeError("alignment contract frozen dictionary missing")
+
+    model_identity: dict[str, dict[str, object]] = {}
+    for role in ("acoustic", "dictionary", "g2p"):
+        record = models.get(role)
+        if not isinstance(record, Mapping):
+            raise RuntimeError(f"alignment contract model missing: {role}")
+        model_identity[role] = {
+            "requested_name": str(record.get("requested_name", "")),
+            "bytes": int(record.get("bytes", -1)),
+            "sha256": str(record.get("sha256", "")),
+        }
+        if (
+            not model_identity[role]["requested_name"]
+            or model_identity[role]["bytes"] < 0
+            or not model_identity[role]["sha256"]
+        ):
+            raise RuntimeError(f"alignment contract model invalid: {role}")
+
+    adoption = contract.get("common_pron_adoption_contract")
+    approved = contract.get("approved_exclusions_contract")
+    if adoption is not None and not isinstance(adoption, Mapping):
+        raise RuntimeError("alignment contract adoption fingerprint invalid")
+    if approved is not None and not isinstance(approved, Mapping):
+        raise RuntimeError("alignment contract exclusion fingerprint invalid")
+
+    return {
+        "schema_version": str(contract.get("schema_version", "")),
+        "year": str(contract.get("year", "")),
+        "lab_input_contract_id": str(
+            contract.get("lab_input_contract_id", "")
+        ),
+        "runtime": contract.get("runtime"),
+        "frozen_model_pin": {
+            "commit": str(frozen.get("commit", "")),
+            "contract_sha256": str(frozen_contract.get("sha256", "")),
+            "base_dictionary_sha256": str(
+                frozen_dictionary.get("sha256", "")
+            ),
+        },
+        "pronunciation_mode": str(
+            contract.get("pronunciation_mode", "")
+        ),
+        "common_pron_adoption_sha256": (
+            str(adoption.get("sha256", "")) if adoption is not None else None
+        ),
+        "approved_exclusions_sha256": (
+            str(approved.get("sha256", "")) if approved is not None else None
+        ),
+        "models": model_identity,
+    }
+
+
+def recompute_alignment_contract_id(
+    contract: Mapping[str, object],
+) -> str:
+    identity = alignment_identity_from_contract(contract)
+    canonical = json.dumps(
+        identity,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def write_alignment_contract_if_changed(
+    output: Path, contract: Mapping[str, object]
+) -> bool:
+    """Write a new semantic contract, but preserve an identical one.
+
+    Re-running a checkpoint must not change the file SHA merely because a
+    fresh ``recorded_at`` value was generated.
+    """
+
+    expected_id = str(contract.get("alignment_contract_id", ""))
+    if output.is_file():
+        try:
+            existing = json.loads(output.read_text(encoding="utf-8-sig"))
+            existing_id = str(existing.get("alignment_contract_id", ""))
+            if (
+                existing.get("status") == "passed"
+                and existing_id == expected_id
+                and recompute_alignment_contract_id(existing) == expected_id
+            ):
+                return False
+        except (OSError, ValueError, TypeError, RuntimeError):
+            pass
+    atomic_write_json(output, dict(contract))
+    return True
 
 
 def installed_version(distribution: str) -> str:
@@ -331,10 +447,11 @@ def main() -> int:
         ),
         allow_legacy_inline_g2p=args.allow_legacy_inline_g2p,
     )
-    atomic_write_json(args.output, contract)
+    wrote = write_alignment_contract_if_changed(args.output, contract)
     print(
         "alignment contract: "
-        f"{contract['alignment_contract_id'][:12]} -> {args.output}",
+        f"{contract['alignment_contract_id'][:12]} -> {args.output} "
+        f"({'written' if wrote else 'unchanged'})",
         flush=True,
     )
     return 0

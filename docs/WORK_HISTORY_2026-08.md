@@ -1591,3 +1591,20 @@ shard 2–23을 재개하는 것이다.
   승격 후 독립 전수 감사와 DB 표본 24개 재수출은 생략하지 않는다.
 - 적용 증거:
   `outputs/reports/REPAIR_2021_float32_terminal_roundoff_20260805.json`
+
+## 2026-08-05 — 2021 v6 의미 동일 정렬 계약의 파일 SHA 오판 교정
+
+- v6는 LAB 4,143세션·1,371,883건 전수 일치, CSV 4,143개·1,373,920행
+  실행 감사, WAV 1,416,216개 손상 0건, 12.7GB DB `quick_check=ok`,
+  word 10,572,619·phone 39,296,691·spn 0을 확인했다. MFA는 재계산하지 않았다.
+- 동반표 직전 재개 gate가 `alignment_contract_file` 하나로 안전 중단됐다.
+  같은 4,050바이트 계약의 `recorded_at`만 새 실행 시각으로 바뀌어 파일 SHA가
+  달라졌지만, 저장 정렬 ID와 builder 생성식 재계산 ID는 모두 `5ff186…`였다.
+- 계약 생성기는 같은 의미 ID의 기존 파일을 보존하도록 바꿨다. 재개기는 파일
+  전체 SHA 대신 builder canonical identity를 독립 재계산한다. 모델·런타임·
+  입력·공통사전·승인 제외 SHA는 모두 ID에 포함하고 `recorded_at`만 제외한다.
+- 관련 8개, Python 전체 348개, PowerShell 안전 46파일·5.1 호환 55스크립트가
+  통과했다. 실제 2021 계약도 `semantic_match=true`였다.
+- 실패 근거:
+  `outputs/reports/FAIL_2021_v6_alignment_contract_recorded_at_identity_20260805.json`.
+  DB·partial·원본·2020 완성본은 보존됐으며 다음 실행은 동반표부터 재개한다.

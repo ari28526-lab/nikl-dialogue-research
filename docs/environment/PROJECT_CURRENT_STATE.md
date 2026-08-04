@@ -360,3 +360,12 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 검토·최종 Gate 전에는 2022로 넘어가지 않는다. 근거와 복구 불변식은
 `docs/decisions/DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md`를
 따른다.
+
+2021 v6는 입력·WAV·DB checkpoint를 모두 통과했으나, 동반표 직전 과거 정렬
+계약 파일 SHA와 현재 파일 SHA가 다르다는 이유로 06:16 KST 안전 중단됐다.
+차이는 의미 계약이 아니라 재실행 때 갱신된 `recorded_at`뿐이며, 저장된 정렬 ID와
+builder 생성식으로 재계산한 ID는 모두 `5ff1865744c85d…`로 일치한다. 같은 의미
+계약은 다시 쓰지 않고, 재개 시 canonical identity를 재계산하도록 교정했다.
+Python 348개·PowerShell 안전/5.1 검사가 통과했다. 다음 실행은 MFA나 6-tier
+전수 생성을 반복하지 않고 동반표부터 재개한다. 세부 정책은
+`docs/decisions/DECISION_MFA_alignment_contract_semantic_checkpoint_identity_20260805.md`다.

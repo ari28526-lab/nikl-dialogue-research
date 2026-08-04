@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  "mfa_r2_full_year_queue_preflight.v1",
     "status":  "GO",
-    "checked_at":  "2026-08-05T05:21:51.4127254+09:00",
+    "checked_at":  "2026-08-05T05:27:20.9981337+09:00",
     "queue_id":  "mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v6",
     "search_master_run_id":  "pre_mfa_v1_20260725",
     "years":  [
