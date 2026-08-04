@@ -21,6 +21,7 @@ param(
     [string]$CommonPronManifest = '',
     [string]$CommonPronAdoptionContract = '',
     [string]$ApprovedExclusionsContract = '',
+    [string]$ExportApprovedExclusionsContract = '',
     [string]$CommonPronEquivalenceReport = '',
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
@@ -29,6 +30,10 @@ param(
     [ValidateSet('','2020','2021','2022','2023','2024','2025')]
     [string]$PauseAfterYear = ''
 )
+
+if ([string]::IsNullOrWhiteSpace($ExportApprovedExclusionsContract)) {
+    $ExportApprovedExclusionsContract = $ApprovedExclusionsContract
+}
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -217,6 +222,7 @@ if (Test-Path -LiteralPath $lockPath) {
     common_pron_manifest = $CommonPronManifest
     common_pron_adoption_contract = $CommonPronAdoptionContract
     approved_exclusions_contract = $ApprovedExclusionsContract
+    export_approved_exclusions_contract = $ExportApprovedExclusionsContract
     legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
     force_verify_lab_input = [bool]$ForceVerifyLabInput
     allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun
@@ -304,7 +310,9 @@ try {
                 '-CommonPronAdoptionContract',
                 $CommonPronAdoptionContract,
                 '-ApprovedExclusionsContract',
-                $ApprovedExclusionsContract
+                $ApprovedExclusionsContract,
+                '-ExportApprovedExclusionsContract',
+                $ExportApprovedExclusionsContract
             )
             if ($AllowBaselineCommonPronRerun) {
                 $realignArgs += '-AllowBaselineCommonPronRerun'
@@ -360,6 +368,8 @@ try {
         common_pron_manifest = $CommonPronManifest
         common_pron_adoption_contract = $CommonPronAdoptionContract
         approved_exclusions_contract = $ApprovedExclusionsContract
+        export_approved_exclusions_contract =
+            $ExportApprovedExclusionsContract
         legacy_common_pron_equivalence_report = $CommonPronEquivalenceReport
         force_verify_lab_input = [bool]$ForceVerifyLabInput
         allow_baseline_common_pron_rerun = [bool]$AllowBaselineCommonPronRerun

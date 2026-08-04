@@ -21,6 +21,7 @@ param(
     [string[]]$Years = @('2020','2021','2022','2023','2024','2025'),
     [string]$YearsCsv = '',
     [string]$ReviewRoot = '',
+    [string]$AlignmentReviewRoot = '',
     [string]$CommonPronManifest = (
         'D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\' +
         '00_contract\release_manifest.json'
@@ -57,6 +58,10 @@ if ([string]::IsNullOrWhiteSpace($ReviewRoot)) {
     )
 }
 $ReviewRoot = [IO.Path]::GetFullPath($ReviewRoot)
+if ([string]::IsNullOrWhiteSpace($AlignmentReviewRoot)) {
+    $AlignmentReviewRoot = $ReviewRoot
+}
+$AlignmentReviewRoot = [IO.Path]::GetFullPath($AlignmentReviewRoot)
 $CommonPronManifest = [IO.Path]::GetFullPath($CommonPronManifest)
 $CommonPronAdoptionContract = [IO.Path]::GetFullPath(
     $CommonPronAdoptionContract
@@ -98,18 +103,31 @@ foreach ($year in $Years) {
         if ($LASTEXITCODE -ne 0) {
             throw "$year 기존 승인 계약 검증 실패; 자동 덮어쓰기 금지"
         }
-        continue
+    } else {
+        & $python (Join-Path $PSScriptRoot (
+            'python\mfa_exclusion_contract.py'
+        )) build --review-csv $reviewCsv --output $approval `
+            --year $year --input-contract-id $inputContractId `
+            --approved-by $ApprovedBy --approved-at $approvedAt
+        if ($LASTEXITCODE -ne 0) {
+            throw (
+                "$year 승인 계약 생성 실패. pending 행이 남았거나 " +
+                '검토표가 입력 계약과 다름; MFA는 시작하지 않음.'
+            )
+        }
+    }
+    $alignmentApproval = Join-Path (
+        Join-Path $AlignmentReviewRoot $year
+    ) 'approved_exclusions.json'
+    if (-not (Test-Path -LiteralPath $alignmentApproval -PathType Leaf)) {
+        throw "$year 정렬 provenance 승인 계약 없음: $alignmentApproval"
     }
     & $python (Join-Path $PSScriptRoot (
         'python\mfa_exclusion_contract.py'
-    )) build --review-csv $reviewCsv --output $approval `
-        --year $year --input-contract-id $inputContractId `
-        --approved-by $ApprovedBy --approved-at $approvedAt
+    )) validate --contract $alignmentApproval --year $year `
+        --input-contract-id $inputContractId
     if ($LASTEXITCODE -ne 0) {
-        throw (
-            "$year 승인 계약 생성 실패. pending 행이 남았거나 " +
-            '검토표가 입력 계약과 다름; MFA는 시작하지 않음.'
-        )
+        throw "$year 정렬 provenance 승인 계약 검증 실패"
     }
 }
 
@@ -125,6 +143,7 @@ $preflightArgs = @(
     '-CommonPronManifest', $CommonPronManifest,
     '-CommonPronAdoptionContract', $CommonPronAdoptionContract,
     '-ApprovedExclusionsRoot', $ReviewRoot,
+    '-AlignmentApprovedExclusionsRoot', $AlignmentReviewRoot,
     '-Output', $preflightReport,
     '-RunRepositoryTests'
 )
@@ -165,6 +184,7 @@ $queueArgs = @(
     '-CommonPronManifest', $CommonPronManifest,
     '-CommonPronAdoptionContract', $CommonPronAdoptionContract,
     '-ApprovedExclusionsRoot', $ReviewRoot,
+    '-AlignmentApprovedExclusionsRoot', $AlignmentReviewRoot,
     '-QcSampleSize', $QcSampleSize
 )
 

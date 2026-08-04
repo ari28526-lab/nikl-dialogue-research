@@ -21,6 +21,7 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$CommonPronAdoptionContract,
     [string]$ApprovedExclusionsRoot = '',
+    [string]$AlignmentApprovedExclusionsRoot = '',
     [switch]$PrepareMissingReviews,
     [switch]$StopAfterBlockedYear,
     [ValidateRange(5, 200)]
@@ -126,6 +127,7 @@ function New-YearState([string]$Year) {
         phase = 'queued'
         attempts_this_invocation = 0
         approved_exclusions_contract = $null
+        export_approved_exclusions_contract = $null
         input_contract_id = $null
         alignment_contract_id = $null
         retained_alignment_db = $null
@@ -161,6 +163,12 @@ if ([string]::IsNullOrWhiteSpace($ApprovedExclusionsRoot)) {
 }
 $ApprovedExclusionsRoot = [IO.Path]::GetFullPath(
     $ApprovedExclusionsRoot
+)
+if ([string]::IsNullOrWhiteSpace($AlignmentApprovedExclusionsRoot)) {
+    $AlignmentApprovedExclusionsRoot = $ApprovedExclusionsRoot
+}
+$AlignmentApprovedExclusionsRoot = [IO.Path]::GetFullPath(
+    $AlignmentApprovedExclusionsRoot
 )
 foreach ($required in @(
     $python, $CommonPronManifest, $CommonPronAdoptionContract
@@ -271,6 +279,8 @@ $queue = [ordered]@{
     common_pron_manifest = $CommonPronManifest
     common_pron_adoption_contract = $CommonPronAdoptionContract
     approved_exclusions_root = $ApprovedExclusionsRoot
+    alignment_approved_exclusions_root =
+        $AlignmentApprovedExclusionsRoot
     no_automatic_full_clean_retry = $true
     continue_after_blocked_year = (-not [bool]$StopAfterBlockedYear)
     researcher_approval_automatic = $false
@@ -333,6 +343,8 @@ try {
         }
 
         $approval = Find-Approval $ApprovedExclusionsRoot $year
+        $alignmentApproval = Find-Approval `
+            $AlignmentApprovedExclusionsRoot $year
         if ($null -eq $approval -and $PrepareMissingReviews) {
             $reviewRoot = Join-Path $ApprovedExclusionsRoot $year
             Write-Host "$year 승인 계약 없음 — pending 검토표 생성"
@@ -366,7 +378,20 @@ try {
             if ($StopAfterBlockedYear) { break }
             continue
         }
-        $state.approved_exclusions_contract = $approval
+        if ($null -eq $alignmentApproval) {
+            $state.status = 'alignment_exclusion_contract_missing'
+            $state.phase = 'blocked_before_mfa'
+            $state.failed_reason = (
+                '정렬 provenance 승인 제외 계약 없음; MFA/export 시작 안 함'
+            )
+            $state.updated_at = (Get-Date).ToString('o')
+            $blocked += 1
+            Write-JsonAtomic $queueStatePath $queue
+            if ($StopAfterBlockedYear) { break }
+            continue
+        }
+        $state.approved_exclusions_contract = $alignmentApproval
+        $state.export_approved_exclusions_contract = $approval
         $state.phase = 'mfa_or_resume'
         Write-JsonAtomic $queueStatePath $queue
 
@@ -377,7 +402,8 @@ try {
             '-UseDirectDbExport', '-PreferD', '-ForceVerifyLabInput',
             '-CommonPronManifest', $CommonPronManifest,
             '-CommonPronAdoptionContract', $CommonPronAdoptionContract,
-            '-ApprovedExclusionsContract', $approval
+            '-ApprovedExclusionsContract', $alignmentApproval,
+            '-ExportApprovedExclusionsContract', $approval
         )
         if ($year -in @('2020','2021')) {
             $runArgs += '-AllowBaselineCommonPronRerun'

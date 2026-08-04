@@ -1,0 +1,73 @@
+{
+  "schema_version": "mfa_post_exact_finalization.v1",
+  "status": "approved",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-04T21:38:44.6991306+09:00",
+  "approval_token": "APPROVE_2021_POST_MFA_535_13B129CEA0BA",
+  "approval_statement": "ari30-approves-technical-exclusion-of-535-post-MFA-candidates-preserve-for-follow-up-recovery-defer-24-WAV-LAB-auditory-review-until-final-2021-gate",
+  "candidate_identity_sha256": "13b129cea0ba009b1e2f27cc2f14f8fbb3fdd1f63e9f030d3c9f5b39328e2de5",
+  "automatic_approval_performed": false,
+  "mfa_database_modified": false,
+  "full_year_mfa_rerun_required": false,
+  "resume_from_retained_db": true,
+  "counts": {
+    "pre_mfa_approved": 1502,
+    "post_mfa_approved": 535,
+    "combined_approved": 2037
+  },
+  "post_mfa_reason_counts": {
+    "mfa_alignment_missing": 511,
+    "mfa_feature_generation_failed": 24
+  },
+  "combined_reason_counts": {
+    "audio_pairing_unresolved": 1039,
+    "empty_reference_unresolved_symbol": 399,
+    "mfa_alignment_missing": 511,
+    "mfa_feature_generation_failed": 24,
+    "text_duration_impossible": 64
+  },
+  "database": {
+    "path": "D:\\mfa_tmp\\2021\\2021.db",
+    "bytes": 12708773888,
+    "mtime_ns": 1785844320376154600
+  },
+  "export_report": {
+    "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260804_114223.json",
+    "bytes": 19675,
+    "mtime_ns": 1785845745050938900,
+    "sha256": "52365be9bd3f65dbadf811e3511192cba92fd926378b394a6808d8fe0b0df4f8"
+  },
+  "pre_approved_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\approved_exclusions.json",
+    "bytes": 1038,
+    "mtime_ns": 1785810061847598600,
+    "sha256": "ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356"
+  },
+  "review_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\SUMMARY.json",
+    "bytes": 4875,
+    "mtime_ns": 1785845960613185900,
+    "sha256": "59ffa328fd54c1389363c080175a06fc79209ae8ed12c8db90f5afefefb0499c"
+  },
+  "researcher_decisions": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\04_RESEARCHER_APPROVAL.csv",
+    "bytes": 226320,
+    "mtime_ns": 1785846754541290400,
+    "sha256": "89bdd81279d90a737d2cc2a72a1bc91c699210fd4e2dd87b2e161260322d28b6"
+  },
+  "combined_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa\\2021\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 635863,
+    "mtime_ns": 1785847294561792600,
+    "sha256": "1173ce387ccdd1aa6a33889f06409bd489616e8359484c73ad8d01899392777c"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa\\2021\\approved_exclusions.json",
+    "bytes": 1166,
+    "mtime_ns": 1785847294602237800,
+    "sha256": "ad4ddd87ecff1542ea645e9840b97375c992e6a83d5b203914bcb3b5f425899f"
+  },
+  "contract_row_count": 2037
+}

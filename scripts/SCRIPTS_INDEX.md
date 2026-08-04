@@ -238,7 +238,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | prepare_full_mfa_approval_reviews.ps1 | 지정 연도의 lab 입력을 전수 검증하고 제외 후보 CSV/manifest만 준비하는 내부 공통 진입점. 기존 검토표·승인 계약을 덮어쓰지 않으며 MFA·WAV 이동·자동 승인 없음 | 직접 기본값 사용 금지; 아래 연도 범위 wrapper가 호출 |
 | start_full_mfa_after_review.ps1 | 지정 연도의 승인 CSV를 input contract 결합 승인 JSON으로 만들고 전체 테스트 포함 preflight가 정확히 `GO`일 때만 체크포인트형 연도 큐 시작 | 내부 공통 진입점; 직접 기본값 사용 금지, full clean/자동승인/정본승격 없음 |
 | resume_2020_export_after_post_mfa_review.ps1 | 2020 결합 2,250건 계약과 보존 DB에서 6-tier·동반표 export를 재개한 이력 wrapper | 2020 완료 근거로 보존; 정상 절차 재실행 금지 |
-| prepare_post_mfa_exact_reconciliation_review.ps1 / resume_year_export_after_post_mfa_review.ps1 | 2021–2025 queue가 exact-ID gate에서 멈춘 경우 같은 정렬 계약의 최신 실패 보고서·보존 DB·선행 승인을 묶어 연구자 검토표를 만들고, 명시 승인 뒤 새 queue에서 재정렬 없이 direct export를 재개 | Windows PowerShell 5.1 안전 45파일·호환성 54스크립트 통과; 실제 후보 자동 승인 없음 |
+| prepare_post_mfa_exact_reconciliation_review.ps1 / resume_year_export_after_post_mfa_review.ps1 | 2021–2025 queue가 exact-ID gate에서 멈춘 경우 같은 정렬 계약의 최신 실패 보고서·보존 DB·선행 승인을 묶어 연구자 검토표를 만들고, 명시 승인 뒤 새 queue에서 재정렬 없이 direct export를 재개. 정렬 당시 pre-MFA 계약과 post-MFA 결합 export/QC 계약을 별도 인자로 전달해 `alignment_contract_id`를 소급 변경하지 않음 | Windows PowerShell 5.1 안전 46파일·호환성 55스크립트, Python 340시험 통과; 실제 후보 자동 승인 없음 |
 | verify_production_source_contract.ps1 | morph_search와 MFA가 같은 동결 `_build_meta.json` SHA·run ID·연도 입력을 사용했음을 `SOURCE_CONTRACT.json`으로 생성/검증 | 원자료 읽기 전용, 2020 검색·MFA·Gate B wrapper에 강제 |
 | resume_2020_morph_search.ps1 | 2020 source contract를 고정하고 성공 shard를 검증 재사용해 shard 2–23만 재개 | 2020 검색표 23/23 완료 |
 | prepare_2020_mfa_approval_review.ps1 / start_2020_mfa_after_review.ps1 | 검색표 성공과 source SHA를 확인한 뒤 2020 제외표만 준비하거나 2020 한 연도만 정렬 시작 | 기본 6개년 오실행 차단 |

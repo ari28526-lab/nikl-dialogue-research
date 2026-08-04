@@ -25,6 +25,7 @@ param(
     [string]$CommonPronManifest = "",
     [string]$CommonPronAdoptionContract = "",
     [string]$ApprovedExclusionsContract = "",
+    [string]$ExportApprovedExclusionsContract = "",
     [string]$CommonPronEquivalenceReport = "",
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
@@ -33,6 +34,13 @@ param(
     [ValidateRange(0, 2147483647)]
     [int]$BulkWrapperPid = 0
 )
+
+# 보통은 정렬·export가 같은 승인 계약을 사용한다. post-MFA exact-ID
+# 재개에서는 이미 계산된 정렬의 provenance를 보존해야 하므로, 정렬 당시
+# 계약과 export/감사용 결합 계약을 명시적으로 분리할 수 있다.
+if ([string]::IsNullOrWhiteSpace($ExportApprovedExclusionsContract)) {
+    $ExportApprovedExclusionsContract = $ApprovedExclusionsContract
+}
 
 if (
     [string]::IsNullOrWhiteSpace($CommonPronManifest) -and
@@ -1537,9 +1545,10 @@ foreach ($y in $years) {
             '--audio-corpus-contract', $wavSelection.ContractPath
         )
     }
-    if (-not [string]::IsNullOrWhiteSpace($ApprovedExclusionsContract)) {
+    if (-not [string]::IsNullOrWhiteSpace($ExportApprovedExclusionsContract)) {
         $labArguments += @(
-            '--approved-exclusions-contract', $ApprovedExclusionsContract
+            '--approved-exclusions-contract',
+            $ExportApprovedExclusionsContract
         )
     }
     if ($ForceVerifyLabInput) { $labArguments += '--force-verify' }
@@ -1569,6 +1578,21 @@ foreach ($y in $years) {
                 $ApprovedExclusionsContract
             )
             exit 1
+        }
+        if (
+            [IO.Path]::GetFullPath($ExportApprovedExclusionsContract) -ne
+            [IO.Path]::GetFullPath($ApprovedExclusionsContract)
+        ) {
+            & $py (Join-Path $pydir "mfa_exclusion_contract.py") validate `
+                --contract $ExportApprovedExclusionsContract --year $y `
+                --input-contract-id $inputContractId
+            if ($LASTEXITCODE -ne 0) {
+                Say (
+                    "!! $y export 승인 제외 계약 불일치: " +
+                    $ExportApprovedExclusionsContract
+                )
+                exit 1
+            }
         }
     }
     # lab/CSV 계약과 별도로 모델 파일 내용·MFA/Pynini 판본을 고정한다.
@@ -1728,7 +1752,8 @@ foreach ($y in $years) {
     }
     if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
         $integrityArguments += @(
-            '--approved-exclusions-contract', $ApprovedExclusionsContract,
+            '--approved-exclusions-contract',
+            $ExportApprovedExclusionsContract,
             '--input-contract-id', $inputContractId
         )
     }
@@ -1872,7 +1897,8 @@ foreach ($y in $years) {
         $quarantineLog = Join-Path $stateRoot "quarantine\$y\quarantine_log.csv"
         if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             $exclusionValidateArgs = @(
-                'validate', '--contract', $ApprovedExclusionsContract,
+                'validate', '--contract',
+                $ExportApprovedExclusionsContract,
                 '--year', $y, '--input-contract-id', $inputContractId
             )
             if (Test-Path -LiteralPath $quarantineLog) {
@@ -2428,7 +2454,7 @@ foreach ($y in $years) {
                 '--acoustic-model', $acousticModelPath,
                 '--alignment-contract', $alignmentContractPath,
                 '--approved-exclusions-contract',
-                $ApprovedExclusionsContract,
+                $ExportApprovedExclusionsContract,
                 '--lab-root', $wavRoot,
                 '--workers', '4', '--report', $directReport
             )
@@ -2517,6 +2543,10 @@ foreach ($y in $years) {
                 input_integrity_analysis_ready_gates_pass = (
                     [bool]$integrityYear[0].analysis_ready_gates_pass
                 )
+                alignment_approved_exclusions_contract =
+                    $ApprovedExclusionsContract
+                export_approved_exclusions_contract =
+                    $ExportApprovedExclusionsContract
                 morph_source_missing = (
                     [int64]$integrityYear[0].counts.morph_source_missing
                 )

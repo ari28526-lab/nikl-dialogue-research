@@ -259,6 +259,20 @@ aligned 1,371,883을 교차 비교했다. 다른 hard mismatch는 0이고,
 
 ## 활성 정본
 
+### 2021 post-MFA 재개 계약 교정
+
+21:35 KST에 연구자 `ari30`이 post-MFA 535건을 기술적 제외로 명시 승인했다.
+pre-MFA 1,502건과 결합한 export/QC 계약은 2,037건이다. 첫 재개 시도는 이
+결합 계약을 정렬 계약에도 사용해 alignment identity를 `5ff186…`에서
+`11e9f6…`로 바꾸려 했기 때문에, `direct_db_ready` 계약 불일치 gate에서
+파일 생성·MFA 재실행 전에 안전 중단됐다. DB와 2020 완성본은 그대로다.
+
+현행 수정은 정렬 provenance 계약(기존 1,502건)과 export·감사 계약(결합
+2,037건)을 별도 인자로 전달한다. 일반 신규 연도는 두 인자가 동일해 기존
+계약이 바뀌지 않는다. 2021은 회귀시험·새 execution queue preflight 후 같은
+DB에서 export만 재개하며, 유예한 24표본 청취와 최종 Gate 전에는 2022를
+시작하지 않는다.
+
 - 문서 색인: `docs/README.md`
 - 현재 상태: 이 문서
 - 생산 실행: `docs/RUNBOOK_production_2020_2025.md`

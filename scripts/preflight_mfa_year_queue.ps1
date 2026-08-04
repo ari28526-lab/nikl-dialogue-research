@@ -16,6 +16,7 @@ param(
     [string]$CommonPronAdoptionContract,
     [Parameter(Mandatory=$true)]
     [string]$ApprovedExclusionsRoot,
+    [string]$AlignmentApprovedExclusionsRoot = '',
     [string]$Output = '',
     [switch]$RunRepositoryTests
 )
@@ -59,6 +60,12 @@ $CommonPronAdoptionContract = [IO.Path]::GetFullPath(
 )
 $ApprovedExclusionsRoot = [IO.Path]::GetFullPath(
     $ApprovedExclusionsRoot
+)
+if ([string]::IsNullOrWhiteSpace($AlignmentApprovedExclusionsRoot)) {
+    $AlignmentApprovedExclusionsRoot = $ApprovedExclusionsRoot
+}
+$AlignmentApprovedExclusionsRoot = [IO.Path]::GetFullPath(
+    $AlignmentApprovedExclusionsRoot
 )
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $projectRoot (
@@ -219,6 +226,21 @@ foreach ($year in $Years) {
     Add-Check "${year}_approved_exclusions" (
         $LASTEXITCODE -eq 0
     ) $approval
+    $alignmentApproval = Find-Approval `
+        $AlignmentApprovedExclusionsRoot $year
+    if ($null -eq $alignmentApproval) {
+        Add-Check "${year}_alignment_approved_exclusions" $false (
+            "정렬 provenance 승인 계약 없음: $AlignmentApprovedExclusionsRoot"
+        )
+        continue
+    }
+    & $python (Join-Path $PSScriptRoot (
+        'python\mfa_exclusion_contract.py'
+    )) validate --contract $alignmentApproval --year $year `
+        --input-contract-id $inputId | Out-Host
+    Add-Check "${year}_alignment_approved_exclusions" (
+        $LASTEXITCODE -eq 0
+    ) $alignmentApproval
 }
 
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
@@ -261,6 +283,9 @@ $report = [ordered]@{
     queue_id = $QueueId
     search_master_run_id = $SearchMasterRunId
     years = @($Years)
+    export_approved_exclusions_root = $ApprovedExclusionsRoot
+    alignment_approved_exclusions_root =
+        $AlignmentApprovedExclusionsRoot
     checks = $checkRows
     failed_checks = $failedNames
     warning_checks = $warningNames

@@ -11,6 +11,9 @@ $files = @(
     (Join-Path $root 'scripts\preflight_mfa_year_queue.ps1'),
     (Join-Path $root 'scripts\prepare_full_mfa_approval_reviews.ps1'),
     (Join-Path $root 'scripts\start_full_mfa_after_review.ps1'),
+    (Join-Path $root (
+        'scripts\resume_year_export_after_post_mfa_review.ps1'
+    )),
     (Join-Path $root 'scripts\verify_production_source_contract.ps1'),
     (Join-Path $root 'scripts\resume_2020_morph_search.ps1'),
     (Join-Path $root 'scripts\prepare_2020_mfa_approval_review.ps1'),
@@ -175,6 +178,7 @@ foreach ($path in $files) {
             '[string]$CommonPronAdoptionContract',
             '[string]$CommonPronEquivalenceReport',
             '[string]$ApprovedExclusionsContract',
+            '[string]$ExportApprovedExclusionsContract',
             '[switch]$ForceVerifyLabInput',
             'mfa_exclusion_contract.py',
             '--approved-exclusions-contract',
@@ -387,7 +391,10 @@ foreach ($path in $files) {
             'MfaYearQueueSleepGuard',
             'Enable-MfaYearQueueSleepGuard',
             'Disable-MfaYearQueueSleepGuard',
-            'Windows system sleep guard: enabled'
+            'Windows system sleep guard: enabled',
+            '[string]$AlignmentApprovedExclusionsRoot',
+            "'-ApprovedExclusionsContract', `$alignmentApproval",
+            "'-ExportApprovedExclusionsContract', `$approval"
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("연도 무인 큐 안전장치 누락: $required")
@@ -426,6 +433,8 @@ foreach ($path in $files) {
             'validate_mfa_r2_adoption.py',
             'preflight_eojeol_realign.ps1',
             'mfa_exclusion_contract.py',
+            '[string]$AlignmentApprovedExclusionsRoot',
+            '${year}_alignment_approved_exclusions',
             'test_powershell_safety.ps1',
             'python_full_test_suite',
             'tracked_code_committed',
@@ -795,7 +804,9 @@ foreach ($path in $files) {
             'run_mfa_year_queue_safe.ps1',
             '-RunRepositoryTests',
             '의도적으로 -AllowFullCleanRetry와 -PrepareMissingReviews를 전달하지 않는다',
-            '연도 전체 자동 clean 재계산·자동 정본 승격은 금지'
+            '연도 전체 자동 clean 재계산·자동 정본 승격은 금지',
+            '[string]$AlignmentReviewRoot',
+            "'-AlignmentApprovedExclusionsRoot', `$AlignmentReviewRoot"
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("승인 후 전수 시작 가드 누락: $required")
@@ -803,6 +814,25 @@ foreach ($path in $files) {
         }
         if ($text -match "`$queueArgs\s*\+=.*AllowFullCleanRetry") {
             $failures.Add('승인 후 전수 시작기가 full clean retry를 전달함')
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+        'resume_year_export_after_post_mfa_review.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '$preContract',
+            '$combinedReviewRoot',
+            "'-ReviewRoot', `$combinedReviewRoot",
+            "'-AlignmentReviewRoot', `$alignmentReviewRoot",
+            '재정렬 없이 6-tier export를 재개한다.'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "post-MFA 정렬/export 계약 분리 가드 누락: $required"
+                )
+            }
         }
     }
     if ((Split-Path $path -Leaf) -eq 'run_stratified_mfa_pilot.ps1') {

@@ -1458,3 +1458,19 @@ shard 2–23을 재개하는 것이다.
   재개 wrapper `-PreflightOnly`는 기존 1,502건+post-MFA 535건=2,037건,
   후보 identity SHA, DB, 실패 보고서, 입력·정렬 계약을 모두 재검증해
   `validated_preflight`을 반환했다. preflight는 계약·MFA·export를 생성하지 않았다.
+
+## 2026-08-04 — 첫 export 재개 안전 중단·정렬/export 계약 분리
+
+- 결합 2,037건 계약을 생성한 뒤 첫 재개 queue를 시작했으나, 6-tier 파일이나
+  MFA를 시작하기 전에 `direct_db_ready` alignment identity 불일치로 중단됐다.
+  marker의 실제 계산 계약은 `5ff1865744c85d...`, 단일 결합 계약으로 재작성된
+  값은 `11e9f6d3078ac...`였다.
+- 원인은 post-MFA 제외가 이미 끝난 정렬의 provenance까지 소급 변경한 변수
+  설계였다. DB·원자료·2020 완성본 문제는 아니며, fail-closed gate가 전수
+  재정렬을 막았다. 실패 queue와 결합 계약은 시행착오 증거로 보존한다.
+- 실행 경로에 기본값 호환 방식의 계약 분리를 추가했다. 정렬 당시 pre-MFA
+  계약은 alignment contract 생성에만 고정하고, post-MFA 결합 계약은 LAB
+  재정돈·입력감사·direct export·독립 QC에 전달한다.
+- Windows PowerShell 5.1 안전성 46파일·호환성 55스크립트, Python 전체
+  340시험이 통과했다. 실제 재개는 코드 커밋·새 queue `PreflightOnly`가
+  통과한 뒤에만 수행한다.

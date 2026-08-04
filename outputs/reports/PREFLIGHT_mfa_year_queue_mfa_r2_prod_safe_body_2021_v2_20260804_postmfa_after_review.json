@@ -1,0 +1,116 @@
+﻿{
+    "schema_version":  "mfa_r2_full_year_queue_preflight.v1",
+    "status":  "GO",
+    "checked_at":  "2026-08-04T21:42:42.3173365+09:00",
+    "queue_id":  "mfa_r2_prod_safe_body_2021_v2_20260804_postmfa",
+    "search_master_run_id":  "pre_mfa_v1_20260725",
+    "years":  [
+                  "2021"
+              ],
+    "checks":  [
+                   {
+                       "name":  "pipeline_python_exists",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe"
+                   },
+                   {
+                       "name":  "common_manifest_exists",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\00_contract\\release_manifest.json"
+                   },
+                   {
+                       "name":  "common_adoption_exists",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728\\00_contract\\adoption_contract.json"
+                   },
+                   {
+                       "name":  "search_master_success_meta",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725"
+                   },
+                   {
+                       "name":  "D_volume_label_DATA_SSD",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "label=DATA_SSD"
+                   },
+                   {
+                       "name":  "D_free_space_at_least_55GiB",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "free_gib=278.39"
+                   },
+                   {
+                       "name":  "no_live_conflicting_lock",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  ""
+                   },
+                   {
+                       "name":  "stale_lock_inventory",
+                       "status":  "passed",
+                       "severity":  "warn",
+                       "detail":  ""
+                   },
+                   {
+                       "name":  "common_pron_adoption_runtime_validation",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PREFLIGHT_mfa_adoption_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa.json"
+                   },
+                   {
+                       "name":  "existing_eojeol_preflight_all_years",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "scripts/preflight_eojeol_realign.ps1"
+                   },
+                   {
+                       "name":  "2021_lab_input_contract",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "report=D:\\mfa_eojeol\\logs\\lab_build_2021_latest.json input_contract_id=1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8"
+                   },
+                   {
+                       "name":  "2021_approved_exclusions",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa\\2021\\approved_exclusions.json"
+                   },
+                   {
+                       "name":  "powershell_static_safety",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "tests/test_powershell_safety.ps1"
+                   },
+                   {
+                       "name":  "python_full_test_suite",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "python -m unittest discover -s tests"
+                   },
+                   {
+                       "name":  "tracked_code_committed",
+                       "status":  "passed",
+                       "severity":  "hard",
+                       "detail":  "working_diff_clean=True staged_diff_clean=True"
+                   }
+               ],
+    "failed_checks":  [
+
+                      ],
+    "warning_checks":  [
+
+                       ],
+    "d_drive":  {
+                    "label":  "DATA_SSD",
+                    "free_gib":  278.39
+                },
+    "output":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PREFLIGHT_mfa_year_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_after_review.json",
+    "starts_mfa":  false,
+    "approves_exclusions":  false,
+    "promotes_canonical_outputs":  false
+}

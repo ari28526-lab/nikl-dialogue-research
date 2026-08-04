@@ -108,7 +108,14 @@ DB를 보존한 채 fail-closed했다. 이 집합은 자동 승인하지 않았�
 WAV/LAB 청취는 2021 최종 Gate 전으로 유예했다. 승인 작업본은
 535/535 `approved`, pending 0이고 immutable 필드 변경 0을 확인했다.
 결합 2,037건 계약·DB·후보 identity `-PreflightOnly`는 통과했으며
-아직 계약 생성·export 실행은 하지 않았다.
+결합 계약은 생성됐다. 첫 실행은 이 결합 계약을 정렬 provenance에도 전달해
+기존 `alignment_contract_id=5ff186…`와 달라졌고, 자동 재정렬 금지 gate에서
+6-tier 생성·MFA 재실행 전에 안전 중단됐다. DB는 보존됐다.
+
+현행 재개 경로는 두 계약을 분리한다. 정렬 identity에는 정렬 당시 승인
+1,502건을 유지하고, 결합 2,037건은 LAB 재정돈·export·독립 감사에만 쓴다.
+실패한 `..._postmfa` queue ID는 재사용하지 않고 새 execution queue로
+`PreflightOnly`를 다시 통과한 뒤 같은 DB에서 export만 재개한다.
 
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과

@@ -121,6 +121,9 @@ $preContract = [IO.Path]::GetFullPath(
 if (-not (Test-Path -LiteralPath $preContract -PathType Leaf)) {
     throw "pre-MFA 승인 계약 없음: $preContract"
 }
+$alignmentReviewRoot = Split-Path -Parent (
+    Split-Path -Parent $preContract
+)
 
 $summary = Get-Content -LiteralPath $reviewSummary -Raw -Encoding UTF8 |
     ConvertFrom-Json
@@ -252,7 +255,8 @@ $startArgs = @(
     '-ApprovedBy', $ApprovedBy,
     '-QueueId', $ResumeQueueId,
     '-Years', $Year,
-    '-ReviewRoot', $combinedReviewRoot
+    '-ReviewRoot', $combinedReviewRoot,
+    '-AlignmentReviewRoot', $alignmentReviewRoot
 )
 Write-Host (
     "[OK] $Year 결합 승인 계약 통과. 같은 direct_db_ready DB에서 " +
