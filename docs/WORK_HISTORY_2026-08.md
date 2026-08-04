@@ -1440,3 +1440,21 @@ shard 2–23을 재개하는 것이다.
   것이다. 승인 후에만 기존 1,502건과 결합한 새 계약을 만들고,
   같은 `direct_db_ready` DB에서 6-tier·동반표 export만 재개한다.
   2021 독립 감사·DB 표본·연구자 표본 gate 전에는 2022를 시작하지 않는다.
+
+## 2026-08-04 — 2021 post-MFA 535건 기술적 제외 승인·preflight
+
+- 21:35 KST에 연구자 `ari30`이 `mfa_alignment_missing` 511건과
+  `mfa_feature_generation_failed` 24건, 합계 535건을 안전 본체에서
+  기술적으로 제외하고 후속 회수 대상으로 보존하는 것을 명시 승인했다.
+  이는 음운 실현·원자료 오류 판정이 아니다.
+- 연구자가 현재 청취 시간이 없음을 반영해, 24개 WAV/LAB 표본 청취는
+  2021 최종 Gate 전으로 유예했다. 이 검토가 끝나기 전에는 2022를 시작하지
+  않는다.
+- `04_RESEARCHER_APPROVAL.csv`의 535행을 모두 `approved`로 반영했고,
+  immutable 원본과 비교해 year, input contract, utt_id, reason, scope, evidence
+  변경 0을 확인했다. 작업본 SHA-256은
+  `89bdd81279d90a737d2cc2a72a1bc91c699210fd4e2dd87b2e161260322d28b6`다.
+- Windows PowerShell 5.1 안전성 45파일·호환성 55스크립트가 통과했다.
+  재개 wrapper `-PreflightOnly`는 기존 1,502건+post-MFA 535건=2,037건,
+  후보 identity SHA, DB, 실패 보고서, 입력·정렬 계약을 모두 재검증해
+  `validated_preflight`을 반환했다. preflight는 계약·MFA·export를 생성하지 않았다.

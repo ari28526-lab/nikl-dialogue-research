@@ -38,7 +38,7 @@ workflow 수정·시험
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
 
-## 현재 시작점 — 2021 MFA 정상 종료, post-MFA 승인 대기
+## 현재 시작점 — 2021 post-MFA 승인 완료, export 재개 전
 
 2020은 신규 공통 Jamo r2 MFA, 6-tier 868,187개, gzip 동반표 4개, 독립 전수
 감사, DB 재생성 표본 24/24, 연구자 생산 표본 24/24 및 Gate B까지 완료됐다.
@@ -102,6 +102,13 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804/
 DB를 보존한 채 fail-closed했다. 이 집합은 자동 승인하지 않았다.
 2021 export·독립 감사·DB 표본·연구자 표본 승인 전에는 2022 명령을
 실행하지 않는다.
+
+연구자 `ari30`은 21:35 KST에 post-MFA 535건을 안전 본체에서 기술적으로
+제외하고 후속 회수 대상으로 보존하는 것을 명시 승인했다. 24개
+WAV/LAB 청취는 2021 최종 Gate 전으로 유예했다. 승인 작업본은
+535/535 `approved`, pending 0이고 immutable 필드 변경 0을 확인했다.
+결합 2,037건 계약·DB·후보 identity `-PreflightOnly`는 통과했으며
+아직 계약 생성·export 실행은 하지 않았다.
 
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과

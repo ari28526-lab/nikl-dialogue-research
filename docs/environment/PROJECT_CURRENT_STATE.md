@@ -69,9 +69,11 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 - 2021–2025 신규 r2 MFA. 2021 정렬 계산은 2026-08-04 20:53:45 KST에
   exit 0으로 완료됐고 보존 DB·계산 checkpoint도 생성됐다. post-MFA
   exact-ID 대조에서 535건(`mfa_alignment_missing` 511,
-  `mfa_feature_generation_failed` 24)을 분리했으며, 현재는 연구자
-  명시 승인 전이다. 승인 후 같은 DB에서 6-tier·동반표 export만
-  재개한다. 2022–2025는 아직 시작하지 않았다.
+  `mfa_feature_generation_failed` 24)을 분리했다. 연구자 `ari30`은
+  21:35 KST에 535건의 기술적 제외·후속 회수 보존을 명시 승인했고,
+  24개 WAV/LAB 청취는 2021 최종 Gate 전으로 유예했다. 승인·DB
+  identity preflight는 통과했으며, 아직 6-tier export는 시작하지 않았다.
+  2022–2025는 아직 시작하지 않았다.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
   있으므로 사용 직전 실물·SHA를 다시 확인한다.
@@ -115,7 +117,7 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 
 현재 안전 정지점은 **2020 Gate B 통과, 2021 `morph_search.v3` 7표와 frozen
 source contract 완료, 2021 MFA 정렬 exit 0, 보존 DB checkpoint 완료,
-post-MFA exact-ID 후보 535건 연구자 승인 대기**다. 2021 DB는
+post-MFA exact-ID 후보 535건 기술적 제외 승인·export 재개 전**이다. 2021 DB는
 `D:\mfa_tmp\2021\2021.db`, marker는
 `D:\mfa_eojeol\done\2021.direct_db_ready`다. 정렬·DB 계산을 다시
 실행하지 않는다.
@@ -125,7 +127,8 @@ post-MFA exact-ID 후보 535건 연구자 승인 대기**다. 2021 DB는
 `empty_reference_unresolved_symbol`, `text_duration_impossible` 세 가지다. 이는
 삭제가 아니라 안전 본체에서 분리하는 계약이며 음원 회수 가능분은 동일 모델의
 후속 shard로 처리한다. 현재 535건은 이 pre-MFA 제외와 다른
-기술적 post-MFA 미정렬 집합이며 자동 승인하지 않았다. 상세 과정은
+기술적 post-MFA 미정렬 집합이며 자동 승인하지 않았다. 연구자가
+이 집합을 승인했으며 청취 검토는 2021 최종 Gate에 결합한다. 상세 과정은
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
