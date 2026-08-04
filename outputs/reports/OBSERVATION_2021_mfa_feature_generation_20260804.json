@@ -1,0 +1,57 @@
+{
+  "schema_version": "mfa_feature_generation_observation.v1",
+  "status": "pending_post_mfa_exact_reconciliation",
+  "recorded_date": "2026-08-04",
+  "year": "2021",
+  "run_id": "eojeol_commonpron_2021_20260804_114223",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804",
+  "mfa_database": "D:\\mfa_tmp\\2021\\2021.db",
+  "source_log": "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log",
+  "observation": {
+    "mfa_reported_files": 1416216,
+    "mfa_feature_generation_ignored_warning": 43822,
+    "wav_not_in_search_master": 42296,
+    "approved_pre_mfa_exclusions": 1502,
+    "expected_no_active_lab_total": 43798,
+    "ignored_with_nonempty_text": 24,
+    "reconciliation_equation": "42296 + 1502 + 24 = 43822"
+  },
+  "db_query_contract": {
+    "mode": "read_only",
+    "predicate": "utterance.ignored = 1 AND text IS NOT NULL AND trim(text) <> ''",
+    "result_count": 24
+  },
+  "research_decision": {
+    "automatic_approval_performed": false,
+    "active_lab_files_modified": false,
+    "current_mfa_run_interrupted": false,
+    "proposed_reason_code": "mfa_feature_generation_failed",
+    "next_gate": "MFA 완료 DB를 보존한 뒤 export exact-ID reconciliation에서 동일 24건을 다시 확인하고 연구자 승인 후보표를 생성한다. 승인 전에는 생산 제외 계약에 넣지 않는다."
+  },
+  "candidates": [
+    {"utt_id": "SDRW2100000024.1.1.152", "text": "그러면은", "duration_seconds": 0.03},
+    {"utt_id": "SDRW2100000154.1.1.417", "text": "근데 거기는", "duration_seconds": 0.03},
+    {"utt_id": "SDRW2100000736.1.1.308", "text": "가끔 생각나는 거 같아", "duration_seconds": 0.099875},
+    {"utt_id": "SDRW2100000871.1.1.215", "text": "너무 버겁대", "duration_seconds": 0.099875},
+    {"utt_id": "SDRW2100001504.1.1.447", "text": "그러니까 그게", "duration_seconds": 0.02},
+    {"utt_id": "SDRW2100001510.1.1.298", "text": "에 어떤 식으로 갈 건데", "duration_seconds": 0.04},
+    {"utt_id": "SDRW2100001512.1.1.33", "text": "근데 이거 인제", "duration_seconds": 0.04},
+    {"utt_id": "SDRW2100001591.1.1.229", "text": "왜냐하면", "duration_seconds": 0.02},
+    {"utt_id": "SDRW2100001615.1.1.496", "text": "응 응 근데", "duration_seconds": 0.02},
+    {"utt_id": "SDRW2100001817.1.1.214", "text": "그래서 이거는", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100001817.1.1.417", "text": "심리적인 거나", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100001817.1.1.463", "text": "그래서", "duration_seconds": 0.02},
+    {"utt_id": "SDRW2100001962.1.1.213", "text": "너 그거 한 번만 해도", "duration_seconds": 0.06},
+    {"utt_id": "SDRW2100001962.1.1.337", "text": "어떻게 타고", "duration_seconds": 0.02},
+    {"utt_id": "SDRW2100001962.1.1.392", "text": "인제 요기", "duration_seconds": 0.04},
+    {"utt_id": "SDRW2100001970.1.1.376", "text": "그래서", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100002231.1.1.227", "text": "나도 교육", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100002231.1.1.321", "text": "안 바뀌어 어르신들은", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100002234.1.1.173", "text": "그 의학이", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100002352.1.1.172", "text": "이렇게 생산성이 높은", "duration_seconds": 0.099875},
+    {"utt_id": "SDRW2100002889.1.1.127", "text": "아홉 시", "duration_seconds": 0.05},
+    {"utt_id": "SDRW2100003710.1.1.276", "text": "거기를", "duration_seconds": 0.08},
+    {"utt_id": "SDRW2100004264.1.1.286", "text": "그렇게 하면 내가 너무", "duration_seconds": 0.01},
+    {"utt_id": "SDRW2100004264.1.1.371", "text": "뭔", "duration_seconds": 0.01}
+  ]
+}

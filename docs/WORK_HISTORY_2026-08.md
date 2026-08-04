@@ -1324,3 +1324,20 @@ shard 2–23을 재개하는 것이다.
   중단 신호 없이 단계가 전환돼 실행을 유지했다.
 - 구조화된 근거는
   `outputs/reports/MONITOR_2021_mfa_mfcc_to_cmvn_20260804.json`에 남겼다.
+
+## 2026-08-04 — 2021 feature 생성 경고 43,822건의 완전 분해
+
+- MFA가 final features 생성 뒤 43,822개 발화를 무시했다고 경고했다. 입력 계약과
+  실행 중 MFA DB를 읽기 전용으로 대조해 `검색표 밖 WAV-only 42,296 + 승인 LAB
+  분리 1,502 + LAB·전사가 있으나 feature 생성에 실패한 초단시간 발화 24 =
+  43,822`임을 확인했다. 따라서 원인을 알 수 없는 대량 누락이 아니다.
+- 마지막 24건은 0.01–0.099875초 WAV이며 DB에서 `ignored=1`,
+  `num_frames=NULL`, `features=NULL`이다. 이들을 자동 승인하거나 현재 MFA를
+  재시작하지 않았다. 현재 실행은 완료 DB를 보존하도록 계속 진행한다.
+- MFA 완료 뒤 export exact-ID reconciliation에서 동일 집합을 다시 확인하고,
+  `mfa_feature_generation_failed` 연구자 승인 후보표를 만든다. 승인 뒤 제외 계약을
+  결합해 export부터 재개하므로, 이 사유만으로 2021 MFA 전체를 다시 돌리지 않는다.
+- 구조화된 목록은
+  `outputs/reports/OBSERVATION_2021_mfa_feature_generation_20260804.json`, 현행 결정은
+  `docs/decisions/DECISION_2021_feature_generation_ignored_pending_20260804.md`에
+  기록했다.
