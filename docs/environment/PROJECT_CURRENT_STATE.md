@@ -172,6 +172,12 @@ canonical 보고서를 변경하기 전에 거부되며, 최종 queue로 Gate B 
 통과해야 시작할 수 있다. 재개 전 기존 queue state는 SHA-256 검증 history로
 보존한다.
 
+2021 실행 전 최종 `-PreflightOnly`는 2026-08-04 10:11 KST에 `GO`였다.
+2020 Gate B, 2021 source contract, 승인 제외 1,488건, 공통 Jamo r2·109-phone,
+동결 음향모델, D: 여유, PowerShell 안전·호환성 검사와 Python 329개 테스트가
+통과했다. 이 관측은 MFA를 시작하지 않았으며, 다음 동작은 사용자 일반
+PowerShell에서 2021 장시간 실행 명령을 시작하는 것이다.
+
 ## 활성 정본
 
 - 문서 색인: `docs/README.md`

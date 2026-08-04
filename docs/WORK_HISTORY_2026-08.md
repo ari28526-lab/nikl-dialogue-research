@@ -1228,3 +1228,7 @@ shard 2–23을 재개하는 것이다.
 - 이 진단 시점에도 MFA는 시작되지 않았다. 수정·승인 증거·문서를 커밋한 뒤
   Windows PowerShell 5.1 안전·호환성 검사와 `-PreflightOnly`를 다시 통과해야
   사용자 PowerShell용 장시간 2021 MFA 명령을 제공한다.
+- 수정과 승인 증거를 커밋한 뒤 10:11 KST에 같은 `-PreflightOnly`를 재실행해
+  최종 `GO`를 확인했다. PowerShell 안전 검사 45개 파일, 5.1 실행 호환성
+  52개 스크립트, Python 329개 테스트가 통과했고, 승인 계약·입력·모델·D: 공간
+  검사도 모두 통과했다. `PreflightOnly`였으므로 MFA는 여전히 시작하지 않았다.

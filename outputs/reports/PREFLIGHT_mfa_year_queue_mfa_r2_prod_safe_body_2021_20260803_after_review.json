@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  "mfa_r2_full_year_queue_preflight.v1",
-    "status":  "NO_GO",
-    "checked_at":  "2026-08-04T10:05:45.8779813+09:00",
+    "status":  "GO",
+    "checked_at":  "2026-08-04T10:11:45.2044702+09:00",
     "queue_id":  "mfa_r2_prod_safe_body_2021_20260803",
     "search_master_run_id":  "pre_mfa_v1_20260725",
     "years":  [
@@ -94,13 +94,13 @@
                    },
                    {
                        "name":  "tracked_code_committed",
-                       "status":  "failed",
+                       "status":  "passed",
                        "severity":  "hard",
-                       "detail":  "working_diff_clean=False staged_diff_clean=True"
+                       "detail":  "working_diff_clean=True staged_diff_clean=True"
                    }
                ],
     "failed_checks":  [
-                          "tracked_code_committed"
+
                       ],
     "warning_checks":  [
 

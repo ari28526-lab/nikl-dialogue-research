@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  "mfa_2020_to_2021_gate_b.v1",
     "status":  "passed",
-    "checked_at":  "2026-08-04T10:04:52.8504277+09:00",
+    "checked_at":  "2026-08-04T10:10:59.6798316+09:00",
     "prior_year":  "2020",
     "next_year":  "2021",
     "source_contract_report":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\GATE_B_2020_source.json",
