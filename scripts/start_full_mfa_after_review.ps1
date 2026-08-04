@@ -22,6 +22,8 @@ param(
     [string]$YearsCsv = '',
     [string]$ReviewRoot = '',
     [string]$AlignmentReviewRoot = '',
+    [string]$DirectExportFailedReport = '',
+    [string]$DirectExportRepairManifest = '',
     [string]$CommonPronManifest = (
         'D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728\' +
         '00_contract\release_manifest.json'
@@ -41,6 +43,21 @@ $env:PYTHONUTF8 = '1'
 $Years = @(
     Resolve-MfaYearSelection -Years $Years -YearsCsv $YearsCsv
 )
+if (
+    [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -ne
+    [string]::IsNullOrWhiteSpace($DirectExportRepairManifest)
+) {
+    throw (
+        '-DirectExportFailedReport와 -DirectExportRepairManifest는 ' +
+        '함께 지정해야 함'
+    )
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -and
+    $Years.Count -ne 1
+) {
+    throw 'direct export repair 재개는 정확히 한 연도만 허용함'
+}
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $config = Get-Content -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
@@ -187,6 +204,12 @@ $queueArgs = @(
     '-AlignmentApprovedExclusionsRoot', $AlignmentReviewRoot,
     '-QcSampleSize', $QcSampleSize
 )
+if (-not [string]::IsNullOrWhiteSpace($DirectExportFailedReport)) {
+    $queueArgs += @(
+        '-DirectExportFailedReport', $DirectExportFailedReport,
+        '-DirectExportRepairManifest', $DirectExportRepairManifest
+    )
+}
 
 Write-Host '전수 연도 큐를 시작한다. 이 창을 닫지 말 것.' `
     -ForegroundColor Cyan

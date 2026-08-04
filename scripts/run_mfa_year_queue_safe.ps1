@@ -22,6 +22,8 @@ param(
     [string]$CommonPronAdoptionContract,
     [string]$ApprovedExclusionsRoot = '',
     [string]$AlignmentApprovedExclusionsRoot = '',
+    [string]$DirectExportFailedReport = '',
+    [string]$DirectExportRepairManifest = '',
     [switch]$PrepareMissingReviews,
     [switch]$StopAfterBlockedYear,
     [ValidateRange(5, 200)]
@@ -33,6 +35,21 @@ $ErrorActionPreference = 'Stop'
 $Years = @(
     Resolve-MfaYearSelection -Years $Years -YearsCsv $YearsCsv
 )
+if (
+    [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -ne
+    [string]::IsNullOrWhiteSpace($DirectExportRepairManifest)
+) {
+    throw (
+        '-DirectExportFailedReport와 -DirectExportRepairManifest는 ' +
+        '함께 지정해야 함'
+    )
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -and
+    $Years.Count -ne 1
+) {
+    throw 'direct export repair 재개 큐는 정확히 한 연도만 허용함'
+}
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $projectRoot 'config\paths.json'
 $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 |
@@ -281,6 +298,8 @@ $queue = [ordered]@{
     approved_exclusions_root = $ApprovedExclusionsRoot
     alignment_approved_exclusions_root =
         $AlignmentApprovedExclusionsRoot
+    direct_export_failed_report = $DirectExportFailedReport
+    direct_export_repair_manifest = $DirectExportRepairManifest
     no_automatic_full_clean_retry = $true
     continue_after_blocked_year = (-not [bool]$StopAfterBlockedYear)
     researcher_approval_automatic = $false
@@ -405,6 +424,13 @@ try {
             '-ApprovedExclusionsContract', $alignmentApproval,
             '-ExportApprovedExclusionsContract', $approval
         )
+        if (-not [string]::IsNullOrWhiteSpace($DirectExportFailedReport)) {
+            $runArgs += @(
+                '-DirectExportFailedReport', $DirectExportFailedReport,
+                '-DirectExportRepairManifest',
+                $DirectExportRepairManifest
+            )
+        }
         if ($year -in @('2020','2021')) {
             $runArgs += '-AllowBaselineCommonPronRerun'
         }

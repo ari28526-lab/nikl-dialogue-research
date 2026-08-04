@@ -68,3 +68,7 @@
 
 역사 문서의 “다음 단계”, 완료 표현, 실행 명령은 현재 지시가 아니다. 논문에서
 방법을 설명할 때는 이 색인의 현행 문서와 실제 manifest를 함께 근거로 사용한다.
+
+- `DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md` —
+  2021 v5 끝검사에서 발견된 구 float32 종단 TextGrid 19개를 archive 후 표적
+  교체하고, 전수 checkpoint 증거를 이어받아 동반표부터 재개하는 결정

@@ -1,0 +1,6034 @@
+{
+  "schema_version": "diagnose_2021_v5_textgrid_mismatches.v1",
+  "source_report": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260805_031430.json",
+  "database": "D:\\mfa_tmp\\2021\\2021.db",
+  "year": "2021",
+  "failed_count": 19,
+  "database_rows_found": 19,
+  "diagnostics": [
+    {
+      "utt_id": "SDRW2100000201.1.1.220",
+      "session": "SDRW2100000201",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "file_bytes": 17519,
+      "file_mtime_ns": 1785860402656208900,
+      "db_duration": 98.84,
+      "actual_textgrid_duration": 98.84,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 3.662109378410605e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 18,
+          "expected_count": 17,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 16,
+            "actual": [
+              10.69,
+              98.839996,
+              "봐요"
+            ],
+            "expected": [
+              10.6899995803833,
+              98.84,
+              "봐요"
+            ],
+            "begin_delta_seconds": 4.196166987213701e-07,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              10.29,
+              10.69,
+              "봐요"
+            ],
+            [
+              10.69,
+              98.839996,
+              "봐요"
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              9.829999923706055,
+              10.289999961853027,
+              ""
+            ],
+            [
+              10.289999961853027,
+              10.6899995803833,
+              "봐요"
+            ],
+            [
+              10.6899995803833,
+              98.84,
+              "봐요"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 64,
+          "expected_count": 63,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 62,
+            "actual": [
+              10.69,
+              98.839996,
+              ""
+            ],
+            "expected": [
+              10.6899995803833,
+              98.84,
+              ""
+            ],
+            "begin_delta_seconds": 4.196166987213701e-07,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              10.66,
+              10.69,
+              "o"
+            ],
+            [
+              10.69,
+              98.839996,
+              ""
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              10.380000114440918,
+              10.65999984741211,
+              "j"
+            ],
+            [
+              10.65999984741211,
+              10.6899995803833,
+              "o"
+            ],
+            [
+              10.6899995803833,
+              98.84,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 64,
+          "expected_count": 63,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 62,
+            "actual": [
+              10.69,
+              98.839996,
+              ""
+            ],
+            "expected": [
+              10.6899995803833,
+              98.84,
+              ""
+            ],
+            "begin_delta_seconds": 4.196166987213701e-07,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              10.66,
+              10.69,
+              "O"
+            ],
+            [
+              10.69,
+              98.839996,
+              ""
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              10.380000114440918,
+              10.65999984741211,
+              "Y"
+            ],
+            [
+              10.65999984741211,
+              10.6899995803833,
+              "O"
+            ],
+            [
+              10.6899995803833,
+              98.84,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.11,
+              98.839996,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ],
+            "expected": [
+              0.10999999940395355,
+              98.84,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ],
+            "begin_delta_seconds": 5.960464483090178e-10,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.11,
+              ""
+            ],
+            [
+              0.11,
+              98.839996,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10999999940395355,
+              ""
+            ],
+            [
+              0.10999999940395355,
+              98.84,
+              "저기 뭐야 약자들한테 주로 베푸는 곳에 가서 그렇게 했나 봐요"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.11,
+              98.839996,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ],
+            "expected": [
+              0.10999999940395355,
+              98.84,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ],
+            "begin_delta_seconds": 5.960464483090178e-10,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.11,
+              ""
+            ],
+            [
+              0.11,
+              98.839996,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10999999940395355,
+              ""
+            ],
+            [
+              0.10999999940395355,
+              98.84,
+              "J EO _ G I | M WO _ YA | YA k _ J A _ D EU l _ H A n _ T E | J U _ R O | B E _ P U _ N EU n | G O s _ E | G A _ S EO | G EU _ R EO h _ G E | H AE ss _ N A | B WA _ YO"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.11,
+              98.839996,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ],
+            "expected": [
+              0.10999999940395355,
+              98.84,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ],
+            "begin_delta_seconds": 5.960464483090178e-10,
+            "end_delta_seconds": -4.0000000041118255e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.11,
+              ""
+            ],
+            [
+              0.11,
+              98.839996,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ],
+            [
+              98.839996,
+              98.84,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10999999940395355,
+              ""
+            ],
+            [
+              0.10999999940395355,
+              98.84,
+              "저기/IC | 뭐/NP + 이/VCP + 야/EF | 약자/NNG + 들/XSN + 한테/JKB | 주로/MAG | 베풀/VV + 는/ETM | 곳/NNG + 에/JKB | 가/VV + 아서/EC | 그렇/VA + 게/EC | 하/VV + 았/EP + 나/EF | 보/VX + 아요/EF"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.350",
+      "session": "SDRW2100000223",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+      "file_bytes": 4722,
+      "file_mtime_ns": 1785860435406270500,
+      "db_duration": 23.55,
+      "actual_textgrid_duration": 23.55,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 7.629394538355427e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 5,
+          "expected_count": 5,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 4,
+            "actual": [
+              1.99,
+              23.549999,
+              ""
+            ],
+            "expected": [
+              1.9900000095367432,
+              23.55,
+              ""
+            ],
+            "begin_delta_seconds": -9.536743172944284e-09,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.95,
+              1.7,
+              ""
+            ],
+            [
+              1.7,
+              1.99,
+              "곡들"
+            ],
+            [
+              1.99,
+              23.549999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.949999988079071,
+              1.7000000476837158,
+              ""
+            ],
+            [
+              1.7000000476837158,
+              1.9900000095367432,
+              "곡들"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 11,
+          "expected_count": 11,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 10,
+            "actual": [
+              1.99,
+              23.549999,
+              ""
+            ],
+            "expected": [
+              1.9900000095367432,
+              23.55,
+              ""
+            ],
+            "begin_delta_seconds": -9.536743172944284e-09,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.92,
+              1.95,
+              "ɨ"
+            ],
+            [
+              1.95,
+              1.99,
+              "ɭ"
+            ],
+            [
+              1.99,
+              23.549999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.9199999570846558,
+              1.9500000476837158,
+              "ɨ"
+            ],
+            [
+              1.9500000476837158,
+              1.9900000095367432,
+              "ɭ"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 11,
+          "expected_count": 11,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 10,
+            "actual": [
+              1.99,
+              23.549999,
+              ""
+            ],
+            "expected": [
+              1.9900000095367432,
+              23.55,
+              ""
+            ],
+            "begin_delta_seconds": -9.536743172944284e-09,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.92,
+              1.95,
+              "EU"
+            ],
+            [
+              1.95,
+              1.99,
+              "l"
+            ],
+            [
+              1.99,
+              23.549999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.9199999570846558,
+              1.9500000476837158,
+              "EU"
+            ],
+            [
+              1.9500000476837158,
+              1.9900000095367432,
+              "l"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              1.99,
+              "그 곡들"
+            ],
+            [
+              1.99,
+              23.55,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              1.9900000095367432,
+              "그 곡들"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              1.99,
+              "G EU | G O k _ D EU l"
+            ],
+            [
+              1.99,
+              23.55,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              1.9900000095367432,
+              "G EU | G O k _ D EU l"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              1.99,
+              "그/MMD | 곡/NNG + 들/XSN"
+            ],
+            [
+              1.99,
+              23.55,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              1.9900000095367432,
+              "그/MMD | 곡/NNG + 들/XSN"
+            ],
+            [
+              1.9900000095367432,
+              23.55,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.364",
+      "session": "SDRW2100000223",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+      "file_bytes": 14331,
+      "file_mtime_ns": 1785860435583069800,
+      "db_duration": 46.42,
+      "actual_textgrid_duration": 46.42,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 1.8310546892053026e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 18,
+          "expected_count": 17,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 16,
+            "actual": [
+              13.12,
+              46.419998,
+              ""
+            ],
+            "expected": [
+              13.119999885559082,
+              46.42,
+              ""
+            ],
+            "begin_delta_seconds": 1.1444091718715299e-07,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              12.81,
+              13.12,
+              "같아요"
+            ],
+            [
+              13.12,
+              46.419998,
+              ""
+            ],
+            [
+              46.419998,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              12.609999656677246,
+              12.8100004196167,
+              ""
+            ],
+            [
+              12.8100004196167,
+              13.119999885559082,
+              "같아요"
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 49,
+          "expected_count": 48,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 47,
+            "actual": [
+              13.12,
+              46.419998,
+              ""
+            ],
+            "expected": [
+              13.119999885559082,
+              46.42,
+              ""
+            ],
+            "begin_delta_seconds": 1.1444091718715299e-07,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              13.09,
+              13.12,
+              "o"
+            ],
+            [
+              13.12,
+              46.419998,
+              ""
+            ],
+            [
+              46.419998,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              13.0600004196167,
+              13.09000015258789,
+              "j"
+            ],
+            [
+              13.09000015258789,
+              13.119999885559082,
+              "o"
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 49,
+          "expected_count": 48,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 47,
+            "actual": [
+              13.12,
+              46.419998,
+              ""
+            ],
+            "expected": [
+              13.119999885559082,
+              46.42,
+              ""
+            ],
+            "begin_delta_seconds": 1.1444091718715299e-07,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              13.09,
+              13.12,
+              "O"
+            ],
+            [
+              13.12,
+              46.419998,
+              ""
+            ],
+            [
+              46.419998,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              13.0600004196167,
+              13.09000015258789,
+              "Y"
+            ],
+            [
+              13.09000015258789,
+              13.119999885559082,
+              "O"
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.41,
+              ""
+            ],
+            [
+              0.41,
+              13.12,
+              "안 알 알아가는 뭐 그런 시간이었던 거 같아요."
+            ],
+            [
+              13.12,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.4099999964237213,
+              ""
+            ],
+            [
+              0.4099999964237213,
+              13.119999885559082,
+              "안 알 알아가는 뭐 그런 시간이었던 거 같아요."
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.41,
+              ""
+            ],
+            [
+              0.41,
+              13.12,
+              "A n | A l | A l _ A _ G A _ N EU n | M WO | G EU _ R EO n | S I _ G A n _ I _ EO ss _ D EO n | G EO | G A th _ A _ YO"
+            ],
+            [
+              13.12,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.4099999964237213,
+              ""
+            ],
+            [
+              0.4099999964237213,
+              13.119999885559082,
+              "A n | A l | A l _ A _ G A _ N EU n | M WO | G EU _ R EO n | S I _ G A n _ I _ EO ss _ D EO n | G EO | G A th _ A _ YO"
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.41,
+              ""
+            ],
+            [
+              0.41,
+              13.12,
+              "안/MAG | 알/VV + ㄹ/ETM | 알/VV + 아/EC | 가/VV + 는/ETM | 뭐/IC | 그런/MMD | 시간/NNG + 이/VCP + 었/EP + 던/ETM | 거/NNB | 같/VA + 아요/EF + ./SF"
+            ],
+            [
+              13.12,
+              46.42,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.4099999964237213,
+              ""
+            ],
+            [
+              0.4099999964237213,
+              13.119999885559082,
+              "안/MAG | 알/VV + ㄹ/ETM | 알/VV + 아/EC | 가/VV + 는/ETM | 뭐/IC | 그런/MMD | 시간/NNG + 이/VCP + 었/EP + 던/ETM | 거/NNB | 같/VA + 아요/EF + ./SF"
+            ],
+            [
+              13.119999885559082,
+              46.42,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000377.1.1.162",
+      "session": "SDRW2100000377",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+      "file_bytes": 70181,
+      "file_mtime_ns": 1785860653157218500,
+      "db_duration": 22.089875,
+      "actual_textgrid_duration": 22.089875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 54,
+          "expected_count": 54,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 53,
+            "actual": [
+              21.959999,
+              22.089874,
+              ""
+            ],
+            "expected": [
+              21.959999084472656,
+              22.089875,
+              ""
+            ],
+            "begin_delta_seconds": -8.44726564253051e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              20.9,
+              21.09,
+              "잘"
+            ],
+            [
+              21.09,
+              21.959999,
+              "모르더라고"
+            ],
+            [
+              21.959999,
+              22.089874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              20.899999618530273,
+              21.09000015258789,
+              "잘"
+            ],
+            [
+              21.09000015258789,
+              21.959999084472656,
+              "모르더라고"
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 286,
+          "expected_count": 286,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 285,
+            "actual": [
+              21.959999,
+              22.089874,
+              ""
+            ],
+            "expected": [
+              21.959999084472656,
+              22.089875,
+              ""
+            ],
+            "begin_delta_seconds": -8.44726564253051e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              21.6,
+              21.790001,
+              "ɡ"
+            ],
+            [
+              21.790001,
+              21.959999,
+              "o"
+            ],
+            [
+              21.959999,
+              22.089874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              21.600000381469727,
+              21.790000915527344,
+              "ɡ"
+            ],
+            [
+              21.790000915527344,
+              21.959999084472656,
+              "o"
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 286,
+          "expected_count": 286,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 285,
+            "actual": [
+              21.959999,
+              22.089874,
+              ""
+            ],
+            "expected": [
+              21.959999084472656,
+              22.089875,
+              ""
+            ],
+            "begin_delta_seconds": -8.44726564253051e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              21.6,
+              21.790001,
+              "G"
+            ],
+            [
+              21.790001,
+              21.959999,
+              "O"
+            ],
+            [
+              21.959999,
+              22.089874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              21.600000381469727,
+              21.790000915527344,
+              "G"
+            ],
+            [
+              21.790000915527344,
+              21.959999084472656,
+              "O"
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              21.959999,
+              "맞아 내가 기억나는 원더걸스의 대표 노래들을 텔미와 노바디와 쏘핫 이렇게 있었던 거 같은데 이 3개는 정말 우리나라를 강타한 노래들이었고 또 신기한 게 원더걸스가 하도 예전에 유행을 했던 그런 그룹이니까 그 그룹의 멤버들은 선미와 현아가 원더걸스 출신이라는 거는 요즘 사람들이 잘 모르더라고."
+            ],
+            [
+              21.959999,
+              22.089875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              21.959999084472656,
+              "맞아 내가 기억나는 원더걸스의 대표 노래들을 텔미와 노바디와 쏘핫 이렇게 있었던 거 같은데 이 3개는 정말 우리나라를 강타한 노래들이었고 또 신기한 게 원더걸스가 하도 예전에 유행을 했던 그런 그룹이니까 그 그룹의 멤버들은 선미와 현아가 원더걸스 출신이라는 거는 요즘 사람들이 잘 모르더라고."
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              21.959999,
+              "M A j _ A | N AE _ G A | G I _ EO k _ N A _ N EU n | WO n _ D EO _ G EO l _ S EU _ UI | D AE _ P YO | N O _ R AE _ D EU l _ EU l | T E l _ M I _ WA | N O _ B A _ D I _ WA | SS O _ H A s | I _ R EO h _ G E | I ss _ EO ss _ D EO n | G EO | G A th _ EU n _ D E | I | ⟨3⟩ _ G AE _ N EU n | J EO ng _ M A l | U _ R I _ N A _ R A _ R EU l | G A ng _ T A _ H A n | N O _ R AE _ D EU l _ I _ EO ss _ G O | TT O | S I n _ G I _ H A n | G E | WO n _ D EO _ G EO l _ S EU _ G A | H A _ D O | YE _ J EO n _ E | YU _ H AE ng _ EU l | H AE ss _ D EO n | G EU _ R EO n | G EU _ R U p _ I _ N I _ KK A | G EU | G EU _ R U p _ UI | M E m _ B EO _ D EU l _ EU n | S EO n _ M I _ WA | H YEO n _ A _ G A | WO n _ D EO _ G EO l _ S EU | CH U l _ S I n _ I _ R A _ N EU n | G EO _ N EU n | YO _ J EU m | S A _ R A m _ D EU l _ I | J A l | M O _ R EU _ D EO _ R A _ G O"
+            ],
+            [
+              21.959999,
+              22.089875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              21.959999084472656,
+              "M A j _ A | N AE _ G A | G I _ EO k _ N A _ N EU n | WO n _ D EO _ G EO l _ S EU _ UI | D AE _ P YO | N O _ R AE _ D EU l _ EU l | T E l _ M I _ WA | N O _ B A _ D I _ WA | SS O _ H A s | I _ R EO h _ G E | I ss _ EO ss _ D EO n | G EO | G A th _ EU n _ D E | I | ⟨3⟩ _ G AE _ N EU n | J EO ng _ M A l | U _ R I _ N A _ R A _ R EU l | G A ng _ T A _ H A n | N O _ R AE _ D EU l _ I _ EO ss _ G O | TT O | S I n _ G I _ H A n | G E | WO n _ D EO _ G EO l _ S EU _ G A | H A _ D O | YE _ J EO n _ E | YU _ H AE ng _ EU l | H AE ss _ D EO n | G EU _ R EO n | G EU _ R U p _ I _ N I _ KK A | G EU | G EU _ R U p _ UI | M E m _ B EO _ D EU l _ EU n | S EO n _ M I _ WA | H YEO n _ A _ G A | WO n _ D EO _ G EO l _ S EU | CH U l _ S I n _ I _ R A _ N EU n | G EO _ N EU n | YO _ J EU m | S A _ R A m _ D EU l _ I | J A l | M O _ R EU _ D EO _ R A _ G O"
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              21.959999,
+              "맞/VV + 아/EC | 내/NP + 가/JKS | 기억나/VV + 는/ETM | 원더걸스/NNP + 의/JKG | 대표/NNG | 노래/NNG + 들/XSN + 을/JKO | 텔미/NNP + 와/JKB | 노바디/NNG + 와/JKB | 쏘핫/NNP | 이렇/VA + 게/EC | 있/VA + 었/EP + 던/ETM | 거/NNB | 같/VA + 은데/EC | 이/MMD | 3/SN + 개/NNB + 는/JX | 정말/MAG | 우리나라/NNG + 를/JKO | 강타하/VV + ㄴ/ETM | 노래/NNG + 들/XSN + 이/VCP + 었/EP + 고/EC | 또/MAG | 신기하/VA + ㄴ/ETM | 거/NNB + 이/JKS | 원더걸스/NNP + 가/JKS | 하도/MAG | 예전/NNG + 에/JKB | 유행/NNG + 을/JKO | 하/VV + 았/EP + 던/ETM | 그런/MMD | 그룹/NNG + 이/VCP + 니까/EC | 그/MMD | 그룹/NNG + 의/JKG | 멤버/NNG + 들/XSN + 은/JX | 선미/NNP + 와/JC | 현아/NNP + 가/JKS | 원더걸스/NNP | 출신/NNG + 이/VCP + 라는/ETM | 거/NNB + 는/JX | 요즘/NNG | 사람/NNG + 들/XSN + 이/JKS | 잘/MAG | 모르/VV + 더라고/EF + ./SF"
+            ],
+            [
+              21.959999,
+              22.089875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              21.959999084472656,
+              "맞/VV + 아/EC | 내/NP + 가/JKS | 기억나/VV + 는/ETM | 원더걸스/NNP + 의/JKG | 대표/NNG | 노래/NNG + 들/XSN + 을/JKO | 텔미/NNP + 와/JKB | 노바디/NNG + 와/JKB | 쏘핫/NNP | 이렇/VA + 게/EC | 있/VA + 었/EP + 던/ETM | 거/NNB | 같/VA + 은데/EC | 이/MMD | 3/SN + 개/NNB + 는/JX | 정말/MAG | 우리나라/NNG + 를/JKO | 강타하/VV + ㄴ/ETM | 노래/NNG + 들/XSN + 이/VCP + 었/EP + 고/EC | 또/MAG | 신기하/VA + ㄴ/ETM | 거/NNB + 이/JKS | 원더걸스/NNP + 가/JKS | 하도/MAG | 예전/NNG + 에/JKB | 유행/NNG + 을/JKO | 하/VV + 았/EP + 던/ETM | 그런/MMD | 그룹/NNG + 이/VCP + 니까/EC | 그/MMD | 그룹/NNG + 의/JKG | 멤버/NNG + 들/XSN + 은/JX | 선미/NNP + 와/JC | 현아/NNP + 가/JKS | 원더걸스/NNP | 출신/NNG + 이/VCP + 라는/ETM | 거/NNB + 는/JX | 요즘/NNG | 사람/NNG + 들/XSN + 이/JKS | 잘/MAG | 모르/VV + 더라고/EF + ./SF"
+            ],
+            [
+              21.959999084472656,
+              22.089875,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.326",
+      "session": "SDRW2100000493",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+      "file_bytes": 7507,
+      "file_mtime_ns": 1785860819752770900,
+      "db_duration": 38.35,
+      "actual_textgrid_duration": 38.35,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 1.5258789076710855e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 9,
+          "expected_count": 8,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 7,
+            "actual": [
+              1.83,
+              38.349998,
+              ""
+            ],
+            "expected": [
+              1.8300000429153442,
+              38.35,
+              ""
+            ],
+            "begin_delta_seconds": -4.2915344167226976e-08,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.24,
+              1.83,
+              "정"
+            ],
+            [
+              1.83,
+              38.349998,
+              ""
+            ],
+            [
+              38.349998,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.090000033378601,
+              1.2400000095367432,
+              "년"
+            ],
+            [
+              1.2400000095367432,
+              1.8300000429153442,
+              "정"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 22,
+          "expected_count": 21,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 20,
+            "actual": [
+              1.83,
+              38.349998,
+              ""
+            ],
+            "expected": [
+              1.8300000429153442,
+              38.35,
+              ""
+            ],
+            "begin_delta_seconds": -4.2915344167226976e-08,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.36,
+              1.83,
+              "ŋ"
+            ],
+            [
+              1.83,
+              38.349998,
+              ""
+            ],
+            [
+              38.349998,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.3200000524520874,
+              1.3600000143051147,
+              "ʌ"
+            ],
+            [
+              1.3600000143051147,
+              1.8300000429153442,
+              "ŋ"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 22,
+          "expected_count": 21,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 20,
+            "actual": [
+              1.83,
+              38.349998,
+              ""
+            ],
+            "expected": [
+              1.8300000429153442,
+              38.35,
+              ""
+            ],
+            "begin_delta_seconds": -4.2915344167226976e-08,
+            "end_delta_seconds": -2.0000000020559128e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.36,
+              1.83,
+              "NG"
+            ],
+            [
+              1.83,
+              38.349998,
+              ""
+            ],
+            [
+              38.349998,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.3200000524520874,
+              1.3600000143051147,
+              "EO"
+            ],
+            [
+              1.3600000143051147,
+              1.8300000429153442,
+              "NG"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              1.83,
+              "졸업을 한 1년 정"
+            ],
+            [
+              1.83,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              1.8300000429153442,
+              "졸업을 한 1년 정"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              1.83,
+              "J O l _ EO p _ EU l | H A n | ⟨1⟩ _ N YEO n | J EO ng"
+            ],
+            [
+              1.83,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              1.8300000429153442,
+              "J O l _ EO p _ EU l | H A n | ⟨1⟩ _ N YEO n | J EO ng"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.16,
+              ""
+            ],
+            [
+              0.16,
+              1.83,
+              "졸업/NNG + 을/JKO | 하/XSV + ㄴ/ETM | 1/SN + 년/NNB | 정/NNP"
+            ],
+            [
+              1.83,
+              38.35,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1599999964237213,
+              ""
+            ],
+            [
+              0.1599999964237213,
+              1.8300000429153442,
+              "졸업/NNG + 을/JKO | 하/XSV + ㄴ/ETM | 1/SN + 년/NNB | 정/NNP"
+            ],
+            [
+              1.8300000429153442,
+              38.35,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.328",
+      "session": "SDRW2100000493",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+      "file_bytes": 5562,
+      "file_mtime_ns": 1785860819780696400,
+      "db_duration": 37.62,
+      "actual_textgrid_duration": 37.62,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 1.0681152318170462e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 7,
+          "expected_count": 6,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 6,
+            "actual": [
+              37.619999,
+              37.62,
+              ""
+            ],
+            "expected": [
+              2.430000066757202,
+              37.62,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              2.18,
+              2.43,
+              "정도"
+            ],
+            [
+              2.43,
+              37.619999,
+              ""
+            ],
+            [
+              37.619999,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.5099999904632568,
+              2.180000066757202,
+              ""
+            ],
+            [
+              2.180000066757202,
+              2.430000066757202,
+              "정도"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 14,
+          "expected_count": 13,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 13,
+            "actual": [
+              37.619999,
+              37.62,
+              ""
+            ],
+            "expected": [
+              2.430000066757202,
+              37.62,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              2.38,
+              2.43,
+              "o"
+            ],
+            [
+              2.43,
+              37.619999,
+              ""
+            ],
+            [
+              37.619999,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              2.369999885559082,
+              2.380000114440918,
+              "d"
+            ],
+            [
+              2.380000114440918,
+              2.430000066757202,
+              "o"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 14,
+          "expected_count": 13,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 13,
+            "actual": [
+              37.619999,
+              37.62,
+              ""
+            ],
+            "expected": [
+              2.430000066757202,
+              37.62,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              2.38,
+              2.43,
+              "O"
+            ],
+            [
+              2.43,
+              37.619999,
+              ""
+            ],
+            [
+              37.619999,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              2.369999885559082,
+              2.380000114440918,
+              "D"
+            ],
+            [
+              2.380000114440918,
+              2.430000066757202,
+              "O"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.21,
+              ""
+            ],
+            [
+              0.21,
+              2.43,
+              "1년 정도"
+            ],
+            [
+              2.43,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.20999999344348907,
+              ""
+            ],
+            [
+              0.20999999344348907,
+              2.430000066757202,
+              "1년 정도"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.21,
+              ""
+            ],
+            [
+              0.21,
+              2.43,
+              "⟨1⟩ _ N YEO n | J EO ng _ D O"
+            ],
+            [
+              2.43,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.20999999344348907,
+              ""
+            ],
+            [
+              0.20999999344348907,
+              2.430000066757202,
+              "⟨1⟩ _ N YEO n | J EO ng _ D O"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.21,
+              ""
+            ],
+            [
+              0.21,
+              2.43,
+              "1/SN + 년/NNB | 정도/NNG"
+            ],
+            [
+              2.43,
+              37.62,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.20999999344348907,
+              ""
+            ],
+            [
+              0.20999999344348907,
+              2.430000066757202,
+              "1/SN + 년/NNB | 정도/NNG"
+            ],
+            [
+              2.430000066757202,
+              37.62,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.102",
+      "session": "SDRW2100000687",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "file_bytes": 29630,
+      "file_mtime_ns": 1785861077341877500,
+      "db_duration": 69.31,
+      "actual_textgrid_duration": 69.31,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 2.4414062522737368e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 39,
+          "expected_count": 38,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 37,
+            "actual": [
+              27.969999,
+              69.309998,
+              "쓰니까"
+            ],
+            "expected": [
+              27.969999313354492,
+              69.31,
+              "쓰니까"
+            ],
+            "begin_delta_seconds": -3.133544907996111e-07,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              27.620001,
+              27.969999,
+              "쓰니까"
+            ],
+            [
+              27.969999,
+              69.309998,
+              "쓰니까"
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              26.709999084472656,
+              27.6200008392334,
+              ""
+            ],
+            [
+              27.6200008392334,
+              27.969999313354492,
+              "쓰니까"
+            ],
+            [
+              27.969999313354492,
+              69.31,
+              "쓰니까"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 109,
+          "expected_count": 108,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 107,
+            "actual": [
+              27.969999,
+              69.309998,
+              ""
+            ],
+            "expected": [
+              27.969999313354492,
+              69.31,
+              ""
+            ],
+            "begin_delta_seconds": -3.133544907996111e-07,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              27.92,
+              27.969999,
+              "ɐ"
+            ],
+            [
+              27.969999,
+              69.309998,
+              ""
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              27.799999237060547,
+              27.920000076293945,
+              "k͈"
+            ],
+            [
+              27.920000076293945,
+              27.969999313354492,
+              "ɐ"
+            ],
+            [
+              27.969999313354492,
+              69.31,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 109,
+          "expected_count": 108,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 107,
+            "actual": [
+              27.969999,
+              69.309998,
+              ""
+            ],
+            "expected": [
+              27.969999313354492,
+              69.31,
+              ""
+            ],
+            "begin_delta_seconds": -3.133544907996111e-07,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              27.92,
+              27.969999,
+              "A"
+            ],
+            [
+              27.969999,
+              69.309998,
+              ""
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              27.799999237060547,
+              27.920000076293945,
+              "KK"
+            ],
+            [
+              27.920000076293945,
+              27.969999313354492,
+              "A"
+            ],
+            [
+              27.969999313354492,
+              69.31,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              69.309998,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ],
+            "expected": [
+              0.10000000149011612,
+              69.31,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              69.309998,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              69.31,
+              "그 상에 올리는 수저를 다 은수저로 쓴대 그러니까 뭐 한 네 벌 이렇게 해서 은수저 은그릇 뭐 이렇게 쓰니까"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              69.309998,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ],
+            "expected": [
+              0.10000000149011612,
+              69.31,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              69.309998,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              69.31,
+              "G EU | S A ng _ E | O l _ R I _ N EU n | S U _ J EO _ R EU l | D A | EU n _ S U _ J EO _ R O | SS EU n _ D AE | G EU _ R EO _ N I _ KK A | M WO | H A n | N E | B EO l | I _ R EO h _ G E | H AE _ S EO | EU n _ S U _ J EO | EU n _ G EU _ R EU s | M WO | I _ R EO h _ G E | SS EU _ N I _ KK A"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              69.309998,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ],
+            "expected": [
+              0.10000000149011612,
+              69.31,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -2.00000000916134e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              69.309998,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ],
+            [
+              69.309998,
+              69.31,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              69.31,
+              "그/MMD | 상/NNG + 에/JKB | 올리/VV + 는/ETM | 수저/NNG + 를/JKO | 다/MAG | 은수저/NNG + 로/JKB | 쓰/VV + ㄴ대/EF | 그러니까/MAJ | 뭐/IC | 한/MMN | 네/MMN | 벌/NNB | 이렇/VA + 게/EC | 하/VV + 아서/EC | 은수저/NNG | 은그릇/NNG | 뭐/IC | 이렇/VA + 게/EC | 쓰/VV + 니까/EC"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.205",
+      "session": "SDRW2100000687",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "file_bytes": 20800,
+      "file_mtime_ns": 1785861078399330900,
+      "db_duration": 173.45,
+      "actual_textgrid_duration": 173.45,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 3.0517578011313162e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 22,
+          "expected_count": 21,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 20,
+            "actual": [
+              6.22,
+              173.449997,
+              "둘째가"
+            ],
+            "expected": [
+              6.21999979019165,
+              173.45,
+              "둘째가"
+            ],
+            "begin_delta_seconds": 2.0980834936068504e-07,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.85,
+              6.22,
+              "둘째가"
+            ],
+            [
+              6.22,
+              173.449997,
+              "둘째가"
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.559999942779541,
+              5.849999904632568,
+              "때는"
+            ],
+            [
+              5.849999904632568,
+              6.21999979019165,
+              "둘째가"
+            ],
+            [
+              6.21999979019165,
+              173.45,
+              "둘째가"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 77,
+          "expected_count": 76,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 75,
+            "actual": [
+              6.22,
+              173.449997,
+              ""
+            ],
+            "expected": [
+              6.21999979019165,
+              173.45,
+              ""
+            ],
+            "begin_delta_seconds": 2.0980834936068504e-07,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              6.19,
+              6.22,
+              "ɐ"
+            ],
+            [
+              6.22,
+              173.449997,
+              ""
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              6.159999847412109,
+              6.190000057220459,
+              "ɡ"
+            ],
+            [
+              6.190000057220459,
+              6.21999979019165,
+              "ɐ"
+            ],
+            [
+              6.21999979019165,
+              173.45,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 77,
+          "expected_count": 76,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 75,
+            "actual": [
+              6.22,
+              173.449997,
+              ""
+            ],
+            "expected": [
+              6.21999979019165,
+              173.45,
+              ""
+            ],
+            "begin_delta_seconds": 2.0980834936068504e-07,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              6.19,
+              6.22,
+              "A"
+            ],
+            [
+              6.22,
+              173.449997,
+              ""
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              6.159999847412109,
+              6.190000057220459,
+              "G"
+            ],
+            [
+              6.190000057220459,
+              6.21999979019165,
+              "A"
+            ],
+            [
+              6.21999979019165,
+              173.45,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.19,
+              173.449997,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ],
+            "expected": [
+              0.1899999976158142,
+              173.45,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ],
+            "begin_delta_seconds": 2.384185793236071e-09,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.19,
+              ""
+            ],
+            [
+              0.19,
+              173.449997,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1899999976158142,
+              ""
+            ],
+            [
+              0.1899999976158142,
+              173.45,
+              "그게 첫째 집에서 하든 당연히 첫째 집에서도 아니라 첫째 집에서 할 때는 둘째가"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.19,
+              173.449997,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ],
+            "expected": [
+              0.1899999976158142,
+              173.45,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ],
+            "begin_delta_seconds": 2.384185793236071e-09,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.19,
+              ""
+            ],
+            [
+              0.19,
+              173.449997,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1899999976158142,
+              ""
+            ],
+            [
+              0.1899999976158142,
+              173.45,
+              "G EU _ G E | CH EO s _ JJ AE | J I p _ E _ S EO | H A _ D EU n | D A ng _ YEO n _ H I | CH EO s _ JJ AE | J I p _ E _ S EO _ D O | A _ N I _ R A | CH EO s _ JJ AE | J I p _ E _ S EO | H A l | TT AE _ N EU n | D U l _ JJ AE _ G A"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.19,
+              173.449997,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ],
+            "expected": [
+              0.1899999976158142,
+              173.45,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ],
+            "begin_delta_seconds": 2.384185793236071e-09,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.19,
+              ""
+            ],
+            [
+              0.19,
+              173.449997,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ],
+            [
+              173.449997,
+              173.45,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.1899999976158142,
+              ""
+            ],
+            [
+              0.1899999976158142,
+              173.45,
+              "그거/NP + 이/JKS | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + 든/EC | 당연히/MAG | 첫째/NR | 집/NNG + 에서/JKB + 도/JX | 아니/VCN + 라/EC | 첫째/NR | 집/NNG + 에서/JKB | 하/VV + ㄹ/ETM | 때/NNG + 는/JX | 둘째/NNG + 가/JKS"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.218",
+      "session": "SDRW2100000687",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "file_bytes": 23085,
+      "file_mtime_ns": 1785861078534269900,
+      "db_duration": 200.04,
+      "actual_textgrid_duration": 200.04,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 6.713867179541921e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 26,
+          "expected_count": 25,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 24,
+            "actual": [
+              11.96,
+              200.039993,
+              "달엔"
+            ],
+            "expected": [
+              11.960000038146973,
+              200.04,
+              "달엔"
+            ],
+            "begin_delta_seconds": -3.814697180359872e-08,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              11.65,
+              11.96,
+              "달엔"
+            ],
+            [
+              11.96,
+              200.039993,
+              "달엔"
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              10.710000038146973,
+              11.649999618530273,
+              ""
+            ],
+            [
+              11.649999618530273,
+              11.960000038146973,
+              "달엔"
+            ],
+            [
+              11.960000038146973,
+              200.04,
+              "달엔"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 86,
+          "expected_count": 85,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 84,
+            "actual": [
+              11.96,
+              200.039993,
+              ""
+            ],
+            "expected": [
+              11.960000038146973,
+              200.04,
+              ""
+            ],
+            "begin_delta_seconds": -3.814697180359872e-08,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              11.84,
+              11.96,
+              "n"
+            ],
+            [
+              11.96,
+              200.039993,
+              ""
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              11.760000228881836,
+              11.84000015258789,
+              "e"
+            ],
+            [
+              11.84000015258789,
+              11.960000038146973,
+              "n"
+            ],
+            [
+              11.960000038146973,
+              200.04,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 86,
+          "expected_count": 85,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 84,
+            "actual": [
+              11.96,
+              200.039993,
+              ""
+            ],
+            "expected": [
+              11.960000038146973,
+              200.04,
+              ""
+            ],
+            "begin_delta_seconds": -3.814697180359872e-08,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              11.84,
+              11.96,
+              "N"
+            ],
+            [
+              11.96,
+              200.039993,
+              ""
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              11.760000228881836,
+              11.84000015258789,
+              "E"
+            ],
+            [
+              11.84000015258789,
+              11.960000038146973,
+              "N"
+            ],
+            [
+              11.960000038146973,
+              200.04,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              200.039993,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ],
+            "expected": [
+              0.10000000149011612,
+              200.04,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              200.039993,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼 거의 한 달에 한 번 꼴인데 그 사람으로서는 엄청나게 달력을 보면 이번 달엔"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              200.039993,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ],
+            "expected": [
+              0.10000000149011612,
+              200.04,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              200.039993,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              200.04,
+              "G EU _ R EO m | G EO _ UI | H A n | D A l _ E | H A n | B EO n | KK O l _ I n _ D E | G EU | S A _ R A m _ EU _ R O _ S EO _ N EU n | EO m _ CH EO ng _ N A _ G E | D A l _ R YEO k _ EU l | B O _ M YEO n | I _ B EO n | D A l _ E n"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.1,
+              200.039993,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ],
+            "expected": [
+              0.10000000149011612,
+              200.04,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ],
+            "begin_delta_seconds": -1.4901161138336505e-09,
+            "end_delta_seconds": -6.999999982326699e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.1,
+              ""
+            ],
+            [
+              0.1,
+              200.039993,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ],
+            [
+              200.039993,
+              200.04,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.10000000149011612,
+              ""
+            ],
+            [
+              0.10000000149011612,
+              200.04,
+              "그럼/MAJ | 거의/MAG | 한/MMN | 달/NNG + 에/JKB | 한번/NNG | 꼴/XSN + 이/VCP + ㄴ데/EC | 그/MMD | 사람/NNG + 으로서/JKB + 는/JX | 엄청나/VA + 게/EC | 달력/NNG + 을/JKO | 보/VV + 면/EC | 이번/NNG | 달/NNG + 에/JKB + ㄴ/JX"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.122",
+      "session": "SDRW2100000688",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+      "file_bytes": 4421,
+      "file_mtime_ns": 1785861078250361800,
+      "db_duration": 75.02,
+      "actual_textgrid_duration": 75.02,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 3.3569335897709607e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 4,
+          "expected_count": 3,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 2,
+            "actual": [
+              1.31,
+              75.019997,
+              ""
+            ],
+            "expected": [
+              1.309999942779541,
+              75.02,
+              ""
+            ],
+            "begin_delta_seconds": 5.7220459037665705e-08,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.55,
+              1.31,
+              "아저씨도"
+            ],
+            [
+              1.31,
+              75.019997,
+              ""
+            ],
+            [
+              75.019997,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.550000011920929,
+              ""
+            ],
+            [
+              0.550000011920929,
+              1.309999942779541,
+              "아저씨도"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 10,
+          "expected_count": 9,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 8,
+            "actual": [
+              1.31,
+              75.019997,
+              ""
+            ],
+            "expected": [
+              1.309999942779541,
+              75.02,
+              ""
+            ],
+            "begin_delta_seconds": 5.7220459037665705e-08,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.24,
+              1.31,
+              "o"
+            ],
+            [
+              1.31,
+              75.019997,
+              ""
+            ],
+            [
+              75.019997,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.2300000190734863,
+              1.2400000095367432,
+              "d"
+            ],
+            [
+              1.2400000095367432,
+              1.309999942779541,
+              "o"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 10,
+          "expected_count": 9,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 8,
+            "actual": [
+              1.31,
+              75.019997,
+              ""
+            ],
+            "expected": [
+              1.309999942779541,
+              75.02,
+              ""
+            ],
+            "begin_delta_seconds": 5.7220459037665705e-08,
+            "end_delta_seconds": -2.999999992425728e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.24,
+              1.31,
+              "O"
+            ],
+            [
+              1.31,
+              75.019997,
+              ""
+            ],
+            [
+              75.019997,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.2300000190734863,
+              1.2400000095367432,
+              "D"
+            ],
+            [
+              1.2400000095367432,
+              1.309999942779541,
+              "O"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.55,
+              ""
+            ],
+            [
+              0.55,
+              1.31,
+              "아저씨도"
+            ],
+            [
+              1.31,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.550000011920929,
+              ""
+            ],
+            [
+              0.550000011920929,
+              1.309999942779541,
+              "아저씨도"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.55,
+              ""
+            ],
+            [
+              0.55,
+              1.31,
+              "A _ J EO _ SS I _ D O"
+            ],
+            [
+              1.31,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.550000011920929,
+              ""
+            ],
+            [
+              0.550000011920929,
+              1.309999942779541,
+              "A _ J EO _ SS I _ D O"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.55,
+              ""
+            ],
+            [
+              0.55,
+              1.31,
+              "아저씨/NNG + 도/JX"
+            ],
+            [
+              1.31,
+              75.02,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.550000011920929,
+              ""
+            ],
+            [
+              0.550000011920929,
+              1.309999942779541,
+              "아저씨/NNG + 도/JX"
+            ],
+            [
+              1.309999942779541,
+              75.02,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.123",
+      "session": "SDRW2100000688",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+      "file_bytes": 20978,
+      "file_mtime_ns": 1785861078265712300,
+      "db_duration": 71.28,
+      "actual_textgrid_duration": 71.28,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 1.2207031261368684e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 25,
+          "expected_count": 24,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 24,
+            "actual": [
+              71.279999,
+              71.28,
+              ""
+            ],
+            "expected": [
+              40.70000076293945,
+              71.28,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              40.130001,
+              40.700001,
+              "텐데"
+            ],
+            [
+              40.700001,
+              71.279999,
+              ""
+            ],
+            [
+              71.279999,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              39.2599983215332,
+              40.130001068115234,
+              ""
+            ],
+            [
+              40.130001068115234,
+              40.70000076293945,
+              "텐데"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 76,
+          "expected_count": 75,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 75,
+            "actual": [
+              71.279999,
+              71.28,
+              ""
+            ],
+            "expected": [
+              40.70000076293945,
+              71.28,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              40.290001,
+              40.700001,
+              "e"
+            ],
+            [
+              40.700001,
+              71.279999,
+              ""
+            ],
+            [
+              71.279999,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              40.279998779296875,
+              40.290000915527344,
+              "d"
+            ],
+            [
+              40.290000915527344,
+              40.70000076293945,
+              "e"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 76,
+          "expected_count": 75,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 75,
+            "actual": [
+              71.279999,
+              71.28,
+              ""
+            ],
+            "expected": [
+              40.70000076293945,
+              71.28,
+              ""
+            ],
+            "reason": "interval_count_only"
+          },
+          "actual_tail": [
+            [
+              40.290001,
+              40.700001,
+              "E"
+            ],
+            [
+              40.700001,
+              71.279999,
+              ""
+            ],
+            [
+              71.279999,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              40.279998779296875,
+              40.290000915527344,
+              "D"
+            ],
+            [
+              40.290000915527344,
+              40.70000076293945,
+              "E"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              2.72,
+              ""
+            ],
+            [
+              2.72,
+              40.700001,
+              "그런 거 좀 먹고 언니랑 같이 움직이면 훨씬 힘들다는 거 덜할 텐데"
+            ],
+            [
+              40.700001,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              2.7200000286102295,
+              ""
+            ],
+            [
+              2.7200000286102295,
+              40.70000076293945,
+              "그런 거 좀 먹고 언니랑 같이 움직이면 훨씬 힘들다는 거 덜할 텐데"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              2.72,
+              ""
+            ],
+            [
+              2.72,
+              40.700001,
+              "G EU _ R EO n | G EO | J O m | M EO k _ G O | EO n _ N I _ R A ng | G A th _ I | U m _ J I k _ I _ M YEO n | H WO l _ SS I n | H I m _ D EU l _ D A _ N EU n | G EO | D EO l _ H A l | T E n _ D E"
+            ],
+            [
+              40.700001,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              2.7200000286102295,
+              ""
+            ],
+            [
+              2.7200000286102295,
+              40.70000076293945,
+              "G EU _ R EO n | G EO | J O m | M EO k _ G O | EO n _ N I _ R A ng | G A th _ I | U m _ J I k _ I _ M YEO n | H WO l _ SS I n | H I m _ D EU l _ D A _ N EU n | G EO | D EO l _ H A l | T E n _ D E"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              2.72,
+              ""
+            ],
+            [
+              2.72,
+              40.700001,
+              "그런/MMD | 거/NNB | 좀/MAG | 먹/VV + 고/EC | 언니/NNG + 랑/JKB | 같이/MAG | 움직이/VV + 면/EC | 훨씬/MAG | 힘들/VA + 다는/ETM | 거/NNB | 덜하/VA + ㄹ/ETM | 터/NNB + 이/VCP + ㄴ데/EC"
+            ],
+            [
+              40.700001,
+              71.28,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              2.7200000286102295,
+              ""
+            ],
+            [
+              2.7200000286102295,
+              40.70000076293945,
+              "그런/MMD | 거/NNB | 좀/MAG | 먹/VV + 고/EC | 언니/NNG + 랑/JKB | 같이/MAG | 움직이/VV + 면/EC | 훨씬/MAG | 힘들/VA + 다는/ETM | 거/NNB | 덜하/VA + ㄹ/ETM | 터/NNB + 이/VCP + ㄴ데/EC"
+            ],
+            [
+              40.70000076293945,
+              71.28,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.232",
+      "session": "SDRW2100000688",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "file_bytes": 15996,
+      "file_mtime_ns": 1785861079601619200,
+      "db_duration": 151.98,
+      "actual_textgrid_duration": 151.98,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 4.272460927268185e-06,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 16,
+          "expected_count": 15,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 14,
+            "actual": [
+              6.03,
+              151.979996,
+              "없는데"
+            ],
+            "expected": [
+              6.03000020980835,
+              151.98,
+              "없는데"
+            ],
+            "begin_delta_seconds": -2.0980834936068504e-07,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.67,
+              6.03,
+              "없는데"
+            ],
+            [
+              6.03,
+              151.979996,
+              "없는데"
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.179999828338623,
+              5.670000076293945,
+              "살은"
+            ],
+            [
+              5.670000076293945,
+              6.03000020980835,
+              "없는데"
+            ],
+            [
+              6.03000020980835,
+              151.98,
+              "없는데"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 58,
+          "expected_count": 57,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 56,
+            "actual": [
+              6.03,
+              151.979996,
+              ""
+            ],
+            "expected": [
+              6.03000020980835,
+              151.98,
+              ""
+            ],
+            "begin_delta_seconds": -2.0980834936068504e-07,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.99,
+              6.03,
+              "e"
+            ],
+            [
+              6.03,
+              151.979996,
+              ""
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.980000019073486,
+              5.989999771118164,
+              "d"
+            ],
+            [
+              5.989999771118164,
+              6.03000020980835,
+              "e"
+            ],
+            [
+              6.03000020980835,
+              151.98,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 58,
+          "expected_count": 57,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 56,
+            "actual": [
+              6.03,
+              151.979996,
+              ""
+            ],
+            "expected": [
+              6.03000020980835,
+              151.98,
+              ""
+            ],
+            "begin_delta_seconds": -2.0980834936068504e-07,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.99,
+              6.03,
+              "E"
+            ],
+            [
+              6.03,
+              151.979996,
+              ""
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.980000019073486,
+              5.989999771118164,
+              "D"
+            ],
+            [
+              5.989999771118164,
+              6.03000020980835,
+              "E"
+            ],
+            [
+              6.03000020980835,
+              151.98,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              1.1,
+              151.979996,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ],
+            "expected": [
+              1.100000023841858,
+              151.98,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ],
+            "begin_delta_seconds": -2.3841857821338408e-08,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              1.1,
+              ""
+            ],
+            [
+              1.1,
+              151.979996,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.100000023841858,
+              ""
+            ],
+            [
+              1.100000023841858,
+              151.98,
+              "관심은 많아 운동 하는 거에 그러니까 걔는 살은 없는데"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              1.1,
+              151.979996,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ],
+            "expected": [
+              1.100000023841858,
+              151.98,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ],
+            "begin_delta_seconds": -2.3841857821338408e-08,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              1.1,
+              ""
+            ],
+            [
+              1.1,
+              151.979996,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.100000023841858,
+              ""
+            ],
+            [
+              1.100000023841858,
+              151.98,
+              "G WA n _ S I m _ EU n | M A nh _ A | U n _ D O ng | H A _ N EU n | G EO _ E | G EU _ R EO _ N I _ KK A | G YAE _ N EU n | S A l _ EU n | EO ps _ N EU n _ D E"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 2,
+          "same_count": false,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              1.1,
+              151.979996,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ],
+            "expected": [
+              1.100000023841858,
+              151.98,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ],
+            "begin_delta_seconds": -2.3841857821338408e-08,
+            "end_delta_seconds": -3.999999989900971e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              1.1,
+              ""
+            ],
+            [
+              1.1,
+              151.979996,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ],
+            [
+              151.979996,
+              151.98,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.100000023841858,
+              ""
+            ],
+            [
+              1.100000023841858,
+              151.98,
+              "관심/NNG + 은/JX | 많/VA + 아/EF | 운동하/VV + 는/ETM | 거/NNB + 에/JKB | 그러니까/MAJ | 걔/NP + 는/JX | 살/NNG + 은/JX | 없/VA + 는데/EC"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100001321.1.1.250",
+      "session": "SDRW2100001321",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+      "file_bytes": 4505,
+      "file_mtime_ns": 1785861937197996300,
+      "db_duration": 27.71,
+      "actual_textgrid_duration": 27.71,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 5,
+          "expected_count": 5,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 4,
+            "actual": [
+              1.89,
+              27.709999,
+              ""
+            ],
+            "expected": [
+              1.8899999856948853,
+              27.71,
+              ""
+            ],
+            "begin_delta_seconds": 1.4305114648394124e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.57,
+              1.66,
+              ""
+            ],
+            [
+              1.66,
+              1.89,
+              "그"
+            ],
+            [
+              1.89,
+              27.709999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.5700000524520874,
+              1.659999966621399,
+              ""
+            ],
+            [
+              1.659999966621399,
+              1.8899999856948853,
+              "그"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 10,
+          "expected_count": 10,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 9,
+            "actual": [
+              1.89,
+              27.709999,
+              ""
+            ],
+            "expected": [
+              1.8899999856948853,
+              27.71,
+              ""
+            ],
+            "begin_delta_seconds": 1.4305114648394124e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.66,
+              1.69,
+              "k"
+            ],
+            [
+              1.69,
+              1.89,
+              "ɨ"
+            ],
+            [
+              1.89,
+              27.709999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.659999966621399,
+              1.690000057220459,
+              "k"
+            ],
+            [
+              1.690000057220459,
+              1.8899999856948853,
+              "ɨ"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 10,
+          "expected_count": 10,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 9,
+            "actual": [
+              1.89,
+              27.709999,
+              ""
+            ],
+            "expected": [
+              1.8899999856948853,
+              27.71,
+              ""
+            ],
+            "begin_delta_seconds": 1.4305114648394124e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              1.66,
+              1.69,
+              "G"
+            ],
+            [
+              1.69,
+              1.89,
+              "EU"
+            ],
+            [
+              1.89,
+              27.709999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              1.659999966621399,
+              1.690000057220459,
+              "G"
+            ],
+            [
+              1.690000057220459,
+              1.8899999856948853,
+              "EU"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.96,
+              ""
+            ],
+            [
+              0.96,
+              1.89,
+              "약간 그"
+            ],
+            [
+              1.89,
+              27.71,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.9599999785423279,
+              ""
+            ],
+            [
+              0.9599999785423279,
+              1.8899999856948853,
+              "약간 그"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.96,
+              ""
+            ],
+            [
+              0.96,
+              1.89,
+              "YA k _ G A n | G EU"
+            ],
+            [
+              1.89,
+              27.71,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.9599999785423279,
+              ""
+            ],
+            [
+              0.9599999785423279,
+              1.8899999856948853,
+              "YA k _ G A n | G EU"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.96,
+              ""
+            ],
+            [
+              0.96,
+              1.89,
+              "약간/MAG | 그/IC"
+            ],
+            [
+              1.89,
+              27.71,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.9599999785423279,
+              ""
+            ],
+            [
+              0.9599999785423279,
+              1.8899999856948853,
+              "약간/MAG | 그/IC"
+            ],
+            [
+              1.8899999856948853,
+              27.71,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.269",
+      "session": "SDRW2100001387",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "file_bytes": 14093,
+      "file_mtime_ns": 1785862015606737300,
+      "db_duration": 22.96,
+      "actual_textgrid_duration": 22.96,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 15,
+          "expected_count": 15,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 14,
+            "actual": [
+              5.6,
+              22.959999,
+              "보니까"
+            ],
+            "expected": [
+              5.599999904632568,
+              22.96,
+              "보니까"
+            ],
+            "begin_delta_seconds": 9.536743128535363e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.14,
+              5.21,
+              ""
+            ],
+            [
+              5.21,
+              5.6,
+              "보니까"
+            ],
+            [
+              5.6,
+              22.959999,
+              "보니까"
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.139999866485596,
+              5.210000038146973,
+              ""
+            ],
+            [
+              5.210000038146973,
+              5.599999904632568,
+              "보니까"
+            ],
+            [
+              5.599999904632568,
+              22.96,
+              "보니까"
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 51,
+          "expected_count": 51,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 50,
+            "actual": [
+              5.6,
+              22.959999,
+              ""
+            ],
+            "expected": [
+              5.599999904632568,
+              22.96,
+              ""
+            ],
+            "begin_delta_seconds": 9.536743128535363e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.45,
+              5.52,
+              "k͈"
+            ],
+            [
+              5.52,
+              5.6,
+              "ɐ"
+            ],
+            [
+              5.6,
+              22.959999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.449999809265137,
+              5.519999980926514,
+              "k͈"
+            ],
+            [
+              5.519999980926514,
+              5.599999904632568,
+              "ɐ"
+            ],
+            [
+              5.599999904632568,
+              22.96,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 51,
+          "expected_count": 51,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 50,
+            "actual": [
+              5.6,
+              22.959999,
+              ""
+            ],
+            "expected": [
+              5.599999904632568,
+              22.96,
+              ""
+            ],
+            "begin_delta_seconds": 9.536743128535363e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              5.45,
+              5.52,
+              "KK"
+            ],
+            [
+              5.52,
+              5.6,
+              "A"
+            ],
+            [
+              5.6,
+              22.959999,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              5.449999809265137,
+              5.519999980926514,
+              "KK"
+            ],
+            [
+              5.519999980926514,
+              5.599999904632568,
+              "A"
+            ],
+            [
+              5.599999904632568,
+              22.96,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 2,
+          "expected_count": 2,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.59,
+              22.959999,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ],
+            "expected": [
+              0.5899999737739563,
+              22.96,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ],
+            "begin_delta_seconds": 2.622604367008563e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.59,
+              ""
+            ],
+            [
+              0.59,
+              22.959999,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.5899999737739563,
+              ""
+            ],
+            [
+              0.5899999737739563,
+              22.96,
+              "이제 그런 점들이 좀 해소가 되고 선이 생기다 보니까"
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 2,
+          "expected_count": 2,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.59,
+              22.959999,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ],
+            "expected": [
+              0.5899999737739563,
+              22.96,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ],
+            "begin_delta_seconds": 2.622604367008563e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.59,
+              ""
+            ],
+            [
+              0.59,
+              22.959999,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.5899999737739563,
+              ""
+            ],
+            [
+              0.5899999737739563,
+              22.96,
+              "I _ J E | G EU _ R EO n | J EO m _ D EU l _ I | J O m | H AE _ S O _ G A | D OE _ G O | S EO n _ I | S AE ng _ G I _ D A | B O _ N I _ KK A"
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 2,
+          "expected_count": 2,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 1,
+            "actual": [
+              0.59,
+              22.959999,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ],
+            "expected": [
+              0.5899999737739563,
+              22.96,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ],
+            "begin_delta_seconds": 2.622604367008563e-08,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              0.0,
+              0.59,
+              ""
+            ],
+            [
+              0.59,
+              22.959999,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.5899999737739563,
+              ""
+            ],
+            [
+              0.5899999737739563,
+              22.96,
+              "이제/MAG | 그런/MMD | 점/NNG + 들/XSN + 이/JKS | 좀/MAG | 해소/NNG + 가/JKC | 되/VV + 고/EC | 선/NNG + 이/JKS | 생기/VV + 다/EC | 보/VX + 니까/EC"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100001777.1.1.181",
+      "session": "SDRW2100001777",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+      "file_bytes": 66096,
+      "file_mtime_ns": 1785862594079914300,
+      "db_duration": 18.669875,
+      "actual_textgrid_duration": 18.669875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 8.087158214209467e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 66,
+          "expected_count": 66,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 65,
+            "actual": [
+              18.41,
+              18.669874,
+              ""
+            ],
+            "expected": [
+              18.40999984741211,
+              18.669875,
+              ""
+            ],
+            "begin_delta_seconds": 1.5258789076710855e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.02,
+              18.110001,
+              "근데"
+            ],
+            [
+              18.110001,
+              18.41,
+              "이제"
+            ],
+            [
+              18.41,
+              18.669874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.020000457763672,
+              18.110000610351562,
+              "근데"
+            ],
+            [
+              18.110000610351562,
+              18.40999984741211,
+              "이제"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 261,
+          "expected_count": 261,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 260,
+            "actual": [
+              18.41,
+              18.669874,
+              ""
+            ],
+            "expected": [
+              18.40999984741211,
+              18.669875,
+              ""
+            ],
+            "begin_delta_seconds": 1.5258789076710855e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.15,
+              18.219999,
+              "dʑ"
+            ],
+            [
+              18.219999,
+              18.41,
+              "e"
+            ],
+            [
+              18.41,
+              18.669874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.149999618530273,
+              18.219999313354492,
+              "dʑ"
+            ],
+            [
+              18.219999313354492,
+              18.40999984741211,
+              "e"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 261,
+          "expected_count": 261,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 260,
+            "actual": [
+              18.41,
+              18.669874,
+              ""
+            ],
+            "expected": [
+              18.40999984741211,
+              18.669875,
+              ""
+            ],
+            "begin_delta_seconds": 1.5258789076710855e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.15,
+              18.219999,
+              "J"
+            ],
+            [
+              18.219999,
+              18.41,
+              "E"
+            ],
+            [
+              18.41,
+              18.669874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.149999618530273,
+              18.219999313354492,
+              "J"
+            ],
+            [
+              18.219999313354492,
+              18.40999984741211,
+              "E"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              1.05,
+              ""
+            ],
+            [
+              1.05,
+              18.41,
+              "그 내가 이제 할 걸 다 끝내고 나서 어 고정적으로 이제 내년 3월까지 일을 한다고 쳤을 때 찾아야 될 곳은 그럼 1인 사무실 정도가 될 거거든 이제 거기서도 배울 거는 있지 많다 이거지 있지 왜냐하면은 설계 쪽으로 배울 게 많고 저쪽으로 가면 여수 쪽으로 가면 시공 쪽으로 배울 게 많지 근데 이제"
+            ],
+            [
+              18.41,
+              18.669875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.0499999523162842,
+              ""
+            ],
+            [
+              1.0499999523162842,
+              18.40999984741211,
+              "그 내가 이제 할 걸 다 끝내고 나서 어 고정적으로 이제 내년 3월까지 일을 한다고 쳤을 때 찾아야 될 곳은 그럼 1인 사무실 정도가 될 거거든 이제 거기서도 배울 거는 있지 많다 이거지 있지 왜냐하면은 설계 쪽으로 배울 게 많고 저쪽으로 가면 여수 쪽으로 가면 시공 쪽으로 배울 게 많지 근데 이제"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              1.05,
+              ""
+            ],
+            [
+              1.05,
+              18.41,
+              "G EU | N AE _ G A | I _ J E | H A l | G EO l | D A | KK EU th _ N AE _ G O | N A _ S EO | EO | G O _ J EO ng _ J EO k _ EU _ R O | I _ J E | N AE _ N YEO n | ⟨3⟩ _ WO l _ KK A _ J I | I l _ EU l | H A n _ D A _ G O | CH YEO ss _ EU l | TT AE | CH A j _ A _ YA | D OE l | G O s _ EU n | G EU _ R EO m | ⟨1⟩ _ I n | S A _ M U _ S I l | J EO ng _ D O _ G A | D OE l | G EO _ G EO _ D EU n | I _ J E | G EO _ G I _ S EO _ D O | B AE _ U l | G EO _ N EU n | I ss _ J I | M A nh _ D A | I _ G EO _ J I | I ss _ J I | WAE _ N YA _ H A _ M YEO n _ EU n | S EO l _ G YE | JJ O k _ EU _ R O | B AE _ U l | G E | M A nh _ G O | J EO _ JJ O k _ EU _ R O | G A _ M YEO n | YEO _ S U | JJ O k _ EU _ R O | G A _ M YEO n | S I _ G O ng | JJ O k _ EU _ R O | B AE _ U l | G E | M A nh _ J I | G EU n _ D E | I _ J E"
+            ],
+            [
+              18.41,
+              18.669875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.0499999523162842,
+              ""
+            ],
+            [
+              1.0499999523162842,
+              18.40999984741211,
+              "G EU | N AE _ G A | I _ J E | H A l | G EO l | D A | KK EU th _ N AE _ G O | N A _ S EO | EO | G O _ J EO ng _ J EO k _ EU _ R O | I _ J E | N AE _ N YEO n | ⟨3⟩ _ WO l _ KK A _ J I | I l _ EU l | H A n _ D A _ G O | CH YEO ss _ EU l | TT AE | CH A j _ A _ YA | D OE l | G O s _ EU n | G EU _ R EO m | ⟨1⟩ _ I n | S A _ M U _ S I l | J EO ng _ D O _ G A | D OE l | G EO _ G EO _ D EU n | I _ J E | G EO _ G I _ S EO _ D O | B AE _ U l | G EO _ N EU n | I ss _ J I | M A nh _ D A | I _ G EO _ J I | I ss _ J I | WAE _ N YA _ H A _ M YEO n _ EU n | S EO l _ G YE | JJ O k _ EU _ R O | B AE _ U l | G E | M A nh _ G O | J EO _ JJ O k _ EU _ R O | G A _ M YEO n | YEO _ S U | JJ O k _ EU _ R O | G A _ M YEO n | S I _ G O ng | JJ O k _ EU _ R O | B AE _ U l | G E | M A nh _ J I | G EU n _ D E | I _ J E"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              1.05,
+              ""
+            ],
+            [
+              1.05,
+              18.41,
+              "그/IC | 내/NP + 가/JKS | 이제/MAG | 하/VV + ㄹ/ETM | 거/NNB + ㄹ/JKO | 다/MAG | 끝내/VV + 고/EC | 나/VX + 아서/EC | 어/IC | 고정/NNG + 적/XSN + 으로/JKB | 이제/MAG | 내년/NNG | 3/SN + 월/NNB + 까지/JX | 일/NNB + 을/JKO | 하/VV + ㄴ다고/EC | 치/VV + 었/EP + 을/ETM | 때/NNG | 찾/VV + 아야/EC | 되/VV + ㄹ/ETM | 곳/NNG + 은/JX | 그럼/MAJ | 1/SN + 인/NNG | 사무실/NNG | 정도/NNG + 가/JKC | 되/VV + ㄹ/ETM | 거/NNB + 이/VCP + 거든/EF | 이제/MAG | 거기/NP + 서/JKB + 도/JX | 배우/VV + ㄹ/ETM | 거/NNB + 는/JX | 있/VA + 지/EF | 많/VA + 다/EF | 이거지/NNG | 있/VA + 지/EF | 왜냐하면/MAG + 은/JX | 설계/NNG | 쪽/NNB + 으로/JKB | 배우/VV + ㄹ/ETM | 거/NNB + 이/JKS | 많/VA + 고/EC | 저쪽/NP + 으로/JKB | 가/VV + 면/EC | 여수/NNP | 쪽/NNB + 으로/JKB | 가/VV + 면/EC | 시공/NNG | 쪽/NNB + 으로/JKB | 배우/VV + ㄹ/ETM | 거/NNB + 이/JKS | 많/VA + 지/EF | 근데/MAJ | 이제/MAG"
+            ],
+            [
+              18.41,
+              18.669875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              1.0499999523162842,
+              ""
+            ],
+            [
+              1.0499999523162842,
+              18.40999984741211,
+              "그/IC | 내/NP + 가/JKS | 이제/MAG | 하/VV + ㄹ/ETM | 거/NNB + ㄹ/JKO | 다/MAG | 끝내/VV + 고/EC | 나/VX + 아서/EC | 어/IC | 고정/NNG + 적/XSN + 으로/JKB | 이제/MAG | 내년/NNG | 3/SN + 월/NNB + 까지/JX | 일/NNB + 을/JKO | 하/VV + ㄴ다고/EC | 치/VV + 었/EP + 을/ETM | 때/NNG | 찾/VV + 아야/EC | 되/VV + ㄹ/ETM | 곳/NNG + 은/JX | 그럼/MAJ | 1/SN + 인/NNG | 사무실/NNG | 정도/NNG + 가/JKC | 되/VV + ㄹ/ETM | 거/NNB + 이/VCP + 거든/EF | 이제/MAG | 거기/NP + 서/JKB + 도/JX | 배우/VV + ㄹ/ETM | 거/NNB + 는/JX | 있/VA + 지/EF | 많/VA + 다/EF | 이거지/NNG | 있/VA + 지/EF | 왜냐하면/MAG + 은/JX | 설계/NNG | 쪽/NNB + 으로/JKB | 배우/VV + ㄹ/ETM | 거/NNB + 이/JKS | 많/VA + 고/EC | 저쪽/NP + 으로/JKB | 가/VV + 면/EC | 여수/NNP | 쪽/NNB + 으로/JKB | 가/VV + 면/EC | 시공/NNG | 쪽/NNB + 으로/JKB | 배우/VV + ㄹ/ETM | 거/NNB + 이/JKS | 많/VA + 지/EF | 근데/MAJ | 이제/MAG"
+            ],
+            [
+              18.40999984741211,
+              18.669875,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100002028.1.1.166",
+      "session": "SDRW2100002028",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+      "file_bytes": 57982,
+      "file_mtime_ns": 1785863015565999700,
+      "db_duration": 19.749875,
+      "actual_textgrid_duration": 19.749875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 8.850097650281441e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 59,
+          "expected_count": 59,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 58,
+            "actual": [
+              19.49,
+              19.749874,
+              ""
+            ],
+            "expected": [
+              19.489999771118164,
+              19.749875,
+              ""
+            ],
+            "begin_delta_seconds": 2.2888183437430598e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.77,
+              18.98,
+              ""
+            ],
+            [
+              18.98,
+              19.49,
+              "소통을"
+            ],
+            [
+              19.49,
+              19.749874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.770000457763672,
+              18.979999542236328,
+              ""
+            ],
+            [
+              18.979999542236328,
+              19.489999771118164,
+              "소통을"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 229,
+          "expected_count": 229,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 228,
+            "actual": [
+              19.49,
+              19.749874,
+              ""
+            ],
+            "expected": [
+              19.489999771118164,
+              19.749875,
+              ""
+            ],
+            "begin_delta_seconds": 2.2888183437430598e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              19.43,
+              19.440001,
+              "ɨ"
+            ],
+            [
+              19.440001,
+              19.49,
+              "ɭ"
+            ],
+            [
+              19.49,
+              19.749874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              19.43000030517578,
+              19.440000534057617,
+              "ɨ"
+            ],
+            [
+              19.440000534057617,
+              19.489999771118164,
+              "ɭ"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 229,
+          "expected_count": 229,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 228,
+            "actual": [
+              19.49,
+              19.749874,
+              ""
+            ],
+            "expected": [
+              19.489999771118164,
+              19.749875,
+              ""
+            ],
+            "begin_delta_seconds": 2.2888183437430598e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              19.43,
+              19.440001,
+              "EU"
+            ],
+            [
+              19.440001,
+              19.49,
+              "l"
+            ],
+            [
+              19.49,
+              19.749874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              19.43000030517578,
+              19.440000534057617,
+              "EU"
+            ],
+            [
+              19.440000534057617,
+              19.489999771118164,
+              "l"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.27,
+              ""
+            ],
+            [
+              0.27,
+              19.49,
+              "근데 사실 회사에서는 그 물론 인제 재택 근무를 하는 회사도 많기는 하지만 대부분의 회사는 좀 작은 특히나 좀 작은 기업들은 재택 근무를 할 수 있는 시스템이 좀 아직은 좀 부족한 것 같지 않아? 너는 어떻게 근무했어 그 서로 소통을?"
+            ],
+            [
+              19.49,
+              19.749875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.27000001072883606,
+              ""
+            ],
+            [
+              0.27000001072883606,
+              19.489999771118164,
+              "근데 사실 회사에서는 그 물론 인제 재택 근무를 하는 회사도 많기는 하지만 대부분의 회사는 좀 작은 특히나 좀 작은 기업들은 재택 근무를 할 수 있는 시스템이 좀 아직은 좀 부족한 것 같지 않아? 너는 어떻게 근무했어 그 서로 소통을?"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.27,
+              ""
+            ],
+            [
+              0.27,
+              19.49,
+              "G EU n _ D E | S A _ S I l | H OE _ S A _ E _ S EO _ N EU n | G EU | M U l _ R O n | I n _ J E | J AE _ T AE k | G EU n _ M U _ R EU l | H A _ N EU n | H OE _ S A _ D O | M A nh _ G I _ N EU n | H A _ J I _ M A n | D AE _ B U _ B U n _ UI | H OE _ S A _ N EU n | J O m | J A k _ EU n | T EU k _ H I _ N A | J O m | J A k _ EU n | G I _ EO p _ D EU l _ EU n | J AE _ T AE k | G EU n _ M U _ R EU l | H A l | S U | I ss _ N EU n | S I _ S EU _ T E m _ I | J O m | A _ J I k _ EU n | J O m | B U _ J O k _ H A n | G EO s | G A th _ J I | A nh _ A | N EO _ N EU n | EO _ TT EO h _ G E | G EU n _ M U _ H AE ss _ EO | G EU | S EO _ R O | S O _ T O ng _ EU l"
+            ],
+            [
+              19.49,
+              19.749875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.27000001072883606,
+              ""
+            ],
+            [
+              0.27000001072883606,
+              19.489999771118164,
+              "G EU n _ D E | S A _ S I l | H OE _ S A _ E _ S EO _ N EU n | G EU | M U l _ R O n | I n _ J E | J AE _ T AE k | G EU n _ M U _ R EU l | H A _ N EU n | H OE _ S A _ D O | M A nh _ G I _ N EU n | H A _ J I _ M A n | D AE _ B U _ B U n _ UI | H OE _ S A _ N EU n | J O m | J A k _ EU n | T EU k _ H I _ N A | J O m | J A k _ EU n | G I _ EO p _ D EU l _ EU n | J AE _ T AE k | G EU n _ M U _ R EU l | H A l | S U | I ss _ N EU n | S I _ S EU _ T E m _ I | J O m | A _ J I k _ EU n | J O m | B U _ J O k _ H A n | G EO s | G A th _ J I | A nh _ A | N EO _ N EU n | EO _ TT EO h _ G E | G EU n _ M U _ H AE ss _ EO | G EU | S EO _ R O | S O _ T O ng _ EU l"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.27,
+              ""
+            ],
+            [
+              0.27,
+              19.49,
+              "근데/MAJ | 사실/MAG | 회사/NNG + 에서/JKB + 는/JX | 그/IC | 물론/MAG | 인제/MAG | 재택근무/NNG + 를/JKO | 하/VV + 는/ETM | 회사/NNG + 도/JX | 많/VA + 기/ETN + 는/JX | 하/VX + 지만/EC | 대부분/NNG + 의/JKG | 회사/NNG + 는/JX | 좀/MAG | 작/VA + 은/ETM | 특히/MAG + 나/JC | 좀/MAG | 작/VA + 은/ETM | 기업/NNG + 들/XSN + 은/JX | 재택근무/NNG + 를/JKO | 하/VV + ㄹ/ETM | 수/NNB | 있/VA + 는/ETM | 시스템/NNG + 이/JKS | 좀/MAG | 아직/MAG + 은/JX | 좀/MAG | 부족하/VA + ㄴ/ETM | 것/NNB | 같/VA + 지/EC | 않/VX + 아/EF + ?/SF | 너/NP + 는/JX | 어떻/VA + 게/EC | 근무하/VV + 았/EP + 어/EF | 그/MMD | 서로/MAG | 소통/NNG + 을/JKO + ?/SF"
+            ],
+            [
+              19.49,
+              19.749875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.27000001072883606,
+              ""
+            ],
+            [
+              0.27000001072883606,
+              19.489999771118164,
+              "근데/MAJ | 사실/MAG | 회사/NNG + 에서/JKB + 는/JX | 그/IC | 물론/MAG | 인제/MAG | 재택근무/NNG + 를/JKO | 하/VV + 는/ETM | 회사/NNG + 도/JX | 많/VA + 기/ETN + 는/JX | 하/VX + 지만/EC | 대부분/NNG + 의/JKG | 회사/NNG + 는/JX | 좀/MAG | 작/VA + 은/ETM | 특히/MAG + 나/JC | 좀/MAG | 작/VA + 은/ETM | 기업/NNG + 들/XSN + 은/JX | 재택근무/NNG + 를/JKO | 하/VV + ㄹ/ETM | 수/NNB | 있/VA + 는/ETM | 시스템/NNG + 이/JKS | 좀/MAG | 아직/MAG + 은/JX | 좀/MAG | 부족하/VA + ㄴ/ETM | 것/NNB | 같/VA + 지/EC | 않/VX + 아/EF + ?/SF | 너/NP + 는/JX | 어떻/VA + 게/EC | 근무하/VV + 았/EP + 어/EF | 그/MMD | 서로/MAG | 소통/NNG + 을/JKO + ?/SF"
+            ],
+            [
+              19.489999771118164,
+              19.749875,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.30",
+      "session": "SDRW2100003286",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+      "file_bytes": 82633,
+      "file_mtime_ns": 1785864553248450100,
+      "db_duration": 27.839875,
+      "actual_textgrid_duration": 27.839875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 75,
+          "expected_count": 75,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 74,
+            "actual": [
+              27.65,
+              27.839874,
+              ""
+            ],
+            "expected": [
+              27.649999618530273,
+              27.839875,
+              ""
+            ],
+            "begin_delta_seconds": 3.8146972514141453e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              26.74,
+              27.09,
+              "했으면"
+            ],
+            [
+              27.09,
+              27.65,
+              "좋겠어"
+            ],
+            [
+              27.65,
+              27.839874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              26.739999771118164,
+              27.09000015258789,
+              "했으면"
+            ],
+            [
+              27.09000015258789,
+              27.649999618530273,
+              "좋겠어"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 331,
+          "expected_count": 331,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 330,
+            "actual": [
+              27.65,
+              27.839874,
+              ""
+            ],
+            "expected": [
+              27.649999618530273,
+              27.839875,
+              ""
+            ],
+            "begin_delta_seconds": 3.8146972514141453e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              27.389999,
+              27.549999,
+              "s"
+            ],
+            [
+              27.549999,
+              27.65,
+              "ʌ"
+            ],
+            [
+              27.65,
+              27.839874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              27.389999389648438,
+              27.549999237060547,
+              "s"
+            ],
+            [
+              27.549999237060547,
+              27.649999618530273,
+              "ʌ"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 331,
+          "expected_count": 331,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 330,
+            "actual": [
+              27.65,
+              27.839874,
+              ""
+            ],
+            "expected": [
+              27.649999618530273,
+              27.839875,
+              ""
+            ],
+            "begin_delta_seconds": 3.8146972514141453e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              27.389999,
+              27.549999,
+              "S"
+            ],
+            [
+              27.549999,
+              27.65,
+              "EO"
+            ],
+            [
+              27.65,
+              27.839874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              27.389999389648438,
+              27.549999237060547,
+              "S"
+            ],
+            [
+              27.549999237060547,
+              27.649999618530273,
+              "EO"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              27.65,
+              "또 이제 같이 이제 소통을 하는 게임 여는 친구들한테 미리 통보를 해서 나 언제까지 시간이 된다라고 하면 친구들도 이제 내 성격도 알고 엄마 성격도 아니까 이제 알아서 잘 이해를 해주고 이제 보내주니까 그런 부분에서는 걱정은 안 해도 될 거 같아 그리고 내가 게임을 매일 하는 것도 아니고 내가 일주일에 어쩌다가 많이 하면 두 번째 적게 하면 한 번 이니까 걱정 안 했으면 좋겠어"
+            ],
+            [
+              27.65,
+              27.839875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              27.649999618530273,
+              "또 이제 같이 이제 소통을 하는 게임 여는 친구들한테 미리 통보를 해서 나 언제까지 시간이 된다라고 하면 친구들도 이제 내 성격도 알고 엄마 성격도 아니까 이제 알아서 잘 이해를 해주고 이제 보내주니까 그런 부분에서는 걱정은 안 해도 될 거 같아 그리고 내가 게임을 매일 하는 것도 아니고 내가 일주일에 어쩌다가 많이 하면 두 번째 적게 하면 한 번 이니까 걱정 안 했으면 좋겠어"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              27.65,
+              "TT O | I _ J E | G A th _ I | I _ J E | S O _ T O ng _ EU l | H A _ N EU n | G E _ I m | YEO _ N EU n | CH I n _ G U _ D EU l _ H A n _ T E | M I _ R I | T O ng _ B O _ R EU l | H AE _ S EO | N A | EO n _ J E _ KK A _ J I | S I _ G A n _ I | D OE n _ D A _ R A _ G O | H A _ M YEO n | CH I n _ G U _ D EU l _ D O | I _ J E | N AE | S EO ng _ G YEO k _ D O | A l _ G O | EO m _ M A | S EO ng _ G YEO k _ D O | A _ N I _ KK A | I _ J E | A l _ A _ S EO | J A l | I _ H AE _ R EU l | H AE _ J U _ G O | I _ J E | B O _ N AE _ J U _ N I _ KK A | G EU _ R EO n | B U _ B U n _ E _ S EO _ N EU n | G EO k _ J EO ng _ EU n | A n | H AE _ D O | D OE l | G EO | G A th _ A | G EU _ R I _ G O | N AE _ G A | G E _ I m _ EU l | M AE _ I l | H A _ N EU n | G EO s _ D O | A _ N I _ G O | N AE _ G A | I l _ J U _ I l _ E | EO _ JJ EO _ D A _ G A | M A nh _ I | H A _ M YEO n | D U | B EO n _ JJ AE | J EO k _ G E | H A _ M YEO n | H A n | B EO n | I _ N I _ KK A | G EO k _ J EO ng | A n | H AE ss _ EU _ M YEO n | J O h _ G E ss _ EO"
+            ],
+            [
+              27.65,
+              27.839875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              27.649999618530273,
+              "TT O | I _ J E | G A th _ I | I _ J E | S O _ T O ng _ EU l | H A _ N EU n | G E _ I m | YEO _ N EU n | CH I n _ G U _ D EU l _ H A n _ T E | M I _ R I | T O ng _ B O _ R EU l | H AE _ S EO | N A | EO n _ J E _ KK A _ J I | S I _ G A n _ I | D OE n _ D A _ R A _ G O | H A _ M YEO n | CH I n _ G U _ D EU l _ D O | I _ J E | N AE | S EO ng _ G YEO k _ D O | A l _ G O | EO m _ M A | S EO ng _ G YEO k _ D O | A _ N I _ KK A | I _ J E | A l _ A _ S EO | J A l | I _ H AE _ R EU l | H AE _ J U _ G O | I _ J E | B O _ N AE _ J U _ N I _ KK A | G EU _ R EO n | B U _ B U n _ E _ S EO _ N EU n | G EO k _ J EO ng _ EU n | A n | H AE _ D O | D OE l | G EO | G A th _ A | G EU _ R I _ G O | N AE _ G A | G E _ I m _ EU l | M AE _ I l | H A _ N EU n | G EO s _ D O | A _ N I _ G O | N AE _ G A | I l _ J U _ I l _ E | EO _ JJ EO _ D A _ G A | M A nh _ I | H A _ M YEO n | D U | B EO n _ JJ AE | J EO k _ G E | H A _ M YEO n | H A n | B EO n | I _ N I _ KK A | G EO k _ J EO ng | A n | H AE ss _ EU _ M YEO n | J O h _ G E ss _ EO"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              27.65,
+              "또/MAG | 이제/MAG | 같이/MAG | 이제/MAG | 소통/NNG + 을/JKO | 하/XSV + 는/ETM | 게임/NNG | 열/VV + 는/ETM | 친구/NNG + 들/XSN + 한테/JKB | 미리/MAG | 통보/NNG + 를/JKO | 하/VV + 아서/EC | 나/NP | 언제/NP + 까지/JX | 시간/NNG + 이/JKS | 되/VV + ㄴ다/EF + 라고/JKQ | 하/VV + 면/EC | 친구/NNG + 들/XSN + 도/JX | 이제/MAG | 나/NP + 의/JKG | 성격/NNG + 도/JX | 알/VV + 고/EC | 엄마/NNG | 성격/NNG + 도/JX | 알/VV + 니까/EC | 이제/MAG | 알/VV + 아서/EC | 잘/MAG | 이해/NNG + 를/JKO | 하/VV + 아/EC | 주/VX + 고/EC | 이제/MAG | 보내/VV + 어/EC | 주/VX + 니까/EC | 그런/MMD | 부분/NNG + 에서/JKB + 는/JX | 걱정/NNG + 은/JX | 안/MAG | 하/VV + 아도/EC | 되/VV + ㄹ거/ETM | 같/VA + 아/EC | 그리고/MAJ | 내/NP + 가/JKS | 게임/NNG + 을/JKO | 매일/MAG | 하/VV + 는/ETM | 것/NNB + 도/JX | 아니/VCN + 고/EC | 내/NP + 가/JKS | 일주일/NNG + 에/JKB | 어쩌다가/MAG | 많이/MAG | 하/VV + 면/EC | 두/MMN | 번/NNB + 째/XSN | 적/VA + 게/EC | 하/VV + 면/EC | 한번/NNG + 이/VCP + 니까/EC | 걱정/NNG | 안/MAG | 하/VV + 았/EP + 으면/EC | 좋/VA + 겠/EP + 어/EF"
+            ],
+            [
+              27.65,
+              27.839875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              27.649999618530273,
+              "또/MAG | 이제/MAG | 같이/MAG | 이제/MAG | 소통/NNG + 을/JKO | 하/XSV + 는/ETM | 게임/NNG | 열/VV + 는/ETM | 친구/NNG + 들/XSN + 한테/JKB | 미리/MAG | 통보/NNG + 를/JKO | 하/VV + 아서/EC | 나/NP | 언제/NP + 까지/JX | 시간/NNG + 이/JKS | 되/VV + ㄴ다/EF + 라고/JKQ | 하/VV + 면/EC | 친구/NNG + 들/XSN + 도/JX | 이제/MAG | 나/NP + 의/JKG | 성격/NNG + 도/JX | 알/VV + 고/EC | 엄마/NNG | 성격/NNG + 도/JX | 알/VV + 니까/EC | 이제/MAG | 알/VV + 아서/EC | 잘/MAG | 이해/NNG + 를/JKO | 하/VV + 아/EC | 주/VX + 고/EC | 이제/MAG | 보내/VV + 어/EC | 주/VX + 니까/EC | 그런/MMD | 부분/NNG + 에서/JKB + 는/JX | 걱정/NNG + 은/JX | 안/MAG | 하/VV + 아도/EC | 되/VV + ㄹ거/ETM | 같/VA + 아/EC | 그리고/MAJ | 내/NP + 가/JKS | 게임/NNG + 을/JKO | 매일/MAG | 하/VV + 는/ETM | 것/NNB + 도/JX | 아니/VCN + 고/EC | 내/NP + 가/JKS | 일주일/NNG + 에/JKB | 어쩌다가/MAG | 많이/MAG | 하/VV + 면/EC | 두/MMN | 번/NNB + 째/XSN | 적/VA + 게/EC | 하/VV + 면/EC | 한번/NNG + 이/VCP + 니까/EC | 걱정/NNG | 안/MAG | 하/VV + 았/EP + 으면/EC | 좋/VA + 겠/EP + 어/EF"
+            ],
+            [
+              27.649999618530273,
+              27.839875,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.6",
+      "session": "SDRW2100003286",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+      "file_bytes": 47503,
+      "file_mtime_ns": 1785864553811794700,
+      "db_duration": 19.509875,
+      "actual_textgrid_duration": 19.509875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 46,
+          "expected_count": 46,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 45,
+            "actual": [
+              19.360001,
+              19.509874,
+              ""
+            ],
+            "expected": [
+              19.360000610351562,
+              19.509875,
+              ""
+            ],
+            "begin_delta_seconds": 3.896484379595222e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.040001,
+              18.35,
+              "나도"
+            ],
+            [
+              18.35,
+              19.360001,
+              "그렇구"
+            ],
+            [
+              19.360001,
+              19.509874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.040000915527344,
+              18.350000381469727,
+              "나도"
+            ],
+            [
+              18.350000381469727,
+              19.360000610351562,
+              "그렇구"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 187,
+          "expected_count": 187,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 186,
+            "actual": [
+              19.360001,
+              19.509874,
+              ""
+            ],
+            "expected": [
+              19.360000610351562,
+              19.509875,
+              ""
+            ],
+            "begin_delta_seconds": 3.896484379595222e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.58,
+              18.9,
+              "kʰ"
+            ],
+            [
+              18.9,
+              19.360001,
+              "u"
+            ],
+            [
+              19.360001,
+              19.509874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.579999923706055,
+              18.899999618530273,
+              "kʰ"
+            ],
+            [
+              18.899999618530273,
+              19.360000610351562,
+              "u"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 187,
+          "expected_count": 187,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 186,
+            "actual": [
+              19.360001,
+              19.509874,
+              ""
+            ],
+            "expected": [
+              19.360000610351562,
+              19.509875,
+              ""
+            ],
+            "begin_delta_seconds": 3.896484379595222e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              18.58,
+              18.9,
+              "K"
+            ],
+            [
+              18.9,
+              19.360001,
+              "U"
+            ],
+            [
+              19.360001,
+              19.509874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              18.579999923706055,
+              18.899999618530273,
+              "K"
+            ],
+            [
+              18.899999618530273,
+              19.360000610351562,
+              "U"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.31,
+              ""
+            ],
+            [
+              0.31,
+              19.360001,
+              "음 근데 나는 스마트폰으로 친구들이랑 연락 수단도 있구 그 다양한 걸 하잖아. 그리고 또 스마트폰이라고 해서 나쁜 기능만 있는 게 아니고 그 앱을 통해서 어 공부도 하는 사람들도 많아. 나도 그렇구"
+            ],
+            [
+              19.360001,
+              19.509875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.3100000023841858,
+              ""
+            ],
+            [
+              0.3100000023841858,
+              19.360000610351562,
+              "음 근데 나는 스마트폰으로 친구들이랑 연락 수단도 있구 그 다양한 걸 하잖아. 그리고 또 스마트폰이라고 해서 나쁜 기능만 있는 게 아니고 그 앱을 통해서 어 공부도 하는 사람들도 많아. 나도 그렇구"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.31,
+              ""
+            ],
+            [
+              0.31,
+              19.360001,
+              "EU m | G EU n _ D E | N A _ N EU n | S EU _ M A _ T EU _ P O n _ EU _ R O | CH I n _ G U _ D EU l _ I _ R A ng | YEO n _ R A k | S U _ D A n _ D O | I ss _ G U | G EU | D A _ YA ng _ H A n | G EO l | H A _ J A nh _ A | G EU _ R I _ G O | TT O | S EU _ M A _ T EU _ P O n _ I _ R A _ G O | H AE _ S EO | N A _ PP EU n | G I _ N EU ng _ M A n | I ss _ N EU n | G E | A _ N I _ G O | G EU | AE p _ EU l | T O ng _ H AE _ S EO | EO | G O ng _ B U _ D O | H A _ N EU n | S A _ R A m _ D EU l _ D O | M A nh _ A | N A _ D O | G EU _ R EO h _ G U"
+            ],
+            [
+              19.360001,
+              19.509875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.3100000023841858,
+              ""
+            ],
+            [
+              0.3100000023841858,
+              19.360000610351562,
+              "EU m | G EU n _ D E | N A _ N EU n | S EU _ M A _ T EU _ P O n _ EU _ R O | CH I n _ G U _ D EU l _ I _ R A ng | YEO n _ R A k | S U _ D A n _ D O | I ss _ G U | G EU | D A _ YA ng _ H A n | G EO l | H A _ J A nh _ A | G EU _ R I _ G O | TT O | S EU _ M A _ T EU _ P O n _ I _ R A _ G O | H AE _ S EO | N A _ PP EU n | G I _ N EU ng _ M A n | I ss _ N EU n | G E | A _ N I _ G O | G EU | AE p _ EU l | T O ng _ H AE _ S EO | EO | G O ng _ B U _ D O | H A _ N EU n | S A _ R A m _ D EU l _ D O | M A nh _ A | N A _ D O | G EU _ R EO h _ G U"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.31,
+              ""
+            ],
+            [
+              0.31,
+              19.360001,
+              "음/IC | 근데/MAJ | 나/NP + 는/JX | 스마트폰/NNG + 으로/JKB | 친구/NNG + 들/XSN + 이랑/JKB | 연락/NNG | 수단/NNG + 도/JX | 있/VA + 구/EC | 그/MMD | 다양하/VA + ㄴ/ETM | 거/NNB + ㄹ/JKO | 하/XSA + 잖아/EF + ./SF | 그리고/MAJ | 또/MAG | 스마트폰/NNG + 이/VCP + 라고/EC | 하/VV + 아서/EC | 나쁘/VA + ㄴ/ETM | 기능/NNG + 만/JX | 있/VA + 는/ETM | 거/NNB + 이/JKC | 아니/VCN + 고/EC | 그/MMD | 앱/NNG + 을/JKO | 통하/VV + 아서/EC | 어/IC | 공부/NNG + 도/JX | 하/VV + 는/ETM | 사람/NNG + 들/XSN + 도/JX | 많/VA + 아/EF + ./SF | 나/NP + 도/JX | 그렇/VA + 구/EC"
+            ],
+            [
+              19.360001,
+              19.509875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.3100000023841858,
+              ""
+            ],
+            [
+              0.3100000023841858,
+              19.360000610351562,
+              "음/IC | 근데/MAJ | 나/NP + 는/JX | 스마트폰/NNG + 으로/JKB | 친구/NNG + 들/XSN + 이랑/JKB | 연락/NNG | 수단/NNG + 도/JX | 있/VA + 구/EC | 그/MMD | 다양하/VA + ㄴ/ETM | 거/NNB + ㄹ/JKO | 하/XSA + 잖아/EF + ./SF | 그리고/MAJ | 또/MAG | 스마트폰/NNG + 이/VCP + 라고/EC | 하/VV + 아서/EC | 나쁘/VA + ㄴ/ETM | 기능/NNG + 만/JX | 있/VA + 는/ETM | 거/NNB + 이/JKC | 아니/VCN + 고/EC | 그/MMD | 앱/NNG + 을/JKO | 통하/VV + 아서/EC | 어/IC | 공부/NNG + 도/JX | 하/VV + 는/ETM | 사람/NNG + 들/XSN + 도/JX | 많/VA + 아/EF + ./SF | 나/NP + 도/JX | 그렇/VA + 구/EC"
+            ],
+            [
+              19.360000610351562,
+              19.509875,
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "utt_id": "SDRW2100003788.1.1.162",
+      "session": "SDRW2100003788",
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+      "file_bytes": 53228,
+      "file_mtime_ns": 1785865287433912500,
+      "db_duration": 17.009875,
+      "actual_textgrid_duration": 17.009875,
+      "word_boundary_adjustments": 1,
+      "phone_boundary_adjustments": 1,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07,
+      "word_span_fallback": false,
+      "matches_pre_f205d32_policy": true,
+      "legacy_tier_matches": {
+        "words": true,
+        "phones_mfa": true,
+        "phoneme_r_auto": true,
+        "utterance": true,
+        "utterance_orth_r": true,
+        "morph_analysis_utt": true
+      },
+      "tiers": {
+        "words": {
+          "actual_count": 46,
+          "expected_count": 46,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 45,
+            "actual": [
+              16.780001,
+              17.009874,
+              ""
+            ],
+            "expected": [
+              16.780000686645508,
+              17.009875,
+              ""
+            ],
+            "begin_delta_seconds": 3.133544907996111e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              15.61,
+              16.35,
+              "필기하게"
+            ],
+            [
+              16.35,
+              16.780001,
+              "됐는데"
+            ],
+            [
+              16.780001,
+              17.009874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              15.609999656677246,
+              16.350000381469727,
+              "필기하게"
+            ],
+            [
+              16.350000381469727,
+              16.780000686645508,
+              "됐는데"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        },
+        "phones_mfa": {
+          "actual_count": 213,
+          "expected_count": 213,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 212,
+            "actual": [
+              16.780001,
+              17.009874,
+              ""
+            ],
+            "expected": [
+              16.780000686645508,
+              17.009875,
+              ""
+            ],
+            "begin_delta_seconds": 3.133544907996111e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              16.690001,
+              16.700001,
+              "d"
+            ],
+            [
+              16.700001,
+              16.780001,
+              "e"
+            ],
+            [
+              16.780001,
+              17.009874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              16.690000534057617,
+              16.700000762939453,
+              "d"
+            ],
+            [
+              16.700000762939453,
+              16.780000686645508,
+              "e"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        },
+        "phoneme_r_auto": {
+          "actual_count": 213,
+          "expected_count": 213,
+          "same_count": true,
+          "first_mismatch": {
+            "index_zero_based": 212,
+            "actual": [
+              16.780001,
+              17.009874,
+              ""
+            ],
+            "expected": [
+              16.780000686645508,
+              17.009875,
+              ""
+            ],
+            "begin_delta_seconds": 3.133544907996111e-07,
+            "end_delta_seconds": -1.0000000010279564e-06,
+            "label_equal": true
+          },
+          "actual_tail": [
+            [
+              16.690001,
+              16.700001,
+              "D"
+            ],
+            [
+              16.700001,
+              16.780001,
+              "E"
+            ],
+            [
+              16.780001,
+              17.009874,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              16.690000534057617,
+              16.700000762939453,
+              "D"
+            ],
+            [
+              16.700000762939453,
+              16.780000686645508,
+              "E"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        },
+        "utterance": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              16.780001,
+              "하지만 교수님이나 선생님들도 비대면 수업을 하게 되면 수업에 대해 준비를 제대로 하지 못하게 될 수도 있다고 봐. 왜냐하면 대면 수업 때는 일일이 칠판이나 그런 데 필기를 해 주셔 가지고 우리는 인제 그걸 보고 적고 필기하게 됐는데"
+            ],
+            [
+              16.780001,
+              17.009875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              16.780000686645508,
+              "하지만 교수님이나 선생님들도 비대면 수업을 하게 되면 수업에 대해 준비를 제대로 하지 못하게 될 수도 있다고 봐. 왜냐하면 대면 수업 때는 일일이 칠판이나 그런 데 필기를 해 주셔 가지고 우리는 인제 그걸 보고 적고 필기하게 됐는데"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        },
+        "utterance_orth_r": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              16.780001,
+              "H A _ J I _ M A n | G YO _ S U _ N I m _ I _ N A | S EO n _ S AE ng _ N I m _ D EU l _ D O | B I _ D AE _ M YEO n | S U _ EO p _ EU l | H A _ G E | D OE _ M YEO n | S U _ EO p _ E | D AE _ H AE | J U n _ B I _ R EU l | J E _ D AE _ R O | H A _ J I | M O s _ H A _ G E | D OE l | S U _ D O | I ss _ D A _ G O | B WA | WAE _ N YA _ H A _ M YEO n | D AE _ M YEO n | S U _ EO p | TT AE _ N EU n | I l _ I l _ I | CH I l _ P A n _ I _ N A | G EU _ R EO n | D E | P I l _ G I _ R EU l | H AE | J U _ S YEO | G A _ J I _ G O | U _ R I _ N EU n | I n _ J E | G EU _ G EO l | B O _ G O | J EO k _ G O | P I l _ G I _ H A _ G E | D WAE ss _ N EU n _ D E"
+            ],
+            [
+              16.780001,
+              17.009875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              16.780000686645508,
+              "H A _ J I _ M A n | G YO _ S U _ N I m _ I _ N A | S EO n _ S AE ng _ N I m _ D EU l _ D O | B I _ D AE _ M YEO n | S U _ EO p _ EU l | H A _ G E | D OE _ M YEO n | S U _ EO p _ E | D AE _ H AE | J U n _ B I _ R EU l | J E _ D AE _ R O | H A _ J I | M O s _ H A _ G E | D OE l | S U _ D O | I ss _ D A _ G O | B WA | WAE _ N YA _ H A _ M YEO n | D AE _ M YEO n | S U _ EO p | TT AE _ N EU n | I l _ I l _ I | CH I l _ P A n _ I _ N A | G EU _ R EO n | D E | P I l _ G I _ R EU l | H AE | J U _ S YEO | G A _ J I _ G O | U _ R I _ N EU n | I n _ J E | G EU _ G EO l | B O _ G O | J EO k _ G O | P I l _ G I _ H A _ G E | D WAE ss _ N EU n _ D E"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        },
+        "morph_analysis_utt": {
+          "actual_count": 3,
+          "expected_count": 3,
+          "same_count": true,
+          "first_mismatch": null,
+          "actual_tail": [
+            [
+              0.0,
+              0.28,
+              ""
+            ],
+            [
+              0.28,
+              16.780001,
+              "하지만/MAJ | 교수/NNG + 님/XSN + 이나/JX | 선생님/NNG + 들/XSN + 도/JX | 비대면/NNG | 수업/NNG + 을/JKO | 하/VV + 게/EC | 되/VV + 면/EC | 수업/NNG + 에/JKB | 대하/VV + 아/EC | 준비/NNG + 를/JKO | 제대로/MAG | 하/VV + 지/EC | 못하/VX + 게/EC | 되/VV + ㄹ/ETM | 수/NNB + 도/JX | 있/VA + 다고/EC | 보/VV + 아/EC + ./SF | 왜냐하면/MAG | 대면/NNG | 수업/NNG | 때/NNG + 는/JX | 일일이/MAG | 칠판/NNG + 이나/JC | 그런/MMD | 데/NNB | 필기/NNG + 를/JKO | 하/VV + 아/EC | 주/VX + 시/EP + 어/EC | 가지/VX + 고/EC | 우리/NP + 는/JX | 인제/MAG | 그거/NP + ㄹ/JKO | 보/VV + 고/EC | 적/VV + 고/EC | 필기하/VV + 게/EC | 되/VV + 었/EP + 는데/EC"
+            ],
+            [
+              16.780001,
+              17.009875,
+              ""
+            ]
+          ],
+          "expected_tail": [
+            [
+              0.0,
+              0.2800000011920929,
+              ""
+            ],
+            [
+              0.2800000011920929,
+              16.780000686645508,
+              "하지만/MAJ | 교수/NNG + 님/XSN + 이나/JX | 선생님/NNG + 들/XSN + 도/JX | 비대면/NNG | 수업/NNG + 을/JKO | 하/VV + 게/EC | 되/VV + 면/EC | 수업/NNG + 에/JKB | 대하/VV + 아/EC | 준비/NNG + 를/JKO | 제대로/MAG | 하/VV + 지/EC | 못하/VX + 게/EC | 되/VV + ㄹ/ETM | 수/NNB + 도/JX | 있/VA + 다고/EC | 보/VV + 아/EC + ./SF | 왜냐하면/MAG | 대면/NNG | 수업/NNG | 때/NNG + 는/JX | 일일이/MAG | 칠판/NNG + 이나/JC | 그런/MMD | 데/NNB | 필기/NNG + 를/JKO | 하/VV + 아/EC | 주/VX + 시/EP + 어/EC | 가지/VX + 고/EC | 우리/NP + 는/JX | 인제/MAG | 그거/NP + ㄹ/JKO | 보/VV + 고/EC | 적/VV + 고/EC | 필기하/VV + 게/EC | 되/VV + 었/EP + 는데/EC"
+            ],
+            [
+              16.780000686645508,
+              17.009875,
+              ""
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

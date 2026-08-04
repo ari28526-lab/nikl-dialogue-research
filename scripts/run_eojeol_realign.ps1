@@ -26,6 +26,8 @@ param(
     [string]$CommonPronAdoptionContract = "",
     [string]$ApprovedExclusionsContract = "",
     [string]$ExportApprovedExclusionsContract = "",
+    [string]$DirectExportFailedReport = "",
+    [string]$DirectExportRepairManifest = "",
     [string]$CommonPronEquivalenceReport = "",
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
@@ -40,6 +42,23 @@ param(
 # 계약과 export/감사용 결합 계약을 명시적으로 분리할 수 있다.
 if ([string]::IsNullOrWhiteSpace($ExportApprovedExclusionsContract)) {
     $ExportApprovedExclusionsContract = $ApprovedExclusionsContract
+}
+if (
+    [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -ne
+    [string]::IsNullOrWhiteSpace($DirectExportRepairManifest)
+) {
+    Write-Error (
+        "-DirectExportFailedReport와 -DirectExportRepairManifest는 " +
+        "함께 지정해야 함"
+    )
+    exit 1
+}
+if (
+    -not [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -and
+    -not $UseDirectDbExport
+) {
+    Write-Error "direct export repair 재개에는 -UseDirectDbExport가 필수임"
+    exit 1
 }
 
 if (
@@ -2456,13 +2475,33 @@ foreach ($y in $years) {
                 '--approved-exclusions-contract',
                 $ExportApprovedExclusionsContract,
                 '--lab-root', $wavRoot,
-                '--workers', '4', '--report', $directReport
+                '--report', $directReport
             )
             if (Test-Path -LiteralPath $quarantineLog) {
                 $directExportArgs += @('--quarantine-log', $quarantineLog)
             }
-            & $py (Join-Path $pydir "export_mfa_db_research_6tier.py") `
-                @directExportArgs
+            if (
+                -not [string]::IsNullOrWhiteSpace(
+                    $DirectExportFailedReport
+                )
+            ) {
+                $directExportArgs += @(
+                    '--failed-report', $DirectExportFailedReport,
+                    '--repair-manifest', $DirectExportRepairManifest
+                )
+                Say (
+                    "$y [3/3-direct-repair] 통과한 전수 checkpoint를 " +
+                    "재사용하고 동반표부터 재개"
+                )
+                & $py (Join-Path $pydir (
+                    'finalize_mfa_db_research_6tier_repair.py'
+                )) @directExportArgs
+            } else {
+                $directExportArgs += @('--workers', '4')
+                & $py (Join-Path $pydir (
+                    'export_mfa_db_research_6tier.py'
+                )) @directExportArgs
+            }
             if ($LASTEXITCODE -ne 0) {
                 Say "!! $y direct-DB 연구 6-tier 실패 — DB와 partial 보존: $directReport"
                 exit 1

@@ -1,0 +1,421 @@
+{
+  "schema_version": "mfa_textgrid_terminal_roundoff_repair.v1",
+  "status": "ready",
+  "year": "2021",
+  "db_path": "D:\\mfa_tmp\\2021\\2021.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "archive_root": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "source_failed_report": {
+    "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260805_031430.json",
+    "bytes": 31562,
+    "mtime_ns": 1785873562804619500,
+    "sha256": "2092bc3d358c69f32e990a513ba6efaab979ca79488dcc05595576b0787fa20b"
+  },
+  "failed_count": 19,
+  "candidate_count": 19,
+  "candidates": [
+    {
+      "utt_id": "SDRW2100000201.1.1.220",
+      "session": "SDRW2100000201",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 17519,
+        "mtime_ns": 1785860402656208900,
+        "sha256": "06d5a11326ff5d678ecb499c45f4fee0450764740c983b8053f38b61c30a3a37"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.662109378410605e-06
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.350",
+      "session": "SDRW2100000223",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+        "bytes": 4722,
+        "mtime_ns": 1785860435406270500,
+        "sha256": "ddcfbdb65149abce08dac2438cefb4e316195b0da292c48962bf54f8a5eb6a27"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.629394538355427e-07
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.364",
+      "session": "SDRW2100000223",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+        "bytes": 14331,
+        "mtime_ns": 1785860435583069800,
+        "sha256": "ef0de20c43ef874529164bb9dff481000ad19aeb920f8b6b6e381c46ec44b784"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.8310546892053026e-06
+    },
+    {
+      "utt_id": "SDRW2100000377.1.1.162",
+      "session": "SDRW2100000377",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+        "bytes": 70181,
+        "mtime_ns": 1785860653157218500,
+        "sha256": "8508c0d3a956cccd7a87a9d5f7dd8fd83327f624b84b92a360b2da95e8bb4439"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.326",
+      "session": "SDRW2100000493",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+        "bytes": 7507,
+        "mtime_ns": 1785860819752770900,
+        "sha256": "0fa9752fad34f3c0e7b212ecec887714452fdee75281ff87cb84abd42c090e7c"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.5258789076710855e-06
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.328",
+      "session": "SDRW2100000493",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+        "bytes": 5562,
+        "mtime_ns": 1785860819780696400,
+        "sha256": "76e163fed30a252b89c4c6bf12f959c6796fdcd16c9f9ba1db26a4b802ea814c"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.0681152318170462e-06
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.102",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29630,
+        "mtime_ns": 1785861077341877500,
+        "sha256": "e6659e99fe4703ef6c1bb43ddf1ac6927c9c6d31bc3ba925e07c24aaf5121992"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 2.4414062522737368e-06
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.205",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20800,
+        "mtime_ns": 1785861078399330900,
+        "sha256": "a0836f7414e2a200668d16382b1da786b85321fc284c40f122c0f39ec9f1ebf7"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.0517578011313162e-06
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.218",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 23085,
+        "mtime_ns": 1785861078534269900,
+        "sha256": "92546b4a8842252d71110e34465b7aead38fbae358da6bd4cada3d983026bef2"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.713867179541921e-06
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.122",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+        "bytes": 4421,
+        "mtime_ns": 1785861078250361800,
+        "sha256": "b6649a98e74c740339041d2028a32ec7d91701ee58c86176dc160b36571dc6fb"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.3569335897709607e-06
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.123",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+        "bytes": 20978,
+        "mtime_ns": 1785861078265712300,
+        "sha256": "c90f2690442e6d60415c352242dfa97d48094d0143d8e8cebe950ded90c29039"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.2207031261368684e-06
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.232",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15996,
+        "mtime_ns": 1785861079601619200,
+        "sha256": "ee8494a4512bbb79b814903fdfc817afaf1f6d1a33e7c5bfdbe034a352960dd3"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 4.272460927268185e-06
+    },
+    {
+      "utt_id": "SDRW2100001321.1.1.250",
+      "session": "SDRW2100001321",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+        "bytes": 4505,
+        "mtime_ns": 1785861937197996300,
+        "sha256": "cc319244b66a395a0d3501242bf1890888c8a7b4d0b213ef2c6d16960536aac6"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.269",
+      "session": "SDRW2100001387",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785862015606737300,
+        "sha256": "912af978079a1532a25957d3c1446d0b8af41118b3883494312bd0f8c7cb8bc3"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07
+    },
+    {
+      "utt_id": "SDRW2100001777.1.1.181",
+      "session": "SDRW2100001777",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+        "bytes": 66096,
+        "mtime_ns": 1785862594079914300,
+        "sha256": "b71ca3dd2d82a3a834c8c2a1aaf05e3b6a82a0f04a0713cabce0b4ddf5496c49"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 8.087158214209467e-07
+    },
+    {
+      "utt_id": "SDRW2100002028.1.1.166",
+      "session": "SDRW2100002028",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+        "bytes": 57982,
+        "mtime_ns": 1785863015565999700,
+        "sha256": "ffab82e332444564b1b652efd237bacf326e6f8c12ae98a1b76e037ace05568b"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 8.850097650281441e-07
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.30",
+      "session": "SDRW2100003286",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+        "bytes": 82633,
+        "mtime_ns": 1785864553248450100,
+        "sha256": "4c8b6f0dccf5749cc0423dd0d0f55721fb055a24050a154039c2dcec4c3f0f07"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.6",
+      "session": "SDRW2100003286",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+        "bytes": 47503,
+        "mtime_ns": 1785864553811794700,
+        "sha256": "5421c3aa53d2a259eae90c523005115dc70a13d39fe15d6b9f107c943c380067"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07
+    },
+    {
+      "utt_id": "SDRW2100003788.1.1.162",
+      "session": "SDRW2100003788",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+        "bytes": 53228,
+        "mtime_ns": 1785865287433912500,
+        "sha256": "8faea4ae5e951a737e7863bc80273f482b671c53a484dacad1e637fdf8af5485"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07
+    }
+  ],
+  "records": [],
+  "mutation_scope": "derived partial TextGrid only; DB/WAV/CSV unchanged"
+}

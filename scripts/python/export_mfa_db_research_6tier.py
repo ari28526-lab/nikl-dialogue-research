@@ -1147,6 +1147,201 @@ def write_companion_tables(
     return manifest
 
 
+def _resolved_path_equal(left: object, right: Path) -> bool:
+    try:
+        return os.path.normcase(str(Path(str(left)).resolve())) == os.path.normcase(
+            str(right.resolve())
+        )
+    except (OSError, TypeError, ValueError):
+        return False
+
+
+def _fingerprint_matches(path: Path, expected: Mapping[str, object]) -> bool:
+    if not path.is_file():
+        return False
+    observed = file_fingerprint(path, with_sha256=True)
+    return (
+        int(observed["bytes"]) == int(expected.get("bytes", -1))
+        and str(observed["sha256"]) == str(expected.get("sha256", ""))
+    )
+
+
+def load_targeted_repair_resume(
+    *,
+    failed_report_path: Path,
+    repair_manifest_path: Path,
+    db_path: Path,
+    year: str,
+    search_master_root: Path,
+    output_root: Path,
+    acoustic_model: Path,
+    alignment_contract: Path,
+    alignment_contract_id: str,
+    input_contract_id: str,
+    reconciliation: Mapping[str, object],
+    source_utterance_count: int,
+) -> tuple[Counter[str], list[dict[str, object]], float, dict[str, object]]:
+    """Load a failed full-pass checkpoint plus an exact targeted repair.
+
+    This deliberately cannot resume from a truncated or ambiguous failure
+    inventory.  The prior pass must have accounted for the full database,
+    every failure must have a separately archived and validated repair, and
+    all frozen identities must still match the current invocation.
+    """
+
+    failed_report_path = failed_report_path.resolve()
+    repair_manifest_path = repair_manifest_path.resolve()
+    if not failed_report_path.is_file():
+        raise FileNotFoundError(failed_report_path)
+    if not repair_manifest_path.is_file():
+        raise FileNotFoundError(repair_manifest_path)
+    previous = json.loads(failed_report_path.read_text(encoding="utf-8-sig"))
+    repair = json.loads(repair_manifest_path.read_text(encoding="utf-8-sig"))
+    if previous.get("status") != "failed":
+        raise RuntimeError("resume source report is not a failed checkpoint")
+    if repair.get("status") != "success":
+        raise RuntimeError("targeted repair manifest is not successful")
+    identity_checks = {
+        "year": str(previous.get("year")) == year
+        and str(repair.get("year")) == year,
+        "db_path": _resolved_path_equal(previous.get("db_path"), db_path)
+        and _resolved_path_equal(repair.get("db_path"), db_path),
+        "search_master_root": _resolved_path_equal(
+            previous.get("search_master_root"), search_master_root
+        ),
+        "output_root": _resolved_path_equal(
+            previous.get("output_root"), output_root
+        )
+        and _resolved_path_equal(repair.get("output_root"), output_root),
+        "alignment_contract_id": str(
+            previous.get("alignment_contract_id", "")
+        )
+        == alignment_contract_id
+        and str(repair.get("alignment_contract_id", ""))
+        == alignment_contract_id,
+        "input_contract_id": str(previous.get("input_contract_id", ""))
+        == input_contract_id
+        and str(repair.get("input_contract_id", "")) == input_contract_id,
+    }
+    failed_contract = previous.get("alignment_contract") or {}
+    failed_acoustic = previous.get("acoustic_model") or {}
+    identity_checks["alignment_contract_file"] = _fingerprint_matches(
+        alignment_contract, failed_contract
+    )
+    identity_checks["acoustic_model_file"] = _fingerprint_matches(
+        acoustic_model, failed_acoustic
+    )
+    source_fingerprint = repair.get("source_failed_report") or {}
+    identity_checks["source_failed_report"] = _fingerprint_matches(
+        failed_report_path, source_fingerprint
+    )
+    if not all(identity_checks.values()):
+        failed = sorted(name for name, passed in identity_checks.items() if not passed)
+        raise RuntimeError("targeted repair resume identity mismatch: " + ", ".join(failed))
+
+    previous_reconciliation = previous.get("exact_id_reconciliation") or {}
+    if (
+        previous_reconciliation.get("status") != "passed"
+        or not previous_reconciliation.get("full_year_gate")
+        or previous_reconciliation.get("counts") != reconciliation.get("counts")
+        or previous_reconciliation.get("inventories")
+        != reconciliation.get("inventories")
+    ):
+        raise RuntimeError("prior/current exact ID reconciliation mismatch")
+
+    counts = previous.get("counts") or {}
+    failed_count = int(counts.get("failed", 0))
+    failed_examples = list(previous.get("failed_examples") or [])
+    failed_ids = [str(row.get("utt_id", "")).strip() for row in failed_examples]
+    if (
+        failed_count <= 0
+        or failed_count != len(failed_examples)
+        or any(not utt_id for utt_id in failed_ids)
+        or len(set(failed_ids)) != failed_count
+    ):
+        raise RuntimeError("failed checkpoint inventory is incomplete or ambiguous")
+    for forbidden in (
+        "alignment_missing",
+        "search_row_missing",
+        "word_span_fallback",
+        "spn_intervals",
+    ):
+        if int(counts.get(forbidden, 0)):
+            raise RuntimeError(f"resume checkpoint contains non-repair failure: {forbidden}")
+    if (
+        int(counts.get("source_utterances", -1)) != source_utterance_count
+        or int(previous.get("accounted", -1)) != source_utterance_count
+    ):
+        raise RuntimeError("resume checkpoint did not account for the full database")
+
+    repaired_ids = [str(value) for value in repair.get("repaired_ids") or []]
+    records = list(repair.get("records") or [])
+    if (
+        int(repair.get("repaired_count", -1)) != failed_count
+        or len(records) != failed_count
+        or set(repaired_ids) != set(failed_ids)
+        or len(repaired_ids) != len(set(repaired_ids))
+    ):
+        raise RuntimeError("repair manifest does not exactly cover prior failures")
+    observed_record_ids: set[str] = set()
+    for record in records:
+        utt_id = str(record.get("utt_id", "")).strip()
+        destination = Path(str(record.get("destination", ""))).resolve()
+        try:
+            destination.relative_to((output_root / year).resolve())
+        except ValueError as exc:
+            raise RuntimeError(f"repair destination outside year root: {destination}") from exc
+        if (
+            not utt_id
+            or utt_id in observed_record_ids
+            or not bool(record.get("matches_pre_normalization_policy"))
+            or not bool(record.get("replacement_validation_passed"))
+            or not _fingerprint_matches(
+                destination, record.get("destination_after") or {}
+            )
+            or not _fingerprint_matches(
+                Path(str(record.get("archive_path", ""))).resolve(),
+                record.get("archive_fingerprint") or {},
+            )
+        ):
+            raise RuntimeError(f"invalid targeted repair evidence: {utt_id or destination}")
+        observed_record_ids.add(utt_id)
+    if observed_record_ids != set(failed_ids):
+        raise RuntimeError("repair record IDs differ from failed checkpoint IDs")
+
+    totals = Counter(
+        {
+            key: int(value)
+            for key, value in counts.items()
+            if isinstance(value, (int, float)) and float(value).is_integer()
+        }
+    )
+    prior_validated = int(totals["validated_existing"])
+    prior_created = int(totals["created"])
+    totals["validated_existing"] += failed_count
+    totals["failed"] = 0
+    totals["targeted_repaired_existing"] = failed_count
+    totals["resume_checkpoint_files_reused"] = prior_validated + prior_created
+    float32 = previous.get("float32_boundary_normalization") or {}
+    examples = list(float32.get("examples") or [])
+    max_adjustment = float(float32.get("max_adjustment_seconds", 0.0))
+    resume = {
+        "mode": "failed_full_pass_plus_exact_targeted_repair",
+        "source_failed_report": file_fingerprint(
+            failed_report_path, with_sha256=True
+        ),
+        "targeted_repair_manifest": file_fingerprint(
+            repair_manifest_path, with_sha256=True
+        ),
+        "prior_validated_existing": prior_validated,
+        "prior_created": prior_created,
+        "prior_failed": failed_count,
+        "repaired_ids": sorted(failed_ids),
+        "full_textgrid_revalidation_deferred_to_independent_year_audit": True,
+    }
+    return totals, examples, max_adjustment, resume
+
+
 def export_database(
     *,
     db_path: Path,

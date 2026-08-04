@@ -22,6 +22,8 @@ param(
     [string]$CommonPronAdoptionContract = '',
     [string]$ApprovedExclusionsContract = '',
     [string]$ExportApprovedExclusionsContract = '',
+    [string]$DirectExportFailedReport = '',
+    [string]$DirectExportRepairManifest = '',
     [string]$CommonPronEquivalenceReport = '',
     [switch]$ForceVerifyLabInput,
     [switch]$AllowBaselineCommonPronRerun,
@@ -33,6 +35,16 @@ param(
 
 if ([string]::IsNullOrWhiteSpace($ExportApprovedExclusionsContract)) {
     $ExportApprovedExclusionsContract = $ApprovedExclusionsContract
+}
+if (
+    [string]::IsNullOrWhiteSpace($DirectExportFailedReport) -ne
+    [string]::IsNullOrWhiteSpace($DirectExportRepairManifest)
+) {
+    Write-Error (
+        "-DirectExportFailedReport와 -DirectExportRepairManifest는 " +
+        "함께 지정해야 함"
+    )
+    exit 1
 }
 
 $ErrorActionPreference = 'Stop'
@@ -299,6 +311,13 @@ try {
         # 위해 남기되 wrapper에서는 항상 하위 러너에 전달한다.
         $realignArgs += '-PreferD'
         if ($UseDirectDbExport) { $realignArgs += '-UseDirectDbExport' }
+        if (-not [string]::IsNullOrWhiteSpace($DirectExportFailedReport)) {
+            $realignArgs += @(
+                '-DirectExportFailedReport', $DirectExportFailedReport,
+                '-DirectExportRepairManifest',
+                $DirectExportRepairManifest
+            )
+        }
         if ($ForceVerifyLabInput) { $realignArgs += '-ForceVerifyLabInput' }
         if ($AllowFullCleanRetry) { $realignArgs += '-AllowFullCleanRetry' }
         if ($CleanupDirectDbAfterMerge) {

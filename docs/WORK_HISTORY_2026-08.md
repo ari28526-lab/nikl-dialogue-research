@@ -1554,3 +1554,24 @@ shard 2–23을 재개하는 것이다.
   같은 v5 `PreflightOnly`를 재실행해 모델·공통사전·승인 계약·입력·DB 재개 상태·
   저장공간·커밋·전체 345개 테스트가 모두 GO임을 확인했다. `PreflightOnly`이므로
   이 시점에는 실제 queue나 MFA/export가 시작되지 않았다.
+
+## 2026-08-05 — 2021 v5 전수 끝검사 19건 안전 중단과 표적 복구 설계
+
+- v5는 보존 DB와 partial을 재사용해 4,139세션을 끝까지 검사했다. v4에서
+  누락됐던 6개는 정확히 생성됐고, 기존 1,371,858개는 통과했으나 19개 기존
+  TextGrid가 신규 예상 interval과 달라 동반표 전 안전 중단됐다. 2022는 시작되지
+  않았다.
+- 19개를 현재 DB·검색표·음향모델로 재구성한 결과 19/19가 `f205d32` 이전
+  writer로 정확히 재현됐고 라벨 차이는 0건이었다. 차이는 12세션에서 발화 끝
+  0.656–6.714µs를 빈 interval로 남긴 구 직렬화 규칙뿐이다. 근거는
+  `outputs/reports/DIAG_2021_v5_textgrid_mismatches_20260805.json`이다.
+- 19개를 archive+SHA 검증 뒤 원자적으로 교체하고, v5 전수 통과 증거와 repair
+  manifest를 결합해 동반표부터 재개하는 복구 경로를 추가했다. 실패 목록이
+  완전하지 않거나 DB·모델·계약·경로·파일 fingerprint가 하나라도 다르면
+  fail-closed한다. 독립 연도 전수 감사와 DB 표본 재수출은 그대로 수행한다.
+- 실제 mutation 전 repair preflight는 19건·12세션·최대 6.713867µs로 `READY`다.
+  Python 347개, PowerShell 안전 46파일, Windows PowerShell 5.1 호환 55스크립트가
+  통과했다.
+- 세부 결정은
+  `docs/decisions/DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md`에
+  기록했다.

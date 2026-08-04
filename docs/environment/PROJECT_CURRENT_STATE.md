@@ -341,3 +341,18 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 - 수정·근거를 `f205d32`로 커밋·푸시한 뒤 03:10 KST v5 `PreflightOnly`를 다시
   실행해 모든 hard gate와 전체 345개 테스트가 GO임을 확인했다. 실제 queue는 아직
   시작하지 않았으며 GO 보고서를 커밋한 뒤 같은 v5 ID로 export만 재개한다.
+
+## 2026-08-05 2021 direct export 현재 상태
+
+2021 MFA 정렬 계산과 DB checkpoint는 완료 상태다. v5 direct export의 전수 끝검사에서
+기존 1,371,858개가 통과하고 v4 누락 6개가 생성됐으나, 구 float32 종단 직렬화
+규칙으로 생성된 기존 TextGrid 19개가 신규 예상값과 달라 동반표 전 안전 중단됐다.
+19개는 12세션에 분포하며 모든 언어 라벨은 같고 차이는 0.656–6.714µs의 종단 빈
+구간뿐이다. 원본 WAV/CSV, 2020 완성본, 2021 DB는 변경되지 않았고 2022는 시작되지
+않았다.
+
+현재 다음 단계는 19개 파생 TextGrid archive·표적 교체, v5 checkpoint에서 동반표
+재개, 2021 독립 전수 감사와 DB 표본 24개 재수출이다. 그 뒤 연구자 24개 표본
+검토·최종 Gate 전에는 2022로 넘어가지 않는다. 근거와 복구 불변식은
+`docs/decisions/DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md`를
+따른다.
