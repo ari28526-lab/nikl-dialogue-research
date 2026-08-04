@@ -1164,11 +1164,57 @@ try {
     if ($null -eq $intervalProgressFunction) {
         throw 'Update-IntervalCsvProgress AST 없음'
     }
+    $writeJsonLineFunction = $runnerAst.Find({
+        param($node)
+        $node -is [Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Write-JsonLine'
+    }, $true)
+    if ($null -eq $writeJsonLineFunction) {
+        throw 'Write-JsonLine AST 없음'
+    }
     Invoke-Expression $metricsFunction.Extent.Text
     Invoke-Expression $accumulatorFunction.Extent.Text
     Invoke-Expression $alignmentProgressFunction.Extent.Text
     Invoke-Expression $memoryMetricsFunction.Extent.Text
     Invoke-Expression $intervalProgressFunction.Extent.Text
+    Invoke-Expression $writeJsonLineFunction.Extent.Text
+    $heartbeatTestRoot = Join-Path ([IO.Path]::GetTempPath()) (
+        'mfa_heartbeat_append_' + [guid]::NewGuid().ToString('N')
+    )
+    try {
+        $heartbeatTestPath = Join-Path $heartbeatTestRoot 'heartbeat.jsonl'
+        Write-JsonLine $heartbeatTestPath ([ordered]@{ sequence = 1 })
+        $readerLock = [IO.FileStream]::new(
+            $heartbeatTestPath,
+            [IO.FileMode]::Open,
+            [IO.FileAccess]::Read,
+            [IO.FileShare]::Read
+        )
+        $savedWarningPreference = $WarningPreference
+        try {
+            $WarningPreference = 'SilentlyContinue'
+            # Reader가 write sharing을 막아도 보조 heartbeat 한 행만 건너뛰고
+            # 호출자(MFA 본체)에는 terminating error를 내지 않아야 한다.
+            Write-JsonLine $heartbeatTestPath ([ordered]@{ sequence = 2 })
+        } finally {
+            $WarningPreference = $savedWarningPreference
+            $readerLock.Dispose()
+        }
+        Write-JsonLine $heartbeatTestPath ([ordered]@{ sequence = 3 })
+        $heartbeatRows = @(
+            [IO.File]::ReadAllLines($heartbeatTestPath) |
+                ForEach-Object { $_ | ConvertFrom-Json }
+        )
+        if ($heartbeatRows.Count -ne 2 -or
+            [int]$heartbeatRows[0].sequence -ne 1 -or
+            [int]$heartbeatRows[1].sequence -ne 3) {
+            throw 'heartbeat 잠금 충돌 비치명 append 회귀'
+        }
+    } finally {
+        if (Test-Path -LiteralPath $heartbeatTestRoot) {
+            Remove-Item -LiteralPath $heartbeatTestRoot -Recurse -Force
+        }
+    }
     $treeMetrics = Get-ProcessTreeMetrics -RootProcessId $PID
     if ($treeMetrics.Scope -ne 'descendant_tree') {
         throw "프로세스 트리 조회가 폴백됨: $($treeMetrics.Scope)"

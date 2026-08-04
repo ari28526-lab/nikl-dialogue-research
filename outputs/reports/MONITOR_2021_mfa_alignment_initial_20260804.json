@@ -1,0 +1,51 @@
+{
+  "schema_version": "mfa_phase_monitor.v1",
+  "status": "alignment_running_stable_heartbeat_collision_recovered",
+  "year": "2021",
+  "run_id": "eojeol_commonpron_2021_20260804_114223",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804",
+  "phase": "alignment_initial_25_minutes",
+  "safe_body_utterances": 1372418,
+  "monitor": {
+    "first_heartbeat": "2026-08-04T14:50:11.5769658+09:00",
+    "last_heartbeat": "2026-08-04T15:15:24.1228199+09:00",
+    "heartbeat_count": 26,
+    "elapsed_seconds": 1512.546,
+    "processed": 279715,
+    "processed_percent": 20.381,
+    "retried": 4048,
+    "retry_percent": 1.447,
+    "alignment_error_signals": 0,
+    "overall_utterances_per_second": 184.93,
+    "recent_10_minute_utterances_per_second": 202.447,
+    "estimated_first_pass_completion": "2026-08-04T16:45:21.5918199+09:00",
+    "tree_cpu_seconds_start": 18872.203125,
+    "tree_cpu_seconds_end": 22870.125,
+    "minimum_system_memory_available_mb": 817.7,
+    "maximum_system_commit_percent": 72.5,
+    "work_drive_free_gb_start": 298.58,
+    "work_drive_free_gb_end": 298.01,
+    "watchdog_will_kill_observed": false
+  },
+  "interpretation": {
+    "retry_policy": "재시도는 MFA의 정렬 탐색 회수이며 그 자체가 제외나 최종 오류를 뜻하지 않는다.",
+    "eta_scope": "예상 시각은 현재 속도가 유지된다는 가정 아래 첫 정렬 통과만 계산한 참고치다. DB 수집, exact-ID gate, 6-tier export, 독립 감사 시간은 포함하지 않는다.",
+    "decision": "오류·정지·자원 위험이 없고 처리 속도가 유지되므로 실행을 변경하지 않는다."
+  },
+  "monitoring_incident": {
+    "observed_at": "2026-08-04T15:15:24+09:00",
+    "component": "heartbeat_jsonl_append",
+    "exception": "Add-Content IOException: heartbeat file was in use by another process",
+    "cause": "상태 감시가 활성 JSONL을 Get-Content로 자주 읽는 순간 기존 Add-Content append와 잠금이 충돌했다.",
+    "mfa_alignment_interrupted": false,
+    "evidence_of_continuation": "화면 처리량이 291846에서 299609로 증가했고 15:17:26 heartbeat가 재개됐다. 별도 15초 측정에서 MFA Python CPU가 46.891초 증가했다.",
+    "alignment_error_signals_after_incident": 0,
+    "corrective_action": "활성 heartbeat 읽기는 FileStream FileShare.ReadWrite만 사용한다. 다음 실행부터 writer도 공유 append, 10회 재시도, 최종 충돌 시 비치명 경고 후 한 행만 건너뛴다.",
+    "regression_tests": [
+      "tests/test_powershell_safety.ps1",
+      "tests/test_powershell_runtime_compat.ps1"
+    ]
+  },
+  "heartbeat_path": "D:\\mfa_eojeol\\logs\\mfa_2021_eojeol_commonpron_2021_20260804_114223_heartbeat.jsonl",
+  "stderr_path": "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log"
+}

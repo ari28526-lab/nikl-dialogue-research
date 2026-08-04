@@ -1433,8 +1433,39 @@ function Write-DoneMarker(
 function Write-JsonLine($path, $payload) {
     $parent = Split-Path -Parent $path
     New-Item -ItemType Directory -Force -Path $parent | Out-Null
-    $payload | ConvertTo-Json -Depth 6 -Compress |
-        Add-Content -LiteralPath $path -Encoding UTF8
+    # Heartbeat는 계산 결과가 아니라 보조 관측 로그다. 상태판이 파일을 읽는
+    # 짧은 순간과 append가 겹쳐도 MFA 본체를 실패시키지 않아야 한다. 공유
+    # 읽기/쓰기를 허용해 한 행씩 쓰고, 외부 reader가 write sharing을 막은
+    # 경우에는 짧게 재시도한 뒤 해당 heartbeat 한 건만 경고와 함께 건너뛴다.
+    $line = $payload | ConvertTo-Json -Depth 6 -Compress
+    $encoding = [Text.UTF8Encoding]::new($false)
+    $bytes = $encoding.GetBytes($line + [Environment]::NewLine)
+    $lastWriteError = $null
+    for ($attempt = 1; $attempt -le 10; $attempt++) {
+        $stream = $null
+        try {
+            $stream = [IO.FileStream]::new(
+                $path,
+                [IO.FileMode]::Append,
+                [IO.FileAccess]::Write,
+                [IO.FileShare]::ReadWrite
+            )
+            $stream.Write($bytes, 0, $bytes.Length)
+            $stream.Flush()
+            return
+        } catch [IO.IOException] {
+            $lastWriteError = $_.Exception
+            if ($attempt -lt 10) {
+                Start-Sleep -Milliseconds 100
+            }
+        } finally {
+            if ($null -ne $stream) { $stream.Dispose() }
+        }
+    }
+    Write-Warning (
+        "heartbeat append 10회 충돌로 1행 건너뜀; MFA 계산은 계속: " +
+        "$path ($($lastWriteError.Message))"
+    )
 }
 function Remove-SafeYearPath($path, $allowedRoot) {
     $resolved = [IO.Path]::GetFullPath($path).TrimEnd('\')

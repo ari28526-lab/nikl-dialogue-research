@@ -1356,3 +1356,27 @@ shard 2–23을 재개하는 것이다.
   계속 실행한다.
 - 구조화된 근거는
   `outputs/reports/MONITOR_2021_mfa_graph_to_align_20260804.json`에 남겼다.
+
+## 2026-08-04 — 2021 alignment 초기 구간과 heartbeat 잠금 충돌
+
+- alignment 진입 뒤 14:50:11–15:15:24 KST 25분 동안 279,715건(안전 본체의
+  20.381%)을 처리했다. 평균은 초당 184.93건, 마지막 10분은 초당
+  202.45건이었다. 재시도는 4,048건(1.447%), alignment 오류 신호는 0건,
+  최대 system commit은 72.5%였다.
+- 15:15:24 상태 감시가 활성 heartbeat JSONL을 `Get-Content`로 읽는 순간 기존
+  `Add-Content` append와 파일 잠금이 한 차례 충돌해 IOException이 화면에
+  출력됐다. 이는 MFA 정렬 오류가 아니었고 처리량은 291,846→299,609로 계속
+  증가했다. 15:17:26 heartbeat도 재개됐으며, 별도 15초 측정에서 MFA Python
+  CPU가 46.891초 증가했다.
+- 원인은 연구 계산이 아니라 너무 잦고 write sharing을 허용하지 않은 감시
+  읽기였다. 즉시 `Get-Content` polling을 중단하고 이후 관측은 `FileStream`의
+  `FileShare.ReadWrite`로만 수행한다. 15:22:28에는 342,747건, 오류 0건으로
+  정상 진행을 재확인했다.
+- 다음 실행부터 `Write-JsonLine`은 공유 append를 사용하고, IOException을
+  100ms 간격으로 10회 재시도한다. 모두 실패해도 보조 heartbeat 한 행만
+  경고와 함께 건너뛰며 MFA 본체를 종료하지 않는다. 잠금 충돌 회귀 검사를
+  추가했고 Windows PowerShell 5.1 안전성 45파일·호환성 52스크립트 검사를
+  모두 통과했다. 현재 실행에는 이미 로드된 함수가 적용되므로 감시 읽기
+  방식을 바꾸는 것으로 재발을 막고, 실행을 재시작하지 않는다.
+- 구조화된 근거는
+  `outputs/reports/MONITOR_2021_mfa_alignment_initial_20260804.json`에 남겼다.

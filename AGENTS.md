@@ -61,6 +61,10 @@ Windows PowerShell 5.1 compatibility rule:
 - Save every `.ps1` as UTF-8 with BOM; `.editorconfig` is authoritative.
 - Do not use `+=` for JSON/pipeline values that can unwrap to a scalar
   `PSCustomObject`; normalize with `@(...)` and accumulate in a typed List.
+- Do not poll an actively written `*_heartbeat.jsonl` with `Get-Content`.
+  Open it through `FileStream` with `FileShare.ReadWrite`, and keep polling
+  intervals conservative. Heartbeat append conflicts must be retried and must
+  never terminate MFA computation.
 - Before giving the user a long-running PowerShell command, run both
   `tests/test_powershell_safety.ps1` and
   `tests/test_powershell_runtime_compat.ps1` under Windows PowerShell 5.1,
