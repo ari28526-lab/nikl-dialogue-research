@@ -226,6 +226,15 @@ WAV/CSV와 2020 완성본은 변경하지 않았다. 승인 반영 뒤 전수 �
 중복 실행하지 않으며, 2021 6-tier·동반표·독립 감사·DB 표본·연구자 표본 승인이
 끝나기 전에는 2022를 시작하지 않는다.
 
+후속 setup 감시에서 MFA가 보고한 4,143 speakers는 source session 수와 정확히
+일치했다. 1,416,216 files는 입력감사의 WAV 수이며, search master 밖 WAV-only
+42,296개가 포함된 값이다. 예상 밖 활성 LAB는 0이므로 결과 정합성 문제는 없고
+초기 I/O 비용만 있다. 2021 입력은 실행 중 바꾸지 않는다. MFCC 구간은
+12:54:37–13:56:42에 오류 없이 완료돼 `Calculating CMVN`으로 전환됐다. 근거는
+`outputs/reports/MONITOR_2021_mfa_mfcc_to_cmvn_20260804.json`이다. 2022 전에
+safe-body corpus view 최적화를 검토할 수 있지만, 이를 새 연구 gate로 삼지는
+않는다.
+
 ## 활성 정본
 
 - 문서 색인: `docs/README.md`

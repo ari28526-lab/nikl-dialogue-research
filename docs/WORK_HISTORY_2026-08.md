@@ -1303,3 +1303,24 @@ shard 2–23을 재개하는 것이다.
   `outputs/reports/MONITOR_2021_mfa_first_hour_20260804.json`에 기록했다. 2021
   MFA·6-tier·동반표·독립 감사·DB 표본·연구자 표본 승인이 끝나기 전에는
   2022를 시작하지 않는다.
+
+## 2026-08-04 — 2021 MFA 코퍼스 로딩·MFCC 장시간 감시
+
+- MFA는 4,143개 세션을 서로 다른 speaker로 인식했다. `Found ... across
+  1,416,216 files`의 파일 수는 입력감사의 실제 WAV 수 1,416,216과 일치했다.
+  과거의 평면 코퍼스·한 화자 오인 재발은 아니다.
+- 검색표 1,373,920행 밖의 WAV는 42,296개였다. `lab_not_expected=0`이고
+  `lab_not_expected_with_wav=0`이므로 이들은 활성 LAB가 없는 WAV-only 잔여분이다.
+  MFA가 초기 로딩 때 목록은 읽지만 안전 본체 1,372,418건의 정렬 입력에는
+  들어가지 않는다. 결과 정합성 문제는 아니고 setup I/O 비용 문제다.
+- 현재 2021 실행을 멈추거나 입력 경로를 바꾸지 않는다. 2022 시작 전에 파생
+  safe-body corpus view가 42,296개 불필요 WAV scan을 줄이는지 검토하되, 원천
+  identity·승인 제외·utt_id 집합·모델·phone 계약의 exact 동등성이 증명될 때만
+  최적화로 채택한다. 이 검토는 새 연구자 gate나 새 파일럿을 만드는 이유가 아니다.
+- `Generating MFCCs` 구간을 12:54:37–13:56:42 KST에 연속 감시했다. MFCC
+  하트비트 62개 동안 CPU는 3,575.97초에서 12,338.36초로 증가했고, 13:56:42의
+  `Calculating CMVN` 전환 시 12,416.88초였다. 최대 commit은 64.6%, 최소 사용
+  가능 물리 메모리는 469.7MB, D: 여유는 321.02→316.56GiB였다. 오류·watchdog
+  중단 신호 없이 단계가 전환돼 실행을 유지했다.
+- 구조화된 근거는
+  `outputs/reports/MONITOR_2021_mfa_mfcc_to_cmvn_20260804.json`에 남겼다.

@@ -1,0 +1,50 @@
+{
+  "schema_version": "mfa_setup_phase_monitor.v1",
+  "status": "phase_transition_passed",
+  "year": "2021",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "monitor_window": {
+    "started_at": "2026-08-04T12:54:37.3108706+09:00",
+    "mfcc_last_heartbeat_at": "2026-08-04T13:55:42.0249303+09:00",
+    "cmvn_observed_at": "2026-08-04T13:56:42.0891283+09:00",
+    "mfcc_heartbeat_samples": 62,
+    "start_phase": "Generating MFCCs",
+    "end_phase": "Calculating CMVN"
+  },
+  "resource_observations": {
+    "tree_cpu_seconds_start": 3575.96875,
+    "tree_cpu_seconds_end": 12416.875,
+    "tree_cpu_seconds_gain": 8840.90625,
+    "minimum_system_memory_available_mb": 469.7,
+    "maximum_system_commit_percent": 64.6,
+    "maximum_tree_private_memory_mb": 5266.3,
+    "work_drive_free_gb_start": 321.02,
+    "work_drive_free_gb_end": 316.56,
+    "work_drive_free_gb_change": -4.46,
+    "watchdog_will_kill_observed": false,
+    "error_signal_observed": false
+  },
+  "corpus_loader_inventory": {
+    "mfa_reported_speakers": 4143,
+    "mfa_reported_files": 1416216,
+    "audit_wav_files": 1416216,
+    "search_master_rows": 1373920,
+    "safe_body_lab_files": 1372418,
+    "approved_exclusions": 1502,
+    "wav_not_in_search_master": 42296,
+    "lab_not_expected": 0,
+    "lab_not_expected_with_wav": 0,
+    "interpretation": "The 42,296 extras are WAV-only files without active LAB input. MFA lists them during corpus loading but they are not alignment targets. This adds setup I/O cost without changing the safe-body alignment result."
+  },
+  "decision": {
+    "current_2021_run": "continue without restart or input mutation",
+    "before_2022": "evaluate a derived safe-body corpus view only as an efficiency optimization; adopt it only if source identity, approved exclusions, utterance count, model and phone contracts remain exact",
+    "not_a_new_research_gate": true
+  },
+  "evidence": {
+    "heartbeat": "D:\\mfa_eojeol\\logs\\mfa_2021_eojeol_commonpron_2021_20260804_114223_heartbeat.jsonl",
+    "stderr": "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log",
+    "input_audit": "outputs/reports/PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260804_114223.json"
+  }
+}
