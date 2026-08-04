@@ -1024,6 +1024,8 @@ foreach ($path in $files) {
             '[IO.FileShare]::Delete',
             'heartbeat_stale_over_5_minutes',
             'alignment_error_signals',
+            'expected_usable_lab',
+            'alignment_percent',
             'watchdog_will_kill',
             'live_tree_process_ids',
             'queue_status'

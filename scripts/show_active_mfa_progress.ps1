@@ -124,6 +124,41 @@ foreach ($processId in $treePids) {
     }
 }
 
+$alignmentTarget = $null
+$alignmentPercent = $null
+$integrityReportPath = Join-Path $projectRoot (
+    "outputs\reports\PREFLIGHT_mfa_input_integrity_{0}_{1}.json" -f
+        $Year, [string]$heartbeat.run_id
+)
+if (Test-Path -LiteralPath $integrityReportPath -PathType Leaf) {
+    try {
+        $integrity = Get-Content -LiteralPath $integrityReportPath -Raw `
+            -Encoding UTF8 | ConvertFrom-Json
+        $integrityYear = @(
+            $integrity.years |
+            Where-Object { [string]$_.year -eq $Year }
+        )
+        if ($integrityYear.Count -eq 1) {
+            $alignmentTarget = [int64](
+                $integrityYear[0].counts.expected_usable_lab
+            )
+            if (
+                $alignmentTarget -gt 0 -and
+                $null -ne $heartbeat.alignment_processed
+            ) {
+                $alignmentPercent = [math]::Round(
+                    100.0 * [double]$heartbeat.alignment_processed /
+                        $alignmentTarget,
+                    3
+                )
+            }
+        }
+    } catch {
+        $alignmentTarget = $null
+        $alignmentPercent = $null
+    }
+}
+
 $queueInfo = Find-LatestYearQueue $stateRoot $Year
 $queueId = $null
 $queueStatus = $null
@@ -150,6 +185,8 @@ $result = [ordered]@{
     event = [string]$heartbeat.event
     phase = [string]$heartbeat.phase
     alignment_processed = $heartbeat.alignment_processed
+    alignment_target = $alignmentTarget
+    alignment_percent = $alignmentPercent
     alignment_retried = $heartbeat.alignment_retried
     alignment_error_signals = $heartbeat.alignment_error_signals
     interval_word_utterances = $heartbeat.interval_word_utterances
@@ -166,6 +203,11 @@ $result = [ordered]@{
     year_status = $yearStatus
     year_phase = $yearPhase
     queue_state_path = $queuePath
+    input_integrity_report = $(if ($null -eq $alignmentTarget) {
+        $null
+    } else {
+        $integrityReportPath
+    })
 }
 
 if ($AsJson) {
