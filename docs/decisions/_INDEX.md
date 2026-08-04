@@ -46,6 +46,7 @@
 | `DECISION_post_MFA_exact_reconciliation_resume_20260804.md` | 2021–2025 post-MFA 기술적 미정렬을 DB·실패 보고서 exact-ID로 검증하고 명시 승인 뒤 전년 재정렬 없이 보존 DB에서 export·감사만 재개하는 공통 절차 |
 | `DECISION_MFA_float32_terminal_boundary_normalization_20260805.md` | MFA DB float32 종단시각과 WAV 프레임 duration의 미세 표현 차이만 동적 허용치로 0/xmax 정규화하고 TextGrid·동반표·보고서에 동일 반영하는 생산 정책 |
 | `DECISION_MFA_alignment_contract_semantic_checkpoint_identity_20260805.md` | 재실행 시각이 아닌 builder canonical identity로 정렬 계약 동일성을 재계산하고 같은 의미 계약 파일은 다시 쓰지 않는 checkpoint 정책 |
+| `DECISION_MFA_direct_export_checkpoint_promotion_20260805.md` | 성공한 direct export의 계약·DB·exact-ID·동반표 SHA를 재검증해 연도 staging만 비재계산 승격하고 독립 QC로 넘기는 정책 |
 | `DECISION_compressed_external_archive_20260728.md` | E: 압축 archive 후 D: 정리 원칙 |
 
 ## 형태소·후속 연구

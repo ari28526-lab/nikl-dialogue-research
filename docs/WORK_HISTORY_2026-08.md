@@ -1608,3 +1608,20 @@ shard 2–23을 재개하는 것이다.
 - 실패 근거:
   `outputs/reports/FAIL_2021_v6_alignment_contract_recorded_at_identity_20260805.json`.
   DB·partial·원본·2020 완성본은 보존됐으며 다음 실행은 동반표부터 재개한다.
+
+## 2026-08-05 — 2021 checkpoint 후처리 실행과 비재계산 승격 경로
+
+- 06:28 KST부터 보존 DB·v5 전수 보고서·19건 표적 repair·현재 의미 정렬 계약을
+  다시 결속한 후처리기를 실행했다. MFA, LAB 생성, 6-tier TextGrid 전수 생성은
+  재실행하지 않으며 네 gzip 동반표와 최종 성공 보고서만 만드는 실행이다.
+- 실행 중 프로세스·CPU·메모리·D: 여유 공간을 확인했고, `_tables` 아래 네
+  `.partial`이 원자적 writer 정책대로 생성된 뒤 단일 후처리가 계속 진행 중임을
+  확인했다. `Get-PSDrive`가 제한 셸에서 0을 반환한 관측은 `DriveInfo`로 재검증해
+  실제 여유 264GiB임을 확인했으며 용량 부족으로 판정하지 않았다.
+- 성공 뒤 기존 runner의 LAB·입력·DB 전수 검사를 다시 반복하지 않도록
+  `promote_mfa_direct_export_checkpoint.py`를 추가했다. 성공 report, 현재 builder
+  canonical alignment ID, `direct_db_ready`, 입력 감사, 동결 search root,
+  exact-ID full-year gate, 4개 동반표 크기·SHA와 잔류 partial을 모두 확인한 뒤
+  같은 D: 안에서 연도 staging 폴더만 원자적으로 옮긴다.
+- 승격은 정본 채택이 아니며 독립 연도 전수 감사와 DB 표본 24건 검증을 생략하지
+  않는다. 정상·중단 후 재개·동반표 변조·정렬 의미 변조 회귀시험이 통과했다.
