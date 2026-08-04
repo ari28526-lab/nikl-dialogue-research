@@ -1516,3 +1516,19 @@ shard 2–23을 재개하는 것이다.
 - 실패 당시 partial 파일은 0건이며 DB·원본 WAV/CSV·2020 완성본은 변경되지 않았다.
   근거는 `outputs/reports/FAIL_2021_direct_export_inactive_approved_db_ids_20260804.json`에
   기록했다. 새 queue에서는 MFA 계산을 건너뛰고 같은 DB에서 export를 재개한다.
+
+## 2026-08-05 — 2021 v4 첫 1시간 집중 모니터링과 direct export 진입
+
+- v4 queue는 00:03:30 KST에 시작됐다. LAB 4,143세션·1,371,883건은 신규 생성·재작성
+  없이 전수 일치했고 입력·정렬 계약은 각각 `1bda84…`, `5ff186…`으로 유지됐다.
+- 실행 감사는 4,143 CSV·1,373,920행과 WAV duration 1,371,883건을 전수 검사했다.
+  duration mismatch, 예상 밖 LAB, 미승인 active/DB-only ID는 0건이고 승인 비활성 DB
+  ID 511건은 보존 DB의 interval 누락 집합과 exact-match했다.
+- WAV 1,416,216개를 추가 스캔해 `<44B` 불량 0건을 확인했다. 12.7GB DB 체크포인트는
+  다시 통과했고 로그에 `재정렬 없이 출력 단계만 재개`가 명시됐다.
+- 01:11:24부터 direct export가 시작됐고 수정된 exact-ID gate가 실제 전수 데이터에서
+  통과했다. 01:27 관측 시 500/4,139세션·170,326개 6-tier TextGrid를 생성했으며 오류
+  신호는 0건이다.
+- 00:03부터 01:27까지 1시간 이상 집중 모니터링했다. D: 디렉터리 I/O 지연 구간이
+  있었으나 같은 프로세스가 재시작 없이 전진했다. 상세 근거는
+  `outputs/reports/MONITOR_2021_v4_first_hour_to_export_500_20260805.json`에 기록했다.

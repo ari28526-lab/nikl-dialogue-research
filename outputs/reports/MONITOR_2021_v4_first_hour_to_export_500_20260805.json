@@ -1,0 +1,59 @@
+{
+  "schema_version": "mfa_first_hour_monitor.v1",
+  "status": "running_normally",
+  "year": "2021",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v4",
+  "monitor_window": {
+    "queue_started_at": "2026-08-05T00:03:30.8563699+09:00",
+    "observed_through": "2026-08-05T01:27:45.5597072+09:00",
+    "minimum_first_hour_monitor_satisfied": true
+  },
+  "contracts": {
+    "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+    "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+    "pronunciation_mode": "common_pron_mfa_r2_latest_jamo",
+    "phone_inventory_count": 109
+  },
+  "observed_gates": {
+    "lab_sessions_verified": 4143,
+    "lab_content_matches": 1371883,
+    "lab_created": 0,
+    "lab_rewritten": 0,
+    "execution_audit_csv_files": 4143,
+    "execution_audit_search_rows": 1373920,
+    "duration_inspected": 1371883,
+    "duration_residual_mismatch": 0,
+    "approved_inactive_database_ids": 511,
+    "approved_inactive_database_ids_exact_match": true,
+    "unexpected_active_or_db_only_ids": 0,
+    "wav_files_scanned": 1416216,
+    "bad_wav_files": 0,
+    "retained_database_revalidated": true,
+    "mfa_recomputed": false
+  },
+  "execution_audit_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260805_000346.json",
+    "sha256": "3943eaa4de75bbed39e6a46d552c64bb0e46574ecbf7f075a9671339746f4405",
+    "all_years_pass": true,
+    "execution_gates_pass": true,
+    "analysis_ready_gates_pass": true
+  },
+  "direct_export": {
+    "started_at": "2026-08-05T01:11:24+09:00",
+    "sessions_total": 4139,
+    "sessions_completed_observed": 500,
+    "textgrids_created_observed": 170326,
+    "failure_signal_count": 0,
+    "final_status": "in_progress"
+  },
+  "preservation": {
+    "raw_wav_csv_modified": false,
+    "production_2020_modified": false,
+    "next_year_started": false,
+    "canonical_promotion_performed": false
+  },
+  "notes": [
+    "Transient D: directory I/O latency was observed during the read-only execution audit; the same process progressed without restart.",
+    "The corrected direct-export exact-ID gate passed the real full-year inventory and began writing six-tier TextGrids."
+  ]
+}

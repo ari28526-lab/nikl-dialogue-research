@@ -309,3 +309,13 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
   Windows PowerShell 5.1 호환 55스크립트 검사가 통과했다.
 - 다음 단계는 코드·근거를 커밋한 뒤 새 queue ID로 2021 보존 DB export만 재개하는
   것이다. 24건 연구자 검토와 최종 Gate 전에는 2022를 시작하지 않는다.
+
+## 2026-08-05 01:27 KST — 2021 v4 direct export 실행 중
+
+- v4 queue의 LAB 전수 검증, 실행 감사, WAV 1,416,216개 손상 검사, 12.7GB DB
+  재검증이 모두 통과했다. MFA는 재계산하지 않았다.
+- 승인 비활성 DB ID 511건은 exact-match했고 미승인 active/DB-only ID는 0건이다.
+  수정된 exporter gate가 실제 전수 데이터에서 통과했다.
+- direct 6-tier export는 500/4,139세션·170,326개 생성까지 오류 0으로 진행 중이다.
+  아직 동반표, 독립 전수 감사, DB 표본 재-export, 24건 연구자 검토가 남아 있으므로
+  2021 최종 Gate 및 2022 시작 조건은 충족되지 않았다.
