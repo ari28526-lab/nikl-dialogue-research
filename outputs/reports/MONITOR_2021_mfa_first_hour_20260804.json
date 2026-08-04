@@ -1,0 +1,71 @@
+{
+  "schema_version": "mfa_first_hour_monitor.v1",
+  "status": "passed_running",
+  "year": "2021",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804",
+  "queue_started_at": "2026-08-04T11:42:13.7105183+09:00",
+  "monitoring_completed_at": "2026-08-04T12:42:15.4607323+09:00",
+  "monitoring_requirement": "first execution segment monitored for at least one hour",
+  "production_contract": {
+    "common_pronunciation": "common_pron_mfa_r2_20260728",
+    "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+    "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+    "approved_exclusions_sha256": "ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356",
+    "approved_exclusion_count": 1502
+  },
+  "approved_lab_application": {
+    "status": "passed",
+    "rows_seen": 1373920,
+    "approved_labs_moved": 1103,
+    "approved_labs_already_archived": 0,
+    "approved_labs_without_active_lab": 399,
+    "sum_matches_approved_count": true,
+    "created": 0,
+    "rewritten_mismatch": 0,
+    "wav_missing": 0,
+    "started_at": "2026-08-04T11:42:24.168568+09:00",
+    "finished_at": "2026-08-04T11:54:38.495605+09:00",
+    "evidence": "D:\\mfa_eojeol\\logs\\lab_build_2021_latest.json"
+  },
+  "post_approval_input_audit": {
+    "status": "passed",
+    "gate_profile": "analysis",
+    "analysis_ready_gates_pass": true,
+    "execution_gates_pass": true,
+    "search_rows": 1373920,
+    "expected_usable_lab": 1372418,
+    "lab_files": 1372418,
+    "approved_alignment_excluded": 1502,
+    "approved_active_alignment_exclusion_count": 0,
+    "duration_residual_mismatch": 0,
+    "text_duration_rows_checked": 1372418,
+    "finished_at": "2026-08-04T12:06:49+09:00",
+    "evidence": "outputs/reports/PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260804_114223.json"
+  },
+  "mfa": {
+    "started_at": "2026-08-04T12:07:23.3693331+09:00",
+    "mode": "--clean whole year",
+    "num_jobs": 4,
+    "phase_at_monitor_end": "setup",
+    "stderr_at_monitor_end": "INFO Loading corpus from source files...",
+    "watchdog_will_kill": false,
+    "alignment_error_signals": null,
+    "heartbeat_count_from_1208_through_1242": 35,
+    "tree_cpu_seconds_first": 55.828125,
+    "tree_cpu_seconds_at_1242": 2935.25,
+    "minimum_system_memory_available_mb": 284.3,
+    "maximum_system_commit_percent": 65.8,
+    "maximum_tree_private_memory_mb": 5481.7,
+    "work_drive_free_gb_at_1242": 322.06,
+    "memory_warning_interpretation": "transient setup peak; warning cleared without intervention and commit remained below 90 percent",
+    "heartbeat_evidence": "D:\\mfa_eojeol\\logs\\mfa_2021_eojeol_commonpron_2021_20260804_114223_heartbeat.jsonl",
+    "stderr_evidence": "D:\\mfa_eojeol\\logs\\mfa_2021_stderr.log"
+  },
+  "protected_assets": {
+    "raw_wav_modified": false,
+    "raw_csv_modified": false,
+    "production_2020_modified": false,
+    "derived_lab_exclusions_reversible": true
+  },
+  "decision": "continue 2021 MFA without restart or intervention; do not start 2022 before 2021 export, independent audit, DB sample validation, and researcher sample approval"
+}
