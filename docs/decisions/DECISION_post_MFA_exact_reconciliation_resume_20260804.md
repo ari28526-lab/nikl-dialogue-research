@@ -102,3 +102,23 @@ WAV+LAB 활성 쌍으로 남아 있어야 한다고 요구했다. 즉 더 안전
 이 교정은 원본 WAV/CSV, 기존 LAB, MFA DB, 2020 완성본을 변경하지 않으며 정렬 기준도
 바꾸지 않는다. 회귀 테스트는 활성 승인 쌍의 허용, 비활성 승인 ID의 허용, 미승인 활성
 쌍의 차단을 모두 검증한다.
+
+## 2021 direct exporter의 비활성 승인 DB ID 판정 보완
+
+2021 v3 재개에서 실행 입력 감사와 12.7GB DB 체크포인트 재검증은 통과했고,
+정렬 계약 `5ff1865744c8…`을 그대로 사용해 direct export에 진입했다. 그러나 exporter는
+active LAB에서 이미 제거된 승인 ID 511건이 보존 DB에 계산 이력으로 남아 있다는
+이유만으로 `db_ids_without_active_lab` 실패를 반환했다. 이는 미승인 고아 ID가 아니라
+post-MFA 기술 제외의 정상적인 비활성 상태다.
+
+판정식은 다음과 같이 고정한다.
+
+- `DB - active LAB - approved alignment exclusion`만 미승인 DB-only 오류다.
+- `(DB - active LAB) ∩ approved alignment exclusion`은 별도 수량으로 기록하고 허용한다.
+- active LAB인데 정렬이 없고 승인도 없는 ID, source·LAB·DB 집합의 다른 미승인 차이는
+  계속 hard failure다.
+- 승인 계약, 입력 계약, 정렬 계약이 달라지면 이 허용은 적용하지 않는다.
+
+이 보완은 phone 기준, TextGrid tier, 원본 WAV/CSV, 2020 완성본을 바꾸지 않는다.
+2021 MFA도 다시 계산하지 않고 보존 DB에서 export만 재개한다. 실패 근거는
+`outputs/reports/FAIL_2021_direct_export_inactive_approved_db_ids_20260804.json`에 고정했다.

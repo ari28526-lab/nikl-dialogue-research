@@ -1,0 +1,40 @@
+{
+  "schema_version": "mfa_direct_export_failure_record.v1",
+  "status": "safely_stopped",
+  "year": "2021",
+  "observed_at": "2026-08-04T23:52:41.7421488+09:00",
+  "queue_id": "mfa_r2_prod_safe_body_2021_v2_20260804_postmfa_v3",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "retained_database": "D:\\mfa_tmp\\2021\\2021.db",
+  "source_report": {
+    "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260804_225106.json",
+    "bytes": 18860,
+    "sha256": "8dc48f82bd5af23e38b9e4fc2ab9f86bfa8324db0e2eec79db1e34360bd5b585"
+  },
+  "counts": {
+    "source_search_ids": 1373920,
+    "active_lab_ids": 1371883,
+    "database_utterance_ids": 1372394,
+    "aligned_database_ids": 1371883,
+    "approved_alignment_exclusions": 2037,
+    "approved_inactive_database_ids": 511,
+    "unapproved_active_lab_without_alignment": 0,
+    "unapproved_source_without_active_lab": 0
+  },
+  "root_cause": "The direct exporter treated every retained DB utterance without an active LAB as unauthorized, including 511 exact-matched, researcher-approved post-MFA exclusions whose LABs were already inactive.",
+  "correction": "DB IDs without an active LAB are permitted only when they are members of the frozen approved alignment-and-analysis exclusion set. Any unapproved DB-only ID remains a hard failure.",
+  "preservation": {
+    "mfa_recomputed": false,
+    "database_preserved": true,
+    "raw_wav_csv_modified": false,
+    "production_2020_modified": false,
+    "next_year_started": false,
+    "partial_output_file_count": 0
+  },
+  "verification": {
+    "exporter_tests_passed": 10,
+    "python_full_suite_passed": 342,
+    "powershell_safety_files_passed": 46,
+    "powershell_51_runtime_scripts_passed": 55
+  }
+}

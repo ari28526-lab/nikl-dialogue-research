@@ -533,6 +533,53 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 [],
             )
 
+    def test_exact_id_reconciliation_accepts_approved_inactive_db_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            labs = root / "labs"
+            self.make_db(db)
+            con = sqlite3.connect(db)
+            con.execute("INSERT INTO file VALUES(2, 'S1.2', 'S1')")
+            con.execute(
+                "INSERT INTO sound_file VALUES(2, 1.0, 'D:/wav/S1.2.wav')"
+            )
+            con.execute("INSERT INTO utterance VALUES(2, 2, 0, NULL)")
+            con.commit()
+            con.close()
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search, extra_utt_ids=("S1.2",))
+            self.make_lab_root(labs, ("S1.1",))
+            approved = self.make_exclusion_contract(root, utt_id="S1.2")
+
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=root / "output",
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+                approved_exclusions_contract=approved,
+                lab_root=labs,
+            )
+
+            self.assertEqual(report["status"], "success", report)
+            reconciliation = report["exact_id_reconciliation"]
+            self.assertEqual(reconciliation["status"], "passed")
+            self.assertEqual(
+                reconciliation["counts"]
+                ["approved_inactive_database_exclusions"],
+                1,
+            )
+            self.assertEqual(
+                reconciliation["inventories"]["db_ids_without_active_lab"],
+                [],
+            )
+
     def test_quarantined_id_requires_matching_approved_exclusion(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

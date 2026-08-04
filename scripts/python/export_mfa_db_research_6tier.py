@@ -1223,7 +1223,17 @@ def export_database(
         unknown_active_missing = (
             active_lab_ids - aligned_ids - alignment_exclusion_ids
         )
-        unexpected_db_ids = db_ids - active_lab_ids
+        # Post-MFA technical exclusions can be present in the retained MFA DB
+        # while their LAB files have already been removed from the active
+        # corpus.  That is an approved, safer inactive state, not an orphan DB
+        # row.  Only DB IDs that are neither active nor explicitly approved
+        # are unauthorized.
+        approved_inactive_database_exclusions = (
+            db_ids - active_lab_ids
+        ) & alignment_exclusion_ids
+        unexpected_db_ids = (
+            db_ids - active_lab_ids - alignment_exclusion_ids
+        )
         approved_upstream_exclusions = (
             alignment_exclusion_ids - active_lab_ids
         )
@@ -1273,6 +1283,9 @@ def export_database(
                 "approved_active_alignment_exclusions": len(
                     approved_active_exclusions
                 ),
+                "approved_inactive_database_exclusions": len(
+                    approved_inactive_database_exclusions
+                ),
                 "quarantine_ids": len(quarantine_ids),
                 **{
                     name: len(values) for name, values in hard_sets.items()
@@ -1285,8 +1298,9 @@ def export_database(
                 "source_search_ids = active_lab_ids union "
                 "approved_upstream_alignment_exclusions; active_lab_ids = "
                 "aligned_database_ids union "
-                "approved_active_alignment_exclusions; quarantine_ids "
-                "subset approved_alignment_exclusions"
+                "approved_active_alignment_exclusions; database_utterance_ids "
+                "subset active_lab_ids union approved_alignment_exclusions; "
+                "quarantine_ids subset approved_alignment_exclusions"
             ),
         }
         if reconciliation["status"] != "passed":

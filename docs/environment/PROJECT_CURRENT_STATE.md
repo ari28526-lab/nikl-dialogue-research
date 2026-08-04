@@ -295,3 +295,17 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 미승인 활성 쌍은 계속 차단하도록 교정했고, Python 340개 및 Windows PowerShell 5.1
 안전 46파일·호환성 55스크립트 검사를 통과했다. 다음 실행은 새 queue ID로 동일 DB에서
 입력 감사를 다시 수행한 뒤 direct 6-tier export만 재개한다.
+
+## 2026-08-04 23:52 KST — 2021 direct export 안전 중단과 교정
+
+- 2021 v3 실행 감사는 4,143 CSV·1,373,920행을 검사해 통과했다. 활성 LAB과 정렬
+  내용은 1,371,883건이며 duration mismatch, 손상 WAV, 미승인 활성 누락은 0건이다.
+- 기존 12.7GB MFA DB와 정렬 계약 `5ff1865744c8…` 재검증 후, 재정렬 없이 direct
+  6-tier·동반표 export에 진입했다.
+- exporter의 구 판정식이 승인되어 비활성화된 LAB 511건의 DB 계산 이력을 미승인
+  DB-only ID로 오판해 안전 중단했다. partial 파일은 0건이고 2022는 시작되지 않았다.
+- 판정식을 `DB - active LAB - approved exclusions`로 교정했다. 미승인 DB-only ID는
+  계속 차단한다. exporter 10개, Python 전체 342개, PowerShell 안전 46파일 및
+  Windows PowerShell 5.1 호환 55스크립트 검사가 통과했다.
+- 다음 단계는 코드·근거를 커밋한 뒤 새 queue ID로 2021 보존 DB export만 재개하는
+  것이다. 24건 연구자 검토와 최종 Gate 전에는 2022를 시작하지 않는다.

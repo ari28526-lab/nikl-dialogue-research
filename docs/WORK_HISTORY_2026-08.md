@@ -1500,3 +1500,19 @@ shard 2–23을 재개하는 것이다.
   Windows PowerShell 5.1 호환성 55스크립트가 모두 통과했다.
 - 실패 queue와 보고서는 시행착오 증거로 보존한다. 2021 DB checkpoint와 원자료,
   2020 완성본은 변경하지 않았으며 새 queue에서 direct export만 재개한다.
+
+## 2026-08-04 — 2021 direct exporter 비활성 승인 DB ID 오판 교정
+
+- v3 queue의 실행 감사가 4,143 CSV·1,373,920행, 활성 LAB 1,371,883건을 검사해
+  통과했고, 12.7GB DB 체크포인트도 정렬 계약 `5ff1865744c8…`과 다시 일치했다.
+- 23:48:17부터 재정렬 없이 direct export에 진입했으나 23:52:41에 exporter가
+  `db_ids_without_active_lab=511`로 fail-closed했다. 이 511건은 보존 DB의 interval
+  미생성 ID와 exact-match하는 승인 post-MFA 제외이며 LAB가 이미 비활성화된 상태다.
+- `export_mfa_db_research_6tier.py`에서 미승인 DB-only 집합만 차단하도록 교정하고,
+  승인된 비활성 DB ID를 실제와 같은 fixture로 재현하는 회귀 테스트를 추가했다.
+  승인되지 않은 활성/DB-only/source-only ID를 차단하는 기존 검사는 유지된다.
+- exporter 테스트 10개, Python 전체 342개, PowerShell 안전 46파일, Windows
+  PowerShell 5.1 호환 55스크립트가 모두 통과했다.
+- 실패 당시 partial 파일은 0건이며 DB·원본 WAV/CSV·2020 완성본은 변경되지 않았다.
+  근거는 `outputs/reports/FAIL_2021_direct_export_inactive_approved_db_ids_20260804.json`에
+  기록했다. 새 queue에서는 MFA 계산을 건너뛰고 같은 DB에서 export를 재개한다.
