@@ -1,0 +1,146 @@
+{
+  "schema_version": "mfa_post_alignment_review.v2",
+  "status": "pending_researcher_review",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "auto_approval_performed": false,
+  "mfa_database_modified": false,
+  "full_year_mfa_rerun_required": false,
+  "candidate_count": 535,
+  "candidate_identity_sha256": "13b129cea0ba009b1e2f27cc2f14f8fbb3fdd1f63e9f030d3c9f5b39328e2de5",
+  "required_approval_token": "APPROVE_2021_POST_MFA_535_13B129CEA0BA",
+  "reason_counts": {
+    "mfa_alignment_missing": 511,
+    "mfa_feature_generation_failed": 24
+  },
+  "candidate_session_count": 363,
+  "top_sessions": [
+    {
+      "session_id": "SDRW2100004234",
+      "candidate_count": 42
+    },
+    {
+      "session_id": "SDRW2100002536",
+      "candidate_count": 9
+    },
+    {
+      "session_id": "SDRW2100004264",
+      "candidate_count": 8
+    },
+    {
+      "session_id": "SDRW2100002471",
+      "candidate_count": 7
+    },
+    {
+      "session_id": "SDRW2100001962",
+      "candidate_count": 6
+    },
+    {
+      "session_id": "SDRW2100000500",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100001684",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100001817",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100001948",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100004140",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100004266",
+      "candidate_count": 4
+    },
+    {
+      "session_id": "SDRW2100000366",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100000504",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100001089",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100001098",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100001112",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100001512",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100001888",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100002016",
+      "candidate_count": 3
+    },
+    {
+      "session_id": "SDRW2100002194",
+      "candidate_count": 3
+    }
+  ],
+  "pilot_count": 24,
+  "existing_approved_exclusion_count": 1502,
+  "artifacts": {
+    "details": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\01_CANDIDATE_DETAILS.csv",
+      "bytes": 172706,
+      "mtime_ns": 1785845960222569600,
+      "sha256": "6a0eb6d3c0dd0460e91f7bf84dcea819b93c495c68e54a7c1f67abb74b9441ae"
+    },
+    "decisions": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\02_RESEARCHER_DECISIONS.csv",
+      "bytes": 158894,
+      "mtime_ns": 1785845960230063100,
+      "sha256": "21e8b095b51e090bf552d0bb1b53a6d70fbcc66d52f174fb5723879d4c5d8085"
+    },
+    "approval_working_copy": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\04_RESEARCHER_APPROVAL.csv",
+      "bytes": 158894,
+      "mtime_ns": 1785845960238062900,
+      "sha256": "21e8b095b51e090bf552d0bb1b53a6d70fbcc66d52f174fb5723879d4c5d8085"
+    },
+    "pilot_review": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804\\03_AUDIO_LAB_PILOT_REVIEW.csv",
+      "bytes": 13063,
+      "mtime_ns": 1785845960567138800,
+      "sha256": "bb392ee0873ff02b363a10ee1caeb4b11be71d85a014f233fbeeeea554bcf44e"
+    },
+    "export_report": {
+      "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260804_114223.json",
+      "bytes": 19675,
+      "mtime_ns": 1785845745050938900,
+      "sha256": "52365be9bd3f65dbadf811e3511192cba92fd926378b394a6808d8fe0b0df4f8"
+    },
+    "database": {
+      "path": "D:\\mfa_tmp\\2021\\2021.db",
+      "bytes": 12708773888,
+      "mtime_ns": 1785844320376154600
+    },
+    "approved_exclusions_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\approved_exclusions.json",
+      "bytes": 1038,
+      "mtime_ns": 1785810061847598600,
+      "sha256": "ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356"
+    }
+  },
+  "researcher_question": "Check the pilot for WAV/LAB pairing, especially the dominant session; then approve exclusion or request targeted recovery.",
+  "approval_instruction": "Keep year/input_contract_id/utt_id/reason_code/scope unchanged, edit only 04_RESEARCHER_APPROVAL.csv, change decision=pending to approved only after review, and pass the required approval token to the finalizer."
+}

@@ -1410,3 +1410,33 @@ shard 2–23을 재개하는 것이다.
 - 관련 Python 회귀 30개, Windows PowerShell 5.1 안전성 45파일·호환성 54스크립트가
   통과했다. 현재 2021 MFA는 실행 중이므로 후보 수·실제 승인·export 성공은 아직
   주장하지 않는다.
+
+## 2026-08-04 — 2021 MFA 정상 종료·DB checkpoint·post-MFA 후보 확정
+
+- MFA는 20:53:45 KST에 exit 0으로 종료됐다. 최종 heartbeat는
+  `watchdog_killed=false`, alignment error signal 0, processed 1,372,394,
+  interval 재시도 19,956을 기록했다. alignment 계산을 다시 실행할
+  근거는 없다.
+- 12.7GB `D:\mfa_tmp\2021\2021.db`를 읽기 전용으로 재검증했다.
+  source 1,372,394, word interval 10,572,619, phone interval 39,296,691,
+  word·phone이 모두 있는 발화 1,371,883, `spn` 0이었다.
+  21:08:22에 `D:\mfa_eojeol\done\2021.direct_db_ready`를 생성했다.
+- direct exporter는 파일을 쓰기 전 source 1,373,920, active LAB 1,372,418,
+  DB 1,372,394, aligned DB 1,371,883을 exact-ID로 대조했다. 승인 없는
+  quarantine, DB-only, source-only, source 밖 LAB, 계약 밖 제외, 잘못된
+  analysis-only는 모두 0이었다.
+- active LAB에는 있지만 정렬 interval이 없는 535건은 숨기지 않고
+  `blocked_exact_id_reconciliation`으로 fail-closed했다. queue는
+  `post_mfa_export_failed_db_preserved`로 종료됐고 DB·partial·checkpoint는 보존했다.
+- 보존 DB에서 535건을 `mfa_alignment_missing` 511건과
+  `mfa_feature_generation_failed` 24건으로 재분류했다. feature 실패 24건은
+  전부 0.01–0.10초였고, alignment missing은 0.11–10.44초였다.
+- 검토 root는
+  `outputs/reviews/mfa_post_exact_2021_mfa_r2_prod_safe_body_2021_v2_20260804`다.
+  immutable 후보표, 편집용 승인표, 20건 후보+4건 정상 대조군
+  WAV/LAB 표본, `SUMMARY.json`을 생성했다. 표본의 WAV·LAB는 24/24
+  실물이 존재하며 자동 승인은 0건이다.
+- 현재 재개 조건은 연구자가 두 사유와 535건 제외를 명시 승인하는
+  것이다. 승인 후에만 기존 1,502건과 결합한 새 계약을 만들고,
+  같은 `direct_db_ready` DB에서 6-tier·동반표 export만 재개한다.
+  2021 독립 감사·DB 표본·연구자 표본 gate 전에는 2022를 시작하지 않는다.

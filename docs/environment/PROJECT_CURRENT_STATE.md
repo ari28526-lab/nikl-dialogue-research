@@ -66,10 +66,12 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 ## 실제 미완료
 
 - 2022–2025 검색표. 2021 검색표와 frozen source contract는 완료됐다.
-- 2021–2025 신규 r2 MFA. 최초 연도별 승인 제외 계약은 2026-08-04에 연구자
-  `ari30`의 명시 승인으로 완료됐다. 2021의 CSV duration 0 발화 14건도
-  11:21 KST에 보충 승인했고, 새 v2 계약으로 승인 적용 뒤 입력감사를 통과해
-  12:07:23부터 실제 MFA를 실행 중이다. 2022–2025는 아직 시작하지 않았다.
+- 2021–2025 신규 r2 MFA. 2021 정렬 계산은 2026-08-04 20:53:45 KST에
+  exit 0으로 완료됐고 보존 DB·계산 checkpoint도 생성됐다. post-MFA
+  exact-ID 대조에서 535건(`mfa_alignment_missing` 511,
+  `mfa_feature_generation_failed` 24)을 분리했으며, 현재는 연구자
+  명시 승인 전이다. 승인 후 같은 DB에서 6-tier·동반표 export만
+  재개한다. 2022–2025는 아직 시작하지 않았다.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
   있으므로 사용 직전 실물·SHA를 다시 확인한다.
@@ -112,14 +114,18 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 경계를 추가하지 않는다.
 
 현재 안전 정지점은 **2020 Gate B 통과, 2021 `morph_search.v3` 7표와 frozen
-source contract 완료, 2021 MFA 정렬 시작 전 입력감사에서 안전 중단, 2021
-보충 제외 14건 연구자 승인 및 결합 1,502건 계약 완료**다.
+source contract 완료, 2021 MFA 정렬 exit 0, 보존 DB checkpoint 완료,
+post-MFA exact-ID 후보 535건 연구자 승인 대기**다. 2021 DB는
+`D:\mfa_tmp\2021\2021.db`, marker는
+`D:\mfa_eojeol\done\2021.direct_db_ready`다. 정렬·DB 계산을 다시
+실행하지 않는다.
 5개년 4,232,919발화 중 실패 세션 전 행과 gate 통과
 세션의 실제 issue, 빈 참조, 시간 불가능을 합친 112,292개가 연구자 승인 제외이며
 안전 본체는 4,120,627개다. 승인 범주는 `audio_pairing_unresolved`,
 `empty_reference_unresolved_symbol`, `text_duration_impossible` 세 가지다. 이는
 삭제가 아니라 안전 본체에서 분리하는 계약이며 음원 회수 가능분은 동일 모델의
-후속 shard로 처리한다. 다음 실행도 2021 한 연도만 시작한다. 상세 과정은
+후속 shard로 처리한다. 현재 535건은 이 pre-MFA 제외와 다른
+기술적 post-MFA 미정렬 집합이며 자동 승인하지 않았다. 상세 과정은
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
@@ -218,12 +224,15 @@ WAV/CSV와 2020 완성본은 변경하지 않았다. 승인 반영 뒤 전수 �
 `1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8`, 정렬 계약은
 `5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd`다.
 
-실제 MFA는 12:07:23부터 공통 Jamo r2·동결 음향모델·`num_jobs=4`로 실행 중이다.
+실제 MFA는 12:07:23부터 공통 Jamo r2·동결 음향모델·`num_jobs=4`로 실행했고
+20:53:45에 exit 0으로 정상 종료됐다.
 11:42–12:42 첫 실행 구간 집중 점검에서 하트비트·CPU가 계속 증가했고 오류·watchdog
 중단 신호가 없었다. setup 초기 메모리 경고는 일시적이었으며 최대 commit 65.8%에서
 개입 없이 해소됐다. 근거는
-`outputs/reports/MONITOR_2021_mfa_first_hour_20260804.json`이다. 현재 명령을
-중복 실행하지 않으며, 2021 6-tier·동반표·독립 감사·DB 표본·연구자 표본 승인이
+`outputs/reports/MONITOR_2021_mfa_first_hour_20260804.json`이다. 최종 heartbeat는
+`watchdog_killed=false`, alignment error 0, processed 1,372,394,
+word·phone interval 모두 있는 ID 1,371,883을 기록했다. 현재 명령을 중복
+실행하지 않으며, 2021 6-tier·동반표·독립 감사·DB 표본·연구자 표본 승인이
 끝나기 전에는 2022를 시작하지 않는다.
 
 후속 setup 감시에서 MFA가 보고한 4,143 speakers는 source session 수와 정확히
@@ -234,6 +243,16 @@ WAV/CSV와 2020 완성본은 변경하지 않았다. 승인 반영 뒤 전수 �
 `outputs/reports/MONITOR_2021_mfa_mfcc_to_cmvn_20260804.json`이다. 2022 전에
 safe-body corpus view 최적화를 검토할 수 있지만, 이를 새 연구 gate로 삼지는
 않는다.
+
+MFA 종료 후 12.7GB DB 계산 checkpoint를 재검증했고
+21:08:22에 `2021.direct_db_ready`를 생성했다. direct exporter의 전수
+exact-ID 대조는 source 1,373,920, active LAB 1,372,418, DB 1,372,394,
+aligned 1,371,883을 교차 비교했다. 다른 hard mismatch는 0이고,
+`unknown_active_lab_without_alignment` 535건만 분리해 안전 중단했다.
+검토 패키지는 535건을 `mfa_alignment_missing` 511건과
+`mfa_feature_generation_failed` 24건으로 구분했고, 20건 후보+4건 정상
+대조군 WAV/LAB 표본을 생성했다. 자동 승인은 0건이며 연구자 승인
+후에만 같은 DB에서 export를 재개한다.
 
 ## 활성 정본
 

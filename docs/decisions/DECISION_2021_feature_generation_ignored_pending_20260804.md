@@ -2,7 +2,7 @@
 
 작성일: 2026-08-04 KST
 
-상태: 실행 중 관찰, 연구자 승인 전
+상태: MFA·exact-ID 재확인 완료, 연구자 승인 전
 
 대상 run: `eojeol_commonpron_2021_20260804_114223`
 
@@ -49,8 +49,21 @@ MFA 경고 합계                         43,822
 
 ## 다음 게이트
 
-- MFA 프로세스 정상 종료 확인
-- 완료 DB와 로그의 SHA·run ID 보존
-- export exact-ID reconciliation에서 24건의 집합 동등성 확인
-- 연구자 승인 후보표 생성 및 승인 요청
+- MFA 프로세스 exit 0 확인(완료)
+- 완료 DB와 `direct_db_ready` 보존(완료)
+- export exact-ID reconciliation에서 24건의 집합 동등성 확인(완료)
+- 연구자 승인 후보표 생성(완료) 및 승인 대기
 - 승인 계약 결합 후 6-tier·동반표 export 재개
+
+## 종료 후 재확인 결과
+
+- MFA는 2026-08-04 20:53:45 KST에 exit 0으로 종료됐다.
+- DB checkpoint는 source 1,372,394, word·phone interval이 모두 있는
+  발화 1,371,883, `spn` 0을 기록했다.
+- exact-ID 대조에서 feature 생성 실패 24건이 모두
+  `mfa_feature_generation_failed`로 재확인됐다. 별도로 DB에는 들어왔으나
+  word/phone interval을 만들지 못한 511건을 `mfa_alignment_missing`으로
+  분리했다.
+- 두 사유의 535건은 하나의 post-MFA 검토 패키지에 들어 있으며,
+  자동 승인은 0건이다. 20건 후보와 4건 정상 대조군의 WAV/LAB
+  표본을 검토한 뒤 연구자가 명시 승인해야 한다.

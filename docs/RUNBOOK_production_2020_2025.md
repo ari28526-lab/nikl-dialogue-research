@@ -38,7 +38,7 @@ workflow 수정·시험
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
 
-## 현재 시작점 — 2021 v2 실제 MFA 실행 중
+## 현재 시작점 — 2021 MFA 정상 종료, post-MFA 승인 대기
 
 2020은 신규 공통 Jamo r2 MFA, 6-tier 868,187개, gzip 동반표 4개, 독립 전수
 감사, DB 재생성 표본 24/24, 연구자 생산 표본 24/24 및 Gate B까지 완료됐다.
@@ -80,8 +80,8 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804/
 명시 승인했고, 총 1,502행 `approved_exclusions.json`을 만들었다. 승인·코드·문서
 커밋과 Windows PowerShell 5.1 검사, 새 queue의 `-PreflightOnly`는 11:27 KST에
 모두 통과했다. 이전 queue ID는 재사용하지 않는다. 아래 명령은 11:42:13 KST에
-이미 실행됐고 현재 2021 MFA가 진행 중이므로 **다시 입력하지 않는다**. 향후
-프로세스가 종료된 뒤 같은 checkpoint를 재개해야 할 때의 정본 명령으로만 보존한다.
+이미 실행됐고 2021 MFA·DB checkpoint까지 완료했으므로
+**다시 입력하지 않는다.** 현재 재개 지점은 아래 E-1의 post-MFA 승인·export다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30" -ApprovalQueueId "mfa_r2_prod_safe_body_2021_v2_20260804" -ExecutionQueueId "mfa_r2_prod_safe_body_2021_v2_20260804" -Year "2021"
@@ -95,8 +95,13 @@ outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804/
 모두 적용됐다. 승인 반영 뒤 입력감사는 안전 본체 1,372,418건, 승인 active pair
 0, duration 잔여 불일치 0으로 통과했다. 실제 MFA는 12:07:23에 시작됐다.
 11:42–12:42 집중 점검에서 오류·watchdog 중단 신호 없이 코퍼스 적재가 진행됐다.
-근거는 `outputs/reports/MONITOR_2021_mfa_first_hour_20260804.json`이다. 2021
-완료·export·독립 감사·DB 표본·연구자 표본 승인 전에는 2022 명령을 실행하지 않는다.
+근거는 `outputs/reports/MONITOR_2021_mfa_first_hour_20260804.json`이다. MFA는
+20:53:45에 exit 0으로 종료됐고 21:08:22에 동일 입력·정렬 계약의
+`2021.direct_db_ready`를 생성했다. direct export 전 exact-ID 대조에서
+535건(정렬 interval 없음 511, feature 생성 실패 24)을 분리했고
+DB를 보존한 채 fail-closed했다. 이 집합은 자동 승인하지 않았다.
+2021 export·독립 감사·DB 표본·연구자 표본 승인 전에는 2022 명령을
+실행하지 않는다.
 
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과
@@ -278,6 +283,14 @@ MFA 계산 완료 뒤 queue 상태가 `post_mfa_export_failed_db_preserved`이�
 `04_RESEARCHER_APPROVAL.csv`의 후보·사유·표본을 확인하고 승인하는 행만
 `decision=approved`로 바꾼다. `SUMMARY.json`의 `required_approval_token`을
 확인한 뒤 아래 재개기를 사용한다. 실제 token과 승인 문구 없이 실행할 수 없다.
+
+시간상 WAV/LAB 표본을 즉시 청취하지 못하는 경우, exact-ID·DB 분류·
+길이 근거로 **기술적 제외 방침**만 명시 승인해 export를 재개할 수
+있다. 이때는 승인 문구에 `청취 검토 유예`를 기록하고, 유예된 표본
+검토를 2021 최종 Gate에 결합한다. 청취 검토가 끝나기 전에는 2022를
+시작하지 않는다. 이 승인은 음운 실현이나 원자료 오류를 판정하는 것이 아니라,
+현 MFA에서 interval이 없는 자료를 본체 분석에서 분리하고 후속 회수 대상으로
+보존하는 운영 승인이다.
 
 ```powershell
 & "C:\Users\ari30\research\2026_summer_research\scripts\resume_year_export_after_post_mfa_review.ps1" `
