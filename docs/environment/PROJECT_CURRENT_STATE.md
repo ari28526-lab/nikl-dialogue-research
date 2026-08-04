@@ -351,8 +351,12 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 구간뿐이다. 원본 WAV/CSV, 2020 완성본, 2021 DB는 변경되지 않았고 2022는 시작되지
 않았다.
 
-현재 다음 단계는 19개 파생 TextGrid archive·표적 교체, v5 checkpoint에서 동반표
-재개, 2021 독립 전수 감사와 DB 표본 24개 재수출이다. 그 뒤 연구자 24개 표본
+19개 파생 TextGrid의 archive·표적 교체는 2026-08-05 05:22 KST에 완료됐다.
+보관본과 교체본 SHA-256을 각각 19/19 재계산했고 불일치는 0건이다. 원본 WAV/CSV,
+검색표, 2021 DB, 2020 완성본은 변경하지 않았다.
+
+현재 다음 단계는 v5 checkpoint와 repair manifest를 재검증하고 동반표 생성부터
+재개한 뒤, 2021 독립 전수 감사와 DB 표본 24개 재수출을 수행하는 것이다. 연구자 24개 표본
 검토·최종 Gate 전에는 2022로 넘어가지 않는다. 근거와 복구 불변식은
 `docs/decisions/DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md`를
 따른다.

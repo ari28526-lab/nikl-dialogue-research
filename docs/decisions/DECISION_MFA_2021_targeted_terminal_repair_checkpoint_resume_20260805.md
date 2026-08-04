@@ -1,6 +1,6 @@
 # 2021 TextGrid 종단 경계 19건 표적 복구와 checkpoint 재개 결정
 
-상태: 생산 복구 계약 — 코드·preflight 통과, 적용 직전
+상태: 생산 복구 계약 — 표적 복구 적용·해시 재검증 완료, checkpoint 재개 직전
 
 적용 범위: 2021 공통 Jamo r2 direct-DB 6-tier 부분 산출물
 
@@ -80,3 +80,22 @@ DB·검색표로 재구성해 비교했다.
 - PowerShell 안전검사: 46개 파일 통과
 - Windows PowerShell 5.1 실행 호환검사: 55개 스크립트 통과
 - 실제 데이터 mutation 전 preflight: 19건, 12세션, 최대 6.713867µs, `READY`
+
+## 적용 결과 (2026-08-05 05:22 KST)
+
+- 실패 보고서의 완전한 19개 집합만 표적 복구했다.
+- 이전 파생 TextGrid 19개는 원래 상대경로를 유지해
+  `D:\mfa_eojeol\repair_archive\2021_float32_terminal_roundoff_20260805`에
+  먼저 보관했다.
+- 교체 후 19/19가 신규 경계 정책 검증을 통과했고 repair manifest 상태는
+  `success`다.
+- manifest 기록을 다시 읽어 보관본 SHA-256 19/19와 현재 교체본 SHA-256
+  19/19를 실제 파일에서 재계산했으며 불일치는 0건이었다.
+- 변경 범위는 부분 산출물 TextGrid 19개뿐이다. 2021 MFA DB, 원본 WAV/CSV,
+  검색표, 2020 완성본은 변경하지 않았다.
+- 적용 증거는
+  `outputs/reports/REPAIR_2021_float32_terminal_roundoff_20260805.json`이다.
+
+다음 실행은 전수 MFA나 전수 TextGrid 재생성이 아니라 v5 전수 통과 증거와 위
+repair manifest를 재검증한 뒤 동반표 생성부터 재개한다. 이후 독립 연도 전수
+감사와 DB 표본 24개 재수출은 예정대로 수행한다.

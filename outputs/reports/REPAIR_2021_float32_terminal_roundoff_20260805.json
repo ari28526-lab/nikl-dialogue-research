@@ -1,6 +1,6 @@
 {
   "schema_version": "mfa_textgrid_terminal_roundoff_repair.v1",
-  "status": "ready",
+  "status": "success",
   "year": "2021",
   "db_path": "D:\\mfa_tmp\\2021\\2021.db",
   "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
@@ -416,6 +416,674 @@
       "max_boundary_adjustment_seconds": 6.561279306538381e-07
     }
   ],
-  "records": [],
-  "mutation_scope": "derived partial TextGrid only; DB/WAV/CSV unchanged"
+  "records": [
+    {
+      "utt_id": "SDRW2100000201.1.1.220",
+      "session": "SDRW2100000201",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 17519,
+        "mtime_ns": 1785860402656208900,
+        "sha256": "06d5a11326ff5d678ecb499c45f4fee0450764740c983b8053f38b61c30a3a37"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.662109378410605e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 17519,
+        "mtime_ns": 1785860402656208900,
+        "sha256": "06d5a11326ff5d678ecb499c45f4fee0450764740c983b8053f38b61c30a3a37"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000201\\SDRW2100000201.1.1.220.TextGrid",
+        "bytes": 16898,
+        "mtime_ns": 1785874930768938600,
+        "sha256": "060d5bc2ec79c7223a87a9a1557637e29d36ff2377b3106cdeffacc8d8d0319f"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.350",
+      "session": "SDRW2100000223",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+        "bytes": 4722,
+        "mtime_ns": 1785860435406270500,
+        "sha256": "ddcfbdb65149abce08dac2438cefb4e316195b0da292c48962bf54f8a5eb6a27"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.629394538355427e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+        "bytes": 4722,
+        "mtime_ns": 1785860435406270500,
+        "sha256": "ddcfbdb65149abce08dac2438cefb4e316195b0da292c48962bf54f8a5eb6a27"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.350.TextGrid",
+        "bytes": 4722,
+        "mtime_ns": 1785874930794035800,
+        "sha256": "2eec2c82f2faaea649c6bd4a2d0607a12b75e9fd2bd1a3cc0589f5054ed32cc8"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000223.1.1.364",
+      "session": "SDRW2100000223",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+        "bytes": 14331,
+        "mtime_ns": 1785860435583069800,
+        "sha256": "ef0de20c43ef874529164bb9dff481000ad19aeb920f8b6b6e381c46ec44b784"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.8310546892053026e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+        "bytes": 14331,
+        "mtime_ns": 1785860435583069800,
+        "sha256": "ef0de20c43ef874529164bb9dff481000ad19aeb920f8b6b6e381c46ec44b784"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000223\\SDRW2100000223.1.1.364.TextGrid",
+        "bytes": 14019,
+        "mtime_ns": 1785874930818313300,
+        "sha256": "b1049643873cfab38f4a4afeeed7571cc98504176586ff6ee0f2ccaa59df0816"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000377.1.1.162",
+      "session": "SDRW2100000377",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+        "bytes": 70181,
+        "mtime_ns": 1785860653157218500,
+        "sha256": "8508c0d3a956cccd7a87a9d5f7dd8fd83327f624b84b92a360b2da95e8bb4439"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+        "bytes": 70181,
+        "mtime_ns": 1785860653157218500,
+        "sha256": "8508c0d3a956cccd7a87a9d5f7dd8fd83327f624b84b92a360b2da95e8bb4439"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000377\\SDRW2100000377.1.1.162.TextGrid",
+        "bytes": 70181,
+        "mtime_ns": 1785874930848349500,
+        "sha256": "08e8549f7fbb7ccbd93c3fb1bbc08ab2a737458e841295bc7098cd8a0c299637"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.326",
+      "session": "SDRW2100000493",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+        "bytes": 7507,
+        "mtime_ns": 1785860819752770900,
+        "sha256": "0fa9752fad34f3c0e7b212ecec887714452fdee75281ff87cb84abd42c090e7c"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.5258789076710855e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+        "bytes": 7507,
+        "mtime_ns": 1785860819752770900,
+        "sha256": "0fa9752fad34f3c0e7b212ecec887714452fdee75281ff87cb84abd42c090e7c"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.326.TextGrid",
+        "bytes": 7196,
+        "mtime_ns": 1785874930886886300,
+        "sha256": "f533ff285c67dfa950cbcf311c21fec091bd653915d1d0cfb698852a8db79c03"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000493.1.1.328",
+      "session": "SDRW2100000493",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+        "bytes": 5562,
+        "mtime_ns": 1785860819780696400,
+        "sha256": "76e163fed30a252b89c4c6bf12f959c6796fdcd16c9f9ba1db26a4b802ea814c"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.0681152318170462e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+        "bytes": 5562,
+        "mtime_ns": 1785860819780696400,
+        "sha256": "76e163fed30a252b89c4c6bf12f959c6796fdcd16c9f9ba1db26a4b802ea814c"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000493\\SDRW2100000493.1.1.328.TextGrid",
+        "bytes": 5251,
+        "mtime_ns": 1785874930911893700,
+        "sha256": "d27bdb63c119ea5a67119c693b790eded13108e94b45f7f64e78c88d1c684ccd"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.102",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29630,
+        "mtime_ns": 1785861077341877500,
+        "sha256": "e6659e99fe4703ef6c1bb43ddf1ac6927c9c6d31bc3ba925e07c24aaf5121992"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 2.4414062522737368e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29630,
+        "mtime_ns": 1785861077341877500,
+        "sha256": "e6659e99fe4703ef6c1bb43ddf1ac6927c9c6d31bc3ba925e07c24aaf5121992"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.102.TextGrid",
+        "bytes": 29007,
+        "mtime_ns": 1785874930940961400,
+        "sha256": "fa14598a82e75d4dbfa381531e50d9e485d19e6d5589bd88c3684ab765a6950a"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.205",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20800,
+        "mtime_ns": 1785861078399330900,
+        "sha256": "a0836f7414e2a200668d16382b1da786b85321fc284c40f122c0f39ec9f1ebf7"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.0517578011313162e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20800,
+        "mtime_ns": 1785861078399330900,
+        "sha256": "a0836f7414e2a200668d16382b1da786b85321fc284c40f122c0f39ec9f1ebf7"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.205.TextGrid",
+        "bytes": 20167,
+        "mtime_ns": 1785874930974408900,
+        "sha256": "5bf76fcae0f65fb2ee588fc538dbf422158aa0022829cf84942655cad748b3e1"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000687.1.1.218",
+      "session": "SDRW2100000687",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 23085,
+        "mtime_ns": 1785861078534269900,
+        "sha256": "92546b4a8842252d71110e34465b7aead38fbae358da6bd4cada3d983026bef2"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.713867179541921e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 23085,
+        "mtime_ns": 1785861078534269900,
+        "sha256": "92546b4a8842252d71110e34465b7aead38fbae358da6bd4cada3d983026bef2"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000687\\SDRW2100000687.1.1.218.TextGrid",
+        "bytes": 22452,
+        "mtime_ns": 1785874931005478400,
+        "sha256": "9e1f69ab2bcd11626a5f4619ab06d77f460ed4c2c062c3c170463d7ecff050a0"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.122",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+        "bytes": 4421,
+        "mtime_ns": 1785861078250361800,
+        "sha256": "b6649a98e74c740339041d2028a32ec7d91701ee58c86176dc160b36571dc6fb"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 3.3569335897709607e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+        "bytes": 4421,
+        "mtime_ns": 1785861078250361800,
+        "sha256": "b6649a98e74c740339041d2028a32ec7d91701ee58c86176dc160b36571dc6fb"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.122.TextGrid",
+        "bytes": 4108,
+        "mtime_ns": 1785874931034033800,
+        "sha256": "d9c60c91fa59f85e17563b1ae88859cfc09b85d76d87123776987776a7502d83"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.123",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+        "bytes": 20978,
+        "mtime_ns": 1785861078265712300,
+        "sha256": "c90f2690442e6d60415c352242dfa97d48094d0143d8e8cebe950ded90c29039"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 1.2207031261368684e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+        "bytes": 20978,
+        "mtime_ns": 1785861078265712300,
+        "sha256": "c90f2690442e6d60415c352242dfa97d48094d0143d8e8cebe950ded90c29039"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.123.TextGrid",
+        "bytes": 20666,
+        "mtime_ns": 1785874931054073400,
+        "sha256": "3f076d853d68dd42ad3eca91833b54e076ec7361227ad41b578ee213ffc70a0f"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100000688.1.1.232",
+      "session": "SDRW2100000688",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15996,
+        "mtime_ns": 1785861079601619200,
+        "sha256": "ee8494a4512bbb79b814903fdfc817afaf1f6d1a33e7c5bfdbe034a352960dd3"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 4.272460927268185e-06,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15996,
+        "mtime_ns": 1785861079601619200,
+        "sha256": "ee8494a4512bbb79b814903fdfc817afaf1f6d1a33e7c5bfdbe034a352960dd3"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100000688\\SDRW2100000688.1.1.232.TextGrid",
+        "bytes": 15363,
+        "mtime_ns": 1785874931077494700,
+        "sha256": "e99dc78981d2e668c241c511f9f307dc95094c3a3191a036af8fc4cbb6f925ef"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001321.1.1.250",
+      "session": "SDRW2100001321",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+        "bytes": 4505,
+        "mtime_ns": 1785861937197996300,
+        "sha256": "cc319244b66a395a0d3501242bf1890888c8a7b4d0b213ef2c6d16960536aac6"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+        "bytes": 4505,
+        "mtime_ns": 1785861937197996300,
+        "sha256": "cc319244b66a395a0d3501242bf1890888c8a7b4d0b213ef2c6d16960536aac6"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001321\\SDRW2100001321.1.1.250.TextGrid",
+        "bytes": 4505,
+        "mtime_ns": 1785874931105519400,
+        "sha256": "54172a559e8bfad80864cf849554e671b914c161ef0022e4f9dafcfbb1d8e3cd"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001387.1.1.269",
+      "session": "SDRW2100001387",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785862015606737300,
+        "sha256": "912af978079a1532a25957d3c1446d0b8af41118b3883494312bd0f8c7cb8bc3"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto",
+        "예상 interval/label 불일치: utterance",
+        "예상 interval/label 불일치: utterance_orth_r",
+        "예상 interval/label 불일치: morph_analysis_utt"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 9.155273446026513e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785862015606737300,
+        "sha256": "912af978079a1532a25957d3c1446d0b8af41118b3883494312bd0f8c7cb8bc3"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001387\\SDRW2100001387.1.1.269.TextGrid",
+        "bytes": 14093,
+        "mtime_ns": 1785874931132340300,
+        "sha256": "1cd6b34d9f6b2b73cbc37fa9191240620172325e69dd244e706d358eacbdd704"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100001777.1.1.181",
+      "session": "SDRW2100001777",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+        "bytes": 66096,
+        "mtime_ns": 1785862594079914300,
+        "sha256": "b71ca3dd2d82a3a834c8c2a1aaf05e3b6a82a0f04a0713cabce0b4ddf5496c49"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 8.087158214209467e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+        "bytes": 66096,
+        "mtime_ns": 1785862594079914300,
+        "sha256": "b71ca3dd2d82a3a834c8c2a1aaf05e3b6a82a0f04a0713cabce0b4ddf5496c49"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100001777\\SDRW2100001777.1.1.181.TextGrid",
+        "bytes": 66096,
+        "mtime_ns": 1785874931164567200,
+        "sha256": "89269d2902ed78301ff0f082b2ef19c7138bd86ab3e332e48f22597615985471"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100002028.1.1.166",
+      "session": "SDRW2100002028",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+        "bytes": 57982,
+        "mtime_ns": 1785863015565999700,
+        "sha256": "ffab82e332444564b1b652efd237bacf326e6f8c12ae98a1b76e037ace05568b"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 8.850097650281441e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+        "bytes": 57982,
+        "mtime_ns": 1785863015565999700,
+        "sha256": "ffab82e332444564b1b652efd237bacf326e6f8c12ae98a1b76e037ace05568b"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100002028\\SDRW2100002028.1.1.166.TextGrid",
+        "bytes": 57982,
+        "mtime_ns": 1785874931203702900,
+        "sha256": "3b35804f5cbdfd06bd6cab739529a42479927d73dd6da8cad597958f5c9c1de1"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.30",
+      "session": "SDRW2100003286",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+        "bytes": 82633,
+        "mtime_ns": 1785864553248450100,
+        "sha256": "4c8b6f0dccf5749cc0423dd0d0f55721fb055a24050a154039c2dcec4c3f0f07"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 7.324218742610356e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+        "bytes": 82633,
+        "mtime_ns": 1785864553248450100,
+        "sha256": "4c8b6f0dccf5749cc0423dd0d0f55721fb055a24050a154039c2dcec4c3f0f07"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.30.TextGrid",
+        "bytes": 82633,
+        "mtime_ns": 1785874931251369000,
+        "sha256": "490f534b548c594adad61930fe6b6d57378c91ade418c630038a41abfabd6e7e"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100003286.1.1.6",
+      "session": "SDRW2100003286",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+        "bytes": 47503,
+        "mtime_ns": 1785864553811794700,
+        "sha256": "5421c3aa53d2a259eae90c523005115dc70a13d39fe15d6b9f107c943c380067"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+        "bytes": 47503,
+        "mtime_ns": 1785864553811794700,
+        "sha256": "5421c3aa53d2a259eae90c523005115dc70a13d39fe15d6b9f107c943c380067"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003286\\SDRW2100003286.1.1.6.TextGrid",
+        "bytes": 47503,
+        "mtime_ns": 1785874931302531300,
+        "sha256": "a03fa8cd8c03d7b2d849c1d31c42c18595d7ab37171152baa15ff63e18bf3130"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2100003788.1.1.162",
+      "session": "SDRW2100003788",
+      "destination": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+      "archive_path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+      "destination_before": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+        "bytes": 53228,
+        "mtime_ns": 1785865287433912500,
+        "sha256": "8faea4ae5e951a737e7863bc80273f482b671c53a484dacad1e637fdf8af5485"
+      },
+      "matches_pre_normalization_policy": true,
+      "current_validation_reasons": [
+        "예상 interval/label 불일치: words",
+        "예상 interval/label 불일치: phones_mfa",
+        "예상 interval/label 불일치: phoneme_r_auto"
+      ],
+      "boundary_adjustment_count": 2,
+      "max_boundary_adjustment_seconds": 6.561279306538381e-07,
+      "archive_fingerprint": {
+        "path": "D:\\mfa_eojeol\\repair_archive\\2021_float32_terminal_roundoff_20260805\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+        "bytes": 53228,
+        "mtime_ns": 1785865287433912500,
+        "sha256": "8faea4ae5e951a737e7863bc80273f482b671c53a484dacad1e637fdf8af5485"
+      },
+      "destination_after": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021\\SDRW2100003788\\SDRW2100003788.1.1.162.TextGrid",
+        "bytes": 53228,
+        "mtime_ns": 1785874931335666200,
+        "sha256": "3b4858c6001ace091bf33a6f39f67e069666ce3181cf2a95b4160dc6126c3484"
+      },
+      "replacement_validation_passed": true
+    }
+  ],
+  "mutation_scope": "derived partial TextGrid only; DB/WAV/CSV unchanged",
+  "repaired_count": 19,
+  "repaired_ids": [
+    "SDRW2100000201.1.1.220",
+    "SDRW2100000223.1.1.350",
+    "SDRW2100000223.1.1.364",
+    "SDRW2100000377.1.1.162",
+    "SDRW2100000493.1.1.326",
+    "SDRW2100000493.1.1.328",
+    "SDRW2100000687.1.1.102",
+    "SDRW2100000687.1.1.205",
+    "SDRW2100000687.1.1.218",
+    "SDRW2100000688.1.1.122",
+    "SDRW2100000688.1.1.123",
+    "SDRW2100000688.1.1.232",
+    "SDRW2100001321.1.1.250",
+    "SDRW2100001387.1.1.269",
+    "SDRW2100001777.1.1.181",
+    "SDRW2100002028.1.1.166",
+    "SDRW2100003286.1.1.30",
+    "SDRW2100003286.1.1.6",
+    "SDRW2100003788.1.1.162"
+  ]
 }

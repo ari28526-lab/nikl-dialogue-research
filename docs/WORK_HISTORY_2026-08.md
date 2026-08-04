@@ -1575,3 +1575,19 @@ shard 2–23을 재개하는 것이다.
 - 세부 결정은
   `docs/decisions/DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md`에
   기록했다.
+
+## 2026-08-05 — 2021 TextGrid 19건 표적 복구 적용 완료
+
+- mutation 전 preflight가 확정한 19건만 적용했다. 구 파생 TextGrid는
+  `D:\mfa_eojeol\repair_archive\2021_float32_terminal_roundoff_20260805`에
+  상대경로와 SHA-256을 보존한 뒤, 현재 DB·검색표로 재구성한 6-tier 파일로
+  원자 교체했다.
+- repair manifest는 `success`, 복구 19/19다. 적용 뒤 보관본과 교체본의
+  SHA-256을 실제 파일에서 다시 계산해 각각 19/19 일치, 문제 0건을 확인했다.
+- 변경 범위는 direct-export 부분 산출물 19개다. 2021 MFA DB·원본 WAV/CSV·
+  검색표·2020 완성본은 변경하지 않았다.
+- 다음 queue는 전수 MFA나 전수 TextGrid export를 반복하지 않는다. v5 전수
+  검증 결과와 표적 복구 manifest를 fail-closed로 결합해 동반표부터 재개하고,
+  승격 후 독립 전수 감사와 DB 표본 24개 재수출은 생략하지 않는다.
+- 적용 증거:
+  `outputs/reports/REPAIR_2021_float32_terminal_roundoff_20260805.json`
