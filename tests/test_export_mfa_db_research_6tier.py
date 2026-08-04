@@ -268,6 +268,59 @@ class ExportMfaDbResearch6TierTests(unittest.TestCase):
                 (table_root / "excluded_utterances.csv.gz").is_file()
             )
 
+    def test_float32_terminal_roundoff_is_reported_and_tables_match_textgrid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            contract = root / "contract.json"
+            search = root / "search"
+            output = root / "output"
+            self.make_db(db)
+            connection = sqlite3.connect(db)
+            connection.execute(
+                "UPDATE sound_file SET duration=153.96 WHERE file_id=1"
+            )
+            connection.execute(
+                "UPDATE word_interval SET end=153.9600067138672 WHERE id=3"
+            )
+            connection.execute(
+                "UPDATE phone_interval SET end=153.9600067138672 WHERE id=3"
+            )
+            connection.commit()
+            connection.close()
+            self.make_acoustic(acoustic)
+            self.make_contract(contract)
+            self.make_search(search)
+            report = export_database(
+                db_path=db,
+                year="2021",
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=contract,
+            )
+            self.assertEqual(report["status"], "success")
+            normalization = report["float32_boundary_normalization"]
+            self.assertEqual(normalization["utterances_adjusted"], 1)
+            self.assertEqual(normalization["boundaries_adjusted"], 2)
+            self.assertAlmostEqual(
+                normalization["max_adjustment_seconds"],
+                6.713867179541921e-06,
+            )
+            textgrid = output / "2021" / "S1" / "S1.1.TextGrid"
+            duration, tiers = parse_mfa_textgrid(textgrid)
+            self.assertEqual(duration, 153.96)
+            self.assertEqual(tiers["words"][-1][1], 153.96)
+            with gzip.open(
+                output / "2021" / "_tables" / "word_intervals_mfa.csv.gz",
+                "rt",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                word_rows = list(csv.DictReader(stream))
+            self.assertEqual(word_rows[-1]["end_seconds"], "153.960000")
+
     def test_source_and_alignment_reference_positions_are_not_conflated(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

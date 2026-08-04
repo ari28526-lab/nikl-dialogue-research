@@ -56,8 +56,12 @@ from research_companion_schema import (
 )
 from research_textgrid_v2 import (
     BASE_TIERS,
+    FLOAT32_BOUNDARY_MARGIN_SECONDS,
+    MIN_BOUNDARY_ROUNDOFF_TOLERANCE_SECONDS,
     SCHEMA_VERSION as TEXTGRID_SCHEMA_VERSION,
     SILENCE,
+    boundary_roundoff_tolerance,
+    normalize_interval_bounds,
     validate_base_textgrid_from_intervals,
     write_base_textgrid_from_intervals,
 )
@@ -402,6 +406,32 @@ def _session_intervals(
     return words, phones
 
 
+def _normalize_db_interval_rows(
+    rows: Sequence[tuple], duration: float
+) -> tuple[list[tuple], int, float]:
+    """Normalize only DB float32 endpoint drift while preserving row shape."""
+
+    normalized: list[tuple] = []
+    adjusted_boundaries = 0
+    max_adjustment = 0.0
+    for row in rows:
+        begin = float(row[1])
+        end = float(row[2])
+        fixed_begin, fixed_end = normalize_interval_bounds(
+            begin, end, duration
+        )
+        for original, fixed in (
+            (begin, fixed_begin),
+            (end, fixed_end),
+        ):
+            difference = abs(original - fixed)
+            if difference > 0:
+                adjusted_boundaries += 1
+                max_adjustment = max(max_adjustment, difference)
+        normalized.append((row[0], fixed_begin, fixed_end, *row[3:]))
+    return normalized, adjusted_boundaries, max_adjustment
+
+
 def export_session_textgrids(
     *,
     db_path: Path,
@@ -432,6 +462,8 @@ def export_session_textgrids(
     missing_search: list[str] = []
     missing_alignment: list[str] = []
     approved_excluded: list[str] = []
+    roundoff_examples: list[dict[str, object]] = []
+    max_boundary_roundoff_seconds = 0.0
     output_dir = output_root / year / session
     output_dir.mkdir(parents=True, exist_ok=True)
     for uid, utt_id, duration, _wav_path, _score in utterances:
@@ -444,20 +476,30 @@ def export_session_textgrids(
             counts["search_row_missing"] += 1
             missing_search.append(utt_id)
             continue
-        words = [
-            (begin, end, label)
-            for _iid, begin, end, label in words_by_utt.get(uid, [])
-        ]
-        phones = [
-            (begin, end, label)
-            for _iid, begin, end, label, _wid in phones_by_utt.get(uid, [])
-        ]
-        if not words or not phones:
+        word_rows = words_by_utt.get(uid, [])
+        phone_rows = phones_by_utt.get(uid, [])
+        if not word_rows or not phone_rows:
             counts["alignment_missing"] += 1
             missing_alignment.append(utt_id)
             continue
         destination = output_dir / f"{utt_id}.TextGrid"
         try:
+            word_rows, word_adjustments, word_max = (
+                _normalize_db_interval_rows(word_rows, duration)
+            )
+            phone_rows, phone_adjustments, phone_max = (
+                _normalize_db_interval_rows(phone_rows, duration)
+            )
+            words = [
+                (begin, end, label)
+                for _iid, begin, end, label in word_rows
+            ]
+            phones = [
+                (begin, end, label)
+                for _iid, begin, end, label, _wid in phone_rows
+            ]
+            boundary_adjustments = word_adjustments + phone_adjustments
+            utterance_max_adjustment = max(word_max, phone_max)
             if destination.is_file():
                 validation = validate_base_textgrid_from_intervals(
                     destination,
@@ -486,6 +528,26 @@ def export_session_textgrids(
                 counts["created"] += 1
             if validation.get("word_span_fallback"):
                 counts["word_span_fallback"] += 1
+            if boundary_adjustments:
+                counts["float32_boundary_adjustments"] += boundary_adjustments
+                counts["utterances_float32_boundary_adjusted"] += 1
+                max_boundary_roundoff_seconds = max(
+                    max_boundary_roundoff_seconds,
+                    utterance_max_adjustment,
+                )
+                if len(roundoff_examples) < 100:
+                    roundoff_examples.append(
+                        {
+                            "utt_id": utt_id,
+                            "adjusted_boundaries": boundary_adjustments,
+                            "max_adjustment_seconds": (
+                                utterance_max_adjustment
+                            ),
+                            "allowed_tolerance_seconds": (
+                                boundary_roundoff_tolerance(duration)
+                            ),
+                        }
+                    )
         except Exception as exc:
             counts["failed"] += 1
             if len(failures) < 100:
@@ -498,6 +560,8 @@ def export_session_textgrids(
         "search_row_missing_inventory": missing_search,
         "alignment_missing_inventory": missing_alignment,
         "approved_excluded_inventory": approved_excluded,
+        "roundoff_examples": roundoff_examples,
+        "max_boundary_roundoff_seconds": max_boundary_roundoff_seconds,
     }
 
 
@@ -675,6 +739,12 @@ def write_companion_tables(
                     excluded_written.add(utt_id)
                     counts["excluded_utterances"] += 1
                     continue
+                word_rows, _word_adjustments, _word_max = (
+                    _normalize_db_interval_rows(word_rows, duration)
+                )
+                phone_rows, _phone_adjustments, _phone_max = (
+                    _normalize_db_interval_rows(phone_rows, duration)
+                )
                 phone_by_word: dict[int | None, list[tuple]] = defaultdict(list)
                 for phone_row in phone_rows:
                     phone_by_word[phone_row[4]].append(phone_row)
@@ -1317,6 +1387,8 @@ def export_database(
     failures: list[dict[str, str]] = []
     missing_search: list[str] = []
     missing_alignment: list[str] = []
+    roundoff_examples: list[dict[str, object]] = []
+    max_boundary_roundoff_seconds = 0.0
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         futures = {
             executor.submit(
@@ -1344,6 +1416,13 @@ def export_database(
             )
             missing_search.extend(result["search_row_missing_inventory"])
             missing_alignment.extend(result["alignment_missing_inventory"])
+            roundoff_examples.extend(
+                result["roundoff_examples"][: max(0, 100 - len(roundoff_examples))]
+            )
+            max_boundary_roundoff_seconds = max(
+                max_boundary_roundoff_seconds,
+                float(result["max_boundary_roundoff_seconds"]),
+            )
             totals["approved_excluded_inventory_rows"] += len(
                 result["approved_excluded_inventory"]
             )
@@ -1455,6 +1534,22 @@ def export_database(
         "phone_inventory": {
             "used_non_silence": len(used_phones),
             "outside_acoustic": outside,
+        },
+        "float32_boundary_normalization": {
+            "policy": (
+                "snap only 0/xmax drift explained by the nearest float32 "
+                "representation of the same WAV duration"
+            ),
+            "minimum_tolerance_seconds": (
+                MIN_BOUNDARY_ROUNDOFF_TOLERANCE_SECONDS
+            ),
+            "comparison_margin_seconds": FLOAT32_BOUNDARY_MARGIN_SECONDS,
+            "utterances_adjusted": totals[
+                "utterances_float32_boundary_adjusted"
+            ],
+            "boundaries_adjusted": totals["float32_boundary_adjustments"],
+            "max_adjustment_seconds": max_boundary_roundoff_seconds,
+            "examples": roundoff_examples[:100],
         },
         "companion_tables": tables_manifest,
         "approved_exclusions_contract": exclusion_contract_data,

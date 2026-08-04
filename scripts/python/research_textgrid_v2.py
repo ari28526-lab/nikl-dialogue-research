@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import os
+import struct
 import uuid
 import wave
 from pathlib import Path
@@ -36,8 +37,50 @@ STITCHED_TIERS = BASE_TIERS + ["source_utt_id", "speaker"]
 # 별도 gate에서 차단하며, 여기서 빈 label로 숨기지 않는다.
 SILENCE = {"", "<eps>", "sil", "sp", "<unk>"}
 
+# MFA interval endpoints are float32-compatible values, while ``sound_file``
+# duration is a double derived from the WAV frame count.  Only the discrepancy
+# explained by the nearest float32 representation of the same duration may be
+# snapped to 0/xmax.  This is intentionally not a broad timing tolerance.
+FLOAT32_BOUNDARY_MARGIN_SECONDS = 1e-7
+MIN_BOUNDARY_ROUNDOFF_TOLERANCE_SECONDS = 1e-6
+
 Interval = tuple[float, float, str]
 PhoneMapper = Callable[[str], str]
+
+
+def boundary_roundoff_tolerance(duration: float) -> float:
+    """Return endpoint drift explained by float32 storage of ``duration``."""
+
+    duration = float(duration)
+    float32_duration = struct.unpack(
+        "!f", struct.pack("!f", duration)
+    )[0]
+    return max(
+        MIN_BOUNDARY_ROUNDOFF_TOLERANCE_SECONDS,
+        abs(float32_duration - duration) + FLOAT32_BOUNDARY_MARGIN_SECONDS,
+    )
+
+
+def normalize_interval_bounds(
+    begin: float, end: float, duration: float
+) -> tuple[float, float]:
+    """Snap only float32-representational 0/xmax drift to exact bounds."""
+
+    begin = float(begin)
+    end = float(end)
+    duration = float(duration)
+    tolerance = boundary_roundoff_tolerance(duration)
+    if begin < -tolerance or end > duration + tolerance:
+        raise ValueError(
+            "interval이 0-xmax 범위를 벗어남: "
+            f"begin={begin:.6f}, end={end:.6f}, duration={duration:.6f}, "
+            f"float32_tolerance={tolerance:.9f}"
+        )
+    if abs(begin) <= tolerance:
+        begin = 0.0
+    if abs(end - duration) <= tolerance:
+        end = duration
+    return begin, end
 
 
 def _escape(value: object) -> str:
@@ -107,19 +150,7 @@ def _materialize_intervals(
     for begin, end, label in sorted(
         intervals, key=lambda item: (float(item[0]), float(item[1]))
     ):
-        begin = float(begin)
-        end = float(end)
-        if begin < -1e-6 or end > float(duration) + 1e-6:
-            raise ValueError(
-                "interval이 0-xmax 범위를 벗어남: "
-                f"begin={begin:.6f}, end={end:.6f}, "
-                f"duration={float(duration):.6f}"
-            )
-        # 부동소수점 직렬화 오차가 tolerance 안에 있을 때만 경계로 맞춘다.
-        if begin < 0:
-            begin = 0.0
-        if end > float(duration):
-            end = float(duration)
+        begin, end = normalize_interval_bounds(begin, end, duration)
         if end - begin <= 1e-9:
             continue
         if begin < cursor - 1e-6:

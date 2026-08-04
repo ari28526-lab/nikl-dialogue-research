@@ -12,7 +12,9 @@ from research_textgrid import write_research_textgrid  # noqa: E402
 from research_textgrid_v2 import (  # noqa: E402
     BASE_TIERS,
     STITCHED_TIERS,
+    boundary_roundoff_tolerance,
     build_base_tier_data_from_intervals,
+    normalize_interval_bounds,
     validate_base_textgrid,
     validate_base_textgrid_from_intervals,
     write_base_textgrid,
@@ -139,6 +141,30 @@ class ResearchTextGridV2Tests(unittest.TestCase):
                 row=self.row(),
                 phone_mapper=self.mapper,
             )
+
+    def test_float32_terminal_roundoff_is_explicitly_normalized(self):
+        duration = 153.96
+        float32_end = 153.9600067138672
+        self.assertLess(
+            float32_end - duration,
+            boundary_roundoff_tolerance(duration),
+        )
+        begin, end = normalize_interval_bounds(0.45, float32_end, duration)
+        self.assertEqual(begin, 0.45)
+        self.assertEqual(end, duration)
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "float32_roundoff.TextGrid"
+            write_base_textgrid_from_intervals(
+                output,
+                duration=duration,
+                words=[(0.45, float32_end, "혹시")],
+                phones=[(0.45, float32_end, "h")],
+                row=self.row(form="혹시"),
+                phone_mapper=self.mapper,
+            )
+            parsed_duration, tiers = parse_mfa_textgrid(output)
+            self.assertEqual(parsed_duration, duration)
+            self.assertEqual(tiers["words"][-1][1], duration)
 
     def test_mixed_orthography_is_searchable_in_orth_roman_tier(self):
         row = self.row(form="2사람이")

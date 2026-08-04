@@ -319,3 +319,22 @@ exact match이므로, 실제 재개에서 전수 MFA를 다시 계산할 이유�
 - direct 6-tier export는 500/4,139세션·170,326개 생성까지 오류 0으로 진행 중이다.
   아직 동반표, 독립 전수 감사, DB 표본 재-export, 24건 연구자 검토가 남아 있으므로
   2021 최종 Gate 및 2022 시작 조건은 충족되지 않았다.
+
+## 2026-08-05 02:56 KST — 2021 v4 종단 float32 차이 안전 중단
+
+- direct exporter는 4,139세션을 모두 순회해 분석 대상 1,371,883개 중
+  1,371,877개를 생성하고 6개를 `0-xmax` 범위 초과로 안전 차단했다. 동반표와
+  독립 감사는 시작되지 않았고 2022도 시작되지 않았다.
+- 6개는 모두 word·phone 마지막 end가 WAV xmax보다 1.2207–6.7139µs 큰 경우다.
+  16kHz 기준 0.0195–0.1074샘플이고, 실제 WAV 길이의 float32 표현과 정확히
+  일치해 정렬 실패가 아닌 저장 정밀도 차이로 확인됐다.
+- 원본 WAV/CSV, 2020 완성본, 12.7GB 2021 DB와 부분 TextGrid는 보존됐다.
+- 일반 tolerance를 넓히지 않고 동일 duration의 float32 표현으로 설명되는 0/xmax
+  차이만 정확한 경계로 정규화한다. TextGrid와 동반표에 같은 값을 쓰고 최종 보고서에
+  조정 수량과 최대량을 기록한다.
+- 실제 6건 검증, 관련 18개와 Python 전체 345개 테스트, PowerShell 안전 46파일·
+  5.1 호환 55스크립트가 통과했다. 첫 v5 `PreflightOnly`는 다른 모든 gate가
+  통과한 상태에서 미커밋 코드만 정확히 차단했다. 수정과 NO_GO 근거를 커밋한 뒤
+  같은 preflight를 재실행하고, GO일 때만 같은 DB에서 export를 재개한다. 근거는
+  `outputs/reports/DIAG_2021_float32_terminal_roundoff_20260805.json`과
+  `docs/decisions/DECISION_MFA_float32_terminal_boundary_normalization_20260805.md`다.

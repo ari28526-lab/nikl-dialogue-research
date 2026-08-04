@@ -1532,3 +1532,21 @@ shard 2–23을 재개하는 것이다.
 - 00:03부터 01:27까지 1시간 이상 집중 모니터링했다. D: 디렉터리 I/O 지연 구간이
   있었으나 같은 프로세스가 재시작 없이 전진했다. 상세 근거는
   `outputs/reports/MONITOR_2021_v4_first_hour_to_export_500_20260805.json`에 기록했다.
+
+## 2026-08-05 — 2021 v4 전수 순회 후 float32 종단 경계 교정
+
+- 02:56 KST에 4,139세션 순회가 끝났으나 1,371,883개 중 6개가 WAV xmax보다
+  1.2207–6.7139µs 큰 마지막 word·phone end로 안전 차단됐다. exporter는
+  1,371,877개 부분 TextGrid와 12.7GB DB를 보존하고 동반표·2022 진입을 막았다.
+- 6개 WAV를 프레임 단위로 대조했다. 모두 16kHz이며 차이는 0.0195–0.1074샘플,
+  DB interval end는 같은 WAV duration의 float32 표현과 정확히 일치했다. 정렬이나
+  음향모델·phone 문제가 아니라 수치 표현 차이다.
+- 파일별 float32 표현으로 설명되는 0/xmax 차이만 정규화하도록
+  `research_textgrid_v2.py`를 고쳤다. 고정 광역 tolerance는 도입하지 않았고 실제
+  범위 초과·overlap·gap 차단은 유지했다.
+- direct exporter는 TextGrid와 동반표에 같은 정규화 경계를 쓰고 발화 수·경계 수·
+  최대 조정량·예시를 최종 JSON에 기록하도록 보완했다. 관련 단위·통합 테스트 18개,
+  Python 전체 345개, PowerShell 안전 46파일·5.1 호환 55스크립트와 실제 6건 진단이
+  통과했다. 첫 v5 `PreflightOnly`는 데이터·계약·모델·공간·테스트가 모두 통과한 뒤
+  미커밋 코드만 `tracked_code_committed=false`로 차단했다. 수정·NO_GO 근거를 먼저
+  커밋하고 같은 preflight가 GO일 때만 보존 DB에서 export를 재개한다.
