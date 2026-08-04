@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import shutil
 import sqlite3
@@ -28,6 +29,7 @@ DETAIL_FIELDS = [
     "num_frames",
     "normalized_text",
     "job_id",
+    "ignored_by_mfa",
     "word_interval_present",
     "phone_interval_present",
     "alignment_log_likelihood",
@@ -43,6 +45,7 @@ PILOT_FIELDS = [
     "utt_id",
     "session_id",
     "duration_sec",
+    "reason_code",
     "normalized_text",
     "wav_path",
     "lab_path",
@@ -63,7 +66,25 @@ def _write_csv(path: Path, fields: list[str], rows: list[dict[str, object]]) -> 
         writer.writerows(rows)
 
 
-def _load_missing_rows(db_path: Path) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+def candidate_identity_sha256(rows: list[dict[str, object]]) -> str:
+    payload = "\n".join(
+        "|".join(
+            [
+                str(row["year"]),
+                str(row["input_contract_id"]),
+                str(row["utt_id"]),
+                str(row["reason_code"]),
+                str(row["exclusion_scope"]),
+            ]
+        )
+        for row in sorted(rows, key=lambda item: str(item["utt_id"]))
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _load_missing_rows(
+    db_path: Path, expected_ids: set[str]
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     connection = sqlite3.connect(
         f"file:{db_path.resolve().as_posix()}?mode=ro", uri=True
     )
@@ -72,6 +93,7 @@ def _load_missing_rows(db_path: Path) -> tuple[list[dict[str, object]], list[dic
             """
             SELECT f.name, f.relative_path, u.begin, u.end, u.num_frames,
                    u.normalized_text, u.job_id, u.alignment_log_likelihood,
+                   u.ignored,
                    EXISTS(
                        SELECT 1 FROM word_interval wi
                        WHERE wi.utterance_id=u.id
@@ -82,7 +104,6 @@ def _load_missing_rows(db_path: Path) -> tuple[list[dict[str, object]], list[dic
                    )
             FROM utterance u
             JOIN file f ON f.id=u.file_id
-            WHERE u.ignored=0
             ORDER BY f.name
             """
         ).fetchall()
@@ -100,13 +121,27 @@ def _load_missing_rows(db_path: Path) -> tuple[list[dict[str, object]], list[dic
             "normalized_text": str(row[5] or ""),
             "job_id": int(row[6]) if row[6] is not None else None,
             "alignment_log_likelihood": row[7],
-            "word_interval_present": bool(row[8]),
-            "phone_interval_present": bool(row[9]),
+            "ignored_by_mfa": bool(row[8]),
+            "word_interval_present": bool(row[9]),
+            "phone_interval_present": bool(row[10]),
         }
-        if record["word_interval_present"] and record["phone_interval_present"]:
+        utt_id = str(record["utt_id"])
+        if utt_id in expected_ids:
+            if record["ignored_by_mfa"]:
+                record["reason_code"] = "mfa_feature_generation_failed"
+                missing.append(record)
+            elif not (
+                record["word_interval_present"]
+                and record["phone_interval_present"]
+            ):
+                record["reason_code"] = "mfa_alignment_missing"
+                missing.append(record)
+        elif (
+            not record["ignored_by_mfa"]
+            and record["word_interval_present"]
+            and record["phone_interval_present"]
+        ):
             aligned.append(record)
-        else:
-            missing.append(record)
     return missing, aligned
 
 
@@ -127,6 +162,22 @@ def _select_pilot(
         if utt_id not in seen:
             selected.append((role, row))
             seen.add(utt_id)
+
+    by_reason: dict[str, list[dict[str, object]]] = {}
+    for row in missing:
+        by_reason.setdefault(str(row["reason_code"]), []).append(row)
+    for reason_code in sorted(by_reason):
+        reason_rows = by_reason[reason_code]
+        positions = sorted(
+            {
+                0,
+                len(reason_rows) // 3,
+                2 * len(reason_rows) // 3,
+                len(reason_rows) - 1,
+            }
+        )
+        for position in positions:
+            add(f"reason_{reason_code}", reason_rows[position])
 
     if ranked:
         dominant = by_session[ranked[0]]
@@ -191,7 +242,7 @@ def prepare_review(
         input_contract_id=input_contract_id,
     )
 
-    missing, aligned = _load_missing_rows(db_path)
+    missing, aligned = _load_missing_rows(db_path, expected)
     observed = {str(row["utt_id"]) for row in missing}
     if observed != expected:
         raise RuntimeError(
@@ -204,18 +255,38 @@ def prepare_review(
     output_root.mkdir(parents=True)
     details_path = output_root / "01_CANDIDATE_DETAILS.csv"
     decisions_path = output_root / "02_RESEARCHER_DECISIONS.csv"
+    approval_working_copy = output_root / "04_RESEARCHER_APPROVAL.csv"
     detail_rows: list[dict[str, object]] = []
     decision_rows: list[dict[str, object]] = []
     for order, row in enumerate(missing, 1):
         utt_id = str(row["utt_id"])
+        reason_code = str(row["reason_code"])
+        if reason_code == "mfa_feature_generation_failed":
+            recommended_next_step = (
+                "check extreme duration/feature evidence; then approve "
+                "exclusion or request targeted audio recovery"
+            )
+            notes = (
+                "MFA ignored the utterance before alignment because usable "
+                "acoustic features/frames were not generated"
+            )
+        else:
+            recommended_next_step = (
+                "check clustered input; then approve exclusion or targeted "
+                "recovery"
+            )
+            notes = (
+                "MFA beam=10 and retry_beam=40 produced no word/phone "
+                "intervals"
+            )
         detail_rows.append(
             {
                 "review_order": order,
                 "year": year,
                 **row,
-                "reason_code": "mfa_alignment_missing",
+                "reason_code": reason_code,
                 "evidence": str(export_report),
-                "recommended_next_step": "check clustered input; then approve exclusion or targeted recovery",
+                "recommended_next_step": recommended_next_step,
             }
         )
         decision_rows.append(
@@ -223,15 +294,25 @@ def prepare_review(
                 "year": year,
                 "input_contract_id": input_contract_id,
                 "utt_id": utt_id,
-                "reason_code": "mfa_alignment_missing",
+                "reason_code": reason_code,
                 "exclusion_scope": "alignment_and_analysis",
                 "evidence_path": str(export_report),
                 "decision": "pending",
-                "notes": "MFA beam=10 and retry_beam=40 produced no word/phone intervals",
+                "notes": notes,
             }
         )
     _write_csv(details_path, DETAIL_FIELDS, detail_rows)
     _write_csv(decisions_path, REVIEW_FIELDS, decision_rows)
+    # Keep the generated pending inventory immutable.  The researcher edits
+    # only this working copy; the finalizer binds its identity fields back to
+    # the pending inventory hash and accepts it only when every decision is
+    # explicitly changed to ``approved``.
+    _write_csv(approval_working_copy, REVIEW_FIELDS, decision_rows)
+    candidate_identity = candidate_identity_sha256(decision_rows)
+    required_approval_token = (
+        f"APPROVE_{year}_POST_MFA_{len(decision_rows)}_"
+        f"{candidate_identity[:12].upper()}"
+    )
 
     pilot_rows: list[dict[str, object]] = []
     pilot_root = output_root / "03_AUDIO_LAB_PILOT"
@@ -259,6 +340,9 @@ def prepare_review(
                 "utt_id": utt_id,
                 "session_id": session,
                 "duration_sec": row["duration_sec"],
+                "reason_code": str(
+                    row.get("reason_code") or "aligned_control"
+                ),
                 "normalized_text": row["normalized_text"],
                 "wav_path": str(wav_path),
                 "lab_path": str(lab_path),
@@ -271,7 +355,7 @@ def prepare_review(
 
     session_counts = Counter(str(row["session_id"]) for row in missing)
     summary: dict[str, object] = {
-        "schema_version": "mfa_post_alignment_review.v1",
+        "schema_version": "mfa_post_alignment_review.v2",
         "status": "pending_researcher_review",
         "year": year,
         "input_contract_id": input_contract_id,
@@ -279,6 +363,11 @@ def prepare_review(
         "mfa_database_modified": False,
         "full_year_mfa_rerun_required": False,
         "candidate_count": len(missing),
+        "candidate_identity_sha256": candidate_identity,
+        "required_approval_token": required_approval_token,
+        "reason_counts": dict(
+            sorted(Counter(str(row["reason_code"]) for row in missing).items())
+        ),
         "candidate_session_count": len(session_counts),
         "top_sessions": [
             {"session_id": key, "candidate_count": value}
@@ -289,6 +378,9 @@ def prepare_review(
         "artifacts": {
             "details": file_fingerprint(details_path, with_sha256=True),
             "decisions": file_fingerprint(decisions_path, with_sha256=True),
+            "approval_working_copy": file_fingerprint(
+                approval_working_copy, with_sha256=True
+            ),
             "pilot_review": file_fingerprint(pilot_csv, with_sha256=True),
             "export_report": file_fingerprint(export_report, with_sha256=True),
             "database": file_fingerprint(db_path, with_sha256=False),
@@ -299,6 +391,12 @@ def prepare_review(
         "researcher_question": (
             "Check the pilot for WAV/LAB pairing, especially the dominant "
             "session; then approve exclusion or request targeted recovery."
+        ),
+        "approval_instruction": (
+            "Keep year/input_contract_id/utt_id/reason_code/scope unchanged, "
+            "edit only 04_RESEARCHER_APPROVAL.csv, change decision=pending "
+            "to approved only after review, and pass the required approval "
+            "token to the finalizer."
         ),
     }
     atomic_write_json(output_root / "SUMMARY.json", summary)

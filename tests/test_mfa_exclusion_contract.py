@@ -101,6 +101,30 @@ class MfaExclusionContractTests(unittest.TestCase):
                 1,
             )
 
+    def test_mfa_feature_generation_failure_can_be_explicitly_approved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            review = root / "review.csv"
+            contract = root / "contract.json"
+            self.write_review(
+                review,
+                reason_code="mfa_feature_generation_failed",
+            )
+            built = build_contract(
+                review_csv=review,
+                output=contract,
+                year="2020",
+                input_contract_id="INPUT1",
+                approved_by="researcher",
+                approved_at="2026-08-04T15:00:00+09:00",
+            )
+            self.assertEqual(
+                built["counts"][
+                    "mfa_feature_generation_failed|alignment_and_analysis"
+                ],
+                1,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

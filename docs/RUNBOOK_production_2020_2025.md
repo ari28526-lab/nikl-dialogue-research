@@ -253,6 +253,38 @@ Gate B는 2020 audit, align/merge marker, retained DB, DB 표본 동등성, 연�
 2021–2025에서는 연도별 실패 상태·partial·DB를 보존하고 다음 조치를 분리한다.
 full-clean 재실행이나 정본 승격은 자동으로 하지 않는다.
 
+#### E-1. 예외적 post-MFA exact-ID 중단 처리
+
+MFA 계산 완료 뒤 queue 상태가 `post_mfa_export_failed_db_preserved`이면 MFA를
+다시 시작하지 않는다. 이는 direct exporter가 active LAB 중 word/phone 정렬이
+없는 ID를 숨기지 않고 멈춘 상태다. 먼저 다음 준비기로 DB·실패 보고서·기존
+승인 계약을 대조한 pending 검토표와 소수 WAV/LAB 표본을 만든다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_post_mfa_exact_reconciliation_review.ps1" `
+  -Year "2021" `
+  -SourceQueueId "mfa_r2_prod_safe_body_2021_v2_20260804"
+```
+
+`02_RESEARCHER_DECISIONS.csv`는 생성 근거이므로 수정하지 않는다. 연구자는
+`04_RESEARCHER_APPROVAL.csv`의 후보·사유·표본을 확인하고 승인하는 행만
+`decision=approved`로 바꾼다. `SUMMARY.json`의 `required_approval_token`을
+확인한 뒤 아래 재개기를 사용한다. 실제 token과 승인 문구 없이 실행할 수 없다.
+
+```powershell
+& "C:\Users\ari30\research\2026_summer_research\scripts\resume_year_export_after_post_mfa_review.ps1" `
+  -Year "2021" `
+  -SourceQueueId "mfa_r2_prod_safe_body_2021_v2_20260804" `
+  -ApprovedBy "ari30" `
+  -ApprovalToken "SUMMARY_JSON의_TOKEN" `
+  -ApprovalStatement "검토한 exact post-MFA 후보를 분석·정렬 본체에서 제외하고 보존 DB에서 export를 재개한다" `
+  -ApprovePostMfaExactReconciliation
+```
+
+이 명령은 새 결합 승인 계약을 만들고 같은 `direct_db_ready` DB에서 export만
+재개한다. DB·입력·정렬 계약이나 후보 identity가 달라지면 중단한다. 결과가
+성공해도 아래 F단계의 독립 감사·표본 연구자 확인 전에는 다음 연도로 가지 않는다.
+
 ### F. 2021 이후 한 연도씩 전진
 
 실행 queue는 연도별로 분리한다.

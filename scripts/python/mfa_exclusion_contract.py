@@ -34,6 +34,7 @@ ALLOWED_REASON_CODES = {
     "researcher_excluded",
     "manual_review_unclassified",
     "mfa_alignment_missing",
+    "mfa_feature_generation_failed",
     "audio_pairing_unresolved",
     "empty_reference_unresolved_symbol",
 }

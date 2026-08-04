@@ -1380,3 +1380,28 @@ shard 2–23을 재개하는 것이다.
   방식을 바꾸는 것으로 재발을 막고, 실행을 재시작하지 않는다.
 - 구조화된 근거는
   `outputs/reports/MONITOR_2021_mfa_alignment_initial_20260804.json`에 남겼다.
+
+- 15:54:39 KST의 공유 읽기 중간점검에서 674,926/1,372,418건(49.178%)이
+  처리됐고 재시도 10,235건, alignment 오류 신호 0, watchdog 중단 예정 false였다.
+  system commit 71.1%, D: 여유 297.15GB로 계속 실행 판정을 유지했다. 근거는
+  `outputs/reports/MONITOR_2021_mfa_alignment_midpoint_20260804.json`이다.
+
+## 2026-08-04 — 2021–2025 post-MFA exact-ID 공통 재개 경로
+
+- 2021 feature 실패 24건을 MFA 종료 전에 승인하지 않고, direct exporter의 실제
+  `unknown_active_lab_without_alignment` 집합과 보존 DB에서 다시 확정하도록
+  공통 절차를 구현했다. `ignored=1`·usable frame 없음은
+  `mfa_feature_generation_failed`, interval 없음은 `mfa_alignment_missing`으로
+  분리하고, 연구자 표본에도 각 사유가 빠지지 않도록 층화한다.
+- 생성 당시 `02_RESEARCHER_DECISIONS.csv`는 immutable pending 근거로 남기고,
+  연구자는 별도 `04_RESEARCHER_APPROVAL.csv`만 편집한다. 후보 identity SHA와
+  명시 token, 실패 보고서 SHA, DB fingerprint, pre-MFA 승인 계약, DB의 현재
+  분류가 모두 맞고 전 행이 `approved`일 때만 새 결합 제외 계약을 만든다.
+- `prepare_post_mfa_exact_reconciliation_review.ps1`과
+  `resume_year_export_after_post_mfa_review.ps1`을 추가했다. 후자는 같은
+  `direct_db_ready` input/alignment contract와 DB를 재검증하고 새 queue에서 MFA
+  계산을 건너뛰어 6-tier export만 재개한다. 기존 계약·2020 완성본·원본
+  WAV/CSV를 덮어쓰지 않으며 자동 승인과 full-clean 재실행을 하지 않는다.
+- 관련 Python 회귀 30개, Windows PowerShell 5.1 안전성 45파일·호환성 54스크립트가
+  통과했다. 현재 2021 MFA는 실행 중이므로 후보 수·실제 승인·export 성공은 아직
+  주장하지 않는다.
