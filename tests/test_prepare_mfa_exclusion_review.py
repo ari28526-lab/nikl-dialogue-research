@@ -174,6 +174,56 @@ class PrepareMfaExclusionReviewTests(unittest.TestCase):
                     audio_recovery_plan=plan,
                 )
 
+    def test_zero_csv_duration_becomes_direct_pending_exclusion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            (search / "2021").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success", "run_id": "T"}),
+                encoding="utf-8",
+            )
+            audit = root / "audit.json"
+            audit.write_text(
+                json.dumps(
+                    {
+                        "years": [
+                            {
+                                "year": "2021",
+                                "issue_inventory": [
+                                    {
+                                        "utt_id": "U_ZERO",
+                                        "issue": "csv_duration_invalid",
+                                        "detail": "0.0",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "review.csv"
+            result = prepare_review(
+                audit_report=audit,
+                year="2021",
+                search_master_root=search,
+                output_csv=output,
+                output_report=root / "report.json",
+                input_contract_id="INPUT_TEST",
+            )
+            self.assertEqual(result["candidate_count"], 1)
+            self.assertEqual(result["direct_audio_exclusion_count"], 1)
+            self.assertEqual(
+                result["uncovered_audio_pairing_issue_count"], 0
+            )
+            with output.open(encoding="utf-8-sig", newline="") as stream:
+                row = next(csv.DictReader(stream))
+            self.assertEqual(row["utt_id"], "U_ZERO")
+            self.assertEqual(row["reason_code"], "audio_pairing_unresolved")
+            self.assertEqual(row["exclusion_scope"], "alignment_and_analysis")
+            self.assertEqual(row["decision"], "pending")
+
     def test_empty_unresolved_lab_is_candidate_but_partial_lab_is_retained(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

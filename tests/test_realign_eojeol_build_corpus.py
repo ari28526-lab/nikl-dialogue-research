@@ -9,9 +9,146 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
 import realign_eojeol_build_corpus as builder  # noqa: E402
+from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
 
 
 class EojeolLabInputContractTests(unittest.TestCase):
+    def test_approved_alignment_lab_is_reversibly_archived_and_resume_safe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            raw = root / "raw"
+            wav_root = root / "wav"
+            state = root / "state"
+            session = "SDRW2100000001"
+            approved_id = f"{session}.1.1.1"
+            retained_id = f"{session}.1.1.2"
+            (search / "2021").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success"}), encoding="utf-8"
+            )
+            with (search / "2021" / f"{session}.csv").open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as stream:
+                writer = csv.DictWriter(
+                    stream,
+                    fieldnames=[
+                        "utt_id",
+                        "form",
+                        "pron_reference_form",
+                        "pron_reference_source",
+                        "pron_reference_status",
+                    ],
+                )
+                writer.writeheader()
+                for utt_id, form in (
+                    (approved_id, "제외 발화"),
+                    (retained_id, "정상 발화"),
+                ):
+                    writer.writerow(
+                        {
+                            "utt_id": utt_id,
+                            "form": form,
+                            "pron_reference_form": form,
+                            "pron_reference_source": "form_rule_prediction",
+                            "pron_reference_status": "resolved_form",
+                        }
+                    )
+            raw_year = raw / builder.YEAR_DIRS["2021"]
+            raw_year.mkdir(parents=True)
+            (raw_year / f"{session}.csv").write_text(
+                "utt_id,form\n", encoding="utf-8"
+            )
+            wav_dir = wav_root / "2021" / session
+            wav_dir.mkdir(parents=True)
+            approved_wav = wav_dir / f"{approved_id}.wav"
+            approved_wav.write_bytes(b"RIFF-approved")
+            (wav_dir / f"{retained_id}.wav").write_bytes(b"RIFF-retained")
+            approved_lab = wav_dir / f"{approved_id}.lab"
+            approved_lab.write_text("제외 발화", encoding="utf-8")
+            (wav_dir / f"{retained_id}.lab").write_text(
+                "정상 발화", encoding="utf-8"
+            )
+
+            old_wav_root = builder.WAV_ROOT
+            old_state_root = builder.STATE_ROOT
+            old_raw = builder.RAW
+            try:
+                builder.WAV_ROOT = wav_root
+                builder.STATE_ROOT = state
+                builder.RAW = raw
+                input_id = str(
+                    builder.input_contract(
+                        search, "2021", wav_root=wav_root
+                    )["input_contract_id"]
+                )
+                review = root / "approved_review.csv"
+                with review.open(
+                    "w", encoding="utf-8-sig", newline=""
+                ) as stream:
+                    writer = csv.DictWriter(
+                        stream, fieldnames=REVIEW_FIELDS
+                    )
+                    writer.writeheader()
+                    writer.writerow(
+                        {
+                            "year": "2021",
+                            "input_contract_id": input_id,
+                            "utt_id": approved_id,
+                            "reason_code": "audio_pairing_unresolved",
+                            "exclusion_scope": "alignment_and_analysis",
+                            "evidence_path": "audit.json",
+                            "decision": "approved",
+                            "notes": "test",
+                        }
+                    )
+                approval = root / "approved.json"
+                build_contract(
+                    review_csv=review,
+                    output=approval,
+                    year="2021",
+                    input_contract_id=input_id,
+                    approved_by="tester",
+                    approved_at="2026-08-04T00:00:00+09:00",
+                )
+                first = builder.build_year(
+                    "2021",
+                    search,
+                    wav_root=wav_root,
+                    approved_exclusions_contract=approval,
+                )
+                second = builder.build_year(
+                    "2021",
+                    search,
+                    wav_root=wav_root,
+                    approved_exclusions_contract=approval,
+                )
+            finally:
+                builder.WAV_ROOT = old_wav_root
+                builder.STATE_ROOT = old_state_root
+                builder.RAW = old_raw
+
+            self.assertTrue(approved_wav.is_file())
+            self.assertEqual(approved_wav.read_bytes(), b"RIFF-approved")
+            self.assertFalse(approved_lab.exists())
+            self.assertEqual(first["approved_labs_moved"], 1)
+            self.assertEqual(first["approved_labs_already_archived"], 0)
+            self.assertEqual(second["approved_labs_moved"], 0)
+            self.assertEqual(second["approved_labs_already_archived"], 1)
+            manifest = Path(
+                str(first["approved_lab_exclusion_apply_manifest"])
+            )
+            data = json.loads(manifest.read_text(encoding="utf-8-sig"))
+            self.assertEqual(data["status"], "passed")
+            self.assertTrue(data["lab_only_reversible_archive"])
+            self.assertFalse(data["source_wav_or_csv_changed"])
+            self.assertEqual(
+                len(list((state / "approved_lab_exclusions").rglob(
+                    f"{approved_id}.lab"
+                ))),
+                1,
+            )
+
     def test_non_hangul_drop_keeps_explicit_source_to_mfa_mapping(self):
         mapping = builder.form_to_lab_mapping("1 다음에 뭐야")
 

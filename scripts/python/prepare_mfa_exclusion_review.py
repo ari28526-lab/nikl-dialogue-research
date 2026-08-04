@@ -19,11 +19,13 @@ from realign_eojeol_build_corpus import input_contract
 
 SCHEMA_VERSION = "mfa_exclusion_review_candidates.v1"
 AUDIO_PAIRING_ISSUES = {
+    "csv_duration_invalid",
     "duration_residual_mismatch",
     "duration_wav_missing",
     "duration_wav_too_small",
     "wav_header_unreadable",
 }
+DIRECT_AUDIO_PAIRING_EXCLUSION_ISSUES = {"csv_duration_invalid"}
 AUDIO_PLAN_EXCLUSION_STATUSES = {
     "ambiguous_short_match",
     "target_unresolved",
@@ -38,6 +40,8 @@ def _candidate_from_issue(issue: dict[str, object]) -> dict[str, str] | None:
         return None
     if issue_name == "source_segment_text_duration_impossible":
         reason, scope = "text_duration_impossible", "alignment_and_analysis"
+    elif issue_name in DIRECT_AUDIO_PAIRING_EXCLUSION_ISSUES:
+        reason, scope = "audio_pairing_unresolved", "alignment_and_analysis"
     elif disposition == "exclude_source_audio_unusable":
         reason, scope = "audio_unusable", "analysis_only"
     elif disposition == "manual_review_unclassified":
@@ -82,6 +86,7 @@ def prepare_review(
     )
     by_utt: dict[str, dict[str, str]] = {}
     active_audio_issue_ids: set[str] = set()
+    direct_audio_exclusion_ids: set[str] = set()
     for issue in year_reports[0].get("issue_inventory", []):
         if not isinstance(issue, dict):
             continue
@@ -89,6 +94,10 @@ def prepare_review(
             utt_id = str(issue.get("utt_id") or "").strip()
             if utt_id:
                 active_audio_issue_ids.add(utt_id)
+                if str(issue.get("issue") or "") in (
+                    DIRECT_AUDIO_PAIRING_EXCLUSION_ISSUES
+                ):
+                    direct_audio_exclusion_ids.add(utt_id)
         candidate = _candidate_from_issue(issue)
         if candidate is None:
             continue
@@ -230,7 +239,9 @@ def prepare_review(
                 }
 
     uncovered_audio_issues = sorted(
-        active_audio_issue_ids - audio_plan_exclusion_ids
+        active_audio_issue_ids
+        - audio_plan_exclusion_ids
+        - direct_audio_exclusion_ids
     )
     if uncovered_audio_issues:
         raise RuntimeError(
@@ -305,6 +316,7 @@ def prepare_review(
         ),
         "active_audio_pairing_issue_count": len(active_audio_issue_ids),
         "audio_plan_exclusion_count": len(audio_plan_exclusion_ids),
+        "direct_audio_exclusion_count": len(direct_audio_exclusion_ids),
         "uncovered_audio_pairing_issue_count": len(uncovered_audio_issues),
         "review_csv": file_fingerprint(
             output_csv.resolve(), with_sha256=True

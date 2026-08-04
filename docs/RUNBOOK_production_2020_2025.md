@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-03 KST
+최종 갱신: 2026-08-04 KST
 
 이 문서가 전수 작업의 유일한 실행 정본이다. 구 RUNBOOK·MONITOR·PILOT의
 명령이 이 문서와 다르면 이 문서가 우선한다.
@@ -38,13 +38,14 @@ workflow 수정·시험
 2020 Gate B 전에는 2021–2025 MFA를 시작하지 않는다. 검색표 계산은 D: I/O와
 겹치지 않는 때에 별도로 할 수 있으나 MFA를 미루기 위한 새 gate로 삼지 않는다.
 
-## 현재 시작점 — 2020 Gate B 통과, 2021–2025 범주 승인 대기
+## 현재 시작점 — 2021 정렬 전 안전 중단 교정·보충 승인 완료
 
 2020은 신규 공통 Jamo r2 MFA, 6-tier 868,187개, gzip 동반표 4개, 독립 전수
 감사, DB 재생성 표본 24/24, 연구자 생산 표본 24/24 및 Gate B까지 완료됐다.
 Gate B의 16개 core check는 모두 통과했고 `allow_remaining_years=true`다.
-2020 계산·export·검토 명령은 **다시 실행하지 않는다.** 2021–2025 후보표는
-완료됐고 아직 어느 연도도 MFA를 시작하지 않았다.
+2020 계산·export·검토 명령은 **다시 실행하지 않는다.** 2021–2025 최초
+safe-body 후보 112,292건은 연구자 `ari30`이 승인했다. 2021 첫 실행은 LAB
+전수 검증 뒤, 실제 MFA 계산에 들어가기 전 입력감사에서 안전 중단됐다.
 
 2021 진입 전 구 결과·상태 정리도 완료됐다. 구 2021–2025 TextGrid와 2021
 MFA DB/temp는 E:의 기존 검증 archive에 있고 D: 연도 결과 폴더는 0개다. D:에
@@ -53,64 +54,31 @@ MFA DB/temp는 E:의 기존 검증 archive에 있고 D: 연도 결과 폴더는 
 정상 실행에서 전수 내용 검증 후 일치분만 재사용한다. 과거 정렬 완료 상태를 새
 Jamo r2 결과로 오인해 건너뛰지 않는다.
 
-아래 후보표 준비 명령은 이미 완료된 이력 명령이다.
+중단 원인은 두 가지다.
 
-이 후보표는 이미 끝낸 2020 후보표를 다시 만드는 작업이 아니다. 현재 보존된
-현행 승인표는 2020뿐이며, 2021–2025는 각 연도에서 손상 WAV·CSV–WAV 대응 불가
-등 MFA 입력 제외 대상을 확정하는 별도 계약이 아직 없다. 공통발음사전 후보나
-형태소 검색 후보와도 다른 표다. 각 연도 표는 한 번만 만들고 동일 입력계약의
-성공 산출물이 있으면 재사용하며, 반복 실행으로 자동 덮어쓰지 않는다.
+1. 최초 승인 계약을 검사했지만 승인된 1,488건의 파생 LAB를 실제 MFA 입력에서
+   분리하지 않은 구현 누락이 있었다. 감사가 active WAV+LAB 1,089쌍을 발견했다.
+2. 원본 CSV 분절시간이 `0.0`인 14건이 최초 후보 snapshot에 없었다.
 
-```powershell
-& "C:\Users\ari30\research\2026_summer_research\scripts\prepare_remaining_mfa_approval_reviews.ps1"
-```
+MFA DB·TextGrid는 생성되지 않았고 원본 WAV/CSV와 2020 완성본은 그대로다.
+실패 queue는 checkpoint로 보존했으므로 지우지 않는다. 승인 LAB는 원본 WAV를
+건드리지 않고 계약별 archive로 옮기며, 그 계약 SHA를 alignment identity에
+결속하도록 코드를 보강했다.
 
-이 명령은 Gate B를 다시 읽고 후보표만 만들며 MFA를 시작하거나 자동 승인하지
-않는다. Windows PowerShell 5.1 외부 프로세스 경계에서는 연도 배열을
-`YearsCsv`로 전달하므로 2021–2025가 문자열 하나로 오해되지 않는다. Gate B는 최종 2020 생산 queue
-`mfa_r2_prod_2020_export_20260803`만 허용하며 구 queue ID는 보고서를 쓰기 전에
-거부한다. 연구자가 연도별 후보를 확인·승인한 뒤에만 다음 명령을 사용한다.
-
-현재 검토 정본은 다음 5행 범주 요약이다.
+현재 검토 정본은 다음 **pending 1,502행**이다.
 
 ```text
-outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/
-  CATEGORY_SUMMARY_2021_2025.md
-  CATEGORY_SUMMARY_2021_2025.csv
-  CATEGORY_SUMMARY_2021_2025.json
+outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804/
+  2021/03_RESEARCHER_REVIEW.csv
+  2021/03_RESEARCHER_REVIEW_MANIFEST.json
 ```
 
-세 범주는 음원 대응 불명, 빈 발음 참조, 원전 시간상 불가능한 전사다. 총
-4,232,919발화 중 112,292개를 본체에서 제외하면 4,120,627개가 안전 본체다.
-제외 후보 때문에 연도 전체를 보류하지 않는다. 연구자 범주 승인 뒤 안전 본체를
-연도별로 먼저 정렬하고, 검증된 회수분은 별도 shard로 추가한다. 자세한 결정은
-`docs/decisions/DECISION_year_safe_body_first_recovery_later_20260803.md`다.
-
-행 단위 duration mismatch만 제외하면 session gate를 크게 실패한 세션 안의
-우연한 길이 일치를 안전 발화로 오인할 수 있다. 현행 요약은 실패 세션 전 행을
-격리하고, gate 통과 세션에서는 실제 issue 행만 격리한 보수적 정본이다. 구
-73,356행 요약은 승인하거나 실행에 사용하지 않는다.
-
-연도 입력 감사에서 CSV–WAV duration/header 문제가 발견되면 준비기는
-`wav_duration_recovery_plan.v2` 읽기 전용 계획을 함께 만든다. 이는 음원을
-자동 교체하거나 제외를 승인하는 단계가 아니다. 감사에서 문제가 없던 same-ID
-파일을 보존하고 실제 issue만 분류하며, 고신뢰 remap이 필요하거나 정상 발화가
-제외로 확대되면 중단한다. 복구 검토 중인 행도 안전 본체 단계에서는 승인 제외
-후보로 유지한다. 나중에 고신뢰 회수분을 별도 staging/shard로 추가하므로 본체
-MFA를 다시 돌리지 않는다.
-
-범주 승인 뒤에는 pending 후보표 112,292행을 직접 고치지 않는다. 승인 문구를
-그대로 보존하는 `approve_remaining_mfa_exclusion_categories.ps1`가 별도 승인
-CSV·승인 기록·입력 계약 결속 제외 계약을 5개 연도에 생성한다. 이 단계는 MFA를
-시작하지 않는다. 그 다음 아래 시작 진입점은 2021만 허용한다.
-
-승인 기록 생성은 대화에서 세 범주와 후속 shard 원칙을 연구자가 명시 승인한
-뒤 수행한다. `-PreflightOnly`는 계약을 만들지 않고 후보 SHA·범주·수를 다시
-검사한다. 계약 생성 성공 후에만 다음 명령으로 2021을 시작한다.
-
-```powershell
-& "C:\Users\ari30\research\2026_summer_research\scripts\start_remaining_mfa_after_2020_gate.ps1" -ApprovedBy "ari30"
-```
+기존 1,488건은 변경하지 않았고 새 14건만 `audio_pairing_unresolved`로 더했다.
+연구자 `ari30`은 11:21 KST에 이 14건의 안전 본체 제외와 후속 shard 이월을
+명시 승인했고, 총 1,502행 `approved_exclusions.json`을 만들었다. 승인·코드·문서
+커밋과 Windows PowerShell 5.1 검사, 새 queue의 `-PreflightOnly`가 끝나기 전에는
+이전 시작 명령을 **재실행하지 않는다.** 재개 명령은 그 시점에 이 문서에 새
+ApprovalQueueId와 ExecutionQueueId로 기록한다.
 
 두 wrapper 모두 2020을 실행 범위에 다시 포함하지 않는다. 2020 완료 근거는
 `outputs/reports/GATE_B_2020_TO_2021.json`과

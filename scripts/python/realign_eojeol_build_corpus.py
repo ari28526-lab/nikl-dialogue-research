@@ -31,8 +31,10 @@ from paths import P  # noqa: E402
 from pipeline_common import (  # noqa: E402
     atomic_text_writer,
     atomic_write_json,
+    file_fingerprint,
     sha256_file,
 )
+from mfa_exclusion_contract import load_contract  # noqa: E402
 
 WAV_ROOT = P("wav") / "individual"
 RAW = P("layers") / "01_bareun_raw"
@@ -56,6 +58,19 @@ UNRESOLVED_INVENTORY_FIELDS = [
     "pron_reference_source",
     "pron_reference_status",
     "lab_text",
+]
+APPROVED_LAB_EXCLUSION_FIELDS = [
+    "year",
+    "input_contract_id",
+    "approved_contract_sha256",
+    "utt_id",
+    "session_id",
+    "reason_code",
+    "exclusion_scope",
+    "lab_status",
+    "original_lab_path",
+    "archive_lab_path",
+    "lab_sha256",
 ]
 csv.field_size_limit(10_000_000)
 if hasattr(sys.stdout, "reconfigure"):
@@ -350,6 +365,98 @@ def archive_stale_lab(
     return destination
 
 
+def approved_lab_exclusion_root(
+    *,
+    year: str,
+    input_contract_id: str,
+    approved_contract_sha256: str,
+) -> Path:
+    """Return the contract-specific, reversible LAB-only archive root."""
+
+    return (
+        STATE_ROOT
+        / "approved_lab_exclusions"
+        / year
+        / input_contract_id[:20]
+        / approved_contract_sha256[:20]
+    )
+
+
+def archive_approved_lab(
+    lab_path: Path,
+    *,
+    year: str,
+    session: str,
+    input_contract_id: str,
+    approved_contract_sha256: str,
+    wav_root: Path,
+) -> dict[str, str]:
+    """Remove one approved LAB from active MFA input without touching WAV/CSV.
+
+    The move is content-verified and idempotent.  A prior interrupted run is
+    represented by a missing source and an existing contract-specific archive.
+    If both exist, the state is ambiguous and the run stops instead of choosing
+    one copy automatically.
+    """
+
+    source = lab_path.resolve()
+    allowed = (wav_root / year).resolve()
+    if allowed != source.parent and allowed not in source.parents:
+        raise RuntimeError(f"승인 제외 LAB 경계 위반: {source}")
+    destination = (
+        approved_lab_exclusion_root(
+            year=year,
+            input_contract_id=input_contract_id,
+            approved_contract_sha256=approved_contract_sha256,
+        )
+        / session
+        / source.name
+    ).resolve()
+    source_exists = source.is_file()
+    destination_exists = destination.is_file()
+    if source_exists and destination_exists:
+        raise RuntimeError(
+            "승인 제외 LAB가 active/archive 양쪽에 존재함: "
+            f"{source} / {destination}"
+        )
+    if source_exists:
+        before = sha256_file(source)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(source), str(destination))
+        after = sha256_file(destination)
+        if before != after:
+            raise RuntimeError(f"승인 제외 LAB 이동 SHA256 불일치: {source}")
+        status = "moved"
+        digest = after
+    elif destination_exists:
+        status = "already_archived"
+        digest = sha256_file(destination)
+    else:
+        status = "no_active_lab"
+        digest = ""
+    return {
+        "lab_status": status,
+        "original_lab_path": str(source),
+        "archive_lab_path": str(destination),
+        "lab_sha256": digest,
+    }
+
+
+def write_approved_lab_exclusion_inventory(
+    path: Path, rows: list[dict[str, str]]
+) -> None:
+    with atomic_text_writer(
+        path, encoding="utf-8-sig", newline=""
+    ) as (stream, _):
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=APPROVED_LAB_EXCLUSION_FIELDS,
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def build_year(
     year: str,
     search_master_root: Path,
@@ -358,6 +465,7 @@ def build_year(
     progress_jsonl: Path | None = None,
     wav_root: Path | None = None,
     audio_corpus_contract: Path | None = None,
+    approved_exclusions_contract: Path | None = None,
 ) -> dict[str, object]:
     search_master_root = search_master_root.resolve()
     wav_root = (wav_root or WAV_ROOT).resolve()
@@ -367,8 +475,33 @@ def build_year(
         wav_root=wav_root,
         audio_corpus_contract=audio_corpus_contract,
     )
+    approved_contract_fingerprint = None
+    approved_alignment_rows: dict[str, dict[str, str]] = {}
+    approved_contract_sha256 = ""
+    if approved_exclusions_contract is not None:
+        approved_exclusions_contract = approved_exclusions_contract.resolve()
+        _, approved_rows = load_contract(
+            approved_exclusions_contract,
+            year=year,
+            input_contract_id=str(contract["input_contract_id"]),
+        )
+        approved_alignment_rows = {
+            utt_id: row
+            for utt_id, row in approved_rows.items()
+            if row["exclusion_scope"] == "alignment_and_analysis"
+        }
+        approved_contract_fingerprint = file_fingerprint(
+            approved_exclusions_contract, with_sha256=True
+        )
+        approved_contract_sha256 = str(
+            approved_contract_fingerprint["sha256"]
+        )
     marker = STATE_ROOT / "done" / f"{year}.lab_input_done.json"
-    if marker.is_file() and not force_verify:
+    if (
+        marker.is_file()
+        and not force_verify
+        and approved_exclusions_contract is None
+    ):
         try:
             prior = json.loads(marker.read_text(encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
@@ -451,11 +584,69 @@ def build_year(
     )
     made = verified = rewritten = no_wav = empty = 0
     reference_changed = unresolved = archived_empty_lab = 0
+    approved_moved = approved_already = approved_no_lab = 0
+    approved_seen: set[str] = set()
+    approved_inventory_rows: list[dict[str, str]] = []
     unresolved_rows = []
     rows_seen = 0
     t0 = time.time()
     last_reported_rows = 0
     flat_names = None
+
+    def apply_approved_exclusion(
+        *,
+        utt_id: str,
+        session: str,
+        lab_name: str,
+        preferred_wav_dir: Path,
+        approved_row: dict[str, str],
+    ) -> None:
+        nonlocal approved_moved, approved_already, approved_no_lab
+        approved_seen.add(utt_id)
+        session_lab = wav_root / year / session / lab_name
+        flat_lab = wav_root / year / lab_name
+        active_labs = [
+            path
+            for path in dict.fromkeys((session_lab, flat_lab))
+            if path.is_file()
+        ]
+        if len(active_labs) > 1:
+            raise RuntimeError(
+                f"{utt_id}: 승인 제외 LAB가 세션/평면 양쪽에 존재함"
+            )
+        lab_source = (
+            active_labs[0]
+            if active_labs
+            else preferred_wav_dir / lab_name
+        )
+        archived = archive_approved_lab(
+            lab_source,
+            year=year,
+            session=session,
+            input_contract_id=str(contract["input_contract_id"]),
+            approved_contract_sha256=approved_contract_sha256,
+            wav_root=wav_root,
+        )
+        status = archived["lab_status"]
+        if status == "moved":
+            approved_moved += 1
+        elif status == "already_archived":
+            approved_already += 1
+        else:
+            approved_no_lab += 1
+        approved_inventory_rows.append(
+            {
+                "year": year,
+                "input_contract_id": str(contract["input_contract_id"]),
+                "approved_contract_sha256": approved_contract_sha256,
+                "utt_id": utt_id,
+                "session_id": session,
+                "reason_code": approved_row["reason_code"],
+                "exclusion_scope": approved_row["exclusion_scope"],
+                **archived,
+            }
+        )
+
     for k, fp in enumerate(files, 1):
         sess_cache = {}  # 세션 → 파일명 집합 (CSV 하나 처리 동안만 유지)
         with open(fp, encoding="utf-8-sig") as f:
@@ -476,22 +667,37 @@ def build_year(
                 rows_seen += 1
                 u = row["utt_id"]
                 sess = u.split(".")[0]
+                approved_row = approved_alignment_rows.get(u)
                 names = sess_cache.get(sess)
                 if names is None:
                     names = load_entries(wav_root / year / sess)
                     sess_cache[sess] = names
+                session_wav_dir = wav_root / year / sess
                 if f"{u}.wav" in names:
                     wav_dir = wav_root / year / sess
+                    wav_found = True
                 else:  # 평면(2025) 폴백
                     if flat_names is None:
                         flat_names = load_entries(wav_root / year)
                     if f"{u}.wav" in flat_names:
                         wav_dir = wav_root / year
                         names = flat_names
+                        wav_found = True
                     else:
                         no_wav += 1
-                        continue
+                        wav_dir = session_wav_dir
+                        wav_found = False
                 lab_name = f"{u}.lab"
+                if not wav_found:
+                    if approved_row is not None:
+                        apply_approved_exclusion(
+                            utt_id=u,
+                            session=sess,
+                            lab_name=lab_name,
+                            preferred_wav_dir=wav_dir,
+                            approved_row=approved_row,
+                        )
+                    continue
                 form = (row.get("form") or "").strip()
                 reference_form = (
                     row.get("pron_reference_form") or ""
@@ -518,6 +724,15 @@ def build_year(
                             "lab_text": text,
                         }
                     )
+                if approved_row is not None:
+                    apply_approved_exclusion(
+                        utt_id=u,
+                        session=sess,
+                        lab_name=lab_name,
+                        preferred_wav_dir=wav_dir,
+                        approved_row=approved_row,
+                    )
+                    continue
                 if not text.strip():
                     empty += 1
                     lab_name = f"{u}.lab"
@@ -578,15 +793,63 @@ def build_year(
                     "validated_existing": verified,
                     "wav_missing": no_wav,
                     "empty_reference_form": empty,
+                    "approved_alignment_exclusions": len(
+                        approved_alignment_rows
+                    ),
+                    "approved_labs_moved": approved_moved,
+                    "approved_labs_already_archived": approved_already,
+                    "approved_labs_without_active_lab": approved_no_lab,
                     "rows_per_second": round(rate, 1),
                     "eta_minutes": round(eta_min, 1),
                     "elapsed_seconds": round(el, 1),
                 },
             )
+    missing_approved = sorted(set(approved_alignment_rows) - approved_seen)
+    if missing_approved:
+        raise RuntimeError(
+            "승인 제외 계약 ID가 search master에 없음: "
+            f"{len(missing_approved):,}건; 예={missing_approved[:20]}"
+        )
+    approved_apply_manifest = None
+    if approved_contract_fingerprint is not None:
+        apply_root = approved_lab_exclusion_root(
+            year=year,
+            input_contract_id=str(contract["input_contract_id"]),
+            approved_contract_sha256=approved_contract_sha256,
+        )
+        inventory_path = apply_root / "approved_lab_exclusion_inventory.csv"
+        write_approved_lab_exclusion_inventory(
+            inventory_path, approved_inventory_rows
+        )
+        approved_apply_manifest = apply_root / "apply_manifest.json"
+        apply_record = {
+            "schema_version": "mfa_approved_lab_exclusion_apply.v1",
+            "status": "passed",
+            "year": year,
+            "input_contract_id": contract["input_contract_id"],
+            "approved_exclusions_contract": approved_contract_fingerprint,
+            "approved_alignment_exclusion_count": len(
+                approved_alignment_rows
+            ),
+            "inventory": file_fingerprint(
+                inventory_path, with_sha256=True
+            ),
+            "lab_status_counts": {
+                "moved": approved_moved,
+                "already_archived": approved_already,
+                "no_active_lab": approved_no_lab,
+            },
+            "source_wav_or_csv_changed": False,
+            "lab_only_reversible_archive": True,
+            "finished_at": datetime.now().astimezone().isoformat(),
+        }
+        atomic_write_json(approved_apply_manifest, apply_record)
     print(
         f"[{year}] 완료: 신규 {made:,} / 불일치재작성 {rewritten:,} / "
         f"내용일치 {verified:,} / wav없음 {no_wav:,} / 빈입력 {empty:,} / "
         f"빈입력구lab보존 {archived_empty_lab:,} / "
+        f"승인LAB이동 {approved_moved:,} / 기존보존 {approved_already:,} / "
+        f"활성LAB없음 {approved_no_lab:,} / "
         f"reference변경 {reference_changed:,} / 미해결기호 {unresolved:,}",
         flush=True,
     )
@@ -613,6 +876,18 @@ def build_year(
         "reference_form_changed": reference_changed,
         "pron_reference_unresolved": unresolved,
         "unresolved_symbol_inventory": str(unresolved_inventory),
+        "approved_exclusions_contract": approved_contract_fingerprint,
+        "approved_alignment_exclusion_count": len(
+            approved_alignment_rows
+        ),
+        "approved_labs_moved": approved_moved,
+        "approved_labs_already_archived": approved_already,
+        "approved_labs_without_active_lab": approved_no_lab,
+        "approved_lab_exclusion_apply_manifest": (
+            str(approved_apply_manifest)
+            if approved_apply_manifest is not None
+            else None
+        ),
         "started_at": started_at,
         "finished_at": finished_at,
         "elapsed_seconds": elapsed_seconds,
@@ -655,6 +930,12 @@ def build_year(
             "validated_existing": verified,
             "wav_missing": no_wav,
             "empty_reference_form": empty,
+            "approved_alignment_exclusions": len(
+                approved_alignment_rows
+            ),
+            "approved_labs_moved": approved_moved,
+            "approved_labs_already_archived": approved_already,
+            "approved_labs_without_active_lab": approved_no_lab,
             "elapsed_seconds": elapsed_seconds,
             "status": "passed",
         },
@@ -692,6 +973,14 @@ def main() -> int:
         type=Path,
         help="별도 복구 corpus를 사용할 때의 passed contract",
     )
+    ap.add_argument(
+        "--approved-exclusions-contract",
+        type=Path,
+        help=(
+            "input_contract_id에 묶인 연구자 승인 제외 계약. "
+            "alignment_and_analysis LAB만 가역 보존한다."
+        ),
+    )
     args = ap.parse_args()
     years = sorted(YEAR_DIRS) if args.year == "all" else [args.year]
     for y in years:
@@ -704,6 +993,9 @@ def main() -> int:
             progress_jsonl=args.progress_jsonl,
             wav_root=args.wav_root,
             audio_corpus_contract=args.audio_corpus_contract,
+            approved_exclusions_contract=(
+                args.approved_exclusions_contract
+            ),
         )
     return 0
 

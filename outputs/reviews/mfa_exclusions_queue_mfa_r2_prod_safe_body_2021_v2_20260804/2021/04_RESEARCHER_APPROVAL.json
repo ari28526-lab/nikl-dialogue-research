@@ -1,0 +1,47 @@
+{
+  "schema_version": "mfa_exclusion_category_approval.v1",
+  "status": "approved",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-04T11:21:01.823001+09:00",
+  "approval_statement": "기존 2021년 1,488건은 2026-08-04의 선행 승인 기록에 따라 승인되었고, 연구자 ari30은 추가로 다음을 승인했다: '2021의 CSV 분절시간 0.0인 14건을 audio_pairing_unresolved 보충 후보로 안전 본체 MFA에서 제외하고 후속 shard로 넘기는 것을 승인한다. 승인자 ari30.' 두 승인 근거를 결합해 2021년 총 1,502건을 승인한다.",
+  "approved_categories": {
+    "audio_pairing_unresolved": 1039,
+    "empty_reference_unresolved_symbol": 399,
+    "text_duration_impossible": 64
+  },
+  "approved_row_count": 1502,
+  "candidate_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 1727,
+    "mtime_ns": 1785809595023830800,
+    "sha256": "a2cb4eb14abd046033b965e128f24ba2e82c6776473950b21e542b1de0c18308"
+  },
+  "pending_candidate_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 415205,
+    "mtime_ns": 1785809595001526400,
+    "sha256": "12c10a42445b74f98752b8231027f90356c5078086fb2d19593eb24f4645d191"
+  },
+  "approved_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 416707,
+    "mtime_ns": 1785810061820072400,
+    "sha256": "aba7ddbed2d35a5cb290c8d0a1653a8819d1368916b3ba7cdef7e5df10c0c94a"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\approved_exclusions.json",
+    "bytes": 1038,
+    "mtime_ns": 1785810061847598600,
+    "sha256": "ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356"
+  },
+  "contract_row_count": 1502,
+  "policy": {
+    "explicit_researcher_category_approval": true,
+    "pending_candidate_snapshot_unchanged": true,
+    "automatic_approval": false,
+    "starts_mfa": false,
+    "changes_wav_or_lab": false
+  }
+}

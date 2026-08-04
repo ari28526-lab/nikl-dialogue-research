@@ -66,8 +66,9 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 ## 실제 미완료
 
 - 2022–2025 검색표. 2021 검색표와 frozen source contract는 완료됐다.
-- 2021–2025 신규 r2 MFA. 연도별 승인 제외 계약은 2026-08-04에 연구자
-  `ari30`의 명시 승인으로 완료됐고, 2021 MFA는 아직 시작하지 않았다.
+- 2021–2025 신규 r2 MFA. 최초 연도별 승인 제외 계약은 2026-08-04에 연구자
+  `ari30`의 명시 승인으로 완료됐다. 2021은 정렬 전 입력감사에서 중단됐고,
+  새로 발견된 CSV duration 0 발화 14건도 11:21 KST에 보충 승인됐다.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
   있으므로 사용 직전 실물·SHA를 다시 확인한다.
@@ -110,8 +111,8 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 경계를 추가하지 않는다.
 
 현재 안전 정지점은 **2020 Gate B 통과, 2021 `morph_search.v3` 7표와 frozen
-source contract 완료, 2021–2025 safe-body 제외 계약 승인 완료, 2021 MFA
-미시작**이다.
+source contract 완료, 2021 MFA 정렬 시작 전 입력감사에서 안전 중단, 2021
+보충 제외 14건 연구자 승인 및 결합 1,502건 계약 완료**다.
 5개년 4,232,919발화 중 실패 세션 전 행과 gate 통과
 세션의 실제 issue, 빈 참조, 시간 불가능을 합친 112,292개가 연구자 승인 제외이며
 안전 본체는 4,120,627개다. 승인 범주는 `audio_pairing_unresolved`,
@@ -175,8 +176,30 @@ canonical 보고서를 변경하기 전에 거부되며, 최종 queue로 Gate B 
 2021 실행 전 최종 `-PreflightOnly`는 2026-08-04 10:11 KST에 `GO`였다.
 2020 Gate B, 2021 source contract, 승인 제외 1,488건, 공통 Jamo r2·109-phone,
 동결 음향모델, D: 여유, PowerShell 안전·호환성 검사와 Python 329개 테스트가
-통과했다. 이 관측은 MFA를 시작하지 않았으며, 다음 동작은 사용자 일반
-PowerShell에서 2021 장시간 실행 명령을 시작하는 것이다.
+통과했다. 이 관측 자체는 MFA를 시작하지 않았고, 그 직후 사용자 일반
+PowerShell에서 2021 장시간 실행 명령을 시작했다.
+
+2021 장시간 실행은 10:23:36 KST에 시작됐고 4,143개 세션·1,373,920행의 LAB
+전수 검증을 완료했다. MFA 계산에 들어가기 전 입력감사가 승인 계약 1,488건 중
+활성 WAV+LAB 1,089쌍이 실제 입력에서 분리되지 않은 구현 누락과, 원본 CSV
+분절시간이 `0.0`인 추가 14건을 발견해 10:49:01에 fail-closed했다. MFA DB와
+TextGrid는 생성되지 않았고 원본 WAV/CSV, 2020 완성본은 변경되지 않았다.
+실패 queue는 `mfa_failed_checkpoint_preserved`로 보존했다.
+
+재발 방지를 위해 승인된 `alignment_and_analysis` 발화는 원본 WAV/CSV를 그대로
+둔 채 파생 LAB만 계약별 폴더에 SHA 검증 후 가역 보존하도록 수정했다. 승인 계약
+SHA도 `alignment_contract_id`에 포함해 제외 목록이 달라지면 과거 temp/DB를
+재사용하지 못한다. 중단 재개, active/archive 이중 존재 차단, 계약 불일치,
+CSV duration 0 후보화와 immutable 후보표 병합을 단위시험으로 검증했다.
+
+기존 1,488행 승인 snapshot은 변경하지 않았다. 새 root
+`outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804`
+에는 기존 1,488건과 새 `csv_duration_invalid` 14건을 합친 **pending 1,502행**이
+있다. 새 14건은 `audio_pairing_unresolved`로 안전 본체에서 분리하고 동일 모델의
+후속 shard에서 회수 여부를 다룰 후보이며 자동 승인하지 않았다. 연구자 `ari30`은
+11:21 KST에 14건을 명시 승인했고, 기존 승인과 결합한 1,502행 계약 SHA는
+`ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356`이다.
+코드·승인 증거 커밋과 새 queue preflight를 통과하기 전에는 재실행하지 않는다.
 
 ## 활성 정본
 

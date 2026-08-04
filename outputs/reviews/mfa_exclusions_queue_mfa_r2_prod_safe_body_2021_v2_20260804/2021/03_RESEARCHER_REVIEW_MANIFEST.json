@@ -1,0 +1,36 @@
+{
+  "schema_version": "mfa_exclusion_review_candidates.v1",
+  "status": "pending_researcher_review",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "merge_policy": "immutable_base_plus_new_ids; duplicate_reason_scope_equal",
+  "base_candidate_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 2501,
+    "mtime_ns": 1785767948779654700,
+    "sha256": "98caf9264e1b58928e4f753b1c7edaa5e61c6bd35f96a5dc1ed803e175cea2b3"
+  },
+  "addendum_candidate_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\02_ADDENDUM_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 2192,
+    "mtime_ns": 1785809593794975400,
+    "sha256": "5dc2665354b8e0de8b42efd54a59aaf43540f55da4d47c63fbdfe4c1eead3db1"
+  },
+  "base_candidate_count": 1488,
+  "addendum_candidate_count": 1438,
+  "duplicate_candidate_count": 1424,
+  "new_addendum_candidate_count": 14,
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804\\2021\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 415205,
+    "mtime_ns": 1785809595001526400,
+    "sha256": "12c10a42445b74f98752b8231027f90356c5078086fb2d19593eb24f4645d191"
+  },
+  "candidate_count": 1502,
+  "candidate_counts_by_reason": {
+    "audio_pairing_unresolved": 1039,
+    "empty_reference_unresolved_symbol": 399,
+    "text_duration_impossible": 64
+  },
+  "automatic_approval_performed": false
+}

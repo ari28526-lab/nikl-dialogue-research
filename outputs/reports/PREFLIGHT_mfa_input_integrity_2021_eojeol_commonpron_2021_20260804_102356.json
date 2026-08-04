@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-04T10:36:34+0900",
+  "read_only": true,
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "search_master_build_status": "success",
+  "wav_root": "D:\\20_AUDIO\\03_wav\\individual",
+  "morph_textgrid_root": null,
+  "strict": true,
+  "gate_profile": "analysis",
+  "approved_exclusions_contract": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\approved_exclusions.json",
+  "retained_db_checkpoint": null,
+  "years": [
+    {
+      "year": "2021",
+      "status": "audited",
+      "read_only": true,
+      "compare_lab_content": false,
+      "wav_duration_audit_enabled": true,
+      "morph_source_audit_enabled": false,
+      "approved_alignment_exclusion_count": 1488,
+      "approved_active_alignment_exclusion_count": 0,
+      "csv_files": 4143,
+      "elapsed_seconds": 747.528,
+      "counts": {
+        "approved_alignment_active_pair": 1089,
+        "approved_alignment_excluded": 1488,
+        "approved_alignment_unauthorized_active_pair": 1089,
+        "duration_csv_duration_invalid": 14,
+        "duration_expected": 1372432,
+        "duration_inspected": 1372418,
+        "duration_matched": 1372418,
+        "duration_residual_mismatch": 0,
+        "duration_sessions_checked": 4139,
+        "duration_sessions_fully_excluded": 4,
+        "duration_sessions_passed": 4139,
+        "expected_lab_nonzero": 1372432,
+        "expected_usable_lab": 1372432,
+        "lab_files": 1373521,
+        "lab_not_expected": 0,
+        "lab_not_expected_with_wav": 0,
+        "pron_reference_unresolved": 16985,
+        "reference_form_changed": 38484,
+        "search_rows": 1373920,
+        "search_sessions": 4143,
+        "text_duration_rows_checked": 1372418,
+        "text_duration_rows_not_computable": 14,
+        "wav_files": 1416216,
+        "wav_not_in_search_master": 42296
+      },
+      "known_source_pcm_risks": {
+        "PCM없음": 1,
+        "원본정상": 28,
+        "원본짧음": 1091
+      },
+      "top_risky_sessions": [
+        {
+          "session": "SDRW2100003249",
+          "issue_count": 260
+        },
+        {
+          "session": "SDRW2100001747",
+          "issue_count": 258
+        },
+        {
+          "session": "SDRW2100001872",
+          "issue_count": 251
+        },
+        {
+          "session": "SDRW2100002153",
+          "issue_count": 248
+        },
+        {
+          "session": "SDRW2100004234",
+          "issue_count": 15
+        },
+        {
+          "session": "SDRW2100001512",
+          "issue_count": 4
+        },
+        {
+          "session": "SDRW2100001817",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2100003450",
+          "issue_count": 3
+        },
+        {
+          "session": "SDRW2100000039",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100001592",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100001962",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100002231",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100002891",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100004135",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100004264",
+          "issue_count": 2
+        },
+        {
+          "session": "SDRW2100000024",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000059",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000120",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000224",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000427",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000468",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000549",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000550",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000584",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000585",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000695",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000699",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000800",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000814",
+          "issue_count": 1
+        },
+        {
+          "session": "SDRW2100000975",
+          "issue_count": 1
+        }
+      ],
+      "examples": {
+        "approved_alignment_active_pair": [
+          "SDRW2100000024.1.1.236",
+          "SDRW2100000039.1.1.199",
+          "SDRW2100000039.1.1.207",
+          "SDRW2100000059.1.1.57",
+          "SDRW2100000120.1.1.190",
+          "SDRW2100000224.1.1.33",
+          "SDRW2100000427.1.1.283",
+          "SDRW2100000468.1.1.297",
+          "SDRW2100000549.1.1.122",
+          "SDRW2100000550.1.1.196",
+          "SDRW2100000584.1.1.192",
+          "SDRW2100000585.1.1.332",
+          "SDRW2100000695.1.1.128",
+          "SDRW2100000699.1.1.43",
+          "SDRW2100000800.1.1.94",
+          "SDRW2100000814.1.1.286",
+          "SDRW2100000975.1.1.260",
+          "SDRW2100001211.1.1.276",
+          "SDRW2100001396.1.1.199",
+          "SDRW2100001505.1.1.435"
+        ],
+        "csv_duration_invalid": [
+          "SDRW2100000157.1.1.43",
+          "SDRW2100000224.1.1.148",
+          "SDRW2100000317.1.1.95",
+          "SDRW2100000329.1.1.318",
+          "SDRW2100000934.1.1.137",
+          "SDRW2100001359.1.1.161",
+          "SDRW2100001810.1.1.363",
+          "SDRW2100001983.1.1.76",
+          "SDRW2100002637.1.1.106",
+          "SDRW2100003394.1.1.334",
+          "SDRW2100003828.1.1.240",
+          "SDRW2100003988.1.1.327",
+          "SDRW2100004325.1.1.327",
+          "SDRW2100004400.1.1.115"
+        ]
+      },
+      "duration_audit": {
+        "policy": {
+          "residual_tolerance_seconds": 0.025,
+          "session_match_min_pct": 98.0,
+          "session_inspection_coverage_min_pct": 98.0,
+          "session_padding_allowed_seconds": [
+            -0.025,
+            0.5
+          ]
+        },
+        "coverage_pct_distribution": {
+          "min": 99.684543,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "match_pct_distribution": {
+          "min": 100.0,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "padding_seconds_distribution": {
+          "min": -0.001125,
+          "median": -0.000125,
+          "max": 0.000875
+        },
+        "failed_sessions": []
+      },
+      "text_duration_audit": {
+        "policy": {
+          "minimum_hangul_syllables": 10,
+          "impossible_hangul_syllables_per_second": 40.0,
+          "logged_fields": [
+            "utt_id",
+            "csv_duration_seconds",
+            "hangul_syllables",
+            "hangul_syllables_per_second"
+          ],
+          "raw_transcript_logged": false
+        },
+        "impossible_count": 0
+      },
+      "morph_source_issues": [],
+      "issue_inventory": [
+        {
+          "year": "2021",
+          "session": "SDRW2100000157",
+          "utt_id": "SDRW2100000157.1.1.43",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100000224",
+          "utt_id": "SDRW2100000224.1.1.148",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100000317",
+          "utt_id": "SDRW2100000317.1.1.95",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100000329",
+          "utt_id": "SDRW2100000329.1.1.318",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100000934",
+          "utt_id": "SDRW2100000934.1.1.137",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100001359",
+          "utt_id": "SDRW2100001359.1.1.161",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100001810",
+          "utt_id": "SDRW2100001810.1.1.363",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100001983",
+          "utt_id": "SDRW2100001983.1.1.76",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100002637",
+          "utt_id": "SDRW2100002637.1.1.106",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100003394",
+          "utt_id": "SDRW2100003394.1.1.334",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100003828",
+          "utt_id": "SDRW2100003828.1.1.240",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100003988",
+          "utt_id": "SDRW2100003988.1.1.327",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100004325",
+          "utt_id": "SDRW2100004325.1.1.327",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        },
+        {
+          "year": "2021",
+          "session": "SDRW2100004400",
+          "utt_id": "SDRW2100004400.1.1.115",
+          "issue": "csv_duration_invalid",
+          "detail": "0.0"
+        }
+      ],
+      "gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": false,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_inputs_inactive": false,
+        "approved_alignment_active_pairs_authorized": false,
+        "source_segment_text_duration_plausible": true,
+        "all_morph_sources_ready": true,
+        "morph_source_inventory_classified": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": false,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_active_pairs_authorized": false,
+        "morph_source_inventory_classified": true
+      },
+      "analysis_ready_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": false,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_active_pairs_authorized": false,
+        "morph_source_inventory_classified": true,
+        "source_segment_text_duration_plausible": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates_pass": false,
+      "analysis_ready_gates_pass": false,
+      "all_gates_pass": false
+    }
+  ],
+  "selected_gate_result_key": "analysis_ready_gates_pass",
+  "all_years_pass": false
+}

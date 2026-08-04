@@ -2,7 +2,7 @@
 
 결정일: 2026-08-03 KST
 
-상태: 2021–2025 연구자 범주 승인 대기
+상태: 최초 2021–2025 범주 승인 및 2021 후속 감사 14건 보충 승인 완료
 
 ## 결정
 
@@ -79,3 +79,22 @@ issue 행만 격리하는 보수적 v2 후보를 정본으로 채택했다.
 - `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/CATEGORY_SUMMARY_2021_2025.csv`
 - `docs/decisions/DECISION_2023_JSON_PCM_segment_id_mismatch_20260803.md`
 - `docs/decisions/DECISION_incremental_unattended_year_MFA_20260801.md`
+
+## 2021 첫 실행 후 보충 결정
+
+2026-08-04 첫 실행의 정렬 전 입력감사가 원본 CSV 분절시간 `0.0`인 14건을
+추가 발견했다. 최초 후보표가 만들어진 시점의 감사에는 이 하드 gate가 없었으므로
+기존 1,488행 승인 snapshot을 수정하지 않는다. 새 immutable v2 후보표에서 14건을
+`audio_pairing_unresolved / alignment_and_analysis`로 추가했다. 연구자 `ari30`은
+2026-08-04 11:21 KST에 이 14건의 안전 본체 제외와 후속 shard 이월을 명시
+승인했다.
+
+보충 승인 뒤 2021 규모는 검색 1,373,920, 안전 본체 1,372,418, 제외 1,502
+(음원 대응 1,039, 빈 참조 399, 시간 불가능 64)가 된다. 5개년 합계는 안전 본체
+4,120,613, 제외 112,306이 된다. 이는 phone·공통사전·음향모델을 바꾸는 결정이
+아니며, 14건은 동일 모델의 후속 회수 shard 후보로 추적한다.
+
+또한 승인 계약을 단순 검증하는 것만으로는 충분하지 않다. 승인된
+`alignment_and_analysis` 발화의 파생 LAB가 실제 active MFA corpus에 없어야
+한다. 원본 WAV/CSV는 불변으로 유지하고 LAB만 SHA 검증된 가역 archive로 옮긴다.
+그 적용 manifest와 승인 계약 SHA를 alignment identity에 결속한다.

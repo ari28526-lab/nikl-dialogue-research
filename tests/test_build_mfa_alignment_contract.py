@@ -1,7 +1,8 @@
+import csv
+import hashlib
 import sys
 import tempfile
 import unittest
-import hashlib
 from pathlib import Path
 from unittest.mock import patch
 
@@ -11,6 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "python"))
 from build_mfa_alignment_contract import (  # noqa: E402
     build_alignment_contract,
 )
+from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
 
 
 class MfaAlignmentContractTests(unittest.TestCase):
@@ -48,6 +50,7 @@ class MfaAlignmentContractTests(unittest.TestCase):
         *,
         lab_contract: str = "lab-a",
         suffix: str = "",
+        approved_exclusions: Path | None = None,
     ) -> dict:
         paths = {}
         for role in ("acoustic", "dictionary", "g2p"):
@@ -65,6 +68,7 @@ class MfaAlignmentContractTests(unittest.TestCase):
                 dictionary_model_path=paths["dictionary"],
                 g2p_model_path=paths["g2p"],
                 frozen_bundle_contract_path=root / "bundle.json",
+                approved_exclusions_contract_path=approved_exclusions,
                 allow_legacy_inline_g2p=True,
                 runtime={
                     "python": "3.13.14",
@@ -72,6 +76,41 @@ class MfaAlignmentContractTests(unittest.TestCase):
                     "pynini": "2.1.7",
                 },
             )
+
+    def make_approved_exclusions(
+        self,
+        root: Path,
+        *,
+        lab_contract: str,
+        suffix: str,
+        notes: str,
+    ) -> Path:
+        review = root / f"review-{suffix}.csv"
+        with review.open("w", encoding="utf-8-sig", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
+            writer.writeheader()
+            writer.writerow(
+                {
+                    "year": "2022",
+                    "input_contract_id": lab_contract,
+                    "utt_id": f"U-{suffix}",
+                    "reason_code": "audio_pairing_unresolved",
+                    "exclusion_scope": "alignment_and_analysis",
+                    "evidence_path": "audit.json",
+                    "decision": "approved",
+                    "notes": notes,
+                }
+            )
+        output = root / f"approved-{suffix}.json"
+        build_contract(
+            review_csv=review,
+            output=output,
+            year="2022",
+            input_contract_id=lab_contract,
+            approved_by="tester",
+            approved_at="2026-08-04T00:00:00+09:00",
+        )
+        return output
 
     def test_same_content_at_different_paths_has_same_identity(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -122,6 +161,57 @@ class MfaAlignmentContractTests(unittest.TestCase):
                 first["alignment_contract_id"],
                 second["alignment_contract_id"],
             )
+
+    def test_approved_exclusion_sha_changes_alignment_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first_approval = self.make_approved_exclusions(
+                root,
+                lab_contract="lab-a",
+                suffix="a",
+                notes="first",
+            )
+            second_approval = self.make_approved_exclusions(
+                root,
+                lab_contract="lab-a",
+                suffix="b",
+                notes="second",
+            )
+            first = self.make_contract(
+                root,
+                suffix="-approved-a",
+                approved_exclusions=first_approval,
+            )
+            second = self.make_contract(
+                root,
+                suffix="-approved-b",
+                approved_exclusions=second_approval,
+            )
+            self.assertNotEqual(
+                first["alignment_contract_id"],
+                second["alignment_contract_id"],
+            )
+            self.assertEqual(
+                first["approved_exclusions_contract"]["path"],
+                str(first_approval.resolve()),
+            )
+
+    def test_approved_exclusion_input_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            approval = self.make_approved_exclusions(
+                root,
+                lab_contract="other-lab",
+                suffix="mismatch",
+                notes="wrong input",
+            )
+            with self.assertRaisesRegex(RuntimeError, "identity/status"):
+                self.make_contract(
+                    root,
+                    lab_contract="lab-a",
+                    suffix="-mismatch",
+                    approved_exclusions=approval,
+                )
 
 
 if __name__ == "__main__":

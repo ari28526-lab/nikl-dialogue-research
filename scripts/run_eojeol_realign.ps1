@@ -1506,6 +1506,11 @@ foreach ($y in $years) {
             '--audio-corpus-contract', $wavSelection.ContractPath
         )
     }
+    if (-not [string]::IsNullOrWhiteSpace($ApprovedExclusionsContract)) {
+        $labArguments += @(
+            '--approved-exclusions-contract', $ApprovedExclusionsContract
+        )
+    }
     if ($ForceVerifyLabInput) { $labArguments += '--force-verify' }
     & $py @labArguments
     if ($LASTEXITCODE -ne 0) { Say "!! $y lab 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
@@ -1558,6 +1563,11 @@ foreach ($y in $years) {
         $alignmentContractArgs += @(
             '--common-pron-manifest', $commonManifestPath,
             '--common-pron-adoption-contract', $adoptionPath
+        )
+    }
+    if (-not [string]::IsNullOrWhiteSpace($ApprovedExclusionsContract)) {
+        $alignmentContractArgs += @(
+            '--approved-exclusions-contract', $ApprovedExclusionsContract
         )
     }
     & $py (Join-Path $pydir "build_mfa_alignment_contract.py") `

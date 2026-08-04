@@ -1232,3 +1232,39 @@ shard 2–23을 재개하는 것이다.
   최종 `GO`를 확인했다. PowerShell 안전 검사 45개 파일, 5.1 실행 호환성
   52개 스크립트, Python 329개 테스트가 통과했고, 승인 계약·입력·모델·D: 공간
   검사도 모두 통과했다. `PreflightOnly`였으므로 MFA는 여전히 시작하지 않았다.
+
+## 2026-08-04 — 2021 MFA 정렬 전 입력감사 안전 중단과 계약 적용 보강
+
+- 10:23:36 KST에 2021 한 연도 queue를 시작했다. 4,143개 세션,
+  1,373,920행을 전수 확인해 기존 LAB 내용 일치 1,373,521, 빈 reference 399,
+  신규·불일치 재작성·WAV 누락 0을 확인했다.
+- MFA 계산 직전 독립 입력감사가 승인 제외 1,488건 중 활성 WAV+LAB 1,089쌍이
+  여전히 입력 폴더에 남은 것을 잡았다. 승인 계약은 검증했지만 LAB builder에
+  전달하지 않아 실제 제외를 적용하지 않은 구현 누락이었다. 감사는 이를
+  승인되지 않은 active pair로 판정해 10:49:01에 중단했다.
+- 같은 감사에서 원본 CSV 분절시간이 `0.0`인 14건도 새로 발견했다. 이는 기존
+  1,488행 snapshot에 없으며 2022–2025에는 같은 범주의 추가 건이 0임을 확인했다.
+- 중단은 MFA 전에 일어났다. MFA DB·TextGrid는 생성되지 않았고, queue는
+  `mfa_failed_checkpoint_preserved`로 남았다. 원본 WAV/CSV와 2020 완성본은
+  변경하지 않았다. 근거 보고서는
+  `outputs/reports/PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260804_102356.json`이다.
+- 승인된 `alignment_and_analysis` ID는 파생 LAB만 계약별 archive로 옮긴다.
+  이동 전후 SHA를 검증하고, 재실행 시 이미 보존된 LAB를 인식하며, active와
+  archive 양쪽에 있으면 자동 선택하지 않고 중단한다. WAV/CSV는 이동·삭제하지
+  않는다. 적용 inventory와 manifest도 원자적으로 기록한다.
+- 승인 제외 계약 SHA를 `alignment_contract_id` 계산에 포함했다. 승인 snapshot이
+  바뀌면 과거 alignment temp/DB를 잘못 재사용할 수 없다. runner는 같은 계약을
+  LAB builder와 alignment contract builder 모두에 전달한다.
+- `csv_duration_invalid`를 `audio_pairing_unresolved / alignment_and_analysis`
+  pending 후보로 생성하도록 보강했다. 기존 1,488행 snapshot을 덮어쓰지 않고,
+  후속 감사 후보와 병합하는 재현 가능한 merger를 추가했다.
+- 새 2021 v2 pending 표는 1,502행이다. 기존 1,488, 후속 감사 1,438 중 중복
+  1,424, 새 14이며 범주별로 audio 1,039, empty reference 399, time impossible
+  64다. 자동 승인은 0건이다. 연구자 보충 승인과 새 preflight 전에는 재실행하지
+  않는다.
+- 11:21 KST에 연구자 `ari30`이 다음을 명시 승인했다. “2021의 CSV 분절시간
+  0.0인 14건을 audio_pairing_unresolved 보충 후보로 안전 본체 MFA에서 제외하고
+  후속 shard로 넘기는 것을 승인한다. 승인자 ari30.” 기존 1,488건의 선행 승인과
+  이 보충 승인을 결합해 1,502행 새 계약을 만들었다. 승인 계약 SHA-256은
+  `ca60cbd3111a4c6d120229d7822e536ea41fe8d6bad0b08f8126cfb429d1f356`이며,
+  승인 계보는 새 review root의 `05_APPROVAL_LINEAGE.md`에 고정했다.
