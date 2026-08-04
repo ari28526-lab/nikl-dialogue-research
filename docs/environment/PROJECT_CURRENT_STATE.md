@@ -1,6 +1,6 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-03 KST
+최종 갱신: 2026-08-04 KST
 
 이 문서는 append-only 일지가 아니다. 현재 상태가 바뀌면 전체를 교체한다.
 이전 전체본은 `docs/archive/PROJECT_CURRENT_STATE_20260801_full.md`에 보존한다.
@@ -109,17 +109,24 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 검색 결함이 아니다. 생산 source time과 파일 가장자리 경계를 유지하며 인공 내부
 경계를 추가하지 않는다.
 
-현재 안전 정지점은 **2020 Gate B 통과, 2021–2025 safe-body 후보표 완료,
-2021 MFA 미시작**이다. 5개년 4,232,919발화 중 실패 세션 전 행과 gate 통과
+현재 안전 정지점은 **2020 Gate B 통과, 2021 `morph_search.v3` 7표와 frozen
+source contract 완료, 2021–2025 safe-body 후보표 완료, 2021 MFA 미시작**이다.
+5개년 4,232,919발화 중 실패 세션 전 행과 gate 통과
 세션의 실제 issue, 빈 참조, 시간 불가능을 합친 112,292개가 pending 승인
 후보이고 안전 본체는 4,120,627개다. 연구자가 세 범주를 승인한 뒤에도 2021
 한 연도만 시작한다. 상세 과정은
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
-2021–2025의 완성된 `morph_search.v3` 7표는 아직 0/5년이다. 2021 작업은
-2026-08-04 08:24 KST에 시작했고 shard checkpoint 방식으로 실행 중이다. 이
-표는 MFA 입력용
+2021–2025의 완성된 `morph_search.v3` 7표는 현재 1/5년이다. 2021은
+2026-08-04 08:24:33 KST에 시작해 42개 shard를 checkpoint 방식으로 처리했고,
+09:45:45에 연간 7표와 source contract를 완료했다. 연간 master는 1,373,920발화다.
+독립 검증에서 source contract 12/12 check가 통과했으며, 연간 manifest는
+`all_shards_success=true`, `duplicate_utt_id=0`, `deterministic_gzip_mtime=0`,
+`orth_symbol_coverage_equal=true`였다. 첫 실행 구간은 09:24:49까지 1시간 이상
+집중 모니터링했고 오류·재처리·정체 없이 39/42 shard까지 진행됨을 확인했다.
+근거 보고서는 `outputs/reports/SOURCE_CONTRACT_morph_search_v3_20260801_2021.json`과
+`outputs/reports/VERIFY_SOURCE_2021_after_morph_search.json`이다. 이 표는 MFA 입력용
 search master와 달리 연구자가 형태소·표기 환경을 조합 검색하는 최종 pre-MFA
 층이다. 각 연도 MFA 전에 `prepare_production_year_before_mfa.ps1`로 생성·재개하고
 source contract를 확정한다. MFA 시작기는 해당 연도 manifest 성공이 없으면

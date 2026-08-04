@@ -1170,3 +1170,30 @@ shard 2–23을 재개하는 것이다.
   상태 확인 전에 재실행하지 않는다.
 - 새 대화용 최소 프롬프트를 문서화하고 `PROJECT_START_HERE.md`에서 바로
   연결했다. 채팅 기억보다 manifest·현재 D:·Git commit을 우선한다.
+
+## 2026-08-04 — 2021 pre-MFA 7표·source contract 생산 완료
+
+- `prepare_production_year_before_mfa.ps1 -Year 2021`을 08:24:33 KST에 시작했다.
+  42개 shard를 재시작 없이 순차 처리했고 각 완료 shard는 `status=success`,
+  7표, SHA-256 manifest를 갖췄다. 09:28:00에 42/42 shard가 완료됐고, 이어서
+  연간 7표를 원자적 partial→final 방식으로 병합했다.
+- 첫 실행 구간은 09:24:49까지 1시간 16초 이상 집중 모니터링했다. 그 시점은
+  39/42 shard, 92.857%였으며 lock/PID, Python CPU, 최신 checkpoint와 D: 여유가
+  모두 정상이고 오류·재처리·정체 징후가 없었다. 시작 시 약 335GiB였던 D: 여유는
+  완료 시 약 323GiB로 남아 공간 gate에도 문제가 없었다.
+- 09:45:45에 연간 manifest `success`, source contract `frozen`, lock 해제를
+  확인했다. 연간 master는 1,373,920발화이며 7표 행 수는 eojeol 6,579,411,
+  master 1,373,920, morph boundary 10,641,533, morph token 12,015,453,
+  morph unit 17,707,418, orth eojeol 6,610,698, symbol reading 537,167이다.
+- 실행 wrapper의 성공을 그대로 신뢰하지 않고
+  `verify_production_source_contract.ps1 -Year 2021 -RequireMorphYearSuccess`로
+  별도 검증했다. source contract check는 모두 통과했고 source meta SHA와
+  input/output path identity가 동결 계약과 일치했다. 연간 manifest gate는
+  `all_shards_success=true`, 중복 utt_id 0, 비결정적 gzip mtime 0,
+  철자·기호 coverage 일치였다.
+- 근거 보고서는
+  `outputs/reports/SOURCE_CONTRACT_morph_search_v3_20260801_2021.json`과
+  `outputs/reports/VERIFY_SOURCE_2021_after_morph_search.json`이다. 이 단계는
+  MFA·TextGrid·2020 완성본·원본 WAV/CSV를 변경하지 않았다. 다음 단계는
+  연구자가 2021–2025 safe-body 제외 세 범주를 명시 승인한 뒤 2021 한 연도
+  MFA만 시작하는 것이다.

@@ -1,0 +1,77 @@
+﻿{
+    "schema_version":  "production_source_contract_check.v1",
+    "status":  "passed",
+    "checked_at":  "2026-08-04T09:45:45.2258839+09:00",
+    "year":  "2021",
+    "morph_run_id":  "morph_search_v3_20260801",
+    "search_master_run_id":  "pre_mfa_v1_20260725",
+    "source_meta_sha256":  "1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79",
+    "source_contract":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\SOURCE_CONTRACT.json",
+    "year_manifest":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\annual_tables\\YEAR_MANIFEST.json",
+    "checks":  [
+                   {
+                       "name":  "source_meta_exists",
+                       "status":  "passed",
+                       "detail":  "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\_build_meta.json"
+                   },
+                   {
+                       "name":  "year_input_exists",
+                       "status":  "passed",
+                       "detail":  "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2021"
+                   },
+                   {
+                       "name":  "source_meta_success",
+                       "status":  "passed",
+                       "detail":  "status=success"
+                   },
+                   {
+                       "name":  "search_master_run_id",
+                       "status":  "passed",
+                       "detail":  "actual=pre_mfa_v1_20260725, expected=pre_mfa_v1_20260725"
+                   },
+                   {
+                       "name":  "source_contract_exists",
+                       "status":  "passed",
+                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\SOURCE_CONTRACT.json"
+                   },
+                   {
+                       "name":  "source_contract_schema",
+                       "status":  "passed",
+                       "detail":  "schema=production_frozen_source_contract.v1"
+                   },
+                   {
+                       "name":  "source_contract_year",
+                       "status":  "passed",
+                       "detail":  "actual=2021, expected=2021"
+                   },
+                   {
+                       "name":  "source_contract_run_ids",
+                       "status":  "passed",
+                       "detail":  "morph=morph_search_v3_20260801, search=pre_mfa_v1_20260725"
+                   },
+                   {
+                       "name":  "source_contract_sha256",
+                       "status":  "passed",
+                       "detail":  "actual=1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79, expected=1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79"
+                   },
+                   {
+                       "name":  "source_contract_paths",
+                       "status":  "passed",
+                       "detail":  "source/input/output path identity"
+                   },
+                   {
+                       "name":  "morph_year_manifest_exists",
+                       "status":  "passed",
+                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\annual_tables\\YEAR_MANIFEST.json"
+                   },
+                   {
+                       "name":  "morph_year_manifest_success",
+                       "status":  "passed",
+                       "detail":  "status=success, year=2021"
+                   }
+               ],
+    "failed_checks":  [
+
+                      ],
+    "modifies_frozen_source":  false
+}
