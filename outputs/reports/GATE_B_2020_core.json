@@ -2,7 +2,7 @@
   "schema_version": "mfa_research_6tier_next_year_gate.v1",
   "supported_export_mode": "direct_db_research_6tier_v1",
   "status": "passed",
-  "checked_at": "2026-08-03T23:41:57+09:00",
+  "checked_at": "2026-08-04T10:04:52+09:00",
   "prior_year": "2020",
   "next_year": "2021",
   "input_contract_id": "7b52204cdb2119b057e5d961ecd75ab33858a3f5a1323d5018d9649e24f53840",

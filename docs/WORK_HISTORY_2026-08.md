@@ -1197,3 +1197,34 @@ shard 2–23을 재개하는 것이다.
   MFA·TextGrid·2020 완성본·원본 WAV/CSV를 변경하지 않았다. 다음 단계는
   연구자가 2021–2025 safe-body 제외 세 범주를 명시 승인한 뒤 2021 한 연도
   MFA만 시작하는 것이다.
+
+## 2026-08-04 — 2021–2025 safe-body 세 범주 연구자 승인
+
+- 10:02 KST에 연구자 `ari30`이 다음 문구로 명시 승인했다.
+  “2021–2025의 audio_pairing_unresolved, empty_reference_unresolved_symbol,
+  text_duration_impossible 세 범주를 안전 본체 MFA에서 제외하고, 음원 회수
+  가능분은 후속 shard로 처리하는 것을 승인한다. 승인자 ari30.”
+- 승인 행은 2021 1,488, 2022 1,231, 2023 103,930, 2024 1,610,
+  2025 4,033으로 합계 112,292다. 범주 합계는 음원 대응 불가 111,425,
+  빈 참조·미해결 기호 788, 원전 시간상 텍스트 불가능 79다.
+- 각 연도의 `04_RESEARCHER_APPROVAL.json`과 `approved_exclusions.json`을
+  생성하고 승인자, 승인 문구, 후보 CSV SHA-256, 입력 계약 ID, 범주별 수를
+  재검증했다. 이는 자료 삭제 승인이 아니며 안전 본체에서만 분리한다. 회수 가능한
+  음원은 원본을 바꾸지 않는 후속 shard에서 같은 공통 Jamo r2·음향모델로 정렬한다.
+- 승인 작업은 MFA를 시작하지 않았고 WAV, LAB, 2020 완성본을 변경하지 않았다.
+  실제 실행 wrapper도 2021 한 연도만 허용한다.
+
+## 2026-08-04 — 2021 MFA 시작 preflight의 생성 보고서 자기오염 수정
+
+- 2020 Gate B, 2021 source contract, 연구자 승인 1,488건, 공통 Jamo r2,
+  109-phone inventory, D: 공간과 모델 검사는 모두 통과했다. 그러나 outer
+  wrapper가 먼저 갱신한 `outputs/reports`의 `checked_at`을 최종 Git clean gate가
+  미커밋 코드로 오인해 `tracked_code_committed` 하나만 실패하고 안전 중단했다.
+- `preflight_mfa_year_queue.ps1`의 Git gate가 `outputs/reports/**`만 제외하고
+  나머지 모든 추적 코드·설정·문서·승인 증거의 미커밋 변경을 계속 차단하도록
+  수정했다. 안전 검사에는 해당 pathspec을 필수 계약으로 추가했다. 따라서 생성
+  보고서 때문에 영구적으로 NO_GO가 되는 순환은 없애되 코드 변경 은폐는 허용하지
+  않는다.
+- 이 진단 시점에도 MFA는 시작되지 않았다. 수정·승인 증거·문서를 커밋한 뒤
+  Windows PowerShell 5.1 안전·호환성 검사와 `-PreflightOnly`를 다시 통과해야
+  사용자 PowerShell용 장시간 2021 MFA 명령을 제공한다.

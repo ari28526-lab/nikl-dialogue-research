@@ -65,9 +65,9 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
 
 ## 실제 미완료
 
-- 2021–2025 검색표.
-- 2021–2025 신규 r2 MFA와 연도별 승인 제외 계약. LAB·pending 후보표·safe-body
-  5행 요약은 완료됐고 연구자 범주 승인을 기다린다.
+- 2022–2025 검색표. 2021 검색표와 frozen source contract는 완료됐다.
+- 2021–2025 신규 r2 MFA. 연도별 승인 제외 계약은 2026-08-04에 연구자
+  `ari30`의 명시 승인으로 완료됐고, 2021 MFA는 아직 시작하지 않았다.
 - 7표+4표 최종 join/Parquet·DuckDB view.
 - 우리말샘 1:N 보조표 연결. reference 4종은 2026-07-24 D: 회수 기록이
   있으므로 사용 직전 실물·SHA를 다시 확인한다.
@@ -110,11 +110,14 @@ utterance 868,187, word 4,973,795, phone 19,101,192, excluded 2,250행이며,
 경계를 추가하지 않는다.
 
 현재 안전 정지점은 **2020 Gate B 통과, 2021 `morph_search.v3` 7표와 frozen
-source contract 완료, 2021–2025 safe-body 후보표 완료, 2021 MFA 미시작**이다.
+source contract 완료, 2021–2025 safe-body 제외 계약 승인 완료, 2021 MFA
+미시작**이다.
 5개년 4,232,919발화 중 실패 세션 전 행과 gate 통과
-세션의 실제 issue, 빈 참조, 시간 불가능을 합친 112,292개가 pending 승인
-후보이고 안전 본체는 4,120,627개다. 연구자가 세 범주를 승인한 뒤에도 2021
-한 연도만 시작한다. 상세 과정은
+세션의 실제 issue, 빈 참조, 시간 불가능을 합친 112,292개가 연구자 승인 제외이며
+안전 본체는 4,120,627개다. 승인 범주는 `audio_pairing_unresolved`,
+`empty_reference_unresolved_symbol`, `text_duration_impossible` 세 가지다. 이는
+삭제가 아니라 안전 본체에서 분리하는 계약이며 음원 회수 가능분은 동일 모델의
+후속 shard로 처리한다. 다음 실행도 2021 한 연도만 시작한다. 상세 과정은
 `docs/WORK_HISTORY_2026-08.md`, 실행 명령은
 `docs/RUNBOOK_production_2020_2025.md`만 정본으로 사용한다.
 
@@ -156,7 +159,11 @@ canonical 보고서를 변경하기 전에 거부되며, 최종 queue로 Gate B 
 행 단위 duration issue만 제외한 최초 queue는 session gate 실패 세션 안의
 우연 일치를 안전 발화로 남길 수 있어 실행 정본에서 제외했다. 현행 queue는 실패
 세션 전 행을 격리하고 원본 WAV/CSV를 바꾸지 않는다. 2021–2025 후보 수는 각각
-1,488 / 1,231 / 103,930 / 1,610 / 4,033이며 자동 승인은 0건이다.
+1,488 / 1,231 / 103,930 / 1,610 / 4,033이다. 2026-08-04 10:02 KST에
+연구자 `ari30`이 세 범주를 명시 승인했으며 자동 승인은 0건이다. 각 연도
+`04_RESEARCHER_APPROVAL.json`과 `approved_exclusions.json`은 후보 CSV의 SHA와
+입력 계약 ID에 결속돼 있다. 승인 생성은 MFA를 시작하거나 WAV/LAB를 변경하지
+않았다.
 
 승인 뒤 실제 MFA queue는 연도별로 분리한다.
 `mfa_r2_prod_safe_body_<YEAR>_20260803`이며 각 queue는 정확히 한 연도만

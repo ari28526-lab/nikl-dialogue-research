@@ -1,0 +1,47 @@
+{
+  "schema_version": "mfa_exclusion_category_approval.v1",
+  "status": "approved",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-04T10:02:21.658940+09:00",
+  "approval_statement": "2021–2025의 audio_pairing_unresolved, empty_reference_unresolved_symbol, text_duration_impossible 세 범주를 안전 본체 MFA에서 제외하고, 음원 회수 가능분은 후속 shard로 처리하는 것을 승인한다. 승인자 ari30.",
+  "approved_categories": {
+    "audio_pairing_unresolved": 1025,
+    "empty_reference_unresolved_symbol": 399,
+    "text_duration_impossible": 64
+  },
+  "approved_row_count": 1488,
+  "candidate_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 2501,
+    "mtime_ns": 1785767948779654700,
+    "sha256": "98caf9264e1b58928e4f753b1c7edaa5e61c6bd35f96a5dc1ed803e175cea2b3"
+  },
+  "pending_candidate_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 412772,
+    "mtime_ns": 1785767948754702900,
+    "sha256": "2dee1853a755ac04292685f2874cf910941e4d29035d9592ead6effc6f968ccd"
+  },
+  "approved_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 414260,
+    "mtime_ns": 1785805341655093900,
+    "sha256": "52ec90d72afddc4aff65328cf742d6ac0e42b25886fa2939393b71ddb7f8d636"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2021\\approved_exclusions.json",
+    "bytes": 1040,
+    "mtime_ns": 1785805341685401800,
+    "sha256": "0a107c08ea3545be9e9d8183fcc36cf720787eb433fa0878e2f449665d6dfc18"
+  },
+  "contract_row_count": 1488,
+  "policy": {
+    "explicit_researcher_category_approval": true,
+    "pending_candidate_snapshot_unchanged": true,
+    "automatic_approval": false,
+    "starts_mfa": false,
+    "changes_wav_or_lab": false
+  }
+}

@@ -235,9 +235,14 @@ if ($RunRepositoryTests) {
     )
 }
 
-& git -C $projectRoot diff --quiet
+# This preflight and its outer wrappers refresh timestamped evidence under
+# outputs/reports before reaching this check.  Those generated observations
+# must not make an otherwise committed execution contract fail forever.
+# Keep every other tracked path (scripts, tests, config, docs, approval
+# evidence, etc.) inside the clean-worktree gate.
+& git -C $projectRoot diff --quiet -- . ':(exclude)outputs/reports/**'
 $trackedClean = $LASTEXITCODE -eq 0
-& git -C $projectRoot diff --cached --quiet
+& git -C $projectRoot diff --cached --quiet -- . ':(exclude)outputs/reports/**'
 $stagedClean = $LASTEXITCODE -eq 0
 Add-Check 'tracked_code_committed' ($trackedClean -and $stagedClean) (
     "working_diff_clean=$trackedClean staged_diff_clean=$stagedClean"
