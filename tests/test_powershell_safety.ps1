@@ -383,6 +383,24 @@ foreach ($path in $files) {
             )
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'start_next_mfa_year_after_gate.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[string]$PriorExecutionQueueId',
+            '-ExecutionQueueId $PriorExecutionQueueId'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "다음 연도 wrapper 직전 queue 계약 회귀: $required"
+                )
+            }
+        }
+        if ($text.Contains('-ExecutionQueueId $priorQueueId')) {
+            $failures.Add(
+                '다음 연도 wrapper가 폐기된 고정 prior queue 변수를 사용함'
+            )
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'run_mfa_year_queue_safe.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(

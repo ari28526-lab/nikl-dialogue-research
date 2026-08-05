@@ -1707,3 +1707,13 @@ shard 2–23을 재개하는 것이다.
   `D:\mfa_eojeol\audit_failure_archive\2021_checkpoint_lab_root_failure_20260805.7z`
   로 압축했고 7-Zip 무결성 검사를 통과했다. 작업 폴더의 원시 대용량
   실패 파일은 제거했다.
+## 2026-08-05 — 2022 시작 전 직전 연도 queue 계약 일반화
+
+- 2021 연구자 Gate 대기 중 2022를 읽기 전용 점검했다. 2022의 기존 승인
+  제외 계약은 input contract `3043de75...`에 대해 1,231건이 승인되어
+  있고, 같은 input ID의 `2022.lab_input_done.json`도 존재한다. 2022 MFA
+  DB·정렬 계약·완료 marker는 아직 없으므로 생산 정렬은 시작되지 않았다.
+- `start_next_mfa_year_after_gate.ps1`이 직전 연도 queue를 과거 기본 이름으로
+  고정해 현재 2021 checkpoint QC queue를 참조하지 못할 수 있음을
+  발견했다. `PriorExecutionQueueId`를 명시적으로 받도록 2022–2025 공통
+  wrapper를 일반화했다. 2021 연구자 승인 전에는 2022를 실행하지 않는다.

@@ -409,3 +409,9 @@ phone 39,296,691행, 승인 제외 2,037행이다. DB 표본 24건은 24개 서�
 다른 세션에서 뽑혔고 semantic·byte 동등성이 모두 24/24이다. 현재
 Dropbox `MFA_2021_FINAL_REVIEW_20260805`에서 연구자 인프라 표본 검토만
 남았다. 이 승인이 끝나기 전에는 2022를 시작하지 않는다.
+## 2022 시작 준비 상태
+
+2022 승인 제외 계약은 input ID `3043de75...` 기준 1,231건이며, 같은 ID의
+LAB 입력 완료 marker가 있다. 2022 MFA DB·정렬 계약·완료 marker는 아직
+없다. 다음 실행은 2021 연구자 Gate가 승인된 뒤 현재 2021 queue ID를
+`PriorExecutionQueueId`로 명시해 preflight부터 수행한다.

@@ -13,6 +13,8 @@ param(
         'mfa_r2_prod_safe_body_2021_2025_20260803'
     ),
     [ValidatePattern('^$|^[A-Za-z0-9._-]+$')]
+    [string]$PriorExecutionQueueId = '',
+    [ValidatePattern('^$|^[A-Za-z0-9._-]+$')]
     [string]$ExecutionQueueId = '',
     [switch]$PreflightOnly
 )
@@ -26,10 +28,14 @@ if ([string]::IsNullOrWhiteSpace($ExecutionQueueId)) {
     $ExecutionQueueId = "mfa_r2_prod_safe_body_${Year}_20260803"
 }
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$priorQueueId = "mfa_r2_prod_safe_body_${PriorYear}_20260803"
+if ([string]::IsNullOrWhiteSpace($PriorExecutionQueueId)) {
+    $PriorExecutionQueueId = (
+        "mfa_r2_prod_safe_body_${PriorYear}_20260803"
+    )
+}
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (
     Join-Path $PSScriptRoot 'preflight_production_next_year_gate.ps1'
-) -PriorYear $PriorYear -ExecutionQueueId $priorQueueId
+) -PriorYear $PriorYear -ExecutionQueueId $PriorExecutionQueueId
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $sourceReport = Join-Path $projectRoot (
     "outputs\reports\PREFLIGHT_source_contract_${Year}_before_mfa.json"
