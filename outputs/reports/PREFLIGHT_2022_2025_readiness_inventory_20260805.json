@@ -1,0 +1,56 @@
+{
+  "schema_version": "mfa_remaining_year_readiness_inventory.v1",
+  "status": "ready_for_sequential_gate_not_authorized_to_start",
+  "checked_at": "2026-08-05T11:00:00+09:00",
+  "requirements_not_yet_satisfied": [
+    "each prior year researcher infrastructure review approval",
+    "each prior-year-to-next-year production gate",
+    "per-year source-contract preflight immediately before MFA"
+  ],
+  "years": {
+    "2022": {
+      "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+      "approved_exclusion_rows": 1231,
+      "lab_marker_status": "passed",
+      "lab_sessions": 2654,
+      "lab_rows_seen": 866359,
+      "alignment_contract_exists": false,
+      "mfa_db_exists": false
+    },
+    "2023": {
+      "input_contract_id": "9496ea5c895fd4f913ba6d747c04d224a38c27b217483657ce265b544c07a089",
+      "approved_exclusion_rows": 103930,
+      "lab_marker_status": "passed",
+      "lab_sessions": 1973,
+      "lab_rows_seen": 677262,
+      "alignment_contract_exists": false,
+      "mfa_db_exists": false
+    },
+    "2024": {
+      "input_contract_id": "5c2f9c76a697d168b9ccac4dfd16deb7f9bb04d78311f202dececaca26af3b6e",
+      "approved_exclusion_rows": 1610,
+      "lab_marker_status": "passed",
+      "lab_sessions": 3227,
+      "lab_rows_seen": 728257,
+      "alignment_contract_exists": false,
+      "mfa_db_exists": false
+    },
+    "2025": {
+      "input_contract_id": "68436e670449c322786115e2a8aff756385cf2f39adafb18c5502bbf74bd5102",
+      "approved_exclusion_rows": 4033,
+      "lab_marker_status": "passed",
+      "lab_sessions": 2927,
+      "lab_rows_seen": 587121,
+      "alignment_contract_exists": false,
+      "mfa_db_exists": false
+    }
+  },
+  "invariants": {
+    "approved_exclusion_input_matches_lab_marker_input_all_years": true,
+    "no_remaining_year_alignment_started": true,
+    "no_automatic_start_performed": true,
+    "year_2020_modified": false,
+    "source_wav_csv_modified": false
+  },
+  "note": "2023 has a previously reviewed and approved large safe-body exclusion set; this inventory does not reopen that methodological decision or bypass its recorded contract."
+}

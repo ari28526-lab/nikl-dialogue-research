@@ -415,3 +415,11 @@ Dropbox `MFA_2021_FINAL_REVIEW_20260805`에서 연구자 인프라 표본 검토
 LAB 입력 완료 marker가 있다. 2022 MFA DB·정렬 계약·완료 marker는 아직
 없다. 다음 실행은 2021 연구자 Gate가 승인된 뒤 현재 2021 queue ID를
 `PriorExecutionQueueId`로 명시해 preflight부터 수행한다.
+## 2022–2025 잔여 연도 공통 준비 inventory
+
+2022–2025는 승인 제외 계약과 LAB 입력 marker의 input ID가 연도별로
+일치한다. 어느 연도도 alignment contract나 MFA DB가 없어 생산 정렬은
+아직 시작되지 않았다. 준비 수치는
+`outputs/reports/PREFLIGHT_2022_2025_readiness_inventory_20260805.json`에
+고정했다. 이 inventory는 실행 승인이 아니며, 직전 연도 연구자 Gate와
+당해 연도 source preflight를 생략하지 않는다.

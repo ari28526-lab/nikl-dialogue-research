@@ -1717,3 +1717,16 @@ shard 2–23을 재개하는 것이다.
   고정해 현재 2021 checkpoint QC queue를 참조하지 못할 수 있음을
   발견했다. `PriorExecutionQueueId`를 명시적으로 받도록 2022–2025 공통
   wrapper를 일반화했다. 2021 연구자 승인 전에는 2022를 실행하지 않는다.
+## 2026-08-05 — 2022–2025 잔여 연도 준비 상태 동등성 확인
+
+- 2021 연구자 Gate 대기 중 생산 실행 없이 2022–2025 승인 제외 계약과
+  LAB marker를 대조했다. 네 연도 모두 승인 계약 input ID와 LAB marker
+  input ID가 일치했다.
+- 승인 제외 수는 2022 1,231건, 2023 103,930건, 2024 1,610건, 2025
+  4,033건이다. 2023의 큰 제외 집합은 이미 연구자가 승인한 safe-body
+  계약을 그대로 보존하며, 이 준비 inventory가 그 판단을 재개정하거나
+  우회하지 않는다.
+- 네 연도 모두 alignment contract, MFA DB, 정렬 완료 marker가 없으므로
+  아직 생산 정렬은 시작되지 않았다. 각 연도는 반드시 직전 연도 연구자
+  Gate와 당해 연도 source preflight를 순차 통과한 뒤에만 시작한다.
+- 근거: `outputs/reports/PREFLIGHT_2022_2025_readiness_inventory_20260805.json`.
