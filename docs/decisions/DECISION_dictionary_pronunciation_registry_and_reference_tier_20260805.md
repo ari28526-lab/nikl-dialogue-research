@@ -1,6 +1,6 @@
 # 사전 발음 registry·조인표·참조 tier 결정 — 2026-08-05
 
-상태: **v2 registry 실물 검증·참조용 채택 완료, occurrence 전수 조인 전**
+상태: **v2 registry 채택, 2020·2021 occurrence·비교표·발화 index 전수 검증, 2020 7-tier 구현 파일럿 통과**
 
 ## 1. 목적
 
@@ -217,3 +217,90 @@ group/member gzip 전수 읽기와 SHA를 확인했고 중복 key·고아 member
 우선순위 오류·partial은 모두 0이다. 2020 첫 5,000형태소 pilot은 입력과 출력이
 1:1이며 3,866건이 정확 표면형+품사로 연결됐다. 불일치·미등재·문장부호·비표준
 표면형은 서로 다른 상태로 보존했다.
+
+## 8. 왜 2020 생산 검토 때 이 층을 잡지 못했는가
+
+2020 Gate B의 검토 대상은 다음이었다.
+
+- 공통 Jamo r2 phone 기준과 MFA 계산의 완주 여부
+- WAV–LAB–DB–TextGrid 발화 동일성
+- 6개 tier의 시간 경계·연속성·검색 정보 가독성
+- 제외 발화와 미정렬 발화의 정확한 회계
+
+당시 `pron_reference_*`는 표기와 규칙기에서 만든 예상형이었고, 우리말샘
+`pron_1/2` 후보를 형태소의 표면형·표제어·품사·의미에 연결하는 occurrence
+계약은 아직 없었다. 따라서 연구자가 2020 표본을 잘못 보거나 검토를 누락해서가
+아니라, **검토표에 사전 후보가 아직 배선되지 않은 설계 공백**이었다. 2021 표본의
+`있잖아`에서 `phones_mfa`와 규칙 예상형·사전 후보의 역할 차이가 눈에 띄면서 이
+공백이 확인됐다.
+
+이후 보완은 2021 예외처리로 두지 않는다. 2020–2025 모두
+`config/pronunciation_reference_layer_v1.json`의 같은 schema·좌표·출처 계약을
+사용한다. 기존 2020 정렬 검토의 효력은 유지하고, 새 참조층만 파생 backfill한다.
+
+## 9. 전수 산출과 좌표 계약
+
+2020·2021 morphology occurrence를 각각 5,767,506행과 12,015,453행으로
+1:1 생성했고, 독립 동시 전수 스캔에서 identity·link state·manifest SHA·partial
+오류가 모두 0이었다.
+
+최초 비교표 파일럿은 형태소 분석 어절을 중심 좌표로 삼았다. 그러나
+`그래가지고`처럼 원 표기 어절 1개가 형태소 분석 어절 2개가 되는 경우 규칙 예상형과
+MFA 어절을 잃을 수 있었다. 이 파일럿은 비채택 근거로 보존하고, 생산 v2는 다음처럼
+고쳤다.
+
+- 1행 단위는 `orth_eojeol_tokens`의 **원 표기 어절**이다.
+- 규칙 예상형과 MFA word/phone 비교는 원 표기 좌표에서 계속 보존한다.
+- 형태소 사전 후보는 `linked_morph_eojeol_idx`가 명시될 때만 결합한다.
+- 어절 수가 다르면 후보를 추측해서 붙이지 않고 `morph_coordinate_not_linked`로
+  기록한다. 후보 원문은 occurrence 표에서 사라지지 않는다.
+
+2020 생산 비교표 v2는 원 표기 어절 3,042,451행, 2021은 6,610,698행이다.
+각각의 발화 index는 870,437행과 1,373,920행이다. 두 연도 모두 독립 전수
+감사에서 좌표·구조화 JSON·규칙/MFA 재계산·SHA·partial 오류가 0이었다. 차이
+flag는 오류나 실현 판정이 아니라 후속 검토 대상을 기술하는 값이다.
+
+## 10. 7번째 tier와 재개 단위 검증
+
+`pron_reference_utt`는 기존 6-tier를 복사한 새 파생 root에만 추가한다.
+`utterance` tier의 interval 경계를 정확히 재사용하며, 사전 후보에 음소별 가짜
+시간을 부여하지 않는다. 상세 1:N 후보는 CSV가 정본이다.
+
+2020 실제 2세션 914개 TextGrid 파일럿에서 다음을 독립 전수 확인했다.
+
+- 기존 6개 tier의 시간·라벨 변경: 0
+- 7번째 tier 순서·0–xmax 연속성·`utterance` 경계 일치: 914/914
+- 발화 label과 동반표 불일치: 0
+- partial: 0
+
+TextGrid backfill은 세션별 임시 폴더→검증→승격→checkpoint 순서다. 중단되면
+완료 세션은 건너뛰고 실패 세션만 다시 만든다. `--max-sessions N`은 재실행마다
+N개를 더 만드는 뜻이 아니라 연도 첫 N세션이라는 안정된 파일럿 범위다.
+
+실행기는 `scripts/run_pronunciation_reference_year.ps1` 하나이며 `Tables`,
+`Pilot`, `Full` 모드를 제공한다. 2022–2025도 당해 `morph_search.v3`와 6-tier
+동반표 manifest가 성공한 뒤 동일 실행기를 사용한다.
+
+## 11. 정리·보관과 다음 단계
+
+채택되지 않은 registry v1과 좌표 설계 중 폐기된 1,000발화 비교 파일럿 2종은
+현재 생산 root에서 제거하기 전에 다음 읽기 전용 archive로 검증 보관했다.
+
+```text
+E:\READ_ONLY_ARCHIVE\2026_summer_research\pronunciation_reference_pre_adoption_20260805\
+  pronunciation_reference_pre_adoption_20260805.7z
+```
+
+6개 파일, 84,513,545바이트를 SHA-256 목록화했고 7-Zip 무결성 검사를 통과한
+뒤 정확히 세 구경로만 D:에서 제거했다. 채택된 v2 registry, 2020·2021 전수표,
+2020 7-tier 파일럿, 기존 MFA·6-tier는 정리 대상이 아니었다. 복구 근거는
+`outputs/reports/ARCHIVE_pronunciation_reference_pre_adoption_20260805.json`이다.
+
+다음 순서는 다음과 같이 동결한다.
+
+1. 이 결정문·RUNBOOK·자산 대장·검증 보고서를 Git에 커밋·푸시한다.
+2. 같은 코드·계약의 2020 구현 파일럿을 다시 반복하지 않는다.
+3. 2021 7-tier를 세션 checkpoint 방식으로 전수 파생하고 독립 검증한다.
+4. 2021 인프라 Gate의 남은 연구자 확인을 끝낸 뒤에만 2022 MFA preflight로
+   넘어간다.
+5. 2022–2025의 발음 참조표는 각 연도 6-tier가 완료된 후 같은 실행기로 만든다.

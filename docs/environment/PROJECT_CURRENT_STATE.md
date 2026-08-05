@@ -17,6 +17,33 @@
 MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실제 실현 판정,
 음소 전사 정답, 음운론적 분석 결과로 취급하지 않는다.
 
+## 사전 발음 참조 레이어 현재 상태
+
+- 2020 생산 검토에서 사전 후보를 놓친 것은 연구자 표본 검토 실패가 아니라,
+  당시 6-tier와 검색표에 우리말샘 `pron_1/2`·품사·의미 occurrence가 아직
+  배선되지 않았기 때문이다. 2021 `있잖아` 사례에서 이 설계 공백을 확인했다.
+- 참조 정본은
+  `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805`다.
+  1,192,729후보와 564,385 표면형+품사 group이 검증됐다. 사전 등재 후보와
+  legacy 기계 fallback은 분리하며 MFA 사전으로 자동 채택하지 않는다.
+- 2020·2021 형태소 occurrence 5,767,506 / 12,015,453행은 전수 생성·독립
+  검증 완료됐다. 원 표기 어절 비교표는 3,042,451 / 6,610,698행, 발화 index는
+  870,437 / 1,373,920행이며 두 연도 모두 SHA·좌표·재계산 감사가 통과했다.
+- 2020 실제 2세션 914개 7-tier 구현 파일럿은 기존 6-tier 변경 0,
+  `pron_reference_utt` 경계·label 오류 0으로 통과했다. 생산 6-tier와 MFA DB는
+  그대로다.
+- 2020–2025 공통 계약은
+  `config/pronunciation_reference_layer_v1.json`, 실행 순서는
+  `docs/RUNBOOK_pronunciation_reference_layer_2020_2025.md`가 정본이다.
+  연도별 `morph_search.v3`와 6-tier가 완료될 때마다 같은 실행기를 사용한다.
+- 비채택 registry v1과 폐기된 비교 파일럿 2종은 E: 읽기 전용 archive에
+  SHA·7-Zip 검증 후 보관했고 D:의 해당 구경로만 제거했다. 채택 v2와 2020·2021
+  생산표는 유지했다. 근거는
+  `outputs/reports/ARCHIVE_pronunciation_reference_pre_adoption_20260805.json`이다.
+- 현재 다음 허용 단계는 같은 계약의 파일럿을 반복하는 것이 아니라 2021
+  7-tier 전수 파생·독립 검증이다. 그 뒤 2021 연구자 Gate를 닫기 전에는 2022
+  MFA를 시작하지 않는다.
+
 ## 2021 현재 실행 상태
 
 - 공통 Jamo r2 MFA 계산은 완료됐고 보존 DB는

@@ -217,6 +217,19 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | audit_review_textgrid_boundaries.py | 검토 묶음의 WAV 신호량과 TextGrid 0--xmax·tier별 좌우 빈 경계를 감사하고 각 TextGrid를 Python PNG로 그려 사람과 기계가 같은 구조를 확인 | V2 4/4 TextGrid × 6/6 tier의 0.05초 좌우 경계 통과 |
 | audit_mfa_db_tier_edges.py | 전수 6-tier export 전에 보존 MFA DB의 유표 word·phone 바깥 발화 경계를 읽기 전용 집계해 검토본 표시 문제와 생산 시간계약을 분리 | 2020 정렬 성공 868,187/868,187 word-phone 시작·끝 일치 |
 | inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
+
+## 사전 발음 참조 레이어 (2026-08-05)
+
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| `python/build_dictionary_pronunciation_group_summaries.py` | 1:N registry group을 후보 선택 없이 compact summary로 만들어 occurrence 반복 복제를 줄임 | 564,385 group 생성 완료 |
+| `python/verify_dictionary_pronunciation_occurrences.py` | 형태소 입력과 occurrence를 독립 동시 전수 스캔하고 identity·상태·SHA·partial 검증 | 2020·2021 통과 |
+| `python/build_eojeol_pronunciation_compare.py` | 원 표기 어절 좌표에서 규칙 예상형·형태소 사전 후보·MFA phone을 기술 비교; 좌표 불일치 추측 금지 | 2020 3,042,451행 완료 |
+| `python/verify_eojeol_pronunciation_compare.py` | 원 표기 어절 identity와 구조화 후보·규칙/MFA 비교를 독립 재계산 | 2020 통과 |
+| `python/build_pron_reference_utterance_index.py` | 어절 비교를 발화 수준 TextGrid 검색 label과 요약 CSV로 집계 | 2020 870,437행 완료 |
+| `python/backfill_pron_reference_textgrid.py` | 기존 6-tier를 바꾸지 않고 7번째 `pron_reference_utt`를 세션 checkpoint 방식으로 파생 | 2020 2세션 914건 구현 파일럿 통과 |
+| `python/verify_pron_reference_textgrid_backfill.py` | 앞 6개 tier 불변과 7번째 tier 순서·경계·연속성·label을 독립 전수 감사 | 파일럿 914/914 통과 |
+| `run_pronunciation_reference_year.ps1` | 2020–2025 동일 계약의 occurrence→compare→index→선택적 7-tier를 `Tables/Pilot/Full`로 실행·재개 | PS5.1 safety/runtime·2020 pilot 통과 |
 | mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
 | finalize_post_mfa_alignment_exclusions.py | 기존 pre-MFA 승인 계약과 보존 DB의 정확한 post-MFA 미정렬 ID를 결합한다. 16표본 결정·원 후보 SHA·DB ID 집합·명시 승인 token을 검증하고 원본을 덮어쓰지 않은 새 계약을 만든다 | 2020: 1,887 + 363(청취 불가 3 + 정렬 실패 360) = 2,250 승인, DB exact match |
 | finalize_post_mfa_exact_reconciliation_exclusions.py | 2021–2025 generic post-MFA 경로. pending inventory SHA, export unknown ID, 보존 DB의 feature/정렬 실패 분류, pre-MFA 계약, 모든 행의 명시 승인과 token을 검증해 새 결합 계약을 만든다. DB 수정·자동 승인·full-year rerun 없음 | Python 관련·회귀 30시험 통과 |

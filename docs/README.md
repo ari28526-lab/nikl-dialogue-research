@@ -19,6 +19,8 @@
 - [decisions/DECISION_incremental_unattended_year_MFA_20260801.md](decisions/DECISION_incremental_unattended_year_MFA_20260801.md): 연도별 checkpoint와 실패 보존
 - [decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md](decisions/METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md): 6개년 phone 방법 동일성
 - [decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md](decisions/PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md): 서울 코퍼스·KOINA를 고려한 tier 근거
+- [RUNBOOK_pronunciation_reference_layer_2020_2025.md](RUNBOOK_pronunciation_reference_layer_2020_2025.md): 우리말샘 occurrence·규칙/MFA 비교표·7번째 파생 tier의 연도 공통 실행 절차
+- [DATA_DICTIONARY_pronunciation_reference_layer.md](DATA_DICTIONARY_pronunciation_reference_layer.md): 발음 참조 레이어 열·좌표·상태값 정의
 
 ## 코드·증거·검토
 

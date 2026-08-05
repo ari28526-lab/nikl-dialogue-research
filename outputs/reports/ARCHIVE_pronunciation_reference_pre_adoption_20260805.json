@@ -1,0 +1,58 @@
+{
+    "schema_version":  "pronunciation_reference_development_archive.v1",
+    "status":  "passed",
+    "recorded_at":  "2026-08-05T16:18:19.2311685+09:00",
+    "reason":  "non-adopted registry v1 and superseded 1000-utterance comparison pilots; adopted v2 production outputs remain on D:",
+    "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference",
+    "source_file_count":  6,
+    "source_bytes":  84513545,
+    "source_records":  [
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v1_20260805",
+                               "relative_path":  "dictionary_pronunciation_registry.csv.gz",
+                               "bytes":  83743330,
+                               "sha256":  "dca116b5a2026973bcf126d58bddf0232f628441d02dfa9eb7cc82a3f079330a"
+                           },
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v1_20260805",
+                               "relative_path":  "dictionary_pronunciation_registry_manifest.json",
+                               "bytes":  2714,
+                               "sha256":  "cda2eeb23743f08f5fb3bb8c9850a4442e78a97a803f28132929099914bba76c"
+                           },
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v1_pilot_1000",
+                               "relative_path":  "2020\\eojeol_pronunciation_compare.csv.gz",
+                               "bytes":  387251,
+                               "sha256":  "a032cabb6972efc376e96c64f1e22e4fa14343a7167609e9ea139988494947a5"
+                           },
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v1_pilot_1000",
+                               "relative_path":  "2020\\eojeol_pronunciation_compare_manifest.json",
+                               "bytes":  5453,
+                               "sha256":  "e38d1ed0cfa934631c786757ec1758af9770fe481f0e706d115c62e1d256fe4d"
+                           },
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v2_pilot_1000",
+                               "relative_path":  "2020\\eojeol_pronunciation_compare.csv.gz",
+                               "bytes":  369294,
+                               "sha256":  "a81022bb63005cda30b3f19819428ec33e33ee8cc5b897a7da7fe6e211a69877"
+                           },
+                           {
+                               "source_root":  "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v2_pilot_1000",
+                               "relative_path":  "2020\\eojeol_pronunciation_compare_manifest.json",
+                               "bytes":  5503,
+                               "sha256":  "c356e2c7e8a374c61562519171ff29124c5c80e84d55892d2bc5fdd52c620f1d"
+                           }
+                       ],
+    "archive":  {
+                    "path":  "E:\\READ_ONLY_ARCHIVE\\2026_summer_research\\pronunciation_reference_pre_adoption_20260805\\pronunciation_reference_pre_adoption_20260805.7z",
+                    "bytes":  84504963,
+                    "sha256":  "c692a4469dc9f6cf22fb64f1b4a58a65b975558b102d7c825703bf59ed6665fb",
+                    "seven_zip_test":  "passed"
+                },
+    "deletion_scope":  [
+                           "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v1_20260805",
+                           "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v1_pilot_1000",
+                           "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v2_pilot_1000"
+                       ]
+}

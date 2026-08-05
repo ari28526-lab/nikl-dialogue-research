@@ -1,0 +1,49 @@
+{
+  "schema_version": "verify_morph_dictionary_pronunciation_occurrences.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-05T14:13:10+09:00",
+  "year": "2020",
+  "method": "independent simultaneous full-row scan of morph input and occurrence output; identity, link-state, manifest count, byte, SHA-256, and partial-file checks",
+  "rows_verified": 5767506,
+  "status_counts": {
+    "dictionary_surface_not_found": 80721,
+    "matched_exact_surface_pos": 4450638,
+    "not_applicable_nonstandard_surface": 148730,
+    "not_applicable_punctuation": 263456,
+    "surface_found_pos_mismatch": 823961
+  },
+  "error_counts": {},
+  "partial_files": [],
+  "inputs": {
+    "morph_tokens": {
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\morph_tokens.csv.gz",
+      "bytes": 59586961,
+      "mtime_ns": 1785573824292729000,
+      "sha256": "04a2646f14c6e15361198931cd427214febf660ded7d89e3b471f834e2068ed3"
+    },
+    "occurrences": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\occurrences_v1\\2020\\morph_dictionary_pron_occurrences.csv.gz",
+      "bytes": 136893744,
+      "mtime_ns": 1785905645974016200,
+      "sha256": "ea0ac1c89425bf5ef835e84ef29a429a421e356473cf34db2928e27293993b37"
+    },
+    "occurrence_manifest": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\occurrences_v1\\2020\\morph_dictionary_pron_occurrences_manifest.json",
+      "bytes": 3206,
+      "mtime_ns": 1785905646789320000,
+      "sha256": "b23976d0d77b681f45400fe63a12627b39e5c71d6b56cb89c633ca54835ba0bb"
+    }
+  },
+  "elapsed_seconds": 112.251,
+  "runtime": {
+    "recorded_at": "2026-08-05T14:13:10+09:00",
+    "git_commit": "7e1ed48425c5ec992b8868adb7470b73a61a34e5",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 19100
+  }
+}

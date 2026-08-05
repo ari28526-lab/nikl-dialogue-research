@@ -16,6 +16,8 @@
   "_comment_textgrid_staging": "G2P 재정렬 신규 4-tier는 먼저 이 staging에 연도별 생성·검증. 기존 06_textgrid_eojeol을 자동 덮어쓰지 않으며, 검증 후 별도 승격 절차로 교체·archive.",
   "textgrid_research_v2_staging": "D:/20_AUDIO/08_textgrid_research_v2_staging",
   "_comment_textgrid_research_v2": "r2 공통사전 전수 MFA의 승인 후보 6-tier와 연도별 gzip 동반표. 외부 리뷰·최종 생산 계약 전에는 대량 생성하지 않음.",
+  "textgrid_pron_reference_v1_staging": "D:/20_AUDIO/09_textgrid_pron_reference_v1_staging",
+  "_comment_textgrid_pron_reference_v1": "검증된 6-tier를 읽기 전용으로 보존하면서 utterance와 같은 경계의 pron_reference_utt만 7번째로 추가한 파생본. 사전 후보는 시간 정답이 아니며 상세 1:N 정보는 동반 CSV가 정본.",
   "mfa_state": "D:/mfa_eojeol",
   "mfa_temp_primary": "C:/mfa_tmp",
   "mfa_temp_secondary": "D:/mfa_tmp",

@@ -52,6 +52,7 @@ $files = @(
     (Join-Path $root 'scripts\archive_legacy_d_workspace_20260802.ps1'),
     (Join-Path $root 'scripts\show_legacy_d_archive_status.ps1'),
     (Join-Path $root 'scripts\run_mfa_r2_infrastructure_pilot.ps1'),
+    (Join-Path $root 'scripts\run_pronunciation_reference_year.ps1'),
     (Join-Path $root (
         'scripts\prune_pre_jamo_outputs_after_compressed_archive.ps1'
     ))

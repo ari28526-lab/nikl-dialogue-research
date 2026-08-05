@@ -1826,3 +1826,86 @@ shard 2–23을 재개하는 것이다.
   occurrence 1:1 연결과 post-MFA 어절 비교 감사표다.
 - 검증 근거:
   `outputs/reports/VERIFY_dictionary_pronunciation_match_index_v1_20260805.json`.
+
+## 2026-08-05 — 2020·2021 occurrence 전수 연결과 연도 공통 참조층 계약
+
+- 2020 생산 표본에서 사전 발음층을 확인하지 못한 원인을 연구자 검토 누락으로
+  보지 않았다. 당시 Gate B의 범위는 MFA 계산·동일 발화·6-tier 경계·검색 정보·
+  제외 회계였고, 우리말샘 `pron_1/2`를 형태소 품사·의미에 연결하는 occurrence
+  계약이 아직 없었다. 2021 `있잖아` 표본이 `phones_mfa`·규칙 예상형·사전 후보를
+  구분해 보여줄 필요를 드러냈다.
+- 2020 5,767,506행과 2021 12,015,453행의 형태소 occurrence 연결표를 생성했다.
+  독립 전수 동시 스캔에서 입력 identity, match state, manifest count/bytes/SHA,
+  partial 오류가 두 연도 모두 0이었다.
+- 564,385 group을 occurrence 비교에서 반복 해석하지 않도록 compact summary를
+  생성했다. group 564,385, member 804,324, preferred 후보 781,132,
+  fallback 보존 23,192이며 출력 SHA는 manifest에 동결했다.
+- 2020–2025 공통 계약을
+  `config/pronunciation_reference_layer_v1.json`에 동결했다. 연도별 예외 코드가
+  아니라 같은 registry·좌표·schema·tier 순서·재개 규칙을 사용한다. 기존 MFA
+  DB·phone inventory·6-tier·WAV·LAB·원 CSV는 변경하지 않는다.
+
+## 2026-08-05 — 어절 비교 좌표 v1 시행착오와 v2 채택
+
+- 첫 비교 파일럿은 형태소 분석 어절을 행 중심으로 사용했다. `그래가지고`처럼
+  원 표기 1어절과 형태소 분석 2어절이 대응하면 규칙 예상형·MFA 어절 연결이
+  비어 버릴 수 있음을 실자료에서 발견했다. 파일럿은 비채택 근거로 보존했다.
+- v2는 `orth_eojeol_tokens`의 원 표기 어절을 정본 좌표로 사용한다. 규칙/MFA
+  비교는 계속 보존하고, 형태소 사전 후보는 명시적 `linked_morph_eojeol_idx`가
+  있을 때만 붙인다. 어절 수가 다르면 추측 결합하지 않고
+  `morph_coordinate_not_linked`를 기록한다.
+- 2020 전수 비교표는 원 표기 어절 3,042,451행이다. 독립 전수 감사에서
+  identity·coordinate·structured JSON·규칙/MFA 재계산·manifest SHA·partial
+  오류가 0이었다. 차이·경고 수는 후속 연구 후보의 기술 통계이며 오류율이나
+  실제 실현 판정률이 아니다.
+- 발화 수준 `pron_reference_utterance.csv.gz` 870,437행을 만들었다. 1:N 후보의
+  실제 상세는 정규화 CSV에 남기고 TextGrid에는 읽을 수 있는 요약 label만 둔다.
+
+## 2026-08-05 — 7번째 tier 파일럿·중단 재개·정렬 순서 교정
+
+- 기존 6-tier를 읽기 전용으로 두고 `pron_reference_utt`만 추가하는 세션
+  checkpoint형 backfill과 독립 감사기를 구현했다. 새 tier는 `utterance`와 같은
+  interval 경계를 사용하며 가짜 phone 시간은 만들지 않는다.
+- 첫 실자료 실행은 TextGrid를 쓰기 전에 `utt_id` 순서 차이로 안전 중단됐다.
+  6-tier alignment 표는 문자열 순서(`1,10,100,...,11`)이고 발화 index는 수치
+  순서(`1,2,...,10,11`)이며 index에는 MFA 제외 발화도 포함됐다. 이를 연도 전체
+  정렬 재생성으로 해결하지 않고, 세션 단위 dictionary join으로 바꿔 발화 내부
+  순서 가정을 제거했다.
+- 재시작 시험에서 `--max-sessions 1`이 완료 세션을 건너뛴 뒤 다음 1세션을 더
+  만드는 의미였음을 발견했다. 원본 손상은 없고 파일럿 파생본만 2세션으로
+  늘었다. 옵션을 “연도 첫 N세션”의 안정된 범위로 교정해 재실행 때 파일럿이
+  확장되지 않게 했다.
+- 실제 2020 2세션 914개를 독립 전수 감사했다. 기존 6-tier semantic 변경 0,
+  7번째 tier 순서·연속성·`utterance` 경계·label 오류 0, partial 0이다. 같은
+  실행을 다시 하면 2세션 914개를 checkpoint로 건너뛰고 새 파일을 만들지 않는다.
+- 단일 실행기 `scripts/run_pronunciation_reference_year.ps1`은 `Tables/Pilot/Full`
+  모드, 연도별 lock, 성공 산출물 재사용, 원 표기 좌표 비교, 세션 재개, 독립
+  검증을 결합한다. Windows PowerShell 5.1 safety 48파일과 runtime compatibility
+  60스크립트가 통과했다.
+- 문서:
+  `docs/RUNBOOK_pronunciation_reference_layer_2020_2025.md`,
+  `docs/DATA_DICTIONARY_pronunciation_reference_layer.md`.
+- 검증 근거:
+  `outputs/reports/VERIFY_pron_reference_textgrid_backfill_2020_20260805.json`.
+
+## 2026-08-05 — 2021 발음 참조표 전수 완료와 다음 단계 전 정리
+
+- 단일 연도 실행기의 `Tables` 모드로 기존 2021 occurrence checkpoint를
+  재사용하고, 원 표기 어절 비교표 v2 6,610,698행과 발화 index 1,373,920행을
+  생성했다. 비교표 741,493,171바이트의 SHA-256은
+  `6232142f1caf53f705891e6aecb4e116dde837e230fa5d07103b1fc44c710f1e`,
+  index 96,551,706바이트의 SHA-256은
+  `6b14ae02840f38c306f3c1ed634b002ee5e096543a80f0eff250eade989a52f3`다.
+- 독립 전수 검증은 6,610,698행을 입력 원 표기 좌표와 함께 다시 읽어 identity,
+  structured morphology, 규칙/MFA 비교 재계산, manifest SHA, partial을 검사했다.
+  오류와 partial은 0이었다. `audit_status`와 `issue_codes` 수는 실제 발음 오류율이
+  아니라 후속 필터·연구자 검토를 위한 기술적 표지다.
+- 채택되지 않은 registry v1과 좌표 설계 중 폐기된 1,000발화 비교 파일럿 2종,
+  총 6파일·84,513,545바이트를 E: 읽기 전용 archive로 압축했다. SHA 목록과
+  7-Zip 검사를 통과한 뒤 정확한 세 구경로만 D:에서 제거했다. 채택 v2,
+  2020·2021 전수표, 기존 MFA·6-tier는 변경하지 않았다.
+- 같은 코드·계약의 2020 7-tier 구현 파일럿이 통과했으므로 2021에서 또 파일럿을
+  반복하지 않는다. 다음 허용 단계는 2021 세션 checkpoint형 전수 backfill과
+  독립 검증이며, 그 뒤 연구자 Gate 전에는 2022 MFA로 넘어가지 않는다.
+- archive 근거:
+  `outputs/reports/ARCHIVE_pronunciation_reference_pre_adoption_20260805.json`.

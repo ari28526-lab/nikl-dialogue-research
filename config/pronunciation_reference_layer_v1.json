@@ -1,0 +1,78 @@
+{
+  "schema_version": "pronunciation_reference_layer_contract.v1",
+  "status": "adopted",
+  "contract_name": "pronunciation_reference_layer_2020_2025_v1",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "methodological_role": "searchable descriptive reference layer; not a realization label and not a replacement MFA lexicon",
+  "invariants": {
+    "raw_corpus_modified": false,
+    "mfa_database_modified": false,
+    "mfa_phone_inventory_modified": false,
+    "source_six_tier_modified": false,
+    "dictionary_candidate_selected_as_truth": false,
+    "same_contract_all_years": true
+  },
+  "frozen_resources": {
+    "registry_release": "dictionary_pron_registry_v2_20260805",
+    "registry_schema": "dictionary_pronunciation_registry.v2",
+    "match_index_schema": "dictionary_pronunciation_match_index.v1",
+    "group_summary_schema": "dictionary_pronunciation_group_summaries.v1",
+    "morph_search_release": "morph_search_v3_20260801",
+    "mfa_pronunciation_release": "common_pron_mfa_r2_20260728",
+    "source_textgrid_schema": "research_textgrid.v2",
+    "source_textgrid_tiers": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ]
+  },
+  "annual_tables": {
+    "morph_occurrence": {
+      "schema": "morph_dictionary_pronunciation_occurrences.v1",
+      "row_unit": "one corpus morpheme occurrence",
+      "key": ["year", "utt_id", "eojeol_idx", "morph_idx_in_eojeol"]
+    },
+    "eojeol_compare": {
+      "schema": "eojeol_pronunciation_compare.v2",
+      "row_unit": "one source orthographic eojeol",
+      "key": ["year", "utt_id", "source_eojeol_idx"],
+      "coordinate_policy": "source orthographic eojeol is authoritative; dictionary morph evidence is joined only through explicit linked_morph_eojeol_idx"
+    },
+    "utterance_index": {
+      "schema": "pron_reference_utterance_index.v1",
+      "row_unit": "one corpus utterance",
+      "key": ["year", "utt_id"],
+      "textgrid_label_schema": "pron_reference_utt.v1"
+    },
+    "textgrid_companion": {
+      "schema": "pron_reference_textgrid_backfill.v1",
+      "row_unit": "one aligned utterance TextGrid",
+      "key": ["year", "utt_id"]
+    }
+  },
+  "textgrid_output": {
+    "schema": "research_textgrid_pron_reference.v1",
+    "tier_order": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt",
+      "pron_reference_utt"
+    ],
+    "new_tier_boundary_source": "exact utterance tier interval edges",
+    "new_tier_timing_claim": "none",
+    "candidate_detail_authority": "normalized registry/group/occurrence/compare CSV.gz tables"
+  },
+  "execution": {
+    "unit_of_resume": "session for TextGrid; atomic annual gzip for comparison tables",
+    "completed_session_policy": "skip only when checkpoint contract ID and TextGrid count match",
+    "failure_policy": "preserve sources; rebuild only interrupted or invalid derived session",
+    "annual_order_policy": "a year may run only after morph_search.v3 and research_textgrid.v2 companion manifests are successful",
+    "pilot_policy": "the adopted contract needs one bounded implementation pilot, not a repeat of the 2020 MFA Gate B research review"
+  }
+}

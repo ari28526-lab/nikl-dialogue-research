@@ -15,11 +15,14 @@
 | `D:\00_RAW\reference\*` | 우리말샘·MP·LS·다층위 reference | 4종 D: 확보 기록 있음; 사용 직전 실물·SHA 재확인 |
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
 | `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 search master | 보존, `_build_meta` SHA 계약 |
-| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020 23/23 완료; 2021–2025 미완료 |
-| `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음과 legacy 기계 fallback의 참조 registry | 1,192,729행·SHA/전수 gzip/Roman 검색열 검증 완료; 참조용 채택 |
+| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020·2021 연도 manifest success; 나머지는 각 생산 연도 직전 checkpoint 생성 |
+| `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음, occurrence와 규칙/사전/MFA 비교표 | registry 1,192,729행 채택; 2020·2021 occurrence 5,767,506/12,015,453행, 비교표 3,042,451/6,610,698행, index 870,437/1,373,920행 전수 검증 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |
 | `D:\20_AUDIO\08_textgrid_research_v2_staging\2020` | 2020 신규 r2 6-tier·동반표 출력 | TextGrid 868,187개·독립 감사 성공·Gate B 통과 |
+| `D:\20_AUDIO\08_textgrid_research_v2_staging\2021` | 2021 신규 r2 6-tier·동반표 출력 | TextGrid·동반표 1,371,883발화 완료; 후행 무음 word 표지 19건 국소 정규화 |
+| `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
+| `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging` | 2020–2025 세션 checkpoint형 7-tier 파생 생산 root | 원 6-tier 읽기 전용; 전수 실행 전 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 현재 공통 Jamo r2 사전 | 보존, 연도별 MFA 필수 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 구 2021 활성 상태 archive 완료; 2021–2025 LAB report 준비, 새 MFA marker·DB는 미생성 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
@@ -48,6 +51,7 @@ E:\READ_ONLY_ARCHIVE\2026_summer_research
 | `wav_id_recovery_2020_eba4f3c7debf` | 첫 복구 계약의 안전 중단 증거 | 역사·실패 근거로 보존 |
 | `legacy_d_workspace_20260802` | 구 공통사전 r1/A-B/파일럿과 구 `06_textgrid_*` | 2026-08-02 완료; TextGrid 8항목 7,341,358파일/33.297GiB를 2.226GiB로 검증 보존 후 D: 정리 |
 | `pre_2021_active_state_20260803` | D:에 남았던 구 2021 로그·LAB 완료표시·입력계약 9개 | 4,208,271 bytes → 458,443-byte 7z; CRC·SHA 검증 성공, 활성 사본 0 |
+| `pronunciation_reference_pre_adoption_20260805` | 비채택 registry v1과 폐기된 2020 비교 좌표 파일럿 2종 | 6파일·84,513,545 bytes; 84,504,963-byte 7z, SHA-256·7-Zip 검사 통과; 채택 v2는 D: 유지 |
 
 archive는 원자료 정본이 아니라 과거 산출물의 재현·감사 근거다. E: archive가
 검증되기 전에는 대응하는 D: 경로를 제거하지 않는다.

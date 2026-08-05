@@ -4,8 +4,9 @@
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
-`../archive/decisions_pre_production/`으로 이동했다. 현재 실행 명령은
-`../RUNBOOK_production_2020_2025.md`만 따른다.
+`../archive/decisions_pre_production/`으로 이동했다. MFA·6-tier 생산 명령은
+`../RUNBOOK_production_2020_2025.md`, 사전 발음 참조표·7번째 파생 tier는
+`../RUNBOOK_pronunciation_reference_layer_2020_2025.md`만 따른다.
 
 ## 연구 흐름과 출력 계약
 

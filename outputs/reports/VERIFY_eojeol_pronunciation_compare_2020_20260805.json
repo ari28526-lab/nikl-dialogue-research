@@ -1,0 +1,60 @@
+{
+  "schema_version": "verify_eojeol_pronunciation_compare.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-05T14:55:10+09:00",
+  "year": "2020",
+  "method": "simultaneous full-row scan against orth_eojeol_tokens; exact coordinate/text identity, structured morph arrays, rule/MFA comparison recomputation, manifest counts/SHA, and partial checks",
+  "rows_verified": 3042451,
+  "audit_status_counts": {
+    "complete_dictionary_ambiguity_for_review": 358305,
+    "complete_no_flagged_difference": 290444,
+    "complete_rule_mfa_difference_for_review": 1629749,
+    "complete_with_reference_warnings": 694153,
+    "incomplete_layer_mapping": 69800
+  },
+  "issue_counts": {
+    "dictionary_legacy_fallback_only": 1244627,
+    "dictionary_morph_coordinate_not_linked": 580974,
+    "dictionary_multiple_pronunciations": 366790,
+    "dictionary_no_exact_surface_pos_link": 670747,
+    "mfa_eojeol_not_available": 69800,
+    "mfa_source_reference_index_not_equal": 58746,
+    "rule_mfa_roman_sequence_differs": 1863865,
+    "rule_reference_eojeol_count_mismatch": 58816,
+    "rule_reference_unresolved_symbol": 26446
+  },
+  "error_counts": {},
+  "partial_files": [],
+  "inputs": {
+    "orth_eojeol_tokens": {
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\orth_eojeol_tokens.csv.gz",
+      "bytes": 43788850,
+      "mtime_ns": 1785574022787309000,
+      "sha256": "3d04dd8ccf0f8e91795826f206ebc38cce572c942f6ff4b1069fc947822a33e5"
+    },
+    "compare": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v2\\2020\\eojeol_pronunciation_compare.csv.gz",
+      "bytes": 339543713,
+      "mtime_ns": 1785909028885380600,
+      "sha256": "1613151927da784ce24602363658c9bab1abde1209f266bd8769add11daa907a"
+    },
+    "compare_manifest": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\compare_v2\\2020\\eojeol_pronunciation_compare_manifest.json",
+      "bytes": 5567,
+      "mtime_ns": 1785909029551898400,
+      "sha256": "0db9a292779e36ab6125d9306a018f0cf96ae62a65d74b42b7493d52e99829db"
+    }
+  },
+  "elapsed_seconds": 185.362,
+  "runtime": {
+    "recorded_at": "2026-08-05T14:55:10+09:00",
+    "git_commit": "7e1ed48425c5ec992b8868adb7470b73a61a34e5",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 17392
+  }
+}
