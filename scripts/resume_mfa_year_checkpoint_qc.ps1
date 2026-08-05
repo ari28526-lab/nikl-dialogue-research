@@ -104,7 +104,8 @@ $searchMasterRoot = Resolve-ConfiguredPath (
     [string]$config.pre_mfa_search_master
 )
 $wavSelection = Resolve-MfaWavCorpusForYear -Config $config -Year $Year
-$yearWavRoot = Join-Path ([string]$wavSelection.WavRoot) $Year
+$wavRoot = [IO.Path]::GetFullPath([string]$wavSelection.WavRoot)
+$yearWavRoot = Join-Path $wavRoot $Year
 
 $ExportReport = [IO.Path]::GetFullPath($ExportReport)
 $InputIntegrityReport = [IO.Path]::GetFullPath($InputIntegrityReport)
@@ -123,6 +124,16 @@ foreach ($required in @(
     if (-not (Test-Path -LiteralPath $required)) {
         throw "필수 checkpoint/QC 입력 없음: $required"
     }
+}
+$labProbe = [IO.Directory]::EnumerateFiles(
+    $yearWavRoot, '*.lab', [IO.SearchOption]::AllDirectories
+).GetEnumerator()
+try {
+    if (-not $labProbe.MoveNext()) {
+        throw "감사 입력 연도 LAB 0건: $yearWavRoot"
+    }
+} finally {
+    if ($labProbe -is [IDisposable]) { $labProbe.Dispose() }
 }
 
 $export = Read-Json $ExportReport
@@ -265,7 +276,7 @@ try {
         'mfa_research_6tier_year_audit.v1' $Year $inputId $alignmentId)) {
         & $python (Join-Path $PSScriptRoot (
             'python\audit_mfa_research_6tier_year.py'
-        )) --year $Year --lab-root $yearWavRoot `
+        )) --year $Year --lab-root $wavRoot `
             --textgrid-root $finalRoot --acoustic-model $acoustic `
             --approved-exclusions-contract $ApprovedExclusionsContract `
             --input-contract-id $inputId `

@@ -1667,3 +1667,22 @@ shard 2–23을 재개하는 것이다.
   `D:\mfa_eojeol\logs\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json`.
   다음 단계는 이 성공 계약의 비재계산 staging 승격 preflight, 독립 연도 전수
   감사와 DB 표본 24건 재수출이다. 연구자 표본 Gate 전에는 2022를 시작하지 않는다.
+## 2026-08-05 — 2021 체크포인트 독립 감사 LAB 루트 계약 교정
+
+- 체크포인트 승격 뒤 독립 감사에서 active LAB 0건, TextGrid 1,371,883건
+  전부 `wav_missing`으로 오인되어 안전 중단되었다. 원인은 재개
+  스크립트가 `D:\20_AUDIO\03_wav\individual\2021`을 넘긴 상태에서
+  감사기가 연도 `2021`을 다시 결합한 호출부 오류였다.
+- 2020 Gate B 본 생산 경로는 올바른 상위 `$wavRoot`를 넘기므로 같은
+  문제가 없었다. 수정은 동적 `$Year`를 쓰는 공통 재개 경로에 적용되어
+  2021–2025 모두를 보호한다.
+- 2021 MFA·6-tier·동반표는 재생성하지 않았다. 완료 checkpoint와
+  1,371,883개 TextGrid, 네 동반표는 보존했다. 원본 WAV/CSV와 2020
+  완성본도 변경하지 않았다.
+- 감사 전 실제 LAB probe, 감사기 `lab_year_empty` 빠른 실패, 요약형
+  콘솔 출력, PowerShell 경로 회귀 검사를 추가했다. Python 표적 18개,
+  PowerShell 안전성 47개 파일, Windows PowerShell 5.1 호환성 56개
+  스크립트가 통과했다.
+- 수정 후 preflight는 active LAB 1,371,883건과 TextGrid 1,371,883건,
+  동반표 SHA를 모두 일치시켰다. 다음 실행은 정렬이 아니라 독립 감사와
+  DB 표본 24건만 재개한다.

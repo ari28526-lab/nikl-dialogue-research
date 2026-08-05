@@ -77,6 +77,21 @@ class AuditMfaResearch6TierYearTests(unittest.TestCase):
             )
             self.assertEqual(report["status"], "success")
             self.assertTrue(all(v == 0 for v in report["hard_failure_counts"].values()))
+            wrong_root = audit_year(
+                year="2021",
+                lab_root=labs / "2021",
+                textgrid_root=output,
+                acoustic_model=acoustic,
+                approved_exclusions_contract=exclusions,
+                input_contract_id="INPUT_TEST",
+                alignment_contract_id="ALIGN_TEST",
+                report_path=root / "audit_wrong_lab_root.json",
+                missing_csv_path=root / "missing_wrong_lab_root.csv",
+            )
+            self.assertEqual(wrong_root["status"], "failed")
+            self.assertEqual(wrong_root["configuration_error"], "lab_year_empty")
+            self.assertEqual(wrong_root["hard_failure_counts"], {"empty_lab_input": 1})
+            self.assertEqual(wrong_root["inventories"]["extra_textgrid_ids"], [])
             sample = verify_sample(
                 db_path=db,
                 year="2021",

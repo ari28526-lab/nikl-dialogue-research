@@ -392,3 +392,12 @@ builder 생성식으로 재계산한 ID는 모두 `5ff1865744c85d…`로 일치�
 Python 348개·PowerShell 안전/5.1 검사가 통과했다. 다음 실행은 MFA나 6-tier
 전수 생성을 반복하지 않고 동반표부터 재개한다. 세부 정책은
 `docs/decisions/DECISION_MFA_alignment_contract_semantic_checkpoint_identity_20260805.md`다.
+## 2026-08-05 2021 checkpoint QC 재개 상태
+
+2021 MFA 정렬, 연구용 6-tier 1,371,883건과 네 동반표 생성은 완료되어
+`D:\20_AUDIO\08_textgrid_research_v2_staging\2021`에 승격되었다. 첫 독립
+감사는 재개 wrapper의 LAB root 중복 결합으로 실패했으며 산출물 결함은
+아니다. 공통 2021–2025 경로 계약을 교정했고, 수정 후 preflight에서
+active LAB과 TextGrid가 각각 1,371,883건으로 일치했다. 현재 다음 허용
+작업은 2021 독립 감사와 DB 표본 24건 재검증뿐이다. 2022는 2021 연구자
+표본 Gate 전에는 시작하지 않는다.

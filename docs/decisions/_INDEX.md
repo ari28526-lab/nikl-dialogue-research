@@ -75,3 +75,4 @@
 - `DECISION_MFA_2021_targeted_terminal_repair_checkpoint_resume_20260805.md` —
   2021 v5 끝검사에서 발견된 구 float32 종단 TextGrid 19개를 archive 후 표적
   교체하고, 전수 checkpoint 증거를 이어받아 동반표부터 재개하는 결정
+- [MFA 체크포인트 감사 LAB 루트 계약 교정 (2026-08-05)](DECISION_MFA_checkpoint_audit_lab_root_contract_20260805.md)

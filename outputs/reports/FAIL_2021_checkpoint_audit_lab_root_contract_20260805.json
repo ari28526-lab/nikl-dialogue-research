@@ -1,0 +1,50 @@
+{
+  "schema_version": "mfa_checkpoint_audit_failure_summary.v1",
+  "status": "safely_stopped_code_contract_error",
+  "year": "2021",
+  "failed_at": "2026-08-05T09:46:39+09:00",
+  "elapsed_seconds": 2344.98,
+  "cause": "resume wrapper passed a year-specific LAB/WAV root to an auditor that appends the year itself",
+  "passed_lab_root": "D:\\20_AUDIO\\03_wav\\individual\\2021",
+  "incorrect_resolved_lab_year": "D:\\20_AUDIO\\03_wav\\individual\\2021\\2021",
+  "observed_counts": {
+    "active_lab_ids": 0,
+    "textgrid_ids": 1371883,
+    "invalid_textgrids_reported_as_wav_missing": 1371883,
+    "extra_textgrid_ids_reported": 1371883,
+    "utterance_table_rows": 1371883,
+    "word_table_rows": 10572619,
+    "phone_table_rows": 39296691,
+    "excluded_table_rows": 2037
+  },
+  "unaffected_checks": {
+    "table_manifest_error": 0,
+    "duplicate_textgrid_ids": 0,
+    "duplicate_table_keys": 0,
+    "invalid_table_key_order": 0,
+    "table_manifest_count_mismatch": 0,
+    "phone_outside_inventory": 0,
+    "spn_intervals": 0
+  },
+  "preservation": {
+    "mfa_rerun_performed": false,
+    "six_tier_regeneration_performed": false,
+    "companion_table_regeneration_performed": false,
+    "checkpoint_preserved": true,
+    "source_wav_csv_modified": false,
+    "year_2020_modified": false
+  },
+  "raw_failure_artifacts": [
+    {
+      "path": "outputs/reports/mfa_year_queue_mfa_checkpoint_qc_2021_20260805/2021/01_year_audit.json",
+      "bytes": 86934665,
+      "sha256": "efc2416a7f31c9f5c8de29af3c0fccea3a67a1363b42b628fac2b9b5adf5f417"
+    },
+    {
+      "path": "outputs/reports/mfa_year_queue_mfa_checkpoint_qc_2021_20260805/2021/01_id_inventory.csv",
+      "bytes": 58554743,
+      "sha256": "6ded69209216f5c0a3d696f91ac6073ccfa510aa00bb0e4f154945d30fa37068"
+    }
+  ],
+  "resume_policy": "commit the shared 2021-2025 LAB-root fix, pass PowerShell 5.1 tests and checkpoint preflight, then rerun independent audit and 24-item DB sample only"
+}

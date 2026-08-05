@@ -363,6 +363,26 @@ foreach ($path in $files) {
             }
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'resume_mfa_year_checkpoint_qc.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '$wavRoot = [IO.Path]::GetFullPath',
+            '$yearWavRoot = Join-Path $wavRoot $Year',
+            '--lab-root $wavRoot',
+            '감사 입력 연도 LAB 0건'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add(
+                    "checkpoint QC LAB root 계약 회귀: $required"
+                )
+            }
+        }
+        if ($text.Contains('--lab-root $yearWavRoot')) {
+            $failures.Add(
+                'checkpoint QC는 감사기에 연도별 LAB root를 중복 전달하면 안 됨'
+            )
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'run_mfa_year_queue_safe.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(

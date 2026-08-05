@@ -219,6 +219,39 @@ def audit_year(
         if path.stem in lab_paths:
             duplicate_labs.add(path.stem)
         lab_paths[path.stem] = path
+    if not lab_paths:
+        with atomic_text_writer(
+            missing_csv_path.resolve(), encoding="utf-8-sig", newline=""
+        ) as (stream, _temp):
+            writer = csv.DictWriter(
+                stream,
+                fieldnames=["year", "utt_id", "reason"],
+                lineterminator="\n",
+            )
+            writer.writeheader()
+        report: dict[str, object] = {
+            "schema_version": SCHEMA_VERSION,
+            "status": "failed",
+            "year": year,
+            "input_contract_id": input_contract_id,
+            "alignment_contract_id": alignment_contract_id,
+            "lab_root": str(lab_root.resolve()),
+            "resolved_lab_year": str(lab_year),
+            "textgrid_root": str(textgrid_root.resolve()),
+            "configuration_error": "lab_year_empty",
+            "hard_failure_counts": {"empty_lab_input": 1},
+            "counts": {"active_lab_ids": 0},
+            "inventories": {
+                "missing_textgrid_ids": [],
+                "extra_textgrid_ids": [],
+                "invalid_textgrid_ids": [],
+                "phone_outside_inventory": [],
+            },
+            "missing_csv": str(missing_csv_path.resolve()),
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        }
+        atomic_write_json(report_path.resolve(), report)
+        return report
     tg_paths: dict[str, Path] = {}
     duplicate_tg: set[str] = set()
     for path in iter_files(tg_year, ".TextGrid"):
@@ -429,7 +462,20 @@ def main() -> int:
         missing_csv_path=args.missing_csv,
         workers=args.workers,
     )
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    console_summary = {
+        "schema_version": report.get("schema_version"),
+        "status": report.get("status"),
+        "year": report.get("year"),
+        "coverage_pct": report.get("coverage_pct"),
+        "configuration_error": report.get("configuration_error"),
+        "hard_failure_counts": report.get("hard_failure_counts", {}),
+        "counts": report.get("counts", {}),
+        "reason_counts": report.get("reason_counts", {}),
+        "elapsed_seconds": report.get("elapsed_seconds"),
+        "report": str(args.report.resolve()),
+        "missing_csv": str(args.missing_csv.resolve()),
+    }
+    print(json.dumps(console_summary, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "success" else 1
 
 
