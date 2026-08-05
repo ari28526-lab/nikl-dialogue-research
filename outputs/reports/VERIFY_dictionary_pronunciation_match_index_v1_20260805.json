@@ -1,0 +1,61 @@
+{
+  "schema_version": "dictionary_pronunciation_match_index_verification.v1",
+  "status": "verified",
+  "verified_at": "2026-08-05T13:46:00+09:00",
+  "source_registry_release": "dictionary_pron_registry_v2_20260805",
+  "index_release": "match_index_v1",
+  "counts": {
+    "registry_candidates": 1192729,
+    "indexed_candidates": 804324,
+    "unindexed_missing_pos": 388405,
+    "groups": 564385,
+    "members": 804324,
+    "dictionary_attested_groups": 335388,
+    "legacy_fallback_only_groups": 228997,
+    "unique_candidate_unique_pronunciation_groups": 454440,
+    "multiple_senses_same_pronunciation_groups": 68877,
+    "multiple_pronunciations_unresolved_groups": 41068,
+    "preferred_members": 781132,
+    "retained_fallback_members": 23192
+  },
+  "outputs": {
+    "groups": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\match_index_v1\\dictionary_pronunciation_match_groups.csv.gz",
+      "bytes": 27700531,
+      "sha256": "9dfa8c541ba67adee61cf6c21a11e39c065e8f41b6fecfb2ca85173523d785c6"
+    },
+    "members": {
+      "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\match_index_v1\\dictionary_pronunciation_match_group_members.csv.gz",
+      "bytes": 52380974,
+      "sha256": "55cbc4338bbf7e8c3f71467681d84b7338f0a0163f66c5ba4bc20540b35f9017"
+    }
+  },
+  "independent_checks": {
+    "gzip_full_read_passed": true,
+    "sha256_recomputed_match": true,
+    "duplicate_group_ids": 0,
+    "duplicate_surface_pos_keys": 0,
+    "invalid_preferred_counts": 0,
+    "unknown_member_group_ids": 0,
+    "duplicate_candidate_members": 0,
+    "invalid_member_priority": 0,
+    "partial_files": 0
+  },
+  "policy": {
+    "predicate": "word_stem + exact POS",
+    "other": "headword + exact POS",
+    "missing_pos": "registry_only_not_auto_linked",
+    "sense": "not automatically selected",
+    "fallback": "retained but secondary when attested candidate exists",
+    "mfa_modified": false
+  },
+  "pilot_2020_first_5000": {
+    "rows": 5000,
+    "matched_exact_surface_pos": 3866,
+    "surface_found_pos_mismatch": 746,
+    "dictionary_surface_not_found": 61,
+    "not_applicable_nonstandard_surface": 112,
+    "not_applicable_punctuation": 215,
+    "coverage_complete_for_pilot": true
+  }
+}

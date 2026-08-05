@@ -1804,3 +1804,25 @@ shard 2–23을 재개하는 것이다.
   감사표 구현이다.
 - 검증 근거:
   `outputs/reports/VERIFY_dictionary_pronunciation_registry_v2_20260805.json`.
+
+## 2026-08-05 — 사전 발음 형태소·품사 match index와 2020 소규모 연결
+
+- 119만 사전 후보를 occurrence마다 복제하지 않도록 type group/member 구조로
+  정규화했다. 용언은 사전 `word_stem + 정확 품사`, 기타 품사는
+  `headword + 정확 품사`를 사용한다. 코퍼스에 의미번호가 없으므로 여러 의미나
+  발음 중 하나를 자동으로 선택하지 않는다.
+- 202.792초에 564,385 group·804,324 member를 생성했다. 사전 품사가 없는
+  388,405후보는 registry에 보존하되 자동 조인을 금지했다. 등재 후보가 있는
+  group에서 legacy fallback 23,192개는 삭제하지 않고 `retained_fallback`으로
+  분리했다.
+- 두 gzip을 독립적으로 끝까지 읽고 SHA 일치, group ID/표면형+품사 중복 0,
+  고아 member 0, candidate 중복 0, 우선순위 오류 0, partial 0을 확인했다.
+- 2020 실제 `morph_tokens` 첫 5,000행 pilot은 출력 5,000행과 정확히 일치했다.
+  정확 표면형+품사 3,866, 표면형은 있으나 품사 불일치 746, 미등재 표면형 61,
+  비표준 표면형 112, 문장부호 215건으로 분리됐다. `여행/NNG`·`수가/NNG`의
+  복수 발음은 unresolved, `읽/VV→읽다/VV`의 여러 의미 동일 발음은 같은 그룹으로
+  유지된다.
+- 기존 MFA 입력사전·DB·TextGrid는 변경하지 않았다. 다음은 2020·2021 전수
+  occurrence 1:1 연결과 post-MFA 어절 비교 감사표다.
+- 검증 근거:
+  `outputs/reports/VERIFY_dictionary_pronunciation_match_index_v1_20260805.json`.

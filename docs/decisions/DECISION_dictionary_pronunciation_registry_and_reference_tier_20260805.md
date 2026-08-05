@@ -78,6 +78,25 @@ dict_match_status, dict_match_type, sense_match_status
 유일한 경우, 복수 후보 보존 순이다. 복수 후보 중 하나를 자동으로 대표값으로
 선택하지 않는다.
 
+실자료 규모에서는 occurrence마다 1:N candidate 행을 폭발시키지 않는다. 다음
+정규화 구조를 사용한다.
+
+```text
+dictionary_pronunciation_match_groups
+  (morph_surface, corpus_pos) -> candidate_group_id + 후보 수·해결 상태
+
+dictionary_pronunciation_match_group_members
+  candidate_group_id -> dict_pron_candidate_id + preferred/retained_fallback
+
+morph_dictionary_pron_occurrences
+  utt_id + 형태소 위치 -> candidate_group_id + match status
+```
+
+용언은 `word_stem + 정확 품사`, 그 밖의 품사는 `headword + 정확 품사`로
+그룹화한다. 사전 품사가 없는 388,405후보는 삭제하지 않고 registry에 보존하되
+자동 occurrence 조인에서는 제외한다. 등재 후보가 하나라도 있으면 legacy
+fallback은 `retained_fallback`으로 남기고 대표 후보 경쟁에서는 제외한다.
+
 ### 3.3 `eojeol_pronunciation_compare`
 
 연구자가 바로 필터·조인할 수 있는 occurrence 비교표를 별도로 만든다.
@@ -190,3 +209,11 @@ v1은 덮어쓰지 않고 비채택 검증 근거로 보존한다.
 필수 열, 사전/fallback flag, 모든 현대 한글 발음의 `roman_mfa.v1` 검색열을
 독립 검증했다. 오류와 partial은 0이다. v2는 **사전 참조·검색용 registry**로
 채택하며 공통 MFA 입력사전으로 채택한 것은 아니다.
+
+### 7.2 형태소·품사 match index 검증
+
+v2에서 804,324후보를 564,385개 `(형태소 표면형, 품사)` 그룹으로 정규화했다.
+group/member gzip 전수 읽기와 SHA를 확인했고 중복 key·고아 member·후보 중복·
+우선순위 오류·partial은 모두 0이다. 2020 첫 5,000형태소 pilot은 입력과 출력이
+1:1이며 3,866건이 정확 표면형+품사로 연결됐다. 불일치·미등재·문장부호·비표준
+표면형은 서로 다른 상태로 보존했다.
