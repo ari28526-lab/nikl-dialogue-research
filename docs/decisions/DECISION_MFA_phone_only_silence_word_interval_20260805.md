@@ -43,6 +43,12 @@ word 표지만 빈칸으로 만든다. 따라서 `phones_mfa`와 `phoneme_r_auto
 - 불변: 2021 MFA DB, 원본 WAV, LAB, 검색 CSV, 원본 CSV, 2020 완성본
 - 결과: preflight 19/19, archive 후 원자 교체 19/19, phone tier 변경 0
 
+동반표 재개는 2026-08-05 08:00–09:02 KST에 수행돼 exit 0으로 끝났다.
+1,371,883발화, 10,572,619 word interval, 39,296,691 phone interval과 승인 제외
+2,037행이 최종 gzip으로 원자 승격됐다. LAB count·word sequence mismatch와 spn은
+0이며 `phone_only_silence_word_intervals_normalized=19`다. 성공 보고서는
+`D:\mfa_eojeol\logs\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json`이다.
+
 앞선 float32 종단 repair와 대상이 겹치는 경우 두 manifest의
 `destination_after → destination_before → destination_after` SHA 사슬을 검증한다.
 기존 manifest를 덮어쓰지 않는다. 어느 fingerprint나 계약 ID가 다르면 동반표

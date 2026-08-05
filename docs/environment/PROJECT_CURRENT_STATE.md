@@ -33,9 +33,12 @@ MFA/G2P phone은 강제정렬을 위한 대략적인 분절 보조값이다. 실
   `phones_mfa`·`phoneme_r_auto`, DB, WAV, LAB, 원본 CSV, 2020 완성본은
   변경하지 않았다. 적용 manifest는
   `outputs/reports/REPAIR_2021_phone_only_silence_word_20260805.json`이다.
-- 다음 단계는 보존된 네 gzip partial을 새 규칙으로 다시 쓰는 동반표 전수
-  1회다. 그 뒤 checkpoint 승격, 독립 연도 전수 감사, DB 표본 24건 재수출,
-  연구자 표본 Gate를 수행한다. 이 Gate 전에는 2022를 시작하지 않는다.
+- 09:02 KST에 네 동반표 재생성이 exit 0으로 완료됐다. utterance 1,371,883,
+  word 10,572,619, phone 39,296,691, 승인 제외 2,037행이며 count·label mismatch와
+  spn은 0, 무음 word 표지 정규화는 19건이다. 성공 보고서는
+  `D:\mfa_eojeol\logs\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json`이다.
+- 다음 단계는 checkpoint 승격, 독립 연도 전수 감사, DB 표본 24건 재수출,
+  연구자 표본 Gate다. 이 Gate 전에는 2022를 시작하지 않는다.
 
 ## 동결된 생산 계약
 

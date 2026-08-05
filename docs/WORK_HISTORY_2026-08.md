@@ -1651,3 +1651,19 @@ shard 2–23을 재개하는 것이다.
   SHA 사슬로 검증하도록 재개기를 확장했다. 다음 실행은 MFA나 TextGrid 전수를
   반복하지 않고 네 동반표만 다시 쓴다. 그 뒤 연도 staging 승격·독립 전수 감사·
   DB 표본 24건 재수출·연구자 표본 Gate를 거치며, 그 전에는 2022로 가지 않는다.
+
+## 2026-08-05 — 2021 동반표 국소 재개 성공
+
+- 08:00:36–09:02:06 KST에 보존 DB와 두 repair manifest의 SHA 사슬을 재검증하고
+  동반표 4종만 다시 썼다. 총 3,690.6초, exit 0이며 MFA·LAB·TextGrid 전수 생성은
+  재실행하지 않았다.
+- 4,139/4,139세션, 분석 TextGrid·utterance 표 1,371,883행, word 10,572,619행,
+  phone 39,296,691행, 승인 제외 2,037행이다. coverage 100%, failed 0, spn 0,
+  LAB word count mismatch 0, word label sequence mismatch 0이다.
+- 새 규칙이 정규화한 phone-only silence word interval은 정확히 19건이다. 이전
+  실패 partial 네 개는 별도 실패 이력으로 보존됐고 새 네 gzip과
+  `TABLES_MANIFEST.json`만 최종 이름으로 원자 승격됐다.
+- 성공 보고서:
+  `D:\mfa_eojeol\logs\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json`.
+  다음 단계는 이 성공 계약의 비재계산 staging 승격 preflight, 독립 연도 전수
+  감사와 DB 표본 24건 재수출이다. 연구자 표본 Gate 전에는 2022를 시작하지 않는다.
