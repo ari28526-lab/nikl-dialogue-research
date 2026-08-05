@@ -1,0 +1,27 @@
+{
+  "schema_version": "mfa_production_year_review_delivery.v1",
+  "status": "success_pending_researcher_review",
+  "created_at": "2026-08-05T10:55:40+09:00",
+  "year": "2021",
+  "execution_queue_id": "mfa_checkpoint_qc_2021_20260805_retry1",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "delivery_root": "C:\\Users\\ari30\\Dropbox\\MFA_2021_FINAL_REVIEW_20260805",
+  "bundle_manifest": {
+    "path": "C:\\Users\\ari30\\Dropbox\\MFA_2021_FINAL_REVIEW_20260805\\BUNDLE_MANIFEST.json",
+    "bytes": 22912,
+    "sha256": "35509f6ec04e4a2039431b1040073e2809017a60052400af44d9b92e50225432"
+  },
+  "counts": {
+    "review_rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24,
+    "wav_files": 24,
+    "lab_files": 24,
+    "textgrid_files": 24,
+    "payload_files": 72
+  },
+  "review_csv_byte_equal_to_authoritative_template": true,
+  "automatic_approval_performed": false,
+  "realization_judgment_requested": false
+}

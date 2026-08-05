@@ -46,5 +46,12 @@
       "sha256": "6ded69209216f5c0a3d696f91ac6073ccfa510aa00bb0e4f154945d30fa37068"
     }
   ],
+  "verified_archive": {
+    "path": "D:\\mfa_eojeol\\audit_failure_archive\\2021_checkpoint_lab_root_failure_20260805.7z",
+    "bytes": 1200317,
+    "sha256": "7640d927e3998fdbccc5f8e5e3bd3a8ebf7a3517fb0f08f2aab2de94a54b4ed8",
+    "archive_test": "passed",
+    "workspace_raw_failure_files_removed_after_archive": true
+  },
   "resume_policy": "commit the shared 2021-2025 LAB-root fix, pass PowerShell 5.1 tests and checkpoint preflight, then rerun independent audit and 24-item DB sample only"
 }

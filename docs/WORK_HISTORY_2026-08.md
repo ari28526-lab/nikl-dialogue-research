@@ -1686,3 +1686,24 @@ shard 2–23을 재개하는 것이다.
 - 수정 후 preflight는 active LAB 1,371,883건과 TextGrid 1,371,883건,
   동반표 SHA를 모두 일치시켰다. 다음 실행은 정렬이 아니라 독립 감사와
   DB 표본 24건만 재개한다.
+## 2026-08-05 — 2021 독립 전수 감사·DB 표본 Gate 통과
+
+- 공통 LAB root 계약 수정 커밋 `3eb8caf`로 체크포인트 감사만 재개했다.
+  MFA 정렬, 6-tier TextGrid 전수 생성, 동반표 생성은 반복하지 않았다.
+- 독립 전수 감사는 2,771.775초에 완료되었다. active LAB, expected
+  TextGrid, 실제 TextGrid, utterance 표가 모두 1,371,883건이고 coverage는
+  100%이다. word 10,572,619행, phone 39,296,691행, 승인 제외 2,037행이
+  manifest와 일치했다.
+- 누락·초과·중복·invalid TextGrid·tier 오류·`spn`·phone inventory 밖
+  기호·동반표 중복/정렬/행 수 오류는 전부 0건이다.
+- 보존 DB에서 24개 서로 다른 세션을 다시 export한 결과 semantic 24/24,
+  byte 24/24가 현재 staging TextGrid와 동일했다.
+- 연구자 검토표는 24개 세션·24개 화자로 구성했다. WAV/LAB/6-tier 각
+  24개와 권위 CSV의 바이트 동일 사본을
+  `C:\Users\ari30\Dropbox\MFA_2021_FINAL_REVIEW_20260805` 한 폴더에
+  전달했다. 이 Gate는 실제 음운 실현 판정이 아니라 연결·tier·검색 사용
+  가능성 점검이다.
+- 첫 잘못된 감사의 139MiB 원시 출력은 SHA 요약을 보존한 뒤
+  `D:\mfa_eojeol\audit_failure_archive\2021_checkpoint_lab_root_failure_20260805.7z`
+  로 압축했고 7-Zip 무결성 검사를 통과했다. 작업 폴더의 원시 대용량
+  실패 파일은 제거했다.

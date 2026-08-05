@@ -264,3 +264,4 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 ## 예정 (미작성)
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장
+- `python/stage_mfa_production_review_bundle.py`: 기계 QC를 통과한 생산 연도의 권위 검토 CSV를 그대로 보존하면서 번호가 붙은 WAV/LAB/6-tier TextGrid를 한 평면 검토 폴더로 복사하고 SHA manifest를 남긴다.

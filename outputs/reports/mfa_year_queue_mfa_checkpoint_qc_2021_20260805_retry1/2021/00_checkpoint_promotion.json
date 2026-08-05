@@ -1,0 +1,109 @@
+{
+  "schema_version": "mfa_direct_export_checkpoint_promotion.v1",
+  "status": "success",
+  "year": "2021",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "source_state": "already_moved",
+  "paths": {
+    "partial_year": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\_partial_direct_db\\5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd\\2021",
+    "final_year": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021",
+    "export_report": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json",
+    "alignment_contract": "D:\\mfa_eojeol\\alignment_contracts\\2021.json",
+    "direct_db_ready": "D:\\mfa_eojeol\\done\\2021.direct_db_ready",
+    "align_marker": "D:\\mfa_eojeol\\done\\2021.align_done",
+    "merge_marker": "D:\\mfa_eojeol\\done\\2021.merge_done",
+    "input_integrity_report": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260805_052735.json",
+    "approved_exclusions_contract": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa\\2021\\approved_exclusions.json"
+  },
+  "evidence": {
+    "export_report": {
+      "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json",
+      "bytes": 32881,
+      "mtime_ns": 1785888122366871300,
+      "sha256": "5363a513a4afeb8ea9721bb962ddf13cbcb0cbee845de6edbf09c564fb197893"
+    },
+    "alignment_contract": {
+      "path": "D:\\mfa_eojeol\\alignment_contracts\\2021.json",
+      "bytes": 4050,
+      "mtime_ns": 1785876115527147200,
+      "sha256": "a495bc78849de150ea986c45a1a6e26124355e21a4979c32f9dccd30276a7b9e"
+    },
+    "direct_db_ready": {
+      "path": "D:\\mfa_eojeol\\done\\2021.direct_db_ready",
+      "bytes": 4195,
+      "mtime_ns": 1785845302946984000,
+      "sha256": "4d556d2e8ae5c45c4e5083f9ca2f01012ca4339f8dd429cf30bc15b0d9ab1d02"
+    },
+    "input_integrity_report": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\PREFLIGHT_mfa_input_integrity_2021_eojeol_commonpron_2021_20260805_052735.json",
+      "bytes": 5320,
+      "mtime_ns": 1785876901280120900,
+      "sha256": "56d24b882bd47fe05b7846391da86e777bc51de6d596d431e3a88b190b15cf6e"
+    },
+    "approved_exclusions_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_v2_20260804_postmfa\\2021\\approved_exclusions.json",
+      "bytes": 1166,
+      "mtime_ns": 1785847294602237800,
+      "sha256": "ad4ddd87ecff1542ea645e9840b97375c992e6a83d5b203914bcb3b5f425899f"
+    },
+    "repair_manifests": {
+      "targeted_repair_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\REPAIR_2021_float32_terminal_roundoff_20260805.json",
+        "bytes": 64421,
+        "mtime_ns": 1785874931363881300,
+        "sha256": "7f2eee224ea94807a7f40e1ad3db7e7a3bedf248f06a384a80b1c975ec4ba5a8"
+      },
+      "subsequent_targeted_repair_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\REPAIR_2021_phone_only_silence_word_20260805.json",
+        "bytes": 150625,
+        "mtime_ns": 1785884019071997800,
+        "sha256": "02021084bd24642f363050100f751deb87da43e3bce30e62233bc9533c40269f"
+      }
+    }
+  },
+  "counts": {
+    "textgrids": 1371883,
+    "active_labs": 1371883
+  },
+  "table_verification": {
+    "manifest": {
+      "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\TABLES_MANIFEST.json",
+      "bytes": 3225,
+      "mtime_ns": 1785888122117734100,
+      "sha256": "ee189a7c9919e7da3d5ce96e900c89b846d47a65aa4f0ba77bbe9a71d96d7d4c"
+    },
+    "tables": {
+      "excluded": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\excluded_utterances.csv.gz",
+        "bytes": 16754,
+        "sha256": "9d3df12424cbc3643dc8e1d848390254b01f9c782aa7c03b5867fbf134c4713e"
+      },
+      "phones": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\phone_intervals_mfa.csv.gz",
+        "bytes": 651677072,
+        "sha256": "84fef00330adcb7b1c1628f8c607e924b8e08ebef1400142c06203d2b029ee3f"
+      },
+      "utterances": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\utterance_alignment.csv.gz",
+        "bytes": 371000648,
+        "sha256": "53eb839757c58dbc5a36a92171cb0da63419eecf7c1367d6237f2b0aa6de53b2"
+      },
+      "words": {
+        "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\word_intervals_mfa.csv.gz",
+        "bytes": 289090755,
+        "sha256": "0f82d6a3c8dee9c7eb0269562ed58e7447008769ba64358196af1c2713a6c660"
+      }
+    }
+  },
+  "dry_run": false,
+  "recorded_at": "2026-08-05T09:56:53+09:00",
+  "git_commit": "3eb8caf5ddae193a2a934f44a8ab900b23bd70fb",
+  "promoted_at": "2026-08-05T09:56:53+09:00",
+  "final_year": {
+    "path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021\\_tables\\TABLES_MANIFEST.json",
+    "bytes": 3225,
+    "mtime_ns": 1785888122117734100,
+    "sha256": "ee189a7c9919e7da3d5ce96e900c89b846d47a65aa4f0ba77bbe9a71d96d7d4c"
+  }
+}
