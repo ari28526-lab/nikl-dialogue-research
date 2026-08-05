@@ -26,6 +26,8 @@
   "pre_mfa_search_master": "D:/10_LAYERS/05_search_master_pre_mfa_staging/pre_mfa_v1_20260725",
   "morph_search_v3_staging": "D:/10_LAYERS/09_morph_search_v3_staging",
   "_comment_morph_search_v3": "morph_search.v3 연도·shard checkpoint형 조합검색 CSV.gz staging. 기존 search master를 읽기 전용으로 사용하고, 성공 manifest 전에는 최종 검색층으로 승격하지 않음.",
+  "pronunciation_reference": "D:/10_LAYERS/10_pronunciation_reference",
+  "_comment_pronunciation_reference": "우리말샘 pron_1/pron_2와 명시적으로 구분한 legacy G2P fallback의 재사용 가능한 type registry·occurrence link·감사표. MFA phone 입력이나 기존 TextGrid를 자동 변경하지 않음.",
   "search_master": "D:/10_LAYERS/05_search_master",
   "actual_pron": "D:/10_LAYERS/06_actual_pron",
   "_comment_lexicon": "lexicon_full=1기 어휘목록(발음 pron_1/pron_2/pron_g2p, 내부 형태경계 morph_dict 포함, 130만 행). Dropbox 00_01_1차_archive/02_DICTIONARY에서 복사 후 사용 (DESIGN_search_master_layer.md)",

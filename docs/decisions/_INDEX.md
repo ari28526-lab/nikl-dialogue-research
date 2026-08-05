@@ -28,6 +28,7 @@
 | `DECISION_common_pron_G2P_no_path_fallback_20260728.md` | G2P 누락 fail-closed와 승인 예외 |
 | `DECISION_r2_realign_all_six_years_20260729.md` | 구결과 재사용 없이 2020–2025 전부 신규 정렬 |
 | `METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md` | 연도간 phone 기준 동일성 근거 |
+| `DECISION_dictionary_pronunciation_registry_and_reference_tier_20260805.md` | 우리말샘 1:N·예외 발음 registry, occurrence 조인표, 7번째 규칙 참조 tier와 공통발음열 감사 계약 |
 
 ## 현재 생산과 안전 계약
 

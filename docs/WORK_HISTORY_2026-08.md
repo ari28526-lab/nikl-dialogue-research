@@ -1730,3 +1730,43 @@ shard 2–23을 재개하는 것이다.
   아직 생산 정렬은 시작되지 않았다. 각 연도는 반드시 직전 연도 연구자
   Gate와 당해 연도 source preflight를 순차 통과한 뒤에만 시작한다.
 - 근거: `outputs/reports/PREFLIGHT_2022_2025_readiness_inventory_20260805.json`.
+
+## 2026-08-05 — 2021 표본에서 MFA 입력 phone 의미 재확인·사전 발음 배선 감사
+
+- 연구자가 2021 최종 표본 중 20개 파일은 WAV·LAB·TextGrid가 정상적으로
+  열리고 분절도 대체로 적절하다고 확인했다. 첫 표본 `어디든 갈 수 있잖아`에서
+  `있잖아`의 `phones_mfa`가 `iː s͈ tɕʰ ɐ n ɐ`로 표시되어, 이를 규칙 발음으로
+  오해할 위험을 발견했다.
+- 공통사전 실물을 대조한 결과 위 열은 동결 Jamo G2P v3.2.0 1-best와 정확히
+  같았다. 이는 음성에서 실제 발음을 판정한 값이 아니라, 주어진 phone 순서를
+  음향모델이 시간에 강제정렬한 결과다.
+- 2020·2021 search master, `morph_search.v3` 7표, post-MFA 동반표 4종의 실제
+  header를 확인했다. `pron_reference_*` 규칙 예상형과 `pron_mfa_*`는 있으나,
+  우리말샘 `pron_1/2`·예외·복수 발음 후보 ID는 아직 배선되지 않았다.
+- 사전 발음은 type-level long registry와 occurrence link로 분리하고, 연구용
+  `eojeol_pronunciation_compare` view에서 규칙 예상형·사전 후보·MFA phone을
+  함께 보도록 결정했다. TextGrid에는 음소별 가짜 시간을 만들지 않는 발화
+  수준 `pron_reference_utt`를 7번째 파생 tier로 추가한다.
+- 기존 2020·2021 MFA·DB·6-tier 정본은 변경하지 않는다. 공통발음열 감사를
+  먼저 수행하고, 7번째 tier와 사전 조인표는 MFA 재실행 없이 backfill한다.
+  실제 경계 문제가 확인된 occurrence만 별도 국소 재정렬 후보로 분리한다.
+- 현행 결정문:
+  `docs/decisions/DECISION_dictionary_pronunciation_registry_and_reference_tier_20260805.md`.
+
+## 2026-08-05 — 사전 발음 registry 생성기와 실자료 preflight
+
+- 현재 생산 CSV에 없던 우리말샘 `pron_1/pron_2`와 예외·복수 발음 후보를
+  반복 문자열 없이 재사용하기 위해 type-level long registry 생성기를 추가했다.
+  enriched 판본에 두 등재 발음이 모두 없을 때만 같은 `urimal_id`의 legacy
+  `pron_g2p`를 연결하고, 이를 `is_machine_generated=true`,
+  `is_dictionary_attested=false`로 강제 표기한다.
+- `pron_1`·`pron_2`의 기존 한글·Roman·Roman-MFA 값을 각각 보존한다. 후보 ID는
+  source row 번호가 아니라 표제어·품사·의미 ID·발음·출처의 canonical hash라서
+  원천 행 순서가 달라져도 같은 후보를 안정적으로 조인할 수 있다.
+- 기존 7월 28일 원천 전수 감사의 SHA-256을 신뢰 앵커로 삼아 실제 enriched
+  386,602,735바이트와 legacy 280,816,832바이트의 경로·크기·수정시각을 다시
+  대조했다. 두 원천 모두 감사 당시와 일치했고 실자료 preflight가 통과했다.
+- Python 표적·기존 공통발음 회귀 13개, PowerShell 안전성 47파일, Windows
+  PowerShell 5.1 호환성 57스크립트가 통과했다. preflight 동안 D: 출력은 만들지
+  않았다. 실제 registry는 사용자 장시간 PowerShell에서 최초 release로 생성한다.
+- 기존 공통 MFA 사전·2020/2021 DB·6-tier·phone 기준은 변경하지 않는다.

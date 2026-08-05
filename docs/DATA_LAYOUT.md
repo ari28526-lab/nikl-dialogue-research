@@ -1,6 +1,6 @@
 # 데이터 배치도 — r2 생산 기준
 
-최종 갱신: 2026-08-03 KST
+최종 갱신: 2026-08-05 KST
 
 자산의 존재·완료 상태는 [ASSETS_LEDGER.md](ASSETS_LEDGER.md)가 정본이다. 이
 문서는 현재 생산에서 사용하는 좌표와 폴더 역할만 설명한다.
@@ -13,7 +13,8 @@ D:\
 ├─ 10_LAYERS
 │  ├─ 01_bareun_raw               연도·세션 형태소 CSV
 │  ├─ 05_search_master            동결 510만 발화 입력
-│  └─ 09_morph_search_v3_staging  pre-MFA 조합검색 7표
+│  ├─ 09_morph_search_v3_staging  pre-MFA 조합검색 7표
+│  └─ 10_pronunciation_reference  사전 발음 registry·연결·감사 파생층
 ├─ 20_AUDIO
 │  ├─ 03_wav                      원 WAV·LAB, 수정 금지
 │  ├─ 04_wav_id_recovered_staging 2020 MFA 전용 파생 WAV
@@ -46,8 +47,15 @@ C:\Users\ari30\research\2026_summer_research
 대형 WAV·TextGrid·MFA DB는 Git에 넣지 않는다.
 
 2020은 `08_textgrid_research_v2_staging\2020`에 TextGrid 868,187개와 동반표
-4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021–2025는 LAB와
-safe-body 제외 후보표까지 완료됐지만 신규 MFA 결과는 아직 없다.
+4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021도 1,371,883개
+TextGrid·동반표·독립 전수 감사·DB 표본 재수출을 완료했고 연구자 표본 Gate를
+진행 중이다. 2022–2025는 승인 제외 계약과 LAB marker까지 준비됐지만 신규 MFA
+결과는 아직 없다.
+
+`10_pronunciation_reference`는 기존 MFA phone을 바꾸는 사전 폴더가 아니다.
+우리말샘 `pron_1/pron_2`와 명시적으로 구분한 legacy 기계 fallback을 한 번만
+저장하고, 연도별 형태소 occurrence와 ID로 연결해 규칙 예상형·MFA 입력 phone과
+비교하는 재사용 가능한 참조층이다.
 
 ## E: archive
 
