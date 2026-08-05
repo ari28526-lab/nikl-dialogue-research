@@ -361,5 +361,11 @@ trap {
         )
         Invoke-PipelinePython -Arguments $verifyBackfillArgs -Label '7-tier 파생본 독립 전수 검증'
     }
-    Write-Host "[OK] $Year 발음 참조 레이어 $Mode 완료" -ForegroundColor Green
+    if ($PreflightOnly) {
+        Write-Host `
+            "[OK] $Year 발음 참조 레이어 $Mode preflight 통과; 산출물 생성 없음" `
+            -ForegroundColor Green
+    } else {
+        Write-Host "[OK] $Year 발음 참조 레이어 $Mode 완료" -ForegroundColor Green
+    }
     Clear-PronunciationReferenceLock
