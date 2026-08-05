@@ -30,10 +30,10 @@ from pipeline_common import (  # noqa: E402
     now_iso,
     runtime_snapshot,
 )
+from morph_schema import ROMAN_SYSTEM_VERSION, orth_roman_v2  # noqa: E402
 
 
-SCHEMA_VERSION = "dictionary_pronunciation_registry.v1"
-ROMAN_SYSTEM = "source_preserved_with_roman_mfa.v1"
+SCHEMA_VERSION = "dictionary_pronunciation_registry.v2"
 PLAIN_HANGUL_RE = re.compile(r"^[가-힣]+$")
 
 ENRICHED_REQUIRED = {
@@ -71,9 +71,11 @@ FIELDS = [
     "stdict_target_code",
     "stdict_sense_code",
     "pron_hangul",
-    "pron_roman",
-    "pron_roman_mfa",
-    "roman_system_version",
+    "pron_roman_source",
+    "pron_roman_source_mfa",
+    "pron_roman_search",
+    "pron_roman_search_status",
+    "roman_search_system_version",
     "variant_rank",
     "source_name",
     "source_field",
@@ -230,7 +232,7 @@ def load_legacy_fallbacks(
                 roman_mfa = (
                     clean(row.get("pron_g2p_roman_mfa"))
                     if has_mfa_roman
-                    else roman
+                    else ""
                 )
                 result[urimal_id].add((pron, roman, roman_mfa))
                 counts["legacy_rows_with_fallback"] += 1
@@ -251,7 +253,6 @@ def _base_row(source: dict[str, str]) -> dict[str, str]:
         "urimal_id": clean(source.get("urimal_id")),
         "stdict_target_code": clean(source.get("stdict_target_code")),
         "stdict_sense_code": clean(source.get("stdict_sense_code")),
-        "roman_system_version": ROMAN_SYSTEM,
     }
 
 
@@ -259,8 +260,8 @@ def _complete_candidate(
     base: dict[str, str],
     *,
     pron: str,
-    roman: str,
-    roman_mfa: str,
+    roman_source: str,
+    roman_source_mfa: str,
     rank: str,
     source_name: str,
     source_field: str,
@@ -271,11 +272,18 @@ def _complete_candidate(
     legacy_fallback: bool,
     machine_generated: bool,
 ) -> dict[str, str]:
+    plain_hangul = bool(PLAIN_HANGUL_RE.fullmatch(pron))
+    pron_roman_search = orth_roman_v2(pron) if plain_hangul else ""
     row = {
         **base,
         "pron_hangul": pron,
-        "pron_roman": roman,
-        "pron_roman_mfa": roman_mfa,
+        "pron_roman_source": roman_source,
+        "pron_roman_source_mfa": roman_source_mfa,
+        "pron_roman_search": pron_roman_search,
+        "pron_roman_search_status": (
+            "generated" if plain_hangul else "unavailable_non_plain_hangul"
+        ),
+        "roman_search_system_version": ROMAN_SYSTEM_VERSION,
         "variant_rank": rank,
         "source_name": source_name,
         "source_field": source_field,
@@ -285,7 +293,7 @@ def _complete_candidate(
         "is_alternative": _bool(alternative),
         "is_legacy_fallback": _bool(legacy_fallback),
         "is_machine_generated": _bool(machine_generated),
-        "plain_hangul_pron": _bool(bool(PLAIN_HANGUL_RE.fullmatch(pron))),
+        "plain_hangul_pron": _bool(plain_hangul),
         "pron_differs_from_headword": _bool(pron != base["headword"]),
     }
     row["dict_pron_candidate_id"] = candidate_id(row)
@@ -318,8 +326,8 @@ def iter_registry_rows(
                     _complete_candidate(
                         base,
                         pron=pron_1,
-                        roman=clean(source.get("pron_1_roman")),
-                        roman_mfa=clean(source.get("pron_1_roman_mfa")),
+                        roman_source=clean(source.get("pron_1_roman")),
+                        roman_source_mfa=clean(source.get("pron_1_roman_mfa")),
                         rank="1",
                         source_name="NIKL_lexicon_full_v2",
                         source_field="pron_1",
@@ -336,8 +344,8 @@ def iter_registry_rows(
                     _complete_candidate(
                         base,
                         pron=pron_2,
-                        roman=clean(source.get("pron_2_roman")),
-                        roman_mfa=clean(source.get("pron_2_roman_mfa")),
+                        roman_source=clean(source.get("pron_2_roman")),
+                        roman_source_mfa=clean(source.get("pron_2_roman_mfa")),
                         rank="2",
                         source_name="NIKL_lexicon_full_v2",
                         source_field="pron_2",
@@ -358,8 +366,8 @@ def iter_registry_rows(
                         _complete_candidate(
                             base,
                             pron=pron,
-                            roman=roman,
-                            roman_mfa=roman_mfa,
+                            roman_source=roman,
+                            roman_source_mfa=roman_mfa,
                             rank="fallback",
                             source_name="NIKL_lexicon_full_legacy",
                             source_field="pron_g2p",

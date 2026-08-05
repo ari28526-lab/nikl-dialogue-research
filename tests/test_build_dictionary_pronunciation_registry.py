@@ -122,10 +122,20 @@ class DictionaryPronunciationRegistryTests(unittest.TestCase):
         self.assertEqual(by_field["pron_1"]["pron_hangul"], "익따")
         self.assertEqual(by_field["pron_1"]["is_primary"], "true")
         self.assertEqual(by_field["pron_2"]["is_alternative"], "true")
-        self.assertEqual(by_field["pron_2"]["pron_roman_mfa"], "I l _ TT A")
+        self.assertEqual(
+            by_field["pron_2"]["pron_roman_source_mfa"], "I l _ TT A"
+        )
+        self.assertEqual(by_field["pron_2"]["pron_roman_search"], "I l _ TT A")
         self.assertEqual(by_field["pron_g2p"]["is_dictionary_attested"], "false")
         self.assertEqual(by_field["pron_g2p"]["is_machine_generated"], "true")
         self.assertEqual(by_field["pron_g2p"]["source_match_mode"], "urimal_id_fallback")
+        self.assertEqual(by_field["pron_g2p"]["pron_roman_source"], "gasangeo")
+        self.assertEqual(by_field["pron_g2p"]["pron_roman_source_mfa"], "")
+        self.assertEqual(by_field["pron_g2p"]["pron_roman_search"], "G A _ S A ng _ EO")
+        self.assertEqual(
+            by_field["pron_g2p"]["roman_search_system_version"],
+            "roman_mfa.v1",
+        )
         self.assertEqual(manifest["counts"]["duplicate_candidates_removed"], 2)
         self.assertFalse(manifest["interpretation"]["mfa_dictionary_activation"])
 

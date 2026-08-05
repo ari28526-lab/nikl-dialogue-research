@@ -1770,3 +1770,20 @@ shard 2–23을 재개하는 것이다.
   PowerShell 5.1 호환성 57스크립트가 통과했다. preflight 동안 D: 출력은 만들지
   않았다. 실제 registry는 사용자 장시간 PowerShell에서 최초 release로 생성한다.
 - 기존 공통 MFA 사전·2020/2021 DB·6-tier·phone 기준은 변경하지 않는다.
+
+## 2026-08-05 — 사전 발음 registry v1 완전성 검증과 Roman 계약 교정
+
+- 사용자 PowerShell 실행은 114.687초에 성공했다. v1은 1,192,729후보,
+  `pron_1` 491,178, `pron_2` 37,864, legacy 기계 fallback 663,687행이며,
+  의미·출처 동일 중복 10,768개를 제거했다. 출력은 83,743,330바이트다.
+- 독립적으로 gzip을 끝까지 다시 읽고 1,192,729행, 필수 열 누락 0,
+  사전/fallback flag 모순 0, partial 0, SHA-256 재계산 일치를 확인했다.
+- 표본 확인 중 enriched의 기존 Roman-MFA와 legacy `pron_g2p_roman` 구형
+  convention이 v1의 한 `pron_roman_mfa` 열에 공존함을 발견했다. 후보 한글·품사·
+  의미·출처는 정확하지만 검색 표기 일관성 계약에는 부적합하므로 v1을 채택하지
+  않는다.
+- v2는 source Roman 두 열을 그대로 보존하고, `pron_hangul`에서 현재
+  `roman_mfa.v1` 검색열을 별도로 동일 생성한다. v1을 덮어쓰거나 삭제하지 않으며
+  v2만 이후 occurrence 조인과 공통발음열 감사에 사용한다.
+- 검증 근거:
+  `outputs/reports/VERIFY_dictionary_pronunciation_registry_v1_20260805.json`.

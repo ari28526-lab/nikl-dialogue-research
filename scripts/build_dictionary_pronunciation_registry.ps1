@@ -8,7 +8,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^dictionary_pron_registry_v[0-9]+_[0-9]{8}$')]
-    [string]$ReleaseId = 'dictionary_pron_registry_v1_20260805',
+    [string]$ReleaseId = 'dictionary_pron_registry_v2_20260805',
 
     [ValidateRange(1, 100)]
     [int]$MinimumFreeGiB = 5,

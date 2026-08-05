@@ -154,8 +154,8 @@ wav2vec2 phone 후보는 전수 사전 감사의 기준이 아니다. 사전·�
   `scripts/build_dictionary_pronunciation_registry.ps1`
 - 출력 root:
   `D:\10_LAYERS\10_pronunciation_reference`
-- 최초 release:
-  `dictionary_pron_registry_v1_20260805`
+- 채택 예정 release:
+  `dictionary_pron_registry_v2_20260805`
 
 2026-08-05 실자료 `-PreflightOnly`는 enriched 46열, legacy 27열과 기존
 SHA-256 감사 fingerprint의 경로·크기·수정시각 일치를 확인했다. preflight는
@@ -165,3 +165,23 @@ registry는 `pron_1`, `pron_2`, 빈 등재 발음의 legacy `pron_g2p` fallback�
 long 형식으로 저장한다. source record 순서와 무관한 semantic hash ID를 쓰고,
 동일한 의미·출처 후보만 중복 제거한다. gzip CSV와 manifest는 완전히 닫아
 검증 가능한 상태가 된 뒤 최종 이름으로 승격하며 기존 release를 덮어쓰지 않는다.
+
+### 7.1 Roman 열 분리
+
+최초 `dictionary_pron_registry_v1_20260805` 실물은 1,192,729행, gzip 전수 읽기,
+SHA 재계산, 출처 flag 검증을 통과했다. 그러나 독립 표본 감사에서 enriched의
+Roman-MFA와 legacy `pron_g2p_roman` 구형 convention이 같은
+`pron_roman_mfa` 열에 들어간 것을 발견했다. 발음·출처 후보 자체의 오류는
+아니지만 조합검색에서 같은 체계로 오해할 수 있으므로 v1은 채택하지 않는다.
+
+v2는 다음을 분리한다.
+
+```text
+pron_roman_source       원자료 Roman 문자열
+pron_roman_source_mfa   원자료에 실제로 존재할 때만 보존한 기존 Roman-MFA
+pron_roman_search       pron_hangul을 현재 roman_mfa.v1로 동일 변환
+roman_search_system_version
+```
+
+따라서 구형 표기를 버리거나 고쳐 쓰지 않으면서도 검색에는 한 체계만 사용한다.
+v1은 덮어쓰지 않고 비채택 검증 근거로 보존한다.
