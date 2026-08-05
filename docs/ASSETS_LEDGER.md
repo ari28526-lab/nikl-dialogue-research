@@ -1,6 +1,6 @@
 # 자산 대장 — 현재 생산 기준
 
-최종 갱신: 2026-08-03 KST
+최종 갱신: 2026-08-05 KST
 
 이 문서는 현재 필요한 자산의 위치만 기록한다. 2026-07-24 전체 인벤토리는
 [archive/ASSETS_LEDGER_20260724_full.md](archive/ASSETS_LEDGER_20260724_full.md)에
@@ -16,6 +16,7 @@
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
 | `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 search master | 보존, `_build_meta` SHA 계약 |
 | `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020 23/23 완료; 2021–2025 미완료 |
+| `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음과 legacy 기계 fallback의 참조 registry | 1,192,729행·SHA/전수 gzip/Roman 검색열 검증 완료; 참조용 채택 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |
 | `D:\20_AUDIO\08_textgrid_research_v2_staging\2020` | 2020 신규 r2 6-tier·동반표 출력 | TextGrid 868,187개·독립 감사 성공·Gate B 통과 |
@@ -27,6 +28,10 @@
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
 WAV–TextGrid–metadata 연결표, 승인·제외·미해결 기호표는 모두 연구 인프라의
 필수 산출물로 유지한다.
+
+사전 발음 registry v2는 공통 MFA 입력 phone 사전이 아니다. `pron_1/2`와
+fallback의 표제어·품사·의미·출처를 occurrence에 조인하고 규칙 예상형·MFA
+phone과 비교하기 위한 참조 자산이다. 비채택 v1은 감사 근거로만 보존한다.
 
 ## E: — 읽기 전용 archive
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": "dictionary_pronunciation_registry_verification.v1",
+  "status": "verified_and_adopted_as_reference_registry",
+  "verified_at": "2026-08-05T13:25:00+09:00",
+  "release_id": "dictionary_pron_registry_v2_20260805",
+  "adoption_scope": "dictionary_reference_and_search_only_not_mfa_dictionary",
+  "registry": {
+    "path": "D:\\10_LAYERS\\10_pronunciation_reference\\dictionary_pron_registry_v2_20260805\\dictionary_pronunciation_registry.csv.gz",
+    "bytes": 87968966,
+    "sha256": "5e51e16c35e68cb142ed98d9a07d1b277499b4a16b1a7f6b1fac788c71cfc2a3",
+    "sha256_recomputed_match": true,
+    "gzip_full_read_passed": true,
+    "rows": 1192729,
+    "partial_files": 0
+  },
+  "counts": {
+    "pron_1": 491178,
+    "pron_2": 37864,
+    "dictionary_attested": 529042,
+    "legacy_g2p_fallback": 663687,
+    "duplicate_candidates_removed": 10768
+  },
+  "contract_checks": {
+    "required_fields_missing": 0,
+    "source_flag_invariant_errors": 0,
+    "plain_hangul_search_roman_errors": 0,
+    "roman_search_system_version": "roman_mfa.v1",
+    "existing_mfa_outputs_modified": false
+  },
+  "supersedes_for_reference_use": "dictionary_pron_registry_v1_20260805"
+}

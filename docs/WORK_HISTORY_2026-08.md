@@ -1787,3 +1787,20 @@ shard 2–23을 재개하는 것이다.
   v2만 이후 occurrence 조인과 공통발음열 감사에 사용한다.
 - 검증 근거:
   `outputs/reports/VERIFY_dictionary_pronunciation_registry_v1_20260805.json`.
+
+## 2026-08-05 — 사전 발음 registry v2 참조용 채택
+
+- 교정된 v2는 121.231초에 별도 release로 생성됐다. 후보 구성과 semantic ID는
+  v1과 같고, Roman 열만 source/source-MFA/current-search로 분리했다.
+- 87,968,966바이트 gzip을 독립적으로 끝까지 다시 읽어 1,192,729행, 필수 열
+  누락 0, 사전/fallback flag 오류 0, 현대 한글 검색 Roman 누락·버전 오류 0,
+  partial 0을 확인했다. 출력 SHA-256도 manifest와 일치했다.
+- `수가`는 의미번호별 사전 후보와 fallback이 분리되고 검색열은 모두
+  `S U _ G A`, `읽다→익따`는 `I k _ TT A`, legacy `있잖아→읻짜나`는
+  `I t _ JJ A _ N A`로 현재 `roman_mfa.v1`에서 동일 검색된다. legacy 값은
+  여전히 사전 등재 발음으로 승격하지 않는다.
+- v2를 사전 참조·검색 registry로 채택했다. MFA 입력사전·2020/2021 DB·TextGrid는
+  변경하지 않았다. 다음 단계는 품사·의미를 보존한 occurrence link와 발음 비교
+  감사표 구현이다.
+- 검증 근거:
+  `outputs/reports/VERIFY_dictionary_pronunciation_registry_v2_20260805.json`.
