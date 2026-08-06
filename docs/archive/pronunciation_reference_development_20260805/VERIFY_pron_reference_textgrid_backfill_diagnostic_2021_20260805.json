@@ -1,0 +1,34 @@
+{
+  "schema_version": "verify_pron_reference_textgrid_backfill.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-05T16:51:10+09:00",
+  "year": "2021",
+  "scope": "all checkpointed sessions under output root",
+  "method": "independent checkpoint/session-table scan; exact first-six-tier semantic comparison; seventh-tier order, boundary, continuity, and label verification",
+  "backfill_contract_ids": [
+    "65a1bfb24a2b1c678ca9dd816c46df65137f316416c5b3a519056b5ab57dabd2"
+  ],
+  "counts": {
+    "companion_rows": 416,
+    "textgrids_semantically_verified": 416,
+    "sessions_verified": 1
+  },
+  "error_counts": {},
+  "error_examples": {},
+  "inputs": {
+    "source_textgrid_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging",
+    "output_root": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\diagnostics\\pron_reference_2021_first_session_20260805"
+  },
+  "elapsed_seconds": 2.748,
+  "runtime": {
+    "recorded_at": "2026-08-05T16:51:10+09:00",
+    "git_commit": "af2167c9104ec7c5aa66e05dbd6679b4ff53aaf4",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 25416
+  }
+}

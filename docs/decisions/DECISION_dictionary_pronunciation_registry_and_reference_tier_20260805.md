@@ -1,6 +1,6 @@
 # 사전 발음 registry·조인표·참조 tier 결정 — 2026-08-05
 
-상태: **v2 registry 채택, 2020·2021 occurrence·비교표·발화 index 전수 검증, 2020 7-tier 구현 파일럿 통과**
+상태: **v2 registry 채택, 2020·2021 occurrence·비교표·발화 index 전수 검증, 2020 구현 파일럿·2021 7-tier 전수 검증 통과**
 
 ## 1. 목적
 
@@ -300,7 +300,9 @@ E:\READ_ONLY_ARCHIVE\2026_summer_research\pronunciation_reference_pre_adoption_2
 
 1. 이 결정문·RUNBOOK·자산 대장·검증 보고서를 Git에 커밋·푸시한다.
 2. 같은 코드·계약의 2020 구현 파일럿을 다시 반복하지 않는다.
-3. 2021 7-tier를 세션 checkpoint 방식으로 전수 파생하고 독립 검증한다.
-4. 2021 인프라 Gate의 남은 연구자 확인을 끝낸 뒤에만 2022 MFA preflight로
+3. 2021 7-tier 4,139세션·1,371,883개는 전수 파생·독립 검증 완료됐으므로 다시
+   실행하지 않는다.
+4. 2021 인프라 Gate의 남은 연구자 기록을 끝낸 뒤 2022 MFA preflight로
    넘어간다.
-5. 2022–2025의 발음 참조표는 각 연도 6-tier가 완료된 후 같은 실행기로 만든다.
+5. 2022–2025의 발음 참조표는 각 연도 6-tier가 완료된 후 같은 실행기로 만들되,
+   다음 연도 MFA의 새 gate로 사용하지 않는다.

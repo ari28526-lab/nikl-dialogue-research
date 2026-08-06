@@ -1909,3 +1909,26 @@ shard 2–23을 재개하는 것이다.
   독립 검증이며, 그 뒤 연구자 Gate 전에는 2022 MFA로 넘어가지 않는다.
 - archive 근거:
   `outputs/reports/ARCHIVE_pronunciation_reference_pre_adoption_20260805.json`.
+
+## 2026-08-05~06 — 2021 7-tier 전수 완료·시작 오류 재현·문서 refresh
+
+- 사용자 PowerShell의 첫 `-Mode Full` 시도는 lock·출력·partial을 하나도 만들지
+  않고 시작 전에 종료됐다. 화면 오류를 복사하기 어려워 같은 동결 입력으로 첫
+  세션 416개를 프로젝트 임시 root에서 직접 재현했다. 기존 6-tier 변경 0,
+  7번째 tier 경계·label 오류 0으로 416/416 통과했다.
+- 로그를 남기는 숨김 PowerShell로 16:52 KST에 전수를 시작했다. 세션
+  checkpoint는 4,139개까지 증가했고 19:54 KST에 backfill이 끝났다. 이어진 독립
+  감사는 2026-08-05 21:20 KST에 1,371,883/1,371,883 TextGrid와 동반표를
+  검증해 `passed`, 오류 0으로 끝났다. MFA DB·WAV·LAB·원 CSV·기존 6-tier는
+  변경하지 않았다.
+- 정본 근거는
+  `outputs/reports/VERIFY_pron_reference_textgrid_backfill_2021_20260805.json`이다.
+  재현용 416개 TextGrid를 포함한 임시 419파일·3,598,599바이트는 정본 완료 뒤
+  제거했고, 작은 독립 감사 보고서만 개발 archive에 보존했다.
+- 실물은 완료됐으나 452행 현재 상태 문서와 383행 생산 RUNBOOK이 2021 export
+  전 상태를 현재처럼 계속 포함하고 있었다. 두 원문을
+  `docs/archive/pre_2022_refresh_20260806`에 보존하고, 2020 동결·2021 완료·
+  2021 공식 Gate 기록 대기·2022 미시작만 담은 짧은 정본으로 교체했다.
+- 공식 2021 연구자 검토 CSV 24행은 여전히 모두 `pending`이다. 대화에서는
+  20개가 정상이라고 확인했지만 행 identity가 기록되지 않았으므로 자동 승인하지
+  않는다. 다음 단계는 기존 확인 증거를 대조하고 실제 남은 행만 확인하는 것이다.
