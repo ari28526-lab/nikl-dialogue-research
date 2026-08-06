@@ -1963,3 +1963,31 @@ shard 2–23을 재개하는 것이다.
   `allow_next_year=true`다.
 - 다음 단계는 2021 재실행이 아니라 2022 `morph_search.v3`·source contract
   생성과 당해 연도 preflight다.
+
+## 2026-08-06 — 2022 전수 MFA 계산 완료·438건 exact-ID 검토 Gate
+
+- 2022 source search 866,359건에서 사전 승인 제외 1,231건을 뺀 활성 LAB
+  865,128건으로 동결 계약 MFA를 수행했다. MFA checkpoint는 `success`이며
+  864,690발화에 word/phone 정렬 구간이 생성됐다. phone interval은
+  26,372,701개, word interval은 7,039,920개, `spn`은 0개다.
+- `D:\mfa_tmp\2022\2022.db` 약 8.49GB와 `2022.direct_db_ready`를 보존했다.
+  full-year MFA 재실행은 필요하지 않다. direct export는 활성 LAB 중 정렬 구간이
+  없는 438건을 발견해 `blocked_exact_id_reconciliation`로 fail-closed 됐다.
+  source/LAB/DB/사전 승인 집합의 다른 차이 범주는 모두 0이다.
+- Windows PowerShell 5.1 safety 48파일, runtime compatibility 60스크립트와
+  사후 검토 wrapper의 읽기 전용 preflight를 통과시킨 뒤 보존 DB에서 후보를
+  생성했다. 438건 모두 `mfa_alignment_missing`이며
+  `mfa_feature_generation_failed`는 0건이다. 후보는 231세션에 분포하고,
+  최다 세션은 `SDRW2200002739`와 `SDRW2200002740` 각 35건이다.
+- 검토 root는
+  `outputs/reviews/mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806`이다.
+  immutable pending 원본·별도 승인 작업본은 각각 438행, 고유 ID도 438개이며
+  모든 결정은 `pending`이다. 자동 승인 0, DB 수정 0이다.
+- 연구자 표본은 미정렬 후보 16건과 최다 세션 정상 정렬 대조군 4건이다.
+  WAV/LAB 각각 20개가 모두 존재하고 빈 LAB은 0이다. 검토 안내를 함께 만들고
+  Dropbox root `MFA_2022_POST_EXACT_REVIEW_438_20260806`에 46파일을 복사한 뒤
+  원본과 SHA-256을 전수 대조했다.
+- 다음 허용 단계는 20건의 WAV–LAB 대응만 연구자가 확인하는 것이다. 실제 음운
+  실현·정렬 품질 판정은 요구하지 않는다. 명시 승인 전에는 438건을 제외 계약에
+  결합하거나 export를 재개하지 않는다. 승인 후에도 MFA를 다시 돌리지 않고
+  보존 DB에서 direct export·6-tier·동반 CSV·독립 감사를 재개한다.
