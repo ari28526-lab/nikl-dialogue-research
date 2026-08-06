@@ -1,13 +1,13 @@
 ﻿{
     "schema_version":  "production_source_contract_check.v1",
     "status":  "passed",
-    "checked_at":  "2026-08-06T16:42:54.6508820+09:00",
-    "year":  "2021",
+    "checked_at":  "2026-08-06T13:00:14.6401398+09:00",
+    "year":  "2022",
     "morph_run_id":  "morph_search_v3_20260801",
     "search_master_run_id":  "pre_mfa_v1_20260725",
     "source_meta_sha256":  "1649d60a302de44a772460ba9f64d3cfb9307a56d53f1fa578bcd0494264ea79",
-    "source_contract":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\SOURCE_CONTRACT.json",
-    "year_manifest":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\annual_tables\\YEAR_MANIFEST.json",
+    "source_contract":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2022\\SOURCE_CONTRACT.json",
+    "year_manifest":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2022\\annual_tables\\YEAR_MANIFEST.json",
     "checks":  [
                    {
                        "name":  "source_meta_exists",
@@ -17,7 +17,7 @@
                    {
                        "name":  "year_input_exists",
                        "status":  "passed",
-                       "detail":  "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2021"
+                       "detail":  "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2022"
                    },
                    {
                        "name":  "source_meta_success",
@@ -32,7 +32,7 @@
                    {
                        "name":  "source_contract_exists",
                        "status":  "passed",
-                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\SOURCE_CONTRACT.json"
+                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2022\\SOURCE_CONTRACT.json"
                    },
                    {
                        "name":  "source_contract_schema",
@@ -42,7 +42,7 @@
                    {
                        "name":  "source_contract_year",
                        "status":  "passed",
-                       "detail":  "actual=2021, expected=2021"
+                       "detail":  "actual=2022, expected=2022"
                    },
                    {
                        "name":  "source_contract_run_ids",
@@ -62,12 +62,12 @@
                    {
                        "name":  "morph_year_manifest_exists",
                        "status":  "passed",
-                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\annual_tables\\YEAR_MANIFEST.json"
+                       "detail":  "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2022\\annual_tables\\YEAR_MANIFEST.json"
                    },
                    {
                        "name":  "morph_year_manifest_success",
                        "status":  "passed",
-                       "detail":  "status=success, year=2021"
+                       "detail":  "status=success, year=2022"
                    }
                ],
     "failed_checks":  [
