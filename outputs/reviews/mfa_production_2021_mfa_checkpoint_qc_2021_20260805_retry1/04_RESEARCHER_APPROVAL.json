@@ -1,0 +1,40 @@
+{
+  "schema_version": "mfa_production_year_researcher_review.v1",
+  "status": "approved",
+  "approved_at": "2026-08-06T12:02:41+09:00",
+  "approved_by": "ari30",
+  "year": "2021",
+  "allow_next_year_mfa": true,
+  "realization_judgment_performed": false,
+  "automatic_approval_performed": false,
+  "counts": {
+    "rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24
+  },
+  "year_contract": {
+    "year": "2021",
+    "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+    "lab_input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+    "database": "D:\\mfa_tmp\\2021\\2021.db"
+  },
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 10906,
+    "mtime_ns": 1785985361329059300,
+    "sha256": "aef286886faa2e372598658af298f7f5e96a981acdd262cc25f59d632ef4e950"
+  },
+  "review_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 13937,
+    "mtime_ns": 1785894509392226600,
+    "sha256": "d88a2b21040dabf95828fc158a560705ed8015ebcbd88047c8e731d76cf3b26e"
+  },
+  "explicit_researcher_decision": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\03_RESEARCHER_DECISION.json",
+    "bytes": 2045,
+    "mtime_ns": 1785985361339112700,
+    "sha256": "340a6a0199a603ab4e483257601988038eb96788466bea20f4b12a0aa7ad12a3"
+  },
+  "materialized_from_explicit_researcher_statement": true
+}

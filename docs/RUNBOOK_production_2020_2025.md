@@ -40,15 +40,14 @@
 ```text
 2020 Gate B 완료·동결
   → 2021 MFA·6-tier·기계 감사·발음 참조 전수 완료
-  → 2021 공식 연구자 검토 기록 대기  ← 현재
-  → 2021→2022 Gate
-  → 2022 검색표/source contract
+  → 2021 공식 연구자 24/24 승인·2021→2022 Gate 완료
+  → 2022 검색표/source contract  ← 현재
   → 2022 MFA
 ```
 
 2022 MFA는 아직 시작되지 않았다.
 
-## 4. 2021 Gate 종료
+## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.
 
@@ -65,9 +64,10 @@ outputs/reviews/
     03_RESEARCHER_REVIEW_MANIFEST.json
 ```
 
-기계 감사·DB 표본은 통과했지만 공식 CSV 24행은 아직 모두 `pending`이다.
-대화에서 확인한 20개를 어느 행인지 추측해 채우지 않는다. 기존 검토 증거를
-대조하고 실제 미확인 행만 연구자에게 제시한다.
+연구자는 1–20번과 21–24번 총 24개 표본을 확인했다. 승인 절차는 CSV 수동
+편집을 요구하지 않는다. 승인자·명시 문장·정확한 행 수를 받은 뒤 아래 단일
+명령이 원 pending CSV를 바이트 동일 보존하고, identity를 검증한 뒤 승인 CSV와
+결정·승인 JSON을 원자적으로 만든다.
 
 모든 행이 기록된 뒤에만 다음 승인기를 사용한다.
 
@@ -75,8 +75,13 @@ outputs/reviews/
 & "C:\Users\ari30\research\2026_summer_research\scripts\approve_production_year_sample_review.ps1" `
   -Year "2021" `
   -ApprovedBy "ari30" `
+  -ApprovalStatement "2021 생산 표본 24개를 직접 확인했으며 연결·6-tier·정렬·검색 정보가 대체로 적절함을 승인한다. 실제 음운 실현 판정은 수행하지 않았다." `
+  -ExpectedRowCount 24 `
   -ExecutionQueueId "mfa_checkpoint_qc_2021_20260805_retry1"
 ```
+
+이 명령은 연구자 결정을 기록할 뿐 자동으로 승인 여부를 추론하지 않는다. 같은
+인자로 재실행해도 승인 CSV·원 pending archive SHA가 바뀌지 않는다.
 
 승인 보고서 생성 뒤 다음 읽기 전용 Gate가 `passed`여야 한다.
 
@@ -86,9 +91,13 @@ outputs/reviews/
   -ExecutionQueueId "mfa_checkpoint_qc_2021_20260805_retry1"
 ```
 
+2021은 2026-08-06에 이 Gate를 실패 검사 0으로 통과했다. Gate는 일반
+`direct_db_research_6tier_v1`과 동일 schema의 checkpoint-resume 실행 mode를
+함께 인정하고, 보존 DB 완료는 같은 계약의 `direct_db_ready` marker로 확인한다.
+
 ## 5. 2022 준비
 
-2021 Gate가 통과한 뒤에만 수행한다.
+2021 Gate가 통과했으므로 다음을 순서대로 수행한다.
 
 1. `prepare_production_year_before_mfa.ps1 -Year 2022`로 검색표와 source
    contract를 checkpoint 생성한다.

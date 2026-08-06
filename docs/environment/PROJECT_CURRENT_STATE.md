@@ -24,7 +24,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 | 연도 | 검색표 | 공통 Jamo r2 MFA·6-tier | 연구자 Gate | 발음 참조 파생층 |
 |---:|---|---|---|---|
 | 2020 | 완료 | 완료 | Gate B 통과 | occurrence·비교/index 완료, 7-tier 914건 구현 검증 |
-| 2021 | 완료 | 완료 | 공식 승인 기록 대기 | occurrence·비교/index·7-tier 전수 완료 |
+| 2021 | 완료 | 완료 | 24/24 승인·다음 연도 Gate 통과 | occurrence·비교/index·7-tier 전수 완료 |
 | 2022 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
 | 2023 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
 | 2024 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
@@ -41,7 +41,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   2세션 914개로 구현 계약이 검증됐으며, 전수 backfill은 다른 MFA와 D: I/O가
   겹치지 않을 때 수행한다.
 
-## 2021 — 기계 생산 완료, 공식 연구자 Gate 기록 대기
+## 2021 — 생산·연구자 Gate 완료
 
 - `morph_search.v3` 7표와 frozen source contract가 완료됐다.
 - MFA 정렬은 2026-08-04 20:53:45 KST에 exit 0으로 끝났다.
@@ -54,10 +54,14 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   `spn` 0이며 DB 재수출 표본은 semantic·byte 24/24 일치했다.
 - 19개 후행 무음 word 표지는 시간·phone을 유지하고 빈 word label로 국소
   정규화했다. MFA DB·WAV·LAB·원 CSV는 변경하지 않았다.
-- 연구자는 대화에서 20개 표본이 같은 발화이고 정렬이 대체로 적절하다고
-  확인했다. 그러나 공식 검토 CSV 24행은 아직 모두 `pending`이다. 어느 20행인지
-  추측해 자동 승인하지 않고, 기존 확인 증거와 정확히 대조한 뒤 남은 행만
-  확인한다.
+- 연구자는 1–20번과 21–24번, 총 24개 표본의 WAV·LAB·TextGrid 연결,
+  6-tier, 정렬, 검색 정보가 대체로 적절하다고 확인했다. 원 pending CSV를
+  바이트 동일 보존한 뒤 명시 승인 문장을 24/24에 기록했다.
+- 승인 보고서는 `automatic_approval_performed=false`,
+  `materialized_from_explicit_researcher_statement=true`,
+  `allow_next_year_mfa=true`다.
+- checkpoint-resume mode와 별도 `direct_db_ready` marker를 같은 6-tier 생산
+  계약으로 검증한 `2021 → 2022` Gate는 2026-08-06에 실패 검사 0으로 통과했다.
 - 우리말샘 occurrence 12,015,453행, 원 표기 어절 비교표 6,610,698행,
   발화 index 1,373,920행을 독립 검증했다.
 - 7-tier 파생본은 4,139세션·1,371,883개다. 기존 6개 tier 변경 0,
@@ -77,8 +81,8 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 
 따라서 2022 생산은 아직 시작되지 않았다. 다음 순서는 다음과 같다.
 
-1. 2021 공식 연구자 검토 기록과 `2021 → 2022` Gate를 닫는다.
-2. 2022 `morph_search.v3`와 source contract를 생성·검증한다.
+1. 2022 `morph_search.v3`와 source contract를 생성·검증한다.
+2. 승인 제외 1,231건과 LAB marker의 input contract를 대조한다.
 3. PowerShell 안전·5.1 검사와 해당 wrapper preflight를 통과시킨다.
 4. 2022 한 연도만 checkpoint 방식으로 시작한다.
 
@@ -107,11 +111,12 @@ MFA를 시작하지 않았다.
 - 실행 중인 장시간 작업 없음
 - 2020 완료 자산 변경 없음
 - 2021 core 및 파생층 완료
-- 2021 공식 연구자 승인 보고서 없음
+- 2021 공식 연구자 승인·`2021 → 2022` Gate 완료
 - 2022 MFA 시작 전
 
-현재 허용 작업은 문서·검토 증거 정리와 2021 Gate 종료다. 2021 정렬 재실행,
-새 발음사전 설계, 새 파일럿, 2022 자동 시작은 허용하지 않는다.
+현재 허용 작업은 2022 검색표·source contract와 preflight 준비다. 2020·2021
+정렬 재실행, 새 발음사전 설계, 새 파일럿, 검증 전 2022 MFA 시작은 허용하지
+않는다.
 
 ## 정본 문서
 

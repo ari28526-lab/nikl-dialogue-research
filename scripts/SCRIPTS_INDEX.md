@@ -1,4 +1,4 @@
-# 스크립트 색인 — 최종 갱신 2026-08-03
+# 스크립트 색인 — 최종 갱신 2026-08-06
 
 ## 현재 생산 진입점
 
@@ -8,8 +8,8 @@
 | 2 | `prepare_production_year_before_mfa.ps1 -Year <YEAR>` | 해당 연도 `morph_search.v3` 7표와 동결 source contract를 checkpoint 방식으로 완성; MFA 없음 |
 | 3 | `approve_remaining_mfa_exclusion_categories.ps1` | 연구자 명시 승인 뒤 세 범주의 5개년 제외 계약만 기록; MFA 시작 없음 |
 | 4 | `start_remaining_mfa_after_2020_gate.ps1 -ApprovedBy ari30` | 검색·승인 계약 뒤 2021만 시작; 2020 재포함·2022 선행 실행 금지 |
-| 5 | `prepare_production_year_sample_review.ps1` / `approve_production_year_sample_review.ps1` | 현 연도 기계 QC 뒤 WAV·LAB·6-tier 연결 표본을 준비하고 연구자 인프라 승인을 기록; 실현 판정 아님 |
-| 6 | `preflight_production_next_year_gate.ps1` / `start_next_mfa_year_after_gate.ps1` | 직전 연도 source·DB·6-tier·동반표·표본 승인을 결합해 다음 한 연도만 시작 |
+| 5 | `prepare_production_year_sample_review.ps1` / `approve_production_year_sample_review.ps1` | 현 연도 기계 QC 뒤 WAV·LAB·6-tier 표본을 준비; 직접 검토 뒤 승인 문장·행 수로 원 pending 보존과 승인 계약을 한 번에 기록; 실현 판정·자동 추론 아님 |
+| 6 | `preflight_production_next_year_gate.ps1` / `start_next_mfa_year_after_gate.ps1` | 직전 연도 source·DB·6-tier·동반표·표본 승인과 checkpoint-resume 완료 marker를 결합해 다음 한 연도만 시작 |
 | 상태 | `show_mfa_year_queue_status.ps1` | 읽기 전용 큐·lock·D: 상태판 |
 
 `mfa_year_selection.ps1`은 Windows PowerShell 5.1의 `-File` 경계에서 연도 배열이
@@ -260,8 +260,8 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | mfa_production_year_review.py / prepare_2020_production_sample_review.ps1 / approve_2020_production_sample_review.ps1 | 기계 QC 표본의 WAV/LAB/6-tier 연결·가용성과 수정 불가 identity 승인 JSON 생성 | 2020 24/24 승인 완료; 실제 실현 판정 미수행; 재실행 금지 |
 | preflight_2020_gate_b.ps1 | 2020 source·audit·marker·DB·표본·연구자 승인을 결합한 fail-closed gate. 최종 queue `mfa_r2_prod_2020_export_20260803`만 허용하고 구 ID는 canonical 보고서 쓰기 전에 차단 | 2026-08-03 재검증 16/16 통과, 실패 0; stale-ID 무변경 거부 시험 통과 |
 | prepare_remaining_mfa_approval_reviews.ps1 / approve_remaining_mfa_exclusion_categories.ps1 / start_remaining_mfa_after_2020_gate.ps1 | Gate B 통과 뒤 2021–2025 제외표를 준비하고, 연구자가 명시 승인한 세 범주를 원본 후보표와 분리된 5개년 계약으로 기록한 뒤, 시작 wrapper는 직전 연도 연구자 gate를 건너뛰지 않도록 현재 2021 한 연도만 허용 | **현재 생산 진입점**; 승인 wrapper는 MFA를 시작하지 않으며 2020 재포함·2022–2025 선행 실행 금지 |
-| prepare_production_year_sample_review.ps1 / approve_production_year_sample_review.ps1 | 2021–2025의 단독 연도 queue가 기계 QC를 통과했을 때 DB 표본의 WAV·LAB·6-tier 연결 검토표와 연구자 승인 기록 생성 | 최소 5세션, identity/path 불변, 자동승인·실현판정 금지 |
-| preflight_production_next_year_gate.ps1 / start_next_mfa_year_after_gate.ps1 | 2021→2022부터 2024→2025까지 직전 연도 source·audit·marker·retained DB·DB 표본·연구자 승인을 결합 검증하고 다음 한 연도만 시작 | 연도별 독립 execution queue; 직전 gate 우회와 다연도 시작 차단 |
+| prepare_production_year_sample_review.ps1 / approve_production_year_sample_review.ps1 | 2021–2025의 단독 연도 queue가 기계 QC를 통과했을 때 DB 표본의 WAV·LAB·6-tier 연결 검토표와 연구자 승인 기록 생성 | 최소 5세션, identity/path·원 pending SHA 불변, 승인 문장·정확 행 수 필수, 재실행 무변경, 자동승인·실현판정 금지 |
+| preflight_production_next_year_gate.ps1 / start_next_mfa_year_after_gate.ps1 | 2021→2022부터 2024→2025까지 직전 연도 source·audit·marker·retained DB·DB 표본·연구자 승인을 결합 검증하고 다음 한 연도만 시작 | 표준 6-tier와 checkpoint-resume mode 동등성·`direct_db_ready` 계약 확인; 연도별 독립 queue, gate 우회와 다연도 시작 차단 |
 | research_companion_schema.py / research_companion_tables_schema_v2.json | gzip CSV와 Parquet의 열 순서·dtype·nullable·부울·null·BOM·압축 계약을 단일 schema로 동결 | exporter 전 필드 대조 시험 통과 |
 | build_research_companion_parquet.py / verify_research_companion_parquet.py | 감사 정본 gzip 4표에서 disposable typed Parquet 검색 미러를 만들고 소규모 QC에서 값·dtype·행 순서를 왕복 검증 | 6개년 60발화 24표 왕복 통과(PyArrow는 별도 분석 환경) |
 | benchmark_research_6tier_exporter.py | MFA 없이 합성 SQLite/search CSV로 6-tier 최초 출력·재개 시간과 Python 메모리·partial을 측정 | 10,000발화 최초 87.7초, 재개 38.4초, peak 9.2MiB |

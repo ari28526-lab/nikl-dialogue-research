@@ -1,0 +1,50 @@
+{
+  "schema_version": "mfa_production_year_explicit_decision.v1",
+  "status": "approved",
+  "approved_at": "2026-08-06T12:02:41+09:00",
+  "approved_by": "ari30",
+  "approval_statement": "2021 생산 표본 24개를 모두 확인했으며 1–20번과 21–24번의 WAV·LAB·TextGrid 연결, 6-tier, 정렬, 검색 정보가 대체로 적절함을 승인한다. 실제 음운 실현 판정은 수행하지 않았다.",
+  "year": "2021",
+  "expected_row_count": 24,
+  "reviewed_utt_ids": [
+    "SDRW2100000136.1.1.47",
+    "SDRW2100002907.1.1.133",
+    "SDRW2100001386.1.1.119",
+    "SDRW2100002314.1.1.309",
+    "SDRW2100000187.1.1.205",
+    "SDRW2100003340.1.1.325",
+    "SDRW2100001699.1.1.373",
+    "SDRW2100000963.1.1.291",
+    "SDRW2100003394.1.1.296",
+    "SDRW2100000938.1.1.100",
+    "SDRW2100001982.1.1.37",
+    "SDRW2100001521.1.1.28",
+    "SDRW2100003745.1.1.346",
+    "SDRW2100001709.1.1.71",
+    "SDRW2100001347.1.1.140",
+    "SDRW2100003256.1.1.229",
+    "SDRW2100004166.1.1.17",
+    "SDRW2100000846.1.1.222",
+    "SDRW2100002015.1.1.52",
+    "SDRW2100002320.1.1.151",
+    "SDRW2100000105.1.1.201",
+    "SDRW2100001537.1.1.265",
+    "SDRW2100004119.1.1.205",
+    "SDRW2100004054.1.1.13"
+  ],
+  "pending_review_archive": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\03_RESEARCHER_REVIEW_PENDING_ORIGINAL.csv",
+    "bytes": 7642,
+    "mtime_ns": 1785985361318280600,
+    "sha256": "1c6dcd62a804671d9fc88f39d780494d8fa58e30852cdcdd36eb44c0f170c9ad"
+  },
+  "approved_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 10906,
+    "mtime_ns": 1785985361329059300,
+    "sha256": "aef286886faa2e372598658af298f7f5e96a981acdd262cc25f59d632ef4e950"
+  },
+  "materialized_from_explicit_researcher_statement": true,
+  "automatic_approval_performed": false,
+  "realization_judgment_performed": false
+}

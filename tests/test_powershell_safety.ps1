@@ -677,7 +677,12 @@ foreach ($path in $files) {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
             'mfa_production_year_review.py',
-            'approve --review-csv',
+            'approve-explicit --review-csv',
+            '[string]$ApprovalStatement',
+            '[int]$ExpectedRowCount',
+            '03_RESEARCHER_REVIEW_PENDING_ORIGINAL.csv',
+            '03_RESEARCHER_DECISION.json',
+            '수동 CSV 편집이나 자동 승인 추론을 수행하지 않았다.',
             '04_RESEARCHER_APPROVAL.json',
             '이 승인은 실제 음운 실현 판정이 아니다.'
         )) {
@@ -695,6 +700,7 @@ foreach ($path in $files) {
             'verify_production_source_contract.ps1',
             'mfa_production_year_review.py',
             'preflight_next_year_after_qc.py',
+            '--direct-db-ready-marker',
             'allow_next_year = [bool]$passed',
             'if (-not $passed) { exit 1 }'
         )) {

@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-05 KST
+최종 갱신: 2026-08-06 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -44,6 +44,7 @@
 | `DECISION_2023_JSON_PCM_segment_id_mismatch_20260803.md` | 2023 배포 JSON 발화와 PCM/WAV 분절 ID 불일치의 원인·보수적 복구 기준 |
 | `DECISION_year_safe_body_first_recovery_later_20260803.md` | 2021–2025 same-ID 안전 본체 우선 정렬·회수분 후속 shard·최종 제외 원칙 |
 | `DECISION_sequential_year_gate_and_queue_isolation_20260803.md` | 2021–2025 연도별 독립 실행 queue·직전 연도 6-tier/DB/연구자 gate·상태 history 보존 |
+| `DECISION_explicit_year_review_approval_and_gate_compatibility_20260806.md` | 표본 직접 검토 뒤 승인 문장·정확 행 수로 원 pending을 보존하며 계약화하고, checkpoint-resume·`direct_db_ready`를 동일 6-tier 생산 근거로 검증 |
 | `DECISION_2021_feature_generation_ignored_pending_20260804.md` | 2021 feature 생성 실패 24건을 자동 누락하지 않고 MFA 완료 DB 보존·exact-ID 재확인·연구자 승인 뒤 export하는 절차 |
 | `DECISION_post_MFA_exact_reconciliation_resume_20260804.md` | 2021–2025 post-MFA 기술적 미정렬을 DB·실패 보고서 exact-ID로 검증하고 명시 승인 뒤 전년 재정렬 없이 보존 DB에서 export·감사만 재개하는 공통 절차 |
 | `DECISION_MFA_float32_terminal_boundary_normalization_20260805.md` | MFA DB float32 종단시각과 WAV 프레임 duration의 미세 표현 차이만 동적 허용치로 0/xmax 정규화하고 TextGrid·동반표·보고서에 동일 반영하는 생산 정책 |

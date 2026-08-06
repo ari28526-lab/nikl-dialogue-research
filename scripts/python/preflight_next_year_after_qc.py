@@ -127,6 +127,7 @@ def validate_next_year_gate(
     expected_pronunciation_mode: str,
     report_path: Path,
     minimum_coverage_pct: float = 99.0,
+    direct_db_ready_marker: Path | None = None,
 ) -> dict[str, Any]:
     """검증 결과를 원자 저장하고 보고서 dict를 반환한다."""
 
@@ -171,6 +172,7 @@ def validate_next_year_gate(
             expected_final_year_root=expected_final_year_root,
             expected_pronunciation_mode=expected_pronunciation_mode,
             report_path=report_path,
+            direct_db_ready_marker=direct_db_ready_marker,
         )
     checks: list[dict[str, Any]] = []
 
@@ -696,6 +698,7 @@ def main() -> int:
         required=True,
     )
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--direct-db-ready-marker", type=Path)
     parser.add_argument("--minimum-coverage-pct", type=float, default=99.0)
     args = parser.parse_args()
     report = validate_next_year_gate(
@@ -712,6 +715,7 @@ def main() -> int:
         expected_pronunciation_mode=args.expected_pronunciation_mode,
         report_path=args.report,
         minimum_coverage_pct=args.minimum_coverage_pct,
+        direct_db_ready_marker=args.direct_db_ready_marker,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "passed" else 1

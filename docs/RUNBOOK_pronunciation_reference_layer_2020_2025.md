@@ -117,9 +117,9 @@ D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\<YEAR>\
 2021 `-Mode Full`은 2026-08-05 21:20 KST에 독립 전수 검증까지 완료됐다.
 기존 6-tier 의미 변경 0, 7번째 tier 경계·label 오류 0이다. 다시 실행하지 않는다.
 
-다음 core 단계는 2021 공식 연구자 Gate 기록을 닫고 2022 MFA를 준비하는 것이다.
-2020 전수 7-tier와 2022–2025 파생층은 core MFA의 새 gate로 만들지 않고 D: I/O가
-비는 시간에 처리한다.
+2021 공식 연구자 24/24 승인과 `2021 → 2022` Gate도 완료됐다. 다음 core 단계는
+2022 검색표·source contract와 MFA preflight다. 2020 전수 7-tier와 2022–2025
+파생층은 core MFA의 새 gate로 만들지 않고 D: I/O가 비는 시간에 처리한다.
 
 비채택 v1과 폐기된 좌표 파일럿은 E: 읽기 전용 archive에 보존됐으며, 다시
 생산 입력으로 사용하지 않는다. 위치와 SHA는

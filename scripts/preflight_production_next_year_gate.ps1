@@ -78,6 +78,9 @@ $reviewExit = $LASTEXITCODE
     --audit-report (Join-Path $reportRoot '01_year_audit.json') `
     --align-marker (Join-Path $stateRoot "done\$PriorYear.align_done") `
     --merge-marker (Join-Path $stateRoot "done\$PriorYear.merge_done") `
+    --direct-db-ready-marker (Join-Path $stateRoot (
+        "done\$PriorYear.direct_db_ready"
+    )) `
     --temp-contract (Join-Path $stateRoot (
         "input_contracts\$PriorYear.json"
     )) `

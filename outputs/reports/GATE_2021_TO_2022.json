@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  "mfa_production_next_year_gate.v1",
+    "status":  "passed",
+    "checked_at":  "2026-08-06T12:06:20.9723652+09:00",
+    "prior_year":  "2021",
+    "next_year":  "2022",
+    "prior_execution_queue_id":  "mfa_checkpoint_qc_2021_20260805_retry1",
+    "source_contract_report":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\GATE_2021_source.json",
+    "production_researcher_review":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\04_RESEARCHER_APPROVAL.json",
+    "research_qc_gate_report":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\GATE_2021_core.json",
+    "allow_next_year":  true
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "mfa_research_6tier_next_year_gate.v1",
+  "supported_export_mode": "direct_db_research_6tier_v1",
+  "compatible_export_modes": [
+    "direct_db_research_6tier_v1",
+    "direct_db_research_6tier_v1_checkpoint_resume"
+  ],
+  "observed_export_mode": "direct_db_research_6tier_v1_checkpoint_resume",
+  "status": "passed",
+  "checked_at": "2026-08-06T12:06:20+09:00",
+  "prior_year": "2021",
+  "next_year": "2022",
+  "input_contract_id": "1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8",
+  "alignment_contract_id": "5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd",
+  "checks": [
+    {
+      "name": "audit_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_checkpoint_qc_2021_20260805_retry1\\2021\\01_year_audit.json"
+    },
+    {
+      "name": "align_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\done\\2021.align_done"
+    },
+    {
+      "name": "merge_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\done\\2021.merge_done"
+    },
+    {
+      "name": "temp_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\input_contracts\\2021.json"
+    },
+    {
+      "name": "sample_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_checkpoint_qc_2021_20260805_retry1\\2021\\02_db_sample.json"
+    },
+    {
+      "name": "review_readable",
+      "status": "passed",
+      "detail": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2021_mfa_checkpoint_qc_2021_20260805_retry1\\04_RESEARCHER_APPROVAL.json"
+    },
+    {
+      "name": "direct_db_ready_readable",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\done\\2021.direct_db_ready"
+    },
+    {
+      "name": "audit_research_6tier_success",
+      "status": "passed",
+      "detail": "status=success, coverage=100.0"
+    },
+    {
+      "name": "exact_contract_identity",
+      "status": "passed",
+      "detail": "input=['1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8'], alignment=['5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd']"
+    },
+    {
+      "name": "marker_export_mode",
+      "status": "passed",
+      "detail": "align=direct_db_research_6tier_v1_checkpoint_resume, merge=direct_db_research_6tier_v1_checkpoint_resume, compatible=['direct_db_research_6tier_v1', 'direct_db_research_6tier_v1_checkpoint_resume']"
+    },
+    {
+      "name": "final_root_identity",
+      "status": "passed",
+      "detail": "audit=D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021, expected=D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2021"
+    },
+    {
+      "name": "search_master_identity",
+      "status": "passed",
+      "detail": "recorded=['D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725', 'D:\\\\10_LAYERS\\\\05_search_master_pre_mfa_staging\\\\pre_mfa_v1_20260725']"
+    },
+    {
+      "name": "direct_db_ready_contract",
+      "status": "passed",
+      "detail": "temp_retained=False, direct_db_ready=True"
+    },
+    {
+      "name": "retained_alignment_db",
+      "status": "passed",
+      "detail": "db=D:\\mfa_tmp\\2021\\2021.db, temp_status=alignment_computation_complete_export_pending, direct_db_ready=True"
+    },
+    {
+      "name": "db_sample_equivalence",
+      "status": "passed",
+      "detail": "compared=24, semantic=24, sessions=24"
+    },
+    {
+      "name": "researcher_infrastructure_review",
+      "status": "passed",
+      "detail": "schema=mfa_production_year_researcher_review.v1, status=approved, contract={'year': '2021', 'alignment_contract_id': '5ff1865744c85d982fc43708d7666f9af061cad833aa7fde04a09bef3238d5dd', 'lab_input_contract_id': '1bda84ba0ce02fed685991f1da0dff3b75577fffa07b05b971293f8c189fe0f8', 'database': 'D:\\\\mfa_tmp\\\\2021\\\\2021.db'}"
+    },
+    {
+      "name": "direct_export_exact_gate",
+      "status": "passed",
+      "detail": "D:\\mfa_eojeol\\logs\\direct_db_export_2021_eojeol_commonpron_2021_20260805_phone_sil_fix.json"
+    },
+    {
+      "name": "companion_manifest_contract",
+      "status": "passed",
+      "detail": "status=success"
+    }
+  ],
+  "failed_checks": []
+}

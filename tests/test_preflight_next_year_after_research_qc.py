@@ -60,7 +60,7 @@ class PreflightNextYearAfterResearchQcTests(unittest.TestCase):
             align = root / "align.json"
             merge = root / "merge.json"
             common_details = {
-                "export_mode": "direct_db_research_6tier_v1",
+                "export_mode": "direct_db_research_6tier_v1_checkpoint_resume",
                 "input_contract_id": "INPUT",
                 "alignment_contract_id": "ALIGN",
                 "search_master_root": str(search),
@@ -88,10 +88,25 @@ class PreflightNextYearAfterResearchQcTests(unittest.TestCase):
             self.write(
                 temp,
                 {
-                    "status": "direct_merge_completed_temp_retained_for_qc",
+                    "status": "alignment_computation_complete_export_pending",
                     "input_contract_id": "INPUT",
                     "alignment_contract_id": "ALIGN",
                     "search_master_root": str(search),
+                },
+            )
+            direct_ready = root / "direct_db_ready.json"
+            self.write(
+                direct_ready,
+                {
+                    "year": "2020",
+                    "stage": "direct_db_ready",
+                    "g2p_model": "common_pron_mfa_r2_latest_jamo",
+                    "details": {
+                        "computation_complete": True,
+                        "input_contract_id": "INPUT",
+                        "alignment_contract_id": "ALIGN",
+                        "alignment_db": str(db),
+                    },
                 },
             )
             sample = root / "sample.json"
@@ -139,9 +154,14 @@ class PreflightNextYearAfterResearchQcTests(unittest.TestCase):
                 expected_final_year_root=final,
                 expected_pronunciation_mode="common_pron_mfa_r2_latest_jamo",
                 report_path=root / "gate.json",
+                direct_db_ready_marker=direct_ready,
             )
             self.assertEqual(result["status"], "passed")
             self.assertEqual(result["supported_export_mode"], "direct_db_research_6tier_v1")
+            self.assertEqual(
+                result["observed_export_mode"],
+                "direct_db_research_6tier_v1_checkpoint_resume",
+            )
 
 
 if __name__ == "__main__":

@@ -1932,3 +1932,34 @@ shard 2–23을 재개하는 것이다.
 - 공식 2021 연구자 검토 CSV 24행은 여전히 모두 `pending`이다. 대화에서는
   20개가 정상이라고 확인했지만 행 identity가 기록되지 않았으므로 자동 승인하지
   않는다. 다음 단계는 기존 확인 증거를 대조하고 실제 남은 행만 확인하는 것이다.
+
+## 2026-08-06 — 2021 24/24 명시 승인·수동 CSV 절차 제거·2022 Gate 통과
+
+- 연구자가 기존에 확인한 표본은 번호 1–20번이라고 명시했다. 이어 21번의
+  `아`를 포함해 21–24번도 WAV·LAB·TextGrid 연결, 6-tier, 정렬, 검색 정보가
+  대체로 적절하다고 확인했다. 총 24/24를 승인했으며 실제 음운 실현 판정은
+  수행하지 않았다.
+- 기존 공식 CSV는 24행 모두 `pending`이고 Dropbox 사본에도 별도 결정 파일이
+  없었다. 스프레드시트 전용 runtime도 경로 오류로 두 번 시작하지 못했다. 이를
+  또 다른 수동 편집 지시로 우회하지 않고 연도별 승인 절차 자체를 수정했다.
+- 새 `approve-explicit` 경로는 승인자·명시 승인 문장·정확 행 수를 필수로 받고,
+  manifest의 identity/path와 원 CSV SHA를 확인한다. 원 pending CSV를 바이트
+  동일 보존한 뒤 승인 CSV·명시 결정 JSON·승인 JSON을 원자적으로 생성한다.
+  기계는 승인 여부를 추론하지 않으며
+  `automatic_approval_performed=false`를 유지한다.
+- 2021 적용 결과는 24행·24세션·24화자 승인이다. 같은 명령을 한 번 더 실행해
+  승인 CSV와 원 pending archive SHA가 모두 그대로임을 확인했다.
+- 첫 `2021 → 2022` Gate는 16개 핵심 검사 중 다른 14개는 통과했으나,
+  `direct_db_research_6tier_v1_checkpoint_resume`를 구 단일 mode만 허용한 검사와
+  옛 input contract의 export-pending status만 본 검사에서 실패했다. 이는 2021
+  산출물 오류가 아니라 완료 증거 판독 코드의 시대 불일치였다.
+- Gate가 표준 6-tier mode와 checkpoint-resume mode를 호환 실행 방식으로
+  인정하고, 같은 input/alignment 계약·보존 DB를 가리키는
+  `2021.direct_db_ready`의 `computation_complete=true`를 완료 근거로 읽도록
+  수정했다. 원 marker는 사후 수정하지 않았다.
+- Python 전체 387시험(명시 승인·재실행·checkpoint Gate 포함)과 Windows PowerShell 5.1
+  안전성 48파일·런타임 호환성 60스크립트가 통과했다. 재실행한
+  `GATE_2021_TO_2022.json`은 `passed`, 실패 검사 0,
+  `allow_next_year=true`다.
+- 다음 단계는 2021 재실행이 아니라 2022 `morph_search.v3`·source contract
+  생성과 당해 연도 preflight다.

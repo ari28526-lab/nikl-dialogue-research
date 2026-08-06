@@ -11,6 +11,10 @@ from pipeline_common import atomic_write_json, now_iso
 
 SCHEMA_VERSION = "mfa_research_6tier_next_year_gate.v1"
 EXPORT_MODE = "direct_db_research_6tier_v1"
+COMPATIBLE_EXPORT_MODES = {
+    EXPORT_MODE,
+    "direct_db_research_6tier_v1_checkpoint_resume",
+}
 
 
 def _read(path: Path) -> dict[str, Any]:
@@ -50,6 +54,7 @@ def validate_research_next_year_gate(
     expected_final_year_root: Path,
     expected_pronunciation_mode: str,
     report_path: Path,
+    direct_db_ready_marker: Path | None = None,
 ) -> dict[str, Any]:
     paths = {
         "audit": audit_report,
@@ -59,6 +64,8 @@ def validate_research_next_year_gate(
         "sample": sample_equivalence_report,
         "review": researcher_review_report,
     }
+    if direct_db_ready_marker is not None:
+        paths["direct_db_ready"] = direct_db_ready_marker
     data: dict[str, dict[str, Any] | None] = {}
     checks: list[dict[str, str]] = []
 
@@ -85,6 +92,7 @@ def validate_research_next_year_gate(
     temp = data["temp"] or {}
     sample = data["sample"] or {}
     review = data["review"] or {}
+    direct_db_ready = data.get("direct_db_ready") or {}
     input_ids = {
         str(audit.get("input_contract_id") or ""),
         str(_nested(align, "details", "input_contract_id") or ""),
@@ -118,14 +126,16 @@ def validate_research_next_year_gate(
         and len(alignment_ids) == 1,
         f"input={sorted(input_ids)}, alignment={sorted(alignment_ids)}",
     )
+    align_export_mode = _nested(align, "details", "export_mode")
+    merge_export_mode = _nested(merge, "details", "export_mode")
     add(
         "marker_export_mode",
-        _nested(align, "details", "export_mode") == EXPORT_MODE
-        and _nested(merge, "details", "export_mode") == EXPORT_MODE
+        align_export_mode == merge_export_mode
+        and align_export_mode in COMPATIBLE_EXPORT_MODES
         and align.get("g2p_model") == expected_pronunciation_mode
         and merge.get("g2p_model") == expected_pronunciation_mode,
-        f"align={_nested(align, 'details', 'export_mode')}, "
-        f"merge={_nested(merge, 'details', 'export_mode')}",
+        f"align={align_export_mode}, merge={merge_export_mode}, "
+        f"compatible={sorted(COMPATIBLE_EXPORT_MODES)}",
     )
     audit_year_root = Path(str(audit.get("textgrid_root", ""))) / prior_year
     add(
@@ -146,13 +156,35 @@ def validate_research_next_year_gate(
         f"recorded={search_values}",
     )
     db_path = Path(str(_nested(align, "details", "alignment_db") or ""))
+    temp_retained = (
+        temp.get("status") == "direct_merge_completed_temp_retained_for_qc"
+    )
+    ready_contract = (
+        bool(direct_db_ready)
+        and str(direct_db_ready.get("year") or "") == prior_year
+        and direct_db_ready.get("stage") == "direct_db_ready"
+        and direct_db_ready.get("g2p_model") == expected_pronunciation_mode
+        and _nested(direct_db_ready, "details", "computation_complete") is True
+        and _nested(direct_db_ready, "details", "input_contract_id") in input_ids
+        and _nested(direct_db_ready, "details", "alignment_contract_id")
+        in alignment_ids
+        and _same_path(
+            _nested(direct_db_ready, "details", "alignment_db"), db_path
+        )
+    )
+    add(
+        "direct_db_ready_contract",
+        temp_retained or ready_contract,
+        f"temp_retained={temp_retained}, direct_db_ready={ready_contract}",
+    )
     add(
         "retained_alignment_db",
         _nested(merge, "details", "alignment_db_retained") is True
         and db_path.is_file()
         and db_path.stat().st_size > 0
-        and temp.get("status") == "direct_merge_completed_temp_retained_for_qc",
-        f"db={db_path}, temp_status={temp.get('status')}",
+        and (temp_retained or ready_contract),
+        f"db={db_path}, temp_status={temp.get('status')}, "
+        f"direct_db_ready={ready_contract}",
     )
     compared = int(_nested(sample, "comparison_counts", "compared") or 0)
     semantic = int(_nested(sample, "comparison_counts", "semantic_equal") or 0)
@@ -232,6 +264,8 @@ def validate_research_next_year_gate(
     report: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "supported_export_mode": EXPORT_MODE,
+        "compatible_export_modes": sorted(COMPATIBLE_EXPORT_MODES),
+        "observed_export_mode": align_export_mode,
         "status": "passed" if not failed else "failed",
         "checked_at": now_iso(),
         "prior_year": prior_year,

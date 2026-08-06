@@ -8,8 +8,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
-from mfa_production_year_review import approve, prepare, validate  # noqa: E402
-from pipeline_common import sha256_file  # noqa: E402
+from mfa_production_year_review import (  # noqa: E402
+    FIELDS,
+    IDENTITY_FIELDS,
+    approve,
+    approve_explicit,
+    prepare,
+    validate,
+)
+from pipeline_common import file_fingerprint, sha256_file  # noqa: E402
 
 
 class ProductionYearReviewTests(unittest.TestCase):
@@ -125,6 +132,85 @@ class ProductionYearReviewTests(unittest.TestCase):
                 writer.writeheader()
                 writer.writerows(rows)
             self.assertEqual(validate(report_path=approval, review_csv=review_csv)["status"], "failed")
+
+    def test_explicit_approval_preserves_pending_csv_and_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            review_csv = root / "03_RESEARCHER_REVIEW.csv"
+            rows = []
+            for index in range(5):
+                rows.append(
+                    {
+                        "review_order": str(index + 1),
+                        "year": "2021",
+                        "session": f"S{index}",
+                        "speaker_id": f"SPK{index}",
+                        "utt_id": f"U{index}",
+                        "wav_path": str(root / f"U{index}.wav"),
+                        "lab_path": str(root / f"U{index}.lab"),
+                        "textgrid_path": str(root / f"U{index}.TextGrid"),
+                        "decision": "pending",
+                        "notes": "",
+                    }
+                )
+            with review_csv.open("w", encoding="utf-8-sig", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+            original_bytes = review_csv.read_bytes()
+            manifest_path = root / "03_RESEARCHER_REVIEW_MANIFEST.json"
+            self.write_json(
+                manifest_path,
+                {
+                    "schema_version": "mfa_production_year_review_manifest.v1",
+                    "status": "pending_researcher_review",
+                    "year": "2021",
+                    "input_contract_id": "INPUT",
+                    "alignment_contract_id": "ALIGN",
+                    "database": str(root / "2021.db"),
+                    "review_csv_template": file_fingerprint(
+                        review_csv, with_sha256=True
+                    ),
+                    "row_identities": [
+                        {key: row[key] for key in IDENTITY_FIELDS} for row in rows
+                    ],
+                    "counts": {"rows": 5, "sessions": 5, "speakers_nonempty": 5},
+                    "automatic_approval_performed": False,
+                },
+            )
+            pending_archive = root / "03_RESEARCHER_REVIEW_PENDING_ORIGINAL.csv"
+            decision_record = root / "03_RESEARCHER_DECISION.json"
+            approval = root / "04_RESEARCHER_APPROVAL.json"
+            kwargs = {
+                "review_csv": review_csv,
+                "review_manifest": manifest_path,
+                "approved_by": "researcher",
+                "approval_statement": "five reviewed samples are approved",
+                "expected_row_count": 5,
+                "pending_archive": pending_archive,
+                "decision_record": decision_record,
+                "output": approval,
+                "row_note": "explicit infrastructure review; no realization judgment",
+            }
+            report = approve_explicit(**kwargs)
+            self.assertEqual(pending_archive.read_bytes(), original_bytes)
+            with review_csv.open("r", encoding="utf-8-sig", newline="") as stream:
+                approved_rows = list(csv.DictReader(stream))
+            self.assertTrue(all(row["decision"] == "approved" for row in approved_rows))
+            self.assertTrue(all(row["notes"] for row in approved_rows))
+            decision = json.loads(decision_record.read_text(encoding="utf-8"))
+            self.assertFalse(decision["automatic_approval_performed"])
+            self.assertTrue(
+                decision["materialized_from_explicit_researcher_statement"]
+            )
+            self.assertEqual(report["status"], "approved")
+            self.assertEqual(validate(report_path=approval, review_csv=review_csv)["status"], "passed")
+            approved_sha = sha256_file(review_csv)
+            second = approve_explicit(**kwargs)
+            self.assertEqual(second["status"], "approved")
+            self.assertEqual(sha256_file(review_csv), approved_sha)
+            with self.assertRaisesRegex(RuntimeError, "row count differs"):
+                approve_explicit(**{**kwargs, "expected_row_count": 6})
 
 
 if __name__ == "__main__":
