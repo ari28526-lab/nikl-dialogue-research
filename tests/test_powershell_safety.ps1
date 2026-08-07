@@ -1052,6 +1052,8 @@ foreach ($path in $files) {
             'candidate_is_final_selection = $false',
             'No final dictionary was adopted and no annual MFA was started.',
             'Enable-SleepGuard',
+            "[Convert]::ToUInt32('80000000', 16)",
+            "[Convert]::ToUInt32('00000001', 16)",
             'Acquire-Lock',
             'Release-Lock',
             'pre_mfa_bulk.lock'
@@ -1059,6 +1061,11 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA r3 후보 실행 안전장치 누락: $required")
             }
+        }
+        if ($text -match '\[uint32\]0x8[0-9a-fA-F]{7}') {
+            $failures.Add(
+                '공통 MFA r3 후보 실행기에 PS5 음수 hexadecimal UInt32 cast 사용'
+            )
         }
     }
     if (

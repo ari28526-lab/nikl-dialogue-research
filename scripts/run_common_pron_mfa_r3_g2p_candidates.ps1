@@ -23,6 +23,12 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# Windows PowerShell 5.1 parses hexadecimal literals above Int32::MaxValue as
+# negative Int32 values.  Parse the Win32 execution-state flags explicitly as
+# UInt32 so the sleep guard is exercised safely on the user's actual shell.
+$script:esContinuous = [Convert]::ToUInt32('80000000', 16)
+$script:esSystemRequired = [Convert]::ToUInt32('00000001', 16)
+
 $projectRoot = (
     Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')
 ).Path
@@ -178,14 +184,14 @@ public static class CommonPronR3G2pSleepGuard {
 
 function Enable-SleepGuard {
     $result = [CommonPronR3G2pSleepGuard]::SetThreadExecutionState(
-        [uint32]0x80000001
+        ($script:esContinuous -bor $script:esSystemRequired)
     )
     if ($result -eq 0) { throw 'Windows sleep guard activation failed' }
 }
 
 function Disable-SleepGuard {
     [void][CommonPronR3G2pSleepGuard]::SetThreadExecutionState(
-        [uint32]0x80000000
+        $script:esContinuous
     )
 }
 
@@ -293,6 +299,9 @@ Say (
 )
 Say 'This phase creates candidates only; it does not modify TextGrids or run MFA.'
 if ($PreflightOnly) {
+    Enable-SleepGuard
+    Disable-SleepGuard
+    Write-Host 'Preflight sleep-guard activation/restoration: passed.'
     Write-Host 'PreflightOnly: no output directory, lock, or G2P process was created.'
     exit 0
 }

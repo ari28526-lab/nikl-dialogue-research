@@ -1,7 +1,7 @@
 {
   "schema_version": "common_pron_r3_g2p_preparation_report.v1",
   "status": "prepared_not_started",
-  "recorded_at": "2026-08-07T20:28:54+09:00",
+  "recorded_at": "2026-08-07T20:47:48+09:00",
   "scope": {
     "years": [2020, 2021, 2022, 2023, 2024, 2025],
     "candidate_is_final_selection": false,
@@ -38,8 +38,16 @@
     "python_unit_tests": "16 passed",
     "powershell_safety": "50 files passed",
     "powershell_5_1_runtime": "63 scripts passed",
-    "runner_preflight": "passed",
+    "runner_preflight": "passed including Windows sleep-guard activation and restoration",
     "drive_free_gib_at_preflight": 196.241
+  },
+  "runtime_correction": {
+    "observed_at": "2026-08-07T20:44:58+09:00",
+    "stage_when_stopped": "after static preflight and before the first G2P shard",
+    "symptom": "Windows PowerShell 5.1 parsed 0x80000001 as a negative Int32 before an explicit UInt32 cast",
+    "effect": "no G2P shard started; no TextGrid, source, or canonical candidate data changed; lock was released",
+    "fix": "parse execution-state flags with Convert.ToUInt32 hexadecimal conversion and exercise activation/restoration during PreflightOnly",
+    "regression": "static safety test rejects the unsafe [uint32]0x8........ form"
   },
   "next_gate": "Run resumable candidate G2P shards, then accept only exact broad-Roman target matches; do not adopt raw 1-best output."
 }

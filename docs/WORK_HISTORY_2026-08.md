@@ -109,6 +109,12 @@
   없음 오류가 났다. 읽기 전용 상태 확인 결과 `prepared_not_started`, lock 없음,
   완료 shard 0이어서 계산·자료 영향은 없었다. RUNBOOK과 연속성 문서의 사용자용
   명령을 프로젝트 절대경로로 통일했다.
+- 20:44:58 KST 절대경로 본 실행은 정적 preflight 뒤 절전 방지 flag
+  `[uint32]0x80000001`의 Windows PowerShell 5.1 음수 `Int32` 해석 때문에 첫
+  shard 전에 중단됐다. lock 없음·완료/부분 shard 0을 확인했다. flag를
+  `Convert.ToUInt32(..., 16)`으로 고치고 `-PreflightOnly`가 sleep guard 활성화·
+  복원까지 실행하도록 보강했다. PS 안전성 50파일, 런타임 63스크립트와 새 실제
+  preflight가 통과했으며, unsafe hexadecimal cast 재도입을 정적 회귀에서 막았다.
 - 논문 연구방법·각주에 중간 수정 이유와 절차를 그대로 인용할 수 있도록
   `docs/decisions/METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md`를
   만들고 r2 문제 발견→전수 감사→r3 후보/선택 분리→증명 기반 재사용 정책과
