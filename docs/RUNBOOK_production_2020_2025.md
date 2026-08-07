@@ -81,12 +81,14 @@
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
   -NoProfile -ExecutionPolicy Bypass `
-  -File ".\scripts\show_common_pron_mfa_r3_g2p_status.ps1"
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\show_common_pron_mfa_r3_g2p_status.ps1"
 ```
 
-실행기는 `run_common_pron_mfa_r3_g2p_candidates.ps1`이다. 완료 SHA 보고서가 있는
-shard만 재사용하므로 중단 뒤 같은 명령으로 국소 재개한다. 이 단계가 끝나도
-최종 사전 adoption이나 연도별 MFA로 자동 진입하지 않는다.
+실행기는
+`C:\Users\ari30\research\2026_summer_research\scripts\
+run_common_pron_mfa_r3_g2p_candidates.ps1`이다. 완료 SHA 보고서가 있는 shard만
+재사용하므로 중단 뒤 같은 명령으로 국소 재개한다. 이 단계가 끝나도 최종 사전
+adoption이나 연도별 MFA로 자동 진입하지 않는다.
 
 ## 4. 2021 Gate 종료 — 완료
 

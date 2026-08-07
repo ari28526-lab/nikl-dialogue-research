@@ -72,8 +72,10 @@ MFA 단계에서는 `show_mfa_year_queue_status.ps1`를 사용하고 같은 원�
 
 부분 `.dict`만 보고 완료로 판단하지 않는다. 입력·출력·동결 모델 SHA가 묶인
 shard 보고서가 있어야 완료다. r3 실행 명령은
-`scripts/run_common_pron_mfa_r3_g2p_candidates.ps1`이며, 새 대화에서는 먼저
-상태판을 실행한 뒤에만 재개한다.
+`C:\Users\ari30\research\2026_summer_research\scripts\
+run_common_pron_mfa_r3_g2p_candidates.ps1`이며, 새 대화에서는 먼저 상태판을
+실행한 뒤에만 재개한다. 사용자에게 주는 명령은 현재 PowerShell 위치와 무관한
+절대경로를 사용한다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

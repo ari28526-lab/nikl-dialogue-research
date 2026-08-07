@@ -105,6 +105,14 @@
   계산한다. 완료 shard는 재사용한다.
 - Windows PowerShell 5.1 안전성·런타임 검사와 실제 `-PreflightOnly`가 통과했다.
   이 준비 과정에서는 최종 사전, adoption, 연도별 MFA, TextGrid를 변경하지 않았다.
+- 20:43 KST 사용자가 사용자 홈에서 상대경로 상태판 명령을 실행해 `-File` 경로
+  없음 오류가 났다. 읽기 전용 상태 확인 결과 `prepared_not_started`, lock 없음,
+  완료 shard 0이어서 계산·자료 영향은 없었다. RUNBOOK과 연속성 문서의 사용자용
+  명령을 프로젝트 절대경로로 통일했다.
+- 논문 연구방법·각주에 중간 수정 이유와 절차를 그대로 인용할 수 있도록
+  `docs/decisions/METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md`를
+  만들고 r2 문제 발견→전수 감사→r3 후보/선택 분리→증명 기반 재사용 정책과
+  commit·manifest 근거를 기록했다.
 
 
 
