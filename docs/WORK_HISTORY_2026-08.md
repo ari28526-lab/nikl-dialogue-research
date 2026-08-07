@@ -126,6 +126,11 @@
   6-tier 재생성 또는 증명된 동등본 재사용→모든 발화 final index의 r3 contract
   ID·사전 SHA·`alignment_origin` 검증까지 통과해야만 연도 완료로 인정한다.
   기존 r2 TextGrid의 phone 문자열만 제자리에서 바꾸는 방식은 계속 금지한다.
+- 연구자는 위 중간 수정 방법론을 논문 각주에 명시할 것을 다시 확인했다. 각주
+  초안은 현재 방법론 방향만 고정하며, 완료 전 재사용·재정렬을 과거형 사실로
+  인용하지 않는다. r3 adoption과 6개년 TextGrid materialization 뒤 실제 후보·
+  보류·재사용·재정렬·연도별 TextGrid 수 및 contract/사전 SHA를 manifest에서
+  채우는 최종 각주 확정 Gate를 방법론 노트에 추가했다.
 - 논문 연구방법·각주에 중간 수정 이유와 절차를 그대로 인용할 수 있도록
   `docs/decisions/METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md`를
   만들고 r2 문제 발견→전수 감사→r3 후보/선택 분리→증명 기반 재사용 정책과
