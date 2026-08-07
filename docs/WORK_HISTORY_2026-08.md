@@ -2059,3 +2059,25 @@ shard 2–23을 재개하는 것이다.
   승인 CSV SHA를 검증하며 기본은 preflight, `-Start`를 명시해야 실제 재개한다.
   wrapper 자체 preflight도 결합 1,669건으로 통과했고, PowerShell 안전성 48개와
   Windows PowerShell 5.1 호환성 61개 스크립트가 통과했다. 파일은 UTF-8 BOM이다.
+
+### 2022 보존 DB direct export·독립 전수 감사 완료
+
+- `mfa_r2_prod_safe_body_2022_20260806_postmfa` queue는 2026-08-07 15:22 KST에
+  시작했다. 입력·정렬 계약과 8.49GB 보존 DB checkpoint를 재검증한 뒤 MFA를
+  다시 계산하지 않고 15:45부터 direct export를 수행했다.
+- 17:28 KST에 연구용 6-tier 864,690개와 gzip 동반표 4종을 최종 staging으로
+  승격했다. TextGrid coverage 100%, 정확 ID 대사 `passed`, `spn` 0이다. 동반표는
+  발화 864,690행, 어절 7,039,920행, phone 26,372,701행, 승인 제외 1,669행이다.
+- 독립 전수 감사는 18:00 KST에 끝났다. 중복·누락·추가 TextGrid, invalid tier,
+  phone inventory 밖 기호, 동반표 ID·key·manifest 불일치 등 hard failure 20범주가
+  모두 0이었다. DB 재수출 24세션 표본은 최종 TextGrid와 semantic·byte 24/24
+  일치했다. queue는 `machine_qc_complete_human_review_pending`으로 정상 종료했고
+  blocked year는 0이다.
+- 공식 연구자 인프라 표본은 24세션·24화자·24발화다. 권위 검토표는
+  `outputs/reviews/mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa`에
+  만들었고, WAV/LAB/TextGrid 72개를 한 평면 SHA 검증 묶음으로 구성했다. Dropbox
+  root의 `REVIEW_2022_FINAL_GATE_20260807`에도 76파일·2.3MiB로 복사했다.
+- 검토 bundle 안내문의 연도가 2021로 고정되고 `phoneme_auto` 구표기가 남아 있던
+  재사용 오류를 manifest 연도와 `phoneme_r_auto`로 교정하고 회귀시험을 추가했다.
+  생산 DB·WAV·LAB·TextGrid는 변경하지 않았다. 남은 단계는 자동 승인이 아닌
+  연구자 24개 직접 확인과 명시 승인, 이어지는 읽기 전용 완료 Gate다.

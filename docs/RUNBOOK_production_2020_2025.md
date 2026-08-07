@@ -48,7 +48,8 @@
   → 2021 공식 연구자 24/24 승인·2021→2022 Gate 완료
   → 2022 MFA 계산 완료·보존 DB
   → 2022 post-MFA exact-ID 438건 명시 승인·preflight 완료
-  → 2022 direct export·6-tier·동반표·독립 Gate  ← 현재
+  → 2022 direct export·6-tier·동반표·독립 기계 Gate 완료
+  → 2022 공식 연구자 24개 표본 Gate  ← 현재
 ```
 
 ## 4. 2021 Gate 종료 — 완료
@@ -111,6 +112,12 @@ outputs/reviews/
 4. 보존 DB에서 direct export를 재개한다.
 5. 6-tier·동반표·독립 전수 감사·한 번의 연구자 표본 Gate를 완료한다.
 6. 품질 플래그는 동반표에 결합하되 실제 실현 여부를 자동 판정하지 않는다.
+
+2026-08-07 실행 queue
+`mfa_r2_prod_safe_body_2022_20260806_postmfa`는 보존 DB를 재사용해 6-tier
+864,690개와 동반표 4종을 생성했다. 독립 전수 감사는 coverage 100%, hard
+failure 0, DB 재수출 표본 semantic·byte 24/24 일치로 통과했다. 현재 남은 단계는
+같은 계약에서 생성된 공식 연구자 표본 24개의 한 번의 인프라 Gate다.
 
 재개 명령은 `resume_year_export_after_post_mfa_review.ps1`을 사용한다. 이 명령은
 기존 1,231건과 새 438건을 결합한 계약을 만든 뒤 같은 `direct_db_ready` DB에서

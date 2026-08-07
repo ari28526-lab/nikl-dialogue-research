@@ -1,0 +1,71 @@
+{
+  "schema_version": "mfa_post_exact_finalization.v1",
+  "status": "approved",
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-07T15:19:36.0915311+09:00",
+  "approval_token": "APPROVE_2022_POST_MFA_438_36912D5D3802",
+  "approval_statement": "2022년 post-MFA 미정렬 438건을 alignment_and_analysis 범위로 안전 본체에서 제외하고, 원 WAV·LAB·MFA DB는 후속 회수 대상으로 보존하는 것을 승인한다. 승인자 ari30.",
+  "candidate_identity_sha256": "36912d5d3802425330d15bb906936a7ce30a02762875a264244c79a19de85b33",
+  "automatic_approval_performed": false,
+  "mfa_database_modified": false,
+  "full_year_mfa_rerun_required": false,
+  "resume_from_retained_db": true,
+  "counts": {
+    "pre_mfa_approved": 1231,
+    "post_mfa_approved": 438,
+    "combined_approved": 1669
+  },
+  "post_mfa_reason_counts": {
+    "mfa_alignment_missing": 438
+  },
+  "combined_reason_counts": {
+    "audio_pairing_unresolved": 974,
+    "empty_reference_unresolved_symbol": 252,
+    "mfa_alignment_missing": 438,
+    "text_duration_impossible": 5
+  },
+  "database": {
+    "path": "D:\\mfa_tmp\\2022\\2022.db",
+    "bytes": 8493625344,
+    "mtime_ns": 1786023519327187200
+  },
+  "export_report": {
+    "path": "D:\\mfa_eojeol\\logs\\direct_db_export_2022_eojeol_commonpron_2022_20260806_164407.json",
+    "bytes": 16547,
+    "mtime_ns": 1786024379576993700,
+    "sha256": "df8e2dbf69afe37dd4870fffa2d999919bd15461d6ce845108337cf69190fa7a"
+  },
+  "pre_approved_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803\\2022\\approved_exclusions.json",
+    "bytes": 1038,
+    "mtime_ns": 1785805342060308700,
+    "sha256": "199f7c884f13297d6185c414630a11614368f57106003c065e89b70d71d67486"
+  },
+  "review_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\SUMMARY.json",
+    "bytes": 4826,
+    "mtime_ns": 1786025712504929000,
+    "sha256": "d5c7467ddfde7f863fbf735be412b1af073953e424f19f772d414775d21f3791"
+  },
+  "researcher_decisions": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\04_RESEARCHER_APPROVAL.csv",
+    "bytes": 129631,
+    "mtime_ns": 1786082663695342100,
+    "sha256": "602d8eec50afa6c34e36f0ac744585d20e221db7eb279aa9faad1a9ad565784a"
+  },
+  "combined_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 477443,
+    "mtime_ns": 1786083643324370000,
+    "sha256": "aa206e700e2a85048d28ed1e78aef256fcbddd4ae9db5cf8627a51fa01f136e4"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\approved_exclusions.json",
+    "bytes": 1097,
+    "mtime_ns": 1786083643369258400,
+    "sha256": "37b4a9d8c6b5234ac05c186ba3c5fb4aae6b74f365e40fecff5542c2a37c96c5"
+  },
+  "contract_row_count": 1669
+}

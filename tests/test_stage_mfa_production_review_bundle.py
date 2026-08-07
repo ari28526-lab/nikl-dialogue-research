@@ -31,7 +31,7 @@ class StageMfaProductionReviewBundleTests(unittest.TestCase):
                 rows.append(
                     {
                         "review_order": str(order),
-                        "year": "2021",
+                        "year": "2022",
                         "session": f"S{order}",
                         "speaker_id": f"P{order}",
                         "utt_id": utt,
@@ -53,7 +53,7 @@ class StageMfaProductionReviewBundleTests(unittest.TestCase):
                     {
                         "schema_version": "mfa_production_year_review_manifest.v1",
                         "status": "pending_researcher_review",
-                        "year": "2021",
+                        "year": "2022",
                         "input_contract_id": "INPUT",
                         "alignment_contract_id": "ALIGN",
                         "automatic_approval_performed": False,
@@ -86,6 +86,9 @@ class StageMfaProductionReviewBundleTests(unittest.TestCase):
                 (output / "BUNDLE_MANIFEST.json").read_text(encoding="utf-8")
             )
             self.assertEqual(copied_manifest["counts"]["sessions"], 5)
+            readme = (output / "00_README.md").read_text(encoding="utf-8-sig")
+            self.assertIn("# 2022 MFA 최종 인프라 표본 검토", readme)
+            self.assertIn("phoneme_r_auto", readme)
 
 
 if __name__ == "__main__":

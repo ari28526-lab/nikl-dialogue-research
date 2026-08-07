@@ -118,15 +118,16 @@ def stage_bundle(
             for source, name in sources:
                 copied.append(copy_verified(source, staging / name))
 
+        year = str(manifest["year"])
         readme = staging / "00_README.md"
         readme.write_text(
-            "# 2021 MFA 최종 인프라 표본 검토\n\n"
+            f"# {year} MFA 최종 인프라 표본 검토\n\n"
             "이 폴더는 실제 음운 실현 여부를 판정하는 단계가 아니라, "
             "전수 산출물의 연결과 사용 가능성을 확인하는 최종 Gate입니다.\n\n"
             "각 번호에서 다음만 확인합니다.\n\n"
             "1. WAV가 재생되고 LAB과 같은 발화인지\n"
             "2. 같은 번호의 TextGrid가 열리고 6개 tier가 보이는지\n"
-            "3. words/phones_mfa/phoneme_auto/utterance/utterance_orth_r/"
+            "3. words/phones_mfa/phoneme_r_auto/utterance/utterance_orth_r/"
             "morph_analysis가 대체로 맞고 연구 검색에 사용할 수 있는지\n"
             "4. 좌우 빈 구간과 tier 경계가 파일 시간 범위 안에서 정상인지\n\n"
             "문제가 없으면 03_RESEARCHER_REVIEW.csv의 decision을 approved로, "

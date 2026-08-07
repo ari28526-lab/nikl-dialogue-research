@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-07T15:29:04+0900",
+  "read_only": true,
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "search_master_build_status": "success",
+  "wav_root": "D:\\20_AUDIO\\03_wav\\individual",
+  "morph_textgrid_root": null,
+  "strict": true,
+  "gate_profile": "execution",
+  "approved_exclusions_contract": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\approved_exclusions.json",
+  "retained_db_checkpoint": {
+    "path": "D:\\mfa_eojeol\\done\\2022.direct_db_ready",
+    "status": "validated",
+    "year": "2022",
+    "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+    "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+    "alignment_db": "D:\\mfa_tmp\\2022\\2022.db",
+    "authorized_active_exclusions": 438,
+    "allowed_reason_codes": [
+      "audio_unusable",
+      "mfa_alignment_missing"
+    ],
+    "db_missing_ids_exact_match": true
+  },
+  "years": [
+    {
+      "year": "2022",
+      "status": "audited",
+      "read_only": true,
+      "compare_lab_content": false,
+      "wav_duration_audit_enabled": true,
+      "morph_source_audit_enabled": false,
+      "approved_alignment_exclusion_count": 1669,
+      "approved_active_alignment_exclusion_count": 438,
+      "approved_active_alignment_exclusion_inactive_count": 438,
+      "csv_files": 2654,
+      "elapsed_seconds": 422.686,
+      "counts": {
+        "approved_alignment_excluded": 1669,
+        "duration_expected": 864690,
+        "duration_inspected": 864690,
+        "duration_matched": 864690,
+        "duration_residual_mismatch": 0,
+        "duration_sessions_checked": 2651,
+        "duration_sessions_fully_excluded": 3,
+        "duration_sessions_passed": 2651,
+        "expected_lab_nonzero": 864690,
+        "expected_usable_lab": 864690,
+        "lab_files": 864690,
+        "lab_not_expected": 0,
+        "lab_not_expected_with_wav": 0,
+        "pron_reference_unresolved": 9835,
+        "reference_form_changed": 43902,
+        "search_rows": 866359,
+        "search_sessions": 2654,
+        "text_duration_rows_checked": 864690,
+        "wav_files": 878157,
+        "wav_not_in_search_master": 11798
+      },
+      "known_source_pcm_risks": {
+        "PCM없음": 15
+      },
+      "top_risky_sessions": [],
+      "examples": {},
+      "duration_audit": {
+        "policy": {
+          "residual_tolerance_seconds": 0.025,
+          "session_match_min_pct": 98.0,
+          "session_inspection_coverage_min_pct": 98.0,
+          "session_padding_allowed_seconds": [
+            -0.025,
+            0.5
+          ]
+        },
+        "coverage_pct_distribution": {
+          "min": 100.0,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "match_pct_distribution": {
+          "min": 100.0,
+          "median": 100.0,
+          "max": 100.0
+        },
+        "padding_seconds_distribution": {
+          "min": -0.001,
+          "median": 0.0,
+          "max": 0.001
+        },
+        "failed_sessions": []
+      },
+      "text_duration_audit": {
+        "policy": {
+          "minimum_hangul_syllables": 10,
+          "impossible_hangul_syllables_per_second": 40.0,
+          "logged_fields": [
+            "utt_id",
+            "csv_duration_seconds",
+            "hangul_syllables",
+            "hangul_syllables_per_second"
+          ],
+          "raw_transcript_logged": false
+        },
+        "impossible_count": 0
+      },
+      "morph_source_issues": [],
+      "issue_inventory": [],
+      "gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_inputs_inactive": true,
+        "approved_alignment_active_pairs_authorized": true,
+        "source_segment_text_duration_plausible": true,
+        "all_morph_sources_ready": true,
+        "morph_source_inventory_classified": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_active_pairs_authorized": true,
+        "morph_source_inventory_classified": true
+      },
+      "analysis_ready_gates": {
+        "session_folders_present": true,
+        "csv_wav_duration_correspondence": true,
+        "no_dangerous_unexpected_labs": true,
+        "all_expected_labs_ready": true,
+        "no_fatal_tiny_wav": true,
+        "approved_alignment_active_pairs_authorized": true,
+        "morph_source_inventory_classified": true,
+        "source_segment_text_duration_plausible": true,
+        "analysis_eligible_morphology_ready": true
+      },
+      "execution_gates_pass": true,
+      "analysis_ready_gates_pass": true,
+      "all_gates_pass": true
+    }
+  ],
+  "selected_gate_result_key": "execution_gates_pass",
+  "all_years_pass": true
+}

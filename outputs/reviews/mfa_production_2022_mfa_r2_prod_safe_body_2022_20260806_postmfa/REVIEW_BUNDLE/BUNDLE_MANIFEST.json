@@ -1,0 +1,480 @@
+{
+  "schema_version": "mfa_production_year_review_bundle.v1",
+  "status": "success",
+  "created_at": "2026-08-07T18:04:51+09:00",
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+  "authoritative_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 7634,
+    "mtime_ns": 1786093369898723700,
+    "sha256": "50af2f1455b34a53ee5638d96c767813cb16086a5112b33dff840d567e1317e5"
+  },
+  "authoritative_review_manifest": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa\\03_RESEARCHER_REVIEW_MANIFEST.json",
+    "bytes": 13944,
+    "mtime_ns": 1786093369909434800,
+    "sha256": "de5a5e95b65f6bd940c7aa96c06d8a0eea7ca7e2105ae700ba7fe6b699b95047"
+  },
+  "counts": {
+    "review_rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24,
+    "payload_files": 72
+  },
+  "automatic_approval_performed": false,
+  "realization_judgment_requested": false,
+  "files": [
+    {
+      "source": "generated",
+      "relative_path": "00_README.md",
+      "bytes": 829,
+      "sha256": "22a917da136f18acb814dc577d3ad02ebcd20cc1932df7939dc95d409f6bb8e5"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.TextGrid",
+      "relative_path": "01_SDRW2200000735.1.1.282.TextGrid",
+      "bytes": 16540,
+      "sha256": "8f7a7b66c7db6b328464c5844d68ded06bffebdca40ce2ca4e8884a255fce373"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.lab",
+      "relative_path": "01_SDRW2200000735.1.1.282.lab",
+      "bytes": 81,
+      "sha256": "aac515342984d41355dfdfa580f0675ba37ceeb28ffa626c1821f0e3a2d24a15"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.wav",
+      "relative_path": "01_SDRW2200000735.1.1.282.wav",
+      "bytes": 142124,
+      "sha256": "63207b70b1865166bd7fa29ab2a42e0a500fc45dd6aab9bd550051115217c4c2"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.TextGrid",
+      "relative_path": "02_SDRW2200001223.1.1.135.TextGrid",
+      "bytes": 3229,
+      "sha256": "89db613cfa9f92a108e6cf15ecca1481fc94db92a5a4a5e93395f755f1d0ed86"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.lab",
+      "relative_path": "02_SDRW2200001223.1.1.135.lab",
+      "bytes": 3,
+      "sha256": "95e3c75cd502220bd32f8b38b28bfae1f3f6090a48b1b66481c1f211cf248a3c"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.wav",
+      "relative_path": "02_SDRW2200001223.1.1.135.wav",
+      "bytes": 27884,
+      "sha256": "168df820a7d302507be686facf2fe50d3f69949f7969a6b77c615c8b246f554d"
+    },
+    {
+      "source": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa\\03_RESEARCHER_REVIEW.csv",
+      "relative_path": "03_RESEARCHER_REVIEW.csv",
+      "bytes": 7634,
+      "sha256": "50af2f1455b34a53ee5638d96c767813cb16086a5112b33dff840d567e1317e5"
+    },
+    {
+      "source": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa\\03_RESEARCHER_REVIEW_MANIFEST.json",
+      "relative_path": "03_RESEARCHER_REVIEW_MANIFEST.json",
+      "bytes": 13944,
+      "sha256": "de5a5e95b65f6bd940c7aa96c06d8a0eea7ca7e2105ae700ba7fe6b699b95047"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.TextGrid",
+      "relative_path": "03_SDRW2200001731.1.1.130.TextGrid",
+      "bytes": 19462,
+      "sha256": "6dd5f08decdda0355de38263606e67479a987b179d5f03d1ad603ea6ab614709"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.lab",
+      "relative_path": "03_SDRW2200001731.1.1.130.lab",
+      "bytes": 107,
+      "sha256": "fb1438bb68ee57637f78435680671e45c2cc8bab755871ee9a51948eb00c6c1d"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.wav",
+      "relative_path": "03_SDRW2200001731.1.1.130.wav",
+      "bytes": 161964,
+      "sha256": "8335fbfc4c00b9be244f9492480648ad671cc5af16d30996174884742eb9119f"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.TextGrid",
+      "relative_path": "04_SDRW2200002151.1.1.132.TextGrid",
+      "bytes": 11377,
+      "sha256": "1733b3e03f9b092f20c00e1289e06aaab3b17be82e28ab38af0b0b9d9cf6b606"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.lab",
+      "relative_path": "04_SDRW2200002151.1.1.132.lab",
+      "bytes": 52,
+      "sha256": "d26a4988d4c5851c681a90050fc8d6e637ad0bc609f239fe1b7e8b7fb335f27c"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.wav",
+      "relative_path": "04_SDRW2200002151.1.1.132.wav",
+      "bytes": 97644,
+      "sha256": "4a387b954357db61d0f7b4346212055288aae3c2516de71ff4a783fbcef54e00"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.TextGrid",
+      "relative_path": "05_SDRW2200001785.1.1.92.TextGrid",
+      "bytes": 13083,
+      "sha256": "26ba736dfc844e91902d046ed4a234c14d275e961cd9e9bc64dcad98448d5c25"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.lab",
+      "relative_path": "05_SDRW2200001785.1.1.92.lab",
+      "bytes": 65,
+      "sha256": "f207354c89e367f2ffac79fcf1f5d8c1f3943bcb9d4a16905a4cd705e12c8dfe"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.wav",
+      "relative_path": "05_SDRW2200001785.1.1.92.wav",
+      "bytes": 98924,
+      "sha256": "5a3db3ae55fc53b227f8185e06157123336a125409781f722316bc3fbcd6e84a"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.TextGrid",
+      "relative_path": "06_SDRW2200000181.1.1.34.TextGrid",
+      "bytes": 3865,
+      "sha256": "663ef0734ddd1a74f3654567a89d52f51d9785f6a90bff8f9a426aa4bf2efa40"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.lab",
+      "relative_path": "06_SDRW2200000181.1.1.34.lab",
+      "bytes": 9,
+      "sha256": "bfc24bbfb62ba2e6a5bb16f22c8f787d927d75285586d2f098d319739db829f3"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.wav",
+      "relative_path": "06_SDRW2200000181.1.1.34.wav",
+      "bytes": 28524,
+      "sha256": "1e0c6e111dfc4c1519a3a4b52ceda2b24786183bd67e091d291c35194ad2477e"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.TextGrid",
+      "relative_path": "07_SDRW2200001419.1.1.131.TextGrid",
+      "bytes": 6982,
+      "sha256": "5e5d7b47c02980971c40b6773ff52d6f6ed586f5b35bd8899dbce7295026a694"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.lab",
+      "relative_path": "07_SDRW2200001419.1.1.131.lab",
+      "bytes": 26,
+      "sha256": "0978aea93cbbb8fe4dcb3350b33d7e30af5918088a738ef109cb5dc11852a930"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.wav",
+      "relative_path": "07_SDRW2200001419.1.1.131.wav",
+      "bytes": 74604,
+      "sha256": "bc71682ed11e7d8103a20f7a1009fb9eec2c901e67721ee1b830bdebcba859e9"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.TextGrid",
+      "relative_path": "08_SDRW2200000232.1.1.84.TextGrid",
+      "bytes": 7836,
+      "sha256": "7779af84353de9e99af84aa58145967d47514bc0965cee7ea0cc02b917729be8"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.lab",
+      "relative_path": "08_SDRW2200000232.1.1.84.lab",
+      "bytes": 31,
+      "sha256": "452cd2c028db99b9e2d7b36989acea94f3d2e2b6ba475d7be7be95335728a474"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.wav",
+      "relative_path": "08_SDRW2200000232.1.1.84.wav",
+      "bytes": 43564,
+      "sha256": "016b9825c9662313f77e7398e029a9182840f9cedefb76841b8ae1422c8f797b"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.TextGrid",
+      "relative_path": "09_SDRW2200001945.1.1.10.TextGrid",
+      "bytes": 8655,
+      "sha256": "3b13b5e26cac59c02e9955ddd5d7920e6c87dd1b40de23d1c3930a71b94013c2"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.lab",
+      "relative_path": "09_SDRW2200001945.1.1.10.lab",
+      "bytes": 40,
+      "sha256": "0e4c474af7751081e96aa08381cc4d915bb7c27f756846874dc1be1684b4c0e2"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.wav",
+      "relative_path": "09_SDRW2200001945.1.1.10.wav",
+      "bytes": 87404,
+      "sha256": "a6a2e0ddb2b9c543952cf631b167cffa41d87cb3fd6c7d1606fd0699302c4514"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.TextGrid",
+      "relative_path": "10_SDRW2200001022.1.1.228.TextGrid",
+      "bytes": 9880,
+      "sha256": "ab9942ea9688b3bfdfe3ec0f372403a7bce098d496636860235a74b5e62ee8d3"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.lab",
+      "relative_path": "10_SDRW2200001022.1.1.228.lab",
+      "bytes": 49,
+      "sha256": "22f16fb7656320042647a849b7df30c166cac3ad87ee0bec23ce6cf899dadbb1"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.wav",
+      "relative_path": "10_SDRW2200001022.1.1.228.wav",
+      "bytes": 113644,
+      "sha256": "96f03e69627efbb1f783fd3cd780f501ee18691701f7f352c719283fa258f208"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.TextGrid",
+      "relative_path": "11_SDRW2200000089.1.1.197.TextGrid",
+      "bytes": 11329,
+      "sha256": "667411a26e3d9027a5a3765a0a7bb235a1a4ffd82193734ac71020cc476f6f78"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.lab",
+      "relative_path": "11_SDRW2200000089.1.1.197.lab",
+      "bytes": 58,
+      "sha256": "d6d77c13a8a050c80b4b5aca49a01542b71eefffdf4bae4af013de6357fe59fc"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.wav",
+      "relative_path": "11_SDRW2200000089.1.1.197.wav",
+      "bytes": 90604,
+      "sha256": "321cc6b715de82024201fe897f6bff3306e1a9646ffbb36f1836621f44e84387"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.TextGrid",
+      "relative_path": "12_SDRW2200002082.1.1.149.TextGrid",
+      "bytes": 8248,
+      "sha256": "b1038f04e23b39064da7a7ffc95bf5d9b3eb465eb9e8bb21b87a96b5e834990b"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.lab",
+      "relative_path": "12_SDRW2200002082.1.1.149.lab",
+      "bytes": 33,
+      "sha256": "f47e97ba64d2dd3df42b23e444ea9d32ef3ae34df1dd0bbb38dd277a9cef2ee8"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.wav",
+      "relative_path": "12_SDRW2200002082.1.1.149.wav",
+      "bytes": 89004,
+      "sha256": "d9f0bbf92bdd5fe94f030ab712cde3dfdf964960d25ab42b6fed2b80a219cfa7"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.TextGrid",
+      "relative_path": "13_SDRW2200002194.1.1.124.TextGrid",
+      "bytes": 6722,
+      "sha256": "d518ccad152da94dbecf9884e4db7bc0c0dc8f043f39a1a511bc892f1203c07f"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.lab",
+      "relative_path": "13_SDRW2200002194.1.1.124.lab",
+      "bytes": 31,
+      "sha256": "77d5c4c06983e04da76e74d47b06c4ce814086c06093c9e2e9ac73117d63ad17"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.wav",
+      "relative_path": "13_SDRW2200002194.1.1.124.wav",
+      "bytes": 47404,
+      "sha256": "c2d5ef032bafe9095b476327aeb47e5fe055c8198c283355d94be3dd6804f426"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.TextGrid",
+      "relative_path": "14_SDRW2200001968.1.1.22.TextGrid",
+      "bytes": 10239,
+      "sha256": "da0c5c1c074100cfa22a4403123df51e33f9a9edfa7607fef7d99ef3823d0e96"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.lab",
+      "relative_path": "14_SDRW2200001968.1.1.22.lab",
+      "bytes": 52,
+      "sha256": "53bcbec2915f61f4bb81faeda42b853b66d89dfcd119a8ad216da1b00331688c"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.wav",
+      "relative_path": "14_SDRW2200001968.1.1.22.wav",
+      "bytes": 90604,
+      "sha256": "fc24de8a1dcc1b0d8061967376871782828b62d361f0121f3d5b4c5851c59cb8"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.TextGrid",
+      "relative_path": "15_SDRW2200001283.1.1.87.TextGrid",
+      "bytes": 12287,
+      "sha256": "34c7db514b528917e03aa26f7a26ae46b51f1cc0168249c6cb4fce9d72b3cc31"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.lab",
+      "relative_path": "15_SDRW2200001283.1.1.87.lab",
+      "bytes": 59,
+      "sha256": "df7f8de4e34ef15ba0c1a30d1927f0f30f76b0bdcd2ed2265a0019670c0ae0ef"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.wav",
+      "relative_path": "15_SDRW2200001283.1.1.87.wav",
+      "bytes": 126444,
+      "sha256": "2f0e2687bcabd09cfee0b1aac669a82763579d4f102d27992c440570a4bf752d"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.TextGrid",
+      "relative_path": "16_SDRW2200001383.1.1.291.TextGrid",
+      "bytes": 2819,
+      "sha256": "ca5c307007599162797d606c748b8771dd65620de91e43d87186fab5c66004ea"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.lab",
+      "relative_path": "16_SDRW2200001383.1.1.291.lab",
+      "bytes": 3,
+      "sha256": "228794e2524374dc86372a1d00dcd4b21fb6889d822d272539682a5c89e8dd49"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.wav",
+      "relative_path": "16_SDRW2200001383.1.1.291.wav",
+      "bytes": 21484,
+      "sha256": "79c84f038245a7e51be7af58ad98b9e5778677b50205727da9bd835fd915f1d7"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.TextGrid",
+      "relative_path": "17_SDRW2200000785.1.1.336.TextGrid",
+      "bytes": 4061,
+      "sha256": "ef04d5e5e1e85a9c87d25a765d8c7b2126433256cde6f8abfe574d6f4171602b"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.lab",
+      "relative_path": "17_SDRW2200000785.1.1.336.lab",
+      "bytes": 7,
+      "sha256": "6093b3cb7199c04803a5fda73918124f4a7c17464c0533f51345aec191e27443"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.wav",
+      "relative_path": "17_SDRW2200000785.1.1.336.wav",
+      "bytes": 18924,
+      "sha256": "7803b60d9d683adccc0646b66db40819c3ceb21c5e25b3d6b3acc99cb9f6f140"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.TextGrid",
+      "relative_path": "18_SDRW2200002051.1.1.71.TextGrid",
+      "bytes": 13112,
+      "sha256": "332f5b439a9ce10d1719686dcc163638981c621be4006d0682631dca0087bfa8"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.lab",
+      "relative_path": "18_SDRW2200002051.1.1.71.lab",
+      "bytes": 63,
+      "sha256": "cefc404267c38e698543df649143e7f831e6f14d2e2606c7a32084b06a092748"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.wav",
+      "relative_path": "18_SDRW2200002051.1.1.71.wav",
+      "bytes": 91884,
+      "sha256": "1a471b9ddb4d9ddf0e47c3da11f217733bf8058c663ce5bb966e9a7d66498740"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.TextGrid",
+      "relative_path": "19_SDRW2200001928.1.1.98.TextGrid",
+      "bytes": 13967,
+      "sha256": "f5a3871bb3e8728e4eae09ef86b62ecfbd86191e50c4c492569a09fa8df9b111"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.lab",
+      "relative_path": "19_SDRW2200001928.1.1.98.lab",
+      "bytes": 71,
+      "sha256": "32c1ba31f1a95de9d54109e1f39dbfc7b9d8fa464a3ad8150c0305e634a9e527"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.wav",
+      "relative_path": "19_SDRW2200001928.1.1.98.wav",
+      "bytes": 151404,
+      "sha256": "2d07cf51b240de98535c67dd788d20e82ec811687e1c4deb40f6232ee4649bb8"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.TextGrid",
+      "relative_path": "20_SDRW2200002813.1.1.185.TextGrid",
+      "bytes": 14294,
+      "sha256": "84a8e8557db19662e14b129661209dadf6eecec35355ed564f6bdc39476187fd"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.lab",
+      "relative_path": "20_SDRW2200002813.1.1.185.lab",
+      "bytes": 76,
+      "sha256": "375fc2acf82d4d7693d0a7c6c1940dc19a422273e8f4a1805b039810a1029753"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.wav",
+      "relative_path": "20_SDRW2200002813.1.1.185.wav",
+      "bytes": 104364,
+      "sha256": "45271d879e2a08b09518a10fedb118680934d3d8b7906edd5b7c390817eb85df"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.TextGrid",
+      "relative_path": "21_SDRW2200002028.1.1.104.TextGrid",
+      "bytes": 13889,
+      "sha256": "7517a16d34ea573e7ad6339a15699dbb4cba8d9d41a8ea28f025028bcff85192"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.lab",
+      "relative_path": "21_SDRW2200002028.1.1.104.lab",
+      "bytes": 67,
+      "sha256": "b0a78b327b6f1423afc19f6e047e6c8fe160ce7ebcc21f692eed1fa4d5a3731b"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.wav",
+      "relative_path": "21_SDRW2200002028.1.1.104.wav",
+      "bytes": 126124,
+      "sha256": "9099565a41c2248ad04784125b89e13c2edc4aea33bb2f9ccd701f1e823a5b4b"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.TextGrid",
+      "relative_path": "22_SDRW2200000812.1.1.69.TextGrid",
+      "bytes": 8300,
+      "sha256": "7594e6e7dbc30a9293ee2c286cf8865abf344d7c9937baf11a145115b916b690"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.lab",
+      "relative_path": "22_SDRW2200000812.1.1.69.lab",
+      "bytes": 39,
+      "sha256": "1d1b2bf4ab8685b16ecda592492da438c1fc709e3ee01323c4490f8f5a4b7e65"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.wav",
+      "relative_path": "22_SDRW2200000812.1.1.69.wav",
+      "bytes": 58924,
+      "sha256": "cb3305bfedf92cf2d47addf2037d4b73164fcffab4a8e684d584dcf0696df8f6"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.TextGrid",
+      "relative_path": "23_SDRW2200000473.1.1.300.TextGrid",
+      "bytes": 11638,
+      "sha256": "0b4d14337317d7fdbbd76e283ef056cf8f425c7bc7bbb671ef4c82bbb9f06f42"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.lab",
+      "relative_path": "23_SDRW2200000473.1.1.300.lab",
+      "bytes": 59,
+      "sha256": "49f3ee7925ce5710f1d116c65672e4f0d61afba031842a83ec2c0ed49fa911b2"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.wav",
+      "relative_path": "23_SDRW2200000473.1.1.300.wav",
+      "bytes": 77164,
+      "sha256": "66fa78ec032f360bc6a2ccf7dc1a6c3a75ea2b5c908194baafaca4e7bd40c6cc"
+    },
+    {
+      "source": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.TextGrid",
+      "relative_path": "24_SDRW2200001947.1.1.192.TextGrid",
+      "bytes": 16787,
+      "sha256": "c7fa8330c696a553c59477e9c474d8593695d152006aa705fe7579a639bdf365"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.lab",
+      "relative_path": "24_SDRW2200001947.1.1.192.lab",
+      "bytes": 84,
+      "sha256": "b5b1a9ff70b95caa93c40d9f269d5c83cf0b7c8abdde48265949d8612e94f354"
+    },
+    {
+      "source": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.wav",
+      "relative_path": "24_SDRW2200001947.1.1.192.wav",
+      "bytes": 145004,
+      "sha256": "edaf0422386dadae10602a514afb280f6e18e089e69076c678c74574206844a1"
+    }
+  ]
+}

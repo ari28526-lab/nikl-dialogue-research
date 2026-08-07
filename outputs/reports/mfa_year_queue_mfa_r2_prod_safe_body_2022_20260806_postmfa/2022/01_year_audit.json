@@ -1,0 +1,153 @@
+{
+  "schema_version": "mfa_research_6tier_year_audit.v1",
+  "status": "success",
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+  "lab_root": "D:\\20_AUDIO\\03_wav\\individual",
+  "textgrid_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging",
+  "approved_exclusions_contract": {
+    "schema_version": "mfa_approved_exclusions.v1",
+    "status": "approved",
+    "year": "2022",
+    "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+    "approved_by": "ari30",
+    "approved_at": "2026-08-07T15:19:36.0915311+09:00",
+    "created_at": "2026-08-07T15:20:43.362844+09:00",
+    "review_csv": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\03_RESEARCHER_REVIEW.csv",
+      "bytes": 477443,
+      "mtime_ns": 1786083643324370000,
+      "sha256": "aa206e700e2a85048d28ed1e78aef256fcbddd4ae9db5cf8627a51fa01f136e4"
+    },
+    "row_count": 1669,
+    "counts": {
+      "audio_pairing_unresolved|alignment_and_analysis": 974,
+      "empty_reference_unresolved_symbol|alignment_and_analysis": 252,
+      "mfa_alignment_missing|alignment_and_analysis": 438,
+      "text_duration_impossible|alignment_and_analysis": 5
+    },
+    "policy": {
+      "automatic_approval_forbidden": true,
+      "unknown_missing_is_hard_failure": true,
+      "contract_bound_to_input_contract_id": true
+    }
+  },
+  "coverage_pct": 100.0,
+  "hard_failure_counts": {
+    "duplicate_lab_ids": 0,
+    "duplicate_textgrid_ids": 0,
+    "missing_textgrid_ids": 0,
+    "extra_textgrid_ids": 0,
+    "invalid_textgrids": 0,
+    "spn_intervals": 0,
+    "phone_outside_inventory": 0,
+    "table_manifest_error": 0,
+    "utterance_table_id_mismatch": 0,
+    "duplicate_utterance_table_ids": 0,
+    "duplicate_word_keys": 0,
+    "duplicate_phone_keys": 0,
+    "invalid_word_key_order": 0,
+    "invalid_phone_key_order": 0,
+    "excluded_table_id_mismatch": 0,
+    "duplicate_excluded_table_ids": 0,
+    "analysis_only_without_textgrid": 0,
+    "manifest_utterance_count_mismatch": 0,
+    "manifest_word_count_mismatch": 0,
+    "manifest_phone_count_mismatch": 0,
+    "manifest_excluded_count_mismatch": 0
+  },
+  "counts": {
+    "active_lab_ids": 864690,
+    "expected_textgrid_ids": 864690,
+    "textgrid_ids": 864690,
+    "approved_exclusions": 1669,
+    "approved_alignment_exclusions": 1669,
+    "approved_analysis_only_exclusions": 0,
+    "utterance_table_rows": 864690,
+    "word_table_rows": 7039920,
+    "phone_table_rows": 26372701,
+    "excluded_table_rows": 1669
+  },
+  "reason_counts": {},
+  "inventories": {
+    "missing_textgrid_ids": [],
+    "extra_textgrid_ids": [],
+    "invalid_textgrid_ids": [],
+    "phone_outside_inventory": []
+  },
+  "table_manifest": {
+    "schema_version": "mfa_research_companion_tables.v2",
+    "status": "success",
+    "year": "2022",
+    "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+    "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+    "textgrid_schema_version": "research_textgrid.v2",
+    "phoneme_schema_version": "phoneme_roman_aux.v1",
+    "roman_system_version": "roman_mfa.v1",
+    "lab_input_version": "eojeol_v4_pron_reference_form_with_token_map",
+    "token_map_version": "source_eojeol_to_mfa_word.v1",
+    "index_base": 1,
+    "position_contract": "source eojeol (form/tagged) and MFA reference eojeol (pron_reference_form) are separate domains",
+    "archived_stale_partials": [],
+    "logical_sidecar_policy": "annual compressed normalized tables keyed by utt_id; per-utterance CSV only in selected candidate bundles",
+    "approved_exclusions_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_exclusions_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\approved_exclusions.json",
+      "bytes": 1097,
+      "mtime_ns": 1786083643369258400,
+      "sha256": "37b4a9d8c6b5234ac05c186ba3c5fb4aae6b74f365e40fecff5542c2a37c96c5"
+    },
+    "column_schema": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\research_companion_tables_schema_v2.json",
+      "bytes": 4708,
+      "mtime_ns": 1785557495874050100,
+      "sha256": "f3560108bfebaa7462f1ef49262173de59e014040d716775ef739d7c0b268811"
+    },
+    "csv_contract": {
+      "delimiter": ",",
+      "lineterminator": "\\n",
+      "null": "",
+      "boolean_true": "true",
+      "boolean_false": "false"
+    },
+    "compression_contract": {
+      "format": "gzip",
+      "mtime": 0
+    },
+    "tables": {
+      "utterances": {
+        "path": "utterance_alignment.csv.gz",
+        "bytes": 249174160,
+        "mtime_ns": 1786091256464565500,
+        "sha256": "5be4136b99be6cd8d4d1198432b85235b59185fa8069aa5b07857eb5332c67c2"
+      },
+      "words": {
+        "path": "word_intervals_mfa.csv.gz",
+        "bytes": 192995988,
+        "mtime_ns": 1786091256467563300,
+        "sha256": "69f546c064200300c0e7bf4217cc3b2a5f7180e0a131ad80013eb9e7314a78bf"
+      },
+      "phones": {
+        "path": "phone_intervals_mfa.csv.gz",
+        "bytes": 437263376,
+        "mtime_ns": 1786091256469562200,
+        "sha256": "78bc1a8e798fdbd0dc97b604451d29f5037aa1034a23111769e45ddb53fcc77c"
+      },
+      "excluded": {
+        "path": "excluded_utterances.csv.gz",
+        "bytes": 10373,
+        "mtime_ns": 1786091256472607300,
+        "sha256": "e68a9e1f6537c6000dbd539efb7ae08199513364d483252a9b09aa6b4a3d369a"
+      }
+    },
+    "counts": {
+      "excluded_utterances": 1669,
+      "phone_intervals": 26372701,
+      "utterances": 864690,
+      "word_intervals": 7039920
+    }
+  },
+  "table_manifest_error": "",
+  "missing_csv": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\01_id_inventory.csv",
+  "elapsed_seconds": 1893.167
+}

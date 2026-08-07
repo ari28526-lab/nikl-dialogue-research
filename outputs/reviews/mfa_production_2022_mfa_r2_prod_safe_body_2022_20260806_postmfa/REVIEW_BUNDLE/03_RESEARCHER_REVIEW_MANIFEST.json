@@ -1,0 +1,282 @@
+{
+  "schema_version": "mfa_production_year_review_manifest.v1",
+  "status": "pending_researcher_review",
+  "created_at": "2026-08-07T18:02:49+09:00",
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+  "database": "D:\\mfa_tmp\\2022\\2022.db",
+  "sample_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\02_db_sample.json",
+    "bytes": 1274,
+    "mtime_ns": 1786093264602411900,
+    "sha256": "64927b35b85b9310e1b0cc208854051806b8c5d3e2f574778242093cd936df28"
+  },
+  "sample_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\02_db_sample.csv",
+    "bytes": 10386,
+    "mtime_ns": 1786093264592879400,
+    "sha256": "f393fc18aaa79da662e74729af50733ebba0cd21a6d3149e7e6970962cfb7448"
+  },
+  "alignment_contract": {
+    "path": "D:\\mfa_eojeol\\alignment_contracts\\2022.json",
+    "bytes": 4052,
+    "mtime_ns": 1786002758312978300,
+    "sha256": "2ad4cab3ff1b9eb61b35bc71cc33dec7e8455ceb998e49f0d5d1ab679b7a0d32"
+  },
+  "review_csv_template": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa\\03_RESEARCHER_REVIEW.csv",
+    "bytes": 7634,
+    "mtime_ns": 1786093369898723700,
+    "sha256": "50af2f1455b34a53ee5638d96c767813cb16086a5112b33dff840d567e1317e5"
+  },
+  "row_identities": [
+    {
+      "review_order": "1",
+      "year": "2022",
+      "session": "SDRW2200000735",
+      "speaker_id": "SD2200342",
+      "utt_id": "SDRW2200000735.1.1.282",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000735\\SDRW2200000735.1.1.282.TextGrid"
+    },
+    {
+      "review_order": "2",
+      "year": "2022",
+      "session": "SDRW2200001223",
+      "speaker_id": "SD2201691",
+      "utt_id": "SDRW2200001223.1.1.135",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001223\\SDRW2200001223.1.1.135.TextGrid"
+    },
+    {
+      "review_order": "3",
+      "year": "2022",
+      "session": "SDRW2200001731",
+      "speaker_id": "SD2202076",
+      "utt_id": "SDRW2200001731.1.1.130",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001731\\SDRW2200001731.1.1.130.TextGrid"
+    },
+    {
+      "review_order": "4",
+      "year": "2022",
+      "session": "SDRW2200002151",
+      "speaker_id": "SD2202125",
+      "utt_id": "SDRW2200002151.1.1.132",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002151\\SDRW2200002151.1.1.132.TextGrid"
+    },
+    {
+      "review_order": "5",
+      "year": "2022",
+      "session": "SDRW2200001785",
+      "speaker_id": "SD2200460",
+      "utt_id": "SDRW2200001785.1.1.92",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001785\\SDRW2200001785.1.1.92.TextGrid"
+    },
+    {
+      "review_order": "6",
+      "year": "2022",
+      "session": "SDRW2200000181",
+      "speaker_id": "SD2200797",
+      "utt_id": "SDRW2200000181.1.1.34",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000181\\SDRW2200000181.1.1.34.TextGrid"
+    },
+    {
+      "review_order": "7",
+      "year": "2022",
+      "session": "SDRW2200001419",
+      "speaker_id": "SD2201026",
+      "utt_id": "SDRW2200001419.1.1.131",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001419\\SDRW2200001419.1.1.131.TextGrid"
+    },
+    {
+      "review_order": "8",
+      "year": "2022",
+      "session": "SDRW2200000232",
+      "speaker_id": "SD2200217",
+      "utt_id": "SDRW2200000232.1.1.84",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000232\\SDRW2200000232.1.1.84.TextGrid"
+    },
+    {
+      "review_order": "9",
+      "year": "2022",
+      "session": "SDRW2200001945",
+      "speaker_id": "SD2201044",
+      "utt_id": "SDRW2200001945.1.1.10",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001945\\SDRW2200001945.1.1.10.TextGrid"
+    },
+    {
+      "review_order": "10",
+      "year": "2022",
+      "session": "SDRW2200001022",
+      "speaker_id": "SD2201546",
+      "utt_id": "SDRW2200001022.1.1.228",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001022\\SDRW2200001022.1.1.228.TextGrid"
+    },
+    {
+      "review_order": "11",
+      "year": "2022",
+      "session": "SDRW2200000089",
+      "speaker_id": "SD2200089",
+      "utt_id": "SDRW2200000089.1.1.197",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000089\\SDRW2200000089.1.1.197.TextGrid"
+    },
+    {
+      "review_order": "12",
+      "year": "2022",
+      "session": "SDRW2200002082",
+      "speaker_id": "SD2200498",
+      "utt_id": "SDRW2200002082.1.1.149",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002082\\SDRW2200002082.1.1.149.TextGrid"
+    },
+    {
+      "review_order": "13",
+      "year": "2022",
+      "session": "SDRW2200002194",
+      "speaker_id": "SD2202201",
+      "utt_id": "SDRW2200002194.1.1.124",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002194\\SDRW2200002194.1.1.124.TextGrid"
+    },
+    {
+      "review_order": "14",
+      "year": "2022",
+      "session": "SDRW2200001968",
+      "speaker_id": "SD2202034",
+      "utt_id": "SDRW2200001968.1.1.22",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001968\\SDRW2200001968.1.1.22.TextGrid"
+    },
+    {
+      "review_order": "15",
+      "year": "2022",
+      "session": "SDRW2200001283",
+      "speaker_id": "SD2200846",
+      "utt_id": "SDRW2200001283.1.1.87",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001283\\SDRW2200001283.1.1.87.TextGrid"
+    },
+    {
+      "review_order": "16",
+      "year": "2022",
+      "session": "SDRW2200001383",
+      "speaker_id": "SD2201839",
+      "utt_id": "SDRW2200001383.1.1.291",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001383\\SDRW2200001383.1.1.291.TextGrid"
+    },
+    {
+      "review_order": "17",
+      "year": "2022",
+      "session": "SDRW2200000785",
+      "speaker_id": "SD2200905",
+      "utt_id": "SDRW2200000785.1.1.336",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000785\\SDRW2200000785.1.1.336.TextGrid"
+    },
+    {
+      "review_order": "18",
+      "year": "2022",
+      "session": "SDRW2200002051",
+      "speaker_id": "SD2202094",
+      "utt_id": "SDRW2200002051.1.1.71",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002051\\SDRW2200002051.1.1.71.TextGrid"
+    },
+    {
+      "review_order": "19",
+      "year": "2022",
+      "session": "SDRW2200001928",
+      "speaker_id": "SD2200484",
+      "utt_id": "SDRW2200001928.1.1.98",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001928\\SDRW2200001928.1.1.98.TextGrid"
+    },
+    {
+      "review_order": "20",
+      "year": "2022",
+      "session": "SDRW2200002813",
+      "speaker_id": "SD2202268",
+      "utt_id": "SDRW2200002813.1.1.185",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002813\\SDRW2200002813.1.1.185.TextGrid"
+    },
+    {
+      "review_order": "21",
+      "year": "2022",
+      "session": "SDRW2200002028",
+      "speaker_id": "SD2212045",
+      "utt_id": "SDRW2200002028.1.1.104",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200002028\\SDRW2200002028.1.1.104.TextGrid"
+    },
+    {
+      "review_order": "22",
+      "year": "2022",
+      "session": "SDRW2200000812",
+      "speaker_id": "SD2201443",
+      "utt_id": "SDRW2200000812.1.1.69",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000812\\SDRW2200000812.1.1.69.TextGrid"
+    },
+    {
+      "review_order": "23",
+      "year": "2022",
+      "session": "SDRW2200000473",
+      "speaker_id": "SD2200715",
+      "utt_id": "SDRW2200000473.1.1.300",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200000473\\SDRW2200000473.1.1.300.TextGrid"
+    },
+    {
+      "review_order": "24",
+      "year": "2022",
+      "session": "SDRW2200001947",
+      "speaker_id": "SD2201046",
+      "utt_id": "SDRW2200001947.1.1.192",
+      "wav_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.wav",
+      "lab_path": "D:\\20_AUDIO\\03_wav\\individual\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.lab",
+      "textgrid_path": "D:\\20_AUDIO\\08_textgrid_research_v2_staging\\2022\\SDRW2200001947\\SDRW2200001947.1.1.192.TextGrid"
+    }
+  ],
+  "counts": {
+    "rows": 24,
+    "sessions": 24,
+    "speakers_nonempty": 24
+  },
+  "realization_judgment_requested": false,
+  "automatic_approval_performed": false
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "mfa_db_research_6tier_sample_equivalence.v1",
+  "status": "success",
+  "read_only_sources": true,
+  "generated_at": "2026-08-07T18:01:04+09:00",
+  "elapsed_seconds": 66.212,
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "alignment_contract_id": "e8d1b54ee05bde3e202b22e4e707dc5db3294a2d3a436c93ceeaac368543e88a",
+  "selection_counts": {
+    "eligible_utterances": 864690,
+    "eligible_sessions": 2651,
+    "selected_utterances": 24,
+    "selected_sessions": 24
+  },
+  "comparison_counts": {
+    "compared": 24,
+    "semantic_equal": 24,
+    "byte_equal": 24
+  },
+  "db": {
+    "path": "D:\\mfa_tmp\\2022\\2022.db",
+    "bytes": 8493625344,
+    "mtime_ns": 1786023519327187200
+  },
+  "final_root": "D:\\20_AUDIO\\08_textgrid_research_v2_staging",
+  "scratch_root": "D:\\mfa_eojeol\\year_queue\\mfa_r2_prod_safe_body_2022_20260806_postmfa\\qc_scratch\\2022",
+  "sample_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_year_queue_mfa_r2_prod_safe_body_2022_20260806_postmfa\\2022\\02_db_sample.csv",
+    "bytes": 10386,
+    "mtime_ns": 1786093264592879400,
+    "sha256": "f393fc18aaa79da662e74729af50733ebba0cd21a6d3149e7e6970962cfb7448"
+  }
+}
