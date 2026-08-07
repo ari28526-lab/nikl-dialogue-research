@@ -1,0 +1,44 @@
+{
+  "schema_version": "common_pron_r3_canonical_inventory_summary.v1",
+  "status": "success_incomplete_selection",
+  "recorded_at": "2026-08-07T19:47:50+09:00",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "source_files_modified": false,
+  "automatic_final_adoption": false,
+  "coverage": {
+    "total_types": 881237,
+    "provisionally_selected_types": 382891,
+    "unselected_types": 498346,
+    "provisionally_selected_occurrences": 19765802
+  },
+  "selection_status_types": {
+    "candidate_dictionary_supported_exception": 426,
+    "candidate_replace_rule_dictionary_agree": 7179,
+    "provisional_retain_exact_rule": 382891,
+    "review_no_surface_rule_mismatch": 185164,
+    "review_rule_dictionary_conflict": 38,
+    "review_rule_sensitive_no_attested_agreement": 305539
+  },
+  "selection_status_occurrences": {
+    "candidate_dictionary_supported_exception": 46197,
+    "candidate_replace_rule_dictionary_agree": 535600,
+    "provisional_retain_exact_rule": 19765802,
+    "review_no_surface_rule_mismatch": 3316580,
+    "review_rule_dictionary_conflict": 300,
+    "review_rule_sensitive_no_attested_agreement": 4182589
+  },
+  "output": {
+    "path": "D:/mfa_common_pron/staging/common_pron_mfa_r3_20260807/01_canonical_inventory/common_pron_r3_canonical_inventory.csv.gz",
+    "bytes": 30954798,
+    "sha256": "1a42a0b07daae7a9d9a4b0adc6438e828e17cb5b6b4bef6b1ae6851a03742f05"
+  },
+  "manifest": "D:/mfa_common_pron/staging/common_pron_mfa_r3_20260807/01_canonical_inventory/CANONICAL_INVENTORY_MANIFEST.json",
+  "next_gate": "No MFA dictionary or TextGrid can be adopted until every type has an explicit selected-phone variant set and the dictionary projection is verified.",
+  "existing_alignment_reuse_policy": {
+    "years": [2020, 2021, 2022],
+    "full_realign_default": false,
+    "reuse_unit": "complete MFA speaker/session adaptation unit",
+    "reuse_only_if": "all LAB token pronunciation-variant sets are exactly equal between r2 and r3 and sampled boundary equivalence passes",
+    "changed_units": "realign with r3 without in-place TextGrid relabeling"
+  }
+}

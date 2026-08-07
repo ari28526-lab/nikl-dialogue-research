@@ -149,6 +149,45 @@ class MfaR2AdoptionValidationTests(unittest.TestCase):
                 "adopted",
             )
 
+    def test_project_r3_contract_requires_six_year_textgrid_materialization(self):
+        gate = json.loads(
+            (ROOT / "config" / "mfa_pronunciation_release_gate.json")
+            .read_text(encoding="utf-8-sig")
+        )
+        draft = json.loads(
+            (ROOT / "config" / "common_pronunciation_resource_contract_v3_draft.json")
+            .read_text(encoding="utf-8-sig")
+        )
+        materialization = draft["textgrid_materialization_gate"]
+        self.assertEqual(
+            materialization["years"], [2020, 2021, 2022, 2023, 2024, 2025]
+        )
+        self.assertFalse(materialization["in_place_r2_label_rewrite_allowed"])
+        self.assertEqual(
+            materialization["source_of_words_and_phones"],
+            "either a new MFA database aligned with r3 or an existing r2 interval set proven pronunciation-equivalent for the complete MFA adaptation unit",
+        )
+        self.assertEqual(
+            materialization["required_tiers"],
+            [
+                "words",
+                "phones_mfa",
+                "phoneme_r_auto",
+                "utterance",
+                "utterance_orth_r",
+                "morph_analysis_utt",
+            ],
+        )
+        requirements = "\n".join(gate["r3_adoption_requirements"])
+        self.assertIn("2020 through 2025", requirements)
+        self.assertIn("TextGrid", requirements)
+        self.assertIn("dictionary SHA", requirements)
+        self.assertTrue(draft["rerun_policy"]["unchanged_r2_reuse_allowed"])
+        self.assertEqual(
+            draft["rerun_policy"]["changed_unit_scope"],
+            "realign the complete MFA speaker/session adaptation unit when any token pronunciation variant changes",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

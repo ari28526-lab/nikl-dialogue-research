@@ -46,7 +46,9 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
 
 - acoustic phone inventory는 Korean MFA v3.3.0 기준으로 동결한다. 기존
   `common_pron_mfa_r2_20260728`은 보존 증거이며 새 실행에는 쓰지 않는다.
-- 2020–2025는 채택될 단일 r3 발음 선택 계약으로 모두 다시 정렬한다.
+- 2020–2022는 채택될 r3와 발음 변이 집합이 달라진 화자/세션 적응 단위만 다시
+  정렬하고, 완전히 같은 단위는 동등성 증명과 최종 index를 붙여 재사용한다.
+  2023–2025는 같은 r3 계약으로 한 번만 정렬한다.
 - TextGrid 정본 형식은 6-tier다:
   `words / phones_mfa / phoneme_r_auto / utterance / utterance_orth_r /
   morph_analysis_utt`.

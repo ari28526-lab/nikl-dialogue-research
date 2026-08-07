@@ -56,13 +56,15 @@
     "new_mfa_with_r2_allowed": false,
     "existing_r2_outputs_modified": false,
     "repeat_broad_human_review_required": false,
-    "six_year_r3_realign_required_after_adoption": true
+    "six_year_single_r3_contract_required": true,
+    "full_realign_existing_r2_years_required": false,
+    "selective_session_realign_after_exact_impact_inventory": true
   },
   "next_required_work": [
     "build the canonical r3 pronunciation-selection table",
     "emit the r3 MFA dictionary only as a verified projection of selected phones",
     "run automatic linguistic coverage and frozen-phone-inventory checks",
     "reuse already-reviewed 2022 IDs and rule-stratified samples for targeted regression",
-    "adopt one contract id and then realign 2020 through 2025 with checkpoints"
+    "adopt one contract id, reuse only proven-equivalent 2020-2022 adaptation units, realign changed units with checkpoints, and align 2023-2025 once"
   ]
 }

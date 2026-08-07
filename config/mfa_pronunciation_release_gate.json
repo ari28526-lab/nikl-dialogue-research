@@ -23,6 +23,9 @@
     "byte/fingerprint identity between canonical selected phones and the emitted MFA dictionary",
     "rule-sensitive mismatches either resolved or explicitly retained with a documented reason",
     "targeted regression using the already-reviewed 2022 samples rather than a repeated broad pilot",
-    "one adopted contract id used for 2020 through 2025"
+    "one adopted contract id used for 2020 through 2025",
+    "changed MFA adaptation units use new r3-aligned DB intervals; r2 TextGrids are never relabeled in place",
+    "unchanged 2020-2022 units may be retained only with exact r2-r3 pronunciation-set equivalence and sampled boundary equivalence proof",
+    "every annual final TextGrid index and companion-table manifest records the same r3 contract id, dictionary SHA, alignment origin, and equivalence proof when reused"
   ]
 }

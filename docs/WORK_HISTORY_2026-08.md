@@ -56,6 +56,35 @@
 - 이 단계에서 연구자가 다시 청취·승인하거나 PowerShell 장시간 명령을 실행할
   일은 없다.
 
+### r3 canonical inventory 첫 전수 실물
+
+- `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  01_canonical_inventory`에 2020–2025 공통 881,237형 전수 inventory를 생성했다.
+- 출력은 30,954,798 bytes, SHA-256
+  `1a42a0b07daae7a9d9a4b0adc6438e828e17cb5b6b4bef6b1ae6851a03742f05`다.
+- r2 phone과 표면 규칙형이 정확히 같은 382,891형·19,765,802회만 provisional
+  유지했다. 나머지 498,346형은 phone을 임의로 만들거나 첫 변이를 선택하지 않고
+  근거별 후보·보류 상태로 남겼다.
+- 규칙 예상형과 사전 근거가 동의하지만 r2가 다른 교체 후보는 7,179형·535,600회,
+  사전 지지 예외 후보는 426형·46,197회다. 이들도 backend phone 후보가 Roman
+  목표와 정확히 대응하기 전에는 최종 선택하지 않는다.
+- 사용자는 최종 수정이 TextGrid에 반영돼야 하고 2020–2025가 동일해야 함을 다시
+  확인했다. 이에 r3 계약은 새 r3 DB에서 6-tier를 재생성하고, 모든 연도 TextGrid
+  manifest가 동일 r3 contract ID·사전 SHA를 기록해야만 완료로 인정하도록 보강했다.
+- 이어서 기존 2020–2022를 모두 처음부터 다시 정렬하는 것은 반복 방지 목적에
+  어긋난다는 연구자 지적을 반영했다. 최종 정책은 전수 재계산이 아니라 **증명 기반
+  선택 재사용**이다. LAB의 모든 token에 대해 r2/r3 발음 변이 집합이 같은 전체
+  화자/세션 적응 단위는 기존 TextGrid를 재사용하고, 하나라도 달라진 단위만 r3로
+  재정렬한다. 2023–2025는 아직 최종 정렬 전이므로 r3로 한 번만 정렬한다.
+- 재사용은 단순 추정이 아니다. WAV·LAB·acoustic model·feature/alignment 설정,
+  기존 QC, token별 변이 집합이 모두 같아야 하며, 동등 세션의 층화 표본을 r3로
+  다시 돌려 label·경계 허용치 동등성을 확인한다. 실패하면 해당 적응 단위를
+  재정렬 범위로 승격한다.
+- 최종 발화 index는 각 TextGrid를 `reused_r2_equivalent` 또는 `realigned_r3`로
+  표시하고 equivalence proof SHA·r3 contract ID·사전 SHA를 함께 기록한다. 기존
+  r2 phone 문자열을 제자리 치환하는 방식은 계속 금지한다.
+
+
 
 ## 2026-08-01 — 로마자 음소 보조층 원격 검토 링크 보정
 

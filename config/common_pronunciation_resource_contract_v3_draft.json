@@ -31,16 +31,24 @@
       "dictionary_candidate_provenance_json",
       "r2_pron_phones_json",
       "r2_pron_source",
-      "selected_pron_phones_mfa",
-      "selected_pron_roman",
+      "selected_variant_count",
+      "selected_pron_phones_json",
+      "selected_pron_roman_json",
       "selection_status",
       "selection_source",
       "selection_reason",
+      "morph_context_required",
       "manual_decision_id"
     ],
     "coverage_required": 881237,
     "selected_phone_coverage_required_before_adoption": 881237,
     "duplicate_token_allowed": false
+  },
+  "variant_policy": {
+    "canonical_table_unit": "one observed surface type with a JSON list of zero or more explicitly selected variants",
+    "mfa_projection_unit": "one token-pronunciation variant row",
+    "arbitrary_first_variant_selection_allowed": false,
+    "morphologically_conditioned_variants": "retain explicit morphology evidence; use multiple variants or a separately adopted occurrence-key remap rather than silently collapsing distinct readings"
   },
   "selection_policy": [
     "Preserve an r2 phone sequence only when its model-group Roman sequence agrees with the mandatory surface-rule reference.",
@@ -60,7 +68,11 @@
     "every retained rule-sensitive mismatch has an explicit reason and decision id",
     "2022 reviewed regression IDs 08, 09, 15, and 24 pass the intended boundary and label checks",
     "stratified automatic regression covers neutralization, fortition, nasal assimilation, liaison, aspiration, h-deletion, palatalization, and cluster simplification",
-    "one r3 contract id is pinned by every annual alignment contract"
+    "one r3 contract id is pinned by every annual alignment contract",
+    "every annual TextGrid and companion-table manifest pins the same r3 contract id and MFA dictionary SHA",
+    "changed pronunciation sessions export phones_mfa from an r3-aligned DB rather than relabeling r2 intervals",
+    "unchanged sessions are reused only after exact r2-r3 token-variant equivalence and alignment-unit provenance are proved",
+    "phoneme_r_auto is regenerated or verified deterministically against the final phones_mfa tier"
   ],
   "output_policy": {
     "phones_mfa": "time-aligned phones from the selected r3 MFA input pronunciation; not realized-speech truth",
@@ -68,10 +80,45 @@
     "search_tables": "retain orthographic Roman, rule reference, dictionary candidates, selected backend phones, and provenance as separate columns",
     "textgrid_tier_count": "no automatic tier increase is required for r3; detailed provenance remains in companion CSV tables"
   },
-  "rerun_policy": {
+  "textgrid_materialization_gate": {
     "years": [2020, 2021, 2022, 2023, 2024, 2025],
-    "required_after_adoption": true,
+    "in_place_r2_label_rewrite_allowed": false,
+    "source_of_words_and_phones": "either a new MFA database aligned with r3 or an existing r2 interval set proven pronunciation-equivalent for the complete MFA adaptation unit",
+    "required_tiers": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ],
+    "required_manifest_fields": [
+      "pronunciation_release_id",
+      "pronunciation_contract_id",
+      "mfa_dictionary_sha256",
+      "alignment_contract_id",
+      "textgrid_schema",
+      "source_db_sha256",
+      "alignment_origin",
+      "r2_r3_pron_equivalent",
+      "equivalence_proof_sha256"
+    ],
+    "completion_rule": "an annual result is not complete until every utterance resolves through a final index to either a verified-equivalent retained TextGrid or an r3-realigned TextGrid, and all companion tables pass the same-contract audit"
+  },
+  "rerun_policy": {
+    "existing_r2_years": [2020, 2021, 2022],
+    "not_yet_finally_aligned_years": [2023, 2024, 2025],
+    "required_after_adoption": "build exact impact inventory; realign changed MFA adaptation units only for 2020-2022; align 2023-2025 once with r3",
     "preserve_r2_outputs_as_read_only_method_evidence": true,
+    "unchanged_r2_reuse_allowed": true,
+    "unchanged_reuse_requirements": [
+      "every LAB token in the complete MFA adaptation unit has an identical ordered pronunciation-variant set in r2 and r3",
+      "WAV and LAB fingerprints, acoustic model, feature configuration, and alignment settings are unchanged",
+      "the retained TextGrid and source DB passed the prior production audit",
+      "a stratified sample of equivalent units is rerun with r3 and passes label and boundary equivalence tolerance",
+      "a final utterance index records the retained source path and equivalence proof SHA"
+    ],
+    "changed_unit_scope": "realign the complete MFA speaker/session adaptation unit when any token pronunciation variant changes",
     "repeat_broad_researcher_pilot": false,
     "repeat_existing_2022_review": false,
     "targeted_regression_only_before_bulk": true
