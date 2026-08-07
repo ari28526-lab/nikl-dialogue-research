@@ -2054,3 +2054,8 @@ shard 2–23을 재개하는 것이다.
 - PowerShell 안전성 48개 파일과 Windows PowerShell 5.1 호환성 60개 스크립트도
   다시 통과했다. 다음 단계는 같은 보존 DB에서 direct export를 실제 재개하는
   장시간 PowerShell 한 번이다.
+- 긴 승인 문장과 token의 재입력 오류를 막기 위해
+  `resume_2022_export_after_exact_approval.ps1`을 추가했다. 기록된 manifest와
+  승인 CSV SHA를 검증하며 기본은 preflight, `-Start`를 명시해야 실제 재개한다.
+  wrapper 자체 preflight도 결합 1,669건으로 통과했고, PowerShell 안전성 48개와
+  Windows PowerShell 5.1 호환성 61개 스크립트가 통과했다. 파일은 UTF-8 BOM이다.
