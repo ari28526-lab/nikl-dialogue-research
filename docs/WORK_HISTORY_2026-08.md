@@ -2035,3 +2035,22 @@ shard 2–23을 재개하는 것이다.
   생산 PowerShell에 함께 반영했다. 신규 회귀시험을 포함한 Python 전수 402개,
   PowerShell 안전성 48개 파일, Windows PowerShell 5.1 호환성 60개 스크립트가
   모두 통과했다. `run_eojeol_realign.ps1` UTF-8 BOM도 확인했다.
+
+### 2022 post-MFA 438건 명시 승인과 재개 preflight
+
+- 연구자는 “2022년 post-MFA 미정렬 438건을 `alignment_and_analysis` 범위로
+  안전 본체에서 제외하고, 원 WAV·LAB·MFA DB는 후속 회수 대상으로 보존”하는
+  것을 승인했다. 승인자는 `ari30`이다.
+- 전용 승인기는 `02_RESEARCHER_DECISIONS.csv`와 `SUMMARY.json`의 candidate
+  identity·행 수·scope·token을 검증했다. 원 pending 작업본은
+  `archive/04_RESEARCHER_APPROVAL.pending_original.csv`에 byte-exact SHA-256
+  `da0504e1...`로 보존하고, 작업본 438행의 `decision`만 `approved`로 바꿨다.
+- 명시 승인 manifest는 `materialized_from_explicit_researcher_statement=true`,
+  `automatic_approval_performed=false`, 원 음원·DB 수정 0, full-year rerun 불필요를
+  기록한다.
+- `resume_year_export_after_post_mfa_review.ps1 -PreflightOnly`는 기존 pre-MFA
+  1,231건 + post-MFA 438건 = 결합 1,669건, candidate SHA
+  `36912d5d3802...`를 exact-ID로 확인했다. DB 수정·출력 생성은 0건이다.
+- PowerShell 안전성 48개 파일과 Windows PowerShell 5.1 호환성 60개 스크립트도
+  다시 통과했다. 다음 단계는 같은 보존 DB에서 direct export를 실제 재개하는
+  장시간 PowerShell 한 번이다.

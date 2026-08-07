@@ -34,7 +34,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 |---:|---|---|---|---|
 | 2020 | 완료 | 완료 | Gate B 통과 | occurrence·비교/index 완료, 7-tier 914건 구현 검증 |
 | 2021 | 완료 | 완료 | 24/24 승인·다음 연도 Gate 통과 | occurrence·비교/index·7-tier 전수 완료 |
-| 2022 | 완료 | MFA 계산 완료·direct export Gate 대기 | post-MFA 438건 pending | MFA 뒤 생성 |
+| 2022 | 완료 | MFA 계산 완료·direct export 재개 직전 | post-MFA 438건 명시 승인·preflight 통과 | MFA 뒤 생성 |
 | 2023 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
 | 2024 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
 | 2025 | 생성 전 | 시작 전 | 해당 없음 | MFA 뒤 생성 |
@@ -86,8 +86,14 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 - 보존 DB는 `D:\mfa_tmp\2022\2022.db`이며 다시 정렬하지 않는다.
 - 연구자는 20개 연결 표본의 WAV·LAB를 확인했다. 그 과정에서 겹침·잘림 의심·
   심한 소음을 발견해 2020–2025 공통 품질 감사로 확장했다.
-- 다음 단계는 438건의 정확한 기술/품질 근거표를 확정한 뒤 명시 승인하고,
-  보존 DB에서 direct export·6-tier·동반표·독립 Gate를 재개하는 것이다.
+- 연구자는 2026-08-07 15:04 KST에 438건을
+  `mfa_alignment_missing / alignment_and_analysis`로 명시 승인했다. 원 pending
+  작업본은 SHA-256 동일 archive로 보존했고, candidate identity는
+  `36912d5d3802...`로 유지됐다.
+- 결합 승인 preflight는 기존 1,231건 + post-MFA 438건 = 1,669건 exact-ID
+  일치, DB 무변경, 출력 생성 0으로 통과했다.
+- 다음 단계는 보존 DB에서 direct export·6-tier·동반표·독립 Gate를 재개하는
+  장시간 PowerShell 한 번이다. 전체 MFA를 다시 실행하지 않는다.
 
 ## 2023–2025 준비 상태
 
@@ -116,9 +122,10 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - 2020 완료 자산 변경 없음
 - 2021 core 및 파생층 완료
 - 2021 공식 연구자 승인·`2021 → 2022` Gate 완료
-- 2022 MFA 계산 완료·post-MFA 438건 명시 승인 전
+- 2022 MFA 계산 완료·post-MFA 438건 승인 및 재개 preflight 통과
+- 결합 승인 계약·direct export는 아직 시작하지 않음
 
-현재 허용 작업은 2022 exact-ID Gate 확정과 보존 DB direct export 준비다.
+현재 허용 작업은 2022 보존 DB direct export 재개다.
 2020·2021 정렬 재실행, 새 발음사전 설계, 새 파일럿, 2022 전체 재정렬은 허용하지
 않는다. 2023은 2022 production Gate 통과 뒤 같은 품질 계약으로 시작한다.
 

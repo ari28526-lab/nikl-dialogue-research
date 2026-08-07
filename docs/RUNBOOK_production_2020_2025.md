@@ -47,8 +47,8 @@
   → 2021 MFA·6-tier·기계 감사·발음 참조 전수 완료
   → 2021 공식 연구자 24/24 승인·2021→2022 Gate 완료
   → 2022 MFA 계산 완료·보존 DB
-  → 2022 post-MFA exact-ID 438건 Gate  ← 현재
-  → 2022 direct export·6-tier·동반표·독립 Gate
+  → 2022 post-MFA exact-ID 438건 명시 승인·preflight 완료
+  → 2022 direct export·6-tier·동반표·독립 Gate  ← 현재
 ```
 
 ## 4. 2021 Gate 종료 — 완료
@@ -105,11 +105,16 @@ outputs/reviews/
 865,128개 중 864,690개가 정렬됐으며 interval이 없는 438개는 exact-ID 검토
 집합이다. 전체 MFA를 다시 실행하지 않는다.
 
-1. 438개와 aligned control의 연결·구조·음향 근거표를 확정한다.
-2. 기술적 미정렬 집합의 exact-ID 범위를 연구자가 명시 승인한다.
-3. 보존 DB에서 direct export를 재개한다.
-4. 6-tier·동반표·독립 전수 감사·한 번의 연구자 표본 Gate를 완료한다.
-5. 품질 플래그는 동반표에 결합하되 실제 실현 여부를 자동 판정하지 않는다.
+1. 438개와 aligned control의 연결·구조·음향 근거표를 확정했다.
+2. 연구자는 438건의 기술적 미정렬 exact-ID 범위를 명시 승인했다.
+3. 승인 materialization과 결합 승인 preflight가 통과했다.
+4. 보존 DB에서 direct export를 재개한다.
+5. 6-tier·동반표·독립 전수 감사·한 번의 연구자 표본 Gate를 완료한다.
+6. 품질 플래그는 동반표에 결합하되 실제 실현 여부를 자동 판정하지 않는다.
+
+재개 명령은 `resume_year_export_after_post_mfa_review.ps1`을 사용한다. 이 명령은
+기존 1,231건과 새 438건을 결합한 계약을 만든 뒤 같은 `direct_db_ready` DB에서
+export부터 시작한다. MFA 정렬 계산은 다시 실행하지 않는다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.

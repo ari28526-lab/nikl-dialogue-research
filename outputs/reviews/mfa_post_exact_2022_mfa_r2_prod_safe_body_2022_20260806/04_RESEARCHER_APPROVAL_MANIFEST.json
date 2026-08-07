@@ -1,0 +1,45 @@
+{
+  "schema_version": "mfa_post_exact_explicit_approval.v1",
+  "status": "approved",
+  "approved_at": "2026-08-07T15:04:23+09:00",
+  "approved_by": "ari30",
+  "approval_statement": "2022년 post-MFA 미정렬 438건을 alignment_and_analysis 범위로 안전 본체에서 제외하고, 원 WAV·LAB·MFA DB는 후속 회수 대상으로 보존하는 것을 승인한다. 승인자 ari30.",
+  "approval_token": "APPROVE_2022_POST_MFA_438_36912D5D3802",
+  "year": "2022",
+  "input_contract_id": "3043de75618fd78762e08a509d075f45573037dc7b23de96b1b27de54c587d8f",
+  "approved_row_count": 438,
+  "reason_code": "mfa_alignment_missing",
+  "exclusion_scope": "alignment_and_analysis",
+  "candidate_identity_sha256": "36912d5d3802425330d15bb906936a7ce30a02762875a264244c79a19de85b33",
+  "immutable_pending_decisions": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\02_RESEARCHER_DECISIONS.csv",
+    "bytes": 129193,
+    "mtime_ns": 1786025712166573600,
+    "sha256": "da0504e1e0d23628ce3b4941ae7362248399ed1cf4c97d0e6b4bbbeb551ca33a"
+  },
+  "pending_working_copy": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\04_RESEARCHER_APPROVAL.csv",
+    "bytes": 129193,
+    "mtime_ns": 1786025712172092400,
+    "sha256": "da0504e1e0d23628ce3b4941ae7362248399ed1cf4c97d0e6b4bbbeb551ca33a"
+  },
+  "pending_working_copy_archive": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\archive\\04_RESEARCHER_APPROVAL.pending_original.csv",
+    "bytes": 129193,
+    "mtime_ns": 1786082663677823200,
+    "sha256": "da0504e1e0d23628ce3b4941ae7362248399ed1cf4c97d0e6b4bbbeb551ca33a"
+  },
+  "approved_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_post_exact_2022_mfa_r2_prod_safe_body_2022_20260806\\04_RESEARCHER_APPROVAL.csv",
+    "bytes": 129631,
+    "mtime_ns": 1786082663695342100,
+    "sha256": "602d8eec50afa6c34e36f0ac744585d20e221db7eb279aa9faad1a9ad565784a"
+  },
+  "materialized_from_explicit_researcher_statement": true,
+  "automatic_approval_performed": false,
+  "actual_phonological_realization_judged": false,
+  "source_audio_modified": false,
+  "mfa_database_modified": false,
+  "full_year_mfa_rerun_required": false,
+  "recovery_inputs_preserved": true
+}
