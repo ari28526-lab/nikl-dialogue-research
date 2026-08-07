@@ -31,6 +31,12 @@
       "dictionary_candidate_provenance_json",
       "r2_pron_phones_json",
       "r2_pron_source",
+      "candidate_variant_count",
+      "candidate_pron_phones_json",
+      "candidate_pron_roman_json",
+      "candidate_status",
+      "candidate_source",
+      "candidate_reason",
       "selected_variant_count",
       "selected_pron_phones_json",
       "selected_pron_roman_json",
@@ -48,6 +54,7 @@
     "canonical_table_unit": "one observed surface type with a JSON list of zero or more explicitly selected variants",
     "mfa_projection_unit": "one token-pronunciation variant row",
     "arbitrary_first_variant_selection_allowed": false,
+    "candidate_is_not_selection": true,
     "morphologically_conditioned_variants": "retain explicit morphology evidence; use multiple variants or a separately adopted occurrence-key remap rather than silently collapsing distinct readings"
   },
   "selection_policy": [

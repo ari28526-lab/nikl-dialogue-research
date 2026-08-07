@@ -71,6 +71,8 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | common_pronunciation_contract.py | 공통 발음 자원 v2의 형태소 결합·MFA 활성화 계약. 표면형만 같은 사전 후보를 검색용 `reference_only`로 분리하고 단일형태소 품사 일치·용언 사전형 일치만 occurrence 후보로 허용 |
 | audit_common_pron_occurrence_matches.py | A/B stress 발화의 lab 어절과 search master 형태소를 안전하게 왕복 조인하고, 어절 수 불일치는 유일한 표면형 복원 때만 회수하여 사전 후보의 occurrence 적합성 CSV·manifest 생성 |
 | build_common_pron_mfa_lexicon.py | 최신 acoustic v3.3.0·Jamo G2P v3.2.0 기준으로 6개년 OOV를 1-best/strict shard화. U+11B3만 같은 모델 입력에서 ㄹ+ㅅ 완전분해하고 원 표층키를 복원한다. 4행 same-model 후보는 불변 증거로 보존하고 별도 연구자 승인 phone만 final에 사용하며, 후보와 다른 수동 교정은 동일 acoustic inventory·근거·notes를 강제한다. 생성기 코드·모델·vocabulary SHA, missing·spn·phone inventory hard gate |
+| build_common_pron_r3_canonical_inventory.py / resolve_common_pron_r3_surface_donors.py | 881,237형 r3 정본 골격을 만들고 규칙 목표 Roman과 정확히 같은 기존 표면형 phone만 donor 후보로 연결. 후보를 자동 선택하거나 TextGrid를 변경하지 않음 |
+| prepare_common_pron_r3_g2p_targets.py / verify_common_pron_r3_g2p_candidates.py | 미선택 규칙 민감형을 310,605개 목표형·13 shard로 중복 제거하고 동결 Jamo grapheme 계약을 검증. G2P exit 0 뒤의 SHA 완료 보고서, 1-best key, `spn`, acoustic inventory, no-path 비율을 검사하며 후보를 최종 선택으로 오인하지 않음 |
 | trace_common_pron_special_occurrences.py | Jamo ㄽ 등 소수 특수 표층형을 공통 vocabulary와 같은 `form_to_lab`로 동결 search-master 전수에서 한 번만 찾아 발화·화자·form/original/pron_reference와 원본 JSON 경로를 연결. 대상 누락·세션/발화 누락·search-master↔JSON 불일치·기존 출력 덮어쓰기를 hard fail하고 CSV·SHA manifest 생성 |
 | stage_common_pron_researcher_review.py | no-path·Jamo ㄽ 원본 추적표를 합쳐 연구자 검토용 WAV를 D: release 아래에 복사. 원본을 읽기 전용으로 취급하고 중복 WAV는 한 번만 복사하며 원본/검토본 SHA256 동등성·누락·대상 경계를 manifest로 검증 |
 | build_common_pron_researcher_review_xlsx.py | 공통사전 r2 예외 27건의 모델 후보·규범/어휘부 근거·31개 발화·WAV 링크·연구자 결정·재현 계약을 7개 시트 XLSX로 생성. 모든 결정을 pending으로 시작하고 후보 phone과 승인 phone, source correction과 발음 승인을 분리하며 IPA 열은 Noto Sans로 표시 |
@@ -83,12 +85,14 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | run_common_pron_difference_inventory.ps1 | 완성된 r2 hard gate, D: 라벨·공간, G2P/MFA/자체 lock과 baseline 증거를 확인하고 2020·2021 difference inventory를 전수 실행. 실행 중 Windows 시스템 절전을 억제하고 종료 시 복원한다. 기본 20,000 TextGrid마다 checkpoint를 보존하며 재실행 시 입력 prefix가 불변일 때만 이어서 처리하고 adoption은 자동 승인하지 않음 |
 | run_common_pron_mfa_r1.ps1 | 구 acoustic v3.0/음절 G2P r1의 재현·실패 감사용 실행기. 첫 shard의 strict grapheme 누락을 검증기가 차단했으며 최신 Jamo 생산에는 재사용하지 않음 |
 | run_common_pron_mfa_r2.ps1 | 역사적 r2 shard 생성기. 2026-08-07 발음 배선 감사 뒤 프로젝트 release Gate가 r2 재생성을 fail-closed로 차단한다. 기존 release는 읽기 전용 감사 증거로만 사용 |
+| run_common_pron_mfa_r3_g2p_candidates.ps1 | r3 규칙 목표형 13 shard의 후보 G2P 장시간 실행기. 완료 보고서가 맞는 shard만 재사용하고 부분 출력은 보존 archive 뒤 해당 shard만 재계산. 절전 방지·lock·`-PreflightOnly` 포함; final 사전·연도 MFA·TextGrid는 시작하지 않음 |
 | build_common_pron_mfa_adoption.py | 연도별 MFA를 허용하는 유일한 adoption v3 contract 생성. r2 실물·동결 모델 pin·2020/2021 difference inventory뿐 아니라 연구자 workbook validation과 원장 적용 transaction, 27개 정규화 결정, no-path 24개 승인 snapshot/repair, ㄽ 4개 최종 phone, source/numeric correction 2개를 행·SHA 수준으로 끝까지 대조한다. no-path 구 repair v1/v2와 현재 review의 필드 배치 차이는 model candidate·approved phone 의미로 정규화한 뒤 비교하며, 최종 연구자 승인 v2가 application·correction SHA를 명시하지 않으면 거부 |
 | build_common_pron_researcher_approval.py | 이미 명시 승인된 27건 workbook·결정 적용 transaction·6개년 전면 재정렬 결정문·완료 difference inventory를 다시 검증해 researcher approval v2를 생성. 새 언어학 판단을 자동 생성하지 않고 기존 명시 결정의 SHA 연결만 기계 판독화 |
 | validate_mfa_r2_adoption.py | 연도별 실행 직전에 adoption v3가 `passed/allow_yearly_mfa=true`인지 확인하고 공통사전·acoustic·Jamo G2P·model bundle 실물 SHA를 동결 계약과 다시 대조. inline G2P가 아닌 승인 공통사전 경로만 허용 |
 | build_mfa_year_phone_inventory.py | 연도별 보존 MFA DB의 실제 phone interval을 집계하고, 동결 acoustic 허용 inventory SHA와 `spn`·inventory 밖 phone을 hard gate로 기록. 코퍼스별 관측 phone 집합 차이는 기술 통계로 보존 |
 | audit_mfa_cross_year_contracts.py | 2020–2025 여섯 alignment contract의 acoustic·최종 공통사전·Jamo G2P·런타임·manifest·adoption SHA와 허용 phone inventory SHA가 동일함을 전수 감사해 논문 방법론의 동일 기준 증거 생성 |
 | show_common_pron_mfa_status.ps1 | 공통 MFA r2의 검증 shard·ㄽ 후보·모든 미검증 partial·no-path 승인/미등록 대기 shard·현재 출력·lock·D: 공간·final/adoption 상태를 읽기 전용으로 표시. 재개 ETA는 현재 lock 이후 새로 생성된 행만 사용 |
+| show_common_pron_mfa_r3_g2p_status.ps1 | r3 후보 G2P의 완료 shard, 검증 후보 수, no-path 수, 미검증 부분 출력, lock·D: 공간을 읽기 전용으로 표시 |
 | package_hf_korean_mfa_bundle.py | MFA 내장 downloader의 stale 성공을 우회해 공식 Hugging Face commit에서 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary를 phone inventory·LF symbol·SHA256 gate로 동결 |
 | build_jamo_nfkd_g2p_model.py | 구 Jamo v3.0 archive의 누락된 NFKD metadata만 파생 수정하는 진단 도구. 최신 v3.2.0은 공식적으로 `unicode_decomposition=true`이므로 새 생산 기준에는 사용하지 않음 |
 | archive_pre_jamo_outputs_to_external.ps1 | **사용 중단·기본 실행 차단.** 수백만 작은 파일의 loose Robocopy 방식이므로 실행 시 압축 스크립트를 안내하고 즉시 중단 |

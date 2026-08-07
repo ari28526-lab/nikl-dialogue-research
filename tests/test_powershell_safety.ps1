@@ -44,8 +44,10 @@ $files = @(
     (Join-Path $root 'scripts\run_common_pron_ab_pilot.ps1'),
     (Join-Path $root 'scripts\run_common_pron_mfa_r1.ps1'),
     (Join-Path $root 'scripts\run_common_pron_mfa_r2.ps1'),
+    (Join-Path $root 'scripts\run_common_pron_mfa_r3_g2p_candidates.ps1'),
     (Join-Path $root 'scripts\run_common_pron_difference_inventory.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
+    (Join-Path $root 'scripts\show_common_pron_mfa_r3_g2p_status.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1'),
     (Join-Path $root 'scripts\archive_legacy_mfa_markers_for_r2.ps1'),
@@ -1027,6 +1029,35 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA 사전 r2 안전장치 누락: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+            'run_common_pron_mfa_r3_g2p_candidates.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$PreflightOnly',
+            'blocked_pending_r3',
+            'common_pron_mfa_r2_20260728',
+            '310605',
+            'af8cfdc93f4d1f354b9fd58abc51084a83a5788b8ffc68510486c1b51deaa5b3',
+            'shards -ne 13',
+            'verify-existing-report',
+            'archive_interrupted',
+            '--num_pronunciations',
+            '--strict_graphemes',
+            'G2P_CANDIDATE_OUTPUTS_MANIFEST.json',
+            'candidate_is_final_selection = $false',
+            'No final dictionary was adopted and no annual MFA was started.',
+            'Enable-SleepGuard',
+            'Acquire-Lock',
+            'Release-Lock',
+            'pre_mfa_bulk.lock'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("공통 MFA r3 후보 실행 안전장치 누락: $required")
             }
         }
     }

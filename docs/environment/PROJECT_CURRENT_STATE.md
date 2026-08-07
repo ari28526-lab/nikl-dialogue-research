@@ -115,9 +115,9 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   `mfa_r2_prod_safe_body_2022_20260806_postmfa`이며 DB는 계속 보존한다.
 - 공식 연구자 표본 24개를
   `outputs/reviews/mfa_production_2022_mfa_r2_prod_safe_body_2022_20260806_postmfa`
-  에 준비했다. 다음 단계는 이 표본의 WAV·LAB·6-tier·검색 사용 가능성을 한 번
-  확인하고 명시 승인한 뒤 2022 완료 Gate를 실행하는 것이다. 실제 음운 실현
-  판정은 이 Gate의 대상이 아니다.
+  에 준비했고 연구자가 24개 모두의 연결·정렬·6-tier·검색 정보를 확인했다.
+  이 검토에서 발견한 공통발음 입력 불일치를 r3 Gate의 회귀 표본으로 재사용한다.
+  실제 음운 실현 판정은 이 인프라 Gate의 대상이 아니다.
 
 ## 2023–2025 준비 상태
 
@@ -152,9 +152,15 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - 2022 post-MFA 438건과 결합 제외 1,669건의 승인·회계 완료
 - 2022 공식 연구자 인프라 표본 24개 검토 완료·발음 입력 불일치 발견
 - r2 프로젝트 발음 release Gate 차단 완료
+- r3 canonical inventory 881,237형 생성 완료
+- exact Roman 표면 donor 후보 346형 생성 완료(아직 최종 선택 아님)
+- 규칙 목표형 Jamo G2P 대상 310,605개를 13 shard로 준비 완료
+- r3 G2P 장시간 실행은 아직 시작하지 않았고 TextGrid 변경도 없음
 
-현재 허용 작업은 r3 canonical 발음 선택표·사전 projection·자동 회귀·adoption
-Gate를 구현하는 것이다. 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
+현재 허용 작업은 r3 G2P 후보를 재개 가능한 shard로 생성하고, 독립 규칙 Roman과
+정확히 일치하는 후보만 canonical 선택표에 승격한 뒤 사전 projection·자동 회귀·
+adoption Gate를 구현하는 것이다. G2P 1-best 자체는 정답이나 최종 선택이 아니다.
+새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
 2020–2022는 영향 세션 delta, 2023–2025는 최초 전수 정렬로 순차 진행한다.
 
@@ -164,4 +170,6 @@ Gate를 구현하는 것이다. 새 광범위 사람 파일럿과 r2 재실행�
 - 발음 참조 파생층: `docs/RUNBOOK_pronunciation_reference_layer_2020_2025.md`
 - 자산 위치: `docs/ASSETS_LEDGER.md`
 - 상세 시행착오: `docs/WORK_HISTORY_2026-08.md`
+- r3 후보 선택 결정:
+  `docs/decisions/DECISION_common_pron_r3_candidate_resolution_20260807.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

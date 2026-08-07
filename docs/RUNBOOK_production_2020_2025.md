@@ -70,6 +70,24 @@
   → 2023–2025 동일 r3 계약으로 최초 정렬
 ```
 
+### 3.1 현재 r3 후보 생성 checkpoint
+
+2026-08-07 현재 canonical inventory 881,237형, exact-Roman donor 후보 346형,
+규칙 목표형 310,605개·13 shard가 준비됐다. G2P 1-best는 최종 발음 선택이
+아니며 독립 규칙 Roman과 정확히 일치하는 후보만 다음 단계로 넘긴다.
+
+장시간 실행 전 상태는 다음 읽기 전용 명령으로 확인한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File ".\scripts\show_common_pron_mfa_r3_g2p_status.ps1"
+```
+
+실행기는 `run_common_pron_mfa_r3_g2p_candidates.ps1`이다. 완료 SHA 보고서가 있는
+shard만 재사용하므로 중단 뒤 같은 명령으로 국소 재개한다. 이 단계가 끝나도
+최종 사전 adoption이나 연도별 MFA로 자동 진입하지 않는다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.
@@ -123,7 +141,8 @@ outputs/reviews/
 2022 r2 MFA 계산은 완료됐고 `D:\mfa_tmp\2022\2022.db`를 보존했다. 활성 LAB
 865,128개 중 864,690개가 정렬됐으며 interval이 없는 438개는 exact-ID 검토
 집합이다. 이 r2 DB에서 export·검토를 반복하지 않는다. r3가 채택되면 기존 DB를
-수정하지 않고 별도 경로에서 2022를 다시 정렬한다.
+수정하지 않고 별도 경로에서 발음 변이가 달라진 적응 단위만 재정렬한다. 전부
+동등한 단위는 계약·QC·표본 경계 동등성 증명 뒤 최종 index로 재사용한다.
 
 1. 438개와 aligned control의 연결·구조·음향 근거표를 확정했다.
 2. 연구자는 438건의 기술적 미정렬 exact-ID 범위를 명시 승인했다.

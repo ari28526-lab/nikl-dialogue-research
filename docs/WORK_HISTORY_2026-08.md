@@ -84,6 +84,28 @@
   표시하고 equivalence proof SHA·r3 contract ID·사전 SHA를 함께 기록한다. 기존
   r2 phone 문자열을 제자리 치환하는 방식은 계속 금지한다.
 
+### r3 후보 근거 확장과 장시간 G2P 준비
+
+- canonical inventory의 미선택 유형에 기존 phone을 억지로 복사하지 않았다.
+  규칙 예상 Roman과 정확히 같은 기존 표면형 phone만 donor 후보로 연결했으며,
+  346형·245,597회가 후보가 됐다. 이는 최종 선택이 아니다.
+- donor로 해결되지 않은 규칙 민감 source 312,410형·4,472,892회를 규칙 목표
+  한글형 310,605개로 중복 제거했다. 동결 Jamo G2P v3.2.0의 grapheme 계약을
+  전수 확인하고 25,000개 단위 13 shard를 만들었다.
+- target inventory SHA-256은
+  `65b51abc7a76ca5a84bf41379422c4d21333d0781ef150dba2be1c5d91408fde`다.
+  target manifest는 `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  03_g2p_rule_targets_1best\G2P_TARGETS_MANIFEST.json`에 있다.
+- G2P 1-best는 발음 정답이 아니라 backend phone 후보로만 사용한다. 독립적으로
+  계산된 규칙 목표 Roman과 정확히 맞는 결과만 다음 선택 단계로 넘긴다. 임의
+  fallback, `spn`, acoustic inventory 밖 phone은 허용하지 않는다.
+- `run_common_pron_mfa_r3_g2p_candidates.ps1`은 MFA G2P exit 0 뒤 생성한
+  입력·출력·모델 SHA 보고서가 있을 때만 shard를 완료로 인정한다. 창이 닫혀
+  부분 `.dict`만 남으면 완료로 오인하지 않고 archive한 뒤 해당 shard만 다시
+  계산한다. 완료 shard는 재사용한다.
+- Windows PowerShell 5.1 안전성·런타임 검사와 실제 `-PreflightOnly`가 통과했다.
+  이 준비 과정에서는 최종 사전, adoption, 연도별 MFA, TextGrid를 변경하지 않았다.
+
 
 
 ## 2026-08-01 — 로마자 음소 보조층 원격 검토 링크 보정
