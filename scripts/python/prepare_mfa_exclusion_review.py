@@ -14,7 +14,12 @@ from collections import Counter
 from pathlib import Path
 
 from mfa_exclusion_contract import REVIEW_FIELDS
-from pipeline_common import atomic_text_writer, atomic_write_json, file_fingerprint
+from pipeline_common import (
+    atomic_text_writer,
+    atomic_write_json,
+    file_fingerprint,
+    load_bad_wav_inventory_ids,
+)
 from realign_eojeol_build_corpus import input_contract
 
 SCHEMA_VERSION = "mfa_exclusion_review_candidates.v1"
@@ -255,15 +260,19 @@ def prepare_review(
         quarantine_fingerprint = file_fingerprint(
             quarantine_log.resolve(), with_sha256=True
         )
+        _inventory_ids, paired_ids = load_bad_wav_inventory_ids(quarantine_log)
         with quarantine_log.open(encoding="utf-8-sig", newline="") as stream:
             reader = csv.DictReader(stream)
-            if "name" not in set(reader.fieldnames or ()):
+            quarantine_fields = set(reader.fieldnames or ())
+            if "name" not in quarantine_fields:
                 raise RuntimeError("quarantine log name 열 누락")
             for row in reader:
                 name = str(row.get("name", "") or "").strip()
                 if not name:
                     continue
                 utt_id = Path(name).stem
+                if utt_id not in paired_ids:
+                    continue
                 by_utt[utt_id] = {
                     "utt_id": utt_id,
                     "reason_code": "quarantined_wav",

@@ -79,3 +79,9 @@
   2021 v5 끝검사에서 발견된 구 float32 종단 TextGrid 19개를 archive 후 표적
   교체하고, 전수 checkpoint 증거를 이어받아 동반표부터 재개하는 결정
 - [MFA 체크포인트 감사 LAB 루트 계약 교정 (2026-08-05)](DECISION_MFA_checkpoint_audit_lab_root_contract_20260805.md)
+
+## 대화 음원·분절 품질
+
+| 문서 | 역할 |
+|---|---|
+| `DECISION_dialogue_audio_quality_gate_2020_2025_20260807.md` | 겹침·경계 잘림·소음·WAV 불량을 2020–2025 공통 근거 수준과 exclusion scope로 관리하며, 정렬 가능한 발화는 데이터 구축 목적으로 보존하는 품질 Gate |

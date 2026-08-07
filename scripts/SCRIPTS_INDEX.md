@@ -147,7 +147,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
 | run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→검증 export. r2 manifest/adoption 필수, `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary. 2020·2021 r2 전수 재실행은 상·하위 러너 모두 명시적 `-AllowBaselineCommonPronRerun`을 요구하고 다른 연도에서 플래그를 거부 | 2020 완료; 2021–2025는 Gate B wrapper를 통해서만 시작 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 필수 패치의 AST/소스 구조와 SHA256 기록 | 10/10 통과 |
-| quarantine_bad_wavs.py | 깨진 wav(0바이트 등) 격리 — 상대경로 보존, planned/complete transaction JSON, dry-run 기본 | 합성 회귀검사 통과 |
+| quarantine_bad_wavs.py | 깨진 WAV(44바이트 header-only 포함) 읽기 전용 inventory/dry-run. 수동 `--apply` 격리 기능은 보존하되 생산 러너는 원자료 이동 없이 승인 계약과 대조 | 44바이트 경계값·상대경로·transaction 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
 | restructure_wav_sessions.py | 평면 연도 wav/lab → 세션 하위폴더 재구성 (★1화자 사고 근본 해결, dry-run 기본, 멱등) | 합성 검증 완료 |
 | locate_utt.py | 발화 ID → 전 레이어 경로·존재 조회. `mfa_state`의 세션형 quarantine 우선·평면 레거시 폴백 (현상별 검색·청취 검증용, import 가능) | 세션형·평면형 격리 회귀검사, 6개년 실검증 완료 |
@@ -278,3 +278,12 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 - inject_tiers.py — morphs/sense/original_form tier 온디맨드 주입
 - KOINA 운율 파일럿 노트북 (Colab) — 표본은 06_multilayer_gold에서 추출 권장
 - `python/stage_mfa_production_review_bundle.py`: 기계 QC를 통과한 생산 연도의 권위 검토 CSV를 그대로 보존하면서 번호가 붙은 WAV/LAB/6-tier TextGrid를 한 평면 검토 폴더로 복사하고 SHA manifest를 남긴다.
+
+## 2020–2025 대화 음원 품질 감사
+
+| 스크립트 | 역할 |
+|---|---|
+| `python/audit_dialogue_audio_structure.py` | 원 JSON의 겹침 note·시간구간 중첩·경계 맞닿음·불가능 시간정보를 연도 전수 감사. 원자료 수정·자동 승인 없음 |
+| `python/audit_dialogue_audio_sample.py` | 세션 층화 WAV의 헤더·에너지·edge·noise proxy를 측정해 검토 우선순위를 생성. SNR/소음 확정·denoise·자동 제외 없음 |
+| `python/profile_dialogue_audio_focus.py` | exact `utt_id` 목록에 구조 근거·직접 WAV edge·세션 noise proxy를 결합해 pending 연구자 검토표 생성 |
+| `python/summarize_dialogue_audio_quality.py` | 6개 연도 manifest와 세션 감사표를 결합한 공통 요약 CSV/JSON 생성 |

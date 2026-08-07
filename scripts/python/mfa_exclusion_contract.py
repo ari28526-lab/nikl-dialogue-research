@@ -14,7 +14,12 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-from pipeline_common import atomic_write_json, file_fingerprint, sha256_file
+from pipeline_common import (
+    atomic_write_json,
+    file_fingerprint,
+    load_bad_wav_inventory_ids,
+    sha256_file,
+)
 
 SCHEMA_VERSION = "mfa_approved_exclusions.v1"
 REVIEW_FIELDS = [
@@ -178,19 +183,12 @@ def main() -> int:
             year=args.year,
             input_contract_id=args.input_contract_id,
         )
+        inventory_ids: set[str] = set()
         quarantine_ids: set[str] = set()
         if args.quarantine_log is not None and args.quarantine_log.is_file():
-            with args.quarantine_log.open(
-                encoding="utf-8-sig", newline=""
-            ) as stream:
-                reader = csv.DictReader(stream)
-                if "name" not in set(reader.fieldnames or ()):
-                    raise RuntimeError("quarantine log name 열 누락")
-                quarantine_ids = {
-                    Path(str(row.get("name", "") or "")).stem
-                    for row in reader
-                    if str(row.get("name", "") or "").strip()
-                }
+            inventory_ids, quarantine_ids = load_bad_wav_inventory_ids(
+                args.quarantine_log
+            )
         approved_alignment = {
             utt_id
             for utt_id, row in rows.items()
@@ -211,6 +209,8 @@ def main() -> int:
                 args.contract.resolve(), with_sha256=True
             ),
             "approved_rows": len(rows),
+            "bad_wav_inventory_ids": len(inventory_ids),
+            "unpaired_bad_wav_ids": len(inventory_ids - quarantine_ids),
             "quarantine_ids": len(quarantine_ids),
             "unapproved_quarantine_ids": unapproved_quarantine,
             "approved_by": data.get("approved_by"),

@@ -58,6 +58,19 @@ class QuarantineTests(unittest.TestCase):
             self.assertTrue(source.exists())
             self.assertFalse((root / "q").exists())
 
+    def test_header_only_44_byte_wav_is_invalid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "wav" / "2023" / "S" / "header_only.wav"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"R" * 44)
+            count = scan_year(
+                "2023", 44, False,
+                wav_root=root / "wav", quarantine_root=root / "q",
+            )
+            self.assertEqual(count, 1)
+            self.assertTrue(source.exists())
+
     def test_dry_run_writes_complete_review_inventory(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

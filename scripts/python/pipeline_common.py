@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 import os
@@ -19,6 +20,46 @@ from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import IO, Iterator
+
+
+def load_bad_wav_inventory_ids(path: Path) -> tuple[set[str], set[str]]:
+    """Return ``(all_bad_ids, paired_bad_ids)`` from a bad-WAV CSV.
+
+    The read-only inventory produced by ``quarantine_bad_wavs.py`` includes a
+    ``lab_present`` field.  Only a bad WAV that still has a paired LAB can enter
+    the current MFA corpus, so only that subset requires an approved
+    ``alignment_and_analysis`` exclusion.  Legacy quarantine logs do not have
+    this field; all of their IDs retain the previous fail-closed behaviour.
+    """
+    path = path.resolve()
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    all_ids: set[str] = set()
+    paired_ids: set[str] = set()
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        fields = set(reader.fieldnames or ())
+        if "name" not in fields:
+            raise RuntimeError(f"bad-WAV inventory name 열 누락: {path}")
+        has_pairing_field = "lab_present" in fields
+        for line_number, row in enumerate(reader, 2):
+            name = str(row.get("name", "") or "").strip()
+            if not name:
+                continue
+            utt_id = Path(name).stem
+            all_ids.add(utt_id)
+            if not has_pairing_field:
+                paired_ids.add(utt_id)
+                continue
+            lab_present = str(row.get("lab_present", "") or "").strip().lower()
+            if lab_present not in {"true", "false"}:
+                raise RuntimeError(
+                    f"bad-WAV inventory {line_number}행 lab_present 불명: "
+                    f"{lab_present!r}"
+                )
+            if lab_present == "true":
+                paired_ids.add(utt_id)
+    return all_ids, paired_ids
 
 
 def now_iso() -> str:

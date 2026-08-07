@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-06 KST
+최종 갱신: 2026-08-07 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -17,6 +17,7 @@
 5. post-MFA gzip 동반표 4개
 6. 입력·정렬·출력·DB 동등성 감사
 7. 한 번의 연구자 인프라 표본 Gate
+8. 공통 대화 음원 품질층과 연도별 동반표 결합
 
 이후 파생층으로 우리말샘 occurrence·규칙/사전/MFA 비교표와 선택적 7번째
 `pron_reference_utt` tier를 만든다. 파생층은 실제 음운 실현 판정이 아니며 다음
@@ -31,6 +32,10 @@
 - 한 번에 한 연도만 실행한다.
 - 직전 연도 연구자 Gate와 당해 연도 source contract가 없으면 시작하지 않는다.
 - 승인 제외·post-MFA 미정렬은 삭제하지 않고 ID·사유·계약을 보존한다.
+- 겹침·소음·잘림 의심처럼 정렬 가능한 품질 문제는 MFA 본체에서 자동 제외하지
+  않는다. 정렬 결과를 보존하고 연구자 승인 뒤 `analysis_only`로 표시한다.
+- `<=44B`, 대응 불명, 불가능 시간처럼 정렬 자체가 성립하지 않는 항목만
+  `alignment_and_analysis` 계약으로 본체에서 분리한다.
 - 실패 시 전체 연도를 지우지 않고 DB·세션·stage checkpoint에서 재개한다.
 - 장시간 명령을 주기 전에 PowerShell 안전·5.1 검사와 가능한 preflight를 먼저
   통과시킨다.
@@ -41,11 +46,10 @@
 2020 Gate B 완료·동결
   → 2021 MFA·6-tier·기계 감사·발음 참조 전수 완료
   → 2021 공식 연구자 24/24 승인·2021→2022 Gate 완료
-  → 2022 검색표/source contract  ← 현재
-  → 2022 MFA
+  → 2022 MFA 계산 완료·보존 DB
+  → 2022 post-MFA exact-ID 438건 Gate  ← 현재
+  → 2022 direct export·6-tier·동반표·독립 Gate
 ```
-
-2022 MFA는 아직 시작되지 않았다.
 
 ## 4. 2021 Gate 종료 — 완료
 
@@ -95,16 +99,17 @@ outputs/reviews/
 `direct_db_research_6tier_v1`과 동일 schema의 checkpoint-resume 실행 mode를
 함께 인정하고, 보존 DB 완료는 같은 계약의 `direct_db_ready` marker로 확인한다.
 
-## 5. 2022 준비
+## 5. 2022 post-MFA 완료 절차
 
-2021 Gate가 통과했으므로 다음을 순서대로 수행한다.
+2022 MFA 계산은 완료됐고 `D:\mfa_tmp\2022\2022.db`를 보존했다. 활성 LAB
+865,128개 중 864,690개가 정렬됐으며 interval이 없는 438개는 exact-ID 검토
+집합이다. 전체 MFA를 다시 실행하지 않는다.
 
-1. `prepare_production_year_before_mfa.ps1 -Year 2022`로 검색표와 source
-   contract를 checkpoint 생성한다.
-2. 승인 제외 1,231건과 LAB marker의 input contract를 다시 대조한다.
-3. 모델·공통사전·phone inventory SHA와 D: 여유 공간을 확인한다.
-4. `start_next_mfa_year_after_gate.ps1`의 `-PreflightOnly`를 통과시킨다.
-5. 같은 인자로 `-PreflightOnly`만 제거해 2022 한 연도를 시작한다.
+1. 438개와 aligned control의 연결·구조·음향 근거표를 확정한다.
+2. 기술적 미정렬 집합의 exact-ID 범위를 연구자가 명시 승인한다.
+3. 보존 DB에서 direct export를 재개한다.
+4. 6-tier·동반표·독립 전수 감사·한 번의 연구자 표본 Gate를 완료한다.
+5. 품질 플래그는 동반표에 결합하되 실제 실현 여부를 자동 판정하지 않는다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.
@@ -116,6 +121,7 @@ outputs/reviews/
 ```text
 직전 연도 Gate
   → 당해 morph_search.v3/source contract
+  → 공통 음원 구조 감사·음향 표본·<=44B 전수 inventory
   → 승인 제외·LAB·모델 preflight
   → MFA·보존 DB
   → post-MFA exact-ID 회계
@@ -126,7 +132,10 @@ outputs/reviews/
 ```
 
 2023의 승인 제외 103,930건은 이미 결정된 안전 본체 계약이다. main MFA에 억지로
-섞지 않고 후속 회수 shard와 계속 분리한다.
+섞지 않고 후속 회수 shard와 계속 분리한다. 2023의 header-only WAV 75건은 이
+승인 집합에 전부 포함돼 있으므로 같은 후보 승인을 반복하지 않는다. 2024·2025는
+전수 `<=44B` WAV가 0건이다. 구조 겹침과 noise proxy는 자동 제외가 아니라
+동반표의 검토 열이다.
 
 ## 7. 발음 참조 파생층
 
@@ -145,7 +154,8 @@ outputs/reviews/
 
 사용자 행동은 다음 두 경우로 제한한다.
 
-- 공식 표본 중 실제로 남은 소수 행의 WAV·TextGrid 확인
+- 공식 표본 중 실제로 남은 소수 행의 WAV·TextGrid 확인 또는 정확한 exact-ID
+  기술 제외 집합의 명시 승인
 - 안전검사와 preflight가 통과한 장시간 PowerShell 시작
 
 이미 승인한 제외 범주, 통과한 표본, 완료 연도는 반복 검토하지 않는다.

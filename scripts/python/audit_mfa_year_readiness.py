@@ -224,8 +224,8 @@ def compare_lab(path: Path, expected_text: str) -> tuple[str, str]:
 
 def wav_duration_seconds(path: Path) -> float:
     """WAV payload를 읽지 않고 header의 frame/rate로 길이를 구한다."""
-    if path.stat().st_size < 44:
-        raise ValueError("WAV가 44바이트보다 작음")
+    if path.stat().st_size <= 44:
+        raise ValueError("WAV가 44바이트 이하라 음성 payload가 없음")
     with wave.open(str(path), "rb") as wav_file:
         frames = wav_file.getnframes()
         rate = wav_file.getframerate()
@@ -311,7 +311,7 @@ def audit_session_durations(
                 }
             )
             continue
-        if wav_size < 44:
+        if wav_size <= 44:
             counts["wav_too_small"] += 1
             issues.append(
                 {
@@ -533,7 +533,7 @@ def audit_year(
                 for utt_id in wav_ids:
                     if utt_id in approved_alignment_exclusions:
                         continue
-                    if entries.get(f"{utt_id}.wav", 0) < 44:
+                    if entries.get(f"{utt_id}.wav", 0) <= 44:
                         counts["wav_too_small"] += 1
                         risky_sessions[session] += 1
                         _add_example(examples, "wav_too_small", utt_id)

@@ -168,7 +168,8 @@ foreach ($path in $files) {
             'Resolve-MfaWavCorpusForYear',
             "'--wav-root', `$wavRoot",
             "'--audio-corpus-contract'",
-            '--root $wavRoot --apply',
+            '--root $wavRoot --inventory-csv $badWavInventory',
+            '원자료 무변경 중단',
             '--gate-profile',
             '$trustedResumeTemp',
             "'analysis_ready_gates_pass'",
@@ -215,6 +216,9 @@ foreach ($path in $files) {
             if (-not $text.Contains($required)) {
                 $failures.Add("MFA 러너 필수 안전장치 누락: $required")
             }
+        }
+        if ($text.Contains('--root $wavRoot --apply')) {
+            $failures.Add('MFA 러너가 원 WAV를 quarantine으로 이동함')
         }
     }
     if ((Split-Path $path -Leaf) -eq 'mfa_wav_corpus.ps1') {

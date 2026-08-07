@@ -43,7 +43,12 @@ from phoneme_roman import (
     load_acoustic_meta,
     model_group_lookup,
 )
-from pipeline_common import atomic_text_writer, atomic_write_json, file_fingerprint
+from pipeline_common import (
+    atomic_text_writer,
+    atomic_write_json,
+    file_fingerprint,
+    load_bad_wav_inventory_ids,
+)
 from realign_eojeol_build_corpus import (
     LAB_INPUT_VERSION,
     MISSING,
@@ -309,16 +314,8 @@ def load_quarantine_ids(path: Path | None) -> set[str]:
     path = path.resolve()
     if not path.is_file():
         raise FileNotFoundError(path)
-    ids: set[str] = set()
-    with path.open(encoding="utf-8-sig", newline="") as stream:
-        reader = csv.DictReader(stream)
-        if "name" not in set(reader.fieldnames or ()):
-            raise RuntimeError(f"quarantine log name 열 누락: {path}")
-        for row in reader:
-            name = str(row.get("name", "") or "").strip()
-            if name:
-                ids.add(Path(name).stem)
-    return ids
+    _all_ids, paired_ids = load_bad_wav_inventory_ids(path)
+    return paired_ids
 
 
 def _db_inventory(

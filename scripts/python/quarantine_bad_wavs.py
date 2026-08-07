@@ -5,8 +5,9 @@
 (acoustic_corpus.py error_dict → raise). 7/17·7/18 두 차례 본실행이
 `SDRW2000000521.1.1.175.wav`(0바이트, 2026-01 변환 산물)로 죽었음.
 
-동작: 연도 wav 폴더(평면/세션 하위폴더 모두)를 훑어 크기 < min-bytes(기본
-44=WAV 헤더 최소)인 .wav를 D:\\mfa_eojeol\\quarantine\\{year}\\로 이동(짝 .lab
+동작: 연도 wav 폴더(평면/세션 하위폴더 모두)를 훑어 크기 <= min-bytes(기본
+44=WAV 헤더뿐이고 음성 payload가 없는 파일 포함)인 .wav를
+D:\\mfa_eojeol\\quarantine\\{year}\\로 이동(짝 .lab
 동반). 기본은 dry-run(목록만), --apply 시 실제 이동. CSV 기록 남김.
 스캔은 디렉토리 열거만으로 크기를 얻으므로(Windows scandir) 추가 I/O 없음.
 
@@ -58,13 +59,13 @@ def scan_year(
                     continue
                 seen += 1
                 size = e.stat().st_size
-                if size < min_bytes:
+                if size <= min_bytes:
                     bad.append((Path(e.path), size))
                 if seen % 200_000 == 0:
                     el = time.time() - t0
                     print(f"  [{year}] {seen:,}개 확인 ({seen/el:,.0f}개/s) · "
                           f"불량 {len(bad)}건", flush=True)
-    print(f"[{year}] 스캔 완료: wav {seen:,}개 중 불량(<{min_bytes}B) "
+    print(f"[{year}] 스캔 완료: wav {seen:,}개 중 불량(<={min_bytes}B) "
           f"{len(bad)}건 ({time.time()-t0:,.0f}초)", flush=True)
     for p, size in bad:
         print(f"  - {p.relative_to(root)} ({size}B)", flush=True)
@@ -166,7 +167,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--year", required=True, help="2020..2025 또는 all")
     ap.add_argument("--min-bytes", type=int, default=44,
-                    help="이 크기 미만이면 불량 (기본 44=WAV 헤더 최소)")
+                    help="이 크기 이하면 불량 (기본 44=WAV header-only 포함)")
     ap.add_argument("--apply", action="store_true", help="실제 이동 (기본 dry-run)")
     ap.add_argument("--root", type=Path, help="wav individual 루트(테스트용)")
     ap.add_argument("--quarantine-root", type=Path,

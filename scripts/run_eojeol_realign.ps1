@@ -1920,13 +1920,40 @@ foreach ($y in $years) {
             Say "   먼저 실행: python scripts\python\restructure_wav_sessions.py --root $wavRoot --year $y --apply"
             exit 1
         }
-        # 1.5) 깨진 wav 격리 (2026-07-18): 0바이트 wav 1개가 MFA 로딩 '말미'에 전체를
-        #   실패시킴(7/17·7/18 두 차례, 각 5h+ 손실). 연도당 ~5분 보험.
-        Say "$y [1.5/3] 깨진 wav 스캔·격리 (0바이트 등)..."
+        # 1.5) 깨진 WAV 읽기 전용 전수감사. 0바이트 WAV 1개가 MFA 로딩 말미에
+        #   전체를 실패시킨 전력이 있으나, 원 WAV는 corpus source이므로 여기서
+        #   이동하지 않는다. <=44B(header-only 포함) 목록을 입력계약별로 원자 기록하고
+        #   승인된 alignment_and_analysis 집합에 전부 포함됐는지 아래에서 검증한다.
+        Say "$y [1.5/3] 깨진 WAV 읽기 전용 전수감사 (44바이트 이하)..."
+        $badWavInventoryRoot = Join-Path $stateRoot "bad_wav_inventory\$y"
+        [IO.Directory]::CreateDirectory($badWavInventoryRoot) | Out-Null
+        $badWavInventory = Join-Path $badWavInventoryRoot (
+            "bad_wavs_{0}.csv" -f $inputContractId
+        )
         & $py (Join-Path $pydir "quarantine_bad_wavs.py") `
-            --year $y --root $wavRoot --apply
+            --year $y --root $wavRoot --inventory-csv $badWavInventory
         if ($LASTEXITCODE -ne 0) { Say "!! $y wav 스캔 실패 (exit $LASTEXITCODE) — 중단"; exit 1 }
-        $quarantineLog = Join-Path $stateRoot "quarantine\$y\quarantine_log.csv"
+        $badWavRows = @(Import-Csv -LiteralPath $badWavInventory -Encoding UTF8)
+        $pairedBadWavRows = @(
+            $badWavRows | Where-Object {
+                [string]$_.lab_present -eq 'true'
+            }
+        )
+        Say (
+            "$y 불량 WAV inventory=$($badWavRows.Count), " +
+            "현재 LAB 짝 있음=$($pairedBadWavRows.Count)"
+        )
+        if (
+            $pairedBadWavRows.Count -gt 0 -and
+            [string]::IsNullOrWhiteSpace($CommonPronManifest)
+        ) {
+            Say (
+                "!! $y LAB와 짝을 이룬 불량 WAV $($pairedBadWavRows.Count)건이 있으나 " +
+                "승인 제외 계약을 검증할 수 없음 — 원자료 무변경 중단"
+            )
+            exit 1
+        }
+        $quarantineLog = $badWavInventory
         if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             $exclusionValidateArgs = @(
                 'validate', '--contract',
@@ -1942,7 +1969,7 @@ foreach ($y in $years) {
                 @exclusionValidateArgs
             if ($LASTEXITCODE -ne 0) {
                 Say (
-                    "!! $y 새 quarantine 항목이 연구자 승인 계약에 없음 — " +
+                    "!! $y 불량 WAV inventory 항목이 연구자 승인 계약에 없음 — " +
                     "MFA 시작 전 중단. 검토표를 갱신할 것."
                 )
                 exit 1

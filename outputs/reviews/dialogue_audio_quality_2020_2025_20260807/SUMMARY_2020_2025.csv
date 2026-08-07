@@ -1,0 +1,7 @@
+﻿year,utterances,sessions,confirmed_source_overlap,confirmed_source_overlap_pct,source_time_invalid,boundary_abut_review,boundary_abut_review_pct,wav_files,sampled_wavs,readable_sampled_wavs,invalid_sampled_wavs,full_scan_bad_wavs,sessions_without_wav,high_noise_proxy_review_sessions,invalid_wav_review_sessions,researcher_reported_noise_sessions,automatic_exclusion_performed,researcher_decision
+2020,870675,2232,0,0.000000,0,869328,99.845292,868603,17848,17848,0,0,1,112,0,0,false,pending
+2021,1416216,4143,235476,16.627125,6,818295,57.780381,1416216,33144,33141,3,68,0,208,2,0,false,pending
+2022,878157,2654,128034,14.579853,1,292505,33.308964,878157,44207,44207,0,0,0,133,0,1,false,pending
+2023,677494,1973,0,0.000000,0,114303,16.871441,677397,15784,15781,3,75,0,99,3,0,false,pending
+2024,728281,3227,13068,1.794362,0,395687,54.331638,728281,25816,25816,0,0,0,162,0,0,false,pending
+2025,587174,2927,16235,2.764939,0,130168,22.168557,587174,23416,23416,0,0,0,147,0,0,false,pending

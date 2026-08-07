@@ -121,8 +121,8 @@ def write_csv_atomic(
 
 
 def inspect_wav(path: Path) -> dict[str, float | int]:
-    if path.stat().st_size < 44:
-        raise ValueError("WAV가 44바이트보다 작음")
+    if path.stat().st_size <= 44:
+        raise ValueError("WAV가 44바이트 이하라 음성 payload가 없음")
     with wave.open(str(path), "rb") as wav:
         frames = wav.getnframes()
         rate = wav.getframerate()
@@ -614,7 +614,7 @@ def validate_existing(
         for row in year_rows:
             wav = run_root / row["corpus_wav_relpath"]
             lab = run_root / row["corpus_lab_relpath"]
-            if not wav.is_file() or wav.stat().st_size < 44:
+            if not wav.is_file() or wav.stat().st_size <= 44:
                 return False
             if not lab.is_file():
                 return False

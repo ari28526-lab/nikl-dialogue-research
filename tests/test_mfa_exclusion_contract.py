@@ -13,6 +13,7 @@ from mfa_exclusion_contract import (  # noqa: E402
     build_contract,
     load_contract,
 )
+from pipeline_common import load_bad_wav_inventory_ids  # noqa: E402
 
 
 class MfaExclusionContractTests(unittest.TestCase):
@@ -124,6 +125,33 @@ class MfaExclusionContractTests(unittest.TestCase):
                 ],
                 1,
             )
+
+    def test_read_only_inventory_requires_approval_only_for_paired_lab(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "bad_wavs.csv"
+            with path.open("w", encoding="utf-8-sig", newline="") as stream:
+                writer = csv.DictWriter(
+                    stream, fieldnames=["name", "lab_present"]
+                )
+                writer.writeheader()
+                writer.writerow({"name": "PAIRED.wav", "lab_present": "true"})
+                writer.writerow({"name": "UNPAIRED.wav", "lab_present": "false"})
+            all_ids, paired_ids = load_bad_wav_inventory_ids(path)
+            self.assertEqual(all_ids, {"PAIRED", "UNPAIRED"})
+            self.assertEqual(paired_ids, {"PAIRED"})
+
+    def test_legacy_quarantine_log_remains_fail_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "quarantine_log.csv"
+            with path.open("w", encoding="utf-8-sig", newline="") as stream:
+                writer = csv.DictWriter(
+                    stream, fieldnames=["name", "lab_moved"]
+                )
+                writer.writeheader()
+                writer.writerow({"name": "LEGACY.wav", "lab_moved": "false"})
+            all_ids, paired_ids = load_bad_wav_inventory_ids(path)
+            self.assertEqual(all_ids, {"LEGACY"})
+            self.assertEqual(paired_ids, {"LEGACY"})
 
 
 if __name__ == "__main__":

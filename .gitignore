@@ -96,3 +96,8 @@ data/03_analysis_ready/
 !outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_2020_export_20260803/2020/03_RESEARCHER_REVIEW.csv
 !outputs/reviews/mfa_production_2020_mfa_r2_prod_2020_export_20260803/03_RESEARCHER_REVIEW.csv
 !outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803/CATEGORY_SUMMARY_2021_2025.csv
+
+# 2020–2025 대화 음원 품질 감사의 행·세션 payload는 로컬 근거로 보존한다.
+# Git에는 방법 안내와 6개 연도 compact summary/manifest만 추적한다.
+/outputs/reviews/dialogue_audio_quality_2020_2025_20260807/20*/**
+!outputs/reviews/dialogue_audio_quality_2020_2025_20260807/SUMMARY_2020_2025.csv

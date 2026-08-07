@@ -70,6 +70,42 @@ class PrepareMfaExclusionReviewTests(unittest.TestCase):
             self.assertEqual(row["reason_code"], "quarantined_wav")
             self.assertEqual(row["exclusion_scope"], "alignment_and_analysis")
 
+    def test_unpaired_read_only_bad_wav_is_not_an_mfa_exclusion_candidate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            search = root / "search"
+            (search / "2021").mkdir(parents=True)
+            (search / "_build_meta.json").write_text(
+                json.dumps({"status": "success", "run_id": "T"}),
+                encoding="utf-8",
+            )
+            audit = root / "audit.json"
+            audit.write_text(
+                json.dumps(
+                    {"years": [{"year": "2021", "issue_inventory": []}]}
+                ),
+                encoding="utf-8",
+            )
+            inventory = root / "bad_wavs.csv"
+            inventory.write_text(
+                "name,lab_present,quarantine_path\n"
+                "NOT_INPUT.wav,false,D:/q/NOT_INPUT.wav\n",
+                encoding="utf-8",
+            )
+            output = root / "review.csv"
+            result = prepare_review(
+                audit_report=audit,
+                year="2021",
+                search_master_root=search,
+                output_csv=output,
+                output_report=root / "report.json",
+                quarantine_log=inventory,
+                input_contract_id="INPUT_TEST",
+            )
+            self.assertEqual(result["candidate_count"], 0)
+            with output.open(encoding="utf-8-sig", newline="") as stream:
+                self.assertEqual(list(csv.DictReader(stream)), [])
+
     def test_audio_plan_turns_only_unresolved_target_into_pending_candidate(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

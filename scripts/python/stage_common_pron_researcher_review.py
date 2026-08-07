@@ -129,7 +129,7 @@ def source_wav(
         path.relative_to(wav_root.resolve())
     except ValueError as exc:
         raise RuntimeError(f"WAV path boundary violation: {path}") from exc
-    if not path.is_file() or path.stat().st_size < 44:
+    if not path.is_file() or path.stat().st_size <= 44:
         raise RuntimeError(f"source WAV missing or invalid: {path}")
     return path
 

@@ -1,0 +1,184 @@
+{
+  "schema_version": "nikl_dialogue_audio_quality_summary.v1",
+  "status": "pending_researcher_quality_review",
+  "created_at": "2026-08-07T14:47:07+09:00",
+  "years": [
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "policy": {
+    "boundary_abut_is_not_clipping_proof": true,
+    "noise_proxy_is_not_snr_or_exclusion_proof": true,
+    "automatic_exclusion_performed": false,
+    "actual_phonological_realization_judged": false
+  },
+  "inputs": {
+    "2020": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2020\\MANIFEST.json",
+        "bytes": 2690,
+        "mtime_ns": 1786078729116040300,
+        "sha256": "0c84c608228a4f9b489ecf3572a3c94b9781d4d2f7c00d32a5eadb252fa403f8"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2020\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2155,
+        "mtime_ns": 1786079294988448500,
+        "sha256": "9f3513733370f1547aae41878d3a72580e32591bbb4d59a3174bdef1ddcbc263"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2020\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 71189,
+        "mtime_ns": 1786079294972067600,
+        "sha256": "60efd728c0ad5438afac2ee96fb41564d2c738b34dedd11f75ec23810d515b3b"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2020\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 68,
+        "mtime_ns": 1786080865106843800,
+        "sha256": "11fcfd9f30d1549240295b61e86575738ba21865650462417197474404f674ff"
+      }
+    },
+    "2021": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2021\\MANIFEST.json",
+        "bytes": 4391,
+        "mtime_ns": 1786078752749149300,
+        "sha256": "f0347929bd3c1b686448bf735b8985916400f41643463865360fe108f1f65011"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2021\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2106,
+        "mtime_ns": 1786079348556058100,
+        "sha256": "c59aec8d9a113db2a796f5267fc67c01d629df2a192defd27ab3e90a64b13f8b"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2021\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 135091,
+        "mtime_ns": 1786079348537988000,
+        "sha256": "6e47331cbf3e9681070fd075028e235a7d07c3b2254530567b4182371b113deb"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2021\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 13321,
+        "mtime_ns": 1786080899034638700,
+        "sha256": "dc0a34ff693514e024cec16c5654b05d01e7d8f9b8d3e76849dd382d8a330025"
+      }
+    },
+    "2022": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2022\\MANIFEST.json",
+        "bytes": 4274,
+        "mtime_ns": 1786078540853416800,
+        "sha256": "6528dc5cc26e002de22a0c8d5314125720bcd8e9433b712b50f981924c751282"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2022\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2232,
+        "mtime_ns": 1786079154768513800,
+        "sha256": "57a95b7af197dd48b9a8818202bc4f60d91bf83cdddcdeac43f073c55d19de08"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2022\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 88681,
+        "mtime_ns": 1786079154748848700,
+        "sha256": "918be4ee39da968b69dcc1e7e0c21ef618fa666b57aa37957f834ce7345d750d"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2022\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 68,
+        "mtime_ns": 1786080918936798200,
+        "sha256": "11fcfd9f30d1549240295b61e86575738ba21865650462417197474404f674ff"
+      }
+    },
+    "2023": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2023\\MANIFEST.json",
+        "bytes": 2703,
+        "mtime_ns": 1786078809020242500,
+        "sha256": "960082ff73cecf1ed121bc48bfe0df905713976d250ff3c9be4199591e10445b"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2023\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2102,
+        "mtime_ns": 1786079555475519700,
+        "sha256": "d7107845fa31a2f2425e460181faab5a46e97f5f45371e5350b0f6dcb16f5796"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2023\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 64907,
+        "mtime_ns": 1786079555458828100,
+        "sha256": "9ee81406e56845eef01240e42b5bd1d26077fef264791fc7d03f03936934a101"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2023\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 14693,
+        "mtime_ns": 1786080934507105900,
+        "sha256": "f82b559f5689d10e64fe36041ba6dae9b55edccb1796a59c45f6c7a0a0eea57c"
+      }
+    },
+    "2024": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2024\\MANIFEST.json",
+        "bytes": 4137,
+        "mtime_ns": 1786078825870532900,
+        "sha256": "d23d6a1750c11382951f831958d687956feb7e354a16afc3f25211cda75cfade"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2024\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2103,
+        "mtime_ns": 1786079683644970100,
+        "sha256": "fa969063019bc703b0255438eb4b2e9665cf510ea1846c22c15b1672d23fbff0"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2024\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 82883,
+        "mtime_ns": 1786079683627305300,
+        "sha256": "d55cf4bd98cebbaf0a27060424971ace871b90a6ff791f068f1eb86baf9b4870"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2024\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 68,
+        "mtime_ns": 1786080952538991400,
+        "sha256": "11fcfd9f30d1549240295b61e86575738ba21865650462417197474404f674ff"
+      }
+    },
+    "2025": {
+      "structural_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2025\\MANIFEST.json",
+        "bytes": 3425,
+        "mtime_ns": 1786078814097508300,
+        "sha256": "59de477556912874d408139db007354f6b04cf6100256acbf687f01f0c5abd9b"
+      },
+      "audio_manifest": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2025\\03_AUDIO_SAMPLE\\MANIFEST.json",
+        "bytes": 2103,
+        "mtime_ns": 1786079796528421300,
+        "sha256": "ed4f7d2b0fb09d6de8d856baabd9bdddfb9238b764d2df99d511eb139b8c431b"
+      },
+      "audio_session_summary": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2025\\03_AUDIO_SAMPLE\\02_SESSION_AUDIO_SUMMARY.csv.gz",
+        "bytes": 81333,
+        "mtime_ns": 1786079796499602200,
+        "sha256": "f7ce82222cfe216a328b29ec7ba80fca280d4a773a8f94c24ad97a5dd7a67998"
+      },
+      "full_bad_wav_inventory": {
+        "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\2025\\05_BAD_WAV_FULL_SCAN.csv",
+        "bytes": 68,
+        "mtime_ns": 1786080972380190500,
+        "sha256": "11fcfd9f30d1549240295b61e86575738ba21865650462417197474404f674ff"
+      }
+    }
+  },
+  "output": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\dialogue_audio_quality_2020_2025_20260807\\SUMMARY_2020_2025.csv",
+    "bytes": 994,
+    "mtime_ns": 1786081627580862400,
+    "sha256": "e88791813cbb7c4dac5c8e0f076aab5189532ca53967c6b1c03b4f34b0caadb4"
+  },
+  "next_step": "Join source-overlap, exact utterance edge evidence, MFA state, and researcher decisions before creating any exclusion contract."
+}
