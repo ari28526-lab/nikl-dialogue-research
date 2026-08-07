@@ -9,6 +9,12 @@ from pathlib import Path
 from pipeline_common import atomic_write_json, now_iso, sha256_file
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_PROJECT_GATE = (
+    PROJECT_ROOT / "config" / "mfa_pronunciation_release_gate.json"
+)
+
+
 def _load(path: Path) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8-sig"))
@@ -36,9 +42,37 @@ def _verified_file(record: dict, label: str) -> dict[str, object]:
     }
 
 
+def _validate_project_gate(
+    *, release_id: str, gate_path: Path
+) -> dict[str, object]:
+    gate_path = gate_path.resolve()
+    gate = _load(gate_path)
+    if gate.get("schema_version") != "mfa_pronunciation_release_gate.v1":
+        raise RuntimeError("프로젝트 MFA 발음 release gate schema 오류")
+    blocked = {str(value) for value in gate.get("blocked_release_ids") or []}
+    allowed = {str(value) for value in gate.get("allowed_release_ids") or []}
+    if release_id in blocked:
+        raise RuntimeError(
+            f"프로젝트 발음 Gate가 release를 차단함: {release_id}; "
+            f"status={gate.get('status')} reason={gate.get('reason')}"
+        )
+    if gate.get("status") != "adopted" or release_id not in allowed:
+        raise RuntimeError(
+            f"프로젝트 발음 Gate에서 채택되지 않은 release: {release_id}; "
+            f"status={gate.get('status')} allowed={sorted(allowed)}"
+        )
+    return {
+        "path": str(gate_path),
+        "bytes": gate_path.stat().st_size,
+        "sha256": sha256_file(gate_path),
+        "status": str(gate["status"]),
+    }
+
+
 def validate_adoption(
     manifest_path: Path,
     adoption_path: Path,
+    project_gate_path: Path | None = None,
 ) -> dict[str, object]:
     manifest_path = manifest_path.resolve()
     adoption_path = adoption_path.resolve()
@@ -66,6 +100,13 @@ def validate_adoption(
         or int(gate.get("phone_outside_acoustic_inventory", -1)) != 0
     ):
         raise RuntimeError("adoption v3 연도별 MFA gate가 닫혀 있음")
+
+    project_gate = None
+    if project_gate_path is not None:
+        project_gate = _validate_project_gate(
+            release_id=str(manifest.get("release_id") or ""),
+            gate_path=project_gate_path,
+        )
 
     manifest_fingerprint = _verified_file(
         adoption["common_release"]["manifest"],
@@ -115,6 +156,7 @@ def validate_adoption(
         "acoustic_model": acoustic,
         "g2p_model_reference_only": g2p,
         "frozen_model_bundle_contract": frozen_bundle,
+        "project_pronunciation_release_gate": project_gate,
         "inline_g2p_used": False,
     }
 
@@ -123,9 +165,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--adoption-contract", type=Path, required=True)
+    parser.add_argument(
+        "--project-gate", type=Path, default=DEFAULT_PROJECT_GATE
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    report = validate_adoption(args.manifest, args.adoption_contract)
+    report = validate_adoption(
+        args.manifest, args.adoption_contract, args.project_gate
+    )
     atomic_write_json(args.output, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0

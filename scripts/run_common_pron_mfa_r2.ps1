@@ -41,6 +41,16 @@ Set-StrictMode -Version Latest
 $projectRoot = (
     Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')
 ).Path
+$projectPronGatePath = Join-Path $projectRoot `
+    'config\mfa_pronunciation_release_gate.json'
+$projectPronGate = Get-Content -Raw -Encoding UTF8 `
+    -LiteralPath $projectPronGatePath | ConvertFrom-Json
+if (@($projectPronGate.blocked_release_ids) -contains $ReleaseId) {
+    throw (
+        "공통발음 release가 프로젝트 Gate에서 차단됨: $ReleaseId. " +
+        'r2를 다시 만들지 말고 r3 canonical 선택 계약을 구현할 것.'
+    )
+}
 $config = Get-Content -Raw -Encoding UTF8 `
     -LiteralPath (Join-Path $projectRoot 'config\paths.json') |
     ConvertFrom-Json

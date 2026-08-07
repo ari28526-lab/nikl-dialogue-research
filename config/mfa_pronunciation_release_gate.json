@@ -1,0 +1,28 @@
+{
+  "schema_version": "mfa_pronunciation_release_gate.v1",
+  "status": "blocked_pending_r3",
+  "recorded_at": "2026-08-07T19:30:00+09:00",
+  "blocked_release_ids": [
+    "common_pron_mfa_r2_20260728"
+  ],
+  "allowed_release_ids": [],
+  "reason": "Researcher review and a full 881237-type audit found that common_pron_mfa_r2 does not consistently carry the existing surface-rule pronunciation layer into the MFA input lexicon.",
+  "evidence": {
+    "decision": "docs/decisions/DECISION_2022_pronunciation_input_gate_hold_20260807.md",
+    "audit_manifest": {
+      "path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/AUDIT_MANIFEST.json",
+      "sha256": "9d62f7cc0d6a12ce7bba3b315e2e2cd0fa63b3447702082852e207a63de7a0ee"
+    },
+    "blocked_release_manifest_sha256": "01b7001c41e3d23858fd57878a958e4fd4ada56dec42453291b2ec5a96c11cce"
+  },
+  "r3_adoption_requirements": [
+    "one canonical pronunciation-selection table for all 881237 observed surface types",
+    "explicit orthographic, surface-rule, dictionary-candidate, selected-backend-phone, and provenance fields",
+    "same frozen acoustic phone inventory for all six years",
+    "zero missing selected pronunciations and zero phones outside the acoustic inventory",
+    "byte/fingerprint identity between canonical selected phones and the emitted MFA dictionary",
+    "rule-sensitive mismatches either resolved or explicitly retained with a documented reason",
+    "targeted regression using the already-reviewed 2022 samples rather than a repeated broad pilot",
+    "one adopted contract id used for 2020 through 2025"
+  ]
+}

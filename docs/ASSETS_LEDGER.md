@@ -1,6 +1,6 @@
 # 자산 대장 — 현재 생산 기준
 
-최종 갱신: 2026-08-06 KST
+최종 갱신: 2026-08-07 KST
 
 이 문서는 현재 필요한 자산의 위치만 기록한다. 2026-07-24 전체 인벤토리는
 [archive/ASSETS_LEDGER_20260724_full.md](archive/ASSETS_LEDGER_20260724_full.md)에
@@ -23,10 +23,11 @@
 | `D:\20_AUDIO\08_textgrid_research_v2_staging\2021` | 2021 신규 r2 6-tier·동반표 출력 | TextGrid·동반표 1,371,883발화 완료; 후행 무음 word 표지 19건 국소 정규화 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\2021` | 세션 checkpoint형 7-tier 파생 생산본 | 4,139세션·1,371,883개; 기존 6-tier 변경 0, 독립 감사 오류 0 |
-| `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 현재 공통 Jamo r2 사전 | 보존, 연도별 MFA 필수 |
-| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2021 marker·계약·queue·다음 연도 Gate 완료 보존; 2022–2025는 미시작 |
+| `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
+| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 준비 중 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
-| `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 독립 감사·DB 표본 통과, 재계산 금지 |
+| `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
+| `D:\mfa_tmp\2022\2022.db` | 2022 공통 Jamo r2 보존 정렬 DB | 864,690 정렬 산출; 발음 입력 문제 발견 근거로 읽기 전용 보존 |
 | `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
 
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
@@ -97,9 +98,11 @@ C:\Users\ari30\research\2026_summer_research
 2021–2025 LAB·pending 제외 후보표와 safe-body 5행 요약은 완료됐다. 저장소의
 현행 검토 root는
 `outputs/reviews/mfa_exclusions_queue_mfa_r2_prod_safe_body_2021_2025_20260803`이며,
-검색 4,232,919 중 안전 본체 4,120,627, 후보 112,292다. 다음 생산 단계는
-세 범주 연구자 승인 뒤 2021 한 연도만 시작하는 것이다. 실행 명령은
+검색 4,232,919 중 안전 본체 4,120,627, 후보 112,292다. 이 승인·제외 계약은
+r3 재정렬에서도 재사용하되 r2 MFA를 새로 시작하는 근거로 쓰지 않는다. 다음
+생산 단계는 r3 발음 release 채택이며 실행 순서는
 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.
 
-2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. 구 완료표시는 E:로
-보냈으므로 다음 2021 실행은 기존 LAB을 전수 재검증하고 불일치만 재작성한다.
+2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. r3 재정렬 시에도
+LAB 자체는 전수 재생성하지 않고 frozen source contract를 재검증해 불일치만
+재작성한다.

@@ -1,0 +1,79 @@
+{
+  "schema_version": "common_pronunciation_resource_contract.v3-draft",
+  "status": "blocked_pending_targeted_validation",
+  "purpose": "A single pre-MFA pronunciation source of truth shared by search tables, MFA lexicon generation, TextGrid provenance, and six-year methods reporting.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "invariants": {
+    "same_acoustic_phone_inventory_all_years": true,
+    "same_selection_contract_all_years": true,
+    "raw_audio_or_transcript_modified": false,
+    "actual_realization_claimed": false,
+    "silent_surface_g2p_1best_fallback_allowed": false,
+    "unconditional_base_dictionary_preservation_allowed": false,
+    "existing_review_samples_reused": true
+  },
+  "canonical_type_table": {
+    "row_unit": "one_observed_surface_word_type",
+    "required_columns": [
+      "token",
+      "total_occurrences",
+      "count_2020",
+      "count_2021",
+      "count_2022",
+      "count_2023",
+      "count_2024",
+      "count_2025",
+      "orth_roman",
+      "rule_pron_hangul",
+      "rule_pron_roman",
+      "surface_rule_names",
+      "dictionary_pron_candidates_json",
+      "dictionary_candidate_provenance_json",
+      "r2_pron_phones_json",
+      "r2_pron_source",
+      "selected_pron_phones_mfa",
+      "selected_pron_roman",
+      "selection_status",
+      "selection_source",
+      "selection_reason",
+      "manual_decision_id"
+    ],
+    "coverage_required": 881237,
+    "selected_phone_coverage_required_before_adoption": 881237,
+    "duplicate_token_allowed": false
+  },
+  "selection_policy": [
+    "Preserve an r2 phone sequence only when its model-group Roman sequence agrees with the mandatory surface-rule reference.",
+    "Audit observed base-dictionary entries under the same rule; base-dictionary membership is not automatic approval.",
+    "Use dictionary-attested pronunciations as independent evidence, not as realized-speech truth.",
+    "Use morphology and POS to resolve lexical candidates where an inflected eojeol cannot be matched as a plain dictionary headword.",
+    "Do not activate optional rules, cross-eojeol sandhi, n-insertion, or unresolved l-nasalization as a single truth without an explicit status.",
+    "Do not feed a respelled Hangul form to Jamo G2P and accept arbitrary 1-best output; candidate phones must map exactly to the selected Roman target or remain unresolved.",
+    "Never repair a completed TextGrid by relabeling phone intervals in place; accepted r3 pronunciations require re-alignment."
+  ],
+  "adoption_gates": [
+    "canonical table input fingerprints recorded",
+    "all observed tokens represented exactly once",
+    "all selected phones inside the frozen acoustic inventory",
+    "emitted MFA dictionary is byte-equivalent to the canonical selected-phone projection",
+    "zero silent fallbacks",
+    "every retained rule-sensitive mismatch has an explicit reason and decision id",
+    "2022 reviewed regression IDs 08, 09, 15, and 24 pass the intended boundary and label checks",
+    "stratified automatic regression covers neutralization, fortition, nasal assimilation, liaison, aspiration, h-deletion, palatalization, and cluster simplification",
+    "one r3 contract id is pinned by every annual alignment contract"
+  ],
+  "output_policy": {
+    "phones_mfa": "time-aligned phones from the selected r3 MFA input pronunciation; not realized-speech truth",
+    "phoneme_r_auto": "deterministic broad Roman mapping of phones_mfa; never a correction layer",
+    "search_tables": "retain orthographic Roman, rule reference, dictionary candidates, selected backend phones, and provenance as separate columns",
+    "textgrid_tier_count": "no automatic tier increase is required for r3; detailed provenance remains in companion CSV tables"
+  },
+  "rerun_policy": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "required_after_adoption": true,
+    "preserve_r2_outputs_as_read_only_method_evidence": true,
+    "repeat_broad_researcher_pilot": false,
+    "repeat_existing_2022_review": false,
+    "targeted_regression_only_before_bulk": true
+  }
+}

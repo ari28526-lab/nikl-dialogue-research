@@ -1,5 +1,62 @@
 # 2026년 8월 작업 기록
 
+## 2026-08-07 — r2 발음 입력 배선 공백 전수 감사·신규 실행 차단
+
+### 반복 원인
+
+- 기존 `predict_pron.py`와 검색/참조 CSV에는 표면 음운규칙 예상형이 있었지만,
+  `build_common_pron_mfa_lexicon.py`는 이를 소비하지 않았다.
+- r2 MFA 사전은 기본 Korean MFA 사전 발음을 무조건 보존하고 OOV에만 Jamo G2P
+  1-best를 썼다. 따라서 검색표에서 고친 발음이 `phones_mfa` 입력에는 반영되지
+  않는 이중 원천 구조였다.
+- 기존 adoption 검사는 SHA·OOV·`spn`·acoustic phone inventory만 확인했고
+  규칙 예상형·사전 근거·최종 MFA phone의 언어학적 일치 여부는 검사하지 않았다.
+- 2020 Gate B와 연도별 표본 Gate의 주목적도 파일 연결·경계·tier·검색 사용성이라
+  모든 phone label의 발음 입력 타당성을 필수 항목으로 두지 않았다.
+
+### 전수 감사
+
+- 2020–2025 관측 표면형 881,237개, 총 27,847,068회 출현을 r2 phone과 기존
+  표면 규칙 예상형으로 전수 비교했다.
+- 규칙 적용 대상이면서 불일치한 것은 312,756형·4,718,489회다. 이는 자동 오류
+  확정 수가 아니라 형태·문맥 검토가 필요한 screening 후보 수다.
+- 그중 규칙 예상형과 우리말샘 등재 발음 근거가 함께 일치하고 r2만 다른 보수적
+  집합은 5,556형·411,320회다.
+- 불일치 비율은 모든 연도에서 약 16.4–17.6%로 나타나 2022 특정 파일 문제가
+  아니라 공통 r2 사전 생성 정책의 문제임을 확인했다.
+- 감사 정본은
+  `D:\mfa_common_pron\audits\common_pron_r2_rule_audit_20260807`이며 Git에는
+  작은 요약 `outputs/reports/AUDIT_common_pron_r2_rule_consistency_20260807.json`을
+  남겼다.
+
+### 재발 차단과 재사용 원칙
+
+- `config/mfa_pronunciation_release_gate.json`을 fail-closed로 만들고 r2 release를
+  명시 차단했다. `validate_mfa_r2_adoption.py`와 실제 연도 runner가 이 Gate를
+  통과하지 못하면 새 MFA를 시작할 수 없다.
+- 구 r2 builder와 v1 참조층 runner도 같은 Gate에서 조기 중단하도록 했다. 이
+  시험에서 전역 `trap`이 아직 정의되지 않은 lock 정리 함수를 불러 실제 오류를
+  가리던 PowerShell 결함을 발견해, lock 상태·정리 함수를 스크립트 맨 앞에서
+  초기화하도록 수정했다.
+- 2020–2022 r2 DB·TextGrid·동반표·검토 결과는 삭제하거나 label만 바꾸지 않고
+  읽기 전용 방법론 증거와 r3 회귀 자료로 보존한다.
+- 같은 24표본 청취·광범위 파일 검토는 반복하지 않는다. 이미 발견한 2022
+  08/09/15/24번과 음운현상별 자동 표본을 r3 표적 회귀에 재사용한다.
+- r3는 관측 표면형당 한 행인 canonical 선택표에서 표기 Roman, 규칙 예상형,
+  사전 후보·품사/출처, r2 phone, 선택 r3 phone과 결정 근거를 함께 관리한다.
+  검색 동반표와 실제 MFA 사전은 같은 선택 projection·contract ID를 써야 한다.
+- r3가 채택되면 2020–2025를 같은 acoustic phone inventory와 같은 선택 계약으로
+  다시 정렬한다. 구 TextGrid phone 문자열만 교체하는 것은 금지한다.
+
+### 현재 정지점
+
+- r2를 이용한 2023 진입과 추가 v1 참조층 backfill은 중단했다.
+- 다음 구현은 r3 canonical 선택표 builder, zero-fallback 검증, MFA 사전
+  projection 동등성, 기존 표본 표적 회귀, 단일 adoption Gate 순서다.
+- 이 단계에서 연구자가 다시 청취·승인하거나 PowerShell 장시간 명령을 실행할
+  일은 없다.
+
+
 ## 2026-08-01 — 로마자 음소 보조층 원격 검토 링크 보정
 
 ### 문제 발견

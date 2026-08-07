@@ -106,6 +106,49 @@ class MfaR2AdoptionValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "SHA256"):
                 validate_adoption(manifest, adoption)
 
+    def test_project_gate_blocks_known_bad_release(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest, adoption = self._fixture(root)
+            gate = root / "gate.json"
+            gate.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "mfa_pronunciation_release_gate.v1",
+                        "status": "blocked_pending_r3",
+                        "blocked_release_ids": ["r2"],
+                        "allowed_release_ids": [],
+                        "reason": "rule audit failed",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RuntimeError, "release를 차단"):
+                validate_adoption(manifest, adoption, gate)
+
+    def test_project_gate_requires_explicit_adoption(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest, adoption = self._fixture(root)
+            gate = root / "gate.json"
+            gate.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "mfa_pronunciation_release_gate.v1",
+                        "status": "adopted",
+                        "blocked_release_ids": [],
+                        "allowed_release_ids": ["r2"],
+                        "reason": "test fixture",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            report = validate_adoption(manifest, adoption, gate)
+            self.assertEqual(
+                report["project_pronunciation_release_gate"]["status"],
+                "adopted",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

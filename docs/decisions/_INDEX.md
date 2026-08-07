@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-06 KST
+최종 갱신: 2026-08-07 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -30,6 +30,7 @@
 | `DECISION_r2_realign_all_six_years_20260729.md` | 구결과 재사용 없이 2020–2025 전부 신규 정렬 |
 | `METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md` | 연도간 phone 기준 동일성 근거 |
 | `DECISION_dictionary_pronunciation_registry_and_reference_tier_20260805.md` | 우리말샘 1:N·예외 발음 registry, occurrence 조인표, 7번째 규칙 참조 tier와 공통발음열 감사 계약 |
+| `DECISION_2022_pronunciation_input_gate_hold_20260807.md` | 2022 표본·881,237형 전수 감사로 r2 규칙 배선 공백을 확인하고 신규 실행을 차단한 결정; r3 단일 선택표와 6개년 재정렬 요구 |
 
 ## 현재 생산과 안전 계약
 

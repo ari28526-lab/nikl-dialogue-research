@@ -203,6 +203,9 @@ foreach ($path in $files) {
             '2020·2021은 전수 동등성 baseline으로 보존함',
             'common_pron_mfa_adoption.v3',
             'latest_jamo_common_dictionary_required',
+            'mfa_pronunciation_release_gate.json',
+            '--project-gate $projectPronGatePath',
+            '프로젝트 MFA 발음 release Gate 실패',
             'allow_yearly_mfa',
             'verify_frozen_mfa_bundle.py',
             'korean_mfa_latest_jamo_bundle_20260728.json',
@@ -991,6 +994,8 @@ foreach ($path in $files) {
     if ((Split-Path $path -Leaf) -eq 'run_common_pron_mfa_r2.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
+            'mfa_pronunciation_release_gate.json',
+            '공통발음 release가 프로젝트 Gate에서 차단됨',
             "D:\mfa_common_pron",
             "VolumeLabel -ne 'DATA_SSD'",
             'pre_mfa_bulk.lock',
@@ -1022,6 +1027,22 @@ foreach ($path in $files) {
         )) {
             if (-not $text.Contains($required)) {
                 $failures.Add("공통 MFA 사전 r2 안전장치 누락: $required")
+            }
+        }
+    }
+    if (
+        (Split-Path $path -Leaf) -eq
+            'run_pronunciation_reference_year.ps1'
+    ) {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'mfa_pronunciation_release_gate.json',
+            'pronunciation_reference_layer_v1.json',
+            '구 pronunciation_reference_layer_v1 추가 생성은 중단됨',
+            '기존 결과는 읽기 전용으로 보존'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("구 발음 참조 runner 차단 장치 누락: $required")
             }
         }
     }

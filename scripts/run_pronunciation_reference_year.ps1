@@ -21,6 +21,19 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+$script:lockStream = $null
+$script:lockPath = $null
+function Clear-PronunciationReferenceLock {
+    if ($null -ne $script:lockStream) {
+        $script:lockStream.Dispose()
+        $script:lockStream = $null
+        if (-not [string]::IsNullOrWhiteSpace($script:lockPath)) {
+            Remove-Item -LiteralPath $script:lockPath -Force `
+                -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 $projectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $pathsConfig = Get-Content -Raw -Encoding UTF8 -LiteralPath (
     Join-Path $projectRoot 'config\paths.json'
@@ -29,6 +42,22 @@ $contractPath = Join-Path $projectRoot `
     'config\pronunciation_reference_layer_v1.json'
 $contract = Get-Content -Raw -Encoding UTF8 -LiteralPath $contractPath |
     ConvertFrom-Json
+$projectPronGatePath = Join-Path $projectRoot `
+    'config\mfa_pronunciation_release_gate.json'
+$projectPronGate = Get-Content -Raw -Encoding UTF8 `
+    -LiteralPath $projectPronGatePath | ConvertFrom-Json
+$referenceMfaRelease = [string]$contract.frozen_resources.mfa_pronunciation_release
+if (
+    @($projectPronGate.blocked_release_ids) -contains $referenceMfaRelease -or
+    [string]$projectPronGate.status -ne 'adopted'
+) {
+    throw (
+        '구 pronunciation_reference_layer_v1 추가 생성은 중단됨. ' +
+        "MFA release=$referenceMfaRelease; " +
+        "project gate=$($projectPronGate.status). " +
+        '기존 결과는 읽기 전용으로 보존하고 r3 canonical 선택표를 사용할 것.'
+    )
+}
 
 function Expand-CfgPath([string]$Value) {
     return [IO.Path]::GetFullPath(
@@ -206,15 +235,6 @@ if (-not $PreflightOnly) {
     $lockBytes = [Text.Encoding]::UTF8.GetBytes([string]$PID)
     $lockStream.Write($lockBytes, 0, $lockBytes.Length)
     $lockStream.Flush()
-}
-
-function Clear-PronunciationReferenceLock {
-    if ($null -ne $script:lockStream) {
-        $script:lockStream.Dispose()
-        $script:lockStream = $null
-        Remove-Item -LiteralPath $script:lockPath -Force `
-            -ErrorAction SilentlyContinue
-    }
 }
 
 trap {

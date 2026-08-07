@@ -1,4 +1,4 @@
-# 데이터 배치도 — r2 생산 기준
+# 데이터 배치도 — r2 증거 보존·r3 준비 기준
 
 최종 갱신: 2026-08-05 KST
 
@@ -22,7 +22,7 @@ D:\
 │                                  신규 r2 6-tier·동반표(2020 완료)
 ├─ mfa_common_pron
 │  └─ releases\common_pron_mfa_r2_20260728
-│                                  현재 공통 Jamo r2
+│                                  구 r2 증거(신규 MFA 사용 금지)
 ├─ mfa_eojeol                     marker·lock·log·계약
 ├─ mfa_tmp                        D: 선택 시 연도별 MFA 임시 DB
 └─ mfa_eojeol_out                 legacy export 폴백 경로

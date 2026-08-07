@@ -440,6 +440,24 @@ if (-not [string]::IsNullOrWhiteSpace($CommonPronManifest)) {
             -LiteralPath $commonManifestPath | ConvertFrom-Json
         $adoptionData = Get-Content -Raw -Encoding UTF8 `
             -LiteralPath $adoptionPath | ConvertFrom-Json
+        $projectPronGatePath = Join-Path $root (
+            'config\mfa_pronunciation_release_gate.json'
+        )
+        $runtimePronGateReport = Join-Path $stateRoot (
+            'alignment_contracts\mfa_pronunciation_release_gate_' +
+            "$Year.json"
+        )
+        & $py (Join-Path $pydir 'validate_mfa_r2_adoption.py') `
+            --manifest $commonManifestPath `
+            --adoption-contract $adoptionPath `
+            --project-gate $projectPronGatePath `
+            --output $runtimePronGateReport
+        if ($LASTEXITCODE -ne 0) {
+            throw (
+                '프로젝트 MFA 발음 release Gate 실패. r2를 재실행하지 ' +
+                '말고 r3 채택을 완료할 것.'
+            )
+        }
         if (
             $commonData.schema_version -ne
                 'common_pron_mfa_lexicon.v2' -or

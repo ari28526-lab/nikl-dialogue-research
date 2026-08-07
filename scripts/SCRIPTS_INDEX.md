@@ -82,7 +82,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | audit_common_pron_mfa_equivalence.py | r2와 구 2020 TextGrid·부분 DB·2021 완성 DB를 전수 비교해 차이를 결함수정·구조/coverage·기본사전·G2P 변화로 분류. mismatch 0을 채택 조건으로 쓰지 않고 완전한 difference inventory를 생성. 2020 TextGrid는 입력-prefix SHA checkpoint로 중단 뒤 안전 재개 |
 | run_common_pron_difference_inventory.ps1 | 완성된 r2 hard gate, D: 라벨·공간, G2P/MFA/자체 lock과 baseline 증거를 확인하고 2020·2021 difference inventory를 전수 실행. 실행 중 Windows 시스템 절전을 억제하고 종료 시 복원한다. 기본 20,000 TextGrid마다 checkpoint를 보존하며 재실행 시 입력 prefix가 불변일 때만 이어서 처리하고 adoption은 자동 승인하지 않음 |
 | run_common_pron_mfa_r1.ps1 | 구 acoustic v3.0/음절 G2P r1의 재현·실패 감사용 실행기. 첫 shard의 strict grapheme 누락을 검증기가 차단했으며 최신 Jamo 생산에는 재사용하지 않음 |
-| run_common_pron_mfa_r2.ps1 | 동결 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary SHA를 먼저 검증하고 r2를 shard별 생성·재개. U+11B3 정확히 4건 외 미지원·spn·누락을 차단한다. FST no-path는 모델 후보와 별도로 기록된 연구자 승인 phone(동일 acoustic inventory)을 사용해 누락 키만 보수하고, 새 미승인 누락은 partial을 보존한 채 다음 shard 계산을 계속하되 final/연도별 MFA만 금지 |
+| run_common_pron_mfa_r2.ps1 | 역사적 r2 shard 생성기. 2026-08-07 발음 배선 감사 뒤 프로젝트 release Gate가 r2 재생성을 fail-closed로 차단한다. 기존 release는 읽기 전용 감사 증거로만 사용 |
 | build_common_pron_mfa_adoption.py | 연도별 MFA를 허용하는 유일한 adoption v3 contract 생성. r2 실물·동결 모델 pin·2020/2021 difference inventory뿐 아니라 연구자 workbook validation과 원장 적용 transaction, 27개 정규화 결정, no-path 24개 승인 snapshot/repair, ㄽ 4개 최종 phone, source/numeric correction 2개를 행·SHA 수준으로 끝까지 대조한다. no-path 구 repair v1/v2와 현재 review의 필드 배치 차이는 model candidate·approved phone 의미로 정규화한 뒤 비교하며, 최종 연구자 승인 v2가 application·correction SHA를 명시하지 않으면 거부 |
 | build_common_pron_researcher_approval.py | 이미 명시 승인된 27건 workbook·결정 적용 transaction·6개년 전면 재정렬 결정문·완료 difference inventory를 다시 검증해 researcher approval v2를 생성. 새 언어학 판단을 자동 생성하지 않고 기존 명시 결정의 SHA 연결만 기계 판독화 |
 | validate_mfa_r2_adoption.py | 연도별 실행 직전에 adoption v3가 `passed/allow_yearly_mfa=true`인지 확인하고 공통사전·acoustic·Jamo G2P·model bundle 실물 SHA를 동결 계약과 다시 대조. inline G2P가 아닌 승인 공통사전 경로만 허용 |
@@ -145,7 +145,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | patch_mfa_skip_export.py | 환경변수를 명시한 프로젝트 direct 모드에서만 built-in raw TextGrid export를 생략 | 기본 MFA 동작 보존, 실제 skip probe 통과 |
 | run_eojeol_realign.ps1 | `-Year` 한 연도 러너. pre-MFA·모델·승인제외 정렬 계약, marker·archive·PreferD, descendant CPU/working-set/private/process/thread, 시스템 available/commit, alignment-log 및 phone·word interval CSV 증분 처리량 heartbeat. `-UseDirectDbExport`는 partial 출력을 검증 승격하고 DB를 QC 전 보존 | 2020 Jamo r2 완료; 2021 첫 실행은 MFA 전 감사에서 안전 중단. 승인 계약을 LAB builder와 alignment identity 양쪽에 전달하도록 보강 |
 | preflight_eojeol_realign.ps1 | 선택 연도의 SSD·공간·모델·세션구조·MFA 패치와 pre-MFA build status·필수 열·세션 coverage·temp 계약을 차단 검사. `-PreferD`이면 선택된 D:의 55/45GB 문턱을 FAIL로 검사하고 C: 용량은 정보로만 기록 | 실환경 MFA 항목 PASS; `PreferD` D: 333.3GB≥55GB 통과; 부분 pilot coverage FAIL 확인 |
-| run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→검증 export. r2 manifest/adoption 필수, `-PreferD`, `-UseDirectDbExport`, PID lock, 연도 실패 시 중단, 자동 승격 금지, transcript/summary. 2020·2021 r2 전수 재실행은 상·하위 러너 모두 명시적 `-AllowBaselineCommonPronRerun`을 요구하고 다른 연도에서 플래그를 거부 | 2020 완료; 2021–2025는 Gate B wrapper를 통해서만 시작 |
+| run_pre_mfa_bulk_safe.ps1 | 동결 versioned pre-MFA CSV→한 연도씩 입력계약 lab→MFA→검증 export. release manifest/adoption과 프로젝트 발음 Gate를 하위 runner에서 필수 검증하고, PID lock·연도 실패 중단·자동 승격 금지·checkpoint를 유지 | r2는 프로젝트 Gate가 차단; r3 adoption 전 신규 실행 금지 |
 | verify_mfa_install.py | 프로젝트 밖 MFA 3.4.0 필수 패치의 AST/소스 구조와 SHA256 기록 | 10/10 통과 |
 | quarantine_bad_wavs.py | 깨진 WAV(44바이트 header-only 포함) 읽기 전용 inventory/dry-run. 수동 `--apply` 격리 기능은 보존하되 생산 러너는 원자료 이동 없이 승인 계약과 대조 | 44바이트 경계값·상대경로·transaction 회귀검사 통과 |
 | copy_hdd_to_ssd.ps1 | HDD→SSD 이전 복사 (robocopy /MT, Tier1 필수분 우선, 재개·검증, MFA 모델 동봉) | 실행 대기(7/20) |
@@ -229,7 +229,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `python/build_pron_reference_utterance_index.py` | 어절 비교를 발화 수준 TextGrid 검색 label과 요약 CSV로 집계 | 2020 870,437행 완료 |
 | `python/backfill_pron_reference_textgrid.py` | 기존 6-tier를 바꾸지 않고 7번째 `pron_reference_utt`를 세션 checkpoint 방식으로 파생 | 2020 2세션 914건 구현 파일럿 통과 |
 | `python/verify_pron_reference_textgrid_backfill.py` | 앞 6개 tier 불변과 7번째 tier 순서·경계·연속성·label을 독립 전수 감사 | 파일럿 914/914 통과 |
-| `run_pronunciation_reference_year.ps1` | 2020–2025 동일 계약의 occurrence→compare→index→선택적 7-tier를 `Tables/Pilot/Full`로 실행·재개 | PS5.1 safety/runtime·2020 pilot 통과 |
+| `run_pronunciation_reference_year.ps1` | 구 v1 occurrence→compare→index→7-tier 생성기. 기존 2020–2021 산출은 r3 근거로 보존하되 r2 release Gate가 추가 전수 생성을 차단 | PS5.1 safety/runtime·2020 pilot 통과; 신규 실행 금지 |
 | mfa_exclusion_contract.py | input contract에 묶인 연구자 승인 제외 CSV/JSON을 생성·검증. 자동 승인과 목록 밖 누락을 금지하고 quarantine ID 전수 포함을 요구 | 합성 승인/변조/미승인 회귀 통과 |
 | finalize_post_mfa_alignment_exclusions.py | 기존 pre-MFA 승인 계약과 보존 DB의 정확한 post-MFA 미정렬 ID를 결합한다. 16표본 결정·원 후보 SHA·DB ID 집합·명시 승인 token을 검증하고 원본을 덮어쓰지 않은 새 계약을 만든다 | 2020: 1,887 + 363(청취 불가 3 + 정렬 실패 360) = 2,250 승인, DB exact match |
 | finalize_post_mfa_exact_reconciliation_exclusions.py | 2021–2025 generic post-MFA 경로. pending inventory SHA, export unknown ID, 보존 DB의 feature/정렬 실패 분류, pre-MFA 계약, 모든 행의 명시 승인과 token을 검증해 새 결합 계약을 만든다. DB 수정·자동 승인·full-year rerun 없음 | Python 관련·회귀 30시험 통과 |

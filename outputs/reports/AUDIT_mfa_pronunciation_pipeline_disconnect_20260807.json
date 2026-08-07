@@ -1,0 +1,68 @@
+{
+  "schema_version": "mfa_pronunciation_pipeline_disconnect_audit.v1",
+  "status": "r2_blocked_r3_required",
+  "observed_at": "2026-08-07T19:30:00+09:00",
+  "root_cause": {
+    "summary": "The surface-rule pronunciation layer used by search/reference outputs was not consumed by the r2 MFA lexicon builder.",
+    "search_reference_source": "scripts/python/predict_pron.py",
+    "mfa_lexicon_source": "scripts/python/build_common_pron_mfa_lexicon.py",
+    "r2_policy": "preserve base Korean MFA dictionary pronunciations and use frozen Jamo G2P 1-best only for OOV",
+    "effect": "A pronunciation correction could appear in CSV/reference outputs while phones_mfa was still aligned from a different r2 pronunciation."
+  },
+  "additional_gaps": [
+    {
+      "id": "PRON-001",
+      "gap": "No single canonical pronunciation-selection table projected to both search outputs and the MFA lexicon.",
+      "resolution": "specified in config/common_pronunciation_resource_contract_v3_draft.json"
+    },
+    {
+      "id": "PRON-002",
+      "gap": "The adoption validator checked file identity, OOV, spn, and acoustic inventory but not linguistic rule or dictionary agreement.",
+      "resolution": "r2 is blocked by config/mfa_pronunciation_release_gate.json; r3 adoption requirements include rule-sensitive decisions and projection identity"
+    },
+    {
+      "id": "PRON-003",
+      "gap": "Current runbooks and entry documentation still named r2 as the canonical production input.",
+      "resolution": "current runbooks, project state, asset ledger, data layout, and start document updated to the r3 hold"
+    },
+    {
+      "id": "PRON-004",
+      "gap": "Human infrastructure gates emphasized file linkage, boundaries, tiers, and search usability rather than exhaustive pronunciation-input validity.",
+      "resolution": "reuse prior reviews; add targeted pronunciation regression without repeating broad listening review"
+    },
+    {
+      "id": "PRON-005",
+      "gap": "Blindly feeding a rule-respelled Hangul form to Jamo G2P 1-best can introduce arbitrary variants.",
+      "resolution": "r3 must select or canonicalize phones against an explicit Roman target; unresolved items remain explicit rather than silently falling back"
+    },
+    {
+      "id": "PRON-006",
+      "gap": "A type-level surface-rule audit cannot by itself resolve optional rules, cross-eojeol sandhi, n-insertion, some l-nasalization, or morphology-sensitive readings.",
+      "resolution": "r3 retains morphology/POS and explicit unresolved or optional statuses; the 312756 screening candidates are not treated as confirmed speech errors"
+    }
+  ],
+  "full_audit": {
+    "observed_surface_types": 881237,
+    "total_occurrences": 27847068,
+    "rule_sensitive_mismatch_types": 312756,
+    "rule_sensitive_mismatch_occurrences": 4718489,
+    "strong_dictionary_agreement_types": 5556,
+    "strong_dictionary_agreement_occurrences": 411320,
+    "manifest_path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/AUDIT_MANIFEST.json",
+    "manifest_sha256": "9d62f7cc0d6a12ce7bba3b315e2e2cd0fa63b3447702082852e207a63de7a0ee"
+  },
+  "safety_actions": {
+    "blocked_release_id": "common_pron_mfa_r2_20260728",
+    "new_mfa_with_r2_allowed": false,
+    "existing_r2_outputs_modified": false,
+    "repeat_broad_human_review_required": false,
+    "six_year_r3_realign_required_after_adoption": true
+  },
+  "next_required_work": [
+    "build the canonical r3 pronunciation-selection table",
+    "emit the r3 MFA dictionary only as a verified projection of selected phones",
+    "run automatic linguistic coverage and frozen-phone-inventory checks",
+    "reuse already-reviewed 2022 IDs and rule-stratified samples for targeted regression",
+    "adopt one contract id and then realign 2020 through 2025 with checkpoints"
+  ]
+}

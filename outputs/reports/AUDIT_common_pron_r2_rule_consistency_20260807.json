@@ -1,0 +1,62 @@
+{
+  "schema_version": "common_pron_rule_consistency_summary.v1",
+  "status": "completed_gate_failure",
+  "recorded_at": "2026-08-07T19:30:00+09:00",
+  "scope": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "observed_surface_types": 881237,
+    "observed_occurrences": 27847068,
+    "realized_speech_judgment": false,
+    "morphological_context_used": false
+  },
+  "results": {
+    "matches_surface_rule": {
+      "types": 382891,
+      "occurrences": 19765802
+    },
+    "mismatch_rule_sensitive": {
+      "types": 312756,
+      "occurrences": 4718489
+    },
+    "mismatch_no_surface_rule_change": {
+      "types": 185590,
+      "occurrences": 3362777
+    },
+    "rule_mismatch_with_dictionary_agreement": {
+      "types_all_reference_tiers": 7179,
+      "occurrences_all_reference_tiers": 535600,
+      "types_dictionary_attested": 5556,
+      "occurrences_dictionary_attested": 411320
+    }
+  },
+  "rule_sensitive_mismatch_occurrences_by_year": {
+    "2020": 537264,
+    "2021": 1087766,
+    "2022": 738325,
+    "2023": 619841,
+    "2024": 890084,
+    "2025": 845209
+  },
+  "rule_sensitive_mismatch_percent_of_year_occurrences": {
+    "2020": 17.596,
+    "2021": 16.377,
+    "2022": 16.406,
+    "2023": 17.093,
+    "2024": 17.325,
+    "2025": 17.294
+  },
+  "interpretation": [
+    "The 312756 type count is a screening inventory, not a count of realized-speech errors.",
+    "The 5556 dictionary-attested types are a conservative high-confidence subset where the project surface-rule prediction agrees with a dictionary-attested pronunciation but the current MFA input phones do not.",
+    "The same r2 pronunciation-input problem affects every year, so 2022 cannot be approved and 2023 must not start under r2."
+  ],
+  "full_audit": {
+    "path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/common_pron_r2_rule_consistency_full.csv.gz",
+    "sha256": "1cbe7ca0b4234ef35ed1f0020bb6eb6c135e11f7aa78c360279d72e437a971f9"
+  },
+  "audit_manifest": {
+    "path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/AUDIT_MANIFEST.json",
+    "sha256": "9d62f7cc0d6a12ce7bba3b315e2e2cd0fa63b3447702082852e207a63de7a0ee"
+  },
+  "decision": "docs/decisions/DECISION_2022_pronunciation_input_gate_hold_20260807.md"
+}
