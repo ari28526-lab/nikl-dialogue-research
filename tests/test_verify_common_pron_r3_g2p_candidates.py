@@ -142,6 +142,65 @@ class VerifyCommonPronR3G2pCandidatesTests(unittest.TestCase):
         self.assertEqual(result["status"], "success_candidates_not_selected")
         self.assertEqual(result["counts"]["output_candidate_words"], 2)
         self.assertTrue(phase_manifest.is_file())
+        audit_report = self.root / "audit.json"
+        audit = verify.audit_phase(
+            target_manifest_path=target_manifest,
+            output_root=output_root,
+            acoustic_model=self.acoustic,
+            phase_manifest_path=phase_manifest,
+            audit_report_path=audit_report,
+        )
+        self.assertEqual(audit["status"], "passed_read_only")
+        self.assertEqual(audit["counts"]["output_candidate_words"], 2)
+        self.assertTrue(audit_report.is_file())
+
+    def test_read_only_audit_rejects_global_duplicate_input_keys(self) -> None:
+        output_root = self.root / "phase"
+        input_root = self.root / "inputs"
+        output_shards = output_root / "output_shards"
+        input_root.mkdir()
+        output_shards.mkdir(parents=True)
+        shard_records = []
+        for index in (1, 2):
+            stem = f"g2p_target_{index:05d}"
+            input_path = input_root / f"{stem}.txt"
+            output_path = output_shards / f"{stem}.dict"
+            input_path.write_text("same\n", encoding="utf-8")
+            output_path.write_text("same\ta\n", encoding="utf-8")
+            shard_records.append(
+                {
+                    **file_fingerprint(input_path, with_sha256=True),
+                    "shard_index": index,
+                    "expected_output_name": output_path.name,
+                }
+            )
+        target_manifest = self.root / "targets.json"
+        target_manifest.write_text(
+            json.dumps(
+                {
+                    "schema_version": verify.TARGET_SCHEMA,
+                    "status": "prepared",
+                    "counts": {"unique_targets": 2},
+                    "outputs": {"input_shards": shard_records},
+                }
+            ),
+            encoding="utf-8",
+        )
+        phase_manifest = output_root / "manifest.json"
+        verify.finalize_phase(
+            target_manifest_path=target_manifest,
+            output_root=output_root,
+            acoustic_model=self.acoustic,
+            phase_manifest_path=phase_manifest,
+        )
+        with self.assertRaisesRegex(RuntimeError, "repeat across shards"):
+            verify.audit_phase(
+                target_manifest_path=target_manifest,
+                output_root=output_root,
+                acoustic_model=self.acoustic,
+                phase_manifest_path=phase_manifest,
+                audit_report_path=self.root / "audit.json",
+            )
 
 
 if __name__ == "__main__":
