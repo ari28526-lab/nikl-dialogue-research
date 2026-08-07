@@ -70,13 +70,15 @@
   → 2023–2025 동일 r3 계약으로 최초 정렬
 ```
 
-### 3.1 현재 r3 후보 생성 checkpoint
+### 3.1 r3 후보 생성 완료 checkpoint
 
-2026-08-07 현재 canonical inventory 881,237형, exact-Roman donor 후보 346형,
-규칙 목표형 310,605개·13 shard가 준비됐다. G2P 1-best는 최종 발음 선택이
-아니며 독립 규칙 Roman과 정확히 일치하는 후보만 다음 단계로 넘긴다.
+2026-08-08 현재 canonical inventory 881,237형, exact-Roman donor 후보 346형,
+규칙 목표형 310,605개·13 shard의 G2P 1-best 생성과 읽기 전용 독립 감사가
+완료됐다. no-path·`spn`·중복·입력 밖 key·acoustic inventory 밖 phone은 모두
+0이다. 이 출력은 최종 발음 선택이 아니며 독립 규칙 Roman과 정확히 일치하는
+후보만 다음 단계로 넘긴다.
 
-장시간 실행 전 상태는 다음 읽기 전용 명령으로 확인한다.
+후보 생성 완료 상태는 다음 읽기 전용 명령으로 확인한다.
 
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
@@ -84,11 +86,17 @@
   -File "C:\Users\ari30\research\2026_summer_research\scripts\show_common_pron_mfa_r3_g2p_status.ps1"
 ```
 
-실행기는
+재현·국소 재개용 실행기는
 `C:\Users\ari30\research\2026_summer_research\scripts\
 run_common_pron_mfa_r3_g2p_candidates.ps1`이다. 완료 SHA 보고서가 있는 shard만
 재사용하므로 중단 뒤 같은 명령으로 국소 재개한다. 이 단계가 끝나도 최종 사전
 adoption이나 연도별 MFA로 자동 진입하지 않는다.
+
+완료 증거는
+`docs/decisions/RESULT_common_pron_r3_g2p_candidate_phase_20260808.md`와
+`outputs/reports/AUDIT_common_pron_mfa_r3_g2p_candidates_20260808.json`이다.
+다음 단계에서는 이 실행기를 다시 돌리지 않고 exact broad-Roman 선택 Gate를
+구축한다.
 
 ## 4. 2021 Gate 종료 — 완료
 

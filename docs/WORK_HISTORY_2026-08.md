@@ -2219,3 +2219,25 @@ shard 2–23을 재개하는 것이다.
   재사용 오류를 manifest 연도와 `phoneme_r_auto`로 교정하고 회귀시험을 추가했다.
   생산 DB·WAV·LAB·TextGrid는 변경하지 않았다. 남은 단계는 자동 승인이 아닌
   연구자 24개 직접 확인과 명시 승인, 이어지는 읽기 전용 완료 Gate다.
+
+## 2026-08-07~08 — 공통발음 r3 Jamo G2P 후보 13 shard 완료
+
+- r2 입력 배선 불일치의 규칙 민감 source 312,410형·4,472,892회를 규칙 목표
+  한글형 310,605개로 중복 제거하고 25,000개 이하 13 shard로 계산했다.
+- 20:51:40 KST에 시작해 02:42:10 KST에 정상 종료했다. 1시간 간격 점검에서
+  2/13, 4/13, 7/13, 9/13, 11/13을 순서대로 확인했고, 오류나 미검증 중단
+  산출물 없이 13/13에 도달했다.
+- 입력 310,605개와 후보 출력 310,605개가 전수 대응했다. no-path, `spn`, 입력
+  밖 key, shard 내부·전체 shard 간 중복, acoustic inventory 밖 phone은 모두
+  0이다. 후보 manifest status는 `success_candidates_not_selected`다.
+- 완료 뒤 13개 SHA 보고서를 다시 검증했다. 기존 `finalize`는 검증과 동시에
+  D: 보고서를 다시 쓰는 경로여서 샌드박스가 차단했고 D: 변경은 없었다. 이를
+  계기로 `audit-phase` 읽기 전용 감사를 추가해 원본 무변경으로 phase manifest
+  SHA·전역 key coverage·phone inventory를 재검증했다.
+- 독립 감사 결과는
+  `outputs/reports/AUDIT_common_pron_mfa_r3_g2p_candidates_20260808.json`이며
+  `passed_read_only`다. 이 단계에서는 후보를 자동 채택하지 않았고 canonical
+  selection·adoption·연도별 MFA·TextGrid materialization으로 넘어가지 않았다.
+- 다음 단계는 후보 broad Roman과 독립 규칙 목표 Roman의 exact agreement
+  Gate이다. 최종 채택 뒤에는 r3 사전 SHA와 contract ID가 실제 6-tier TextGrid
+  및 동반 index까지 전달되어야 하며 r2 phone label의 제자리 치환은 금지한다.

@@ -1,0 +1,53 @@
+{
+  "schema_version": "common_pron_r3_g2p_completion_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T02:48:02+09:00",
+  "counts": {
+    "shards": 13,
+    "input_words": 310605,
+    "output_candidate_words": 310605,
+    "missing_no_path_words": 0,
+    "global_input_duplicate_words": 0,
+    "global_output_duplicate_words": 0,
+    "extras": 0,
+    "spn_words": 0,
+    "phones_outside_acoustic_inventory": 0
+  },
+  "contracts": {
+    "candidate_is_final_selection": false,
+    "source_files_modified_by_candidate_phase": false,
+    "textgrids_modified_by_candidate_phase": false,
+    "next_required_gate": "exact broad-Roman agreement with the explicit rule target"
+  },
+  "evidence": {
+    "target_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\03_g2p_rule_targets_1best\\G2P_TARGETS_MANIFEST.json",
+      "bytes": 8168,
+      "mtime_ns": 1786101219917554900,
+      "sha256": "af8cfdc93f4d1f354b9fd58abc51084a83a5788b8ffc68510486c1b51deaa5b3"
+    },
+    "phase_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\03_g2p_rule_targets_1best\\G2P_CANDIDATE_OUTPUTS_MANIFEST.json",
+      "bytes": 11299,
+      "mtime_ns": 1786124530381445300,
+      "sha256": "b8772dcd5fb5923b7653cce1aead6a7ca3528b0058081a3c5d239066876bd8f6"
+    },
+    "acoustic_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T02:48:03+09:00",
+    "git_commit": "f0a826eadaf2ec1fc7de9f7c938f5b57b9516022",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 4036
+  }
+}

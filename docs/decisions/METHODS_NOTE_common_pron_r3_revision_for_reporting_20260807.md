@@ -110,6 +110,22 @@ inventory를 사용했다고 보고할 수 있고, 동시에 불필요한 전년
 부분 산출물은 삭제하지 않고 `archive_interrupted`에 보존하고 해당 shard만
 재계산한다.
 
+### 5.1 후보 생성 완료와 독립 감사
+
+수정 뒤 본 실행은 2026-08-07 20:51:40 KST에 시작해 2026-08-08 02:42:10
+KST에 정상 종료됐다. 13개 shard의 입력 310,605개 전부에 대해 Jamo G2P
+1-best 후보가 생성됐고, no-path·`spn`·입력 밖 key·shard 내부 및 전체 shard 간
+중복·acoustic inventory 밖 phone은 모두 0이었다. 후보 phase manifest의
+SHA-256은
+`b8772dcd5fb5923b7653cce1aead6a7ca3528b0058081a3c5d239066876bd8f6`이다.
+
+완료 직후에는 실행기가 쓴 집계만 재사용하지 않고 읽기 전용 독립 감사를 한 번
+더 수행했다. 각 입력·출력·보고서·음향모델 SHA, 전체 key 집합 동등성, 전역
+중복, phone inventory를 다시 계산했으며 모두 통과했다. 감사 보고서는
+`outputs/reports/AUDIT_common_pron_mfa_r3_g2p_candidates_20260808.json`이다.
+이 단계에서는 canonical 최종 선택, 사전 adoption, 연도별 MFA, TextGrid 생성·
+수정을 수행하지 않았다.
+
 2026-08-07 20:43 KST에는 사용자가 `C:\Users\ari30`에서 상대경로
 `.\scripts\show_common_pron_mfa_r3_g2p_status.ps1`를 실행해 상태판 파일을
 찾지 못했다. 이는 상태 조회 명령의 작업 디렉터리 문제였으며 G2P는 시작되지
@@ -127,8 +143,8 @@ PowerShell 5.1에서 실패하는 `[uint32]0x8........` 형식을 금지하는 �
 
 ## 6. 논문 각주용 축약문 초안
 
-아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성과
-r3 adoption·재정렬·TextGrid materialization이 완료되지 않았으므로, 논문에
+아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성만
+완료됐고 r3 adoption·재정렬·TextGrid materialization은 완료되지 않았으므로, 논문에
 완료형으로 그대로 사용하지 않는다. 최종 각주에는 manifest에서 확인한 다음
 실측값을 채운 뒤에만 완료형으로 확정한다.
 
@@ -174,6 +190,7 @@ r3 adoption·재정렬·TextGrid materialization이 완료되지 않았으므로
 | `e8013c3` | r2 불일치 확인과 신규 실행 fail-closed 차단 |
 | `3aa2d7e` | 881,237형 r3 inventory와 선택 재사용 계약 |
 | `59a135e` | donor/G2P 후보 단계, 재개 가능한 runner, 상태판, 방법론 문서 |
+| `f0a826e` | 완료 후보를 원본 무변경으로 전수 재검증하는 read-only 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 

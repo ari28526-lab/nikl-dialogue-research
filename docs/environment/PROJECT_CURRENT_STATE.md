@@ -154,11 +154,12 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - r2 프로젝트 발음 release Gate 차단 완료
 - r3 canonical inventory 881,237형 생성 완료
 - exact Roman 표면 donor 후보 346형 생성 완료(아직 최종 선택 아님)
-- 규칙 목표형 Jamo G2P 대상 310,605개를 13 shard로 준비 완료
-- r3 G2P 장시간 실행은 아직 시작하지 않았고 TextGrid 변경도 없음
+- 규칙 목표형 Jamo G2P 310,605개·13 shard 후보 생성 및 읽기 전용 독립 감사 완료
+- no-path·`spn`·중복·입력 밖 key·acoustic inventory 밖 phone 모두 0
+- 후보 생성은 최종 선택이 아니며 canonical selection·adoption·TextGrid 변경 없음
 
-현재 허용 작업은 r3 G2P 후보를 재개 가능한 shard로 생성하고, 독립 규칙 Roman과
-정확히 일치하는 후보만 canonical 선택표에 승격한 뒤 사전 projection·자동 회귀·
+현재 허용 작업은 생성된 r3 G2P 후보를 독립 규칙 Roman과 정확히 비교하고,
+일치하는 후보만 canonical 선택표에 승격한 뒤 사전 projection·자동 회귀·
 adoption Gate를 구현하는 것이다. G2P 1-best 자체는 정답이나 최종 선택이 아니다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -172,4 +173,6 @@ adoption Gate를 구현하는 것이다. G2P 1-best 자체는 정답이나 최�
 - 상세 시행착오: `docs/WORK_HISTORY_2026-08.md`
 - r3 후보 선택 결정:
   `docs/decisions/DECISION_common_pron_r3_candidate_resolution_20260807.md`
+- r3 G2P 후보 실행 결과:
+  `docs/decisions/RESULT_common_pron_r3_g2p_candidate_phase_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`
