@@ -120,6 +120,12 @@
   실제 중단처럼 보이는 표현 문제를 발견했다. 실행·후보 자료는 건드리지 않고,
   live lock이 있으면 `active_unverified_outputs`, lock이 없을 때만
   `interrupted_unverified_outputs`로 나누도록 읽기 전용 상태판을 보정했다.
+- 연구자는 G2P 후보 계산 뒤 수정 발음이 최종 TextGrid에 실제 반영되는 단계까지
+  누락하지 말 것을 다시 확인했다. 현행 r3 계약은 G2P 완료를 생산 완료로 보지
+  않는다. 후보 검증→canonical 선택→MFA 사전 adoption→변경 적응 단위 재정렬→
+  6-tier 재생성 또는 증명된 동등본 재사용→모든 발화 final index의 r3 contract
+  ID·사전 SHA·`alignment_origin` 검증까지 통과해야만 연도 완료로 인정한다.
+  기존 r2 TextGrid의 phone 문자열만 제자리에서 바꾸는 방식은 계속 금지한다.
 - 논문 연구방법·각주에 중간 수정 이유와 절차를 그대로 인용할 수 있도록
   `docs/decisions/METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md`를
   만들고 r2 문제 발견→전수 감사→r3 후보/선택 분리→증명 기반 재사용 정책과
