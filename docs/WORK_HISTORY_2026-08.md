@@ -115,6 +115,11 @@
   `Convert.ToUInt32(..., 16)`으로 고치고 `-PreflightOnly`가 sleep guard 활성화·
   복원까지 실행하도록 보강했다. PS 안전성 50파일, 런타임 63스크립트와 새 실제
   preflight가 통과했으며, unsafe hexadecimal cast 재도입을 정적 회귀에서 막았다.
+- 20:51:40 KST 수정본 본 실행이 시작됐다. 첫 shard가 계산 중일 때 완료 보고서가
+  아직 없는 활성 `.dict`를 상태판이 `interrupted_unverified_outputs=1`로 표시해
+  실제 중단처럼 보이는 표현 문제를 발견했다. 실행·후보 자료는 건드리지 않고,
+  live lock이 있으면 `active_unverified_outputs`, lock이 없을 때만
+  `interrupted_unverified_outputs`로 나누도록 읽기 전용 상태판을 보정했다.
 - 논문 연구방법·각주에 중간 수정 이유와 절차를 그대로 인용할 수 있도록
   `docs/decisions/METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md`를
   만들고 r2 문제 발견→전수 감사→r3 후보/선택 분리→증명 기반 재사용 정책과

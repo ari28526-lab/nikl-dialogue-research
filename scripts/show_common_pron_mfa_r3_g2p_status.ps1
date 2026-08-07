@@ -78,6 +78,8 @@ $phase = if (Test-Path -LiteralPath $phaseManifest -PathType Leaf) {
 } else {
     'prepared_not_started'
 }
+$activeUnverified = if ($lockAlive) { $partial.Count } else { 0 }
+$interruptedUnverified = if ($lockAlive) { 0 } else { $partial.Count }
 $drive = [IO.DriveInfo]::new('D')
 [pscustomobject]@{
     observed_at = (Get-Date).ToString('o')
@@ -89,7 +91,8 @@ $drive = [IO.DriveInfo]::new('D')
     )
     verified_candidate_words = $candidateWords
     recorded_no_path_words = $missingWords
-    interrupted_unverified_outputs = $partial.Count
+    active_unverified_outputs = $activeUnverified
+    interrupted_unverified_outputs = $interruptedUnverified
     lock_present = $lockPresent
     lock_pid = $lockPid
     lock_process_alive = $lockAlive
