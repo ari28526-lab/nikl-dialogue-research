@@ -208,6 +208,27 @@ zero-fallback 보류 128,932형·1,649,312회다. 다음은 아직 projection ta
 선택, MFA·TextGrid 변경은 금지한다. 상세 근거는
 `docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`를 따른다.
 
+### 3.7 r3 no-rule 보류형 특성화 완료 checkpoint
+
+no-rule 실질 불일치 85,504형·1,140,107회를 전수 분류하고 독립 감사했다.
+모두 완성형 한글이며 숫자·기호·라틴 문자·낱자 자모는 없다. 비음 조음 위치,
+활음·모음 단위화, 후두 대립 phone 매핑, 분절 수·탈락 차이가 함께 포함돼
+있으므로 한 가지 fallback으로 자동 투사하지 않는다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+10_no_rule_hold_characterization\NO_RULE_HOLD_CHARACTERIZATION_MANIFEST.json
+```
+
+manifest 상태는 `success_characterized_not_candidate`, 별도 감사 상태는
+`passed_read_only`다. 다음 한 단계는 고빈도 signature에 대한 표준 발음·
+우리말샘·형태소 경계·acoustic inventory의 읽기 전용 coverage 감사다. 그
+결과로 명시된 규칙/매핑만 candidate-only 계약에 추가한다. 85,504형 일괄
+projection, canonical selection, adoption, MFA, TextGrid 변경은 금지한다.
+상세 근거는
+`docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`를
+따른다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.

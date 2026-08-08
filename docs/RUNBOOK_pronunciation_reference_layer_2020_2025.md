@@ -132,3 +132,11 @@ D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\<YEAR>\
 생산 입력으로 사용하지 않는다. 위치와 SHA는
 `outputs/reports/ARCHIVE_pronunciation_reference_pre_adoption_20260805.json`을
 정본으로 한다.
+
+2026-08-08 r3 no-rule 보류형 85,504개를 전수 특성화한 결과 모두 완성형 한글
+어절이었다. 이 집합은 사전 발음 참조층의 숫자·기호 처리 대상이 아니며, 비음
+동화·활음/모음 단위화·후두 대립 phone 매핑·분절 수 차이를 섞은 채 자동
+발음으로 채우지 않는다. 상세 결과는
+`docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`를
+따른다. 규칙/매핑 coverage 감사와 r3 adoption이 끝날 때까지 2022–2025
+발음 참조 파생층과 MFA를 실행하지 않는다.

@@ -159,6 +159,29 @@ readiness를 다시 실행하지 않는다. 다음은 no-rule 85,504형을 별�
 않는다. 상세 결과는
 `docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`다.
 
+### 2026-08-08 no-rule 85,504형 특성화 이후 재개점
+
+no-rule 보류형의 전수 특성화와 독립 감사까지 완료됐다. 정본은 다음이다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  10_no_rule_hold_characterization\NO_RULE_HOLD_CHARACTERIZATION_MANIFEST.json
+outputs/reports/AUDIT_common_pron_r3_no_rule_hold_characterization_20260808.json
+outputs/reports/REPORT_common_pron_r3_no_rule_hold_characterization_20260808.json
+```
+
+```text
+85,504형 / 1,140,107회 / 모두 완성형 한글
+canonical selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+새 대화에서 stage 10, 같은 G2P, 08 projection, 09 readiness를 다시 실행하지
+않는다. `no_rule`은 언어학적으로 규칙이 없다는 뜻이 아니다. 다음 일은 숫자·기호
+정리가 아니라 비음 조음 위치, 활음·모음 단위화, 후두 대립 phone 매핑, 분절
+탈락/모델 오류의 읽기 전용 coverage 감사다. 85,504형을 표기 규칙이나 r2 phone으로
+일괄 투사하지 않는다. 상세 결과는
+`docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`다.
+
 ## 새 대화에 붙일 최소 프롬프트
 
 ```text

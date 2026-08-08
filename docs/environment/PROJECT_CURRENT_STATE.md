@@ -182,9 +182,16 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - 잔여 보류: target projection 미해결 43,428형, 아직 target이 아닌 no-rule
   실질 불일치 85,504형. 후자의 83,922형은 이미 동일 Jamo G2P 1-best 출처다.
 
-현재 허용 작업은 no-rule 85,504형을 사전 예외·기호·숫자·외래어와 분리한
-candidate-only target 계약을 설계하는 것이다. 같은 Jamo G2P 반복, 기존 56행
-전수 청취, 자동 승인, canonical selection·adoption 전 MFA는 허용하지 않는다.
+no-rule 85,504형·1,140,107회의 전수 특성화와 독립 감사가 완료됐다. 모두
+완성형 한글 음절이며, 숫자·기호·라틴 문자·낱자 자모는 없다. 주요 비배타적
+진단 표지는 비음 조음 위치·경계 54,073형, 분절 수·탈락 35,703형,
+활음·모음 단위화 22,168형, 후두 대립·phone 매핑 13,550형이다. 이는 규칙
+정답이 아니라 현재 규칙 엔진·phone 매핑의 coverage를 점검할 우선순위다.
+
+현재 허용 작업은 이 네 범주의 표준 발음·우리말샘·형태소 경계·acoustic phone
+대조를 읽기 전용으로 수행하고, 명시적으로 검증된 규칙/매핑만 candidate-only
+계약에 보강하는 것이다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 85,504형
+일괄 투사, 자동 승인, canonical selection·adoption 전 MFA는 허용하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -210,4 +217,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_selection_readiness_20260808.md`
 - r3 전역 donor projection·09 readiness 결과:
   `docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`
+- r3 no-rule 보류형 전수 특성화 결과:
+  `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

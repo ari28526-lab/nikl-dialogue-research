@@ -249,10 +249,32 @@ G2P를 재실행하지 않았고 canonical selection, adoption, MFA, TextGrid �
 수행하지 않았다. 상세 결과는
 `RESULT_common_pron_r3_global_projection_v2_20260808.md`에 기록했다.
 
+### 5.7 no-rule 보류형과 규칙·phone 매핑 coverage 분리
+
+09 readiness의 no-rule 실질 불일치 85,504형·1,140,107회를 문자 구성, 사전
+근거, r2 발음 출처, 편집 signature로 전수 특성화했다. 이 집합은 숫자·기호·
+라틴 문자·낱자 자모가 아니라 모두 완성형 한글이었다. 따라서 기호 정규화 문제와
+발음 규칙 coverage 문제를 같은 fallback으로 처리하지 않았다.
+
+비배타적 진단 표지는 비음 조음 위치·경계 54,073형, 분절 수·탈락 35,703형,
+활음·모음 단위화 22,168형, 후두 대립·phone 매핑 13,550형이었다. `한번`,
+`친구가`, `공부를` 같은 고빈도형은 조음 위치 동화가 현재 broad-Roman 목표에
+충분히 표현되지 않았을 가능성을 보였다. `왜`, `돼`는 활음·모음 단위화,
+`어차피` 같은 B/P 대립은 acoustic phone과 연구용 넓은 로마자 사이의 매핑을
+먼저 점검해야 한다. 이 진단 family는 규칙 정답이 아니며 서로 겹칠 수 있다.
+
+독립 감사기는 85,504행을 원 입력에서 다시 계산해 `passed_read_only`로
+통과했다. 일괄 projection, canonical selection, adoption, MFA, TextGrid 변경은
+수행하지 않았다. 다음 단계는 고빈도 signature부터 표준 발음·우리말샘·형태소
+경계·acoustic inventory를 대조해 명시된 규칙/매핑만 candidate-only 계약에
+추가하는 coverage 감사다. 상세 결과는
+`RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
-진단·model projection·전역 donor 재검증·881,237형 readiness까지 완료됐지만,
+진단·model projection·전역 donor 재검증·881,237형 readiness와 no-rule 보류형
+전수 특성화까지 완료됐지만,
 canonical 최종 선택·r3 adoption·재정렬·TextGrid materialization은 미완료다.
 따라서 논문에 완료형으로 그대로 사용하지 않는다. 최종 각주에는
 manifest에서 확인한 다음

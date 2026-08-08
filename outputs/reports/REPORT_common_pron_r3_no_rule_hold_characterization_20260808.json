@@ -1,0 +1,5021 @@
+{
+  "schema_version": "common_pron_r3_no_rule_hold_summary.v1",
+  "status": "audited_characterization_summary",
+  "recorded_at": "2026-08-08T13:54:39+09:00",
+  "counts": {
+    "rows": 85504,
+    "occurrences": 1140107,
+    "multi_variant_types": 223,
+    "dictionary_present_types": 6144,
+    "character_stratum_types": {
+      "hangul_syllables_only": 85504
+    },
+    "character_stratum_occurrences": {
+      "hangul_syllables_only": 1140107
+    },
+    "evidence_stratum_types": {
+      "hangul_dictionary_present_but_not_phone_supported": 6144,
+      "hangul_multiple_r2_variants": 62,
+      "hangul_single_frozen_g2p_variant": 79298
+    },
+    "evidence_stratum_occurrences": {
+      "hangul_dictionary_present_but_not_phone_supported": 384929,
+      "hangul_multiple_r2_variants": 12959,
+      "hangul_single_frozen_g2p_variant": 742219
+    },
+    "r2_source_types": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 1582,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 83922
+    },
+    "r2_source_occurrences": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 452304,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 687803
+    },
+    "diagnostic_layer_types": {
+      "contrast_review_required": 9828,
+      "representation_review_required": 22,
+      "substantive_difference_candidate": 75692
+    },
+    "diagnostic_class_types": {
+      "mixed_or_cross_group_difference": 35327,
+      "multiple_contrasts_within_acoustic_model_group": 731,
+      "multiple_segment_count_difference": 943,
+      "run_length_difference_without_complete_length_support": 22,
+      "single_candidate_unit_extra": 297,
+      "single_contrast_within_acoustic_model_group": 9097,
+      "single_cross_group_substitution": 36704,
+      "single_rule_unit_missing_from_candidate": 2511
+    },
+    "distinct_edit_signatures": 1656,
+    "top_edit_signature_types": {
+      "SUB:N>NG": 13556,
+      "SUB:NG>N": 13119,
+      "SUB:B>P": 4528,
+      "SUB:M>N": 4322,
+      "SUB:D>T": 4053,
+      "SUB:M>NG": 3921,
+      "RULE_ONLY:P;SUB:B>Y": 3006,
+      "RULE_ONLY:Y;SUB:N>NG": 2386,
+      "RULE_ONLY:CH;SUB:J>W": 1595,
+      "RULE_ONLY:L;SUB:N>Y": 1388,
+      "SUB:N>NG;RULE_ONLY:W": 1329,
+      "SUB:NG>N;RULE_ONLY:W": 1122,
+      "RULE_ONLY:Y;SUB:NG>N": 1084,
+      "SUB:N>L": 986,
+      "RULE_ONLY:W;SUB:E>AE": 902,
+      "RULE_ONLY:EU_G": 824,
+      "RULE_ONLY:T;SUB:D>W": 749,
+      "RULE_ONLY:W;SUB:N>NG": 651,
+      "SUB:N>NG;RULE_ONLY:Y": 637,
+      "RULE_ONLY:W;SUB:NG>N": 596,
+      "SUB:M>N;RULE_ONLY:Y": 508,
+      "RULE_ONLY:Y;SUB:M>NG": 473,
+      "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:Y": 467,
+      "SUB:N>NG;SUB:N>NG": 409,
+      "RULE_ONLY:Y": 408,
+      "RULE_ONLY:G;SUB:NG>L;SUB:N>Y": 401,
+      "RULE_ONLY:T;SUB:D>Y": 393,
+      "RULE_ONLY:L;SUB:NG>N": 390,
+      "SUB:SS>S": 389,
+      "SUB:NG>N;RULE_ONLY:Y": 367,
+      "SUB:B>P;RULE_ONLY:Y": 357,
+      "RULE_ONLY:K;SUB:G>W": 356,
+      "RULE_ONLY:Y;SUB:M>N": 354,
+      "RULE_ONLY:G": 341,
+      "RULE_ONLY:NG": 341,
+      "SUB:N>NG;SUB:NG>N": 335,
+      "SUB:M>NG;RULE_ONLY:Y": 334,
+      "RULE_ONLY:S;SUB:SS>Y;SUB:B>P": 281,
+      "RULE_ONLY:P;SUB:B>Y;SUB:N>NG": 280,
+      "SUB:M>N;SUB:B>P": 233,
+      "RULE_ONLY:N;SUB:M>P;SUB:B>Y": 221,
+      "SUB:D>T;RULE_ONLY:Y": 216,
+      "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:Y": 213,
+      "SUB:NG>N;SUB:NG>N": 210,
+      "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:W": 210,
+      "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:W": 209,
+      "RULE_ONLY:NG;SUB:M>P;SUB:B>Y": 202,
+      "SUB:B>P;RULE_ONLY:L": 200,
+      "SUB:D>T;SUB:B>P": 197,
+      "SUB:AE>E": 194,
+      "RULE_ONLY:Y;RULE_ONLY:NG": 169,
+      "CANDIDATE_ONLY:NG": 169,
+      "SUB:D>S": 168,
+      "SUB:B>P;SUB:D>T": 165,
+      "RULE_ONLY:L;SUB:N>NG": 164,
+      "SUB:M>NG;RULE_ONLY:W": 163,
+      "SUB:NG>G;SUB:N>L": 163,
+      "SUB:NG>N;SUB:N>NG": 162,
+      "RULE_ONLY:L;SUB:D>T": 162,
+      "RULE_ONLY:H": 155,
+      "RULE_ONLY:Y;SUB:NG>N;RULE_ONLY:W": 153,
+      "RULE_ONLY:Y;RULE_ONLY:L;SUB:N>Y": 151,
+      "SUB:D>T;SUB:D>T": 150,
+      "SUB:M>N;RULE_ONLY:L": 149,
+      "RULE_ONLY:W;SUB:M>N": 146,
+      "SUB:M>NG;SUB:NG>N": 145,
+      "RULE_ONLY:I": 144,
+      "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W": 144,
+      "SUB:N>NG;RULE_ONLY:W;SUB:E>AE": 139,
+      "RULE_ONLY:K;SUB:G>W;SUB:E>AE": 138,
+      "SUB:N>NG;SUB:M>NG": 137,
+      "SUB:D>T;SUB:NG>N": 133,
+      "SUB:M>N;RULE_ONLY:W": 132,
+      "RULE_ONLY:W;SUB:M>NG": 128,
+      "RULE_ONLY:Y;SUB:D>T": 126,
+      "RULE_ONLY:Y;SUB:N>L": 126,
+      "RULE_ONLY:W": 126,
+      "SUB:B>P;SUB:NG>N": 123,
+      "RULE_ONLY:W;RULE_ONLY:W;SUB:E>AE": 118,
+      "SUB:N>NG;RULE_ONLY:W;RULE_ONLY:Y": 113,
+      "SUB:E>AE": 113,
+      "SUB:NG>G": 110,
+      "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:W": 106,
+      "SUB:B>P;SUB:SS>S": 105,
+      "RULE_ONLY:T;SUB:D>W;RULE_ONLY:Y": 105,
+      "SUB:NG>N;RULE_ONLY:L": 103,
+      "RULE_ONLY:L;SUB:B>P": 102,
+      "RULE_ONLY:P;SUB:B>Y;SUB:NG>N": 100,
+      "SUB:M>B;SUB:N>L": 98,
+      "SUB:B>P;RULE_ONLY:W": 98,
+      "RULE_ONLY:B;SUB:M>L;SUB:N>Y": 96,
+      "RULE_ONLY:W;RULE_ONLY:P;SUB:B>Y": 92,
+      "SUB:B>P;SUB:N>NG": 90,
+      "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W;SUB:N>NG": 90,
+      "SUB:M>NG;SUB:B>P": 86,
+      "SUB:M>N;SUB:NG>N": 79,
+      "RULE_ONLY:Y;SUB:B>P": 79,
+      "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:Y": 77,
+      "RULE_ONLY:NG;SUB:N>CH;SUB:J>W": 76,
+      "CANDIDATE_ONLY:Y": 74
+    }
+  },
+  "diagnostic_family_hint_types": {
+    "glide_vowel_unitization_or_rule_gap": 22168,
+    "laryngeal_contrast_or_phone_mapping_gap": 13550,
+    "nasal_place_or_boundary_rule_gap": 54073,
+    "other_substitution_or_mixed_gap": 1726,
+    "segment_count_or_deletion_gap": 35703
+  },
+  "diagnostic_family_hint_occurrences": {
+    "glide_vowel_unitization_or_rule_gap": 278103,
+    "laryngeal_contrast_or_phone_mapping_gap": 138921,
+    "nasal_place_or_boundary_rule_gap": 665945,
+    "other_substitution_or_mixed_gap": 13819,
+    "segment_count_or_deletion_gap": 450463
+  },
+  "top_edit_signature_occurrences": {
+    "SUB:NG>N": 234976,
+    "SUB:N>NG": 162657,
+    "SUB:M>N": 85807,
+    "RULE_ONLY:P;SUB:B>Y": 56489,
+    "SUB:M>NG": 51022,
+    "RULE_ONLY:W;SUB:E>AE": 50464,
+    "SUB:B>P": 49388,
+    "SUB:D>T": 46123,
+    "RULE_ONLY:W;SUB:N>NG": 39676,
+    "RULE_ONLY:CH;SUB:J>W": 29618,
+    "SUB:E>AE": 28669,
+    "RULE_ONLY:Y;SUB:N>NG": 22374,
+    "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y": 16224,
+    "RULE_ONLY:L;SUB:N>Y": 15943,
+    "RULE_ONLY:EU_G": 14936,
+    "RULE_ONLY:Y": 14672,
+    "RULE_ONLY:T;SUB:D>Y": 13890,
+    "RULE_ONLY:S;SUB:SS>Y;SUB:B>P": 13540,
+    "RULE_ONLY:NG": 13301,
+    "SUB:N>L": 9488,
+    "SUB:NG>N;RULE_ONLY:W": 7442,
+    "RULE_ONLY:G": 6948,
+    "RULE_ONLY:T;SUB:D>W": 6427,
+    "SUB:AE>E": 5917,
+    "SUB:NG>N;RULE_ONLY:G": 5746,
+    "SUB:N>NG;RULE_ONLY:W": 5478,
+    "RULE_ONLY:Y;SUB:NG>N": 4721,
+    "RULE_ONLY:T;SUB:CH>Y": 4205,
+    "SUB:M>NG;RULE_ONLY:H": 4160,
+    "SUB:SS>S": 4139,
+    "SUB:CH>T": 3961,
+    "RULE_ONLY:Y;SUB:M>NG": 3680,
+    "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:H": 3634,
+    "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:Y": 3632,
+    "RULE_ONLY:H": 3604,
+    "SUB:N>NG;RULE_ONLY:Y": 3339,
+    "SUB:G>K": 3301,
+    "CANDIDATE_ONLY:NG": 3193,
+    "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:Y": 2908,
+    "RULE_ONLY:I": 2764,
+    "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:Y": 2682,
+    "RULE_ONLY:W;SUB:NG>N": 2478,
+    "RULE_ONLY:W;RULE_ONLY:NG": 2434,
+    "RULE_ONLY:K;SUB:G>W": 2419,
+    "SUB:M>N;RULE_ONLY:Y": 2343,
+    "SUB:D>T;SUB:D>T": 2135,
+    "SUB:D>S": 2112,
+    "SUB:B>P;SUB:D>T": 2047,
+    "RULE_ONLY:G;SUB:NG>L;SUB:N>Y": 2010,
+    "RULE_ONLY:W;SUB:E>AE;RULE_ONLY:H": 1927,
+    "SUB:B>P;RULE_ONLY:L": 1882,
+    "SUB:N>NG;SUB:N>NG": 1880,
+    "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:B": 1825,
+    "RULE_ONLY:Y;SUB:M>N": 1811,
+    "SUB:NG>N;SUB:N>NG": 1804,
+    "RULE_ONLY:W;RULE_ONLY:I": 1717,
+    "RULE_ONLY:N;SUB:M>P;SUB:B>Y": 1693,
+    "SUB:B>P;RULE_ONLY:Y": 1649,
+    "SUB:N>NG;RULE_ONLY:G": 1576,
+    "RULE_ONLY:P;SUB:B>Y;SUB:N>NG": 1410,
+    "RULE_ONLY:L;SUB:B>P": 1397,
+    "RULE_ONLY:W;SUB:M>NG": 1372,
+    "RULE_ONLY:M;SUB:B>Y;SUB:N>NG": 1326,
+    "RULE_ONLY:B": 1299,
+    "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W;SUB:N>NG": 1279,
+    "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W": 1278,
+    "SUB:M>NG;RULE_ONLY:Y": 1251,
+    "RULE_ONLY:L;SUB:N>NG": 1206,
+    "SUB:B>P;SUB:SS>S": 1155,
+    "SUB:D>N;RULE_ONLY:P;SUB:B>Y": 1148,
+    "RULE_ONLY:Y;CANDIDATE_ONLY:Y": 1144,
+    "SUB:NG>N;RULE_ONLY:Y": 1089,
+    "SUB:M>N;SUB:B>P": 1076,
+    "SUB:NG>N;SUB:M>N": 1032,
+    "SUB:M>NG;RULE_ONLY:B": 982,
+    "SUB:D>N;SUB:N>NG": 972,
+    "CANDIDATE_ONLY:N": 968,
+    "RULE_ONLY:Y;RULE_ONLY:L;SUB:N>Y": 942,
+    "SUB:NG>N;SUB:NG>N;RULE_ONLY:W;RULE_ONLY:Y": 915,
+    "RULE_ONLY:L;SUB:N>Y;RULE_ONLY:G": 898,
+    "RULE_ONLY:Y;SUB:N>L": 864,
+    "SUB:D>T;RULE_ONLY:Y": 859,
+    "RULE_ONLY:Y;SUB:D>T": 858,
+    "RULE_ONLY:K;SUB:G>W;RULE_ONLY:L;SUB:D>T": 851,
+    "RULE_ONLY:P;SUB:B>Y;SUB:M>NG": 838,
+    "RULE_ONLY:Y;RULE_ONLY:NG": 834,
+    "RULE_ONLY:NG;SUB:M>P;SUB:B>Y": 817,
+    "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:W": 811,
+    "RULE_ONLY:M;SUB:B>Y;SUB:M>NG": 778,
+    "SUB:D>T;SUB:B>P": 771,
+    "SUB:D>T;RULE_ONLY:G": 763,
+    "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:W": 728,
+    "SUB:N>NG;SUB:NG>N": 721,
+    "SUB:NG>N;RULE_ONLY:H": 708,
+    "RULE_ONLY:L;SUB:D>T": 708,
+    "SUB:M>NG;RULE_ONLY:W": 696,
+    "RULE_ONLY:K;SUB:G>W;SUB:E>AE": 679,
+    "RULE_ONLY:Y;SUB:NG>N;RULE_ONLY:W": 677,
+    "SUB:D>N;SUB:NG>N": 668,
+    "RULE_ONLY:W": 622
+  },
+  "diagnostic_class_occurrences": {
+    "mixed_or_cross_group_difference": 394215,
+    "multiple_contrasts_within_acoustic_model_group": 6549,
+    "multiple_segment_count_difference": 9063,
+    "run_length_difference_without_complete_length_support": 44,
+    "single_candidate_unit_extra": 4579,
+    "single_contrast_within_acoustic_model_group": 103056,
+    "single_cross_group_substitution": 585913,
+    "single_rule_unit_missing_from_candidate": 58320
+  },
+  "high_frequency_overall": [
+    {
+      "token": "한번",
+      "total_occurrences": 43629,
+      "rule_pron_hangul": "한번",
+      "rule_pron_roman": "H A n _ B EO n",
+      "r2_pron_roman": [
+        "H A M B EO N"
+      ],
+      "r2_pron_phones": [
+        "h ɐ m b ʌ n"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "한번"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:M>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "뭔가",
+      "total_occurrences": 36666,
+      "rule_pron_hangul": "뭔가",
+      "rule_pron_roman": "M WO n _ G A",
+      "r2_pron_roman": [
+        "M W EO NG G A"
+      ],
+      "r2_pron_phones": [
+        "m w ʌ ŋ ɡ ɐ"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "굉장히",
+      "total_occurrences": 35619,
+      "rule_pron_hangul": "굉장히",
+      "rule_pron_roman": "G OE ng _ J A ng _ H I",
+      "r2_pron_roman": [
+        "G E N J A NG H I"
+      ],
+      "r2_pron_phones": [
+        "kʷ e ɲ dʑ ɐ ŋ ʝ i"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "굉장히",
+        "궹장히"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "mixed_or_cross_group_difference"
+      ],
+      "edit_signatures": [
+        "RULE_ONLY:W;SUB:N>NG"
+      ],
+      "diagnostic_family_hints": [
+        "glide_vowel_unitization_or_rule_gap",
+        "nasal_place_or_boundary_rule_gap",
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "정도",
+      "total_occurrences": 27326,
+      "rule_pron_hangul": "정도",
+      "rule_pron_roman": "J EO ng _ D O",
+      "r2_pron_roman": [
+        "J EO N D O"
+      ],
+      "r2_pron_phones": [
+        "tɕ ʌ n d o"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "정ː도",
+        "정도"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:N>NG"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "왜",
+      "total_occurrences": 26832,
+      "rule_pron_hangul": "왜",
+      "rule_pron_roman": "WAE",
+      "r2_pron_roman": [
+        "W E"
+      ],
+      "r2_pron_phones": [
+        "w eː"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "왜",
+        "왜ː"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:E>AE"
+      ],
+      "diagnostic_family_hints": [
+        "glide_vowel_unitization_or_rule_gap"
+      ]
+    },
+    {
+      "token": "돼",
+      "total_occurrences": 23120,
+      "rule_pron_hangul": "돼",
+      "rule_pron_roman": "D WAE",
+      "r2_pron_roman": [
+        "D E"
+      ],
+      "r2_pron_phones": [
+        "tʷ eː"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "mixed_or_cross_group_difference"
+      ],
+      "edit_signatures": [
+        "RULE_ONLY:W;SUB:E>AE"
+      ],
+      "diagnostic_family_hints": [
+        "glide_vowel_unitization_or_rule_gap",
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "왜냐하면",
+      "total_occurrences": 16219,
+      "rule_pron_hangul": "왜냐하면",
+      "rule_pron_roman": "WAE _ N YA _ H A _ M YEO n",
+      "r2_pron_roman": [
+        "W E N A A M EO N"
+      ],
+      "r2_pron_phones": [
+        "w eː ɲ ɐ ɐ mʲ ʌ n"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "왜냐하면"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "mixed_or_cross_group_difference"
+      ],
+      "edit_signatures": [
+        "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y"
+      ],
+      "diagnostic_family_hints": [
+        "glide_vowel_unitization_or_rule_gap",
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "친구가",
+      "total_occurrences": 12179,
+      "rule_pron_hangul": "친구가",
+      "rule_pron_roman": "CH I n _ G U _ G A",
+      "r2_pron_roman": [
+        "CH I NG G U G A"
+      ],
+      "r2_pron_phones": [
+        "tɕʰ i ŋ ɡ u ɡ ɐ"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "친구",
+      "total_occurrences": 9969,
+      "rule_pron_hangul": "친구",
+      "rule_pron_roman": "CH I n _ G U",
+      "r2_pron_roman": [
+        "CH I NG G U"
+      ],
+      "r2_pron_phones": [
+        "tɕʰ i ŋ ɡ u"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "친구"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "돼서",
+      "total_occurrences": 8262,
+      "rule_pron_hangul": "돼서",
+      "rule_pron_roman": "D WAE _ S EO",
+      "r2_pron_roman": [
+        "D E S EO"
+      ],
+      "r2_pron_phones": [
+        "tʷ eː sʰ ʌ"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "mixed_or_cross_group_difference"
+      ],
+      "edit_signatures": [
+        "RULE_ONLY:W;SUB:E>AE"
+      ],
+      "diagnostic_family_hints": [
+        "glide_vowel_unitization_or_rule_gap",
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "정도로",
+      "total_occurrences": 7898,
+      "rule_pron_hangul": "정도로",
+      "rule_pron_roman": "J EO ng _ D O _ R O",
+      "r2_pron_roman": [
+        "J EO N D O R O"
+      ],
+      "r2_pron_phones": [
+        "tɕ ʌ n d o ɾ o"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:N>NG"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "공부를",
+      "total_occurrences": 7005,
+      "rule_pron_hangul": "공부를",
+      "rule_pron_roman": "G O ng _ B U _ R EU l",
+      "r2_pron_roman": [
+        "G O M B U R EU l"
+      ],
+      "r2_pron_phones": [
+        "k o m b u ɾ ɨ ɭ"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:M>NG"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "건강",
+      "total_occurrences": 6570,
+      "rule_pron_hangul": "건강",
+      "rule_pron_roman": "G EO n _ G A ng",
+      "r2_pron_roman": [
+        "G EO NG G A NG"
+      ],
+      "r2_pron_phones": [
+        "k ʌː ŋ ɡ ɐ ŋ"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "건ː강",
+        "건강"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "중에서",
+      "total_occurrences": 6483,
+      "rule_pron_hangul": "중에서",
+      "rule_pron_roman": "J U ng _ E _ S EO",
+      "r2_pron_roman": [
+        "J U E S EO"
+      ],
+      "r2_pron_phones": [
+        "tɕ uː e sʰ ʌ"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_rule_unit_missing_from_candidate"
+      ],
+      "edit_signatures": [
+        "RULE_ONLY:NG"
+      ],
+      "diagnostic_family_hints": [
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "친구들",
+      "total_occurrences": 5750,
+      "rule_pron_hangul": "친구들",
+      "rule_pron_roman": "CH I n _ G U _ D EU l",
+      "r2_pron_roman": [
+        "CH I NG G U D EU l"
+      ],
+      "r2_pron_phones": [
+        "tɕʰ i ŋ ɡ u d ɨ ɭ"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "정도는",
+      "total_occurrences": 5046,
+      "rule_pron_hangul": "정도는",
+      "rule_pron_roman": "J EO ng _ D O _ N EU n",
+      "r2_pron_roman": [
+        "J EO N D O N EU N"
+      ],
+      "r2_pron_phones": [
+        "tɕ ʌ n d o n ɨ n"
+      ],
+      "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:N>NG"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "어차피",
+      "total_occurrences": 5031,
+      "rule_pron_hangul": "어차피",
+      "rule_pron_roman": "EO _ CH A _ P I",
+      "r2_pron_roman": [
+        "EO CH A B I"
+      ],
+      "r2_pron_phones": [
+        "ʌ tɕʰ ɐ pʲ i"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "어차피"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_contrast_within_acoustic_model_group"
+      ],
+      "edit_signatures": [
+        "SUB:B>P"
+      ],
+      "diagnostic_family_hints": [
+        "laryngeal_contrast_or_phone_mapping_gap"
+      ]
+    },
+    {
+      "token": "한국",
+      "total_occurrences": 4669,
+      "rule_pron_hangul": "한국",
+      "rule_pron_roman": "H A n _ G U k",
+      "r2_pron_roman": [
+        "H A NG G U",
+        "H A NG G U k"
+      ],
+      "r2_pron_phones": [
+        "h ɐ ŋ ɡ u",
+        "h ɐ ŋ ɡ u k̚"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "한ː국",
+        "한국"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "mixed_or_cross_group_difference",
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N",
+        "SUB:NG>N;RULE_ONLY:G"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap",
+        "segment_count_or_deletion_gap"
+      ]
+    },
+    {
+      "token": "아닌가",
+      "total_occurrences": 4474,
+      "rule_pron_hangul": "아닌가",
+      "rule_pron_roman": "A _ N I n _ G A",
+      "r2_pron_roman": [
+        "A N I NG G A"
+      ],
+      "r2_pron_phones": [
+        "ɐ ɲ i ŋ ɡ ɐ"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [],
+      "evidence_stratum": "hangul_single_frozen_g2p_variant",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:NG>N"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    },
+    {
+      "token": "상당히",
+      "total_occurrences": 4302,
+      "rule_pron_hangul": "상당히",
+      "rule_pron_roman": "S A ng _ D A ng _ H I",
+      "r2_pron_roman": [
+        "S A N D A NG H I"
+      ],
+      "r2_pron_phones": [
+        "sʰ ɐ n d ɐ ŋ ʝ i"
+      ],
+      "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+      "dictionary_pron_hangul": [
+        "상당히"
+      ],
+      "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+      "diagnostic_classes": [
+        "single_cross_group_substitution"
+      ],
+      "edit_signatures": [
+        "SUB:N>NG"
+      ],
+      "diagnostic_family_hints": [
+        "nasal_place_or_boundary_rule_gap"
+      ]
+    }
+  ],
+  "high_frequency_by_evidence_stratum": {
+    "hangul_dictionary_present_but_not_phone_supported": [
+      {
+        "token": "한번",
+        "total_occurrences": 43629,
+        "rule_pron_hangul": "한번",
+        "rule_pron_roman": "H A n _ B EO n",
+        "r2_pron_roman": [
+          "H A M B EO N"
+        ],
+        "r2_pron_phones": [
+          "h ɐ m b ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한번"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "굉장히",
+        "total_occurrences": 35619,
+        "rule_pron_hangul": "굉장히",
+        "rule_pron_roman": "G OE ng _ J A ng _ H I",
+        "r2_pron_roman": [
+          "G E N J A NG H I"
+        ],
+        "r2_pron_phones": [
+          "kʷ e ɲ dʑ ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "굉장히",
+          "궹장히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "정도",
+        "total_occurrences": 27326,
+        "rule_pron_hangul": "정도",
+        "rule_pron_roman": "J EO ng _ D O",
+        "r2_pron_roman": [
+          "J EO N D O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "정ː도",
+          "정도"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "왜",
+        "total_occurrences": 26832,
+        "rule_pron_hangul": "왜",
+        "rule_pron_roman": "WAE",
+        "r2_pron_roman": [
+          "W E"
+        ],
+        "r2_pron_phones": [
+          "w eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왜",
+          "왜ː"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap"
+        ]
+      },
+      {
+        "token": "왜냐하면",
+        "total_occurrences": 16219,
+        "rule_pron_hangul": "왜냐하면",
+        "rule_pron_roman": "WAE _ N YA _ H A _ M YEO n",
+        "r2_pron_roman": [
+          "W E N A A M EO N"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ ɐ ɐ mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왜냐하면"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "친구",
+        "total_occurrences": 9969,
+        "rule_pron_hangul": "친구",
+        "rule_pron_roman": "CH I n _ G U",
+        "r2_pron_roman": [
+          "CH I NG G U"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "친구"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "건강",
+        "total_occurrences": 6570,
+        "rule_pron_hangul": "건강",
+        "rule_pron_roman": "G EO n _ G A ng",
+        "r2_pron_roman": [
+          "G EO NG G A NG"
+        ],
+        "r2_pron_phones": [
+          "k ʌː ŋ ɡ ɐ ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "건ː강",
+          "건강"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "어차피",
+        "total_occurrences": 5031,
+        "rule_pron_hangul": "어차피",
+        "rule_pron_roman": "EO _ CH A _ P I",
+        "r2_pron_roman": [
+          "EO CH A B I"
+        ],
+        "r2_pron_phones": [
+          "ʌ tɕʰ ɐ pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "어차피"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "한국",
+        "total_occurrences": 4669,
+        "rule_pron_hangul": "한국",
+        "rule_pron_roman": "H A n _ G U k",
+        "r2_pron_roman": [
+          "H A NG G U",
+          "H A NG G U k"
+        ],
+        "r2_pron_phones": [
+          "h ɐ ŋ ɡ u",
+          "h ɐ ŋ ɡ u k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한ː국",
+          "한국"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N",
+          "SUB:NG>N;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "상당히",
+        "total_occurrences": 4302,
+        "rule_pron_hangul": "상당히",
+        "rule_pron_roman": "S A ng _ D A ng _ H I",
+        "r2_pron_roman": [
+          "S A N D A NG H I"
+        ],
+        "r2_pron_phones": [
+          "sʰ ɐ n d ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "상당히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "충분히",
+        "total_occurrences": 4160,
+        "rule_pron_hangul": "충분히",
+        "rule_pron_roman": "CH U ng _ B U n _ H I",
+        "r2_pron_roman": [
+          "CH U M B U N H I",
+          "CH U M B U N I"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ u m b u n ʝ i",
+          "tɕʰ u m b u ɲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "충분히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG",
+          "SUB:M>NG;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "꽤",
+        "total_occurrences": 4067,
+        "rule_pron_hangul": "꽤",
+        "rule_pron_roman": "KK WAE",
+        "r2_pron_roman": [
+          "KK E"
+        ],
+        "r2_pron_phones": [
+          "k͈ʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "꽤"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "티브이",
+        "total_occurrences": 3794,
+        "rule_pron_hangul": "티브이",
+        "rule_pron_roman": "T I _ B EU _ I",
+        "r2_pron_roman": [
+          "D I B EU I"
+        ],
+        "r2_pron_phones": [
+          "tʲ i b ɨ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "티브이"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "그만큼",
+        "total_occurrences": 3656,
+        "rule_pron_hangul": "그만큼",
+        "rule_pron_roman": "G EU _ M A n _ K EU m",
+        "r2_pron_roman": [
+          "G EU M A NG K EU M"
+        ],
+        "r2_pron_phones": [
+          "k ɨ m ɐ ŋ kʰ ɨ m"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "그만큼"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "건가",
+        "total_occurrences": 3538,
+        "rule_pron_hangul": "건가",
+        "rule_pron_roman": "G EO n _ G A",
+        "r2_pron_roman": [
+          "G EO NG G A"
+        ],
+        "r2_pron_phones": [
+          "k ʌː ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "건ː까",
+          "건가"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "전부",
+        "total_occurrences": 3227,
+        "rule_pron_hangul": "전부",
+        "rule_pron_roman": "J EO n _ B U",
+        "r2_pron_roman": [
+          "J EO M B U"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ m b u"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "전ː부",
+          "전부"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "만큼",
+        "total_occurrences": 3007,
+        "rule_pron_hangul": "만큼",
+        "rule_pron_roman": "M A n _ K EU m",
+        "r2_pron_roman": [
+          "M A NG K EU M"
+        ],
+        "r2_pron_phones": [
+          "m ɐ ŋ kʰ ɨ m"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "만큼"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "편한",
+        "total_occurrences": 2807,
+        "rule_pron_hangul": "편한",
+        "rule_pron_roman": "P YEO n _ H A n",
+        "r2_pron_roman": [
+          "B EO N H A N",
+          "B EO N A N"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ n",
+          "pʲ ʌ n ɐ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "편한"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y",
+          "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "카페",
+        "total_occurrences": 2566,
+        "rule_pron_hangul": "카페",
+        "rule_pron_roman": "K A _ P E",
+        "r2_pron_roman": [
+          "G A P E"
+        ],
+        "r2_pron_phones": [
+          "k ɐ pʰ e"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "카페"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:G>K"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "쇼핑",
+        "total_occurrences": 2490,
+        "rule_pron_hangul": "쇼핑",
+        "rule_pron_roman": "S YO _ P I ng",
+        "r2_pron_roman": [
+          "SS O B I NG"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "쇼핑"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      }
+    ],
+    "hangul_multiple_r2_variants": [
+      {
+        "token": "유튜브",
+        "total_occurrences": 3974,
+        "rule_pron_hangul": "유튜브",
+        "rule_pron_roman": "YU _ T YU _ B EU",
+        "r2_pron_roman": [
+          "Y U CH U B EU",
+          "Y U D U B EU"
+        ],
+        "r2_pron_phones": [
+          "j u tɕʰ u b ɨ",
+          "j u tʲ u b ɨ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:T;SUB:CH>Y",
+          "RULE_ONLY:T;SUB:D>Y"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "괜히",
+        "total_occurrences": 1927,
+        "rule_pron_hangul": "괜히",
+        "rule_pron_roman": "G WAE n _ H I",
+        "r2_pron_roman": [
+          "G E N H I",
+          "G E N I"
+        ],
+        "r2_pron_phones": [
+          "kʷ eː n ʝ i",
+          "kʷ eː ɲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "괜ː히"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE",
+          "RULE_ONLY:W;SUB:E>AE;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "취업",
+        "total_occurrences": 1825,
+        "rule_pron_hangul": "취업",
+        "rule_pron_roman": "CH WI _ EO p",
+        "r2_pron_roman": [
+          "J I EO",
+          "J I EO p"
+        ],
+        "r2_pron_phones": [
+          "tɕʷ i ʌ",
+          "tɕʷ i ʌ p̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "취ː업"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:CH;SUB:J>W",
+          "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:B"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "주택",
+        "total_occurrences": 725,
+        "rule_pron_hangul": "주택",
+        "rule_pron_roman": "J U _ T AE k",
+        "r2_pron_roman": [
+          "J U t AE",
+          "J U t AE k"
+        ],
+        "r2_pron_phones": [
+          "tɕ u t̚ ɛː",
+          "tɕ u t̚ ɛː k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "주ː택"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T",
+          "SUB:D>T;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "편할",
+        "total_occurrences": 590,
+        "rule_pron_hangul": "편할",
+        "rule_pron_roman": "P YEO n _ H A l",
+        "r2_pron_roman": [
+          "B EO N H A l",
+          "B EO N A l"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ ɭ",
+          "pʲ ʌ n ɐ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y",
+          "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "취직",
+        "total_occurrences": 547,
+        "rule_pron_hangul": "취직",
+        "rule_pron_roman": "CH WI _ J I k",
+        "r2_pron_roman": [
+          "J I J I",
+          "J I J I k"
+        ],
+        "r2_pron_phones": [
+          "tɕʷ iː dʑ i",
+          "tɕʷ iː dʑ i k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "취ː직"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:CH;SUB:J>W",
+          "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "냉장고",
+        "total_occurrences": 469,
+        "rule_pron_hangul": "냉장고",
+        "rule_pron_roman": "N AE ng _ J A ng _ G O",
+        "r2_pron_roman": [
+          "D AE N J A NG G O",
+          "N AE N J A NG G O"
+        ],
+        "r2_pron_phones": [
+          "d ɛː ɲ dʑ ɐ ŋ ɡ o",
+          "n ɛː ɲ dʑ ɐ ŋ ɡ o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "냉ː장고"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>N;SUB:N>NG",
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "대한민국",
+        "total_occurrences": 391,
+        "rule_pron_hangul": "대한민국",
+        "rule_pron_roman": "D AE _ H A n _ M I n _ G U k",
+        "r2_pron_roman": [
+          "D AE H A N M I NG G U",
+          "D AE H A N M I NG G U k"
+        ],
+        "r2_pron_phones": [
+          "t ɛː ɦ ɐ n mʲ i ŋ ɡ u",
+          "t ɛː ɦ ɐ n mʲ i ŋ ɡ u k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "대ː한민국"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N",
+          "SUB:NG>N;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "냉동",
+        "total_occurrences": 328,
+        "rule_pron_hangul": "냉동",
+        "rule_pron_roman": "N AE ng _ D O ng",
+        "r2_pron_roman": [
+          "D AE N D O NG",
+          "N AE N D O NG"
+        ],
+        "r2_pron_phones": [
+          "d ɛː n d o ŋ",
+          "n ɛː n d o ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "냉ː동"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>N;SUB:N>NG",
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "장례식",
+        "total_occurrences": 258,
+        "rule_pron_hangul": "장례식",
+        "rule_pron_roman": "J A ng _ R YE _ S I k",
+        "r2_pron_roman": [
+          "J A NG N E S I",
+          "J A NG N E S I k"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ ɲ e ɕʰ i",
+          "tɕ ɐ ŋ ɲ e ɕʰ i k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "장ː녜식"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:L;SUB:N>Y",
+          "RULE_ONLY:L;SUB:N>Y;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "양쪽",
+        "total_occurrences": 249,
+        "rule_pron_hangul": "양쪽",
+        "rule_pron_roman": "YA ng _ JJ O k",
+        "r2_pron_roman": [
+          "Y A N JJ O",
+          "Y A N JJ O k"
+        ],
+        "r2_pron_phones": [
+          "j ɐ ɲ tɕ͈ o",
+          "j ɐ ɲ tɕ͈ o k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "양ː쪽"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG",
+          "SUB:N>NG;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "어딘가",
+        "total_occurrences": 206,
+        "rule_pron_hangul": "어딘가",
+        "rule_pron_roman": "EO _ D I n _ G A",
+        "r2_pron_roman": [
+          "EO J I NG G A",
+          "EO D I NG G A"
+        ],
+        "r2_pron_phones": [
+          "ʌ dʑ i ŋ ɡ ɐ",
+          "ʌ dʲ i ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:J>D;SUB:NG>N",
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "한복",
+        "total_occurrences": 203,
+        "rule_pron_hangul": "한복",
+        "rule_pron_roman": "H A n _ B O k",
+        "r2_pron_roman": [
+          "H A M B O",
+          "H A M B O k"
+        ],
+        "r2_pron_phones": [
+          "h ɐ m b o",
+          "h ɐ m b o k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한ː복"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N",
+          "SUB:M>N;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왕복",
+        "total_occurrences": 201,
+        "rule_pron_hangul": "왕복",
+        "rule_pron_roman": "WA ng _ B O k",
+        "r2_pron_roman": [
+          "W A M B O",
+          "W A M B O k"
+        ],
+        "r2_pron_phones": [
+          "w ɐ m b o",
+          "w ɐ m b o k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왕ː복"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG",
+          "SUB:M>NG;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "퇴직",
+        "total_occurrences": 147,
+        "rule_pron_hangul": "퇴직",
+        "rule_pron_roman": "T OE _ J I k",
+        "r2_pron_roman": [
+          "D E J I",
+          "D E J I k"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː dʑ i",
+          "tʷ eː dʑ i k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "퇴ː직",
+          "퉤ː직"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:T;SUB:D>W",
+          "RULE_ONLY:T;SUB:D>W;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "퀄리티",
+        "total_occurrences": 145,
+        "rule_pron_hangul": "퀄리티",
+        "rule_pron_roman": "K WO l _ R I _ T I",
+        "r2_pron_roman": [
+          "G EO l I CH I",
+          "G EO l I D I"
+        ],
+        "r2_pron_phones": [
+          "kʷ ʌ ʎː i tɕʰ i",
+          "kʷ ʌ ʎː i tʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:K;SUB:G>W;RULE_ONLY:L;SUB:CH>T",
+          "RULE_ONLY:K;SUB:G>W;RULE_ONLY:L;SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "경북",
+        "total_occurrences": 74,
+        "rule_pron_hangul": "경북",
+        "rule_pron_roman": "G YEO ng _ B U k",
+        "r2_pron_roman": [
+          "G EO M B U",
+          "G EO M B U k"
+        ],
+        "r2_pron_phones": [
+          "c ʌ m b u",
+          "c ʌ m b u k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "경ː북"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:M>NG",
+          "RULE_ONLY:Y;SUB:M>NG;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "냉동식품",
+        "total_occurrences": 64,
+        "rule_pron_hangul": "냉동식품",
+        "rule_pron_roman": "N AE ng _ D O ng _ S I k _ P U m",
+        "r2_pron_roman": [
+          "D AE N D O NG S I k P U M",
+          "N AE N D O NG S I k P U M"
+        ],
+        "r2_pron_phones": [
+          "d ɛː n d o ŋ ɕʰ i k̚ pʰ u m",
+          "n ɛː n d o ŋ ɕʰ i k̚ pʰ u m"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "냉ː동식품"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>N;SUB:N>NG",
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "편하",
+        "total_occurrences": 50,
+        "rule_pron_hangul": "편하",
+        "rule_pron_roman": "P YEO n _ H A",
+        "r2_pron_roman": [
+          "B EO N H A",
+          "B EO N A"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ",
+          "pʲ ʌ n ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y",
+          "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "영향력",
+        "total_occurrences": 50,
+        "rule_pron_hangul": "영향력",
+        "rule_pron_roman": "YEO ng _ H YA ng _ R YEO k",
+        "r2_pron_roman": [
+          "Y EO NG H A NG N EO",
+          "Y EO NG H A NG N EO k"
+        ],
+        "r2_pron_phones": [
+          "j ʌː ŋ ʝ ɐ ŋ ɲ ʌ",
+          "j ʌː ŋ ʝ ɐ ŋ ɲ ʌ k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "영ː향녁"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;RULE_ONLY:L;SUB:N>Y",
+          "RULE_ONLY:Y;RULE_ONLY:L;SUB:N>Y;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      }
+    ],
+    "hangul_single_frozen_g2p_variant": [
+      {
+        "token": "뭔가",
+        "total_occurrences": 36666,
+        "rule_pron_hangul": "뭔가",
+        "rule_pron_roman": "M WO n _ G A",
+        "r2_pron_roman": [
+          "M W EO NG G A"
+        ],
+        "r2_pron_phones": [
+          "m w ʌ ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "돼",
+        "total_occurrences": 23120,
+        "rule_pron_hangul": "돼",
+        "rule_pron_roman": "D WAE",
+        "r2_pron_roman": [
+          "D E"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "친구가",
+        "total_occurrences": 12179,
+        "rule_pron_hangul": "친구가",
+        "rule_pron_roman": "CH I n _ G U _ G A",
+        "r2_pron_roman": [
+          "CH I NG G U G A"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "돼서",
+        "total_occurrences": 8262,
+        "rule_pron_hangul": "돼서",
+        "rule_pron_roman": "D WAE _ S EO",
+        "r2_pron_roman": [
+          "D E S EO"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "정도로",
+        "total_occurrences": 7898,
+        "rule_pron_hangul": "정도로",
+        "rule_pron_roman": "J EO ng _ D O _ R O",
+        "r2_pron_roman": [
+          "J EO N D O R O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o ɾ o"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "공부를",
+        "total_occurrences": 7005,
+        "rule_pron_hangul": "공부를",
+        "rule_pron_roman": "G O ng _ B U _ R EU l",
+        "r2_pron_roman": [
+          "G O M B U R EU l"
+        ],
+        "r2_pron_phones": [
+          "k o m b u ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "중에서",
+        "total_occurrences": 6483,
+        "rule_pron_hangul": "중에서",
+        "rule_pron_roman": "J U ng _ E _ S EO",
+        "r2_pron_roman": [
+          "J U E S EO"
+        ],
+        "r2_pron_phones": [
+          "tɕ uː e sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:NG"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "친구들",
+        "total_occurrences": 5750,
+        "rule_pron_hangul": "친구들",
+        "rule_pron_roman": "CH I n _ G U _ D EU l",
+        "r2_pron_roman": [
+          "CH I NG G U D EU l"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u d ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "정도는",
+        "total_occurrences": 5046,
+        "rule_pron_hangul": "정도는",
+        "rule_pron_roman": "J EO ng _ D O _ N EU n",
+        "r2_pron_roman": [
+          "J EO N D O N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "아닌가",
+        "total_occurrences": 4474,
+        "rule_pron_hangul": "아닌가",
+        "rule_pron_roman": "A _ N I n _ G A",
+        "r2_pron_roman": [
+          "A N I NG G A"
+        ],
+        "r2_pron_phones": [
+          "ɐ ɲ i ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구랑",
+        "total_occurrences": 4294,
+        "rule_pron_hangul": "친구랑",
+        "rule_pron_roman": "CH I n _ G U _ R A ng",
+        "r2_pron_roman": [
+          "CH I NG G U R A NG"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u ɾ ɐ ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "걔가",
+        "total_occurrences": 4139,
+        "rule_pron_hangul": "걔가",
+        "rule_pron_roman": "G YAE _ G A",
+        "r2_pron_roman": [
+          "G AE G A"
+        ],
+        "r2_pron_phones": [
+          "kʷ ɛː ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "저희가",
+        "total_occurrences": 3828,
+        "rule_pron_hangul": "저희가",
+        "rule_pron_roman": "J EO _ H UI _ G A",
+        "r2_pron_roman": [
+          "J EO H I G A"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ ʝ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:EU_G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "쇼핑을",
+        "total_occurrences": 3722,
+        "rule_pron_hangul": "쇼핑을",
+        "rule_pron_roman": "S YO _ P I ng _ EU l",
+        "r2_pron_roman": [
+          "SS O B I NG EU l"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼요",
+        "total_occurrences": 3646,
+        "rule_pron_hangul": "돼요",
+        "rule_pron_roman": "D WAE _ YO",
+        "r2_pron_roman": [
+          "D E Y O"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː j o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "편하게",
+        "total_occurrences": 3593,
+        "rule_pron_hangul": "편하게",
+        "rule_pron_roman": "P YEO n _ H A _ G E",
+        "r2_pron_roman": [
+          "B EO N H A G E"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ ɡ e"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "친구는",
+        "total_occurrences": 3520,
+        "rule_pron_hangul": "친구는",
+        "rule_pron_roman": "CH I n _ G U _ N EU n",
+        "r2_pron_roman": [
+          "CH I NG G U N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "준비를",
+        "total_occurrences": 3213,
+        "rule_pron_hangul": "준비를",
+        "rule_pron_roman": "J U n _ B I _ R EU l",
+        "r2_pron_roman": [
+          "J U M B I R EU l"
+        ],
+        "r2_pron_phones": [
+          "tɕ uː m bʲ i ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "최대한",
+        "total_occurrences": 3052,
+        "rule_pron_hangul": "최대한",
+        "rule_pron_roman": "CH OE _ D AE _ H A n",
+        "r2_pron_roman": [
+          "J E D AE H A N"
+        ],
+        "r2_pron_phones": [
+          "tɕʷ eː t ɛː ɦ ɐ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "최ː대한",
+          "췌ː대한"
+        ],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:CH;SUB:J>W"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "건강을",
+        "total_occurrences": 3000,
+        "rule_pron_hangul": "건강을",
+        "rule_pron_roman": "G EO n _ G A ng _ EU l",
+        "r2_pron_roman": [
+          "G EO NG G A NG EU l"
+        ],
+        "r2_pron_phones": [
+          "k ʌː ŋ ɡ ɐ ŋ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      }
+    ]
+  },
+  "high_frequency_by_diagnostic_family_hint": {
+    "glide_vowel_unitization_or_rule_gap": [
+      {
+        "token": "굉장히",
+        "total_occurrences": 35619,
+        "rule_pron_hangul": "굉장히",
+        "rule_pron_roman": "G OE ng _ J A ng _ H I",
+        "r2_pron_roman": [
+          "G E N J A NG H I"
+        ],
+        "r2_pron_phones": [
+          "kʷ e ɲ dʑ ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "굉장히",
+          "궹장히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왜",
+        "total_occurrences": 26832,
+        "rule_pron_hangul": "왜",
+        "rule_pron_roman": "WAE",
+        "r2_pron_roman": [
+          "W E"
+        ],
+        "r2_pron_phones": [
+          "w eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왜",
+          "왜ː"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap"
+        ]
+      },
+      {
+        "token": "돼",
+        "total_occurrences": 23120,
+        "rule_pron_hangul": "돼",
+        "rule_pron_roman": "D WAE",
+        "r2_pron_roman": [
+          "D E"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왜냐하면",
+        "total_occurrences": 16219,
+        "rule_pron_hangul": "왜냐하면",
+        "rule_pron_roman": "WAE _ N YA _ H A _ M YEO n",
+        "r2_pron_roman": [
+          "W E N A A M EO N"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ ɐ ɐ mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왜냐하면"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼서",
+        "total_occurrences": 8262,
+        "rule_pron_hangul": "돼서",
+        "rule_pron_roman": "D WAE _ S EO",
+        "r2_pron_roman": [
+          "D E S EO"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "걔가",
+        "total_occurrences": 4139,
+        "rule_pron_hangul": "걔가",
+        "rule_pron_roman": "G YAE _ G A",
+        "r2_pron_roman": [
+          "G AE G A"
+        ],
+        "r2_pron_phones": [
+          "kʷ ɛː ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "꽤",
+        "total_occurrences": 4067,
+        "rule_pron_hangul": "꽤",
+        "rule_pron_roman": "KK WAE",
+        "r2_pron_roman": [
+          "KK E"
+        ],
+        "r2_pron_phones": [
+          "k͈ʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "꽤"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "저희가",
+        "total_occurrences": 3828,
+        "rule_pron_hangul": "저희가",
+        "rule_pron_roman": "J EO _ H UI _ G A",
+        "r2_pron_roman": [
+          "J EO H I G A"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ ʝ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:EU_G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼요",
+        "total_occurrences": 3646,
+        "rule_pron_hangul": "돼요",
+        "rule_pron_roman": "D WAE _ YO",
+        "r2_pron_roman": [
+          "D E Y O"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː j o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왜냐면",
+        "total_occurrences": 2896,
+        "rule_pron_hangul": "왜냐면",
+        "rule_pron_roman": "WAE _ N YA _ M YEO n",
+        "r2_pron_roman": [
+          "W E N A M EO N"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ ɐ mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "걔는",
+        "total_occurrences": 2464,
+        "rule_pron_hangul": "걔는",
+        "rule_pron_roman": "G YAE _ N EU n",
+        "r2_pron_roman": [
+          "G AE N EU N"
+        ],
+        "r2_pron_phones": [
+          "kʷ ɛː n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "경제",
+        "total_occurrences": 2364,
+        "rule_pron_hangul": "경제",
+        "rule_pron_roman": "G YEO ng _ J E",
+        "r2_pron_roman": [
+          "G EO N J E"
+        ],
+        "r2_pron_phones": [
+          "c ʌ ɲ dʑ e"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "경ː제",
+          "경제"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "저희는",
+        "total_occurrences": 2298,
+        "rule_pron_hangul": "저희는",
+        "rule_pron_roman": "J EO _ H UI _ N EU n",
+        "r2_pron_roman": [
+          "J EO H I N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ ʝ i n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:EU_G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "괜히",
+        "total_occurrences": 1927,
+        "rule_pron_hangul": "괜히",
+        "rule_pron_roman": "G WAE n _ H I",
+        "r2_pron_roman": [
+          "G E N H I",
+          "G E N I"
+        ],
+        "r2_pron_phones": [
+          "kʷ eː n ʝ i",
+          "kʷ eː ɲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "괜ː히"
+        ],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE",
+          "RULE_ONLY:W;SUB:E>AE;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼야",
+        "total_occurrences": 1554,
+        "rule_pron_hangul": "돼야",
+        "rule_pron_roman": "D WAE _ YA",
+        "r2_pron_roman": [
+          "D E Y A"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː j ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "아쉬운",
+        "total_occurrences": 1553,
+        "rule_pron_hangul": "아쉬운",
+        "rule_pron_roman": "A _ S WI _ U n",
+        "r2_pron_roman": [
+          "A S U N"
+        ],
+        "r2_pron_phones": [
+          "ɐ sʷ u n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "multiple_segment_count_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;RULE_ONLY:I"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "상황에서",
+        "total_occurrences": 1359,
+        "rule_pron_hangul": "상황에서",
+        "rule_pron_roman": "S A ng _ H WA ng _ E _ S EO",
+        "r2_pron_roman": [
+          "S A NG H A E S EO"
+        ],
+        "r2_pron_phones": [
+          "sʰ ɐ ŋ βʷ ɐ e sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "multiple_segment_count_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;RULE_ONLY:NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "너희는",
+        "total_occurrences": 1230,
+        "rule_pron_hangul": "너희는",
+        "rule_pron_roman": "N EO _ H UI _ N EU n",
+        "r2_pron_roman": [
+          "N EO H I N EU N"
+        ],
+        "r2_pron_phones": [
+          "n ʌ ʝ i n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:EU_G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "정도면",
+        "total_occurrences": 1216,
+        "rule_pron_hangul": "정도면",
+        "rule_pron_roman": "J EO ng _ D O _ M YEO n",
+        "r2_pron_roman": [
+          "J EO N D O M EO N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왠지",
+        "total_occurrences": 1205,
+        "rule_pron_hangul": "왠지",
+        "rule_pron_roman": "WAE n _ J I",
+        "r2_pron_roman": [
+          "W E N J I"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ dʑ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왠지"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap"
+        ]
+      }
+    ],
+    "laryngeal_contrast_or_phone_mapping_gap": [
+      {
+        "token": "어차피",
+        "total_occurrences": 5031,
+        "rule_pron_hangul": "어차피",
+        "rule_pron_roman": "EO _ CH A _ P I",
+        "r2_pron_roman": [
+          "EO CH A B I"
+        ],
+        "r2_pron_phones": [
+          "ʌ tɕʰ ɐ pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "어차피"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "티브이",
+        "total_occurrences": 3794,
+        "rule_pron_hangul": "티브이",
+        "rule_pron_roman": "T I _ B EU _ I",
+        "r2_pron_roman": [
+          "D I B EU I"
+        ],
+        "r2_pron_phones": [
+          "tʲ i b ɨ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "티브이"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "쇼핑을",
+        "total_occurrences": 3722,
+        "rule_pron_hangul": "쇼핑을",
+        "rule_pron_roman": "S YO _ P I ng _ EU l",
+        "r2_pron_roman": [
+          "SS O B I NG EU l"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "카페",
+        "total_occurrences": 2566,
+        "rule_pron_hangul": "카페",
+        "rule_pron_roman": "K A _ P E",
+        "r2_pron_roman": [
+          "G A P E"
+        ],
+        "r2_pron_phones": [
+          "k ɐ pʰ e"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "카페"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:G>K"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "쇼핑",
+        "total_occurrences": 2490,
+        "rule_pron_hangul": "쇼핑",
+        "rule_pron_roman": "S YO _ P I ng",
+        "r2_pron_roman": [
+          "SS O B I NG"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "쇼핑"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "티브이를",
+        "total_occurrences": 2285,
+        "rule_pron_hangul": "티브이를",
+        "rule_pron_roman": "T I _ B EU _ I _ R EU l",
+        "r2_pron_roman": [
+          "D I B EU I R EU l"
+        ],
+        "r2_pron_phones": [
+          "tʲ i b ɨ i ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "엠비티아이",
+        "total_occurrences": 1899,
+        "rule_pron_hangul": "엠비티아이",
+        "rule_pron_roman": "E m _ B I _ T I _ A _ I",
+        "r2_pron_roman": [
+          "E M B I D I A I"
+        ],
+        "r2_pron_phones": [
+          "e m bʲ i tʲ i ɐ i"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "시에",
+        "total_occurrences": 1869,
+        "rule_pron_hangul": "시에",
+        "rule_pron_roman": "S I _ E",
+        "r2_pron_roman": [
+          "SS I E"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ i e"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "시에"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:SS>S"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "커피",
+        "total_occurrences": 1819,
+        "rule_pron_hangul": "커피",
+        "rule_pron_roman": "K EO _ P I",
+        "r2_pron_roman": [
+          "K EO B I"
+        ],
+        "r2_pron_phones": [
+          "kʰ ʌ pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "커피"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "엠비티아이가",
+        "total_occurrences": 1557,
+        "rule_pron_hangul": "엠비티아이가",
+        "rule_pron_roman": "E m _ B I _ T I _ A _ I _ G A",
+        "r2_pron_roman": [
+          "E M B I D I A I G A"
+        ],
+        "r2_pron_phones": [
+          "e m bʲ i tʲ i ɐ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "티브이가",
+        "total_occurrences": 1513,
+        "rule_pron_hangul": "티브이가",
+        "rule_pron_roman": "T I _ B EU _ I _ G A",
+        "r2_pron_roman": [
+          "D I B EU I G A"
+        ],
+        "r2_pron_phones": [
+          "tʲ i b ɨ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "피해를",
+        "total_occurrences": 1406,
+        "rule_pron_hangul": "피해를",
+        "rule_pron_roman": "P I _ H AE _ R EU l",
+        "r2_pron_roman": [
+          "B I H AE R EU l"
+        ],
+        "r2_pron_phones": [
+          "pʲ iː ɦ ɛː ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "기피",
+        "total_occurrences": 1110,
+        "rule_pron_hangul": "기피",
+        "rule_pron_roman": "G I _ P I",
+        "r2_pron_roman": [
+          "G I B I"
+        ],
+        "r2_pron_phones": [
+          "c i pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "기피"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "티브이에서",
+        "total_occurrences": 1099,
+        "rule_pron_hangul": "티브이에서",
+        "rule_pron_roman": "T I _ B EU _ I _ E _ S EO",
+        "r2_pron_roman": [
+          "D I B EU I E S EO"
+        ],
+        "r2_pron_phones": [
+          "tʲ i b ɨ i e sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "팀",
+        "total_occurrences": 1063,
+        "rule_pron_hangul": "팀",
+        "rule_pron_roman": "T I m",
+        "r2_pron_roman": [
+          "CH I M",
+          "D I M"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i m",
+          "tʲ i m"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "팀"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:CH>T",
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "커피를",
+        "total_occurrences": 1044,
+        "rule_pron_hangul": "커피를",
+        "rule_pron_roman": "K EO _ P I _ R EU l",
+        "r2_pron_roman": [
+          "K EO B I R EU l"
+        ],
+        "r2_pron_phones": [
+          "kʰ ʌ pʲ i ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "알다시피",
+        "total_occurrences": 995,
+        "rule_pron_hangul": "알다시피",
+        "rule_pron_roman": "A l _ D A _ S I _ P I",
+        "r2_pron_roman": [
+          "A l D A S I B I"
+        ],
+        "r2_pron_phones": [
+          "ɐ ɭ d ɐ ɕʰ i pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "티",
+        "total_occurrences": 977,
+        "rule_pron_hangul": "티",
+        "rule_pron_roman": "T I",
+        "r2_pron_roman": [
+          "CH I",
+          "D I"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i",
+          "tʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "티"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:CH>T",
+          "SUB:D>T"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "피",
+        "total_occurrences": 932,
+        "rule_pron_hangul": "피",
+        "rule_pron_roman": "P I",
+        "r2_pron_roman": [
+          "B I"
+        ],
+        "r2_pron_phones": [
+          "pʲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "피",
+          "피ː"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_contrast_within_acoustic_model_group"
+        ],
+        "edit_signatures": [
+          "SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap"
+        ]
+      },
+      {
+        "token": "쇼핑할",
+        "total_occurrences": 903,
+        "rule_pron_hangul": "쇼핑할",
+        "rule_pron_roman": "S YO _ P I ng _ H A l",
+        "r2_pron_roman": [
+          "SS O B I NG H A l"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ h ɐ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      }
+    ],
+    "nasal_place_or_boundary_rule_gap": [
+      {
+        "token": "한번",
+        "total_occurrences": 43629,
+        "rule_pron_hangul": "한번",
+        "rule_pron_roman": "H A n _ B EO n",
+        "r2_pron_roman": [
+          "H A M B EO N"
+        ],
+        "r2_pron_phones": [
+          "h ɐ m b ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한번"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "뭔가",
+        "total_occurrences": 36666,
+        "rule_pron_hangul": "뭔가",
+        "rule_pron_roman": "M WO n _ G A",
+        "r2_pron_roman": [
+          "M W EO NG G A"
+        ],
+        "r2_pron_phones": [
+          "m w ʌ ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "굉장히",
+        "total_occurrences": 35619,
+        "rule_pron_hangul": "굉장히",
+        "rule_pron_roman": "G OE ng _ J A ng _ H I",
+        "r2_pron_roman": [
+          "G E N J A NG H I"
+        ],
+        "r2_pron_phones": [
+          "kʷ e ɲ dʑ ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "굉장히",
+          "궹장히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "정도",
+        "total_occurrences": 27326,
+        "rule_pron_hangul": "정도",
+        "rule_pron_roman": "J EO ng _ D O",
+        "r2_pron_roman": [
+          "J EO N D O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "정ː도",
+          "정도"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구가",
+        "total_occurrences": 12179,
+        "rule_pron_hangul": "친구가",
+        "rule_pron_roman": "CH I n _ G U _ G A",
+        "r2_pron_roman": [
+          "CH I NG G U G A"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구",
+        "total_occurrences": 9969,
+        "rule_pron_hangul": "친구",
+        "rule_pron_roman": "CH I n _ G U",
+        "r2_pron_roman": [
+          "CH I NG G U"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "친구"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "정도로",
+        "total_occurrences": 7898,
+        "rule_pron_hangul": "정도로",
+        "rule_pron_roman": "J EO ng _ D O _ R O",
+        "r2_pron_roman": [
+          "J EO N D O R O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o ɾ o"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "공부를",
+        "total_occurrences": 7005,
+        "rule_pron_hangul": "공부를",
+        "rule_pron_roman": "G O ng _ B U _ R EU l",
+        "r2_pron_roman": [
+          "G O M B U R EU l"
+        ],
+        "r2_pron_phones": [
+          "k o m b u ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "건강",
+        "total_occurrences": 6570,
+        "rule_pron_hangul": "건강",
+        "rule_pron_roman": "G EO n _ G A ng",
+        "r2_pron_roman": [
+          "G EO NG G A NG"
+        ],
+        "r2_pron_phones": [
+          "k ʌː ŋ ɡ ɐ ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "건ː강",
+          "건강"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구들",
+        "total_occurrences": 5750,
+        "rule_pron_hangul": "친구들",
+        "rule_pron_roman": "CH I n _ G U _ D EU l",
+        "r2_pron_roman": [
+          "CH I NG G U D EU l"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u d ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "정도는",
+        "total_occurrences": 5046,
+        "rule_pron_hangul": "정도는",
+        "rule_pron_roman": "J EO ng _ D O _ N EU n",
+        "r2_pron_roman": [
+          "J EO N D O N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ n d o n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "한국",
+        "total_occurrences": 4669,
+        "rule_pron_hangul": "한국",
+        "rule_pron_roman": "H A n _ G U k",
+        "r2_pron_roman": [
+          "H A NG G U",
+          "H A NG G U k"
+        ],
+        "r2_pron_phones": [
+          "h ɐ ŋ ɡ u",
+          "h ɐ ŋ ɡ u k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한ː국",
+          "한국"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N",
+          "SUB:NG>N;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "아닌가",
+        "total_occurrences": 4474,
+        "rule_pron_hangul": "아닌가",
+        "rule_pron_roman": "A _ N I n _ G A",
+        "r2_pron_roman": [
+          "A N I NG G A"
+        ],
+        "r2_pron_phones": [
+          "ɐ ɲ i ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "상당히",
+        "total_occurrences": 4302,
+        "rule_pron_hangul": "상당히",
+        "rule_pron_roman": "S A ng _ D A ng _ H I",
+        "r2_pron_roman": [
+          "S A N D A NG H I"
+        ],
+        "r2_pron_phones": [
+          "sʰ ɐ n d ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "상당히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구랑",
+        "total_occurrences": 4294,
+        "rule_pron_hangul": "친구랑",
+        "rule_pron_roman": "CH I n _ G U _ R A ng",
+        "r2_pron_roman": [
+          "CH I NG G U R A NG"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u ɾ ɐ ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "충분히",
+        "total_occurrences": 4160,
+        "rule_pron_hangul": "충분히",
+        "rule_pron_roman": "CH U ng _ B U n _ H I",
+        "r2_pron_roman": [
+          "CH U M B U N H I",
+          "CH U M B U N I"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ u m b u n ʝ i",
+          "tɕʰ u m b u ɲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "충분히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG",
+          "SUB:M>NG;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "그만큼",
+        "total_occurrences": 3656,
+        "rule_pron_hangul": "그만큼",
+        "rule_pron_roman": "G EU _ M A n _ K EU m",
+        "r2_pron_roman": [
+          "G EU M A NG K EU M"
+        ],
+        "r2_pron_phones": [
+          "k ɨ m ɐ ŋ kʰ ɨ m"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "그만큼"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "건가",
+        "total_occurrences": 3538,
+        "rule_pron_hangul": "건가",
+        "rule_pron_roman": "G EO n _ G A",
+        "r2_pron_roman": [
+          "G EO NG G A"
+        ],
+        "r2_pron_phones": [
+          "k ʌː ŋ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "건ː까",
+          "건가"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "친구는",
+        "total_occurrences": 3520,
+        "rule_pron_hangul": "친구는",
+        "rule_pron_roman": "CH I n _ G U _ N EU n",
+        "r2_pron_roman": [
+          "CH I NG G U N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ i ŋ ɡ u n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      },
+      {
+        "token": "전부",
+        "total_occurrences": 3227,
+        "rule_pron_hangul": "전부",
+        "rule_pron_roman": "J EO n _ B U",
+        "r2_pron_roman": [
+          "J EO M B U"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ m b u"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "전ː부",
+          "전부"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>N"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap"
+        ]
+      }
+    ],
+    "other_substitution_or_mixed_gap": [
+      {
+        "token": "정리를",
+        "total_occurrences": 967,
+        "rule_pron_hangul": "정리를",
+        "rule_pron_roman": "J EO ng _ R I _ R EU l",
+        "r2_pron_roman": [
+          "J EO NG N I R EU l"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "이슈가",
+        "total_occurrences": 742,
+        "rule_pron_hangul": "이슈가",
+        "rule_pron_roman": "I _ S YU _ G A",
+        "r2_pron_roman": [
+          "I t Y U G A"
+        ],
+        "r2_pron_phones": [
+          "iː t̚ j u ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>S"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "장르가",
+        "total_occurrences": 698,
+        "rule_pron_hangul": "장르가",
+        "rule_pron_roman": "J A ng _ R EU _ G A",
+        "r2_pron_roman": [
+          "J A NG N EU G A"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ n ɨ ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "장르를",
+        "total_occurrences": 647,
+        "rule_pron_hangul": "장르를",
+        "rule_pron_roman": "J A ng _ R EU _ R EU l",
+        "r2_pron_roman": [
+          "J A NG N EU R EU l"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ n ɨ ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "금리가",
+        "total_occurrences": 599,
+        "rule_pron_hangul": "금리가",
+        "rule_pron_roman": "G EU m _ R I _ G A",
+        "r2_pron_roman": [
+          "G EU M N I G A"
+        ],
+        "r2_pron_phones": [
+          "k ɨ m ɲ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리가",
+        "total_occurrences": 330,
+        "rule_pron_hangul": "정리가",
+        "rule_pron_roman": "J EO ng _ R I _ G A",
+        "r2_pron_roman": [
+          "J EO NG N I G A"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "장르는",
+        "total_occurrences": 311,
+        "rule_pron_hangul": "장르는",
+        "rule_pron_roman": "J A ng _ R EU _ N EU n",
+        "r2_pron_roman": [
+          "J A NG N EU N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ n ɨ n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리해",
+        "total_occurrences": 307,
+        "rule_pron_hangul": "정리해",
+        "rule_pron_roman": "J EO ng _ R I _ H AE",
+        "r2_pron_roman": [
+          "J EO NG N I H AE"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɦ ɛː"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "장르의",
+        "total_occurrences": 300,
+        "rule_pron_hangul": "장르의",
+        "rule_pron_roman": "J A ng _ R EU _ UI",
+        "r2_pron_roman": [
+          "J A NG N EU EU_G I"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ n ɨ ɰ i"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리하고",
+        "total_occurrences": 288,
+        "rule_pron_hangul": "정리하고",
+        "rule_pron_roman": "J EO ng _ R I _ H A _ G O",
+        "r2_pron_roman": [
+          "J EO NG N I H A G O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɦ ɐ ɡ o"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "하셔야",
+        "total_occurrences": 223,
+        "rule_pron_hangul": "하셔야",
+        "rule_pron_roman": "H A _ S YEO _ YA",
+        "r2_pron_roman": [
+          "H A t Y EO Y A"
+        ],
+        "r2_pron_phones": [
+          "h ɐ t̚ j ʌː j ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>S"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리하는",
+        "total_occurrences": 194,
+        "rule_pron_hangul": "정리하는",
+        "rule_pron_roman": "J EO ng _ R I _ H A _ N EU n",
+        "r2_pron_roman": [
+          "J EO NG N I H A N EU N"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɦ ɐ n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "금리를",
+        "total_occurrences": 163,
+        "rule_pron_hangul": "금리를",
+        "rule_pron_roman": "G EU m _ R I _ R EU l",
+        "r2_pron_roman": [
+          "G EU M N I R EU l"
+        ],
+        "r2_pron_phones": [
+          "k ɨ m ɲ i ɾ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "심리가",
+        "total_occurrences": 150,
+        "rule_pron_hangul": "심리가",
+        "rule_pron_roman": "S I m _ R I _ G A",
+        "r2_pron_roman": [
+          "S I M N I G A"
+        ],
+        "r2_pron_phones": [
+          "ɕʰ i m ɲ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "주셔야",
+        "total_occurrences": 145,
+        "rule_pron_hangul": "주셔야",
+        "rule_pron_roman": "J U _ S YEO _ YA",
+        "r2_pron_roman": [
+          "J U t Y EO Y A"
+        ],
+        "r2_pron_phones": [
+          "tɕ u t̚ j ʌː j ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:D>S"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리해서",
+        "total_occurrences": 138,
+        "rule_pron_hangul": "정리해서",
+        "rule_pron_roman": "J EO ng _ R I _ H AE _ S EO",
+        "r2_pron_roman": [
+          "J EO NG N I H AE S EO"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɦ ɛː sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "강릉에",
+        "total_occurrences": 135,
+        "rule_pron_hangul": "강릉에",
+        "rule_pron_roman": "G A ng _ R EU ng _ E",
+        "r2_pron_roman": [
+          "G A NG N EU NG E"
+        ],
+        "r2_pron_phones": [
+          "k ɐ ŋ n ɨ ŋ e"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "정리할",
+        "total_occurrences": 127,
+        "rule_pron_hangul": "정리할",
+        "rule_pron_roman": "J EO ng _ R I _ H A l",
+        "r2_pron_roman": [
+          "J EO NG N I H A l"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌː ŋ ɲ i ɦ ɐ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "생각까지",
+        "total_occurrences": 112,
+        "rule_pron_hangul": "생각까지",
+        "rule_pron_roman": "S AE ng _ G A k _ KK A _ J I",
+        "r2_pron_roman": [
+          "S AE NG G A NG KK A J I"
+        ],
+        "r2_pron_phones": [
+          "sʰ ɛː ŋ ɡ ɐ ŋ k͈ ɐ dʑ i"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>G"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      },
+      {
+        "token": "장르도",
+        "total_occurrences": 111,
+        "rule_pron_hangul": "장르도",
+        "rule_pron_roman": "J A ng _ R EU _ D O",
+        "r2_pron_roman": [
+          "J A NG N EU D O"
+        ],
+        "r2_pron_phones": [
+          "tɕ ɐ ŋ n ɨ d o"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:N>L"
+        ],
+        "diagnostic_family_hints": [
+          "other_substitution_or_mixed_gap"
+        ]
+      }
+    ],
+    "segment_count_or_deletion_gap": [
+      {
+        "token": "굉장히",
+        "total_occurrences": 35619,
+        "rule_pron_hangul": "굉장히",
+        "rule_pron_roman": "G OE ng _ J A ng _ H I",
+        "r2_pron_roman": [
+          "G E N J A NG H I"
+        ],
+        "r2_pron_phones": [
+          "kʷ e ɲ dʑ ɐ ŋ ʝ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "굉장히",
+          "궹장히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:N>NG"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼",
+        "total_occurrences": 23120,
+        "rule_pron_hangul": "돼",
+        "rule_pron_roman": "D WAE",
+        "r2_pron_roman": [
+          "D E"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왜냐하면",
+        "total_occurrences": 16219,
+        "rule_pron_hangul": "왜냐하면",
+        "rule_pron_roman": "WAE _ N YA _ H A _ M YEO n",
+        "r2_pron_roman": [
+          "W E N A A M EO N"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ ɐ ɐ mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "왜냐하면"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼서",
+        "total_occurrences": 8262,
+        "rule_pron_hangul": "돼서",
+        "rule_pron_roman": "D WAE _ S EO",
+        "r2_pron_roman": [
+          "D E S EO"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "중에서",
+        "total_occurrences": 6483,
+        "rule_pron_hangul": "중에서",
+        "rule_pron_roman": "J U ng _ E _ S EO",
+        "r2_pron_roman": [
+          "J U E S EO"
+        ],
+        "r2_pron_phones": [
+          "tɕ uː e sʰ ʌ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:NG"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "한국",
+        "total_occurrences": 4669,
+        "rule_pron_hangul": "한국",
+        "rule_pron_roman": "H A n _ G U k",
+        "r2_pron_roman": [
+          "H A NG G U",
+          "H A NG G U k"
+        ],
+        "r2_pron_phones": [
+          "h ɐ ŋ ɡ u",
+          "h ɐ ŋ ɡ u k̚"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "한ː국",
+          "한국"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N",
+          "SUB:NG>N;RULE_ONLY:G"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "충분히",
+        "total_occurrences": 4160,
+        "rule_pron_hangul": "충분히",
+        "rule_pron_roman": "CH U ng _ B U n _ H I",
+        "r2_pron_roman": [
+          "CH U M B U N H I",
+          "CH U M B U N I"
+        ],
+        "r2_pron_phones": [
+          "tɕʰ u m b u n ʝ i",
+          "tɕʰ u m b u ɲ i"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "충분히"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference",
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG",
+          "SUB:M>NG;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "nasal_place_or_boundary_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "걔가",
+        "total_occurrences": 4139,
+        "rule_pron_hangul": "걔가",
+        "rule_pron_roman": "G YAE _ G A",
+        "r2_pron_roman": [
+          "G AE G A"
+        ],
+        "r2_pron_phones": [
+          "kʷ ɛː ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "꽤",
+        "total_occurrences": 4067,
+        "rule_pron_hangul": "꽤",
+        "rule_pron_roman": "KK WAE",
+        "r2_pron_roman": [
+          "KK E"
+        ],
+        "r2_pron_phones": [
+          "k͈ʷ eː"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "꽤"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "유튜브",
+        "total_occurrences": 3974,
+        "rule_pron_hangul": "유튜브",
+        "rule_pron_roman": "YU _ T YU _ B EU",
+        "r2_pron_roman": [
+          "Y U CH U B EU",
+          "Y U D U B EU"
+        ],
+        "r2_pron_phones": [
+          "j u tɕʰ u b ɨ",
+          "j u tʲ u b ɨ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_multiple_r2_variants",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:T;SUB:CH>Y",
+          "RULE_ONLY:T;SUB:D>Y"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "저희가",
+        "total_occurrences": 3828,
+        "rule_pron_hangul": "저희가",
+        "rule_pron_roman": "J EO _ H UI _ G A",
+        "r2_pron_roman": [
+          "J EO H I G A"
+        ],
+        "r2_pron_phones": [
+          "tɕ ʌ ʝ i ɡ ɐ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:EU_G"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "쇼핑을",
+        "total_occurrences": 3722,
+        "rule_pron_hangul": "쇼핑을",
+        "rule_pron_roman": "S YO _ P I ng _ EU l",
+        "r2_pron_roman": [
+          "SS O B I NG EU l"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ ɨ ɭ"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "돼요",
+        "total_occurrences": 3646,
+        "rule_pron_hangul": "돼요",
+        "rule_pron_roman": "D WAE _ YO",
+        "r2_pron_roman": [
+          "D E Y O"
+        ],
+        "r2_pron_phones": [
+          "tʷ eː j o"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "편하게",
+        "total_occurrences": 3593,
+        "rule_pron_hangul": "편하게",
+        "rule_pron_roman": "P YEO n _ H A _ G E",
+        "r2_pron_roman": [
+          "B EO N H A G E"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ ɡ e"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "최대한",
+        "total_occurrences": 3052,
+        "rule_pron_hangul": "최대한",
+        "rule_pron_roman": "CH OE _ D AE _ H A n",
+        "r2_pron_roman": [
+          "J E D AE H A N"
+        ],
+        "r2_pron_phones": [
+          "tɕʷ eː t ɛː ɦ ɐ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "최ː대한",
+          "췌ː대한"
+        ],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:CH;SUB:J>W"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "왜냐면",
+        "total_occurrences": 2896,
+        "rule_pron_hangul": "왜냐면",
+        "rule_pron_roman": "WAE _ N YA _ M YEO n",
+        "r2_pron_roman": [
+          "W E N A M EO N"
+        ],
+        "r2_pron_phones": [
+          "w eː ɲ ɐ mʲ ʌ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "평소에",
+        "total_occurrences": 2833,
+        "rule_pron_hangul": "평소에",
+        "rule_pron_roman": "P YEO ng _ S O _ E",
+        "r2_pron_roman": [
+          "B EO NG S O E"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ ŋ sʰ o e"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "편한",
+        "total_occurrences": 2807,
+        "rule_pron_hangul": "편한",
+        "rule_pron_roman": "P YEO n _ H A n",
+        "r2_pron_roman": [
+          "B EO N H A N",
+          "B EO N A N"
+        ],
+        "r2_pron_phones": [
+          "pʲ ʌ n h ɐ n",
+          "pʲ ʌ n ɐ n"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "편한"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:P;SUB:B>Y",
+          "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:H"
+        ],
+        "diagnostic_family_hints": [
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "쇼핑",
+        "total_occurrences": 2490,
+        "rule_pron_hangul": "쇼핑",
+        "rule_pron_roman": "S YO _ P I ng",
+        "r2_pron_roman": [
+          "SS O B I NG"
+        ],
+        "r2_pron_phones": [
+          "ɕ͈ o pʲ i ŋ"
+        ],
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "dictionary_pron_hangul": [
+          "쇼핑"
+        ],
+        "evidence_stratum": "hangul_dictionary_present_but_not_phone_supported",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+        ],
+        "diagnostic_family_hints": [
+          "laryngeal_contrast_or_phone_mapping_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      },
+      {
+        "token": "걔는",
+        "total_occurrences": 2464,
+        "rule_pron_hangul": "걔는",
+        "rule_pron_roman": "G YAE _ N EU n",
+        "r2_pron_roman": [
+          "G AE N EU N"
+        ],
+        "r2_pron_phones": [
+          "kʷ ɛː n ɨ n"
+        ],
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "dictionary_pron_hangul": [],
+        "evidence_stratum": "hangul_single_frozen_g2p_variant",
+        "diagnostic_classes": [
+          "single_rule_unit_missing_from_candidate"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y"
+        ],
+        "diagnostic_family_hints": [
+          "glide_vowel_unitization_or_rule_gap",
+          "segment_count_or_deletion_gap"
+        ]
+      }
+    ]
+  },
+  "interpretation_contract": {
+    "diagnostic_family_is_rule_truth": false,
+    "characterization_is_candidate_generation": false,
+    "dictionary_presence_is_final_selection": false,
+    "next_action": "audit and extend rule/phone mapping coverage before projecting no-rule holds"
+  },
+  "evidence": {
+    "characterization_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\10_no_rule_hold_characterization\\NO_RULE_HOLD_CHARACTERIZATION_MANIFEST.json",
+      "bytes": 7694,
+      "mtime_ns": 1786164524879843000,
+      "sha256": "ad13bbc91dfe8eba93c770efedc0765dfadda4631657b5876a6f06e9c98eda08"
+    },
+    "characterization_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_no_rule_hold_characterization_20260808.json",
+      "bytes": 11771,
+      "mtime_ns": 1786164695177917300,
+      "sha256": "f35e12e2c9ec4f581acbde863371584a857af2b7514700f71ffb81152bc81eef"
+    }
+  }
+}

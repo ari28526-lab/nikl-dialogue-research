@@ -1,0 +1,32 @@
+{
+  "schema_version": "common_pron_r3_no_rule_hold_characterization_policy.v1",
+  "status": "read_only_characterization",
+  "purpose": "Separate unresolved no-surface-rule pronunciation rows by character composition, provenance, dictionary traces, variant structure, and phone-rule edit type before any candidate projection.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "input_planning_status": "hold_no_surface_rule_substantive_mismatch",
+  "character_strata": [
+    "hangul_syllables_only",
+    "hangul_with_digits",
+    "hangul_with_latin",
+    "hangul_with_punctuation_or_symbol",
+    "jamo_present",
+    "digits_symbols_or_latin_without_hangul",
+    "other_unicode"
+  ],
+  "evidence_policy": {
+    "dictionary_presence_is_evidence_not_selection": true,
+    "numeric_or_symbol_form_requires_explicit_form_mapping": true,
+    "multiple_r2_variants_must_not_be_first_variant_selected": true,
+    "same_frozen_g2p_rerun_allowed": false,
+    "actual_realization_claimed": false
+  },
+  "invariants": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}

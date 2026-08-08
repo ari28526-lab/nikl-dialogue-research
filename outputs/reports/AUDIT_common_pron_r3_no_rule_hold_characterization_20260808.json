@@ -1,0 +1,365 @@
+{
+  "schema_version": "common_pron_r3_no_rule_hold_characterization_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T13:51:34+09:00",
+  "counts": {
+    "rows": 85504,
+    "occurrences": 1140107,
+    "multi_variant_types": 223,
+    "dictionary_present_types": 6144,
+    "character_stratum_types": {
+      "hangul_syllables_only": 85504
+    },
+    "character_stratum_occurrences": {
+      "hangul_syllables_only": 1140107
+    },
+    "evidence_stratum_types": {
+      "hangul_dictionary_present_but_not_phone_supported": 6144,
+      "hangul_multiple_r2_variants": 62,
+      "hangul_single_frozen_g2p_variant": 79298
+    },
+    "evidence_stratum_occurrences": {
+      "hangul_dictionary_present_but_not_phone_supported": 384929,
+      "hangul_multiple_r2_variants": 12959,
+      "hangul_single_frozen_g2p_variant": 742219
+    },
+    "r2_source_types": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 1582,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 83922
+    },
+    "r2_source_occurrences": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 452304,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 687803
+    },
+    "diagnostic_layer_types": {
+      "contrast_review_required": 9828,
+      "representation_review_required": 22,
+      "substantive_difference_candidate": 75692
+    },
+    "diagnostic_class_types": {
+      "mixed_or_cross_group_difference": 35327,
+      "multiple_contrasts_within_acoustic_model_group": 731,
+      "multiple_segment_count_difference": 943,
+      "run_length_difference_without_complete_length_support": 22,
+      "single_candidate_unit_extra": 297,
+      "single_contrast_within_acoustic_model_group": 9097,
+      "single_cross_group_substitution": 36704,
+      "single_rule_unit_missing_from_candidate": 2511
+    },
+    "distinct_edit_signatures": 1656,
+    "top_edit_signature_types": {
+      "SUB:N>NG": 13556,
+      "SUB:NG>N": 13119,
+      "SUB:B>P": 4528,
+      "SUB:M>N": 4322,
+      "SUB:D>T": 4053,
+      "SUB:M>NG": 3921,
+      "RULE_ONLY:P;SUB:B>Y": 3006,
+      "RULE_ONLY:Y;SUB:N>NG": 2386,
+      "RULE_ONLY:CH;SUB:J>W": 1595,
+      "RULE_ONLY:L;SUB:N>Y": 1388,
+      "SUB:N>NG;RULE_ONLY:W": 1329,
+      "SUB:NG>N;RULE_ONLY:W": 1122,
+      "RULE_ONLY:Y;SUB:NG>N": 1084,
+      "SUB:N>L": 986,
+      "RULE_ONLY:W;SUB:E>AE": 902,
+      "RULE_ONLY:EU_G": 824,
+      "RULE_ONLY:T;SUB:D>W": 749,
+      "RULE_ONLY:W;SUB:N>NG": 651,
+      "SUB:N>NG;RULE_ONLY:Y": 637,
+      "RULE_ONLY:W;SUB:NG>N": 596,
+      "SUB:M>N;RULE_ONLY:Y": 508,
+      "RULE_ONLY:Y;SUB:M>NG": 473,
+      "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:Y": 467,
+      "SUB:N>NG;SUB:N>NG": 409,
+      "RULE_ONLY:Y": 408,
+      "RULE_ONLY:G;SUB:NG>L;SUB:N>Y": 401,
+      "RULE_ONLY:T;SUB:D>Y": 393,
+      "RULE_ONLY:L;SUB:NG>N": 390,
+      "SUB:SS>S": 389,
+      "SUB:NG>N;RULE_ONLY:Y": 367,
+      "SUB:B>P;RULE_ONLY:Y": 357,
+      "RULE_ONLY:K;SUB:G>W": 356,
+      "RULE_ONLY:Y;SUB:M>N": 354,
+      "RULE_ONLY:G": 341,
+      "RULE_ONLY:NG": 341,
+      "SUB:N>NG;SUB:NG>N": 335,
+      "SUB:M>NG;RULE_ONLY:Y": 334,
+      "RULE_ONLY:S;SUB:SS>Y;SUB:B>P": 281,
+      "RULE_ONLY:P;SUB:B>Y;SUB:N>NG": 280,
+      "SUB:M>N;SUB:B>P": 233,
+      "RULE_ONLY:N;SUB:M>P;SUB:B>Y": 221,
+      "SUB:D>T;RULE_ONLY:Y": 216,
+      "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:Y": 213,
+      "SUB:NG>N;SUB:NG>N": 210,
+      "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:W": 210,
+      "RULE_ONLY:P;SUB:B>Y;RULE_ONLY:W": 209,
+      "RULE_ONLY:NG;SUB:M>P;SUB:B>Y": 202,
+      "SUB:B>P;RULE_ONLY:L": 200,
+      "SUB:D>T;SUB:B>P": 197,
+      "SUB:AE>E": 194,
+      "RULE_ONLY:Y;RULE_ONLY:NG": 169,
+      "CANDIDATE_ONLY:NG": 169,
+      "SUB:D>S": 168,
+      "SUB:B>P;SUB:D>T": 165,
+      "RULE_ONLY:L;SUB:N>NG": 164,
+      "SUB:M>NG;RULE_ONLY:W": 163,
+      "SUB:NG>G;SUB:N>L": 163,
+      "SUB:NG>N;SUB:N>NG": 162,
+      "RULE_ONLY:L;SUB:D>T": 162,
+      "RULE_ONLY:H": 155,
+      "RULE_ONLY:Y;SUB:NG>N;RULE_ONLY:W": 153,
+      "RULE_ONLY:Y;RULE_ONLY:L;SUB:N>Y": 151,
+      "SUB:D>T;SUB:D>T": 150,
+      "SUB:M>N;RULE_ONLY:L": 149,
+      "RULE_ONLY:W;SUB:M>N": 146,
+      "SUB:M>NG;SUB:NG>N": 145,
+      "RULE_ONLY:I": 144,
+      "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W": 144,
+      "SUB:N>NG;RULE_ONLY:W;SUB:E>AE": 139,
+      "RULE_ONLY:K;SUB:G>W;SUB:E>AE": 138,
+      "SUB:N>NG;SUB:M>NG": 137,
+      "SUB:D>T;SUB:NG>N": 133,
+      "SUB:M>N;RULE_ONLY:W": 132,
+      "RULE_ONLY:W;SUB:M>NG": 128,
+      "RULE_ONLY:Y;SUB:D>T": 126,
+      "RULE_ONLY:Y;SUB:N>L": 126,
+      "RULE_ONLY:W": 126,
+      "SUB:B>P;SUB:NG>N": 123,
+      "RULE_ONLY:W;RULE_ONLY:W;SUB:E>AE": 118,
+      "SUB:N>NG;RULE_ONLY:W;RULE_ONLY:Y": 113,
+      "SUB:E>AE": 113,
+      "SUB:NG>G": 110,
+      "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:W": 106,
+      "SUB:B>P;SUB:SS>S": 105,
+      "RULE_ONLY:T;SUB:D>W;RULE_ONLY:Y": 105,
+      "SUB:NG>N;RULE_ONLY:L": 103,
+      "RULE_ONLY:L;SUB:B>P": 102,
+      "RULE_ONLY:P;SUB:B>Y;SUB:NG>N": 100,
+      "SUB:M>B;SUB:N>L": 98,
+      "SUB:B>P;RULE_ONLY:W": 98,
+      "RULE_ONLY:B;SUB:M>L;SUB:N>Y": 96,
+      "RULE_ONLY:W;RULE_ONLY:P;SUB:B>Y": 92,
+      "SUB:B>P;SUB:N>NG": 90,
+      "RULE_ONLY:W;SUB:NG>N;RULE_ONLY:W;SUB:N>NG": 90,
+      "SUB:M>NG;SUB:B>P": 86,
+      "SUB:M>N;SUB:NG>N": 79,
+      "RULE_ONLY:Y;SUB:B>P": 79,
+      "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:Y": 77,
+      "RULE_ONLY:NG;SUB:N>CH;SUB:J>W": 76,
+      "CANDIDATE_ONLY:Y": 74
+    }
+  },
+  "examples_by_evidence_stratum": {
+    "hangul_single_frozen_g2p_variant": [
+      {
+        "token": "가게라던가",
+        "total_occurrences": 1,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ]
+      },
+      {
+        "token": "가게라든가",
+        "total_occurrences": 3,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ]
+      },
+      {
+        "token": "가게인가요",
+        "total_occurrences": 3,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ]
+      },
+      {
+        "token": "가겐가",
+        "total_occurrences": 2,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:NG>N"
+        ]
+      },
+      {
+        "token": "가격까지",
+        "total_occurrences": 26,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "multiple_segment_count_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;RULE_ONLY:G"
+        ]
+      }
+    ],
+    "hangul_dictionary_present_but_not_phone_supported": [
+      {
+        "token": "가격표",
+        "total_occurrences": 10,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+        ]
+      },
+      {
+        "token": "가계부",
+        "total_occurrences": 68,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:P>B"
+        ]
+      },
+      {
+        "token": "가계부채",
+        "total_occurrences": 2,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:P>B"
+        ]
+      },
+      {
+        "token": "가공되다",
+        "total_occurrences": 1,
+        "r2_pron_source": "korean_mfa_jamo_g2p_v3.2.0_1best_strict",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "SUB:N>NG;RULE_ONLY:W"
+        ]
+      },
+      {
+        "token": "가공품",
+        "total_occurrences": 1,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "single_cross_group_substitution"
+        ],
+        "edit_signatures": [
+          "SUB:M>NG"
+        ]
+      }
+    ],
+    "hangul_multiple_r2_variants": [
+      {
+        "token": "경북",
+        "total_occurrences": 74,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:M>NG",
+          "RULE_ONLY:Y;SUB:M>NG;RULE_ONLY:G"
+        ]
+      },
+      {
+        "token": "경쟁력",
+        "total_occurrences": 40,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:L;SUB:N>Y",
+          "RULE_ONLY:Y;SUB:N>NG;RULE_ONLY:L;SUB:N>Y;RULE_ONLY:G"
+        ]
+      },
+      {
+        "token": "공략",
+        "total_occurrences": 11,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:L;SUB:N>Y",
+          "RULE_ONLY:L;SUB:N>Y;RULE_ONLY:G"
+        ]
+      },
+      {
+        "token": "괜히",
+        "total_occurrences": 1927,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:W;SUB:E>AE",
+          "RULE_ONLY:W;SUB:E>AE;RULE_ONLY:H"
+        ]
+      },
+      {
+        "token": "김만복",
+        "total_occurrences": 2,
+        "r2_pron_source": "korean_mfa_dictionary_v3.3.0_preserved",
+        "diagnostic_classes": [
+          "mixed_or_cross_group_difference"
+        ],
+        "edit_signatures": [
+          "RULE_ONLY:M;SUB:M>N",
+          "RULE_ONLY:M;SUB:M>N;RULE_ONLY:G"
+        ]
+      }
+    ]
+  },
+  "contracts": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "characterization_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\10_no_rule_hold_characterization\\NO_RULE_HOLD_CHARACTERIZATION_MANIFEST.json",
+      "bytes": 7694,
+      "mtime_ns": 1786164524879843000,
+      "sha256": "ad13bbc91dfe8eba93c770efedc0765dfadda4631657b5876a6f06e9c98eda08"
+    },
+    "characterization_output": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\10_no_rule_hold_characterization\\no_rule_hold_characterization.csv.gz",
+      "bytes": 3981059,
+      "mtime_ns": 1786164524300441000,
+      "sha256": "2306bd7cc74b0f4a8945a4456b53df20c639e9722a7216040ec24ef04a5e7cd8"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T13:51:34+09:00",
+    "git_commit": "2b1a97416fb243bb7496542025c0065fe295c166",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 20900
+  }
+}
