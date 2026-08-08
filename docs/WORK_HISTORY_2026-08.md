@@ -2426,3 +2426,21 @@ shard 2–23을 재개하는 것이다.
   원자료 변경은 모두 수행하지 않았다.
 - 다음 단계는 검증된 37,379형만 정렬용 candidate-only로 09 readiness에
   추가하는 것이다. 의무 규칙 Roman과 정렬용 phone 역할을 별도 열로 유지한다.
+
+## 2026-08-08 — r3 selection-readiness v2 candidate-only 병합
+
+- stage 09 readiness 881,237형과 stage 11 coverage를 token·variant 순서로
+  연결했다. 모든 변이가 수의적 위치동화로만 다른 36,568형과 비중복 frozen
+  기본사전 정확 일치 811형, 합계 37,379형·754,924회만 새 계획 후보로 추가했다.
+- `한번`의 의무 규칙 참조 `H A n _ B EO n`과 정렬용 phone 후보
+  `h ɐ m b ʌ n`을 별도 열로 유지했다. `중에서`의 분절 누락형과 `한국`의 일부
+  변이만 위치동화인 경우는 계속 hold로 남겼다.
+- candidate 준비 범위는 789,649형·26,952,517회, zero-fallback hold는
+  91,553형·894,388회가 됐다. 정책 결정 35형·163회는 그대로다.
+- 독립 감사기는 881,237행을 v1과 전수 대조해 새 후보 37,379행의 허용된 planning
+  필드 외 변화 0, 비대상·hold 기존 필드 변화 0, 의무 규칙 참조 변화 0을 확인해
+  `passed_read_only`로 통과했다.
+- candidate-only이며 canonical selection, adoption, MFA, TextGrid, 원자료 변경,
+  실제 실현 판정은 수행하지 않았다.
+- 다음 단계는 target projection 미해결 43,428형과 no-rule 잔여 48,125형을
+  분리한 읽기 전용 반복 패턴 감사다. 같은 G2P를 다시 실행하지 않는다.

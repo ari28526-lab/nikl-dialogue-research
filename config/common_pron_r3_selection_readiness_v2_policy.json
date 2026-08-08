@@ -1,0 +1,42 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_v2_policy.v1",
+  "status": "planning_candidates_only",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "purpose": "Add only fully audited no-rule alignment variants to the full 881,237-type readiness matrix while preserving mandatory-rule references and every unresolved hold.",
+  "candidate_policies": {
+    "all_variants_optional_place_assimilation": {
+      "eligible": true,
+      "candidate_role": "mfa_alignment_lexicon_candidate",
+      "standard_relation": "optional_variant_not_mandatory_standard"
+    },
+    "all_variants_exact_frozen_dictionary": {
+      "eligible": true,
+      "candidate_role": "mfa_alignment_lexicon_candidate",
+      "standard_relation": "frozen_alignment_variant_standard_relation_not_claimed"
+    },
+    "some_variants_optional_place_assimilation": {
+      "eligible": false
+    },
+    "some_variants_exact_frozen_dictionary": {
+      "eligible": false
+    },
+    "unresolved_g2p_or_rule_mapping": {
+      "eligible": false
+    }
+  },
+  "interpretation_policy": {
+    "rule_pron_roman_remains_mandatory_standard_reference": true,
+    "optional_place_assimilation_is_not_added_to_mandatory_rule_engine": true,
+    "frozen_dictionary_variant_is_not_standard_pronunciation_truth": true,
+    "phone_noninjectivity_alone_never_authorizes_candidate": true,
+    "actual_realization_requires_later_researcher_judgment": true
+  },
+  "invariants": {
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}

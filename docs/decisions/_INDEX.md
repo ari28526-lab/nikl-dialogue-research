@@ -40,6 +40,7 @@
 | `RESULT_common_pron_r3_global_projection_v2_20260808.md` | canonical exact donor 382,891형 전역 projection, 후보 획득·상실·변경, 09 readiness와 독립 감사 결과 |
 | `RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md` | no-rule 보류 85,504형을 문자·사전·r2 출처·편집 유형으로 전수 분류하고 규칙/phone 매핑 감사 우선순위를 정한 결과 |
 | `RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md` | 수의적 위치동화·frozen MFA 사전 변이·비일대일 phone을 분리한 85,504형 전수 읽기 전용 감사와 다음 candidate-only 정책 |
+| `RESULT_common_pron_r3_selection_readiness_v2_20260808.md` | 감사된 no-rule 37,379형만 정렬용 계획 후보로 추가한 881,237형 readiness v2와 잔여 91,553형 회계 |
 
 ## 현재 생산과 안전 계약
 

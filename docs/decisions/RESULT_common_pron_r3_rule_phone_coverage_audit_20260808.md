@@ -93,8 +93,8 @@ D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\
 
 ## 4. 다음 candidate-only 정책
 
-이 결과가 허용하는 다음 단계는 다음 두 집합을 **MFA 정렬용 후보**로만
-readiness에 추가하는 것이다.
+이 결과가 허용한 다음 단계는 다음 두 집합을 **MFA 정렬용 후보**로만
+readiness에 추가하는 것이었다.
 
 1. 모든 변이가 수의적 위치동화로만 다른 36,568형
 2. 위 집합과 겹치지 않으면서 모든 변이가 frozen 기본사전과 정확히 일치하는
@@ -108,8 +108,10 @@ readiness에 추가하는 것이다.
 - 실제 실현 판정: `not_performed`
 - canonical 선택·adoption: `false`
 
-일부 변이만 위치동화인 82형과 나머지 48,043형은 그대로 보류한다. 비일대일
-phone 표지 하나만으로는 어떤 후보도 승격하지 않는다.
+stage 12 readiness v2에서 이 37,379형만 계획 후보로 추가하고 독립 전수 감사를
+통과했다. 일부 변이만 위치동화인 82형과 나머지 48,043형은 그대로 보류했다.
+비일대일 phone 표지 하나만으로는 어떤 후보도 승격하지 않았다. 후속 정본은
+`RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
 ## 5. 산출물과 검증
 

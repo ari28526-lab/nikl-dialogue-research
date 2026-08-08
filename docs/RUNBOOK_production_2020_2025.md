@@ -244,11 +244,30 @@ D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
 ```
 
 manifest는 `success_audited_not_candidate`, 독립 감사기는 `passed_read_only`다.
-다음 단계는 37,379형의 기존 r2 phone 변이를 정렬용 candidate-only로 09
-readiness에 추가한 새 버전을 만드는 것이다. `rule_pron_roman`은 표준 참조로
-그대로 보존한다. canonical selection·adoption·MFA·TextGrid 변경은 금지한다.
+stage 12는 37,379형의 기존 r2 phone 변이를 정렬용 candidate-only로 09
+readiness에 추가했다. `rule_pron_roman`은 표준 참조로 그대로 보존했다.
+canonical selection·adoption·MFA·TextGrid 변경은 금지한다.
 비일대일 phone 포함 여부만으로 후보를 승격하지 않는다. 상세 근거는
 `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`다.
+
+### 3.9 r3 selection-readiness v2 완료 checkpoint
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+12_selection_readiness_v2\SELECTION_READINESS_V2_MANIFEST.json
+```
+
+candidate 준비는 789,649형·26,952,517회, zero-fallback hold는
+91,553형·894,388회다. 별도 정책 결정 35형·163회는 유지한다. 독립 감사기는
+881,237행을 v1과 대조해 새 후보 37,379행의 허용 planning 필드 외 변화가 없고,
+모든 의무 규칙 참조가 보존됐음을 확인했다.
+
+다음 단계는 hold_target_projection_unresolved 43,428형과
+hold_no_surface_rule_substantive_mismatch 48,125형을 분리해, 이미 생성된 사전·
+donor·편집 진단으로 회수 가능한 반복 패턴만 candidate-only로 제안하는 것이다.
+같은 G2P 재실행, r2 일괄 fallback, canonical 자동 선택, MFA·TextGrid 변경은
+금지한다. 상세 근거는
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
 ## 4. 2021 Gate 종료 — 완료
 

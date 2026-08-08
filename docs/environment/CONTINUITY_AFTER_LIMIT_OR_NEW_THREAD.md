@@ -201,10 +201,30 @@ candidate selection false / adoption false / MFA false / TextGrid 변경 false
 첫 stage 11 결과는 비일대일 phone 포함을 해결 사유로 과잉분류해
 `archive_intermediate\11_rule_phone_coverage_audit_v1_overbroad_noninjective_20260808`
 로 이동했다. 수정본은 비일대일성을 경고 표지로만 쓴다. 새 대화에서 stage 11을
-다시 실행하지 않는다. 다음 한 단계는 검증된 37,379형을 정렬용 candidate-only로
-09 readiness에 추가하는 것이다. 수의적 위치동화를 의무 표준발음 규칙에 넣지
+다시 실행하지 않는다. stage 12는 검증된 37,379형을 정렬용 candidate-only로
+추가했고 독립 감사를 통과했다. 수의적 위치동화를 의무 표준발음 규칙에 넣지
 않고, phone을 실제 실현 또는 확정 음소로 해석하지 않는다. 정본 결과는
 `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`다.
+
+### 2026-08-08 selection-readiness v2 이후 재개점
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  12_selection_readiness_v2\SELECTION_READINESS_V2_MANIFEST.json
+outputs/reports/AUDIT_common_pron_r3_selection_readiness_v2_20260808.json
+```
+
+```text
+candidate ready: 789,649형 / 26,952,517회
+zero-fallback hold: 91,553형 / 894,388회
+policy decision: 35형 / 163회
+canonical selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+새 대화에서 stage 12 이하를 다시 실행하지 않는다. 다음은 target projection
+미해결 43,428형과 no-rule 잔여 48,125형을 분리한 읽기 전용 잔여 패턴 감사다.
+정본은
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

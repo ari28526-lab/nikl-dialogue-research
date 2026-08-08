@@ -195,9 +195,15 @@ no-rule 85,504형·1,140,107회의 전수 특성화와 독립 감사가 완료�
 사전의 동일 길이 위치 대조에서 둘 이상의 규칙키와 반복 공존하므로, phone만으로
 기저·표면 음소를 일대일 복원하지 않는다. 특히 `pʲ`는 B/P 양쪽에 쓰인다.
 
-현재 허용 작업은 검증된 37,379형을 **정렬용 candidate-only**로 881,237형
-readiness에 추가하는 것이다. 수의적 위치동화를 의무 표준발음 규칙에 추가하거나,
-frozen 사전 변이를 표준·실현 발음으로 선언하지 않는다. 같은 Jamo G2P 반복,
+stage 12 readiness v2는 검증된 37,379형을 **정렬용 candidate-only**로 추가했고
+독립 전수 감사를 통과했다. candidate 준비는 789,649형·26,952,517회,
+zero-fallback hold는 91,553형·894,388회다. 새 후보 외 795,733행과 모든 의무
+규칙 참조는 v1과 동일하다.
+
+현재 허용 작업은 target projection 미해결 43,428형과 no-rule 잔여 48,125형을
+분리해 기존 근거로 회수 가능한 반복 패턴만 찾는 읽기 전용 감사다. 수의적
+위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현 발음으로
+선언하지 않는다. 같은 Jamo G2P 반복,
 기존 56행 전수 청취, 85,504형 일괄 투사, 자동 승인, canonical selection·
 adoption 전 MFA는 허용하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
@@ -229,4 +235,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`
 - r3 규칙·MFA phone coverage 감사 결과:
   `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`
+- r3 selection-readiness v2 결과:
+  `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

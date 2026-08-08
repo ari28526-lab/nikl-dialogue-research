@@ -1,0 +1,328 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_v2_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T14:37:25+09:00",
+  "counts": {
+    "canonical_types": 881237,
+    "total_occurrences": 27847068,
+    "candidate_ready_types": 789649,
+    "candidate_ready_occurrences": 26952517,
+    "zero_fallback_hold_types": 91553,
+    "zero_fallback_hold_occurrences": 894388,
+    "policy_decision_types": 35,
+    "policy_decision_occurrences": 163,
+    "newly_eligible_no_rule_types": 37379,
+    "newly_eligible_no_rule_occurrences": 754924,
+    "preserved_v1_rows": 795733,
+    "planning_status_types": {
+      "candidate_r2_dictionary_supported_exception": 426,
+      "candidate_r2_exact_frozen_dictionary_alignment_variant": 811,
+      "candidate_r2_exact_mandatory_rule": 382891,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 99660,
+      "candidate_r2_optional_place_assimilation_alignment_variant": 36568,
+      "candidate_rule_projection_dictionary_agree": 6020,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 262927,
+      "candidate_surface_donor_exact_mandatory_rule": 346,
+      "hold_no_surface_rule_substantive_mismatch": 48125,
+      "hold_target_projection_unresolved": 43428,
+      "policy_candidate_multiple_rule_dictionary_conflict": 35
+    },
+    "planning_status_occurrences": {
+      "candidate_r2_dictionary_supported_exception": 46197,
+      "candidate_r2_exact_frozen_dictionary_alignment_variant": 229177,
+      "candidate_r2_exact_mandatory_rule": 19765802,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 2176473,
+      "candidate_r2_optional_place_assimilation_alignment_variant": 525747,
+      "candidate_rule_projection_dictionary_agree": 377651,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 3585873,
+      "candidate_surface_donor_exact_mandatory_rule": 245597,
+      "hold_no_surface_rule_substantive_mismatch": 385183,
+      "hold_target_projection_unresolved": 509205,
+      "policy_candidate_multiple_rule_dictionary_conflict": 163
+    },
+    "no_rule_coverage_status_types": {
+      "all_variants_exact_frozen_dictionary": 811,
+      "all_variants_optional_place_assimilation": 36568,
+      "not_applicable_existing_planning": 795733,
+      "some_variants_optional_place_assimilation": 82,
+      "unresolved_g2p_or_rule_mapping": 48043
+    },
+    "no_rule_coverage_status_occurrences": {
+      "all_variants_exact_frozen_dictionary": 229177,
+      "all_variants_optional_place_assimilation": 525747,
+      "not_applicable_existing_planning": 26706961,
+      "some_variants_optional_place_assimilation": 16271,
+      "unresolved_g2p_or_rule_mapping": 368912
+    }
+  },
+  "examples_by_no_rule_coverage_status": {
+    "all_variants_optional_place_assimilation": [
+      {
+        "token": "가게라던가",
+        "occurrences": 1,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G E _ R A _ D EO n _ G A",
+        "candidate_roman_json": "[\"G A G E R A D EO NG G A\"]"
+      },
+      {
+        "token": "가게라든가",
+        "occurrences": 3,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G E _ R A _ D EU n _ G A",
+        "candidate_roman_json": "[\"G A G E R A D EU NG G A\"]"
+      },
+      {
+        "token": "가게인가요",
+        "occurrences": 3,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G E _ I n _ G A _ YO",
+        "candidate_roman_json": "[\"G A G E I NG G A Y O\"]"
+      },
+      {
+        "token": "가겐가",
+        "occurrences": 2,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G E n _ G A",
+        "candidate_roman_json": "[\"G A G E NG G A\"]"
+      },
+      {
+        "token": "가공품",
+        "occurrences": 1,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G O ng _ P U m",
+        "candidate_roman_json": "[\"G A G O M P U M\"]"
+      },
+      {
+        "token": "가공한다든가",
+        "occurrences": 1,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G O ng _ H A n _ D A _ D EU n _ G A",
+        "candidate_roman_json": "[\"G A G O NG H A N D A D EU NG G A\"]"
+      },
+      {
+        "token": "가구라든가",
+        "occurrences": 4,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G U _ R A _ D EU n _ G A",
+        "candidate_roman_json": "[\"G A G U R A D EU NG G A\"]"
+      },
+      {
+        "token": "가군가",
+        "occurrences": 1,
+        "planning_status": "candidate_r2_optional_place_assimilation_alignment_variant",
+        "rule_pron_roman": "G A _ G U n _ G A",
+        "candidate_roman_json": "[\"G A G U NG G A\"]"
+      }
+    ],
+    "unresolved_g2p_or_rule_mapping": [
+      {
+        "token": "가격까지",
+        "occurrences": 26,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ KK A _ J I",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격까지는",
+        "occurrences": 5,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ KK A _ J I _ N EU n",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표",
+        "occurrences": 10,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표가",
+        "occurrences": 3,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO _ G A",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표도",
+        "occurrences": 2,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO _ D O",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표를",
+        "occurrences": 13,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO _ R EU l",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표만",
+        "occurrences": 1,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO _ M A n",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "가격표에",
+        "occurrences": 1,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A _ G YEO k _ P YO _ E",
+        "candidate_roman_json": "[]"
+      }
+    ],
+    "all_variants_exact_frozen_dictionary": [
+      {
+        "token": "가져다",
+        "occurrences": 155,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A _ J YEO _ D A",
+        "candidate_roman_json": "[\"G A J EO TT A\"]"
+      },
+      {
+        "token": "가져다준",
+        "occurrences": 8,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A _ J YEO _ D A _ J U n",
+        "candidate_roman_json": "[\"G A J EO TT A J U N\"]"
+      },
+      {
+        "token": "가평",
+        "occurrences": 165,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A _ P YEO ng",
+        "candidate_roman_json": "[\"G A B EO NG\"]"
+      },
+      {
+        "token": "간과",
+        "occurrences": 5,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A n _ G WA",
+        "candidate_roman_json": "[\"G A NG G A\"]"
+      },
+      {
+        "token": "간편",
+        "occurrences": 43,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A n _ P YEO n",
+        "candidate_roman_json": "[\"G A M B EO N\"]"
+      },
+      {
+        "token": "감퇴",
+        "occurrences": 7,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A m _ T OE",
+        "candidate_roman_json": "[\"G A M D E\"]"
+      },
+      {
+        "token": "갑판",
+        "occurrences": 1,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A p _ P A n",
+        "candidate_roman_json": "[\"G A P A N\"]"
+      },
+      {
+        "token": "강력",
+        "occurrences": 71,
+        "planning_status": "candidate_r2_exact_frozen_dictionary_alignment_variant",
+        "rule_pron_roman": "G A ng _ R YEO k",
+        "candidate_roman_json": "[\"G A NG N EO\", \"G A NG N EO k\"]"
+      }
+    ],
+    "some_variants_optional_place_assimilation": [
+      {
+        "token": "간간히",
+        "occurrences": 87,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A n _ G A n _ H I",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "강대국",
+        "occurrences": 3,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A ng _ D AE _ G U k",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "강북",
+        "occurrences": 36,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G A ng _ B U k",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "공백",
+        "occurrences": 34,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G O ng _ B AE k",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "공작",
+        "occurrences": 5,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G O ng _ J A k",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "공중분해",
+        "occurrences": 3,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G O ng _ J U ng _ B U n _ H AE",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "공직",
+        "occurrences": 49,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G O ng _ J I k",
+        "candidate_roman_json": "[]"
+      },
+      {
+        "token": "공책",
+        "occurrences": 20,
+        "planning_status": "hold_no_surface_rule_substantive_mismatch",
+        "rule_pron_roman": "G O ng _ CH AE k",
+        "candidate_roman_json": "[]"
+      }
+    ]
+  },
+  "contracts": {
+    "all_non_target_v1_fields_preserved": true,
+    "all_held_v1_fields_preserved": true,
+    "mandatory_rule_references_preserved": true,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\12_selection_readiness_v2\\SELECTION_READINESS_V2_MANIFEST.json",
+      "bytes": 5391,
+      "mtime_ns": 1786167298635603300,
+      "sha256": "92da4e3cd1403b15addbeef5816cf57dc814da74c4011065e6e02c4a622e0801"
+    },
+    "readiness_v2": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\12_selection_readiness_v2\\common_pron_r3_selection_readiness_v2.csv.gz",
+      "bytes": 47051504,
+      "mtime_ns": 1786167298088071100,
+      "sha256": "6040c31181c9ce57ab79c16824b8598fca19590ac078ecd1f75ceb93ae90cb5a"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T14:37:25+09:00",
+    "git_commit": "1f2874a06a9d94d4a63fb10ccbe2f8033dc7b832",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 25008
+  }
+}

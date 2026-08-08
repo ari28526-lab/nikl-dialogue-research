@@ -290,6 +290,20 @@ acoustic inventory에 대조했다. 표준발음법상 표준으로 인정하지
 않았다. 상세 근거는
 `RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`에 기록했다.
 
+### 5.9 감사 근거의 candidate-only readiness 반영
+
+stage 09의 881,237형 readiness를 보존하면서 stage 11에서 전 변이가 검증된
+37,379형·754,924회만 정렬용 planning candidate로 추가했다. 수의적 위치동화
+36,568형과 비중복 frozen 기본사전 정확 일치 811형은 서로 다른
+`planning_standard_relation`을 기록했다. 의무 규칙 `rule_pron_roman`과 r2
+phone/roman을 같은 열로 덮어쓰지 않았다.
+
+그 결과 candidate 준비는 752,270형에서 789,649형으로, zero-fallback hold는
+128,932형에서 91,553형으로 바뀌었다. 독립 감사기는 전체 881,237행을 v1과
+행별 대조해 새 후보의 허용된 planning 필드 외 기존 값이 모두 보존됐음을
+확인했다. canonical 최종 선택, adoption, MFA, TextGrid 변경은 수행하지 않았다.
+상세 결과는 `RESULT_common_pron_r3_selection_readiness_v2_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
