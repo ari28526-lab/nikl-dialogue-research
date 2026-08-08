@@ -95,8 +95,30 @@ adoption이나 연도별 MFA로 자동 진입하지 않는다.
 완료 증거는
 `docs/decisions/RESULT_common_pron_r3_g2p_candidate_phase_20260808.md`와
 `outputs/reports/AUDIT_common_pron_mfa_r3_g2p_candidates_20260808.json`이다.
-다음 단계에서는 이 실행기를 다시 돌리지 않고 exact broad-Roman 선택 Gate를
-구축한다.
+이 실행기는 다시 돌리지 않는다. 후속 exact broad-Roman Gate의 완료 상태는
+아래 checkpoint를 따른다.
+
+### 3.2 r3 G2P–규칙 Roman 전수 Gate 완료 checkpoint
+
+2026-08-08에 310,605개 후보 phone을 고정 broad-Roman 단위로 바꾸고 독립 규칙
+목표와 순서·길이까지 exact 비교했다. 대상형 exact는 96,284개(30.999%),
+mismatch는 214,321개(69.001%)다. source 기준 사전 근거 일치 exact는 3,078형,
+사전 충돌 exact는 14형, 독립 근거 없는 exact는 94,134형, mismatch는
+215,184형이다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+04_g2p_rule_agreement_gate\G2P_AGREEMENT_GATE_MANIFEST.json
+```
+
+별도 감사 보고서
+`outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`은
+`passed_read_only`다. `EVIDENCE_SAMPLE.csv` 75행은 승인표가 아니므로 이
+checkpoint에서 사용자 검토를 요구하지 않는다.
+
+다음 단계는 별도 canonical 선택 계약이다. exact 후보도 자동 선택하지 않고 사전
+근거와 형태음운 보류를 보존한다. adoption manifest가 통과하기 전에는 r3 MFA,
+TextGrid materialization, 기존 r2 label 치환을 시작하지 않는다.
 
 ## 4. 2021 Gate 종료 — 완료
 

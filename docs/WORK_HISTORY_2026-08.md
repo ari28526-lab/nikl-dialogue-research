@@ -2241,3 +2241,28 @@ shard 2–23을 재개하는 것이다.
 - 다음 단계는 후보 broad Roman과 독립 규칙 목표 Roman의 exact agreement
   Gate이다. 최종 채택 뒤에는 r3 사전 SHA와 contract ID가 실제 6-tier TextGrid
   및 동반 index까지 전달되어야 하며 r2 phone label의 제자리 치환은 금지한다.
+
+## 2026-08-08 — r3 G2P–규칙 발음 전수 agreement Gate 완료
+
+- 후보 생성 성공과 발음 타당성을 분리하기 위해 310,605개 target의 G2P phone을
+  동결 acoustic-model broad-Roman으로 변환하고 독립 규칙 목표 Roman과 단위 순서·
+  길이까지 exact 비교했다. 새 산출물은
+  `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  04_g2p_rule_agreement_gate`에 원자적으로 생성했다.
+- target exact는 96,284개(30.999%), mismatch는 214,321개(69.001%)였다.
+  source 312,410형·4,472,892회 기준 exact 출현은 1,676,283회(37.476%),
+  mismatch 출현은 2,796,609회(62.524%)였다.
+- exact source를 다시 사전 근거로 나눠 사전 일치 3,078형·184,103회, 사전 충돌
+  14형·57회, 독립 사전 일치 근거 없음 94,134형·1,492,123회로 보존했다.
+  mismatch 215,184형은 자동 선택 불가로 분리했다. exact도 최종 선택하지 않았다.
+- 연도별 exact 출현 비율은 2020 37.023%, 2021 38.281%, 2022 37.952%,
+  2023 37.166%, 2024 37.684%, 2025 36.347%다. 모든 연도에 같은 target,
+  model, Roman mapping, exact 함수와 evidence routing을 적용했다.
+- 기존 문제 예시 `놨던`, `어쨌든`, `없는`, `있는`, `있지`를 회귀 표본으로
+  고정했다. 앞 세 예시는 exact, `있는`·`있지`는 mismatch로 분류됐다.
+- 별도 감사기는 310,605 target과 312,410 source의 변환·편집거리·연도 합계·
+  target/source 연결·SHA를 전수 재계산해 `passed_read_only`로 통과했다. 보고서는
+  `outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`이다.
+- 75행 `EVIDENCE_SAMPLE.csv`는 결과 범주 설명용이지 승인표가 아니다. 이 단계에서
+  canonical selection, adoption, 연도별 MFA, TextGrid 변경, 실제 실현 판정을
+  수행하지 않았다.

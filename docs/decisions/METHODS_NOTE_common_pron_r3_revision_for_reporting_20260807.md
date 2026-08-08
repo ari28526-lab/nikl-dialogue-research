@@ -141,10 +141,30 @@ SHA-256은
 PowerShell 5.1에서 실패하는 `[uint32]0x8........` 형식을 금지하는 조건을
 추가했다.
 
+### 5.2 G2P 후보–규칙 목표 전수 비교 결과
+
+2026-08-08에는 G2P 계산 성공을 발음 타당성으로 간주하지 않고, 후보 phone을
+고정 acoustic-model broad-Roman 단위로 변환해 독립 규칙 목표 Roman과 순서·길이까지
+전수 exact 비교했다. 대상형 310,605개 중 96,284개(30.999%)만 exact였고
+214,321개(69.001%)는 mismatch였다. source 출현 4,472,892회 기준 exact는
+1,676,283회(37.476%), mismatch는 2,796,609회(62.524%)였다.
+
+exact도 최종 선택으로 해석하지 않았다. 사전 근거가 일치한 3,078 source형만
+후속 선택 우선 후보로 두고, 사전 충돌 14형과 독립 사전 근거가 없는 exact
+94,134형을 별도 보류했다. mismatch 215,184형은 G2P 자동 선택 대상에서 제외했다.
+여섯 연도는 같은 후보·규칙·Roman mapping·exact 함수로 비교하고 연도별 출현만
+별도로 합산했다. 이 단계에서는 canonical selection, adoption, MFA, TextGrid 변경,
+실제 실현 발음 판정을 수행하지 않았다.
+
+전수 결과와 독립 재감사 근거는
+`RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`와
+`outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
-아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성만
-완료됐고 r3 adoption·재정렬·TextGrid materialization은 완료되지 않았으므로, 논문에
+아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성과
+규칙 Roman agreement Gate만 완료됐고 r3 adoption·재정렬·TextGrid materialization은
+완료되지 않았으므로, 논문에
 완료형으로 그대로 사용하지 않는다. 최종 각주에는 manifest에서 확인한 다음
 실측값을 채운 뒤에만 완료형으로 확정한다.
 
@@ -191,11 +211,13 @@ PowerShell 5.1에서 실패하는 `[uint32]0x8........` 형식을 금지하는 �
 | `3aa2d7e` | 881,237형 r3 inventory와 선택 재사용 계약 |
 | `59a135e` | donor/G2P 후보 단계, 재개 가능한 runner, 상태판, 방법론 문서 |
 | `f0a826e` | 완료 후보를 원본 무변경으로 전수 재검증하는 read-only 감사 |
+| 이 변경 묶음 | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
 - `DECISION_2022_pronunciation_input_gate_hold_20260807.md`
 - `DECISION_common_pron_r3_candidate_resolution_20260807.md`
+- `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

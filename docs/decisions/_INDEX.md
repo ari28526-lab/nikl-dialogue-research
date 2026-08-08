@@ -32,6 +32,8 @@
 | `DECISION_2022_pronunciation_input_gate_hold_20260807.md` | 2022 표본·881,237형 전수 감사로 r2 규칙 배선 공백을 확인하고 신규 실행을 차단한 결정; r3 단일 선택표와 6개년 재정렬 요구 |
 | `DECISION_common_pron_r3_candidate_resolution_20260807.md` | r3 canonical·donor·G2P 후보를 최종 선택과 분리하고, 2020–2022 동등 단위 증명 재사용·변경 단위 재정렬·2023–2025 최초 정렬을 규정 |
 | `METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md` | r2 입력 배선 문제 발견, 881,237형 전수 감사, r3 후보·선택 분리, 재정렬 범위 수정과 논문 각주용 축약문을 기록 |
+| `RESULT_common_pron_r3_g2p_candidate_phase_20260808.md` | Jamo G2P 310,605개 후보의 13 shard 완결성·no-path/`spn` 0·읽기 전용 감사 기록 |
+| `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md` | 후보–독립 규칙 Roman 전수 exact/mismatch, 사전 근거별 보류, 연도별 동일 기준 회계와 독립 감사 기록 |
 
 ## 현재 생산과 안전 계약
 

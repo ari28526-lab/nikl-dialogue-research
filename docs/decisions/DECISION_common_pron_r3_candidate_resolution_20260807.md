@@ -1,7 +1,7 @@
 # 공통발음 r3 후보 생성·선택·정렬 반영 결정
 
 - 결정일: 2026-08-07 KST
-- 상태: G2P 후보 생성 완료, 아직 canonical 선택·adoption 전
+- 상태: G2P 후보 생성·규칙 Roman 전수 Gate 완료, 아직 canonical 선택·adoption 전
 - 적용 범위: 2020–2025 전체 관측 표면형 881,237개
 
 ## 목적
@@ -89,3 +89,19 @@ WAV, TextGrid, KOINA 결과 등을 보고 연구자가 판정한다.
 이 계약은 이미 끝난 정렬을 무조건 처음부터 반복하지 않으면서도, 논문에서
 2020–2025가 동일한 발음 선택 기준과 동일한 acoustic phone inventory를
 사용했다고 입증하기 위한 기준이다.
+
+## 2026-08-08 전수 agreement Gate 후속 결정
+
+310,605개 후보와 독립 규칙 목표를 ordered broad-Roman으로 전수 비교한 결과,
+exact는 96,284개(30.999%), mismatch는 214,321개(69.001%)였다. 따라서
+`G2P exit 0`, no-path 0, `spn` 0은 후보 생성 완결성 근거일 뿐 발음 선택 근거로
+사용하지 않는다.
+
+- 사전 근거 일치 exact source 3,078형은 후속 canonical 선택 우선 후보로만 둔다.
+- 사전 충돌 exact 14형과 독립 사전 근거 없는 exact 94,134형은 서로 다른 보류
+  상태를 유지한다.
+- mismatch source 215,184형은 G2P 후보를 자동 선택하지 않는다.
+- exact 여부와 최종 선택 여부를 별도 열·manifest로 유지한다.
+- 별도 adoption Gate 전에는 연도별 MFA와 TextGrid materialization을 시작하지 않는다.
+
+수치와 SHA 근거는 `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`를 따른다.

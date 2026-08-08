@@ -1,6 +1,6 @@
 # Codex 리밋·새 대화 뒤 프로젝트 연속성
 
-최종 갱신: 2026-08-07 KST
+최종 갱신: 2026-08-08 KST
 
 이 절차는 새 계정을 만들기 위한 것이 아니다. 같은 계정에서 Codex 사용 한도가
 초기화되기를 기다리거나 새 대화를 열어도, 로컬 계산과 연구 계약을 잃지 않고
@@ -76,6 +76,22 @@ shard 보고서가 있어야 완료다. r3 실행 명령은
 run_common_pron_mfa_r3_g2p_candidates.ps1`이며, 새 대화에서는 먼저 상태판을
 실행한 뒤에만 재개한다. 사용자에게 주는 명령은 현재 PowerShell 위치와 무관한
 절대경로를 사용한다.
+
+### 2026-08-08 agreement Gate 이후 재개점
+
+G2P 13 shard는 완료됐으며 다시 실행하지 않는다. 이어서 수행한 ordered
+broad-Roman 전수 비교와 읽기 전용 감사도 완료됐다.
+
+```text
+대상 exact 96,284 / mismatch 214,321
+source exact 출현 1,676,283 / mismatch 출현 2,796,609
+canonical selection false / adoption false / annual MFA false / TextGrid 변경 false
+```
+
+새 대화에서는 `docs/decisions/RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`와
+`outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`을 먼저
+확인한다. 상태판의 `success_candidates_not_selected`를 보고 G2P를 재실행하지
+않으며, 다음 일은 별도 canonical 선택 정책과 adoption Gate다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

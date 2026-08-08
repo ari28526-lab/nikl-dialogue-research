@@ -1,0 +1,235 @@
+{
+  "schema_version": "common_pron_r3_g2p_agreement_gate_summary.v1",
+  "status": "summarized_candidates_not_selected",
+  "recorded_at": "2026-08-08T10:02:29+09:00",
+  "scope": {
+    "evidence_handoff_only": true,
+    "researcher_approval_required_now": false,
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false
+  },
+  "target_results": {
+    "total": 310605,
+    "exact": 96284,
+    "mismatch": 214321,
+    "exact_percent": 30.999,
+    "mismatch_percent": 69.001,
+    "comparison_statuses": {
+      "different_rule_roman": 214321,
+      "exact_rule_roman": 96284
+    },
+    "gate_classes": {
+      "exact_candidate_dictionary_agree_all_sources": 2981,
+      "hold_exact_source_evidence_review": 93303,
+      "mismatch_not_eligible": 214321
+    },
+    "edit_distance_distribution": {
+      "0": 96284,
+      "1": 144848,
+      "2": 52806,
+      "3": 13594,
+      "4": 2567,
+      "5": 439,
+      "6": 66,
+      "7": 1
+    }
+  },
+  "source_results": {
+    "rows_by_gate": {
+      "exact_candidate_dictionary_agree": 3078,
+      "hold_exact_dictionary_conflict": 14,
+      "hold_exact_no_attested_agreement": 94134,
+      "mismatch_not_eligible": 215184
+    },
+    "occurrences_by_gate": {
+      "exact_candidate_dictionary_agree": 184103,
+      "hold_exact_dictionary_conflict": 57,
+      "hold_exact_no_attested_agreement": 1492123,
+      "mismatch_not_eligible": 2796609
+    },
+    "total_occurrences": 4472892,
+    "exact_occurrences": 1676283,
+    "mismatch_occurrences": 2796609,
+    "exact_percent": 37.476,
+    "mismatch_percent": 62.524
+  },
+  "year_summary": {
+    "2020": {
+      "exact_occurrences": 191245,
+      "mismatch_occurrences": 325314,
+      "total_occurrences": 516559,
+      "exact_percent": 37.023,
+      "mismatch_percent": 62.977,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 16667,
+        "hold_exact_dictionary_conflict": 7,
+        "hold_exact_no_attested_agreement": 174571,
+        "mismatch_not_eligible": 325314
+      }
+    },
+    "2021": {
+      "exact_occurrences": 392339,
+      "mismatch_occurrences": 632563,
+      "total_occurrences": 1024902,
+      "exact_percent": 38.281,
+      "mismatch_percent": 61.719,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 48701,
+        "hold_exact_dictionary_conflict": 7,
+        "hold_exact_no_attested_agreement": 343631,
+        "mismatch_not_eligible": 632563
+      }
+    },
+    "2022": {
+      "exact_occurrences": 264241,
+      "mismatch_occurrences": 432004,
+      "total_occurrences": 696245,
+      "exact_percent": 37.952,
+      "mismatch_percent": 62.048,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 30223,
+        "hold_exact_dictionary_conflict": 8,
+        "hold_exact_no_attested_agreement": 234010,
+        "mismatch_not_eligible": 432004
+      }
+    },
+    "2023": {
+      "exact_occurrences": 218709,
+      "mismatch_occurrences": 369751,
+      "total_occurrences": 588460,
+      "exact_percent": 37.166,
+      "mismatch_percent": 62.834,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 22546,
+        "hold_exact_dictionary_conflict": 8,
+        "hold_exact_no_attested_agreement": 196155,
+        "mismatch_not_eligible": 369751
+      }
+    },
+    "2024": {
+      "exact_occurrences": 315998,
+      "mismatch_occurrences": 522546,
+      "total_occurrences": 838544,
+      "exact_percent": 37.684,
+      "mismatch_percent": 62.316,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 34576,
+        "hold_exact_dictionary_conflict": 4,
+        "hold_exact_no_attested_agreement": 281418,
+        "mismatch_not_eligible": 522546
+      }
+    },
+    "2025": {
+      "exact_occurrences": 293751,
+      "mismatch_occurrences": 514431,
+      "total_occurrences": 808182,
+      "exact_percent": 36.347,
+      "mismatch_percent": 63.653,
+      "by_source_gate": {
+        "exact_candidate_dictionary_agree": 31390,
+        "hold_exact_dictionary_conflict": 23,
+        "hold_exact_no_attested_agreement": 262338,
+        "mismatch_not_eligible": 514431
+      }
+    }
+  },
+  "regression_examples": {
+    "놨던": {
+      "target_hangul": "놛떤",
+      "rule_pron_roman": "N WA t _ TT EO n",
+      "g2p_candidate_phones": "n w ɐ d t͈ ʌ n",
+      "g2p_candidate_roman": "N W A D TT EO N",
+      "comparison_status": "exact_rule_roman",
+      "source_gate_class": "hold_exact_no_attested_agreement"
+    },
+    "어쨌든": {
+      "target_hangul": "어짿뜬",
+      "rule_pron_roman": "EO _ JJ AE t _ TT EU n",
+      "g2p_candidate_phones": "ʌ tɕ͈ ɛː t̚ t͈ ɨ n",
+      "g2p_candidate_roman": "EO JJ AE t TT EU N",
+      "comparison_status": "exact_rule_roman",
+      "source_gate_class": "exact_candidate_dictionary_agree"
+    },
+    "없는": {
+      "target_hangul": "엄는",
+      "rule_pron_roman": "EO m _ N EU n",
+      "g2p_candidate_phones": "ʌː m n ɨ n",
+      "g2p_candidate_roman": "EO M N EU N",
+      "comparison_status": "exact_rule_roman",
+      "source_gate_class": "hold_exact_no_attested_agreement"
+    },
+    "있는": {
+      "target_hangul": "인는",
+      "rule_pron_roman": "I n _ N EU n",
+      "g2p_candidate_phones": "i nː ɨ n",
+      "g2p_candidate_roman": "I N EU N",
+      "comparison_status": "different_rule_roman",
+      "source_gate_class": "mismatch_not_eligible"
+    },
+    "있지": {
+      "target_hangul": "읻찌",
+      "rule_pron_roman": "I t _ JJ I",
+      "g2p_candidate_phones": "iː tɕ͈ː tɕ͈ i",
+      "g2p_candidate_roman": "I JJ JJ I",
+      "comparison_status": "different_rule_roman",
+      "source_gate_class": "mismatch_not_eligible"
+    }
+  },
+  "handoff": {
+    "sample_rows": 75,
+    "purpose": "evidence inspection before a separately authorized canonical-selection stage",
+    "not_an_approval_queue": true,
+    "evidence_sample": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_g2p_agreement_gate_20260808\\EVIDENCE_SAMPLE.csv",
+      "bytes": 31838,
+      "mtime_ns": 1786150949439102600,
+      "sha256": "516bbbb8a3e3281de106c0846d351ba95bc4de61c9b4a6669cbf30c027a228e2"
+    }
+  },
+  "inputs": {
+    "agreement_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\G2P_AGREEMENT_GATE_MANIFEST.json",
+      "bytes": 4581,
+      "mtime_ns": 1786150682121256300,
+      "sha256": "8e4252885db93cd9abf47b2265fcb1cee699f3c4a5c63db475a371b8854df516"
+    },
+    "target_agreement": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\g2p_target_agreement.csv.gz",
+      "bytes": 10911709,
+      "mtime_ns": 1786150647410872000,
+      "sha256": "b090f31560f3a28f05aacf2743918fad6ea59b8166d30501c9e91284a97fae24"
+    },
+    "source_agreement": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\g2p_source_agreement.csv.gz",
+      "bytes": 16318975,
+      "mtime_ns": 1786150681406260900,
+      "sha256": "546a9510343a03d3a404bffab35667ccaae0ff26d2374f2239cc3621e2eaccc0"
+    },
+    "gate_summary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\gate_summary.csv",
+      "bytes": 784,
+      "mtime_ns": 1786150681411273900,
+      "sha256": "3957f82b26a62b1ac1517eb05482180672f4c37fb9f4bfbb93727866a2a55e45"
+    },
+    "regression_examples": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\regression_examples.csv",
+      "bytes": 2967,
+      "mtime_ns": 1786150681409227900,
+      "sha256": "d43226915a005dc2efa855456957640f3db3fb9225631b3c04b94b823141be38"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T10:02:29+09:00",
+    "git_commit": "daa0e5e01ad62c0a4306bd71bb3db34060ea4534",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 26188
+  }
+}

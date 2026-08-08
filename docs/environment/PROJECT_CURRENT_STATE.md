@@ -156,11 +156,16 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - exact Roman 표면 donor 후보 346형 생성 완료(아직 최종 선택 아님)
 - 규칙 목표형 Jamo G2P 310,605개·13 shard 후보 생성 및 읽기 전용 독립 감사 완료
 - no-path·`spn`·중복·입력 밖 key·acoustic inventory 밖 phone 모두 0
-- 후보 생성은 최종 선택이 아니며 canonical selection·adoption·TextGrid 변경 없음
+- G2P 후보–독립 규칙 Roman 전수 exact Gate와 별도 읽기 전용 감사 완료
+- 대상형 exact 96,284개(30.999%), mismatch 214,321개(69.001%)
+- source 출현 exact 1,676,283회(37.476%), mismatch 2,796,609회(62.524%)
+- 사전 근거 일치 exact 3,078형은 후속 선택 후보, 사전 충돌 14형과 독립 근거 없는
+  exact 94,134형은 각각 보류, mismatch 215,184형은 자동 선택 불가
+- 후보 비교는 최종 선택이 아니며 canonical selection·adoption·TextGrid 변경 없음
 
-현재 허용 작업은 생성된 r3 G2P 후보를 독립 규칙 Roman과 정확히 비교하고,
-일치하는 후보만 canonical 선택표에 승격한 뒤 사전 projection·자동 회귀·
-adoption Gate를 구현하는 것이다. G2P 1-best 자체는 정답이나 최종 선택이 아니다.
+현재 허용 작업은 Gate 결과와 사전·형태음운 근거를 이용해 canonical 선택 정책을
+별도 설계하고, 선택표·사전 projection·자동 회귀·adoption Gate를 구현하는 것이다.
+exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
 2020–2022는 영향 세션 delta, 2023–2025는 최초 전수 정렬로 순차 진행한다.
@@ -175,4 +180,6 @@ adoption Gate를 구현하는 것이다. G2P 1-best 자체는 정답이나 최�
   `docs/decisions/DECISION_common_pron_r3_candidate_resolution_20260807.md`
 - r3 G2P 후보 실행 결과:
   `docs/decisions/RESULT_common_pron_r3_g2p_candidate_phase_20260808.md`
+- r3 G2P–규칙 Roman 전수 Gate 결과:
+  `docs/decisions/RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

@@ -1,0 +1,73 @@
+{
+  "schema_version": "common_pron_r3_g2p_agreement_gate_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T09:59:41+09:00",
+  "counts": {
+    "target_rows": 310605,
+    "source_rows": 312410,
+    "total_occurrences": 4472892,
+    "target_gate_classes": {
+      "exact_candidate_dictionary_agree_all_sources": 2981,
+      "hold_exact_source_evidence_review": 93303,
+      "mismatch_not_eligible": 214321
+    },
+    "source_gate_classes": {
+      "exact_candidate_dictionary_agree": 3078,
+      "hold_exact_dictionary_conflict": 14,
+      "hold_exact_no_attested_agreement": 94134,
+      "mismatch_not_eligible": 215184
+    },
+    "regression_tokens": 5
+  },
+  "contracts": {
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "agreement_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\G2P_AGREEMENT_GATE_MANIFEST.json",
+      "bytes": 4581,
+      "mtime_ns": 1786150682121256300,
+      "sha256": "8e4252885db93cd9abf47b2265fcb1cee699f3c4a5c63db475a371b8854df516"
+    },
+    "target_agreement": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\g2p_target_agreement.csv.gz",
+      "bytes": 10911709,
+      "mtime_ns": 1786150647410872000,
+      "sha256": "b090f31560f3a28f05aacf2743918fad6ea59b8166d30501c9e91284a97fae24"
+    },
+    "source_agreement": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\g2p_source_agreement.csv.gz",
+      "bytes": 16318975,
+      "mtime_ns": 1786150681406260900,
+      "sha256": "546a9510343a03d3a404bffab35667ccaae0ff26d2374f2239cc3621e2eaccc0"
+    },
+    "gate_summary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\gate_summary.csv",
+      "bytes": 784,
+      "mtime_ns": 1786150681411273900,
+      "sha256": "3957f82b26a62b1ac1517eb05482180672f4c37fb9f4bfbb93727866a2a55e45"
+    },
+    "regression_examples": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\04_g2p_rule_agreement_gate\\regression_examples.csv",
+      "bytes": 2967,
+      "mtime_ns": 1786150681409227900,
+      "sha256": "d43226915a005dc2efa855456957640f3db3fb9225631b3c04b94b823141be38"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T09:59:41+09:00",
+    "git_commit": "daa0e5e01ad62c0a4306bd71bb3db34060ea4534",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 23940
+  }
+}
