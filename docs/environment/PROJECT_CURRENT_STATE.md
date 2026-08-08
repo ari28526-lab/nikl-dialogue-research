@@ -226,17 +226,29 @@ hold했다. Stage 18 readiness v4는 이 14형만 병합했다. candidate 준비
 795,804형·27,043,261회, zero-fallback hold는 85,398형·803,644회다. v3/v4
 881,237행 전수 감사에서 비대상 변화 0을 확인했다.
 
-현재 허용 작업은 readiness v4의 candidate·hold·기존 정책결정 35형을 다시
-요약해 canonical selection/adoption 전 남은 결정 단위와 Gate를 고정하는 것이다.
-51형은 연구자 청취가 아니라 model allophone 복수·충돌 문제이므로 사용자에게
-발음 판정을 요구하지 않는다. 기존 phone의 부분 교정도 허용하지 않는다.
-수의적 위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현
-발음으로 선언하지 않는다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 자동 승인,
-canonical selection·adoption 전 MFA는 허용하지 않는다.
-exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
-새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
-2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
-2020–2022는 영향 세션 delta, 2023–2025는 최초 전수 정렬로 순차 진행한다.
+Stage 19는 동결 pre-MFA `pron_reference_form`과 실제 LAB tokenizer로
+5,103,356발화를 전수 다시 읽었다. candidate만 포함한 safe body는
+4,384,992발화(85.923694%), hold·policy·빈 LAB가 하나라도 있는 follow-up은
+718,364발화다. unknown 어절은 0이며, 여섯 연도에 같은 발화 단위 라우팅 규칙을
+적용했다. 부분 어절 삭제·대체는 하지 않았다. 독립 전수 감사가 통과했다.
+
+Stage 20은 795,804형·796,061변이의 safe-body MFA 후보 사전을 물질화하고
+107-phone 동결 acoustic inventory와 전수 byte projection을 독립 감사했다.
+inventory 밖 phone, lexical `spn`/`sil`, non-candidate 누출은 모두 0이다. 파일명과
+manifest는 `NOT_ADOPTED` 상태를 명시하며 아직 최종 선택·release가 아니다.
+
+Stage 21은 기존 연구자 지적 표본 `있지·놨던·슬프겠지만·없는` 네 발화만 새
+후보 사전으로 표적 정렬했다. 입력 phone exact 4/4, interval 연속 4/4,
+word–phone 바깥 경계 4/4, `spn` 0으로 자동 검사를 통과했다. 연구자의 짧은
+음성–경계 검토만 대기한다. 검토 root는
+`C:\Users\ari30\Dropbox\REVIEW_r3_TARGETED_4_20260808`이다.
+
+현재 자동으로 더 진행할 수 있는 작업은 끝났다. 35개 policy형에는 재사용 가능한
+과거 명시 결정이 없고, 기존 생성 phone을 승인으로 간주하지 않았다. 다음은
+연구자가 (1) 네 표적 경계를 승인하고 (2) 881,237형 전부가 해결될 때까지
+기다릴지, 또는 같은 6개년 기준으로 safe body만 단계 채택하고 follow-up을
+보존할지 결정하는 Gate다. 그 전에는 생산 MFA·TextGrid materialization을
+시작하지 않는다.
 
 ## 정본 문서
 
@@ -272,4 +284,12 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`
 - r3 단일 문맥 근거·phone 변경 필요형 감사:
   `docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`
+- r3 pre-adoption 발화 라우팅:
+  `docs/decisions/RESULT_common_pron_r3_pre_adoption_routing_20260808.md`
+- r3 safe-body 후보 사전:
+  `docs/decisions/RESULT_common_pron_r3_safe_body_candidate_20260808.md`
+- r3 2022 표적 회귀 정렬:
+  `docs/decisions/RESULT_common_pron_r3_targeted_regression_20260808.md`
+- r3 adoption 선택 Gate:
+  `docs/decisions/DECISION_common_pron_r3_adoption_choice_pending_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

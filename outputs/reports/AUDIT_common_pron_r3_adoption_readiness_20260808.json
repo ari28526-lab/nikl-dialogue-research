@@ -1,0 +1,152 @@
+{
+  "schema_version": "common_pron_r3_adoption_readiness_audit.v1",
+  "status": "blocked_as_expected_at_explicit_method_choice_and_manual_targeted_review",
+  "recorded_at": "2026-08-08T23:05:32+09:00",
+  "verdict": {
+    "full_r3_adoption_allowed": false,
+    "yearly_production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "safe_body_candidate_materialized_and_audited": true,
+    "next_automatic_work_exhausted_without_changing_adoption_policy": true
+  },
+  "coverage": {
+    "canonical_types": 881237,
+    "canonical_occurrences": 27847068,
+    "candidate_types": 795804,
+    "candidate_occurrences": 27043261,
+    "zero_fallback_hold_types": 85398,
+    "zero_fallback_hold_occurrences": 803644,
+    "policy_types": 35,
+    "policy_occurrences": 163,
+    "safe_utterances": 4384992,
+    "blocked_utterances": 718364,
+    "safe_utterance_percent": 85.923694
+  },
+  "gates": [
+    {
+      "gate": "canonical_type_coverage",
+      "passed": true,
+      "evidence": "881237 observed types represented exactly once"
+    },
+    {
+      "gate": "safe_body_routing_independent_audit",
+      "passed": true,
+      "evidence": "4384992 safe and 718364 deferred utterances; unknown eojeol=0"
+    },
+    {
+      "gate": "candidate_dictionary_phone_and_byte_projection",
+      "passed": true,
+      "evidence": "795804 types / 796061 variant rows; outside inventory=0; spn=0"
+    },
+    {
+      "gate": "full_final_selected_phone_coverage",
+      "passed": false,
+      "evidence": "planning candidates=795804; zero-fallback hold=85398; policy decision=35; planning rows are not final selection"
+    },
+    {
+      "gate": "explicit_policy_decisions",
+      "passed": false,
+      "evidence": "35 types / 163 occurrences; reusable prior decisions=0"
+    },
+    {
+      "gate": "targeted_regression_automatic",
+      "passed": true,
+      "evidence": "review IDs 08, 09, 15, 24: candidate phone exact 4/4; boundaries internally consistent 4/4; spn=0"
+    },
+    {
+      "gate": "targeted_regression_researcher_audio_boundary_review",
+      "passed": false,
+      "evidence": "4/4 pending in Dropbox review bundle"
+    },
+    {
+      "gate": "project_release_gate_open",
+      "passed": false,
+      "evidence": "mfa_pronunciation_release_gate remains blocked_pending_r3; allowed_release_ids is empty"
+    }
+  ],
+  "decision_required": {
+    "decision_1": {
+      "question": "Keep the full 881237-type adoption gate, or authorize a staged safe-body adoption contract?",
+      "full_coverage_path": "Continue resolving 85398 zero-fallback holds and 35 policy types; no production MFA before all types have final selected phones.",
+      "staged_safe_body_path": "After the four-sample manual boundary review, explicitly amend the gate for 4384992 safe utterances only; preserve 718364 utterances as follow-up and do not claim full-corpus completion."
+    },
+    "decision_2": {
+      "question": "Do the four r3 targeted TextGrids have acceptable audio-aligned word/phone boundaries?",
+      "review_bundle": "C:\\Users\\ari30\\Dropbox\\REVIEW_r3_TARGETED_4_20260808"
+    }
+  },
+  "methodological_constraints": {
+    "same_policy_all_six_years": true,
+    "r2_textgrids_relabelled_in_place": false,
+    "candidate_phone_is_actual_realization_truth": false,
+    "deferred_utterances_deleted": false,
+    "broad_pilot_repeated": false
+  },
+  "inputs": {
+    "readiness_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\18_selection_readiness_v4\\SELECTION_READINESS_V4_MANIFEST.json",
+      "bytes": 5436,
+      "mtime_ns": 1786188722162157500,
+      "sha256": "1664c07bb336b9e8a1e150b8733e5df6f949dedc34e1e73533abfcfbba1951c9"
+    },
+    "routing_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\PRE_ADOPTION_ROUTING_MANIFEST.json",
+      "bytes": 4560,
+      "mtime_ns": 1786195377373723000,
+      "sha256": "7e00bf5bf28dc7cb1c97a4b5d14584d78cfef0957e6e71c4c42a23c144ce7ddb"
+    },
+    "routing_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_pre_adoption_routing_20260808.json",
+      "bytes": 2844,
+      "mtime_ns": 1786195935528559500,
+      "sha256": "5ce19e9602f9f3bcfea4acfce04f76948d8f7354c815f869c0eb6cc1f9453cfe"
+    },
+    "policy_decision_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_policy_decision_reuse_20260808.json",
+      "bytes": 2202,
+      "mtime_ns": 1786195497000217900,
+      "sha256": "c16f9f066ce8cde5886159a39881212327aee41c87343ef913e62e8b04c1f47d"
+    },
+    "candidate_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\20_safe_body_candidate\\SAFE_BODY_CANDIDATE_MANIFEST.json",
+      "bytes": 6109,
+      "mtime_ns": 1786196226495957600,
+      "sha256": "813af9daf8281aba7095875eb8ef39a63ffc684e9c3701313bcb6cca989529ac"
+    },
+    "candidate_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_safe_body_candidate_20260808.json",
+      "bytes": 2752,
+      "mtime_ns": 1786196352711696900,
+      "sha256": "e1178d915e98e1624d4f879fee428f533cb3f98b40002044c52b50945409ba26"
+    },
+    "targeted_regression_audit": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\21_targeted_regression_2022\\TARGETED_REGRESSION_AUDIT.json",
+      "bytes": 6940,
+      "mtime_ns": 1786197738413818100,
+      "sha256": "0db5b17c1dab0e83131eed2058179248f65dce1695b56a51669dda9875e12e4f"
+    },
+    "release_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_pronunciation_release_gate.json",
+      "bytes": 2025,
+      "mtime_ns": 1786100488524582300,
+      "sha256": "ca858e689323bb95710d7a0b39c4d38117b6298ac0321daece06640e9032fae6"
+    },
+    "draft_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\common_pronunciation_resource_contract_v3_draft.json",
+      "bytes": 7226,
+      "mtime_ns": 1786100866060137900,
+      "sha256": "e671a305e06a1940218d2f63bf92622baf91ba0087bebbb0c0aaf08afeb4979f"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T23:05:32+09:00",
+    "git_commit": "dcec43e8a510e67cdc8f5a9c091e84d248e8808c",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 5420
+  }
+}

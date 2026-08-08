@@ -258,12 +258,20 @@ readiness v4 zero-fallback hold: 85,398형 / 803,644회
 canonical selection false / adoption false / MFA false / TextGrid 변경 false
 ```
 
-새 대화에서 Stage 13–18을 다시 실행하지 않는다. 다음 허용 작업은 readiness v4의
-candidate·hold·기존 정책결정 35형을 요약해 canonical selection/adoption 전 남은
-결정 단위와 Gate를 고정하는 것이다. Stage 17 잔여 51형은 model allophone 복수·
-충돌 hold이며 사용자 청취 대상이 아니다. 부분 phone 교정, 사용자 전수 청취,
-같은 G2P 재실행, r3 adoption 전 MFA는 금지한다. 최신 정본은
-`docs/decisions/RESULT_common_pron_r3_selection_readiness_v4_20260808.md`다.
+Stage 19–21까지 완료됐으므로 새 대화에서 Stage 13–21을 다시 실행하지 않는다.
+정본은 다음이다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\19_pre_adoption_routing\PRE_ADOPTION_ROUTING_MANIFEST.json
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\20_safe_body_candidate\SAFE_BODY_CANDIDATE_MANIFEST.json
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\21_targeted_regression_2022\TARGETED_REGRESSION_AUDIT.json
+outputs/reports/AUDIT_common_pron_r3_adoption_readiness_20260808.json
+```
+
+safe body는 4,384,992발화, follow-up은 718,364발화다. 후보 사전은
+795,804형·796,061변이이며 `NOT_ADOPTED`다. 다음 행동은 Dropbox의 표적 네 발화
+경계 검토와 full-coverage/단계적 safe-body adoption 선택뿐이다. 그 전에는 생산
+MFA, TextGrid materialization, r2 label 제자리 치환을 시작하지 않는다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

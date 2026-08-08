@@ -2579,3 +2579,38 @@ shard 2–23을 재개하는 것이다.
   필드만 바뀌고 비대상 881,223행 변화 0임을 확인했다. canonical selection,
   adoption, MFA, TextGrid, 2020–2022 완성본은 변경하지 않았다.
 - 표준 pipeline Python으로 `test_*common_pron*.py` 190개를 실행해 모두 통과했다.
+
+## 2026-08-08 — r3 Stage 19 pre-adoption 발화 라우팅
+
+- 동결 pre-MFA `pron_reference_form`을 실제 LAB tokenizer로 17,156 CSV,
+  5,103,356발화, 27,847,068 LAB 어절 전수 다시 읽었다. 모든 어절이 candidate인
+  safe body는 4,384,992발화, hold·policy·빈 LAB가 포함된 follow-up은
+  718,364발화였다. unknown은 0이고 부분 어절 삭제·대체는 하지 않았다.
+- 연구 검색용 구 `05_search_master/form`을 입력으로 쓴 첫 시도는 어절 총계
+  불일치로 final 전에 중단됐다. 두 번째 시도는 `pron_reference_n_eojeol`과 실제
+  tokenizer 결과가 같다는 과도한 가정 때문에 기호 제거 사례에서 중단됐다.
+  올바른 pre-MFA root와 실제 LAB 어절 수를 계약으로 고친 뒤 성공했다.
+- 두 실패 partial은 삭제하지 않고 r3 `archive_intermediate`에 원인별 이름으로
+  옮겼다. 독립 감사기는 원 CSV부터 전수 재스캔해 blocked identity, 연도 회계,
+  follow-up token 연도별 출현과 safe 누출 0을 확인했다.
+
+## 2026-08-08 — r3 Stage 20 safe-body 후보 사전
+
+- readiness candidate 795,804형·27,043,261회를 796,061변이의 MFA 후보 사전으로
+  물질화했다. Korean MFA v3.3.0의 raw acoustic phone 107개를 기준으로 inventory
+  밖 phone, lexical `sil`/`spn`, non-candidate 누출이 모두 0임을 독립 감사했다.
+- 첫 preflight는 acoustic 특수 심볼 `sil`/`spn`을 어휘 inventory에 더한 109개와
+  raw 동결 pin 107개를 비교해 안전 중단됐다. 출력 생성 전에 raw 107-phone
+  계약으로 교정했다. 후보는 `NOT_ADOPTED`이며 생산 MFA를 시작하지 않았다.
+
+## 2026-08-08 — r3 Stage 21 표적 회귀와 adoption 정지점
+
+- 기존 2022 문제 표본 08 `있지`, 09 `놨던`, 15 `슬프겠지만`, 24 `없는`만
+  별도 corpus에서 정렬했다. candidate phone exact, interval 연속성,
+  word–phone 외곽 경계가 4/4 통과했고 `spn`은 0이었다. 기존 r2 TextGrid와 원
+  WAV/LAB는 변경하지 않았다.
+- 4개 정렬은 약 15분 38초였으며 병목은 79만형 후보 사전 graph compile이었다.
+  이후 소수 파일마다 compile을 반복하지 않고 연도·shard로 묶는 근거로 기록했다.
+- 연구자 최소 검토용 WAV/LAB/r2/r3 TextGrid를 Dropbox 한 폴더에 모았다.
+  자동 adoption 감사는 production MFA·TextGrid 생성을 차단한 채, 네 경계 검토와
+  full-coverage/단계적 safe-body 선택만 실제 연구자 결정으로 남겼다.

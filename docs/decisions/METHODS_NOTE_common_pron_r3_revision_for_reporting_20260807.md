@@ -363,12 +363,46 @@ Stage 18 readiness v4에는 이 14형만 정렬용 candidate-only로 병합했�
 795,804형·27,043,261회, zero-fallback hold는 85,398형·803,644회가 됐다.
 canonical 최종 선택, adoption, 재정렬, TextGrid materialization은 수행하지 않았다.
 
+### 5.8 실제 MFA 입력 단위의 safe-body/follow-up 라우팅
+
+Stage 19에서는 연구 검색용 구 `form`이 아니라 동결 pre-MFA master의
+`pron_reference_form`을 실제 MFA LAB tokenizer와 동일하게 분절했다. 한 발화의
+모든 LAB 어절이 readiness candidate인 경우만 safe body로 두고, hold·미결
+policy·unknown·빈 LAB가 하나라도 있으면 발화 전체를 follow-up으로 이관했다.
+어절을 부분 삭제하거나 임시 `spn`으로 채우지 않았다.
+
+5,103,356발화·27,847,068 LAB 어절 전수 결과 safe body는
+4,384,992발화(85.923694%), follow-up은 718,364발화였으며 unknown은 0이었다.
+`pron_reference_form` 표면 어절 27,869,302개와 LAB 어절의 차이 22,234개는
+실제 tokenizer가 제거한 기호 어절로 별도 회계했다. 동일한 tokenizer와 라우팅
+규칙을 2020–2025에 적용했다.
+
+Stage 20에서는 candidate 795,804형의 모든 변이를 후보 사전 796,061행으로
+물질화했다. Korean MFA v3.3.0 동결 acoustic inventory 107개 밖 phone,
+lexical `spn`/`sil`, non-candidate 누출은 0이었다. 이 사전은 정렬 가능성을
+검증하는 `NOT_ADOPTED` 후보이며 표준발음이나 실제 실현 판정이 아니다.
+
+Stage 21은 기존 연구자 지적 사례 `있지·놨던·슬프겠지만·없는` 네 발화만 표적
+정렬했다. 후보 phone exact, phone interval 연속성, word–phone 외곽 경계가 각각
+4/4 통과했고 `spn`은 0이었다. 이 자동 검사는 입력 phone과 정렬 산출의 구조
+동등성 검사이며, 음성 실현의 진위 판정은 연구자 검토와 후속 연구에 남긴다.
+
+### 5.9 adoption 전 남은 방법론 선택
+
+35개 policy형·163회에 재사용 가능한 과거 명시 결정은 없었다. 따라서 r2 생성
+phone과 결과 유사성을 연구자 승인으로 소급하지 않았다. 다음 둘 중 하나를
+연구자가 명시 선택해야 한다.
+
+1. 85,398 hold형과 35 policy형을 모두 해결한 뒤 전 유형을 한 번에 채택한다.
+2. 자동·수동 표적 Gate 뒤 safe body만 단계 채택하고 718,364발화를 exact-ID
+   follow-up shard로 보존한다. 이때 전체 코퍼스 정렬 완료라고 주장하지 않는다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
-진단·model projection·전역/문맥 donor 재검증·881,237형 readiness v3까지
-완료됐지만,
-canonical 최종 선택·r3 adoption·재정렬·TextGrid materialization은 미완료다.
+진단·model projection·전역/문맥 donor 재검증·881,237형 readiness v4,
+pre-MFA 발화 라우팅과 후보 사전 감사까지 완료됐지만, canonical 최종 선택·r3
+adoption·생산 재정렬·TextGrid materialization은 미완료다.
 따라서 논문에 완료형으로 그대로 사용하지 않는다. 최종 각주에는
 manifest에서 확인한 다음
 실측값을 채운 뒤에만 완료형으로 확정한다.
@@ -387,6 +421,14 @@ manifest에서 확인한 다음
 > 예상형·사전 후보·G2P 후보·최종 선택을 분리한 r3 공통발음 계약으로 수정하였다.
 > 기존 2020–2022 결과는 적응 단위별 r2/r3 발음 변이 집합과 경계 동등성이
 > 입증된 경우에만 재사용하고, 차이가 있는 단위는 재정렬하였다.
+
+단계적 safe-body 경로를 채택할 경우 다음 문장을 추가하되, 실제 adoption과 연도별
+생산 manifest가 통과한 뒤에만 완료형으로 쓴다.
+
+> 동결 pre-MFA 입력 5,103,356발화를 동일 tokenizer와 발음 coverage Gate로
+> 전수 분류하였다. 모든 어절의 정렬 후보가 준비된 4,384,992발화는 안전 본체로
+> 처리하고, 미해결 어절이 하나라도 포함된 718,364발화는 삭제하지 않은 채 후속
+> 정렬 shard로 보존하였다.
 
 더 짧은 각주:
 

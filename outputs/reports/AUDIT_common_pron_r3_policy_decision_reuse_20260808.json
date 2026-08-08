@@ -1,0 +1,78 @@
+{
+  "schema_version": "common_pron_r3_policy_decision_reuse_audit.v1",
+  "status": "no_reusable_decisions_found",
+  "recorded_at": "2026-08-08T22:24:56+09:00",
+  "scope": {
+    "reuse_requires_explicit_manual_decision_id": true,
+    "generated_r2_pronunciation_is_not_researcher_approval": true,
+    "no_decision_inferred_from_output_similarity": true
+  },
+  "inputs": {
+    "readiness_v4": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\18_selection_readiness_v4\\common_pron_r3_selection_readiness_v4.csv.gz",
+      "bytes": 48483021,
+      "mtime_ns": 1786188721484904000,
+      "sha256": "5d271d2633c2ae9d6226798159c711f2332d1e86cb07cb2b40078feb17cdcb97"
+    },
+    "ledger_root": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r2_20260728"
+  },
+  "counts": {
+    "policy_types": 35,
+    "policy_occurrences": 163,
+    "manual_decision_id_bound_types": 0,
+    "ledger_files_scanned": 23,
+    "files_with_exact_token_hits": 0,
+    "exact_token_hit_types": 0,
+    "reusable_decision_types": 0
+  },
+  "exact_token_hits": [],
+  "reusable_decision_tokens": [],
+  "unresolved_policy_tokens": [
+    "갑론을박",
+    "값어치",
+    "값없이",
+    "곧이어",
+    "국무총리",
+    "꽃무늬",
+    "녹록히",
+    "답십리",
+    "독립심",
+    "독립운동",
+    "독립운동가",
+    "등록인",
+    "등록하다",
+    "밑음",
+    "밤낮없이",
+    "버릇없이",
+    "부딪히다",
+    "비영리법인",
+    "어슷어슷",
+    "언뜻언뜻",
+    "언어유희",
+    "여덟아홉",
+    "움칫움칫",
+    "윗옷",
+    "잊히다",
+    "적립식",
+    "적립식투자",
+    "중립인",
+    "첫아이",
+    "청록색",
+    "팥앙금",
+    "햄릿",
+    "헛웃음",
+    "희랍어",
+    "흰옷"
+  ],
+  "runtime": {
+    "recorded_at": "2026-08-08T22:24:56+09:00",
+    "git_commit": "dcec43e8a510e67cdc8f5a9c091e84d248e8808c",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 21252
+  }
+}

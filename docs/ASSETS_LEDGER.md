@@ -14,7 +14,8 @@
 | `D:\00_RAW\dialogue_json` | 전사 JSON 원본 | 보존, 수정 금지 |
 | `D:\00_RAW\reference\*` | 우리말샘·MP·LS·다층위 reference | 4종 D: 확보 기록 있음; 사용 직전 실물·SHA 재확인 |
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
-| `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 search master | 보존, `_build_meta` SHA 계약 |
+| `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 연구 검색 master | 보존, `_build_meta` SHA 계약; r3 MFA 입력 root로 사용 금지 |
+| `D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725` | 동결 pre-MFA 발음 입력 master | `pron_reference_form`과 실제 LAB tokenizer의 r3 발화 라우팅 정본 |
 | `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020·2021 연도 manifest success; 나머지는 각 생산 연도 직전 checkpoint 생성 |
 | `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음, occurrence와 규칙/사전/MFA 비교표 | registry 1,192,729행 채택; 2020·2021 occurrence 5,767,506/12,015,453행, 비교표 3,042,451/6,610,698행, index 870,437/1,373,920행 전수 검증 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
@@ -34,6 +35,10 @@
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\16_morph_context_evidence` | Stage 15 보류 4,453형을 동결 검색 master의 exact 표면 어절과 안전한 Bareun 형태소·품사 문맥에 연결한 읽기 전용 inventory | `success_evidence_linked_not_candidate`; 표면 68,285회·형태소 60,292회 연결, 자동 후보 0형, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\17_attested_full_sequence_projection` | 사전 등재 `pron_1/2`·규칙 exact 65형의 전체 model-phone열 문맥 projection | `success_candidate_plan_not_selected`; 14형·200회 candidate-only, 51형 hold, legacy 기계발음 76형 제외, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\18_selection_readiness_v4` | Stage 17 독립 감사 후보 14형만 병합한 881,237형 readiness v4 | `success_planning_not_selected`; candidate 795,804형, hold 85,398형, 비대상 행 변화 0, 독립 감사 통과 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\19_pre_adoption_routing` | 실제 pre-MFA tokenizer로 2020–2025 발화를 safe body/follow-up으로 전수 라우팅 | `passed_independent_full_scan`; 5,103,356발화 중 safe 4,384,992, follow-up 718,364, unknown 0 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\20_safe_body_candidate` | readiness candidate-only MFA 사전·projection | `passed_candidate_only_not_adopted`; 795,804형·796,061변이, inventory 밖 phone·`spn` 0, adoption 아님 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\21_targeted_regression_2022` | 기존 2022 발음 문제 네 발화의 r3 raw 표적 회귀 정렬 | 자동 검사 4/4 통과, 연구자 음성–경계 검토 대기; r2 원본 무변경 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\19_pre_adoption_routing_failed_*` | 구 검색 root·LAB tokenizer count 가정으로 안전 중단된 Stage 19 두 partial | 삭제하지 않고 원인별 이름으로 보존, 생산 입력 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 준비 중 |

@@ -1,0 +1,28 @@
+{
+  "schema_version": "common_pron_r3_safe_body_candidate_policy.v1",
+  "status": "candidate_only_not_adopted",
+  "release_id": "common_pron_r3_safe_body_candidate_20260808",
+  "expected": {
+    "canonical_types": 881237,
+    "candidate_types": 795804,
+    "candidate_occurrences": 27043261,
+    "hold_types": 85398,
+    "hold_occurrences": 803644,
+    "policy_types": 35,
+    "policy_occurrences": 163,
+    "safe_utterances": 4384992,
+    "blocked_utterances": 718364,
+    "acoustic_phone_count": 107,
+    "acoustic_phone_sorted_sha256": "6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d"
+  },
+  "gates": {
+    "allow_adoption": false,
+    "allow_yearly_mfa": false,
+    "allow_textgrid_materialization": false,
+    "candidate_is_final_selection": false,
+    "silent_fallback_allowed": false,
+    "spn_in_lexical_pronunciation_allowed": false,
+    "phones_outside_frozen_acoustic_inventory_allowed": false,
+    "hold_or_policy_token_in_safe_body_allowed": false
+  }
+}

@@ -48,6 +48,10 @@
 | `RESULT_common_pron_r3_morph_context_evidence_20260808.md` | Stage 15 보류 4,453형을 6개년 검색 master의 exact 표면 어절과 안전한 형태소·품사 문맥에 연결하고 자동 후보 없이 보존한 Stage 16 감사 |
 | `RESULT_common_pron_r3_attested_full_sequence_projection_20260808.md` | 실제 사전 등재 `pron_1/2`·규칙 exact 65형의 전체 model-phone열을 감사해 14형만 candidate-only로 계획한 Stage 17 |
 | `RESULT_common_pron_r3_selection_readiness_v4_20260808.md` | Stage 17의 14형만 병합하고 v3 비대상 881,223행 변동 0을 확인한 readiness v4 |
+| `RESULT_common_pron_r3_pre_adoption_routing_20260808.md` | 실제 pre-MFA tokenizer로 5,103,356발화를 safe body 4,384,992와 follow-up 718,364로 전수 라우팅한 Stage 19 |
+| `RESULT_common_pron_r3_safe_body_candidate_20260808.md` | 795,804형·796,061변이의 `NOT_ADOPTED` 후보 사전과 frozen acoustic inventory 전수 감사 |
+| `RESULT_common_pron_r3_targeted_regression_20260808.md` | 기존 2022 문제 표본 네 발화의 r3 표적 정렬·자동 구조 검사와 최소 연구자 검토 절차 |
+| `DECISION_common_pron_r3_adoption_choice_pending_20260808.md` | full-coverage와 단계적 safe-body adoption 사이의 명시 연구자 선택 Gate |
 
 ## 현재 생산과 안전 계약
 

@@ -1,0 +1,40 @@
+{
+  "schema_version": "common_pron_r3_pre_adoption_routing_policy.v1",
+  "status": "read_only_routing_audit",
+  "scope_years": ["2020", "2021", "2022", "2023", "2024", "2025"],
+  "input_contract": {
+    "expected_readiness_types": 881237,
+    "expected_readiness_occurrences": 27847068,
+    "expected_candidate_types": 795804,
+    "expected_candidate_occurrences": 27043261,
+    "expected_hold_types": 85398,
+    "expected_hold_occurrences": 803644,
+    "expected_policy_types": 35,
+    "expected_policy_occurrences": 163,
+    "expected_search_master_csv_files": 17156,
+    "expected_search_master_utterances": 5103356,
+    "expected_search_master_eojeol": 27847068,
+    "expected_unknown_eojeol": 0,
+    "expected_search_master_run_id": "pre_mfa_v1_20260725",
+    "source_field": "pron_reference_form",
+    "source_eojeol_count_field": "pron_reference_n_eojeol",
+    "tokenizer": "realign_eojeol_build_corpus.form_to_lab"
+  },
+  "routing_policy": {
+    "utterance_is_safe_only_if_every_eojeol_is_candidate_ready": true,
+    "hold_eojeol_routes_whole_utterance_to_followup": true,
+    "policy_eojeol_routes_whole_utterance_to_followup": true,
+    "unknown_eojeol_fails_closed": true,
+    "blocked_utterance_identity_is_preserved": true,
+    "hold_and_policy_tokens_are_not_deleted": true
+  },
+  "invariants": {
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

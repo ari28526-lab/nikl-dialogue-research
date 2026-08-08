@@ -1,0 +1,42 @@
+{
+  "schema_version": "common_pron_r3_targeted_regression_2022.v1",
+  "status": "frozen_reviewed_samples",
+  "year": "2022",
+  "samples": [
+    {
+      "review_id": "08",
+      "utt_id": "SDRW2200000232.1.1.84",
+      "target_word": "있지",
+      "expected_candidate_phones": "iː t̚ tɕ͈ i",
+      "prior_issue": "r2 phones did not preserve the intended coda-plus-fortition sequence"
+    },
+    {
+      "review_id": "09",
+      "utt_id": "SDRW2200001945.1.1.10",
+      "target_word": "놨던",
+      "expected_candidate_phones": "n w ɐ d t͈ ʌ n",
+      "prior_issue": "reviewed control with acceptable boundary; pronunciation input still required the same r3 audit"
+    },
+    {
+      "review_id": "15",
+      "utt_id": "SDRW2200001283.1.1.87",
+      "target_word": "슬프겠지만",
+      "expected_candidate_phones": "sʰ ɨ ɭ pʰ ɨ ɡ e t̚ tɕ͈ i m ɐ n",
+      "prior_issue": "r2 phones did not preserve the intended coda-plus-fortition sequence"
+    },
+    {
+      "review_id": "24",
+      "utt_id": "SDRW2200001947.1.1.192",
+      "target_word": "없는",
+      "expected_candidate_phones": "ʌː m n ɨ n",
+      "prior_issue": "r2 phones did not preserve nasal-assimilation output"
+    }
+  ],
+  "invariants": {
+    "repeat_broad_pilot": false,
+    "candidate_is_adopted": false,
+    "production_mfa_started": false,
+    "existing_r2_textgrids_modified": false,
+    "raw_wav_modified": false
+  }
+}

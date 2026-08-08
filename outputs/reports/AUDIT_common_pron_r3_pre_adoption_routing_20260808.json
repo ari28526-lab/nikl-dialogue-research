@@ -1,0 +1,71 @@
+{
+  "schema_version": "common_pron_r3_pre_adoption_routing_audit.v1",
+  "status": "passed_independent_full_scan",
+  "recorded_at": "2026-08-08T22:32:15+09:00",
+  "inputs": {
+    "stage19_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\PRE_ADOPTION_ROUTING_MANIFEST.json",
+      "bytes": 4560,
+      "mtime_ns": 1786195377373723000,
+      "sha256": "7e00bf5bf28dc7cb1c97a4b5d14584d78cfef0957e6e71c4c42a23c144ce7ddb"
+    },
+    "readiness_v4": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\18_selection_readiness_v4\\common_pron_r3_selection_readiness_v4.csv.gz",
+      "bytes": 48483021,
+      "mtime_ns": 1786188721484904000,
+      "sha256": "5d271d2633c2ae9d6226798159c711f2332d1e86cb07cb2b40078feb17cdcb97"
+    },
+    "blocked_routing": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\blocked_utterance_routing.csv.gz",
+      "bytes": 8360860,
+      "mtime_ns": 1786195372983356400,
+      "sha256": "59f9d03fb8db25e2030e9cb592b609af1ef7c1308f98ddeab97a3e274f49ed10"
+    },
+    "followup_tokens": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\followup_token_observations.csv.gz",
+      "bytes": 1573355,
+      "mtime_ns": 1786195375819732700,
+      "sha256": "6e8e77803595dd17e86d2e1b0ef4fcf2a28b4c90effeed688e6febd617d7a2ca"
+    },
+    "year_summary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\year_routing_summary.csv",
+      "bytes": 938,
+      "mtime_ns": 1786195376425371200,
+      "sha256": "90ee101fa2b10618d4c04d2e69b2a13706b901b4729864c094d3af981417bd77"
+    }
+  },
+  "checks": {
+    "all_source_rows_rescanned": true,
+    "blocked_rows_exact_identity": true,
+    "no_safe_utterance_contains_hold_policy_unknown_or_empty": true,
+    "readiness_occurrences_match": true,
+    "followup_token_year_counts_match": true,
+    "year_summary_matches": true,
+    "unknown_eojeol": 0
+  },
+  "counts": {
+    "utterances": 5103356,
+    "pron_reference_eojeol": 27869302,
+    "lab_eojeol": 27847068,
+    "tokenizer_removed_eojeol": 22234,
+    "safe_utterances": 4384992,
+    "blocked_utterances": 718364,
+    "routing_class_utterances": {
+      "hold": 717354,
+      "policy": 136,
+      "empty_reference": 848,
+      "hold+policy": 26
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T22:32:15+09:00",
+    "git_commit": "dcec43e8a510e67cdc8f5a9c091e84d248e8808c",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 17536
+  }
+}

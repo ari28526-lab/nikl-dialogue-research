@@ -10,12 +10,14 @@
 > 규칙 예상 발음층을 실제 MFA 입력 사전에 일관되게 전달하지 않았음이 2022
 > 연구자 표본과 881,237 표면형 전수 감사에서 확인됐다. r2 산출물은 삭제·수정하지
 > 않고 방법론 증거로 보존하되, r2를 이용한 새 MFA와 2023 진입은 금지한다.
-> 현재 다음 단계는 `config/common_pronunciation_resource_contract_v3_draft.json`에
-> 따른 단일 발음 선택표·r3 사전의 채택이다. 채택 뒤 2020–2022는 발음 변이가
+> Stage 19 발화 라우팅과 Stage 20 후보 사전 감사까지 완료됐으나 후보 사전은
+> `NOT_ADOPTED`다. 현재 다음 단계는 표적 네 발화의 연구자 경계 확인과
+> full-coverage/단계적 safe-body adoption 선택이다. 채택 뒤 2020–2022는 발음 변이가
 > 달라진 화자/세션 적응 단위만 재정렬하고, 완전히 동일한 단위는 엄격한 동등성
 > 증명 아래 재사용한다. 2023–2025는 r3로 한 번만 정렬한다. 이미 수행한
 > 광범위한 파일·tier 검토와 2022 24표본
-> 청취는 반복하지 않고 표적 회귀 자료로 재사용한다.
+> 청취는 반복하지 않고 표적 회귀 자료로 재사용한다. production 명령은 이 두
+> Gate가 문서와 release contract에 반영된 뒤에만 제공한다.
 
 ## 1. 완료 산출물
 
@@ -338,8 +340,22 @@ adoption·MFA·TextGrid를 만들거나 바꾸지 않는다.
 phone열을 완전·단일하게 구성했다. legacy 기계 `pron_g2p` 76형은 사전 등재
 근거에서 제외했고, 복수·충돌 51형은 기술 hold로 남겼다. Stage 18 readiness v4는
 14형만 candidate-only로 병합했으며 비대상 행 변화는 0이다. 현재 사용자가 51형을
-청취하거나 승인하지 않는다. 다음은 adoption 전 잔여 결정 단위와 Gate를 다시
-고정하는 단계다.
+청취하거나 승인하지 않는다.
+
+Stage 19는 동결 pre-MFA root의 `pron_reference_form`을 실제 LAB tokenizer로
+전수 라우팅했다. 발화 안에 hold/policy/unknown/empty가 하나라도 있으면 발화
+전체를 follow-up으로 보내고 어절을 부분 삭제하지 않는다. 결과는 safe body
+4,384,992발화, follow-up 718,364발화, unknown 0이다. Stage 20의 후보 사전은
+795,804형·796,061변이이며 독립 전수 감사를 통과했지만 `NOT_ADOPTED`다.
+
+Stage 21 표적 네 발화의 자동 회귀 검사는 통과했다. 아래 두 연구자 Gate가 끝나기
+전에는 6절의 생산 반복 절차에 진입하지 않는다.
+
+1. `C:\Users\ari30\Dropbox\REVIEW_r3_TARGETED_4_20260808`의 네 r3 TextGrid 경계 승인
+2. full-coverage 또는 단계적 safe-body adoption의 명시 선택
+
+단계적 채택을 선택하면 4,384,992발화만 생산 queue로 승격하고 718,364발화는
+후속 shard로 보존한다. 이를 전체 코퍼스 완료로 보고하지 않는다.
 
 ## 4. 2021 Gate 종료 — 완료
 
