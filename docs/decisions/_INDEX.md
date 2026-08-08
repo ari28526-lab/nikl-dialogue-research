@@ -42,6 +42,8 @@
 | `RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md` | 수의적 위치동화·frozen MFA 사전 변이·비일대일 phone을 분리한 85,504형 전수 읽기 전용 감사와 다음 candidate-only 정책 |
 | `RESULT_common_pron_r3_selection_readiness_v2_20260808.md` | 감사된 no-rule 37,379형만 정렬용 계획 후보로 추가한 881,237형 readiness v2와 잔여 91,553형 회계 |
 | `RESULT_common_pron_r3_readiness_v2_residual_priorities_20260808.md` | 잔여 zero-fallback 91,553형을 target donor 불합의와 no-rule phone/단위화 반복 패턴으로 분리한 다음 구현 우선순위 |
+| `RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md` | frozen 기본사전의 단어·음절·이차조음 문맥 donor inventory와 91,553형의 합의·복수·충돌·근거 없음 전수 감사 |
+| `RESULT_common_pron_r3_selection_readiness_v3_20260808.md` | 기존 phone·Roman을 바꾸지 않는 이차조음 6,141형만 정렬용 후보로 추가한 readiness v3와 잔여 85,412형 회계 |
 
 ## 현재 생산과 안전 계약
 

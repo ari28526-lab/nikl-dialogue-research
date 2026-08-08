@@ -304,11 +304,35 @@ phone/roman을 같은 열로 덮어쓰지 않았다.
 확인했다. canonical 최종 선택, adoption, MFA, TextGrid 변경은 수행하지 않았다.
 상세 결과는 `RESULT_common_pron_r3_selection_readiness_v2_20260808.md`에 기록했다.
 
+### 5.10 단어·음절·이차조음 문맥 donor와 phone 불변 후보
+
+readiness v2의 zero-fallback 91,553형에는 `pʲ/tʲ/kʷ/tʷ` 같은 이차조음 phone,
+분절 삽입/누락, 후두 대립, 종성 변이가 섞여 있었다. frozen 기본사전의 phone을
+음소에 전역 매핑하지 않고, 표제어·전체 규칙형·음절 전체·음절 내 위치·앞뒤
+규칙 단위·onset+glide 결합을 보존한 donor inventory를 만들었다. 기존 canonical
+donor와의 대조 결과는 단일 근거 10,594형, 복수 근거 22,171형, 출처 충돌
+48,780형, 근거 없음 10,008형이었다. 이는 빈도 다수결이나 전역 치환이 연구용
+규칙형을 훼손할 수 있음을 수치로 확인한 것이다.
+
+단일 근거 10,594형 중에서도 기존 r2 phone과 Roman을 바이트 그대로 유지하고,
+모든 미해결 issue가 frozen 사전의 onset+glide 이차조음 문맥으로 지지되는
+6,141형·90,544회만 정렬용 candidate-only로 추가했다. `최근에: CH W ↔ tɕʷ`,
+`편하게: P Y ↔ pʲ`가 대표적이다. `중에서`의 `ng`처럼 새 분절을 넣거나,
+`저희·너희`류 ㅢ 규칙처럼 규칙 해석이 필요한 4,453형은 단일 donor가 있어도
+보류했다.
+
+readiness v3의 candidate 준비는 795,790형·27,043,061회, zero-fallback hold는
+85,412형·803,844회다. 독립 감사기는 전체 881,237행을 v2와 대조해 새 6,141행의
+phone·Roman JSON이 바이트 동일하고 나머지 v2 필드가 변하지 않았음을 확인했다.
+상세 결과는
+`RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`와
+`RESULT_common_pron_r3_selection_readiness_v3_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
-진단·model projection·전역 donor 재검증·881,237형 readiness와 no-rule 보류형
-전수 특성화까지 완료됐지만,
+진단·model projection·전역/문맥 donor 재검증·881,237형 readiness v3까지
+완료됐지만,
 canonical 최종 선택·r3 adoption·재정렬·TextGrid materialization은 미완료다.
 따라서 논문에 완료형으로 그대로 사용하지 않는다. 최종 각주에는
 manifest에서 확인한 다음
@@ -361,7 +385,8 @@ manifest에서 확인한 다음
 | `93e52a9` | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
 | `534eeb4` | 좁은 model 단위화 계약, exact 문맥 donor projection, 잔여 56행 축약과 독립 전수 감사 |
 | `b6bc12d` | 881,237형 selection-readiness, zero-fallback 회계, partial 국소 복구와 독립 감사 |
-| 현 변경 묶음 | canonical exact donor 전역 projection, 후보 획득·상실 비교, 09 readiness와 독립 감사 |
+| `2b1a974`–`f9c8fcc` | 전역 donor, no-rule·phone coverage 감사, readiness v2 |
+| 현 변경 묶음 | 문맥 donor 전수 감사와 phone 불변 이차조음 readiness v3 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
@@ -372,6 +397,8 @@ manifest에서 확인한 다음
 - `RESULT_common_pron_r3_model_projection_candidates_20260808.md`
 - `RESULT_common_pron_r3_selection_readiness_20260808.md`
 - `RESULT_common_pron_r3_global_projection_v2_20260808.md`
+- `RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`
+- `RESULT_common_pron_r3_selection_readiness_v3_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

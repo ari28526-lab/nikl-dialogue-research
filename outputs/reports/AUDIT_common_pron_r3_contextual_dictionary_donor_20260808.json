@@ -1,0 +1,105 @@
+{
+  "schema_version": "common_pron_r3_contextual_dictionary_donor_independent_audit.v1",
+  "status": "passed_read_only",
+  "audited_at": "2026-08-08T16:36:22+09:00",
+  "manifest": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\13_contextual_dictionary_donor_audit\\CONTEXTUAL_DICTIONARY_DONOR_AUDIT_MANIFEST.json",
+    "bytes": 5796,
+    "mtime_ns": 1786174403781992400,
+    "sha256": "32cfa44a1f06b99ce9c166c19aa12fa0510ce992f7e07ad232b0f21aaf3d2f31"
+  },
+  "verified_inputs": {
+    "readiness_v2_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\12_selection_readiness_v2\\SELECTION_READINESS_V2_MANIFEST.json",
+      "bytes": 5391,
+      "mtime_ns": 1786167298635603300,
+      "sha256": "92da4e3cd1403b15addbeef5816cf57dc814da74c4011065e6e02c4a622e0801"
+    },
+    "readiness_v2": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\12_selection_readiness_v2\\common_pron_r3_selection_readiness_v2.csv.gz",
+      "bytes": 47051504,
+      "mtime_ns": 1786167298088071100,
+      "sha256": "6040c31181c9ce57ab79c16824b8598fca19590ac078ecd1f75ceb93ae90cb5a"
+    },
+    "base_dictionary": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_dictionary_v3.3.0.dict",
+      "bytes": 934391,
+      "mtime_ns": 1785218323166307600,
+      "sha256": "49e223fddb518bc441baa4cb9fec1a108e80dae9a2b54e5834dbff30e89c7d34"
+    },
+    "acoustic_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    },
+    "policy_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\common_pron_r3_contextual_dictionary_donor_audit_v1.json",
+      "bytes": 3074,
+      "mtime_ns": 1786174049252608700,
+      "sha256": "71eda56b4ebe94acdbbc7396ad64579f3808b97fe81feb4158d444172e4d2b5b"
+    }
+  },
+  "verified_outputs": {
+    "frozen_dictionary_contextual_inventory": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\13_contextual_dictionary_donor_audit\\frozen_dictionary_contextual_donor_inventory.csv.gz",
+      "bytes": 3155218,
+      "mtime_ns": 1786174151797105900,
+      "sha256": "3760e3e20bd6daca23b4952042390a7de3880934066931a1a97d2ff69ec22df7"
+    },
+    "residual_hold_contextual_evidence": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\13_contextual_dictionary_donor_audit\\residual_hold_contextual_donor_evidence.csv.gz",
+      "bytes": 2856027,
+      "mtime_ns": 1786174402879348700,
+      "sha256": "3b56861794c5f696982eea88c5c78b41c1bc9adb1c43b04014bb95d4929e0077"
+    },
+    "residual_hold_contextual_classification": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\13_contextual_dictionary_donor_audit\\residual_hold_contextual_donor_classification.csv.gz",
+      "bytes": 3367740,
+      "mtime_ns": 1786174402876365800,
+      "sha256": "85f31c5760849e74d271da56a68b3bdeffbb84062222dce56615de1ad69810ad"
+    }
+  },
+  "independent_counts": {
+    "dictionary_inventory_rows": {
+      "complete_contextual_mapping": 18109,
+      "dictionary_variant_rows_not_inventory_due_to_no_rule": 27,
+      "direct_mapping_rows": 111801,
+      "partial_unsupported_mapping": 2869,
+      "secondary_articulation_mapping_rows": 4601,
+      "variant_rows": 20978
+    },
+    "readiness_hold_types": 91553,
+    "readiness_hold_occurrences": 894388,
+    "issue_rows": 172565,
+    "issue_evidence_class_rows": {
+      "cross_source_conflict": 54379,
+      "multiple_supported_contextual_variants": 44269,
+      "no_eligible_contextual_donor": 17657,
+      "unanimous_contextual_support": 56260
+    },
+    "hold_contextual_support_class_types": {
+      "cross_source_conflict": 48780,
+      "multiple_supported_contextual_variants": 22171,
+      "no_eligible_contextual_donor": 10008,
+      "unanimous_contextual_support": 10594
+    },
+    "hold_contextual_support_class_occurrences": {
+      "cross_source_conflict": 377518,
+      "multiple_supported_contextual_variants": 225511,
+      "no_eligible_contextual_donor": 128785,
+      "unanimous_contextual_support": 162574
+    }
+  },
+  "checks": {
+    "all_output_fingerprints_match": true,
+    "inventory_rows_are_frozen_dictionary_variants": true,
+    "issue_classes_recomputed": true,
+    "hold_classes_recomputed": true,
+    "readiness_hold_coverage_complete": true,
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false
+  }
+}

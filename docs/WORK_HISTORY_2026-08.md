@@ -2458,3 +2458,46 @@ shard 2–23을 재개하는 것이다.
 - 다음 단계는 frozen 기본사전의 단어·음절·이차조음 문맥 donor inventory와
   기존 donor 합의·충돌 감사다. 같은 G2P 재실행, 후보 자동 채택, MFA, TextGrid
   변경은 수행하지 않는다.
+
+## 2026-08-08 — r3 문맥 보존 frozen 사전 donor 전수 감사
+
+- `config/common_pron_r3_contextual_dictionary_donor_audit_v1.json`에 단어·음절·
+  국소 window·이차조음 문맥 보존, 전역 phone→음소 매핑 금지, 빈도 다수결 금지,
+  후보·selection·adoption 금지 계약을 고정했다.
+- 동결 Korean MFA 기본사전 17,946표제어·20,978변이를 inventory로 만들었다.
+  문맥 mapping이 완전한 18,109변이만 donor index에 사용했고, 분절 누락·삽입 등
+  미지원 mapping 2,869변이는 증거표에는 보존하되 donor에서 제외했다.
+- readiness v2 zero-fallback 91,553형·894,388회의 91,677변이·172,565 issue를
+  기존 canonical exact donor와 대조했다. 결과는 단일 근거 10,594형·162,574회,
+  복수 근거 22,171형·225,511회, 출처 충돌 48,780형·377,518회, 근거 없음
+  10,008형·128,785회다.
+- `최근에`의 `CH W ↔ tɕʷ`, `편하게`의 `P Y ↔ pʲ`는 frozen 사전의 같은
+  음절 문맥에서 단일하게 지지됐다. `친구들이`의 `n ↔ ŋ`은 canonical/frozen
+  충돌, `중에서`의 빠진 `ng`는 단일 donor가 있어도 phone 삽입 필요, `학교`는
+  복수·근거 없음으로 보류했다.
+- 장시간 실행 호출의 120초 관찰 제한이 먼저 끝났지만 Python PID가 CPU를 계속
+  사용하고 있음을 확인해 중복 재시작하지 않았다. 원자적 partial 폴더가 최종
+  `13_contextual_dictionary_donor_audit`로 승격된 뒤에만 완료로 인정했다.
+- 독립 감사기는 frozen 사전 variant identity, 91,553형 coverage, 172,565 issue의
+  분류와 모든 비채택 flag를 다시 계산해 `passed_read_only`로 통과했다.
+- canonical selection, adoption, MFA, TextGrid, r2/2020–2022 보존 자산은 변경하지
+  않았다.
+
+## 2026-08-08 — r3 selection-readiness v3 phone 불변 후보 병합
+
+- 단일 근거 10,594형 중 기존 r2 phone·Roman을 바이트 그대로 유지하고, 모든
+  issue가 frozen 사전의 onset+glide 이차조음 문맥으로 지지되는 6,141형·90,544회만
+  정렬용 candidate-only로 추가하는 정책을 고정했다.
+- 첫 Stage 14 실행은 issue가 0개인 특수 hold가 분류표에는 있고 issue 상세표에는
+  없는 합법적 구조를 token 집합 불일치로 잡아 출력 전 안전 중단됐다. 이 행을 빈
+  근거·계속 hold로 명시하도록 reader를 고치고 회귀 테스트를 추가했다. 기존
+  Stage 13·readiness v2·MFA·TextGrid 변경은 없었다.
+- 재실행 결과 candidate 준비는 795,790형·27,043,061회, zero-fallback hold는
+  85,412형·803,844회가 됐다. planning status는
+  `candidate_r2_contextual_secondary_articulation_equivalent`다.
+- 독립 감사기는 881,237행을 v2와 전수 비교해 6,141행의
+  `r2_pron_phones_json/r2_pron_roman_json`과 새 planning 후보 JSON이 바이트
+  동일하고, 나머지 행의 v2 필드 변화가 0임을 확인했다.
+- 남은 단일 근거 4,453형·72,030회는 `중에서`류 분절 삽입, `걔`류 glide,
+  `저희·너희`류 ㅢ, 후두 대립·종성 교체가 섞여 계속 보류한다. 다음은 이 집합을
+  규칙별로 좁게 감사하는 단계이며 사용자 전수 청취나 장시간 MFA 단계가 아니다.

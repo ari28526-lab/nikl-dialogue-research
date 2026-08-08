@@ -275,6 +275,42 @@ unanimous·multiple-supported·conflict·no-donor를 재계산하는 읽기 전�
 phone 하나를 음소 하나로 전역 매핑하지 않는다. 상세 우선순위는
 `docs/decisions/RESULT_common_pron_r3_readiness_v2_residual_priorities_20260808.md`다.
 
+### 3.10 r3 문맥 보존 frozen 사전 donor 감사 완료 checkpoint
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+13_contextual_dictionary_donor_audit\CONTEXTUAL_DICTIONARY_DONOR_AUDIT_MANIFEST.json
+```
+
+동결 사전 20,978개 변이에 단어·음절·앞뒤 단위·이차조음 onset+glide 문맥을
+보존했고, readiness v2 hold 91,553형을 기존 canonical donor와 전수 대조했다.
+단일 근거 10,594형, 복수 근거 22,171형, 출처 충돌 48,780형, 근거 없음
+10,008형이다. 전역 phone→음소 치환, 빈도 다수결, 후보 생성은 하지 않았다.
+독립 감사는
+`outputs/reports/AUDIT_common_pron_r3_contextual_dictionary_donor_20260808.json`이며
+`passed_read_only`다. 상세 해석은
+`docs/decisions/RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`를
+따른다.
+
+### 3.11 r3 selection-readiness v3 완료 checkpoint
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+14_selection_readiness_v3\SELECTION_READINESS_V3_MANIFEST.json
+```
+
+단일 근거 중 모든 issue가 이차조음 onset+glide 관계이고 기존 r2 phone·Roman을
+바이트 그대로 유지하는 6,141형·90,544회만 정렬용 candidate-only로 추가했다.
+candidate 준비는 795,790형·27,043,061회, zero-fallback hold는
+85,412형·803,844회다. 독립 감사는 881,237행을 v2와 전수 비교해 phone·Roman
+변화 0과 비대상 필드 변화 0을 확인했다.
+
+다음은 남은 단일 근거 4,453형을 ㅢ 규칙, 분절 삽입/삭제, 후두 대립·종성 교체로
+분리하는 좁은 읽기 전용 감사다. `중에서`의 `ng`처럼 새 phone 삽입이 필요한
+경우는 단일 donor만으로 승격하지 않는다. 상세 결과는
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`를 따른다.
+canonical selection·adoption 전에는 MFA·TextGrid 작업을 시작하지 않는다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.

@@ -145,3 +145,12 @@ D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\<YEAR>\
 `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`를
 따른다. r3 adoption이 끝날 때까지 2022–2025 발음 참조 파생층과 MFA를 실행하지
 않는다.
+
+후속 문맥 donor 감사에서는 frozen 기본사전의 단어·음절·이차조음 문맥을
+보존해 기존 canonical donor와 합의·복수·충돌·근거 없음으로 분리했다. 이 중
+기존 phone·Roman을 바꾸지 않는 onset+glide 단위화 6,141형만 readiness v3의
+정렬 후보가 됐다. `중에서`의 `ng`, `걔`류 glide, `저희·너희`류 ㅢ처럼 새
+분절을 넣거나 기존 phone을 바꾸는 경우는 계속 보류한다. 사전 참조층이 이 값을
+실제 발음이나 표준발음으로 덮어쓰지 않도록 한다. 정본 결과는
+`docs/decisions/RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`와
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`다.

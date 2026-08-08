@@ -196,20 +196,23 @@ no-rule 85,504형·1,140,107회의 전수 특성화와 독립 감사가 완료�
 기저·표면 음소를 일대일 복원하지 않는다. 특히 `pʲ`는 B/P 양쪽에 쓰인다.
 
 stage 12 readiness v2는 검증된 37,379형을 **정렬용 candidate-only**로 추가했고
-독립 전수 감사를 통과했다. candidate 준비는 789,649형·26,952,517회,
-zero-fallback hold는 91,553형·894,388회다. 새 후보 외 795,733행과 모든 의무
-규칙 참조는 v1과 동일하다.
+독립 전수 감사를 통과했다. 이어 Stage 13에서 frozen 기본사전의 단어·음절·
+국소 분절·이차조음 문맥 inventory를 만들고 zero-fallback 91,553형을 기존
+canonical donor와 전수 대조했다. 단일 근거 10,594형, 복수 근거 22,171형,
+출처 충돌 48,780형, 근거 없음 10,008형이며 독립 감사가 통과했다.
 
-잔여 우선순위 요약도 완료했다. target hold의 42,839형·506,404회는 exact-context
-donor 불합의이고, no-rule 잔여 상위는 `pʲ/tʲ` 이차조음·후두 대립, 활음
-단위화, ㅢ, 분절 누락 패턴이다.
+Stage 14 readiness v3는 단일 근거 중 기존 r2 phone·Roman을 바이트 그대로
+유지하고 모든 issue가 frozen 사전의 onset+glide 이차조음 문맥으로 지지되는
+6,141형·90,544회만 정렬용 candidate-only로 추가했다. candidate 준비는
+795,790형·27,043,061회, zero-fallback hold는 85,412형·803,844회다. 881,237행
+전수 v2 대조에서 비대상 필드 변화 0, phone·Roman 변화 0을 확인했다.
 
-현재 허용 작업은 frozen 기본사전의 단어·음절·이차조음 문맥을 보존한 donor
-inventory를 만들고 기존 donor와의 합의·충돌을 읽기 전용으로 감사하는 것이다. 수의적
-위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현 발음으로
-선언하지 않는다. 같은 Jamo G2P 반복,
-기존 56행 전수 청취, 85,504형 일괄 투사, 자동 승인, canonical selection·
-adoption 전 MFA는 허용하지 않는다.
+현재 허용 작업은 남은 단일 근거 4,453형·72,030회를 ㅢ 규칙, 분절 삽입/삭제,
+후두 대립·종성 교체로 분리해 읽기 전용으로 감사하는 것이다. `중에서`처럼 donor
+`ŋ`가 하나여도 기존 phone열에 분절을 새로 넣는 경우는 자동 승격하지 않는다.
+수의적 위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현
+발음으로 선언하지 않는다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 자동 승인,
+canonical selection·adoption 전 MFA는 허용하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -243,4 +246,8 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`
 - r3 readiness v2 잔여 hold 우선순위:
   `docs/decisions/RESULT_common_pron_r3_readiness_v2_residual_priorities_20260808.md`
+- r3 문맥 보존 frozen 사전 donor 감사:
+  `docs/decisions/RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`
+- r3 selection-readiness v3 결과:
+  `docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

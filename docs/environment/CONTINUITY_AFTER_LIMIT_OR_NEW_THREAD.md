@@ -227,6 +227,29 @@ canonical selection false / adoption false / MFA false / TextGrid 변경 false
 기존 donor와 합의·충돌을 읽기 전용으로 대조하는 것이다. 정본은
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
+### 2026-08-08 문맥 donor·selection-readiness v3 이후 재개점
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  13_contextual_dictionary_donor_audit\CONTEXTUAL_DICTIONARY_DONOR_AUDIT_MANIFEST.json
+  14_selection_readiness_v3\SELECTION_READINESS_V3_MANIFEST.json
+outputs/reports/AUDIT_common_pron_r3_contextual_dictionary_donor_20260808.json
+outputs/reports/AUDIT_common_pron_r3_selection_readiness_v3_20260808.json
+```
+
+```text
+candidate ready: 795,790형 / 27,043,061회
+zero-fallback hold: 85,412형 / 803,844회
+new phone-unchanged secondary candidates: 6,141형 / 90,544회
+canonical selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+새 대화에서 Stage 13·14를 다시 실행하지 않는다. 다음 허용 작업은 남은 단일
+근거 4,453형을 ㅢ 규칙, 분절 삽입/삭제, 후두 대립·종성 교체로 나누는 좁은
+읽기 전용 감사다. 사용자 전수 청취, 같은 G2P 재실행, r3 adoption 전 MFA는
+금지한다. 정본은
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`다.
+
 ## 새 대화에 붙일 최소 프롬프트
 
 ```text

@@ -1,0 +1,72 @@
+{
+  "schema_version": "common_pron_r3_contextual_dictionary_donor_policy.v1",
+  "status": "read_only_methodological_audit",
+  "purpose": "Build a frozen Korean MFA dictionary donor inventory that preserves word, syllable, local segment, and secondary-articulation context, then compare it with the existing canonical exact-donor pool for every readiness-v2 zero-fallback hold.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "hold_scope": {
+    "required_planning_zero_fallback_hold": true,
+    "expected_hold_statuses": [
+      "hold_target_projection_unresolved",
+      "hold_no_surface_rule_substantive_mismatch"
+    ],
+    "all_r2_variants_must_be_audited": true
+  },
+  "canonical_donor_policy": {
+    "eligible_planning_status": "candidate_r2_exact_mandatory_rule",
+    "specificity_order": [
+      "window2_boundary",
+      "window1_boundary",
+      "unit_boundary"
+    ],
+    "minimum_distinct_token_types": 2,
+    "occurrence_weighting_allowed": false
+  },
+  "frozen_dictionary_donor_policy": {
+    "complete_contextual_mapping_required": true,
+    "direct_specificity_order": [
+      "word_exact",
+      "syllable_signature",
+      "window2_boundary",
+      "window1_boundary"
+    ],
+    "secondary_articulation_specificity_order": [
+      "word_exact",
+      "syllable_signature",
+      "compound_vowel_boundary"
+    ],
+    "minimum_distinct_token_types": {
+      "word_exact": 1,
+      "syllable_signature": 2,
+      "window2_boundary": 2,
+      "window1_boundary": 2,
+      "compound_vowel_boundary": 2
+    },
+    "global_phone_to_phoneme_mapping_allowed": false,
+    "word_or_syllable_context_may_be_dropped": false,
+    "occurrence_weighting_allowed": false
+  },
+  "classification_policy": {
+    "unanimous_contextual_support": "The union of eligible contextual donor phones is one and no source conflict exists.",
+    "multiple_supported_contextual_variants": "Eligible contextual evidence supports more than one phone but the canonical and frozen source sets overlap when both exist.",
+    "cross_source_conflict": "Canonical and frozen contextual donor sets are both present and disjoint.",
+    "no_eligible_contextual_donor": "At least one unresolved operation has no eligible contextual donor, or contains an unsupported candidate-only operation.",
+    "classification_is_candidate_generation": false,
+    "classification_is_canonical_selection": false
+  },
+  "interpretation_policy": {
+    "frozen_dictionary_is_alignment_evidence_not_standard_pronunciation_truth": true,
+    "mfa_phone_is_not_actual_realization_transcription": true,
+    "secondary_articulation_relation_is_contextual_many_to_many": true,
+    "all_variants_are_preserved_in_the_audit": true,
+    "segment_deletion_or_insertion_without_contextual_evidence_remains_fail_closed": true
+  },
+  "invariants": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}
