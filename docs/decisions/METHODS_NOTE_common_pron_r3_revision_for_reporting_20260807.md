@@ -190,12 +190,40 @@ canonical 선택 정책을 만들기 위한 handoff다. 먼저 model 표상 동�
 adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
 `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`에 기록했다.
 
+### 5.4 model 단위화 관계와 exact 문맥 projection
+
+진단 결과의 표상 동등성 후보를 곧바로 승인하지 않고 별도 코드 계약을 만들었다.
+comparison key exact, 장음 phone의 인접 동일 단위 흡수, 인접 phone의 명시적·
+고유 구개성에 의한 `Y` 흡수, 명시적 원순화에 의한 `W` 흡수만 model 단위화
+관계로 인정했다. 이 관계는 실제 음성 실현이나 언어학적 발음 동등성을 주장하지
+않는다.
+
+실질 차이의 phone 후보는 규칙 Roman exact이면서 model input rewrite가 없는
+target만 donor로 사용했다. `±2단위+경계`, `±1단위+경계`, `해당 단위+경계`
+순으로 탐색하되 서로 다른 target type 최소 2개와 phone 완전 일치를 요구했다.
+빈도 mode, 첫 변이, 수기 phone, 기본사전 membership fallback은 허용하지 않았다.
+전체 projected phone 열이 다시 model 단위화 관계를 만족할 때만 후보로 남겼다.
+
+target 310,605개 중 264,906개(85.287%), 출현 3,744,243회(83.710%)에 후보를
+마련했다. 45,699개·728,649회는 donor 부재 또는 candidate-only 삭제 문제로
+보류했다. source에서 projection과 독립 사전 근거가 함께 일치한 것은
+5,948형·349,689회지만 이 역시 최종 선택 전 후보다. 잔여 1,799패턴은 출현의
+95.136%와 각 범주 대표를 포괄하는 56행 handoff로 축약했다.
+
+별도 감사기는 exact donor 96,284 target·1,000,388 unit과 query context,
+798개 사용 evidence, target/source 전수 경로, acoustic inventory와 회귀 예시를
+다시 계산해 `passed_read_only`로 통과했다. 이 단계에서도 canonical selection,
+adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
+`RESULT_common_pron_r3_model_projection_candidates_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성과
 규칙 Roman agreement Gate만 완료됐고 r3 adoption·재정렬·TextGrid materialization은
 완료되지 않았으므로, 논문에
-완료형으로 그대로 사용하지 않는다. 최종 각주에는 manifest에서 확인한 다음
+완료형으로 그대로 사용하지 않는다. 현재 G2P·agreement·mismatch 진단·model
+projection 후보까지만 완료됐고 canonical 선택·adoption은 미완료다. 최종 각주에는
+manifest에서 확인한 다음
 실측값을 채운 뒤에만 완료형으로 확정한다.
 
 - G2P 생성 후보·no-path·규칙 Roman 정확 일치·불일치·보류 유형 수
@@ -242,7 +270,8 @@ adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
 | `59a135e` | donor/G2P 후보 단계, 재개 가능한 runner, 상태판, 방법론 문서 |
 | `f0a826e` | 완료 후보를 원본 무변경으로 전수 재검증하는 read-only 감사 |
 | `a89debb` | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
-| 현 변경 묶음 | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
+| `93e52a9` | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
+| 현 변경 묶음 | 좁은 model 단위화 계약, exact 문맥 donor projection, 잔여 56행 축약과 독립 전수 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
@@ -250,6 +279,7 @@ adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
 - `DECISION_common_pron_r3_candidate_resolution_20260807.md`
 - `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
 - `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
+- `RESULT_common_pron_r3_model_projection_candidates_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

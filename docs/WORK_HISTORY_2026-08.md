@@ -2303,3 +2303,28 @@ shard 2–23을 재개하는 것이다.
 - 이 단계에서 canonical 선택·adoption·MFA·TextGrid·기존 DB 변경은 하지 않았다.
   다음 단계는 model 표상 동등성 및 규칙·사전 projection 정책을 코드 계약으로
   고정하고 자동 해소할 수 없는 소수만 연구자 판단으로 넘기는 것이다.
+
+## 2026-08-08 — r3 model 표상·exact 문맥 projection 후보 완료
+
+- `config/common_pron_r3_model_projection_v1.json`에 후보 생성 전용 계약을
+  고정했다. 장음과 `Y/W` 흡수만 좁은 model 단위화 관계로 인정하며 발음
+  동등성·실현을 주장하지 않는다.
+- 실질 차이는 agreement exact·rewrite 없음 target만 donor로 사용했다. 문맥은
+  ±2/±1/해당 단위와 음절·어절 경계를 보존하고, 최소 2 target type 및 phone
+  완전 일치를 요구했다. mode·첫 변이·수기 phone·기본사전 fallback은 금지했다.
+- 원자적 출력은 `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  06_model_projection_candidates`다. target 후보 가능 264,906개(85.287%)·
+  3,744,243회(83.710%), 보류 45,699개·728,649회다.
+- source에서 projection과 독립 사전 근거가 함께 일치한 것은 5,948형·349,689회다.
+  사전 일치는 근거 routing일 뿐 최종 선택으로 사용하지 않았다.
+- `있는`은 장음 단위화 후보로 유지됐고 `있지`는 전수 exact donor가 최소 지지를
+  충족하지 않아 보류됐다. 합성 단위시험 결과를 실제 전수 evidence로 오인하지
+  않았다.
+- 독립 감사기는 target/source 원 입력 불변성, 9,347/810/44 query context,
+  exact donor 96,284 target·1,000,388 unit, 798 evidence, phone inventory,
+  source 사전 경로와 회귀 예시를 다시 계산해 `passed_read_only`로 통과했다.
+- 잔여 1,799패턴은 95.136% 출현과 각 범주 대표를 포괄하는 56행 handoff로
+  축약했다. 사용자에게 1,799패턴이나 56행 전체 청취를 요구하지 않는다.
+- canonical selection, adoption, 연도별 MFA, 기존 DB·TextGrid 변경은 모두
+  수행하지 않았다. 다음 단계는 canonical 선택 우선순위·zero-fallback·사전
+  projection·표적 회귀·단일 adoption Gate다.

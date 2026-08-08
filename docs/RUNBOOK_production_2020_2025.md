@@ -65,7 +65,8 @@
   → 881,237 표면형 r2 규칙 일관성 전수 감사
   → r2 신규 실행 fail-closed 차단
   → G2P–규칙 mismatch 전수 진단·반복 패턴 축약 완료
-  → model 표상·규칙 projection 정책 및 단일 canonical 선택표 구축  ← 현재
+  → model 표상·exact 문맥 projection 후보·독립 감사 완료
+  → 단일 canonical 선택 계약·zero-fallback·adoption Gate 구축  ← 현재
   → r3 채택
   → 2020–2022 영향 inventory·변경 세션 delta 재정렬
   → 2023–2025 동일 r3 계약으로 최초 정렬
@@ -146,6 +147,37 @@ PATTERN_DECISION_TABLE.csv
 `passed_read_only`다. 다음 구현은 반복 패턴에서 model 표상 동등성 계약과
 규칙·사전 projection 정책을 먼저 코드화하고, 자동으로 해소하지 못한 소수만
 연구자 판단으로 올리는 canonical 선택 단계다.
+
+### 3.4 r3 model 표상·exact 문맥 projection 완료 checkpoint
+
+좁은 model 단위화 관계와 exact-agreement donor 문맥을 코드 계약으로 고정했다.
+장음 및 `Y/W` 흡수만 기술적 단위화 관계로 인정하고, substitution·candidate-only·
+기타 rule-only 차이는 자동 승인하지 않았다. 실질 차이는 최소 2개 target type과
+phone 완전 일치를 갖는 동일 문맥에서만 projection했다. mode·첫 변이·수기 phone·
+기본사전 fallback은 금지했다.
+
+결과는 target 310,605개 중 후보 가능 264,906개(85.287%), 보류 45,699개
+(14.713%)다. 출현 기준 후보 가능은 3,744,243회(83.710%)다. source에서
+projection과 독립 사전 근거가 함께 일치한 것은 5,948형·349,689회이며, 아직
+최종 선택은 아니다. `있는`은 model 장음 단위화 후보, `있지`는 실제 donor 지지
+부족으로 보류됨을 회귀검사했다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+06_model_projection_candidates\PROJECTION_CANDIDATES_MANIFEST.json
+
+outputs/reports/AUDIT_common_pron_r3_projection_candidates_20260808.json
+outputs/reviews/common_pron_r3_projection_residual_handoff_20260808.csv
+```
+
+독립 감사는 exact donor context와 798개 사용 evidence를 포함해 target/source
+전수를 재계산했고 `passed_read_only`다. 잔여 1,799패턴을 모두 검토하지 않고
+95.136% 출현과 각 범주 대표를 포괄하는 56행 handoff로 축약했다. 이 표는
+승인표가 아니다.
+
+다음 한 단계는 canonical inventory에 모든 근거를 연결한 최종 선택 우선순위와
+zero-fallback 계약을 구현하는 것이다. 선택 phone 누락·`spn`·inventory 밖 phone
+0, 표적 회귀, 단일 adoption Gate가 모두 통과하기 전에는 MFA를 시작하지 않는다.
 
 ## 4. 2021 Gate 종료 — 완료
 

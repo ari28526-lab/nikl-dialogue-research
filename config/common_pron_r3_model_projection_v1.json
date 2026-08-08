@@ -1,0 +1,54 @@
+{
+  "schema_version": "common_pron_r3_model_projection.v1",
+  "status": "candidate_generation_only",
+  "purpose": "Formalize acoustic-model unitization equivalence and evidence-bound projection candidates without selecting canonical pronunciations.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "frozen_acoustic_model": {
+    "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+    "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+  },
+  "representation_relation": {
+    "relation_id": "ordered_broad_roman_model_unitization.v1",
+    "exact_comparison_keys_allowed": true,
+    "rule_only_adjacent_identical_unit_allowed_only_with_phone_length_mark": true,
+    "rule_only_y_allowed_only_with_adjacent_explicit_or_inherent_palatal_phone": true,
+    "rule_only_w_allowed_only_with_adjacent_explicit_labialized_phone": true,
+    "substitution_allowed": false,
+    "candidate_only_allowed": false,
+    "other_rule_only_allowed": false,
+    "linguistic_pronunciation_equivalence_claimed": false,
+    "actual_realization_claimed": false
+  },
+  "exact_context_donor_policy": {
+    "donor_pool": "agreement targets with comparison_status=exact_rule_roman and rewrite_rule=none",
+    "weighting": "one observation per unique target and rule unit; source occurrence frequency is not used",
+    "specificity_order": [
+      "window2_boundary",
+      "window1_boundary",
+      "unit_boundary"
+    ],
+    "minimum_distinct_target_types": 2,
+    "accepted_phone_rule": "all eligible donor observations at the chosen context must contain exactly one acoustic phone value",
+    "mode_or_first_variant_selection_allowed": false,
+    "fallback_to_handwritten_phone_allowed": false,
+    "fallback_to_base_dictionary_membership_allowed": false,
+    "candidate_phone_must_be_in_frozen_inventory": true,
+    "projected_sequence_must_satisfy_representation_relation": true
+  },
+  "source_evidence_routing": {
+    "dictionary_rule_agreement": "candidate evidence only",
+    "dictionary_conflict": "hold",
+    "no_independent_dictionary_agreement": "hold",
+    "morph_context_required_preserved": true,
+    "dictionary_is_realized_speech_truth": false
+  },
+  "invariants": {
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}

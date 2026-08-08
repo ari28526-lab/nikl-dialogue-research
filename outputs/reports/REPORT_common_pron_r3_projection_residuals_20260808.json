@@ -1,0 +1,68 @@
+{
+  "schema_version": "common_pron_r3_projection_residual_summary.v1",
+  "status": "success_summary_not_selection",
+  "recorded_at": "2026-08-08T11:55:21+09:00",
+  "headline": {
+    "target_candidate_ready": 264906,
+    "target_candidate_ready_percent": 85.287,
+    "target_unresolved": 45699,
+    "target_unresolved_percent": 14.713,
+    "occurrence_candidate_ready": 3744243,
+    "occurrence_candidate_ready_percent": 83.71,
+    "occurrence_unresolved": 728649,
+    "occurrence_unresolved_percent": 16.29,
+    "source_dictionary_agree_candidate_types": 5948,
+    "source_dictionary_agree_candidate_occurrences": 349689
+  },
+  "counts": {
+    "target_residual_pattern_rows": 1799,
+    "target_residual_handoff_rows": 56,
+    "target_residual_handoff_occurrences": 693205,
+    "target_residual_handoff_coverage_percent": 95.136,
+    "source_route_pattern_rows": 14
+  },
+  "scope": {
+    "summary_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false
+  },
+  "evidence": {
+    "projection_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\PROJECTION_CANDIDATES_MANIFEST.json",
+      "bytes": 6359,
+      "mtime_ns": 1786156757484920900,
+      "sha256": "992bc1f8af30a4b6d1c4aec7cc1ee6eace1854b59f263e09605eed12c17a7dc9"
+    },
+    "target_residual_patterns": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\common_pron_r3_target_residual_patterns_20260808.csv",
+      "bytes": 385911,
+      "mtime_ns": 1786157721107114400,
+      "sha256": "7dbcfa333cfabfc01d2de0fb7a8073e99c05ab3fab392cf5e4cabc90ffc81e40"
+    },
+    "target_residual_handoff": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_projection_residual_handoff_20260808.csv",
+      "bytes": 13776,
+      "mtime_ns": 1786157721109948700,
+      "sha256": "273ee16e53057b7c24aff29d4df3cbfc158e7b3b2b1d425acd8c7a4b147865e1"
+    },
+    "source_route_patterns": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\common_pron_r3_source_route_patterns_20260808.csv",
+      "bytes": 4985,
+      "mtime_ns": 1786157721113251200,
+      "sha256": "d1cd15a8be120e975b64125b05116d3643c00f402893d45db7950f80d3f6cc33"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T11:55:21+09:00",
+    "git_commit": "93e52a92c49d041f84eaa54ecf9c78a7465689e0",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 5264
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": "common_pron_r3_projection_candidates_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T11:50:49+09:00",
+  "counts": {
+    "target_rows": 310605,
+    "source_rows": 312410,
+    "donor_exact_target_rows": 96284,
+    "donor_exact_units": 1000388,
+    "query_contexts": {
+      "window2_boundary": 9347,
+      "window1_boundary": 810,
+      "unit_boundary": 44
+    },
+    "indexed_query_contexts": {
+      "window2_boundary": 881,
+      "window1_boundary": 427,
+      "unit_boundary": 43
+    },
+    "used_projection_evidence_rows": 798,
+    "target_projection_status": {
+      "candidate_exact_context_projection": 44058,
+      "candidate_exact_gate_unchanged": 96284,
+      "candidate_model_unitization_equivalent_unchanged": 124564,
+      "hold_candidate_only_deletion_requires_policy": 588,
+      "hold_no_unanimous_exact_context_donor": 45111
+    },
+    "target_representation_relation": {
+      "equivalent_combined_unitization": 12764,
+      "equivalent_glide_unitization": 103988,
+      "equivalent_length_unitization": 23662,
+      "exact_comparison_keys": 124492,
+      "not_equivalent": 45699
+    },
+    "target_occurrences_by_projection_status": {
+      "candidate_exact_context_projection": 381335,
+      "candidate_exact_gate_unchanged": 1676283,
+      "candidate_model_unitization_equivalent_unchanged": 1686625,
+      "hold_candidate_only_deletion_requires_policy": 2801,
+      "hold_no_unanimous_exact_context_donor": 725848
+    },
+    "source_projection_gate_class": {
+      "candidate_projection_dictionary_agree": 5948,
+      "hold_projection_dictionary_conflict": 24,
+      "hold_projection_no_independent_dictionary": 260508,
+      "hold_target_projection_unresolved": 45930
+    },
+    "source_occurrences_by_gate_class": {
+      "candidate_projection_dictionary_agree": 349689,
+      "hold_projection_dictionary_conflict": 126,
+      "hold_projection_no_independent_dictionary": 3394428,
+      "hold_target_projection_unresolved": 728649
+    }
+  },
+  "regression_examples": {
+    "놨던": {
+      "target_hangul": "놛떤",
+      "rule_pron_roman": "N WA t _ TT EO n",
+      "g2p_candidate_phones": "n w ɐ d t͈ ʌ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"n w ɐ d t͈ ʌ n\"]"
+    },
+    "어쨌든": {
+      "target_hangul": "어짿뜬",
+      "rule_pron_roman": "EO _ JJ AE t _ TT EU n",
+      "g2p_candidate_phones": "ʌ tɕ͈ ɛː t̚ t͈ ɨ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "candidate_projection_dictionary_agree",
+      "projected_pron_phones_json": "[\"ʌ tɕ͈ ɛː t̚ t͈ ɨ n\"]"
+    },
+    "없는": {
+      "target_hangul": "엄는",
+      "rule_pron_roman": "EO m _ N EU n",
+      "g2p_candidate_phones": "ʌː m n ɨ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"ʌː m n ɨ n\"]"
+    },
+    "있는": {
+      "target_hangul": "인는",
+      "rule_pron_roman": "I n _ N EU n",
+      "g2p_candidate_phones": "i nː ɨ n",
+      "target_projection_status": "candidate_model_unitization_equivalent_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"i nː ɨ n\"]"
+    },
+    "있지": {
+      "target_hangul": "읻찌",
+      "rule_pron_roman": "I t _ JJ I",
+      "g2p_candidate_phones": "iː tɕ͈ː tɕ͈ i",
+      "target_projection_status": "hold_no_unanimous_exact_context_donor",
+      "source_projection_gate_class": "hold_target_projection_unresolved",
+      "projected_pron_phones_json": "[]"
+    }
+  },
+  "contracts": {
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "projection_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\PROJECTION_CANDIDATES_MANIFEST.json",
+      "bytes": 6359,
+      "mtime_ns": 1786156757484920900,
+      "sha256": "992bc1f8af30a4b6d1c4aec7cc1ee6eace1854b59f263e09605eed12c17a7dc9"
+    },
+    "target_projection_candidates": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\g2p_target_projection_candidates.csv.gz",
+      "bytes": 16608127,
+      "mtime_ns": 1786156718953941900,
+      "sha256": "5983f416bdb580c78279ae68ea2e1f3cbb69a2b6726fb5a520a49ca158271f05"
+    },
+    "source_projection_candidates": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\g2p_source_projection_candidates.csv.gz",
+      "bytes": 18877125,
+      "mtime_ns": 1786156756959593400,
+      "sha256": "bb03b8d10fcde13b4a1139a9064230ad0559f3ad02e87fbea7c2813d707ff7e2"
+    },
+    "exact_context_projection_evidence": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\exact_context_projection_evidence.csv",
+      "bytes": 179080,
+      "mtime_ns": 1786156756985916600,
+      "sha256": "4af7835f9e9cb993112513d22c99f028deee1ac5ba3cb66228927890e77c70e5"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T11:50:49+09:00",
+    "git_commit": "93e52a92c49d041f84eaa54ecf9c78a7465689e0",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 18152
+  }
+}

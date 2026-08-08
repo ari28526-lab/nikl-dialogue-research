@@ -168,11 +168,17 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - 전체 2,625개 패턴 중 56행이 2,590,212회(92.620%)를 포괄하는 결정표 생성;
   자동 동등성 승인과 연구자 즉시 검토 요구는 모두 없음
 - 후보 비교는 최종 선택이 아니며 canonical selection·adoption·TextGrid 변경 없음
+- 좁은 model 단위화 관계와 exact 문맥 donor projection 계약·전수 생성·독립
+  감사 완료: target 후보 가능 264,906개(85.287%)·3,744,243회(83.710%)
+- 자동 보류 45,699개·728,649회; 잔여 1,799패턴은 95.136% 출현과 각 범주
+  대표를 포괄하는 56행 handoff로 축약
+- source 중 projection과 독립 사전 근거가 함께 일치한 것은 5,948형·349,689회;
+  이 또한 canonical 최종 선택 전 후보
 
-현재 허용 작업은 전수 진단의 반복 패턴과 사전·형태음운 근거를 이용해 model
-표상 동등성·규칙 projection 정책을 먼저 코드 계약으로 고정하고, 정말 사람 판단이
-필요한 잔여 패턴만 축약한 뒤 canonical 선택표·사전 projection·자동 회귀·
-adoption Gate를 구현하는 것이다.
+현재 허용 작업은 감사된 model 표상·exact 문맥 projection 후보를 canonical
+inventory에 다시 연결하고, 선택 우선순위·zero-fallback·사전 projection·자동
+회귀·adoption Gate를 구현하는 것이다. 56행 잔여표 전체를 새 청취 검토로
+돌리거나 자동 승인하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -192,4 +198,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
 - r3 G2P mismatch 전수 진단 결과:
   `docs/decisions/RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
+- r3 model 표상·문맥 projection 후보 결과:
+  `docs/decisions/RESULT_common_pron_r3_model_projection_candidates_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

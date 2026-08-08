@@ -101,6 +101,26 @@ agreement Gate를 재실행하지 않는다. 다음 일은 반복 패턴의 mode
 규칙 projection 정책을 코드로 고정한 뒤 canonical 선택·adoption Gate를 만드는
 것이다. 새 대규모 청취 검토로 돌아가지 않는다.
 
+### 2026-08-08 model projection 이후 재개점
+
+위 다음 단계 가운데 model 단위화·exact 문맥 projection 후보 생성과 독립 감사는
+이미 완료됐다. 다시 실행하지 않는다.
+
+```text
+target 후보 가능 264,906 / 보류 45,699
+출현 후보 가능 3,744,243 / 보류 728,649
+source 사전 근거 동시 일치 후보 5,948형
+canonical selection false / adoption false / annual MFA false / TextGrid 변경 false
+```
+
+정본 manifest는 `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+06_model_projection_candidates\PROJECTION_CANDIDATES_MANIFEST.json`이고, 독립
+감사는 `outputs/reports/AUDIT_common_pron_r3_projection_candidates_20260808.json`
+이다. 새 대화에서는 이 둘과
+`docs/decisions/RESULT_common_pron_r3_model_projection_candidates_20260808.md`를
+먼저 확인한다. 다음 일은 projection 재실행이나 56행 전수 청취가 아니라
+canonical 선택 우선순위·zero-fallback·사전 projection·adoption Gate 구현이다.
+
 ## 새 대화에 붙일 최소 프롬프트
 
 ```text
