@@ -2403,3 +2403,26 @@ shard 2–23을 재개하는 것이다.
   모두 통과했다.
 - 다음 단계는 고빈도 signature부터 표준 발음·우리말샘·형태소 경계·Korean MFA
   acoustic inventory를 대조하는 읽기 전용 규칙/phone 매핑 coverage 감사다.
+
+## 2026-08-08 — r3 의무 규칙·수의 변이·MFA phone coverage 감사
+
+- stage 10의 비음 관련 휴리스틱을 표준발음 규칙 누락으로 오인하지 않도록,
+  no-rule 85,504형·85,741변이를 frozen Korean MFA 기본사전·107 acoustic phone과
+  읽기 전용으로 전수 대조했다.
+- 국립국어원 표준발음법·FAQ 근거에 따라 `친구→칭구`, `한번→함번` 유형의
+  위치동화를 수의적 정렬 변이로 분리하고 의무 규칙 엔진에는 추가하지 않았다.
+- 주분류 결과는 모든 변이 수의 위치동화 36,568형·525,747회, 일부 변이만 해당
+  82형·16,271회, 비중복 frozen 기본사전 정확 일치 811형·229,177회, 미해결
+  48,043형·368,912회다.
+- frozen 기본사전의 동일 길이 위치 대조에서 107 phone 중 33개가 둘 이상의
+  규칙키와 반복 공존했다. `pʲ`가 B 132형·P 137형 등으로 나타나므로 phone에서
+  확정 음소를 일대일 복원하지 않는다.
+- 첫 실행은 비일대일 phone이 하나라도 든 47,851형을 주분류 해결 범주로 잘못
+  사용했다. 결과를
+  `archive_intermediate\11_rule_phone_coverage_audit_v1_overbroad_noninjective_20260808`
+  로 보존하고, 비일대일성을 경고 표지로만 고쳐 stage 11을 다시 생성했다.
+- 수정 stage 11 manifest는 `success_audited_not_candidate`, 별도 감사기는
+  `passed_read_only`다. 후보 채택, canonical selection, adoption, MFA, TextGrid,
+  원자료 변경은 모두 수행하지 않았다.
+- 다음 단계는 검증된 37,379형만 정렬용 candidate-only로 09 readiness에
+  추가하는 것이다. 의무 규칙 Roman과 정렬용 phone 역할을 별도 열로 유지한다.

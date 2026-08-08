@@ -1,0 +1,226 @@
+{
+  "schema_version": "common_pron_r3_rule_phone_coverage_verification.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T14:23:34+09:00",
+  "counts": {
+    "token_types": 85504,
+    "total_occurrences": 1140107,
+    "variant_rows": 85741,
+    "tokens_with_any_optional_place_assimilation": 36650,
+    "tokens_all_variants_optional_place_assimilation": 36568,
+    "tokens_with_any_exact_frozen_dictionary_variant": 1582,
+    "tokens_all_variants_exact_frozen_dictionary": 1582,
+    "tokens_with_any_noninjective_phone": 85295,
+    "noninjective_phone_types": 33,
+    "acoustic_phone_inventory_types": 107,
+    "token_diagnostic_status_types": {
+      "all_variants_exact_frozen_dictionary": 811,
+      "all_variants_optional_place_assimilation": 36568,
+      "some_variants_optional_place_assimilation": 82,
+      "unresolved_g2p_or_rule_mapping": 48043
+    },
+    "variant_diagnostic_status_rows": {
+      "hold_frozen_dictionary_variant_standard_relation_unresolved": 1039,
+      "hold_g2p_or_rule_mapping_unresolved": 48043,
+      "hold_optional_place_assimilation_alignment_variant": 36659
+    },
+    "r2_source_types": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 1582,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 83922
+    }
+  },
+  "examples_by_variant_status": {
+    "hold_optional_place_assimilation_alignment_variant": [
+      {
+        "token": "가게라던가",
+        "phones": "k ɐ ɡ e ɾ ɐ d ʌ ŋ ɡ ɐ",
+        "rule_roman": "G A _ G E _ R A _ D EO n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가게라든가",
+        "phones": "k ɐ ɡ e ɾ ɐ d ɨ ŋ ɡ ɐ",
+        "rule_roman": "G A _ G E _ R A _ D EU n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가게인가요",
+        "phones": "k ɐ ɡ e i ŋ ɡ ɐ j o",
+        "rule_roman": "G A _ G E _ I n _ G A _ YO",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가겐가",
+        "phones": "k ɐ ɡ e ŋ ɡ ɐ",
+        "rule_roman": "G A _ G E n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가공품",
+        "phones": "k ɐ ɡ o m pʰ u m",
+        "rule_roman": "G A _ G O ng _ P U m",
+        "edit_signature": "SUB:M>NG"
+      },
+      {
+        "token": "가공한다든가",
+        "phones": "k ɐ ɡ o ŋ h ɐ n d ɐ d ɨ ŋ ɡ ɐ",
+        "rule_roman": "G A _ G O ng _ H A n _ D A _ D EU n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가구라든가",
+        "phones": "k ɐ ɡ u ɾ ɐ d ɨ ŋ ɡ ɐ",
+        "rule_roman": "G A _ G U _ R A _ D EU n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "가군가",
+        "phones": "k ɐ ɡ u ŋ ɡ ɐ",
+        "rule_roman": "G A _ G U n _ G A",
+        "edit_signature": "SUB:NG>N"
+      }
+    ],
+    "hold_g2p_or_rule_mapping_unresolved": [
+      {
+        "token": "가격까지",
+        "phones": "k ɐ ɟ ʌ k͈ː ɐ dʑ i",
+        "rule_roman": "G A _ G YEO k _ KK A _ J I",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:G"
+      },
+      {
+        "token": "가격까지는",
+        "phones": "k ɐ ɟ ʌ k͈ː ɐ dʑ i n ɨ n",
+        "rule_roman": "G A _ G YEO k _ KK A _ J I _ N EU n",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:G"
+      },
+      {
+        "token": "가격표",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o",
+        "rule_roman": "G A _ G YEO k _ P YO",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "가격표가",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o ɡ ɐ",
+        "rule_roman": "G A _ G YEO k _ P YO _ G A",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "가격표도",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o d o",
+        "rule_roman": "G A _ G YEO k _ P YO _ D O",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "가격표를",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o ɾ ɨ ɭ",
+        "rule_roman": "G A _ G YEO k _ P YO _ R EU l",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "가격표만",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o m ɐ n",
+        "rule_roman": "G A _ G YEO k _ P YO _ M A n",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "가격표에",
+        "phones": "k ɐ ɟ ʌ k̚ pʲ o e",
+        "rule_roman": "G A _ G YEO k _ P YO _ E",
+        "edit_signature": "RULE_ONLY:Y;RULE_ONLY:P;SUB:B>Y"
+      }
+    ],
+    "hold_frozen_dictionary_variant_standard_relation_unresolved": [
+      {
+        "token": "가져다",
+        "phones": "k ɐ dʑ ʌ t͈ ɐ",
+        "rule_roman": "G A _ J YEO _ D A",
+        "edit_signature": "RULE_ONLY:Y;SUB:TT>D"
+      },
+      {
+        "token": "가져다준",
+        "phones": "k ɐ dʑ ʌ t͈ ɐ dʑ u n",
+        "rule_roman": "G A _ J YEO _ D A _ J U n",
+        "edit_signature": "RULE_ONLY:Y;SUB:TT>D"
+      },
+      {
+        "token": "가평",
+        "phones": "k ɐ pʲ ʌ ŋ",
+        "rule_roman": "G A _ P YEO ng",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "간간히",
+        "phones": "k ɐ ŋ ɡ ɐ ɲ i",
+        "rule_roman": "G A n _ G A n _ H I",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:H"
+      },
+      {
+        "token": "간과",
+        "phones": "k ɐ ŋ ɡʷ ɐ",
+        "rule_roman": "G A n _ G WA",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:W"
+      },
+      {
+        "token": "간편",
+        "phones": "k ɐ m pʲ ʌ n",
+        "rule_roman": "G A n _ P YEO n",
+        "edit_signature": "RULE_ONLY:N;SUB:M>P;SUB:B>Y"
+      },
+      {
+        "token": "감퇴",
+        "phones": "k ɐ m tʷ e",
+        "rule_roman": "G A m _ T OE",
+        "edit_signature": "RULE_ONLY:T;SUB:D>W"
+      },
+      {
+        "token": "갑판",
+        "phones": "k ɐ pʰː ɐ n",
+        "rule_roman": "G A p _ P A n",
+        "edit_signature": "RULE_ONLY:B"
+      }
+    ]
+  },
+  "contracts": {
+    "optional_place_assimilation_added_to_mandatory_rule_engine": false,
+    "dictionary_rule_cooccurrence_used_as_direct_mapping": false,
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\RULE_PHONE_COVERAGE_MANIFEST.json",
+      "bytes": 4556,
+      "mtime_ns": 1786166474256345000,
+      "sha256": "d5f04dfb58b58ed2ca88afc6ff1757b887422b56d84b0c79626883923c7ac17f"
+    },
+    "variant_coverage": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\no_rule_variant_rule_phone_coverage.csv.gz",
+      "bytes": 2999284,
+      "mtime_ns": 1786166473971589700,
+      "sha256": "1c89b30c6c104bf914360db8549d73d21236066175c3c2bfd8afc5ea3ff73bf0"
+    },
+    "phone_rule_cooccurrence": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\frozen_dictionary_phone_rule_cooccurrence.csv",
+      "bytes": 26629,
+      "mtime_ns": 1786166473981952400,
+      "sha256": "99315aaf86afa5f2bc64a43380f8bdad120efb29d693d6a6ea15a74714578151"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T14:23:34+09:00",
+    "git_commit": "d1f85893be49ccf3a5e24ba9245da0d9a80f3bc8",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 27924
+  }
+}

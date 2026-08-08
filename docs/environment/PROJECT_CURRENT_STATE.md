@@ -188,10 +188,18 @@ no-rule 85,504형·1,140,107회의 전수 특성화와 독립 감사가 완료�
 활음·모음 단위화 22,168형, 후두 대립·phone 매핑 13,550형이다. 이는 규칙
 정답이 아니라 현재 규칙 엔진·phone 매핑의 coverage를 점검할 우선순위다.
 
-현재 허용 작업은 이 네 범주의 표준 발음·우리말샘·형태소 경계·acoustic phone
-대조를 읽기 전용으로 수행하고, 명시적으로 검증된 규칙/매핑만 candidate-only
-계약에 보강하는 것이다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 85,504형
-일괄 투사, 자동 승인, canonical selection·adoption 전 MFA는 허용하지 않는다.
+후속 읽기 전용 coverage 감사에서 모든 변이가 수의적 위치동화로만 다른
+36,568형·525,747회, 위치동화와 겹치지 않으면서 모든 변이가 frozen 기본사전에
+정확히 있는 811형·229,177회를 분리했다. 일부 변이만 위치동화인 82형·16,271회와
+나머지 48,043형·368,912회는 보류한다. 107 acoustic phone 중 33개는 frozen
+사전의 동일 길이 위치 대조에서 둘 이상의 규칙키와 반복 공존하므로, phone만으로
+기저·표면 음소를 일대일 복원하지 않는다. 특히 `pʲ`는 B/P 양쪽에 쓰인다.
+
+현재 허용 작업은 검증된 37,379형을 **정렬용 candidate-only**로 881,237형
+readiness에 추가하는 것이다. 수의적 위치동화를 의무 표준발음 규칙에 추가하거나,
+frozen 사전 변이를 표준·실현 발음으로 선언하지 않는다. 같은 Jamo G2P 반복,
+기존 56행 전수 청취, 85,504형 일괄 투사, 자동 승인, canonical selection·
+adoption 전 MFA는 허용하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -219,4 +227,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`
 - r3 no-rule 보류형 전수 특성화 결과:
   `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`
+- r3 규칙·MFA phone coverage 감사 결과:
+  `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

@@ -1,0 +1,43 @@
+{
+  "schema_version": "common_pron_r3_rule_phone_coverage_policy.v1",
+  "status": "read_only_methodological_audit",
+  "purpose": "Separate optional place-assimilation variants, frozen MFA dictionary evidence, and non-injective phone-to-phoneme relations before any r3 pronunciation candidate is selected.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "input_status": "success_characterized_not_candidate",
+  "interpretation_policy": {
+    "mandatory_standard_rule_engine_excludes_optional_place_assimilation": true,
+    "frozen_mfa_dictionary_is_alignment_evidence_not_standard_pronunciation_truth": true,
+    "mfa_phone_sequence_is_not_actual_realization_transcription": true,
+    "noninjective_phone_to_rule_relation_must_remain_explicit": true,
+    "dictionary_rule_cooccurrence_is_not_a_direct_mapping": true
+  },
+  "methodological_sources": [
+    {
+      "id": "korean_standard_pronunciation_article_21",
+      "url": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "accessed": "2026-08-08",
+      "claim": "Place assimilation such as 감기→강기 and 문법→뭄뻡 is optional and is not accepted as standard pronunciation."
+    },
+    {
+      "id": "nikl_faq_chingu",
+      "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8184&mn_id=70",
+      "accessed": "2026-08-08",
+      "claim": "친구 is the standard pronunciation; 칭구 is not the standard pronunciation."
+    },
+    {
+      "id": "mfa_korean_acoustic_model_card",
+      "url": "https://huggingface.co/MontrealCorpusTools/korean_mfa",
+      "accessed": "2026-08-08",
+      "claim": "The acoustic model is for forced alignment, accepts pronunciation variation, and is not a pronunciation-goodness or transcription model."
+    }
+  ],
+  "invariants": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}

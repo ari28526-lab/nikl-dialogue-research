@@ -1,0 +1,2166 @@
+{
+  "schema_version": "common_pron_r3_rule_phone_coverage_summary.v1",
+  "status": "success_summary_read_only",
+  "recorded_at": "2026-08-08T14:25:03+09:00",
+  "type_counts_by_primary_diagnostic": {
+    "all_variants_exact_frozen_dictionary": 811,
+    "all_variants_optional_place_assimilation": 36568,
+    "some_variants_optional_place_assimilation": 82,
+    "unresolved_g2p_or_rule_mapping": 48043
+  },
+  "occurrence_counts_by_primary_diagnostic": {
+    "all_variants_exact_frozen_dictionary": 229177,
+    "all_variants_optional_place_assimilation": 525747,
+    "some_variants_optional_place_assimilation": 16271,
+    "unresolved_g2p_or_rule_mapping": 368912
+  },
+  "overlapping_evidence_counts": {
+    "tokens_with_any_optional_place_assimilation": 36650,
+    "tokens_all_variants_exact_frozen_dictionary": 1582,
+    "tokens_with_any_noninjective_phone": 85295,
+    "noninjective_phone_types": 33
+  },
+  "top_examples_by_primary_diagnostic": {
+    "all_variants_optional_place_assimilation": [
+      {
+        "token": "한번",
+        "total_occurrences": 43629,
+        "r2_pron_phones": "h ɐ m b ʌ n",
+        "r2_pron_roman": "H A M B EO N",
+        "rule_pron_roman": "H A n _ B EO n",
+        "edit_signature": "SUB:M>N"
+      },
+      {
+        "token": "뭔가",
+        "total_occurrences": 36666,
+        "r2_pron_phones": "m w ʌ ŋ ɡ ɐ",
+        "r2_pron_roman": "M W EO NG G A",
+        "rule_pron_roman": "M WO n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "정도",
+        "total_occurrences": 27326,
+        "r2_pron_phones": "tɕ ʌ n d o",
+        "r2_pron_roman": "J EO N D O",
+        "rule_pron_roman": "J EO ng _ D O",
+        "edit_signature": "SUB:N>NG"
+      },
+      {
+        "token": "친구가",
+        "total_occurrences": 12179,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u ɡ ɐ",
+        "r2_pron_roman": "CH I NG G U G A",
+        "rule_pron_roman": "CH I n _ G U _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구",
+        "total_occurrences": 9969,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u",
+        "r2_pron_roman": "CH I NG G U",
+        "rule_pron_roman": "CH I n _ G U",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "정도로",
+        "total_occurrences": 7898,
+        "r2_pron_phones": "tɕ ʌ n d o ɾ o",
+        "r2_pron_roman": "J EO N D O R O",
+        "rule_pron_roman": "J EO ng _ D O _ R O",
+        "edit_signature": "SUB:N>NG"
+      },
+      {
+        "token": "공부를",
+        "total_occurrences": 7005,
+        "r2_pron_phones": "k o m b u ɾ ɨ ɭ",
+        "r2_pron_roman": "G O M B U R EU l",
+        "rule_pron_roman": "G O ng _ B U _ R EU l",
+        "edit_signature": "SUB:M>NG"
+      },
+      {
+        "token": "건강",
+        "total_occurrences": 6570,
+        "r2_pron_phones": "k ʌː ŋ ɡ ɐ ŋ",
+        "r2_pron_roman": "G EO NG G A NG",
+        "rule_pron_roman": "G EO n _ G A ng",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구들",
+        "total_occurrences": 5750,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u d ɨ ɭ",
+        "r2_pron_roman": "CH I NG G U D EU l",
+        "rule_pron_roman": "CH I n _ G U _ D EU l",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "정도는",
+        "total_occurrences": 5046,
+        "r2_pron_phones": "tɕ ʌ n d o n ɨ n",
+        "r2_pron_roman": "J EO N D O N EU N",
+        "rule_pron_roman": "J EO ng _ D O _ N EU n",
+        "edit_signature": "SUB:N>NG"
+      },
+      {
+        "token": "아닌가",
+        "total_occurrences": 4474,
+        "r2_pron_phones": "ɐ ɲ i ŋ ɡ ɐ",
+        "r2_pron_roman": "A N I NG G A",
+        "rule_pron_roman": "A _ N I n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "상당히",
+        "total_occurrences": 4302,
+        "r2_pron_phones": "sʰ ɐ n d ɐ ŋ ʝ i",
+        "r2_pron_roman": "S A N D A NG H I",
+        "rule_pron_roman": "S A ng _ D A ng _ H I",
+        "edit_signature": "SUB:N>NG"
+      },
+      {
+        "token": "친구랑",
+        "total_occurrences": 4294,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u ɾ ɐ ŋ",
+        "r2_pron_roman": "CH I NG G U R A NG",
+        "rule_pron_roman": "CH I n _ G U _ R A ng",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "그만큼",
+        "total_occurrences": 3656,
+        "r2_pron_phones": "k ɨ m ɐ ŋ kʰ ɨ m",
+        "r2_pron_roman": "G EU M A NG K EU M",
+        "rule_pron_roman": "G EU _ M A n _ K EU m",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "건가",
+        "total_occurrences": 3538,
+        "r2_pron_phones": "k ʌː ŋ ɡ ɐ",
+        "r2_pron_roman": "G EO NG G A",
+        "rule_pron_roman": "G EO n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구는",
+        "total_occurrences": 3520,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u n ɨ n",
+        "r2_pron_roman": "CH I NG G U N EU N",
+        "rule_pron_roman": "CH I n _ G U _ N EU n",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "전부",
+        "total_occurrences": 3227,
+        "r2_pron_phones": "tɕ ʌ m b u",
+        "r2_pron_roman": "J EO M B U",
+        "rule_pron_roman": "J EO n _ B U",
+        "edit_signature": "SUB:M>N"
+      },
+      {
+        "token": "준비를",
+        "total_occurrences": 3213,
+        "r2_pron_phones": "tɕ uː m bʲ i ɾ ɨ ɭ",
+        "r2_pron_roman": "J U M B I R EU l",
+        "rule_pron_roman": "J U n _ B I _ R EU l",
+        "edit_signature": "SUB:M>N"
+      },
+      {
+        "token": "만큼",
+        "total_occurrences": 3007,
+        "r2_pron_phones": "m ɐ ŋ kʰ ɨ m",
+        "r2_pron_roman": "M A NG K EU M",
+        "rule_pron_roman": "M A n _ K EU m",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "건강을",
+        "total_occurrences": 3000,
+        "r2_pron_phones": "k ʌː ŋ ɡ ɐ ŋ ɨ ɭ",
+        "r2_pron_roman": "G EO NG G A NG EU l",
+        "rule_pron_roman": "G EO n _ G A ng _ EU l",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구들도",
+        "total_occurrences": 2718,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u d ɨ ɭ d o",
+        "r2_pron_roman": "CH I NG G U D EU l D O",
+        "rule_pron_roman": "CH I n _ G U _ D EU l _ D O",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구를",
+        "total_occurrences": 2690,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u ɾ ɨ ɭ",
+        "r2_pron_roman": "CH I NG G U R EU l",
+        "rule_pron_roman": "CH I n _ G U _ R EU l",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "그런가",
+        "total_occurrences": 2645,
+        "r2_pron_phones": "k ɨ ɾ ʌ ŋ ɡ ɐ",
+        "r2_pron_roman": "G EU R EO NG G A",
+        "rule_pron_roman": "G EU _ R EO n _ G A",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "친구도",
+        "total_occurrences": 2539,
+        "r2_pron_phones": "tɕʰ i ŋ ɡ u d o",
+        "r2_pron_roman": "CH I NG G U D O",
+        "rule_pron_roman": "CH I n _ G U _ D O",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "당장",
+        "total_occurrences": 2388,
+        "r2_pron_phones": "t ɐ ɲ dʑ ɐ ŋ",
+        "r2_pron_roman": "D A N J A NG",
+        "rule_pron_roman": "D A ng _ J A ng",
+        "edit_signature": "SUB:N>NG"
+      }
+    ],
+    "unresolved_g2p_or_rule_mapping": [
+      {
+        "token": "중에서",
+        "total_occurrences": 6483,
+        "r2_pron_phones": "tɕ uː e sʰ ʌ",
+        "r2_pron_roman": "J U E S EO",
+        "rule_pron_roman": "J U ng _ E _ S EO",
+        "edit_signature": "RULE_ONLY:NG"
+      },
+      {
+        "token": "걔가",
+        "total_occurrences": 4139,
+        "r2_pron_phones": "kʷ ɛː ɡ ɐ",
+        "r2_pron_roman": "G AE G A",
+        "rule_pron_roman": "G YAE _ G A",
+        "edit_signature": "RULE_ONLY:Y"
+      },
+      {
+        "token": "저희가",
+        "total_occurrences": 3828,
+        "r2_pron_phones": "tɕ ʌ ʝ i ɡ ɐ",
+        "r2_pron_roman": "J EO H I G A",
+        "rule_pron_roman": "J EO _ H UI _ G A",
+        "edit_signature": "RULE_ONLY:EU_G"
+      },
+      {
+        "token": "쇼핑을",
+        "total_occurrences": 3722,
+        "r2_pron_phones": "ɕ͈ o pʲ i ŋ ɨ ɭ",
+        "r2_pron_roman": "SS O B I NG EU l",
+        "rule_pron_roman": "S YO _ P I ng _ EU l",
+        "edit_signature": "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+      },
+      {
+        "token": "편하게",
+        "total_occurrences": 3593,
+        "r2_pron_phones": "pʲ ʌ n h ɐ ɡ e",
+        "r2_pron_roman": "B EO N H A G E",
+        "rule_pron_roman": "P YEO n _ H A _ G E",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "평소에",
+        "total_occurrences": 2833,
+        "r2_pron_phones": "pʲ ʌ ŋ sʰ o e",
+        "r2_pron_roman": "B EO NG S O E",
+        "rule_pron_roman": "P YEO ng _ S O _ E",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "걔는",
+        "total_occurrences": 2464,
+        "r2_pron_phones": "kʷ ɛː n ɨ n",
+        "r2_pron_roman": "G AE N EU N",
+        "rule_pron_roman": "G YAE _ N EU n",
+        "edit_signature": "RULE_ONLY:Y"
+      },
+      {
+        "token": "저희는",
+        "total_occurrences": 2298,
+        "r2_pron_phones": "tɕ ʌ ʝ i n ɨ n",
+        "r2_pron_roman": "J EO H I N EU N",
+        "rule_pron_roman": "J EO _ H UI _ N EU n",
+        "edit_signature": "RULE_ONLY:EU_G"
+      },
+      {
+        "token": "아직까지",
+        "total_occurrences": 2288,
+        "r2_pron_phones": "ɐ dʑ i k͈ː ɐ dʑ i",
+        "r2_pron_roman": "A J I KK A J I",
+        "rule_pron_roman": "A _ J I k _ KK A _ J I",
+        "edit_signature": "RULE_ONLY:G"
+      },
+      {
+        "token": "티브이를",
+        "total_occurrences": 2285,
+        "r2_pron_phones": "tʲ i b ɨ i ɾ ɨ ɭ",
+        "r2_pron_roman": "D I B EU I R EU l",
+        "rule_pron_roman": "T I _ B EU _ I _ R EU l",
+        "edit_signature": "SUB:D>T"
+      },
+      {
+        "token": "아직까지는",
+        "total_occurrences": 2051,
+        "r2_pron_phones": "ɐ dʑ i k͈ː ɐ dʑ i n ɨ n",
+        "r2_pron_roman": "A J I KK A J I N EU N",
+        "rule_pron_roman": "A _ J I k _ KK A _ J I _ N EU n",
+        "edit_signature": "RULE_ONLY:G"
+      },
+      {
+        "token": "불편한",
+        "total_occurrences": 2029,
+        "r2_pron_phones": "p u ɭ pʲ ʌ n h ɐ n",
+        "r2_pron_roman": "B U l B EO N H A N",
+        "rule_pron_roman": "B U l _ P YEO n _ H A n",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "엠비티아이",
+        "total_occurrences": 1899,
+        "r2_pron_phones": "e m bʲ i tʲ i ɐ i",
+        "r2_pron_roman": "E M B I D I A I",
+        "rule_pron_roman": "E m _ B I _ T I _ A _ I",
+        "edit_signature": "SUB:D>T"
+      },
+      {
+        "token": "편하고",
+        "total_occurrences": 1750,
+        "r2_pron_phones": "pʲ ʌ n h ɐ ɡ o",
+        "r2_pron_roman": "B EO N H A G O",
+        "rule_pron_roman": "P YEO n _ H A _ G O",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "종류가",
+        "total_occurrences": 1650,
+        "r2_pron_phones": "tɕ oː ŋ ɲ u ɡ ɐ",
+        "r2_pron_roman": "J O NG N U G A",
+        "rule_pron_roman": "J O ng _ R YU _ G A",
+        "edit_signature": "RULE_ONLY:L;SUB:N>Y"
+      },
+      {
+        "token": "유튜브를",
+        "total_occurrences": 1600,
+        "r2_pron_phones": "j u tʲ u b ɨ ɾ ɨ ɭ",
+        "r2_pron_roman": "Y U D U B EU R EU l",
+        "rule_pron_roman": "YU _ T YU _ B EU _ R EU l",
+        "edit_signature": "RULE_ONLY:T;SUB:D>Y"
+      },
+      {
+        "token": "엠비티아이가",
+        "total_occurrences": 1557,
+        "r2_pron_phones": "e m bʲ i tʲ i ɐ i ɡ ɐ",
+        "r2_pron_roman": "E M B I D I A I G A",
+        "rule_pron_roman": "E m _ B I _ T I _ A _ I _ G A",
+        "edit_signature": "SUB:D>T"
+      },
+      {
+        "token": "중에서는",
+        "total_occurrences": 1552,
+        "r2_pron_phones": "tɕ uː e sʰ ʌ n ɨ n",
+        "r2_pron_roman": "J U E S EO N EU N",
+        "rule_pron_roman": "J U ng _ E _ S EO _ N EU n",
+        "edit_signature": "RULE_ONLY:NG"
+      },
+      {
+        "token": "티브이가",
+        "total_occurrences": 1513,
+        "r2_pron_phones": "tʲ i b ɨ i ɡ ɐ",
+        "r2_pron_roman": "D I B EU I G A",
+        "rule_pron_roman": "T I _ B EU _ I _ G A",
+        "edit_signature": "SUB:D>T"
+      },
+      {
+        "token": "중에서도",
+        "total_occurrences": 1470,
+        "r2_pron_phones": "tɕ uː e sʰ ʌ d o",
+        "r2_pron_roman": "J U E S EO D O",
+        "rule_pron_roman": "J U ng _ E _ S EO _ D O",
+        "edit_signature": "RULE_ONLY:NG"
+      },
+      {
+        "token": "피해를",
+        "total_occurrences": 1406,
+        "r2_pron_phones": "pʲ iː ɦ ɛː ɾ ɨ ɭ",
+        "r2_pron_roman": "B I H AE R EU l",
+        "rule_pron_roman": "P I _ H AE _ R EU l",
+        "edit_signature": "SUB:B>P"
+      },
+      {
+        "token": "상황에서",
+        "total_occurrences": 1359,
+        "r2_pron_phones": "sʰ ɐ ŋ βʷ ɐ e sʰ ʌ",
+        "r2_pron_roman": "S A NG H A E S EO",
+        "rule_pron_roman": "S A ng _ H WA ng _ E _ S EO",
+        "edit_signature": "RULE_ONLY:W;RULE_ONLY:NG"
+      },
+      {
+        "token": "너희는",
+        "total_occurrences": 1230,
+        "r2_pron_phones": "n ʌ ʝ i n ɨ n",
+        "r2_pron_roman": "N EO H I N EU N",
+        "rule_pron_roman": "N EO _ H UI _ N EU n",
+        "edit_signature": "RULE_ONLY:EU_G"
+      },
+      {
+        "token": "유튜브에서",
+        "total_occurrences": 1224,
+        "r2_pron_phones": "j u tʲ u b ɨ e sʰ ʌ",
+        "r2_pron_roman": "Y U D U B EU E S EO",
+        "rule_pron_roman": "YU _ T YU _ B EU _ E _ S EO",
+        "edit_signature": "RULE_ONLY:T;SUB:D>Y"
+      },
+      {
+        "token": "정도면",
+        "total_occurrences": 1216,
+        "r2_pron_phones": "tɕ ʌ n d o mʲ ʌ n",
+        "r2_pron_roman": "J EO N D O M EO N",
+        "rule_pron_roman": "J EO ng _ D O _ M YEO n",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:Y"
+      }
+    ],
+    "all_variants_exact_frozen_dictionary": [
+      {
+        "token": "굉장히",
+        "total_occurrences": 35619,
+        "r2_pron_phones": "kʷ e ɲ dʑ ɐ ŋ ʝ i",
+        "r2_pron_roman": "G E N J A NG H I",
+        "rule_pron_roman": "G OE ng _ J A ng _ H I",
+        "edit_signature": "RULE_ONLY:W;SUB:N>NG"
+      },
+      {
+        "token": "왜",
+        "total_occurrences": 26832,
+        "r2_pron_phones": "w eː",
+        "r2_pron_roman": "W E",
+        "rule_pron_roman": "WAE",
+        "edit_signature": "SUB:E>AE"
+      },
+      {
+        "token": "돼",
+        "total_occurrences": 23120,
+        "r2_pron_phones": "tʷ eː",
+        "r2_pron_roman": "D E",
+        "rule_pron_roman": "D WAE",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      },
+      {
+        "token": "왜냐하면",
+        "total_occurrences": 16219,
+        "r2_pron_phones": "w eː ɲ ɐ ɐ mʲ ʌ n",
+        "r2_pron_roman": "W E N A A M EO N",
+        "rule_pron_roman": "WAE _ N YA _ H A _ M YEO n",
+        "edit_signature": "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:H;RULE_ONLY:Y"
+      },
+      {
+        "token": "돼서",
+        "total_occurrences": 8262,
+        "r2_pron_phones": "tʷ eː sʰ ʌ",
+        "r2_pron_roman": "D E S EO",
+        "rule_pron_roman": "D WAE _ S EO",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      },
+      {
+        "token": "어차피",
+        "total_occurrences": 5031,
+        "r2_pron_phones": "ʌ tɕʰ ɐ pʲ i",
+        "r2_pron_roman": "EO CH A B I",
+        "rule_pron_roman": "EO _ CH A _ P I",
+        "edit_signature": "SUB:B>P"
+      },
+      {
+        "token": "꽤",
+        "total_occurrences": 4067,
+        "r2_pron_phones": "k͈ʷ eː",
+        "r2_pron_roman": "KK E",
+        "rule_pron_roman": "KK WAE",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      },
+      {
+        "token": "유튜브",
+        "total_occurrences": 3974,
+        "r2_pron_phones": "j u tɕʰ u b ɨ",
+        "r2_pron_roman": "Y U CH U B EU",
+        "rule_pron_roman": "YU _ T YU _ B EU",
+        "edit_signature": "RULE_ONLY:T;SUB:CH>Y"
+      },
+      {
+        "token": "티브이",
+        "total_occurrences": 3794,
+        "r2_pron_phones": "tʲ i b ɨ i",
+        "r2_pron_roman": "D I B EU I",
+        "rule_pron_roman": "T I _ B EU _ I",
+        "edit_signature": "SUB:D>T"
+      },
+      {
+        "token": "돼요",
+        "total_occurrences": 3646,
+        "r2_pron_phones": "tʷ eː j o",
+        "r2_pron_roman": "D E Y O",
+        "rule_pron_roman": "D WAE _ YO",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      },
+      {
+        "token": "최대한",
+        "total_occurrences": 3052,
+        "r2_pron_phones": "tɕʷ eː t ɛː ɦ ɐ n",
+        "r2_pron_roman": "J E D AE H A N",
+        "rule_pron_roman": "CH OE _ D AE _ H A n",
+        "edit_signature": "RULE_ONLY:CH;SUB:J>W"
+      },
+      {
+        "token": "왜냐면",
+        "total_occurrences": 2896,
+        "r2_pron_phones": "w eː ɲ ɐ mʲ ʌ n",
+        "r2_pron_roman": "W E N A M EO N",
+        "rule_pron_roman": "WAE _ N YA _ M YEO n",
+        "edit_signature": "SUB:E>AE;RULE_ONLY:Y;RULE_ONLY:Y"
+      },
+      {
+        "token": "편한",
+        "total_occurrences": 2807,
+        "r2_pron_phones": "pʲ ʌ n h ɐ n",
+        "r2_pron_roman": "B EO N H A N",
+        "rule_pron_roman": "P YEO n _ H A n",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "카페",
+        "total_occurrences": 2566,
+        "r2_pron_phones": "k ɐ pʰ e",
+        "r2_pron_roman": "G A P E",
+        "rule_pron_roman": "K A _ P E",
+        "edit_signature": "SUB:G>K"
+      },
+      {
+        "token": "쇼핑",
+        "total_occurrences": 2490,
+        "r2_pron_phones": "ɕ͈ o pʲ i ŋ",
+        "r2_pron_roman": "SS O B I NG",
+        "rule_pron_roman": "S YO _ P I ng",
+        "edit_signature": "RULE_ONLY:S;SUB:SS>Y;SUB:B>P"
+      },
+      {
+        "token": "취미",
+        "total_occurrences": 2372,
+        "r2_pron_phones": "tɕʷ iː mʲ i",
+        "r2_pron_roman": "J I M I",
+        "rule_pron_roman": "CH WI _ M I",
+        "edit_signature": "RULE_ONLY:CH;SUB:J>W"
+      },
+      {
+        "token": "경제",
+        "total_occurrences": 2364,
+        "r2_pron_phones": "c ʌ ɲ dʑ e",
+        "r2_pron_roman": "G EO N J E",
+        "rule_pron_roman": "G YEO ng _ J E",
+        "edit_signature": "RULE_ONLY:Y;SUB:N>NG"
+      },
+      {
+        "token": "괜히",
+        "total_occurrences": 1927,
+        "r2_pron_phones": "kʷ eː n ʝ i",
+        "r2_pron_roman": "G E N H I",
+        "rule_pron_roman": "G WAE n _ H I",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      },
+      {
+        "token": "시에",
+        "total_occurrences": 1869,
+        "r2_pron_phones": "ɕ͈ i e",
+        "r2_pron_roman": "SS I E",
+        "rule_pron_roman": "S I _ E",
+        "edit_signature": "SUB:SS>S"
+      },
+      {
+        "token": "취업",
+        "total_occurrences": 1825,
+        "r2_pron_phones": "tɕʷ i ʌ",
+        "r2_pron_roman": "J I EO",
+        "rule_pron_roman": "CH WI _ EO p",
+        "edit_signature": "RULE_ONLY:CH;SUB:J>W;RULE_ONLY:B"
+      },
+      {
+        "token": "커피",
+        "total_occurrences": 1819,
+        "r2_pron_phones": "kʰ ʌ pʲ i",
+        "r2_pron_roman": "K EO B I",
+        "rule_pron_roman": "K EO _ P I",
+        "edit_signature": "SUB:B>P"
+      },
+      {
+        "token": "최근",
+        "total_occurrences": 1733,
+        "r2_pron_phones": "tɕʷ eː ɡ ɨ n",
+        "r2_pron_roman": "J E G EU N",
+        "rule_pron_roman": "CH OE _ G EU n",
+        "edit_signature": "RULE_ONLY:CH;SUB:J>W"
+      },
+      {
+        "token": "컴퓨터",
+        "total_occurrences": 1665,
+        "r2_pron_phones": "kʰ ʌ m pʲ u tʰ ʌ",
+        "r2_pron_roman": "K EO M B U T EO",
+        "rule_pron_roman": "K EO m _ P YU _ T EO",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "평생",
+        "total_occurrences": 1632,
+        "r2_pron_phones": "pʲ ʌ ŋ sʰ ɛː ŋ",
+        "r2_pron_roman": "B EO NG S AE NG",
+        "rule_pron_roman": "P YEO ng _ S AE ng",
+        "edit_signature": "RULE_ONLY:P;SUB:B>Y"
+      },
+      {
+        "token": "돼야",
+        "total_occurrences": 1554,
+        "r2_pron_phones": "tʷ eː j ɐ",
+        "r2_pron_roman": "D E Y A",
+        "rule_pron_roman": "D WAE _ YA",
+        "edit_signature": "RULE_ONLY:W;SUB:E>AE"
+      }
+    ],
+    "some_variants_optional_place_assimilation": [
+      {
+        "token": "한국",
+        "total_occurrences": 4669,
+        "r2_pron_phones": "h ɐ ŋ ɡ u",
+        "r2_pron_roman": "H A NG G U",
+        "rule_pron_roman": "H A n _ G U k",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:G"
+      },
+      {
+        "token": "충분히",
+        "total_occurrences": 4160,
+        "r2_pron_phones": "tɕʰ u m b u n ʝ i",
+        "r2_pron_roman": "CH U M B U N H I",
+        "rule_pron_roman": "CH U ng _ B U n _ H I",
+        "edit_signature": "SUB:M>NG"
+      },
+      {
+        "token": "방법",
+        "total_occurrences": 981,
+        "r2_pron_phones": "p ɐ m b ʌ",
+        "r2_pron_roman": "B A M B EO",
+        "rule_pron_roman": "B A ng _ B EO p",
+        "edit_signature": "SUB:M>NG;RULE_ONLY:B"
+      },
+      {
+        "token": "누군가",
+        "total_occurrences": 652,
+        "r2_pron_phones": "d u ɡ u ŋ ɡ ɐ",
+        "r2_pron_roman": "D U G U NG G A",
+        "rule_pron_roman": "N U _ G U n _ G A",
+        "edit_signature": "SUB:D>N;SUB:NG>N"
+      },
+      {
+        "token": "은근히",
+        "total_occurrences": 621,
+        "r2_pron_phones": "ɨ ŋ ɡ ɨ n ʝ i",
+        "r2_pron_roman": "EU NG G EU N H I",
+        "rule_pron_roman": "EU n _ G EU n _ H I",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "냉장고",
+        "total_occurrences": 469,
+        "r2_pron_phones": "d ɛː ɲ dʑ ɐ ŋ ɡ o",
+        "r2_pron_roman": "D AE N J A NG G O",
+        "rule_pron_roman": "N AE ng _ J A ng _ G O",
+        "edit_signature": "SUB:D>N;SUB:N>NG"
+      },
+      {
+        "token": "정작",
+        "total_occurrences": 422,
+        "r2_pron_phones": "tɕ ʌː ɲ dʑ ɐ",
+        "r2_pron_roman": "J EO N J A",
+        "rule_pron_roman": "J EO ng _ J A k",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "대한민국",
+        "total_occurrences": 391,
+        "r2_pron_phones": "t ɛː ɦ ɐ n mʲ i ŋ ɡ u",
+        "r2_pron_roman": "D AE H A N M I NG G U",
+        "rule_pron_roman": "D AE _ H A n _ M I n _ G U k",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:G"
+      },
+      {
+        "token": "성적",
+        "total_occurrences": 344,
+        "r2_pron_phones": "sʰ ʌ ɲ dʑ ʌ",
+        "r2_pron_roman": "S EO N J EO",
+        "rule_pron_roman": "S EO ng _ J EO k",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "전국",
+        "total_occurrences": 338,
+        "r2_pron_phones": "tɕ ʌ ŋ ɡ u",
+        "r2_pron_roman": "J EO NG G U",
+        "rule_pron_roman": "J EO n _ G U k",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:G"
+      },
+      {
+        "token": "냉동",
+        "total_occurrences": 328,
+        "r2_pron_phones": "d ɛː n d o ŋ",
+        "r2_pron_roman": "D AE N D O NG",
+        "rule_pron_roman": "N AE ng _ D O ng",
+        "edit_signature": "SUB:D>N;SUB:N>NG"
+      },
+      {
+        "token": "정책",
+        "total_occurrences": 251,
+        "r2_pron_phones": "tɕ ʌ ɲ tɕʰ ɛː",
+        "r2_pron_roman": "J EO N CH AE",
+        "rule_pron_roman": "J EO ng _ CH AE k",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "양쪽",
+        "total_occurrences": 249,
+        "r2_pron_phones": "j ɐ ɲ tɕ͈ o",
+        "r2_pron_roman": "Y A N JJ O",
+        "rule_pron_roman": "YA ng _ JJ O k",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "손가락",
+        "total_occurrences": 243,
+        "r2_pron_phones": "sʰ o ŋ k ɐ ɾ ɐ",
+        "r2_pron_roman": "S O NG G A R A",
+        "rule_pron_roman": "S O n _ G A _ R A k",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:G"
+      },
+      {
+        "token": "어딘가",
+        "total_occurrences": 206,
+        "r2_pron_phones": "ʌ dʑ i ŋ ɡ ɐ",
+        "r2_pron_roman": "EO J I NG G A",
+        "rule_pron_roman": "EO _ D I n _ G A",
+        "edit_signature": "SUB:J>D;SUB:NG>N"
+      },
+      {
+        "token": "행복",
+        "total_occurrences": 206,
+        "r2_pron_phones": "h ɛː m b o",
+        "r2_pron_roman": "H AE M B O",
+        "rule_pron_roman": "H AE ng _ B O k",
+        "edit_signature": "SUB:M>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "한복",
+        "total_occurrences": 203,
+        "r2_pron_phones": "h ɐ m b o",
+        "r2_pron_roman": "H A M B O",
+        "rule_pron_roman": "H A n _ B O k",
+        "edit_signature": "SUB:M>N;RULE_ONLY:G"
+      },
+      {
+        "token": "왕복",
+        "total_occurrences": 201,
+        "r2_pron_phones": "w ɐ m b o",
+        "r2_pron_roman": "W A M B O",
+        "rule_pron_roman": "WA ng _ B O k",
+        "edit_signature": "SUB:M>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "반복",
+        "total_occurrences": 135,
+        "r2_pron_phones": "p ɐ m b o",
+        "r2_pron_roman": "B A M B O",
+        "rule_pron_roman": "B A n _ B O k",
+        "edit_signature": "SUB:M>N;RULE_ONLY:G"
+      },
+      {
+        "token": "동작",
+        "total_occurrences": 96,
+        "r2_pron_phones": "t oː ɲ dʑ ɐ",
+        "r2_pron_roman": "D O N J A",
+        "rule_pron_roman": "D O ng _ J A k",
+        "edit_signature": "SUB:N>NG;RULE_ONLY:G"
+      },
+      {
+        "token": "민간",
+        "total_occurrences": 92,
+        "r2_pron_phones": "bʲ i ŋ ɡ ɐ n",
+        "r2_pron_roman": "B I NG G A N",
+        "rule_pron_roman": "M I n _ G A n",
+        "edit_signature": "SUB:B>M;SUB:NG>N"
+      },
+      {
+        "token": "간간히",
+        "total_occurrences": 87,
+        "r2_pron_phones": "k ɐ ŋ ɡ ɐ n ʝ i",
+        "r2_pron_roman": "G A NG G A N H I",
+        "rule_pron_roman": "G A n _ G A n _ H I",
+        "edit_signature": "SUB:NG>N"
+      },
+      {
+        "token": "선진국",
+        "total_occurrences": 86,
+        "r2_pron_phones": "sʰ ʌ ɲ dʑ i ŋ ɡ u",
+        "r2_pron_roman": "S EO N J I NG G U",
+        "rule_pron_roman": "S EO n _ J I n _ G U k",
+        "edit_signature": "SUB:NG>N;RULE_ONLY:G"
+      },
+      {
+        "token": "냉동식품",
+        "total_occurrences": 64,
+        "r2_pron_phones": "d ɛː n d o ŋ ɕʰ i k̚ pʰ u m",
+        "r2_pron_roman": "D AE N D O NG S I k P U M",
+        "rule_pron_roman": "N AE ng _ D O ng _ S I k _ P U m",
+        "edit_signature": "SUB:D>N;SUB:N>NG"
+      },
+      {
+        "token": "전북",
+        "total_occurrences": 58,
+        "r2_pron_phones": "tɕ ʌ m b u",
+        "r2_pron_roman": "J EO M B U",
+        "rule_pron_roman": "J EO n _ B U k",
+        "edit_signature": "SUB:M>N;RULE_ONLY:G"
+      }
+    ]
+  },
+  "noninjective_phone_inventory": [
+    {
+      "phone_mfa": "n",
+      "current_phone_class_r_auto": "N",
+      "rule_key_token_types": {
+        "A": 1,
+        "D": 1,
+        "G": 2,
+        "L": 43,
+        "N": 3648,
+        "NG": 144,
+        "T": 1
+      },
+      "examples_by_rule_key": {
+        "A": [
+          "중앙선관위"
+        ],
+        "D": [
+          "꽃길"
+        ],
+        "G": [
+          "맥도날드",
+          "맥도널"
+        ],
+        "L": [
+          "각론",
+          "강릉",
+          "강릉시",
+          "공론",
+          "급락",
+          "남루",
+          "녹록",
+          "농락"
+        ],
+        "N": [
+          "가까운",
+          "가나",
+          "가난",
+          "가늠",
+          "가능",
+          "가득찬",
+          "가디언",
+          "가뜩이나"
+        ],
+        "NG": [
+          "강당",
+          "강대국",
+          "강도",
+          "강도높게",
+          "강타자",
+          "고영태",
+          "공단",
+          "공대"
+        ],
+        "T": [
+          "끝없이"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 3799,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "m",
+      "current_phone_class_r_auto": "M",
+      "rule_key_token_types": {
+        "B": 15,
+        "D": 1,
+        "M": 2534,
+        "N": 177,
+        "NG": 178,
+        "P": 1
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "강도높게",
+          "급락",
+          "급랭",
+          "방법론",
+          "법리",
+          "수입액",
+          "앞길",
+          "앞부분"
+        ],
+        "D": [
+          "바닷바람"
+        ],
+        "M": [
+          "가공품",
+          "가끔",
+          "가늠",
+          "가다듬",
+          "가담",
+          "가로막",
+          "가르침",
+          "가르칩니다"
+        ],
+        "N": [
+          "간밤",
+          "간부",
+          "간파",
+          "간판",
+          "건배",
+          "건보",
+          "군복",
+          "군부"
+        ],
+        "NG": [
+          "가공품",
+          "강박",
+          "강북",
+          "강풍",
+          "공방",
+          "공백",
+          "공범",
+          "공법"
+        ],
+        "P": [
+          "스피리도노프"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 2871,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ŋ",
+      "current_phone_class_r_auto": "NG",
+      "rule_key_token_types": {
+        "AE": 2,
+        "G": 14,
+        "N": 259,
+        "NG": 2444
+      },
+      "examples_by_rule_key": {
+        "AE": [
+          "고액",
+          "투자액"
+        ],
+        "G": [
+          "각론",
+          "국립",
+          "녹록",
+          "독립",
+          "독립성",
+          "독립운동",
+          "맥락",
+          "목록"
+        ],
+        "N": [
+          "간간히",
+          "간곡히",
+          "개발제한구역",
+          "건가",
+          "건가요",
+          "건강",
+          "건국",
+          "건국대"
+        ],
+        "NG": [
+          "가공",
+          "가능",
+          "가독성",
+          "가동",
+          "가로등",
+          "가망",
+          "가맹",
+          "가방"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 2679,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "dʑ",
+      "current_phone_class_r_auto": "J",
+      "rule_key_token_types": {
+        "D": 31,
+        "J": 1625,
+        "JJ": 3,
+        "N": 7
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "가디언",
+          "더딘",
+          "드디어",
+          "디딘",
+          "라이몬디",
+          "마디",
+          "메디",
+          "메디나"
+        ],
+        "J": [
+          "가구주",
+          "가로지르",
+          "가맹점",
+          "가산점",
+          "가장",
+          "가장자리",
+          "가전",
+          "가전제품"
+        ],
+        "JJ": [
+          "값진",
+          "굵직",
+          "밑줄"
+        ],
+        "N": [
+          "네",
+          "니",
+          "니까",
+          "니스",
+          "니코니코",
+          "니트",
+          "님"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 1665,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "tɕʰ",
+      "current_phone_class_r_auto": "CH",
+      "rule_key_token_types": {
+        "CH": 1253,
+        "D": 10,
+        "J": 1,
+        "JJ": 240,
+        "T": 51
+      },
+      "examples_by_rule_key": {
+        "CH": [
+          "가득찬",
+          "가로축",
+          "가르치",
+          "가르칠",
+          "가르침",
+          "가르칩니다",
+          "가중치",
+          "가처분"
+        ],
+        "D": [
+          "디",
+          "디딜",
+          "디램",
+          "디스크",
+          "디아",
+          "디자이너",
+          "디자인",
+          "디제이"
+        ],
+        "J": [
+          "잖아요"
+        ],
+        "JJ": [
+          "가급적",
+          "가입자",
+          "각자",
+          "각종",
+          "각지",
+          "갑자기",
+          "갑작",
+          "갑작스런"
+        ],
+        "T": [
+          "갇힌",
+          "굳히",
+          "굳힌",
+          "네거티브",
+          "네티즌",
+          "닫히",
+          "닫힌",
+          "드라마틱"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 1534,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "d",
+      "current_phone_class_r_auto": "D",
+      "rule_key_token_types": {
+        "D": 1094,
+        "N": 346,
+        "S": 2,
+        "T": 1,
+        "TT": 5
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "가다듬",
+          "가닥",
+          "가담",
+          "가도",
+          "가독성",
+          "가동",
+          "가두",
+          "가득"
+        ],
+        "N": [
+          "나",
+          "나가",
+          "나간",
+          "나간다",
+          "나간다는",
+          "나갈",
+          "나갔었",
+          "나누"
+        ],
+        "S": [
+          "나뭇잎",
+          "맛없"
+        ],
+        "T": [
+          "어떻든"
+        ],
+        "TT": [
+          "닭도리탕",
+          "뜻대로",
+          "어쨌든",
+          "제주조릿대",
+          "하굿둑"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 1408,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ɲ",
+      "current_phone_class_r_auto": "N",
+      "rule_key_token_types": {
+        "L": 33,
+        "N": 756,
+        "NG": 367,
+        "Y": 19
+      },
+      "examples_by_rule_key": {
+        "L": [
+          "감리",
+          "국립",
+          "국무총리",
+          "궁리",
+          "금리",
+          "급랭",
+          "냉랭",
+          "농림부"
+        ],
+        "N": [
+          "가르칩니다",
+          "가산점",
+          "가전제품",
+          "간선제",
+          "간절",
+          "간절히",
+          "간접",
+          "간접세"
+        ],
+        "NG": [
+          "가맹점",
+          "가장자리",
+          "가정주부",
+          "가중치",
+          "강장제",
+          "강점",
+          "강정",
+          "강제"
+        ],
+        "Y": [
+          "검열",
+          "곤욕",
+          "금융",
+          "금융업",
+          "김동윤",
+          "김양배",
+          "김양제",
+          "김예리"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 1170,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "t̚",
+      "current_phone_class_r_auto": "t",
+      "rule_key_token_types": {
+        "CH": 4,
+        "D": 513,
+        "J": 1,
+        "S": 7,
+        "T": 12
+      },
+      "examples_by_rule_key": {
+        "CH": [
+          "비춰",
+          "비춰볼",
+          "쫓아가",
+          "쫓아다니"
+        ],
+        "D": [
+          "가까웠",
+          "가마솥",
+          "가했",
+          "갓",
+          "갔",
+          "갔었",
+          "강했",
+          "갖"
+        ],
+        "J": [
+          "자재"
+        ],
+        "S": [
+          "도색",
+          "모색",
+          "모셔야",
+          "셔야",
+          "오색",
+          "으셔야",
+          "이색"
+        ],
+        "T": [
+          "꽂혀",
+          "맞혀",
+          "맞혔",
+          "비상사태",
+          "사태",
+          "사택",
+          "이기택",
+          "자태"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 536,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "pʲ",
+      "current_phone_class_r_auto": "B",
+      "rule_key_token_types": {
+        "B": 132,
+        "H": 2,
+        "P": 137,
+        "PP": 6
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "눈빛",
+          "달빛",
+          "분홍빛",
+          "불빛",
+          "비",
+          "비겁",
+          "비굴",
+          "비극"
+        ],
+        "H": [
+          "넓히",
+          "넓힐"
+        ],
+        "P": [
+          "굽히",
+          "궁핍",
+          "그래픽",
+          "급히",
+          "기피",
+          "김종필",
+          "김필수",
+          "깊이"
+        ],
+        "PP": [
+          "값비싼",
+          "급식비",
+          "장밋빛",
+          "제작비",
+          "학비",
+          "햇빛"
+        ]
+      },
+      "supported_rule_key_count": 4,
+      "same_length_positional_token_types": 277,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "sʰ",
+      "current_phone_class_r_auto": "S",
+      "rule_key_token_types": {
+        "D": 5,
+        "S": 2441,
+        "SS": 4
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "노랫소리",
+          "닷새",
+          "레킷벤키저",
+          "버킷",
+          "햇살"
+        ],
+        "S": [
+          "가까스로",
+          "가라사대",
+          "가마솥",
+          "가사",
+          "가산점",
+          "가상",
+          "가설",
+          "가성"
+        ],
+        "SS": [
+          "깊숙이",
+          "낮술",
+          "닷새",
+          "마릿수"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 2449,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "k",
+      "current_phone_class_r_auto": "G",
+      "rule_key_token_types": {
+        "G": 1468,
+        "K": 2,
+        "KK": 6
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "가",
+          "가게",
+          "가공",
+          "가공품",
+          "가구",
+          "가구주",
+          "가급적",
+          "가까스로"
+        ],
+        "K": [
+          "카페",
+          "택했"
+        ],
+        "KK": [
+          "덮개",
+          "뜻밖에",
+          "묶음",
+          "밖에",
+          "밖엔",
+          "어쨌거나"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 1476,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "tʰ",
+      "current_phone_class_r_auto": "T",
+      "rule_key_token_types": {
+        "D": 7,
+        "T": 782,
+        "TT": 85
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "구단주",
+          "군부대",
+          "마릿수",
+          "만수대",
+          "상무대",
+          "접수대",
+          "제주조릿대"
+        ],
+        "T": [
+          "가토",
+          "각시탈",
+          "간탄",
+          "간통",
+          "갈아타",
+          "갈탄",
+          "감탄",
+          "강타자"
+        ],
+        "TT": [
+          "각도",
+          "각동",
+          "건국대",
+          "고속도",
+          "고속도로",
+          "구급대",
+          "국당",
+          "극단"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 871,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "pʰ",
+      "current_phone_class_r_auto": "P",
+      "rule_key_token_types": {
+        "B": 2,
+        "P": 601,
+        "PP": 67
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "깊숙이",
+          "폭스바겐"
+        ],
+        "P": [
+          "가공품",
+          "가스프롬",
+          "가전제품",
+          "가파르",
+          "간파",
+          "간판",
+          "강풍",
+          "개판"
+        ],
+        "PP": [
+          "각본",
+          "갯벌",
+          "고속버스",
+          "곧바로",
+          "국방",
+          "국방부",
+          "국방비",
+          "국방위"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 666,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "c",
+      "current_phone_class_r_auto": "G",
+      "rule_key_token_types": {
+        "G": 213,
+        "K": 4,
+        "KK": 4
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "기",
+          "기각",
+          "기간",
+          "기간제",
+          "기강",
+          "기고",
+          "기구",
+          "기금"
+        ],
+        "K": [
+          "노키아",
+          "버킷",
+          "시킨다",
+          "시킨다는"
+        ],
+        "KK": [
+          "뒤섞이",
+          "떡볶이",
+          "섞이",
+          "섞인"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 221,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ɕ͈",
+      "current_phone_class_r_auto": "SS",
+      "rule_key_token_types": {
+        "D": 4,
+        "S": 13,
+        "SS": 121
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "날아갔",
+          "돌아갔",
+          "찼",
+          "찾아갔"
+        ],
+        "S": [
+          "불신",
+          "시스템",
+          "시에",
+          "시엠",
+          "신",
+          "실시",
+          "싱글",
+          "열심히"
+        ],
+        "SS": [
+          "각시탈",
+          "갑시다",
+          "개인택시",
+          "객실",
+          "거침없이",
+          "고고씽",
+          "고등학생",
+          "국민학생"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 138,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "dʲ",
+      "current_phone_class_r_auto": "D",
+      "rule_key_token_types": {
+        "D": 55,
+        "J": 2,
+        "N": 12,
+        "TT": 1
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "가디언",
+          "간디",
+          "더딘",
+          "드디어",
+          "디딘",
+          "디딜",
+          "라디오",
+          "라이몬디"
+        ],
+        "J": [
+          "곧이어",
+          "등받이"
+        ],
+        "N": [
+          "네",
+          "니",
+          "니까",
+          "니네베",
+          "니다",
+          "니미츠",
+          "니스",
+          "니제"
+        ],
+        "TT": [
+          "빅딜"
+        ]
+      },
+      "supported_rule_key_count": 3,
+      "same_length_positional_token_types": 70,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "tɕ",
+      "current_phone_class_r_auto": "J",
+      "rule_key_token_types": {
+        "CH": 1,
+        "J": 1545,
+        "JJ": 2
+      },
+      "examples_by_rule_key": {
+        "CH": [
+          "싫증"
+        ],
+        "J": [
+          "갈증",
+          "감자",
+          "강점",
+          "골다공증",
+          "골절",
+          "공통점",
+          "굴지",
+          "글자"
+        ],
+        "JJ": [
+          "입점",
+          "입증"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 1548,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "k̚",
+      "current_phone_class_r_auto": "k",
+      "rule_key_token_types": {
+        "G": 1345,
+        "K": 2,
+        "NG": 1
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "가급적",
+          "가닥",
+          "가득",
+          "가득찬",
+          "가로막",
+          "가로축",
+          "가속",
+          "가슴속"
+        ],
+        "K": [
+          "정옥현",
+          "징역형"
+        ],
+        "NG": [
+          "얽매이"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 1348,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ɡ",
+      "current_phone_class_r_auto": "G",
+      "rule_key_token_types": {
+        "G": 1129,
+        "KK": 4
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "가게",
+          "가공",
+          "가공품",
+          "가구",
+          "가구주",
+          "가급적",
+          "가스공사",
+          "각오"
+        ],
+        "KK": [
+          "강도높게",
+          "밑거름",
+          "밑그림",
+          "옆구리"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 1133,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "e",
+      "current_phone_class_r_auto": "E",
+      "rule_key_token_types": {
+        "AE": 13,
+        "E": 1060,
+        "G": 1
+      },
+      "examples_by_rule_key": {
+        "AE": [
+          "매출액",
+          "산액",
+          "세액",
+          "소액",
+          "수입액",
+          "수출액",
+          "원액",
+          "잔액"
+        ],
+        "E": [
+          "가게",
+          "가세",
+          "가외",
+          "가운데",
+          "가전제품",
+          "간만에",
+          "간선제",
+          "간접세"
+        ],
+        "G": [
+          "투자액"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 1074,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "t",
+      "current_phone_class_r_auto": "D",
+      "rule_key_token_types": {
+        "D": 947,
+        "TT": 2
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "간다고",
+          "간다는",
+          "갈대",
+          "갈등",
+          "강대국",
+          "거스름돈",
+          "건대",
+          "공감대"
+        ],
+        "TT": [
+          "맥도날드",
+          "맥도널"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 949,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "b",
+      "current_phone_class_r_auto": "B",
+      "rule_key_token_types": {
+        "B": 692,
+        "PP": 4
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "가발",
+          "가방",
+          "가본",
+          "가위바위보",
+          "가처분",
+          "간밤",
+          "간부",
+          "간호부"
+        ],
+        "PP": [
+          "레킷벤키저",
+          "바닷바람",
+          "앞부분",
+          "옆방"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 694,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "p̚",
+      "current_phone_class_r_auto": "p",
+      "rule_key_token_types": {
+        "B": 557,
+        "L": 1,
+        "M": 2,
+        "P": 1
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "가급적",
+          "가깝",
+          "가습기",
+          "가업",
+          "가엾",
+          "가입",
+          "가입자",
+          "간섭"
+        ],
+        "L": [
+          "밟"
+        ],
+        "M": [
+          "세제곱미터",
+          "제곱미터"
+        ],
+        "P": [
+          "연합회"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 561,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "kʰ",
+      "current_phone_class_r_auto": "K",
+      "rule_key_token_types": {
+        "G": 1,
+        "K": 475,
+        "KK": 42
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "우여곡절"
+        ],
+        "K": [
+          "각하",
+          "구축함",
+          "국민카드",
+          "국한",
+          "국해",
+          "그렇게",
+          "그만큼",
+          "극한"
+        ],
+        "KK": [
+          "갖가지",
+          "고춧가루",
+          "곳곳",
+          "급감",
+          "급급",
+          "기업가",
+          "나뭇가지",
+          "눈엣가시"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 518,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "s",
+      "current_phone_class_r_auto": "S",
+      "rule_key_token_types": {
+        "S": 122,
+        "SS": 234
+      },
+      "examples_by_rule_key": {
+        "S": [
+          "가슴속",
+          "갈수록",
+          "건설사",
+          "극소수",
+          "급할수록",
+          "김범수",
+          "눈살",
+          "눈송이"
+        ],
+        "SS": [
+          "가독성",
+          "가족사",
+          "각성",
+          "간접세",
+          "갑작스런",
+          "갑작스럽",
+          "갔었",
+          "겠어"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 354,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ɟ",
+      "current_phone_class_r_auto": "G",
+      "rule_key_token_types": {
+        "G": 296,
+        "K": 1,
+        "KK": 5
+      },
+      "examples_by_rule_key": {
+        "G": [
+          "가뜩이나",
+          "감기",
+          "갑자기",
+          "거기",
+          "고기",
+          "고기압",
+          "고흥길",
+          "공군기지"
+        ],
+        "K": [
+          "끊기"
+        ],
+        "KK": [
+          "굵기",
+          "꺾기",
+          "꽃길",
+          "앞길",
+          "재밌기만"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 302,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "bʲ",
+      "current_phone_class_r_auto": "B",
+      "rule_key_token_types": {
+        "B": 127,
+        "M": 104
+      },
+      "examples_by_rule_key": {
+        "B": [
+          "가비",
+          "가비아",
+          "갈비",
+          "갈비찜",
+          "고비",
+          "구비",
+          "국방비",
+          "군비"
+        ],
+        "M": [
+          "미",
+          "미국",
+          "미국인",
+          "미군",
+          "미궁",
+          "미끄러지",
+          "미네르바",
+          "미니"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 230,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "eː",
+      "current_phone_class_r_auto": "E",
+      "rule_key_token_types": {
+        "AE": 6,
+        "E": 153
+      },
+      "examples_by_rule_key": {
+        "AE": [
+          "왜",
+          "왜곡",
+          "왜소",
+          "왠",
+          "왠지",
+          "왤케"
+        ],
+        "E": [
+          "게",
+          "게시판",
+          "네",
+          "네거티브",
+          "넷",
+          "뇌",
+          "세",
+          "세간"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 159,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "s͈",
+      "current_phone_class_r_auto": "SS",
+      "rule_key_token_types": {
+        "D": 5,
+        "N": 1,
+        "SS": 128
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "어쨌거나",
+          "어쨌든",
+          "재밌",
+          "재밌기만",
+          "했잖아"
+        ],
+        "N": [
+          "어딨나"
+        ],
+        "SS": [
+          "감싸",
+          "값비싼",
+          "값싸",
+          "값싼",
+          "글쎄",
+          "글쎄요",
+          "글쓰기",
+          "나왔었"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 134,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "ʝ",
+      "current_phone_class_r_auto": "H",
+      "rule_key_token_types": {
+        "H": 112,
+        "Y": 5
+      },
+      "examples_by_rule_key": {
+        "H": [
+          "가라앉히",
+          "가만히",
+          "가해",
+          "가해자",
+          "가했",
+          "간간히",
+          "간단히",
+          "간신히"
+        ],
+        "Y": [
+          "꽂혀",
+          "맞혀",
+          "맞혔",
+          "정옥현",
+          "징역형"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 117,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "cʰ",
+      "current_phone_class_r_auto": "K",
+      "rule_key_token_types": {
+        "K": 89,
+        "KK": 22
+      },
+      "examples_by_rule_key": {
+        "K": [
+          "가리키",
+          "간곡히",
+          "급속히",
+          "기막힌",
+          "나이키",
+          "내키",
+          "다카유키",
+          "들키"
+        ],
+        "KK": [
+          "가습기",
+          "급기야",
+          "맡기",
+          "맡긴",
+          "맡길",
+          "믿기",
+          "벗기",
+          "벗긴"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 111,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "tʲ",
+      "current_phone_class_r_auto": "D",
+      "rule_key_token_types": {
+        "D": 21,
+        "T": 74
+      },
+      "examples_by_rule_key": {
+        "D": [
+          "디",
+          "디딘",
+          "디딜",
+          "디램",
+          "디스크",
+          "디스패치",
+          "디아",
+          "디야"
+        ],
+        "T": [
+          "굳히",
+          "굳힌",
+          "네거티브",
+          "네티즌",
+          "닫히",
+          "닫힌",
+          "드라마틱",
+          "라티"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 95,
+      "direct_mapping_authorized": false
+    },
+    {
+      "phone_mfa": "nː",
+      "current_phone_class_r_auto": "N",
+      "rule_key_token_types": {
+        "CH": 2,
+        "N": 3
+      },
+      "examples_by_rule_key": {
+        "CH": [
+          "꽃잎",
+          "낯익"
+        ],
+        "N": [
+          "웬일",
+          "짓누르",
+          "큰일"
+        ]
+      },
+      "supported_rule_key_count": 2,
+      "same_length_positional_token_types": 5,
+      "direct_mapping_authorized": false
+    }
+  ],
+  "interpretation": {
+    "optional_place_assimilation_is_mandatory_standard_rule": false,
+    "frozen_dictionary_variant_is_standard_pronunciation_truth": false,
+    "phone_rule_cooccurrence_is_direct_mapping": false,
+    "mfa_phone_is_actual_realization_transcription": false,
+    "candidate_generation_performed": false
+  },
+  "evidence": {
+    "manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\RULE_PHONE_COVERAGE_MANIFEST.json",
+      "bytes": 4556,
+      "mtime_ns": 1786166474256345000,
+      "sha256": "d5f04dfb58b58ed2ca88afc6ff1757b887422b56d84b0c79626883923c7ac17f"
+    },
+    "audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_rule_phone_coverage_20260808.json",
+      "bytes": 7914,
+      "mtime_ns": 1786166615065000400,
+      "sha256": "f9b136dad0b97581f94e2f11ef46dcc86b13c6758b20c811071948c7ed3cf6c4"
+    },
+    "variant_coverage": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\no_rule_variant_rule_phone_coverage.csv.gz",
+      "bytes": 2999284,
+      "mtime_ns": 1786166473971589700,
+      "sha256": "1c89b30c6c104bf914360db8549d73d21236066175c3c2bfd8afc5ea3ff73bf0"
+    },
+    "phone_rule_cooccurrence": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\11_rule_phone_coverage_audit\\frozen_dictionary_phone_rule_cooccurrence.csv",
+      "bytes": 26629,
+      "mtime_ns": 1786166473981952400,
+      "sha256": "99315aaf86afa5f2bc64a43380f8bdad120efb29d693d6a6ea15a74714578151"
+    }
+  }
+}

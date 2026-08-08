@@ -138,5 +138,10 @@ D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\<YEAR>\
 동화·활음/모음 단위화·후두 대립 phone 매핑·분절 수 차이를 섞은 채 자동
 발음으로 채우지 않는다. 상세 결과는
 `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`를
-따른다. 규칙/매핑 coverage 감사와 r3 adoption이 끝날 때까지 2022–2025
-발음 참조 파생층과 MFA를 실행하지 않는다.
+따른다. 후속 coverage 감사에서는 수의적 위치동화를 의무 규칙에 추가하지 않고,
+`pʲ`처럼 phone에서 연구용 음소를 일대일 복원할 수 없는 경우를 명시적으로
+보류했다. 따라서 `phoneme_r_auto`는 phone 기반 넓은 표시일 뿐 확정 음소나
+실현 전사가 아니다. 정본 해석은
+`docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`를
+따른다. r3 adoption이 끝날 때까지 2022–2025 발음 참조 파생층과 MFA를 실행하지
+않는다.

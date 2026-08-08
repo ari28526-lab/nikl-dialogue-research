@@ -229,6 +229,27 @@ projection, canonical selection, adoption, MFA, TextGrid 변경은 금지한다.
 `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`를
 따른다.
 
+### 3.8 r3 규칙·MFA phone coverage 감사 완료 checkpoint
+
+stage 11은 no-rule 85,504형·85,741변이를 동결 기본사전·acoustic inventory와
+다시 대조했다. 모든 변이가 수의적 위치동화로만 다른 36,568형과, 그 집합과
+겹치지 않으면서 모든 변이가 frozen 기본사전에 정확히 있는 811형을 분리했다.
+전자는 의무 표준발음 규칙이 아니며 후자도 표준발음 정답이 아니라 MFA 정렬용
+model-compatible 근거다. 일부 변이만 해당하는 82형과 나머지 48,043형은
+계속 보류한다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+11_rule_phone_coverage_audit\RULE_PHONE_COVERAGE_MANIFEST.json
+```
+
+manifest는 `success_audited_not_candidate`, 독립 감사기는 `passed_read_only`다.
+다음 단계는 37,379형의 기존 r2 phone 변이를 정렬용 candidate-only로 09
+readiness에 추가한 새 버전을 만드는 것이다. `rule_pron_roman`은 표준 참조로
+그대로 보존한다. canonical selection·adoption·MFA·TextGrid 변경은 금지한다.
+비일대일 phone 포함 여부만으로 후보를 승격하지 않는다. 상세 근거는
+`docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.

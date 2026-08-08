@@ -270,6 +270,26 @@ G2P를 재실행하지 않았고 canonical selection, adoption, MFA, TextGrid �
 추가하는 coverage 감사다. 상세 결과는
 `RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`에 기록했다.
 
+### 5.8 의무 표준발음·수의 변이·MFA phone의 분리
+
+후속 stage 11은 no-rule 85,504형·85,741변이를 frozen Korean MFA 기본사전과
+acoustic inventory에 대조했다. 표준발음법상 표준으로 인정하지 않는 수의적
+위치동화를 의무 규칙 엔진에 추가하지 않았다. 모든 r2 변이가 이 위치동화로만
+다른 36,568형·525,747회와, 위치동화 집합과 겹치지 않으면서 frozen 기본사전에
+모든 변이가 정확히 있는 811형·229,177회를 정렬용 후보 근거로 분리했다. 일부
+변이만 해당하는 82형과 미해결 48,043형은 보류했다.
+
+동일 길이 위치 대조에서 107 acoustic phone 중 33개가 둘 이상의 규칙키와 반복
+공존했다. 특히 `pʲ`는 B와 P 양쪽에서 충분한 사전 예가 있어 phone만으로 음소를
+일대일 복원할 수 없다. 이 대조는 매핑 학습이 아니라 비일대일성 진단이며,
+`phones_mfa`와 `phoneme_r_auto`를 실제 실현 전사로 해석하지 않는다.
+
+첫 집계는 비일대일 phone 포함을 주분류 해결 사유로 삼아 47,851형을 과잉분류했다.
+이를 중단·보존하고 비일대일 표지를 비배타적 경고로만 고쳐 전수 재생성·독립
+감사했다. 후보 생성, canonical selection, adoption, MFA, TextGrid 변경은 하지
+않았다. 상세 근거는
+`RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch

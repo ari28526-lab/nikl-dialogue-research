@@ -176,11 +176,35 @@ canonical selection false / adoption false / MFA false / TextGrid 변경 false
 ```
 
 새 대화에서 stage 10, 같은 G2P, 08 projection, 09 readiness를 다시 실행하지
-않는다. `no_rule`은 언어학적으로 규칙이 없다는 뜻이 아니다. 다음 일은 숫자·기호
-정리가 아니라 비음 조음 위치, 활음·모음 단위화, 후두 대립 phone 매핑, 분절
-탈락/모델 오류의 읽기 전용 coverage 감사다. 85,504형을 표기 규칙이나 r2 phone으로
-일괄 투사하지 않는다. 상세 결과는
+않는다. `no_rule`은 언어학적으로 규칙이 없다는 뜻이 아니다. 상세 결과는
 `docs/decisions/RESULT_common_pron_r3_no_rule_hold_characterization_20260808.md`다.
+
+### 2026-08-08 규칙·MFA phone coverage 감사 이후 재개점
+
+stage 11 읽기 전용 감사와 독립 재계산이 완료됐다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  11_rule_phone_coverage_audit\RULE_PHONE_COVERAGE_MANIFEST.json
+outputs/reports/AUDIT_common_pron_r3_rule_phone_coverage_20260808.json
+outputs/reports/REPORT_common_pron_r3_rule_phone_coverage_20260808.json
+```
+
+```text
+all optional place assimilation: 36,568형 / 525,747회
+non-overlap all exact frozen dictionary: 811형 / 229,177회
+some optional only: 82형 / 16,271회
+unresolved: 48,043형 / 368,912회
+candidate selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+첫 stage 11 결과는 비일대일 phone 포함을 해결 사유로 과잉분류해
+`archive_intermediate\11_rule_phone_coverage_audit_v1_overbroad_noninjective_20260808`
+로 이동했다. 수정본은 비일대일성을 경고 표지로만 쓴다. 새 대화에서 stage 11을
+다시 실행하지 않는다. 다음 한 단계는 검증된 37,379형을 정렬용 candidate-only로
+09 readiness에 추가하는 것이다. 수의적 위치동화를 의무 표준발음 규칙에 넣지
+않고, phone을 실제 실현 또는 확정 음소로 해석하지 않는다. 정본 결과는
+`docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`다.
 
 ## 새 대화에 붙일 최소 프롬프트
 
