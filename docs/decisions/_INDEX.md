@@ -45,6 +45,7 @@
 | `RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md` | frozen 기본사전의 단어·음절·이차조음 문맥 donor inventory와 91,553형의 합의·복수·충돌·근거 없음 전수 감사 |
 | `RESULT_common_pron_r3_selection_readiness_v3_20260808.md` | 기존 phone·Roman을 바꾸지 않는 이차조음 6,141형만 정렬용 후보로 추가한 readiness v3와 잔여 85,412형 회계 |
 | `RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md` | 단일 문맥 donor가 있지만 phone 삽입·치환이 필요한 4,453형·4,900 issue를 규칙별로 분류하고 모두 hold한 Stage 15 감사 |
+| `RESULT_common_pron_r3_morph_context_evidence_20260808.md` | Stage 15 보류 4,453형을 6개년 검색 master의 exact 표면 어절과 안전한 형태소·품사 문맥에 연결하고 자동 후보 없이 보존한 Stage 16 감사 |
 
 ## 현재 생산과 안전 계약
 

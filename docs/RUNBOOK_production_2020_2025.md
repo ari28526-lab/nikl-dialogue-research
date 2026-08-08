@@ -324,9 +324,15 @@ Stage 15는 4,453형·72,030회의 미지지 issue 4,900개를 분절 삽입 2,8
 회계했다. 자동 후보는 0형이고 모든 형은 기존 hold를 유지한다. 정본은
 `docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`다.
 
-다음 단계는 경로별 사전·규칙·acoustic model 관계 감사다. Stage 15를 다시
-실행하거나 사용자가 4,453형을 전수 청취하지 않는다. canonical 선택과 adoption
-전에는 MFA·TextGrid를 변경하지 않는다.
+Stage 16은 이 4,453형을 검색 master 5,103,356발화와 전수 대조해 표면 exact
+68,285회, 안전한 형태소·품사 문맥 60,292회를 연결했다. Bareun group과 표면
+어절이 1:1이 아닌 행은 위치를 추정하지 않는다. Stage 16도 후보·selection·
+adoption·MFA·TextGrid를 만들거나 바꾸지 않는다.
+
+다음 단계는 사전·규칙 Roman exact인 좁은 집합의 전체 phone열을 문맥 donor로
+완전 재구성할 수 있는지 감사하는 것이다. Stage 15·16을 다시 실행하거나 사용자가
+4,453형을 전수 청취하지 않는다. 부분 phone 교정은 허용하지 않는다. canonical
+선택과 adoption 전에는 MFA·TextGrid를 변경하지 않는다.
 
 ## 4. 2021 Gate 종료 — 완료
 

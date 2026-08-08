@@ -160,3 +160,10 @@ Stage 15는 그중 phone 변경이 필요한 4,453형·72,030회를 4,900개 iss
 모음·이차조음 치환은 각각 다른 근거 감사가 필요하다. 자동 후보는 0형이며
 사전 참조층과 TextGrid에는 아직 반영하지 않는다. 정본 결과는
 `docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`다.
+
+Stage 16은 같은 4,453형을 6개년 검색 master와 exact 표면 어절 기준으로 연결하고,
+Bareun group 수가 표면 어절 수와 같은 행에 한해 형태소·품사 위치를 연결했다.
+표면 exact 68,285회와 안전한 형태소·품사 60,292회가 연결됐으며, 비1:1 분석은
+형태소 미연결로 보존한다. 이 층은 발음 정답이나 실현 판정이 아니라 후속 규칙·
+사전 감사의 검색 문맥이다. 자동 후보는 0형이다. 정본 결과는
+`docs/decisions/RESULT_common_pron_r3_morph_context_evidence_20260808.md`다.

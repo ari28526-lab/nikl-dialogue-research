@@ -1,0 +1,47 @@
+{
+  "schema_version": "common_pron_r3_morph_context_evidence_independent_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T19:49:06+09:00",
+  "manifest": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\16_morph_context_evidence\\MORPH_CONTEXT_EVIDENCE_MANIFEST.json",
+    "bytes": 5120,
+    "mtime_ns": 1786185884033278700,
+    "sha256": "7539be36cc69b02bff0028501db3400206aa284fb34cfeb0f09566c0231ce6f0"
+  },
+  "recomputed_counts": {
+    "search_master_csv_files": 17156,
+    "search_master_utterances": 5103356,
+    "target_types": 4453,
+    "expected_target_occurrences": 72030,
+    "linked_target_occurrences": 68285,
+    "morph_linked_target_occurrences": 60292,
+    "occurrence_link_status_types": {
+      "full_exact": 3661,
+      "partial": 306,
+      "unlinked": 486
+    },
+    "morph_link_status_types": {
+      "full_exact": 2502,
+      "partial": 839,
+      "unlinked": 1112
+    },
+    "morph_context_status_types": {
+      "multiple_signatures": 316,
+      "single_signature": 3025,
+      "unlinked": 1112
+    },
+    "morph_signature_rows": 3792,
+    "dictionary_reference_types": 179,
+    "surface_rule_reference_types": 742,
+    "automatic_candidate_types": 0,
+    "preserved_zero_fallback_hold_types": 4453
+  },
+  "invariants": {
+    "all_target_types_accounted": true,
+    "surface_and_morph_linkage_separated": true,
+    "bareun_alignment_mismatch_not_forced": true,
+    "automatic_candidate_types": 0,
+    "canonical_selection_performed": false,
+    "mfa_or_textgrid_modified": false
+  }
+}

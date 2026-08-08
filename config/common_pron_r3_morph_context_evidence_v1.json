@@ -1,0 +1,31 @@
+{
+  "schema_version": "common_pron_r3_morph_context_evidence_policy.v1",
+  "status": "read_only_evidence_linkage",
+  "purpose": "Link every Stage 15 token to the frozen six-year search-master eojeol, Bareun morphology/POS analysis, and rule-prediction context without selecting a pronunciation or modifying MFA/TextGrid outputs.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "input_contract": {
+    "expected_target_types": 4453,
+    "expected_target_occurrences": 72030,
+    "expected_search_master_utterances": 5103356,
+    "search_master_eojeol_mismatch": 0,
+    "exact_surface_eojeol_link_only": true
+  },
+  "evidence_policy": {
+    "bareun_analysis_is_automatic_not_gold": true,
+    "morph_signature_frequency_is_descriptive_not_pronunciation_truth": true,
+    "dictionary_pronunciation_is_reference_not_mfa_phone_selection": true,
+    "rule_prediction_is_reference_not_actual_realization": true,
+    "ambiguous_morph_signatures_remain_explicit": true,
+    "unlinked_occurrences_fail_closed": true
+  },
+  "invariants": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}
