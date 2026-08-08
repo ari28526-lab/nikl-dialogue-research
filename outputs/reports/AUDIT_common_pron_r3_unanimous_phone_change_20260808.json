@@ -1,0 +1,67 @@
+{
+  "schema_version": "common_pron_r3_unanimous_phone_change_independent_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T17:09:47+09:00",
+  "manifest": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\15_unanimous_phone_change_audit\\UNANIMOUS_PHONE_CHANGE_AUDIT_MANIFEST.json",
+    "bytes": 5790,
+    "mtime_ns": 1786176467362091400,
+    "sha256": "c23267a1ca0dcdc881fab1b8c59ad05266819ce6f6d3f2b84f094a71066788f5"
+  },
+  "recomputed_counts": {
+    "target_types": 4453,
+    "target_occurrences": 72030,
+    "unsupported_issue_rows": 4900,
+    "edit_mechanism_issue_rows": {
+      "secondary_articulation_substitution": 27,
+      "segment_insertion": 2826,
+      "segment_substitution": 2047
+    },
+    "rule_unit_family_issue_rows": {
+      "coda_or_sonorant_unit": 747,
+      "compound_vowel_glide_component": 721,
+      "onset_laryngeal_or_manner_unit": 1356,
+      "secondary_articulation_cluster": 27,
+      "ui_glide_component": 972,
+      "velar_nasal_unit": 794,
+      "vowel_quality_or_length_unit": 283
+    },
+    "primary_audit_route_types": {
+      "coda_or_sonorant_insertion": 212,
+      "compound_vowel_glide_insertion": 589,
+      "multi_operation_mixed_edit": 333,
+      "nasal_or_coda_substitution": 455,
+      "onset_laryngeal_or_manner_substitution": 919,
+      "other_segment_insertion": 250,
+      "other_segment_substitution": 35,
+      "secondary_articulation_substitution": 16,
+      "ui_glide_component_insertion": 964,
+      "velar_nasal_insertion": 536,
+      "vowel_quality_or_length_substitution": 144
+    },
+    "primary_audit_route_occurrences": {
+      "coda_or_sonorant_insertion": 7397,
+      "compound_vowel_glide_insertion": 15627,
+      "multi_operation_mixed_edit": 905,
+      "nasal_or_coda_substitution": 1626,
+      "onset_laryngeal_or_manner_substitution": 9453,
+      "other_segment_insertion": 2919,
+      "other_segment_substitution": 134,
+      "secondary_articulation_substitution": 29,
+      "ui_glide_component_insertion": 15134,
+      "velar_nasal_insertion": 15868,
+      "vowel_quality_or_length_substitution": 2938
+    },
+    "automatic_candidate_types": 0,
+    "preserved_zero_fallback_hold_types": 4453
+  },
+  "invariants": {
+    "all_target_tokens_accounted": true,
+    "all_unsupported_issues_accounted": true,
+    "all_donor_sets_unanimous": true,
+    "readiness_v3_hold_preserved": true,
+    "automatic_candidate_types": 0,
+    "canonical_selection_performed": false,
+    "mfa_or_textgrid_modified": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "common_pron_r3_unanimous_phone_change_audit_policy.v1",
+  "status": "read_only_audit_only",
+  "purpose": "Classify every readiness-v3 hold that has unanimous contextual donor support but would require an insertion or substitution of the existing r2 MFA phone sequence. This stage creates no pronunciation candidate and makes no standard-pronunciation or realization claim.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "input_contract": {
+    "required_contextual_support_class": "unanimous_contextual_support",
+    "required_candidate_eligible_flag": false,
+    "required_zero_fallback_hold_flag": true,
+    "expected_types": 4453,
+    "expected_occurrences": 72030
+  },
+  "taxonomy": {
+    "edit_mechanisms": [
+      "segment_insertion",
+      "segment_substitution",
+      "secondary_articulation_substitution"
+    ],
+    "rule_unit_families": [
+      "ui_glide_component",
+      "compound_vowel_glide_component",
+      "velar_nasal_unit",
+      "coda_or_sonorant_unit",
+      "onset_laryngeal_or_manner_unit",
+      "vowel_quality_or_length_unit",
+      "secondary_articulation_cluster",
+      "other_rule_unit"
+    ],
+    "primary_routes": [
+      "ui_glide_component_insertion",
+      "compound_vowel_glide_insertion",
+      "velar_nasal_insertion",
+      "coda_or_sonorant_insertion",
+      "other_segment_insertion",
+      "onset_laryngeal_or_manner_substitution",
+      "vowel_quality_or_length_substitution",
+      "nasal_or_coda_substitution",
+      "secondary_articulation_substitution",
+      "other_segment_substitution",
+      "multi_operation_mixed_edit"
+    ]
+  },
+  "routing_policy": {
+    "insertion_requires_rule_parser_and_model_unitization_audit": true,
+    "substitution_requires_dictionary_rule_and_model_relation_audit": true,
+    "mixed_edit_requires_token_level_audit": true,
+    "frequency_is_priority_not_truth": true
+  },
+  "invariants": {
+    "candidate_generation_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

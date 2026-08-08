@@ -207,9 +207,14 @@ Stage 14 readiness v3는 단일 근거 중 기존 r2 phone·Roman을 바이트 �
 795,790형·27,043,061회, zero-fallback hold는 85,412형·803,844회다. 881,237행
 전수 v2 대조에서 비대상 필드 변화 0, phone·Roman 변화 0을 확인했다.
 
-현재 허용 작업은 남은 단일 근거 4,453형·72,030회를 ㅢ 규칙, 분절 삽입/삭제,
-후두 대립·종성 교체로 분리해 읽기 전용으로 감사하는 것이다. `중에서`처럼 donor
-`ŋ`가 하나여도 기존 phone열에 분절을 새로 넣는 경우는 자동 승격하지 않는다.
+Stage 15는 남은 단일 근거 4,453형·72,030회의 4,900 issue를 ㅢ 규칙, 활음·
+`ng`·종성 삽입, 후두 대립·비음/종성·모음·이차조음 치환, 혼합 편집으로 전수
+분류하고 독립 감사를 통과했다. 자동 후보는 0형이고 4,453형 모두 기존 hold를
+유지한다. `중에서`처럼 donor `ŋ`가 하나여도 기존 phone열에 분절을 새로 넣는
+경우는 자동 승격하지 않는다.
+
+현재 허용 작업은 Stage 15 경로별로 규칙 parser·우리말샘/표준발음 근거·동결
+MFA 사전·acoustic model phone 관계를 좁게 감사하는 것이다.
 수의적 위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현
 발음으로 선언하지 않는다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 자동 승인,
 canonical selection·adoption 전 MFA는 허용하지 않는다.
@@ -250,4 +255,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`
 - r3 selection-readiness v3 결과:
   `docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`
+- r3 단일 문맥 근거·phone 변경 필요형 감사:
+  `docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

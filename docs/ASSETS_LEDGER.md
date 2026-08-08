@@ -24,12 +24,13 @@
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\2021` | 세션 checkpoint형 7-tier 파생 생산본 | 4,139세션·1,371,883개; 기존 6-tier 변경 0, 독립 감사 오류 0 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
-| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 문맥 donor, 전수 readiness | 14 readiness v3 기준 candidate 준비 795,790, zero-fallback 보류 85,412; 독립 감사 통과; canonical 선택·adoption 전 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 문맥 donor, 전수 readiness | 15 phone 변경 감사까지 완료; readiness v3 candidate 준비 795,790, zero-fallback 보류 85,412; 자동 추가 후보 0; 독립 감사 통과; canonical 선택·adoption 전 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\10_no_rule_hold_characterization` | no-rule 85,504형의 문자·사전·r2 출처·편집 유형 전수 특성화 | `success_characterized_not_candidate`; 모두 완성형 한글, 독립 감사 통과, 후보·selection·adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\11_rule_phone_coverage_audit` | no-rule 변이의 수의적 위치동화, frozen 기본사전 정확 일치, phone↔규칙키 비일대일성 전수 진단 | `success_audited_not_candidate`; 36,568형 all-optional, 811형 비중복 all-frozen, 48,043형 미해결, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\12_selection_readiness_v2` | stage 09 전체 readiness에 감사된 no-rule 정렬 후보 37,379형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 789,649형, zero-fallback hold 91,553형, 독립 감사 통과, adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\13_contextual_dictionary_donor_audit` | frozen 기본사전의 단어·음절·국소 분절·이차조음 donor inventory와 readiness v2 hold 전수 합의·충돌 감사 | `success_audited_not_candidate`; 단일 10,594형, 복수 22,171형, 충돌 48,780형, 근거 없음 10,008형; 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\14_selection_readiness_v3` | phone 불변 이차조음 onset+glide 6,141형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 795,790형, zero-fallback hold 85,412형, phone·Roman 전수 불변 감사 통과, adoption 아님 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\15_unanimous_phone_change_audit` | 단일 문맥 근거지만 r2 phone 삽입·치환이 필요한 4,453형·4,900 issue의 규칙별 읽기 전용 inventory | `success_audited_not_candidate`; 자동 후보 0형, 4,453형 hold 보존, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 준비 중 |

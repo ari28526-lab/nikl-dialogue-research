@@ -328,6 +328,15 @@ phone·Roman JSON이 바이트 동일하고 나머지 v2 필드가 변하지 않
 `RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`와
 `RESULT_common_pron_r3_selection_readiness_v3_20260808.md`에 기록했다.
 
+이어 단일 문맥 근거가 있으나 phone 변경이 필요한 4,453형·72,030회를 별도
+Stage 15로 분리했다. 4,900개 미지지 issue는 phone 삽입 2,826개, 직접 치환
+2,047개, 이차조음 결합 치환 27개였다. ㅢ·활음·`ng`·종성 삽입, 후두 대립·
+비음/종성·모음·이차조음 치환, 혼합 편집으로 경로를 나눴으며, donor의 단일성은
+phone 편집의 자동 승인 근거로 사용하지 않았다. 따라서 후보 생성은 0형이고
+4,453형 모두 hold를 유지한다. 이 단계 역시 표준발음이나 실제 실현 판정이 아닌
+정렬 입력 후보의 근거 감사이며, 결과는
+`RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch

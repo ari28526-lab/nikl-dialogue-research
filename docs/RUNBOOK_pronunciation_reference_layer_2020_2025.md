@@ -154,3 +154,9 @@ D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\<YEAR>\
 실제 발음이나 표준발음으로 덮어쓰지 않도록 한다. 정본 결과는
 `docs/decisions/RESULT_common_pron_r3_contextual_dictionary_donor_audit_20260808.md`와
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`다.
+
+Stage 15는 그중 phone 변경이 필요한 4,453형·72,030회를 4,900개 issue로
+전수 분류했다. ㅢ `EU_G`, `Y/W` 활음, `ng`, 종성 삽입과 후두 대립·비음/종성·
+모음·이차조음 치환은 각각 다른 근거 감사가 필요하다. 자동 후보는 0형이며
+사전 참조층과 TextGrid에는 아직 반영하지 않는다. 정본 결과는
+`docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`다.

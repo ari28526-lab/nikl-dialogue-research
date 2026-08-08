@@ -311,6 +311,23 @@ candidate 준비는 795,790형·27,043,061회, zero-fallback hold는
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_v3_20260808.md`를 따른다.
 canonical selection·adoption 전에는 MFA·TextGrid 작업을 시작하지 않는다.
 
+### 3.12 r3 단일 문맥 근거·phone 변경 필요형 감사 완료 checkpoint
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+15_unanimous_phone_change_audit\UNANIMOUS_PHONE_CHANGE_AUDIT_MANIFEST.json
+```
+
+Stage 15는 4,453형·72,030회의 미지지 issue 4,900개를 분절 삽입 2,826개,
+직접 치환 2,047개, 이차조음 결합 치환 27개로 분리했다. ㅢ `EU_G`, `Y/W`
+활음, `ng`, 종성 삽입과 후두 대립·비음/종성·모음·이차조음 치환을 별도 경로로
+회계했다. 자동 후보는 0형이고 모든 형은 기존 hold를 유지한다. 정본은
+`docs/decisions/RESULT_common_pron_r3_unanimous_phone_change_audit_20260808.md`다.
+
+다음 단계는 경로별 사전·규칙·acoustic model 관계 감사다. Stage 15를 다시
+실행하거나 사용자가 4,453형을 전수 청취하지 않는다. canonical 선택과 adoption
+전에는 MFA·TextGrid를 변경하지 않는다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.
