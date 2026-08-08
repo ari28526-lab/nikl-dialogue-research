@@ -86,6 +86,11 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
   보류했고 56행 handoff가 95.136%를 포괄한다. 다음 단계는 이 표를 전부
   청취하는 일이 아니라 canonical 선택 우선순위·zero-fallback·adoption Gate를
   구현하는 것이다.
+- 881,237형 전수 selection-readiness 조인은 candidate 준비 749,779형
+  (93.289% 출현), zero-fallback 보류 131,434형을 확인하고 독립 감사를
+  통과했다. 보류 중 83,922형은 이미 같은 Jamo G2P 결과이므로 같은 G2P를
+  반복하지 않는다. 다음은 canonical exact donor 382,891형으로 문맥 projection
+  pool을 확장하는 후보 단계다.
 
 ## 문서 사용 규칙
 

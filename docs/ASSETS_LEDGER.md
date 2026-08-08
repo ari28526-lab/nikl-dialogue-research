@@ -24,7 +24,7 @@
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\2021` | 세션 checkpoint형 7-tier 파생 생산본 | 4,139세션·1,371,883개; 기존 6-tier 변경 0, 독립 감사 오류 0 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
-| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Roman Gate, mismatch 진단, model 문맥 projection | target 후보 가능 264,906개(85.287%), 보류 45,699개; projection 독립 감사 통과; canonical 선택·adoption 전 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, model projection, 전수 readiness | 881,237형 중 candidate 준비 749,779, zero-fallback 보류 131,434; 06·07 독립 감사 통과; canonical 선택·adoption 전 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 준비 중 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |

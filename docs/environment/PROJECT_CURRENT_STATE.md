@@ -174,11 +174,17 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
   대표를 포괄하는 56행 handoff로 축약
 - source 중 projection과 독립 사전 근거가 함께 일치한 것은 5,948형·349,689회;
   이 또한 canonical 최종 선택 전 후보
+- 881,237형 selection-readiness 행렬·독립 감사 완료: candidate 준비 749,779형
+  (85.083%)·25,978,186회(93.289%), 복수 변이 정책 24형·126회,
+  zero-fallback 보류 131,434형·1,868,756회
+- no-rule 보류 85,504형 중 83,922형은 이미 동일 Jamo G2P 1-best 출처이므로
+  G2P 반복은 개선책이 아님; canonical exact donor 382,891형으로 projection pool
+  확장이 다음 후보 단계
 
-현재 허용 작업은 감사된 model 표상·exact 문맥 projection 후보를 canonical
-inventory에 다시 연결하고, 선택 우선순위·zero-fallback·사전 projection·자동
-회귀·adoption Gate를 구현하는 것이다. 56행 잔여표 전체를 새 청취 검토로
-돌리거나 자동 승인하지 않는다.
+현재 허용 작업은 canonical exact-rule 382,891형을 전역 donor pool로 사용해
+기존 projection과 보류형을 같은 문맥 정책으로 다시 후보화하고, 이전 06 후보의
+유지·변경을 비교하는 것이다. 같은 Jamo G2P 반복, 56행 전체 청취, 자동 승인,
+adoption 전 MFA는 허용하지 않는다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -200,4 +206,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
 - r3 model 표상·문맥 projection 후보 결과:
   `docs/decisions/RESULT_common_pron_r3_model_projection_candidates_20260808.md`
+- r3 881,237형 selection-readiness 결과:
+  `docs/decisions/RESULT_common_pron_r3_selection_readiness_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

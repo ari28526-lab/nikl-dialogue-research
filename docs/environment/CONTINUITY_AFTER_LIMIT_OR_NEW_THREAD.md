@@ -121,6 +121,22 @@ canonical selection false / adoption false / annual MFA false / TextGrid 변경 
 먼저 확인한다. 다음 일은 projection 재실행이나 56행 전수 청취가 아니라
 canonical 선택 우선순위·zero-fallback·사전 projection·adoption Gate 구현이다.
 
+### 2026-08-08 selection-readiness 이후 재개점
+
+881,237형 전수 readiness와 독립 감사도 완료됐다. 정본은
+`D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+07_canonical_selection_readiness\SELECTION_READINESS_MANIFEST.json`이다.
+
+```text
+candidate 준비 749,779형 / zero-fallback 보류 131,434형
+candidate 출현 coverage 93.289%
+canonical selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+새 대화에서 같은 07 행렬이나 Jamo G2P를 다시 실행하지 않는다. 다음 후보 단계는
+canonical exact-rule 382,891형 전역 donor projection이며, 기존 06 후보와의
+변경 비교를 반드시 남긴다.
+
 ## 새 대화에 붙일 최소 프롬프트
 
 ```text

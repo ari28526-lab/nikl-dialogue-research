@@ -1,0 +1,122 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_summary.v1",
+  "status": "success_summary_not_selection",
+  "recorded_at": "2026-08-08T12:39:50+09:00",
+  "headline": {
+    "canonical_types": 881237,
+    "canonical_occurrences": 27847068,
+    "candidate_ready_types": 749779,
+    "candidate_ready_type_percent": 85.083,
+    "candidate_ready_occurrences": 25978186,
+    "candidate_ready_occurrence_percent": 93.289,
+    "policy_decision_types": 24,
+    "zero_fallback_hold_types": 131434,
+    "zero_fallback_hold_occurrences": 1868756
+  },
+  "hold_source_types": {
+    "hold_no_surface_rule_substantive_mismatch": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 1582,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 83922
+    },
+    "hold_target_projection_unresolved": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 242,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 45688
+    }
+  },
+  "hold_source_occurrences": {
+    "hold_no_surface_rule_substantive_mismatch": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 452304,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 687803
+    },
+    "hold_target_projection_unresolved": {
+      "korean_mfa_dictionary_v3.3.0_preserved": 57826,
+      "korean_mfa_jamo_g2p_v3.2.0_1best_strict": 670823
+    }
+  },
+  "no_surface_rule_hold_target_reuse": {
+    "types": {
+      "new_target": 85263,
+      "overlap_candidate_exact_context_projection": 132,
+      "overlap_hold_candidate_only_deletion_requires_policy": 4,
+      "overlap_hold_no_unanimous_exact_context_donor": 105
+    },
+    "occurrences": {
+      "new_target": 1129577,
+      "overlap_candidate_exact_context_projection": 8807,
+      "overlap_hold_candidate_only_deletion_requires_policy": 5,
+      "overlap_hold_no_unanimous_exact_context_donor": 1718
+    },
+    "examples": {
+      "new_target": [
+        "가게라던가",
+        "가게라든가",
+        "가게인가요",
+        "가겐가",
+        "가격까지"
+      ],
+      "overlap_candidate_exact_context_projection": [
+        "강타를",
+        "결시를",
+        "경지기",
+        "경차를",
+        "경찰과는"
+      ],
+      "overlap_hold_candidate_only_deletion_requires_policy": [
+        "리액쎤",
+        "웹싸이트가",
+        "웹싸이트에",
+        "이명은"
+      ],
+      "overlap_hold_no_unanimous_exact_context_donor": [
+        "가시라든가",
+        "가텨",
+        "거리라든가",
+        "거린가",
+        "고기라든가"
+      ]
+    }
+  },
+  "methodological_conclusion": {
+    "repeat_same_jamo_g2p_for_existing_strict_sources": false,
+    "reason": "83,922 of 85,504 no-surface-rule substantive holds already originate from the same frozen Jamo G2P 1-best",
+    "next_candidate_stage": "rebuild exact-context projection with the full 382,891-type canonical exact-rule donor pool before considering any new G2P run",
+    "human_review_required_now": false
+  },
+  "scope": {
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false
+  },
+  "evidence": {
+    "readiness_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\07_canonical_selection_readiness\\SELECTION_READINESS_MANIFEST.json",
+      "bytes": 5080,
+      "mtime_ns": 1786159355357803300,
+      "sha256": "d11bd4e74b3c3cefba22745788f0e74aa5406efa0e96f6bbfd1bc82e76b54e8a"
+    },
+    "projection_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\06_model_projection_candidates\\PROJECTION_CANDIDATES_MANIFEST.json",
+      "bytes": 6359,
+      "mtime_ns": 1786156757484920900,
+      "sha256": "992bc1f8af30a4b6d1c4aec7cc1ee6eace1854b59f263e09605eed12c17a7dc9"
+    },
+    "readiness_output": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\07_canonical_selection_readiness\\common_pron_r3_selection_readiness.csv.gz",
+      "bytes": 44530438,
+      "mtime_ns": 1786159062148293200,
+      "sha256": "bf3ecae5a3fe23c86469d4bc7099d05a39958bdacfe7ce7e49da304ebb6b2f13"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T12:39:50+09:00",
+    "git_commit": "534eeb4e74998fc5ff37f230009db4e54c2aef4b",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 9112
+  }
+}

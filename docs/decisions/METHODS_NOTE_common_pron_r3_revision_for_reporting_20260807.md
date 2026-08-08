@@ -216,13 +216,30 @@ target 310,605개 중 264,906개(85.287%), 출현 3,744,243회(83.710%)에 후�
 adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
 `RESULT_common_pron_r3_model_projection_candidates_20260808.md`에 기록했다.
 
+### 5.5 881,237형 selection-readiness와 중복 G2P 방지
+
+규칙 민감 source만의 projection 결과를 전체 공통사전으로 곧바로 일반화하지
+않고 canonical 881,237형에 r2 exact, surface donor, 사전 지지 예외, 감사된
+의무 규칙 projection, no-rule model 단위화 관계를 다시 연결했다. 규칙·사전
+충돌 24형은 임의 first variant가 아니라 복수 변이 후보로 남겼다.
+
+candidate 준비는 749,779형(85.083%)·25,978,186회(93.289%), zero-fallback
+보류는 131,434형·1,868,756회였다. no-rule 보류 85,504형 중 83,922형이 이미
+같은 동결 Jamo G2P 1-best 출처임을 확인해 동일 G2P 반복을 차단했다. 다음 후보
+단계는 canonical exact-rule 382,891형을 전역 donor로 쓰는 문맥 projection이다.
+
+첫 전수 실행의 열 이름 오류와 종료검사 오류는 각각 원자료 변경 전 안전 중단과
+완성 partial 전수 검증·국소 승격으로 처리했다. 881,237행 계산을 처음부터
+반복하지 않았고 복구 사실을 manifest에 기록했다. 별도 감사기는 전수 route를
+재계산해 `passed_read_only`로 통과했다. 상세 결과는
+`RESULT_common_pron_r3_selection_readiness_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
-아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성과
-규칙 Roman agreement Gate만 완료됐고 r3 adoption·재정렬·TextGrid materialization은
-완료되지 않았으므로, 논문에
-완료형으로 그대로 사용하지 않는다. 현재 G2P·agreement·mismatch 진단·model
-projection 후보까지만 완료됐고 canonical 선택·adoption은 미완료다. 최종 각주에는
+아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
+진단·model projection 후보·881,237형 selection-readiness까지 완료됐지만,
+canonical 최종 선택·r3 adoption·재정렬·TextGrid materialization은 미완료다.
+따라서 논문에 완료형으로 그대로 사용하지 않는다. 최종 각주에는
 manifest에서 확인한 다음
 실측값을 채운 뒤에만 완료형으로 확정한다.
 
@@ -271,7 +288,8 @@ manifest에서 확인한 다음
 | `f0a826e` | 완료 후보를 원본 무변경으로 전수 재검증하는 read-only 감사 |
 | `a89debb` | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
 | `93e52a9` | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
-| 현 변경 묶음 | 좁은 model 단위화 계약, exact 문맥 donor projection, 잔여 56행 축약과 독립 전수 감사 |
+| `534eeb4` | 좁은 model 단위화 계약, exact 문맥 donor projection, 잔여 56행 축약과 독립 전수 감사 |
+| 현 변경 묶음 | 881,237형 selection-readiness, zero-fallback 회계, partial 국소 복구와 독립 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
@@ -280,6 +298,7 @@ manifest에서 확인한 다음
 - `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
 - `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
 - `RESULT_common_pron_r3_model_projection_candidates_20260808.md`
+- `RESULT_common_pron_r3_selection_readiness_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

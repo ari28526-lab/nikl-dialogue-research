@@ -36,6 +36,7 @@
 | `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md` | 후보–독립 규칙 Roman 전수 exact/mismatch, 사전 근거별 보류, 연도별 동일 기준 회계와 독립 감사 기록 |
 | `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md` | mismatch 214,321 target의 편집·model 표상·사전/형태소/연도 근거 전수 진단, 2,625패턴·56행 handoff와 독립 감사 기록 |
 | `RESULT_common_pron_r3_model_projection_candidates_20260808.md` | 좁은 model 단위화 관계와 exact 문맥 donor로 target 후보 264,906개를 마련하고 잔여 45,699개를 보류한 전수 projection·독립 감사 기록 |
+| `RESULT_common_pron_r3_selection_readiness_20260808.md` | 881,237형에 r2·donor·사전·projection을 연결한 candidate/복수변이/zero-fallback 전수 회계, 국소 복구와 전역 donor 확장 필요성 기록 |
 
 ## 현재 생산과 안전 계약
 

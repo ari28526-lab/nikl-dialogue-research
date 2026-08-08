@@ -66,7 +66,9 @@
   → r2 신규 실행 fail-closed 차단
   → G2P–규칙 mismatch 전수 진단·반복 패턴 축약 완료
   → model 표상·exact 문맥 projection 후보·독립 감사 완료
-  → 단일 canonical 선택 계약·zero-fallback·adoption Gate 구축  ← 현재
+  → 881,237형 selection-readiness·독립 감사 완료
+  → canonical exact donor 전역 projection·비교  ← 현재
+  → 단일 canonical 선택 계약·zero-fallback·adoption Gate
   → r3 채택
   → 2020–2022 영향 inventory·변경 세션 delta 재정렬
   → 2023–2025 동일 r3 계약으로 최초 정렬
@@ -178,6 +180,19 @@ outputs/reviews/common_pron_r3_projection_residual_handoff_20260808.csv
 다음 한 단계는 canonical inventory에 모든 근거를 연결한 최종 선택 우선순위와
 zero-fallback 계약을 구현하는 것이다. 선택 phone 누락·`spn`·inventory 밖 phone
 0, 표적 회귀, 단일 adoption Gate가 모두 통과하기 전에는 MFA를 시작하지 않는다.
+
+### 3.5 r3 전수 selection-readiness 완료 checkpoint
+
+canonical 881,237형에 r2·surface donor·사전·06 projection을 한 행씩 연결해
+candidate 준비 749,779형(출현 93.289%), 복수 변이 정책 24형, zero-fallback
+보류 131,434형을 분리했다. 독립 감사는 전수 route와 phone 관계를 다시 계산해
+`passed_read_only`로 통과했다.
+
+보류 중 no-rule 실질 불일치 85,504형의 83,922형은 이미 같은 동결 Jamo G2P
+1-best 출처다. 같은 G2P 장시간 실행을 반복하지 않는다. 다음 단계는 06의 제한된
+96,284 exact target donor 대신 canonical 382,891 exact-rule 형을 donor로 사용한
+projection v2와 기존 후보 유지·변경 비교다. 상세 근거는
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_20260808.md`를 따른다.
 
 ## 4. 2021 Gate 종료 — 완료
 

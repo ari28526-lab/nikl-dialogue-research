@@ -2328,3 +2328,26 @@ shard 2–23을 재개하는 것이다.
 - canonical selection, adoption, 연도별 MFA, 기존 DB·TextGrid 변경은 모두
   수행하지 않았다. 다음 단계는 canonical 선택 우선순위·zero-fallback·사전
   projection·표적 회귀·단일 adoption Gate다.
+
+## 2026-08-08 — r3 881,237형 selection-readiness·국소 복구 완료
+
+- canonical·surface donor·사전·06 projection·r2 phone을 881,237행에서 연결했다.
+  candidate 준비 749,779형(85.083%)·25,978,186회(93.289%), 복수 변이 정책
+  24형·126회, zero-fallback 보류 131,434형·1,868,756회다.
+- candidate 구성은 r2 exact 382,891, no-rule model 단위화 99,660, 의무 규칙
+  projection·사전 비충돌 260,508, projection·사전 일치 5,948, surface donor
+  346, 사전 지지 r2 예외 426형이다.
+- 첫 실행은 projection 열 이름 `original_selection_status`를 잘못 연결해 첫
+  행에서 안전 중단됐다. 1KB partial은 `archive_intermediate\
+  07_selection_readiness_failed_schema_link_20260808_1207`에 보존했다.
+- 수정 실행은 881,237행 gzip을 완성했으나 닫힌 iterator를 다시 읽는 종료검사
+  오류로 manifest 직전에 멈췄다. 완성 partial을 버리지 않고 gzip EOF, donor
+  원행, 312,410 projection link, JSON 수, phone inventory, 집계를 전수 검증해
+  원자 승격했다. manifest에 `recovery.performed=true`와
+  `full_recomputation_avoided=true`를 기록하고 종료검사를 수정했다.
+- 별도 감사가 model 관계·사전 변이·planning route·회귀 예시를 재계산해
+  `passed_read_only`로 통과했다.
+- no-rule 보류 85,504형 중 83,922형은 이미 동일 Jamo G2P 1-best 출처다. 같은
+  모델을 다시 돌리지 않고 canonical exact-rule 382,891형을 전역 donor로
+  확장한 projection v2를 다음 후보 단계로 정했다.
+- canonical selection·adoption·MFA·TextGrid 변경은 수행하지 않았다.

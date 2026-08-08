@@ -1,0 +1,50 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_policy.v1",
+  "status": "planning_candidates_only",
+  "purpose": "Join every canonical surface type to audited evidence and expose zero-fallback readiness without selecting or adopting pronunciations.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "mandatory_surface_rules": [
+    "aspiration",
+    "h_deletion",
+    "palatalization",
+    "liaison",
+    "neutralize",
+    "cluster",
+    "nasal_assim",
+    "fortis"
+  ],
+  "excluded_from_single_truth": [
+    "cross_eojeol_sandhi",
+    "optional_n_insertion",
+    "unimplemented_l_nasalization",
+    "actual_realization"
+  ],
+  "candidate_priority": [
+    "r2_exact_mandatory_rule",
+    "surface_donor_exact_mandatory_rule",
+    "r2_dictionary_supported_exception",
+    "audited_exact_context_projection_for_mandatory_rule",
+    "r2_model_unitization_equivalent_when_no_surface_rule_changes"
+  ],
+  "conflict_policy": {
+    "rule_and_dictionary_supported_r2_variants": "retain both as an explicit multiple-variant planning candidate",
+    "arbitrary_first_variant_allowed": false,
+    "multiple_variant_candidate_is_final_selection": false
+  },
+  "zero_fallback": {
+    "silent_g2p_fallback_allowed": false,
+    "unconditional_base_dictionary_preservation_allowed": false,
+    "handwritten_phone_fallback_allowed": false,
+    "unresolved_candidate_only_deletion_allowed": false,
+    "unresolved_no_rule_mismatch_allowed": false
+  },
+  "invariants": {
+    "planning_candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}
