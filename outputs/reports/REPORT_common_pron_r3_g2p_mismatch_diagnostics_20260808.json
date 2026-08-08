@@ -1,0 +1,335 @@
+{
+  "schema_version": "common_pron_r3_g2p_mismatch_diagnostics_summary.v1",
+  "status": "summarized_diagnostics_not_selected",
+  "recorded_at": "2026-08-08T11:08:44+09:00",
+  "scope": {
+    "pattern_handoff_only": true,
+    "review_required_before_canonical_selection": true,
+    "researcher_review_required_now": false,
+    "representation_equivalence_candidate_is_approved": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false
+  },
+  "target_results": {
+    "total": 214321,
+    "layers": {
+      "contrast_review_required": 5988,
+      "representation_equivalence_candidate": 124564,
+      "representation_review_required": 30,
+      "substantive_difference_candidate": 83739
+    },
+    "classes": {
+      "combined_length_and_glide_encoding": 11954,
+      "length_supported_adjacent_identical_coalescence": 22087,
+      "mixed_or_cross_group_difference": 39684,
+      "multiple_contrasts_within_acoustic_model_group": 285,
+      "multiple_segment_count_difference": 4257,
+      "run_length_difference_without_complete_length_support": 30,
+      "secondary_articulation_encodes_glide": 90523,
+      "single_candidate_unit_extra": 242,
+      "single_contrast_within_acoustic_model_group": 5703,
+      "single_cross_group_substitution": 32453,
+      "single_rule_unit_missing_from_candidate": 7103
+    },
+    "edit_distance_distribution": {
+      "1": 144848,
+      "2": 52806,
+      "3": 13594,
+      "4": 2567,
+      "5": 439,
+      "6": 66,
+      "7": 1
+    }
+  },
+  "source_results": {
+    "total_rows": 215184,
+    "rows_by_layer": {
+      "contrast_review_required": 6004,
+      "representation_equivalence_candidate": 125132,
+      "representation_review_required": 30,
+      "substantive_difference_candidate": 84018
+    },
+    "rows_by_class": {
+      "combined_length_and_glide_encoding": 11996,
+      "length_supported_adjacent_identical_coalescence": 22302,
+      "mixed_or_cross_group_difference": 39737,
+      "multiple_contrasts_within_acoustic_model_group": 286,
+      "multiple_segment_count_difference": 4264,
+      "run_length_difference_without_complete_length_support": 30,
+      "secondary_articulation_encodes_glide": 90834,
+      "single_candidate_unit_extra": 243,
+      "single_contrast_within_acoustic_model_group": 5718,
+      "single_cross_group_substitution": 32633,
+      "single_rule_unit_missing_from_candidate": 7141
+    },
+    "total_occurrences": 2796609,
+    "occurrences_by_layer": {
+      "contrast_review_required": 34667,
+      "representation_equivalence_candidate": 1686625,
+      "representation_review_required": 106,
+      "substantive_difference_candidate": 1075211
+    },
+    "occurrences_by_class": {
+      "combined_length_and_glide_encoding": 104002,
+      "length_supported_adjacent_identical_coalescence": 554401,
+      "mixed_or_cross_group_difference": 363442,
+      "multiple_contrasts_within_acoustic_model_group": 2813,
+      "multiple_segment_count_difference": 37782,
+      "run_length_difference_without_complete_length_support": 106,
+      "secondary_articulation_encodes_glide": 1028222,
+      "single_candidate_unit_extra": 1244,
+      "single_contrast_within_acoustic_model_group": 31854,
+      "single_cross_group_substitution": 578699,
+      "single_rule_unit_missing_from_candidate": 94044
+    },
+    "occurrence_percent_by_layer": {
+      "contrast_review_required": 1.24,
+      "representation_equivalence_candidate": 60.31,
+      "representation_review_required": 0.004,
+      "substantive_difference_candidate": 38.447
+    }
+  },
+  "year_results": {
+    "2020": {
+      "total_occurrences": 325314,
+      "occurrences_by_layer": {
+        "contrast_review_required": 2921,
+        "representation_equivalence_candidate": 197110,
+        "representation_review_required": 10,
+        "substantive_difference_candidate": 125273
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 0.898,
+        "representation_equivalence_candidate": 60.591,
+        "representation_review_required": 0.003,
+        "substantive_difference_candidate": 38.508
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 13102,
+        "length_supported_adjacent_identical_coalescence": 61015,
+        "mixed_or_cross_group_difference": 42288,
+        "multiple_contrasts_within_acoustic_model_group": 49,
+        "multiple_segment_count_difference": 5633,
+        "run_length_difference_without_complete_length_support": 10,
+        "secondary_articulation_encodes_glide": 122993,
+        "single_candidate_unit_extra": 79,
+        "single_contrast_within_acoustic_model_group": 2872,
+        "single_cross_group_substitution": 66416,
+        "single_rule_unit_missing_from_candidate": 10857
+      }
+    },
+    "2021": {
+      "total_occurrences": 632563,
+      "occurrences_by_layer": {
+        "contrast_review_required": 6668,
+        "representation_equivalence_candidate": 383407,
+        "representation_review_required": 31,
+        "substantive_difference_candidate": 242457
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 1.054,
+        "representation_equivalence_candidate": 60.612,
+        "representation_review_required": 0.005,
+        "substantive_difference_candidate": 38.329
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 20507,
+        "length_supported_adjacent_identical_coalescence": 134292,
+        "mixed_or_cross_group_difference": 81914,
+        "multiple_contrasts_within_acoustic_model_group": 195,
+        "multiple_segment_count_difference": 7765,
+        "run_length_difference_without_complete_length_support": 31,
+        "secondary_articulation_encodes_glide": 228608,
+        "single_candidate_unit_extra": 248,
+        "single_contrast_within_acoustic_model_group": 6473,
+        "single_cross_group_substitution": 133273,
+        "single_rule_unit_missing_from_candidate": 19257
+      }
+    },
+    "2022": {
+      "total_occurrences": 432004,
+      "occurrences_by_layer": {
+        "contrast_review_required": 5694,
+        "representation_equivalence_candidate": 261873,
+        "representation_review_required": 19,
+        "substantive_difference_candidate": 164418
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 1.318,
+        "representation_equivalence_candidate": 60.618,
+        "representation_review_required": 0.004,
+        "substantive_difference_candidate": 38.059
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 15606,
+        "length_supported_adjacent_identical_coalescence": 88826,
+        "mixed_or_cross_group_difference": 54333,
+        "multiple_contrasts_within_acoustic_model_group": 222,
+        "multiple_segment_count_difference": 5969,
+        "run_length_difference_without_complete_length_support": 19,
+        "secondary_articulation_encodes_glide": 157441,
+        "single_candidate_unit_extra": 165,
+        "single_contrast_within_acoustic_model_group": 5472,
+        "single_cross_group_substitution": 88790,
+        "single_rule_unit_missing_from_candidate": 15161
+      }
+    },
+    "2023": {
+      "total_occurrences": 369751,
+      "occurrences_by_layer": {
+        "contrast_review_required": 5014,
+        "representation_equivalence_candidate": 223286,
+        "representation_review_required": 6,
+        "substantive_difference_candidate": 141445
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 1.356,
+        "representation_equivalence_candidate": 60.388,
+        "representation_review_required": 0.002,
+        "substantive_difference_candidate": 38.254
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 14887,
+        "length_supported_adjacent_identical_coalescence": 73113,
+        "mixed_or_cross_group_difference": 47793,
+        "multiple_contrasts_within_acoustic_model_group": 202,
+        "multiple_segment_count_difference": 4401,
+        "run_length_difference_without_complete_length_support": 6,
+        "secondary_articulation_encodes_glide": 135286,
+        "single_candidate_unit_extra": 188,
+        "single_contrast_within_acoustic_model_group": 4812,
+        "single_cross_group_substitution": 76522,
+        "single_rule_unit_missing_from_candidate": 12541
+      }
+    },
+    "2024": {
+      "total_occurrences": 522546,
+      "occurrences_by_layer": {
+        "contrast_review_required": 7825,
+        "representation_equivalence_candidate": 315392,
+        "representation_review_required": 12,
+        "substantive_difference_candidate": 199317
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 1.497,
+        "representation_equivalence_candidate": 60.357,
+        "representation_review_required": 0.002,
+        "substantive_difference_candidate": 38.143
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 19289,
+        "length_supported_adjacent_identical_coalescence": 105499,
+        "mixed_or_cross_group_difference": 65998,
+        "multiple_contrasts_within_acoustic_model_group": 996,
+        "multiple_segment_count_difference": 8088,
+        "run_length_difference_without_complete_length_support": 12,
+        "secondary_articulation_encodes_glide": 190604,
+        "single_candidate_unit_extra": 253,
+        "single_contrast_within_acoustic_model_group": 6829,
+        "single_cross_group_substitution": 107035,
+        "single_rule_unit_missing_from_candidate": 17943
+      }
+    },
+    "2025": {
+      "total_occurrences": 514431,
+      "occurrences_by_layer": {
+        "contrast_review_required": 6545,
+        "representation_equivalence_candidate": 305557,
+        "representation_review_required": 28,
+        "substantive_difference_candidate": 202301
+      },
+      "occurrence_percent_by_layer": {
+        "contrast_review_required": 1.272,
+        "representation_equivalence_candidate": 59.397,
+        "representation_review_required": 0.005,
+        "substantive_difference_candidate": 39.325
+      },
+      "occurrences_by_class": {
+        "combined_length_and_glide_encoding": 20611,
+        "length_supported_adjacent_identical_coalescence": 91656,
+        "mixed_or_cross_group_difference": 71116,
+        "multiple_contrasts_within_acoustic_model_group": 1149,
+        "multiple_segment_count_difference": 5926,
+        "run_length_difference_without_complete_length_support": 28,
+        "secondary_articulation_encodes_glide": 193290,
+        "single_candidate_unit_extra": 311,
+        "single_contrast_within_acoustic_model_group": 5396,
+        "single_cross_group_substitution": 106663,
+        "single_rule_unit_missing_from_candidate": 18285
+      }
+    }
+  },
+  "regression_sources": {
+    "있는": {
+      "comparison_status": "different_rule_roman",
+      "diagnostic_layer": "representation_equivalence_candidate",
+      "diagnostic_class": "length_supported_adjacent_identical_coalescence",
+      "edit_signature": "RULE_ONLY:N",
+      "automatic_equivalence_approved": false
+    },
+    "있지": {
+      "comparison_status": "different_rule_roman",
+      "diagnostic_layer": "substantive_difference_candidate",
+      "diagnostic_class": "single_cross_group_substitution",
+      "edit_signature": "SUB:JJ>D",
+      "automatic_equivalence_approved": false
+    }
+  },
+  "exact_regression_sources_not_in_mismatch": [
+    "놨던",
+    "어쨌든",
+    "없는"
+  ],
+  "handoff": {
+    "all_pattern_rows": 2625,
+    "decision_rows": 56,
+    "selected_occurrences": 2590212,
+    "selected_occurrence_percent": 92.62,
+    "not_an_adoption_approval": true,
+    "decision_table": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_g2p_mismatch_diagnostics_20260808\\PATTERN_DECISION_TABLE.csv",
+      "bytes": 31328,
+      "mtime_ns": 1786154924265280600,
+      "sha256": "49c416b97f4c7daae29aeaaccd9b0a4eb98fdf98dba25a53011c25e38cd78114"
+    }
+  },
+  "inputs": {
+    "diagnostic_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\G2P_MISMATCH_DIAGNOSTICS_MANIFEST.json",
+      "bytes": 4970,
+      "mtime_ns": 1786154434742991500,
+      "sha256": "dbeae47ba2a7bf3da0784441195cd55ce15fa0fe6aa9817a4cc866dfd2f499da"
+    },
+    "target_diagnostics": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_target_diagnostics.csv.gz",
+      "bytes": 30930787,
+      "mtime_ns": 1786154413346323600,
+      "sha256": "7b0f5afe4cacb8cafb9c721a33f14ad220c47d090b9dafcb400ce14fcb4020dd"
+    },
+    "source_diagnostics": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_source_diagnostics.csv.gz",
+      "bytes": 11766331,
+      "mtime_ns": 1786154433805793700,
+      "sha256": "762f576f32b653dd4ab5e1ee38fb9e33c41351110db7f1f2bd0b5144a91fd1b0"
+    },
+    "pattern_summary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_pattern_summary.csv",
+      "bytes": 657184,
+      "mtime_ns": 1786154433921748700,
+      "sha256": "97961b2aec0da356a3e2880b22032aaa2cf96ac3ff9b84e64c1e2132e9425c84"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T11:08:44+09:00",
+    "git_commit": "a89debb85c0cdc0b9cff78100b87962970446faf",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 9272
+  }
+}

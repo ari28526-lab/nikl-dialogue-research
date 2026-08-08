@@ -160,6 +160,36 @@ exact도 최종 선택으로 해석하지 않았다. 사전 근거가 일치한 
 `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`와
 `outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`에 기록했다.
 
+### 5.3 mismatch의 model 표상 차이와 실질 차이 분리
+
+agreement mismatch 214,321 target을 모두 잘못된 발음으로 판정하지 않았다.
+후보 broad Roman과 규칙 Roman 사이의 순서 보존 편집을 계산하고, acoustic-model
+phone 하나가 장음 또는 `Y/W` 활음성을 함께 나타내는 경우를 좁은 표상 동등성
+후보로 분리했다. 이때도 자동 동등성 승인은 하지 않았다.
+
+source 불일치 출현 2,796,609회 기준 결과는 다음과 같다.
+
+- 장음·활음 표상 동등성 후보: 1,686,625회(60.310%)
+- 근거가 불완전한 표상 추가 검토: 106회(0.004%)
+- 같은 acoustic-model group 내부 대조 검토: 34,667회(1.240%)
+- 실제 규칙 예상형과 다른 후보로 볼 실질 차이: 1,075,211회(38.447%)
+
+여섯 연도의 표상 후보 비율은 59.397–60.618%, 실질 차이 후보 비율은
+38.059–39.325%였다. 따라서 특정 연도에 임시 예외를 넣지 않고 같은 target,
+model inventory, Roman mapping, 편집·근거 routing을 적용한다.
+
+전체 2,625개 편집 패턴은 빈도·class 대표·회귀 표본을 기준으로 56행으로
+축약했으며, 불일치 출현의 92.620%를 포괄한다. 이는 연구자 승인표가 아니라
+canonical 선택 정책을 만들기 위한 handoff다. 먼저 model 표상 동등성과
+규칙·사전 projection을 코드 계약으로 결정하고, 자동 해소할 수 없는 잔여만
+연구자 판단으로 올린다.
+
+감사기의 첫 실행은 agreement 입력과 진단 출력의 행 순서가 같다고 가정해 즉시
+안전 중단됐다. ID 기반 exact join으로 수정한 뒤 편집거리·편집경로·분류·연도
+집계·회귀 예시를 독립 재계산해 `passed_read_only`로 통과했다. canonical 선택,
+adoption, MFA, TextGrid 변경은 수행하지 않았다. 상세 결과는
+`RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 시점에는 G2P 후보 생성과
@@ -211,13 +241,15 @@ exact도 최종 선택으로 해석하지 않았다. 사전 근거가 일치한 
 | `3aa2d7e` | 881,237형 r3 inventory와 선택 재사용 계약 |
 | `59a135e` | donor/G2P 후보 단계, 재개 가능한 runner, 상태판, 방법론 문서 |
 | `f0a826e` | 완료 후보를 원본 무변경으로 전수 재검증하는 read-only 감사 |
-| 이 변경 묶음 | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
+| `a89debb` | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
+| 현 변경 묶음 | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
 - `DECISION_2022_pronunciation_input_gate_hold_20260807.md`
 - `DECISION_common_pron_r3_candidate_resolution_20260807.md`
 - `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
+- `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

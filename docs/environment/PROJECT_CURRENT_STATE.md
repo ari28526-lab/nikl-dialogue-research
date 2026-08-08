@@ -1,6 +1,6 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-07 KST
+최종 갱신: 2026-08-08 KST
 
 > **2026-08-07 발음 입력 Gate 보정:** 2022 공식 표본에서 `있지·있는·없는·
 > 어쨌든` 등의 MFA 입력 phone이 기존 규칙 예상형과 불일치함을 확인했다. 전수
@@ -161,10 +161,18 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - source 출현 exact 1,676,283회(37.476%), mismatch 2,796,609회(62.524%)
 - 사전 근거 일치 exact 3,078형은 후속 선택 후보, 사전 충돌 14형과 독립 근거 없는
   exact 94,134형은 각각 보류, mismatch 215,184형은 자동 선택 불가
+- mismatch 214,321 target·215,184 source형 전수 편집 진단과 독립 감사 완료
+- mismatch 출현 중 표상 동등성 후보 1,686,625회(60.310%), 실질 차이 후보
+  1,075,211회(38.447%), model 내부 대조 34,667회(1.240%), 표상 추가 검토
+  106회(0.004%)
+- 전체 2,625개 패턴 중 56행이 2,590,212회(92.620%)를 포괄하는 결정표 생성;
+  자동 동등성 승인과 연구자 즉시 검토 요구는 모두 없음
 - 후보 비교는 최종 선택이 아니며 canonical selection·adoption·TextGrid 변경 없음
 
-현재 허용 작업은 Gate 결과와 사전·형태음운 근거를 이용해 canonical 선택 정책을
-별도 설계하고, 선택표·사전 projection·자동 회귀·adoption Gate를 구현하는 것이다.
+현재 허용 작업은 전수 진단의 반복 패턴과 사전·형태음운 근거를 이용해 model
+표상 동등성·규칙 projection 정책을 먼저 코드 계약으로 고정하고, 정말 사람 판단이
+필요한 잔여 패턴만 축약한 뒤 canonical 선택표·사전 projection·자동 회귀·
+adoption Gate를 구현하는 것이다.
 exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교정해 채택하지 않는다.
 새 광범위 사람 파일럿과 r2 재실행은 허용하지 않는다.
 2023은 r3 release가 채택되고 프로젝트 발음 Gate가 열린 뒤에만 시작한다. 이후
@@ -182,4 +190,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_g2p_candidate_phase_20260808.md`
 - r3 G2P–규칙 Roman 전수 Gate 결과:
   `docs/decisions/RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`
+- r3 G2P mismatch 전수 진단 결과:
+  `docs/decisions/RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

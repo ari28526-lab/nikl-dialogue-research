@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-07 KST
+최종 갱신: 2026-08-08 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -64,7 +64,8 @@
   → 2022 표본에서 MFA 발음 입력 불일치 발견
   → 881,237 표면형 r2 규칙 일관성 전수 감사
   → r2 신규 실행 fail-closed 차단
-  → 단일 canonical 발음 선택표·r3 사전 구축 및 표적 회귀  ← 현재
+  → G2P–규칙 mismatch 전수 진단·반복 패턴 축약 완료
+  → model 표상·규칙 projection 정책 및 단일 canonical 선택표 구축  ← 현재
   → r3 채택
   → 2020–2022 영향 inventory·변경 세션 delta 재정렬
   → 2023–2025 동일 r3 계약으로 최초 정렬
@@ -119,6 +120,32 @@ checkpoint에서 사용자 검토를 요구하지 않는다.
 다음 단계는 별도 canonical 선택 계약이다. exact 후보도 자동 선택하지 않고 사전
 근거와 형태음운 보류를 보존한다. adoption manifest가 통과하기 전에는 r3 MFA,
 TextGrid materialization, 기존 r2 label 치환을 시작하지 않는다.
+
+### 3.3 r3 G2P mismatch 전수 진단 완료 checkpoint
+
+agreement mismatch 214,321 target·215,184 source형에 대해 후보–규칙 Roman의
+순서 보존 편집, acoustic-model phone의 장음·이차조음 표상, 사전·형태소·연도
+근거를 결합했다. source 불일치 출현 2,796,609회 중 표상 동등성 후보는
+1,686,625회(60.310%), 실질 차이 후보는 1,075,211회(38.447%)다.
+
+표상 동등성 후보도 자동 승인하지 않는다. 전체 2,625개 반복 패턴 중 빈도 상위·
+각 class 대표·회귀 패턴 56행이 2,590,212회(92.620%)를 포괄한다. 이 결정표는
+adoption 승인표가 아니며, 지금 사용자에게 21만여 개 어휘나 56행 전체 청취를
+요구하지 않는다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+05_g2p_mismatch_diagnostics\G2P_MISMATCH_DIAGNOSTICS_MANIFEST.json
+
+outputs/reviews/common_pron_r3_g2p_mismatch_diagnostics_20260808/
+PATTERN_DECISION_TABLE.csv
+```
+
+독립 감사 보고서는
+`outputs/reports/AUDIT_common_pron_r3_g2p_mismatch_diagnostics_20260808.json`이며
+`passed_read_only`다. 다음 구현은 반복 패턴에서 model 표상 동등성 계약과
+규칙·사전 projection 정책을 먼저 코드화하고, 자동으로 해소하지 못한 소수만
+연구자 판단으로 올리는 canonical 선택 단계다.
 
 ## 4. 2021 Gate 종료 — 완료
 

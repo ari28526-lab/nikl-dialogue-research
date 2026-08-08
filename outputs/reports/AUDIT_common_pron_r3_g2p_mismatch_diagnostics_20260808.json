@@ -1,0 +1,106 @@
+{
+  "schema_version": "common_pron_r3_g2p_mismatch_diagnostics_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T11:05:53+09:00",
+  "counts": {
+    "target_rows": 214321,
+    "source_rows": 215184,
+    "pattern_rows": 2625,
+    "target_layers": {
+      "contrast_review_required": 5988,
+      "representation_equivalence_candidate": 124564,
+      "representation_review_required": 30,
+      "substantive_difference_candidate": 83739
+    },
+    "target_classes": {
+      "combined_length_and_glide_encoding": 11954,
+      "length_supported_adjacent_identical_coalescence": 22087,
+      "mixed_or_cross_group_difference": 39684,
+      "multiple_contrasts_within_acoustic_model_group": 285,
+      "multiple_segment_count_difference": 4257,
+      "run_length_difference_without_complete_length_support": 30,
+      "secondary_articulation_encodes_glide": 90523,
+      "single_candidate_unit_extra": 242,
+      "single_contrast_within_acoustic_model_group": 5703,
+      "single_cross_group_substitution": 32453,
+      "single_rule_unit_missing_from_candidate": 7103
+    },
+    "source_layers": {
+      "contrast_review_required": 6004,
+      "representation_equivalence_candidate": 125132,
+      "representation_review_required": 30,
+      "substantive_difference_candidate": 84018
+    },
+    "source_classes": {
+      "combined_length_and_glide_encoding": 11996,
+      "length_supported_adjacent_identical_coalescence": 22302,
+      "mixed_or_cross_group_difference": 39737,
+      "multiple_contrasts_within_acoustic_model_group": 286,
+      "multiple_segment_count_difference": 4264,
+      "run_length_difference_without_complete_length_support": 30,
+      "secondary_articulation_encodes_glide": 90834,
+      "single_candidate_unit_extra": 243,
+      "single_contrast_within_acoustic_model_group": 5718,
+      "single_cross_group_substitution": 32633,
+      "single_rule_unit_missing_from_candidate": 7141
+    },
+    "automatic_equivalence_approved": 0
+  },
+  "regression_mismatch_sources": {
+    "있는": {
+      "diagnostic_layer": "representation_equivalence_candidate",
+      "diagnostic_class": "length_supported_adjacent_identical_coalescence",
+      "edit_signature": "RULE_ONLY:N"
+    },
+    "있지": {
+      "diagnostic_layer": "substantive_difference_candidate",
+      "diagnostic_class": "single_cross_group_substitution",
+      "edit_signature": "SUB:JJ>D"
+    }
+  },
+  "contracts": {
+    "representation_equivalence_candidate_is_approved": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "diagnostic_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\G2P_MISMATCH_DIAGNOSTICS_MANIFEST.json",
+      "bytes": 4970,
+      "mtime_ns": 1786154434742991500,
+      "sha256": "dbeae47ba2a7bf3da0784441195cd55ce15fa0fe6aa9817a4cc866dfd2f499da"
+    },
+    "target_diagnostics": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_target_diagnostics.csv.gz",
+      "bytes": 30930787,
+      "mtime_ns": 1786154413346323600,
+      "sha256": "7b0f5afe4cacb8cafb9c721a33f14ad220c47d090b9dafcb400ce14fcb4020dd"
+    },
+    "source_diagnostics": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_source_diagnostics.csv.gz",
+      "bytes": 11766331,
+      "mtime_ns": 1786154433805793700,
+      "sha256": "762f576f32b653dd4ab5e1ee38fb9e33c41351110db7f1f2bd0b5144a91fd1b0"
+    },
+    "pattern_summary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\05_g2p_mismatch_diagnostics\\g2p_mismatch_pattern_summary.csv",
+      "bytes": 657184,
+      "mtime_ns": 1786154433921748700,
+      "sha256": "97961b2aec0da356a3e2880b22032aaa2cf96ac3ff9b84e64c1e2132e9425c84"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T11:05:53+09:00",
+    "git_commit": "a89debb85c0cdc0b9cff78100b87962970446faf",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 16264
+  }
+}

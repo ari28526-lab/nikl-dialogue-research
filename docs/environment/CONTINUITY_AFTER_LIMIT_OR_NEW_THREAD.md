@@ -88,10 +88,18 @@ source exact 출현 1,676,283 / mismatch 출현 2,796,609
 canonical selection false / adoption false / annual MFA false / TextGrid 변경 false
 ```
 
-새 대화에서는 `docs/decisions/RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`와
-`outputs/reports/AUDIT_common_pron_r3_g2p_agreement_gate_20260808.json`을 먼저
-확인한다. 상태판의 `success_candidates_not_selected`를 보고 G2P를 재실행하지
-않으며, 다음 일은 별도 canonical 선택 정책과 adoption Gate다.
+agreement mismatch 214,321 target과 215,184 source형의 ordered edit 진단도
+완료됐다. source 불일치 출현 중 60.310%는 길이·활음의 model 표상 동등성
+후보이고 38.447%는 실질 차이 후보다. 2,625개 패턴은 출현의 92.620%를
+포괄하는 56행 결정표로 축약됐으나 자동 승인·canonical 선택은 하지 않았다.
+
+새 대화에서는
+`docs/decisions/RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`와
+`outputs/reports/AUDIT_common_pron_r3_g2p_mismatch_diagnostics_20260808.json`을
+먼저 확인한다. 상태판의 `success_candidates_not_selected`를 보고 G2P와
+agreement Gate를 재실행하지 않는다. 다음 일은 반복 패턴의 model 표상 계약과
+규칙 projection 정책을 코드로 고정한 뒤 canonical 선택·adoption Gate를 만드는
+것이다. 새 대규모 청취 검토로 돌아가지 않는다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

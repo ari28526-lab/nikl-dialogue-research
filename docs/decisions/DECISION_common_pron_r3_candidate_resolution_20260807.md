@@ -105,3 +105,20 @@ exact는 96,284개(30.999%), mismatch는 214,321개(69.001%)였다. 따라서
 - 별도 adoption Gate 전에는 연도별 MFA와 TextGrid materialization을 시작하지 않는다.
 
 수치와 SHA 근거는 `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md`를 따른다.
+
+## 2026-08-08 mismatch 진단 후속 결정
+
+mismatch 214,321 target을 단순 오류로 묶지 않고 acoustic-model phone 표상과
+실질 규칙 차이로 전수 분해했다. source 불일치 출현 중 60.310%는 장음·활음
+표상 동등성 후보, 38.447%는 실질 차이 후보였다.
+
+- 표상 동등성 후보도 자동 승인하지 않는다.
+- 실질 차이 후보는 G2P 1-best 자동 선택을 거부하고 규칙·사전 projection을 찾는다.
+- 같은 model group 내부 대조는 연구 기준상 보존 여부를 별도로 판단한다.
+- 2,625개 패턴을 그대로 사람에게 넘기지 않고 56행 handoff로 축약한다.
+- canonical 선택 전에 model 표상 계약과 projection 정책을 코드·회귀검사로 먼저
+  고정하고, 자동 해소가 불가능한 잔여만 연구자에게 올린다.
+- 이 결정으로 adoption, MFA, TextGrid 변경을 허용하지 않는다.
+
+수치·분류·감사 근거는
+`RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`를 따른다.

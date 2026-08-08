@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-07 KST
+최종 갱신: 2026-08-08 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -34,6 +34,7 @@
 | `METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md` | r2 입력 배선 문제 발견, 881,237형 전수 감사, r3 후보·선택 분리, 재정렬 범위 수정과 논문 각주용 축약문을 기록 |
 | `RESULT_common_pron_r3_g2p_candidate_phase_20260808.md` | Jamo G2P 310,605개 후보의 13 shard 완결성·no-path/`spn` 0·읽기 전용 감사 기록 |
 | `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md` | 후보–독립 규칙 Roman 전수 exact/mismatch, 사전 근거별 보류, 연도별 동일 기준 회계와 독립 감사 기록 |
+| `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md` | mismatch 214,321 target의 편집·model 표상·사전/형태소/연도 근거 전수 진단, 2,625패턴·56행 handoff와 독립 감사 기록 |
 
 ## 현재 생산과 안전 계약
 

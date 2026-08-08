@@ -2266,3 +2266,40 @@ shard 2–23을 재개하는 것이다.
 - 75행 `EVIDENCE_SAMPLE.csv`는 결과 범주 설명용이지 승인표가 아니다. 이 단계에서
   canonical selection, adoption, 연도별 MFA, TextGrid 변경, 실제 실현 판정을
   수행하지 않았다.
+
+## 2026-08-08 — r3 G2P mismatch 전수 진단·반복 패턴 축약 완료
+
+- agreement mismatch target 214,321개와 source 215,184형을 모두 읽어 후보
+  broad Roman–규칙 Roman의 unit-cost 순서 보존 편집을 만들고, acoustic-model
+  phone 표상·사전·형태소·연도 근거를 결합했다.
+- 초기 구현은 장음 표지만 표상 차이로 인식해 `RULE_ONLY:Y/W`를 실질 차이로
+  과대분류했다. 실제 phone 분포를 전수 조사해 `/ʲ/`, `/ʷ/` 및 고유 구개
+  phone이 인접 활음 단위를 포함할 수 있음을 확인했다. 초기 출력은 삭제하지 않고
+  `archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053`에
+  보존한 뒤 분류 계약과 회귀검사를 보강해 최종 출력을 다시 만들었다.
+- target 기준 표상 동등성 후보 124,564, 표상 추가 검토 30, model 내부 대조
+  5,988, 실질 차이 후보 83,739개다. source 출현 2,796,609회 기준 각각
+  1,686,625회(60.310%), 106회(0.004%), 34,667회(1.240%),
+  1,075,211회(38.447%)다. 표상 후보도 자동 승인하지 않았다.
+- 연도별 표상 후보 비율은 59.397–60.618%, 실질 차이 후보 비율은
+  38.059–39.325%로 여섯 연도에 같은 진단 계약을 적용했다.
+- 기존 예시 중 `있는`은 `RULE_ONLY:N` 장음/중복 단위 표상 후보,
+  `있지`는 `SUB:JJ>D` 실질 차이 후보로 남았다. `놨던`, `어쨌든`, `없는`은
+  agreement exact라 mismatch 입력에 들어오지 않음을 회귀검사로 확인했다.
+- 2,625개 편집 패턴을 출현 상위·각 class 대표·표상 추가 검토·회귀 사례의
+  56행 결정표로 축약했다. 이 표는 불일치 출현 2,590,212회(92.620%)를
+  포괄하지만 adoption 승인표가 아니며 모든 행의 자동 승인은 `false`다.
+- 첫 독립 감사는 agreement target과 진단 CSV의 행 순서가 같다고 가정해 즉시
+  안전 중단됐다. 산출물은 변경되지 않았다. 감사기를 target ID exact join으로
+  고친 뒤 편집경로·거리·분류·source link·연도·2,625패턴을 독립 재계산해
+  `passed_read_only`로 통과했다.
+- 최종 manifest는
+  `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  05_g2p_mismatch_diagnostics\G2P_MISMATCH_DIAGNOSTICS_MANIFEST.json`,
+  감사 보고서는
+  `outputs/reports/AUDIT_common_pron_r3_g2p_mismatch_diagnostics_20260808.json`,
+  결과 문서는
+  `docs/decisions/RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`다.
+- 이 단계에서 canonical 선택·adoption·MFA·TextGrid·기존 DB 변경은 하지 않았다.
+  다음 단계는 model 표상 동등성 및 규칙·사전 projection 정책을 코드 계약으로
+  고정하고 자동 해소할 수 없는 소수만 연구자 판단으로 넘기는 것이다.
