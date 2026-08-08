@@ -269,6 +269,12 @@ donor·편집 진단으로 회수 가능한 반복 패턴만 candidate-only로 �
 금지한다. 상세 근거는
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
+잔여 반복 패턴 요약까지 완료됐다. 다음 구현은 frozen 기본사전에서 단어·음절·
+이차조음 문맥을 보존한 donor inventory를 만든 뒤 기존 canonical donor와의
+unanimous·multiple-supported·conflict·no-donor를 재계산하는 읽기 전용 감사다.
+phone 하나를 음소 하나로 전역 매핑하지 않는다. 상세 우선순위는
+`docs/decisions/RESULT_common_pron_r3_readiness_v2_residual_priorities_20260808.md`다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.

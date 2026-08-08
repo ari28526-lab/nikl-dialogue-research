@@ -2444,3 +2444,17 @@ shard 2–23을 재개하는 것이다.
   실제 실현 판정은 수행하지 않았다.
 - 다음 단계는 target projection 미해결 43,428형과 no-rule 잔여 48,125형을
   분리한 읽기 전용 반복 패턴 감사다. 같은 G2P를 다시 실행하지 않는다.
+
+## 2026-08-08 — readiness v2 잔여 hold 반복 패턴 우선순위 확정
+
+- zero-fallback 91,553형·894,388회를 target projection 43,428형·509,205회와
+  no-rule 잔여 48,125형·385,183회로 분리해 읽기 전용 요약했다.
+- target projection 중 42,839형·506,404회는 exact-context donor 불합의,
+  589형·2,801회는 deletion 정책 보류다. fortis, liaison, neutralize+fortis,
+  aspiration 조합이 출현 대부분을 차지한다.
+- no-rule 잔여 상위는 `pʲ/tʲ`의 이차조음·후두 대립, 활음 단위화, ㅢ,
+  `중에서`류 분절 누락이다. `B→P`, `D→T` 전역 치환은 비일대일 phone 때문에
+  금지한다.
+- 다음 단계는 frozen 기본사전의 단어·음절·이차조음 문맥 donor inventory와
+  기존 donor 합의·충돌 감사다. 같은 G2P 재실행, 후보 자동 채택, MFA, TextGrid
+  변경은 수행하지 않는다.

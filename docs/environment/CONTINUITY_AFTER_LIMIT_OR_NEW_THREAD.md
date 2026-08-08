@@ -221,9 +221,10 @@ policy decision: 35형 / 163회
 canonical selection false / adoption false / MFA false / TextGrid 변경 false
 ```
 
-새 대화에서 stage 12 이하를 다시 실행하지 않는다. 다음은 target projection
-미해결 43,428형과 no-rule 잔여 48,125형을 분리한 읽기 전용 잔여 패턴 감사다.
-정본은
+새 대화에서 stage 12 이하를 다시 실행하지 않는다. 잔여 패턴 요약도
+`outputs/reports/REPORT_common_pron_r3_readiness_v2_residual_priorities_20260808.json`
+으로 완료됐다. 다음은 frozen 기본사전의 단어·음절·이차조음 문맥 donor를 만들고
+기존 donor와 합의·충돌을 읽기 전용으로 대조하는 것이다. 정본은
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`다.
 
 ## 새 대화에 붙일 최소 프롬프트

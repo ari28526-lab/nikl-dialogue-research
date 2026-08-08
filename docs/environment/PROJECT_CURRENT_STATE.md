@@ -200,8 +200,12 @@ stage 12 readiness v2는 검증된 37,379형을 **정렬용 candidate-only**로 
 zero-fallback hold는 91,553형·894,388회다. 새 후보 외 795,733행과 모든 의무
 규칙 참조는 v1과 동일하다.
 
-현재 허용 작업은 target projection 미해결 43,428형과 no-rule 잔여 48,125형을
-분리해 기존 근거로 회수 가능한 반복 패턴만 찾는 읽기 전용 감사다. 수의적
+잔여 우선순위 요약도 완료했다. target hold의 42,839형·506,404회는 exact-context
+donor 불합의이고, no-rule 잔여 상위는 `pʲ/tʲ` 이차조음·후두 대립, 활음
+단위화, ㅢ, 분절 누락 패턴이다.
+
+현재 허용 작업은 frozen 기본사전의 단어·음절·이차조음 문맥을 보존한 donor
+inventory를 만들고 기존 donor와의 합의·충돌을 읽기 전용으로 감사하는 것이다. 수의적
 위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현 발음으로
 선언하지 않는다. 같은 Jamo G2P 반복,
 기존 56행 전수 청취, 85,504형 일괄 투사, 자동 승인, canonical selection·
@@ -237,4 +241,6 @@ exact 자체도 정답이나 최종 선택이 아니며 mismatch를 임의 교�
   `docs/decisions/RESULT_common_pron_r3_rule_phone_coverage_audit_20260808.md`
 - r3 selection-readiness v2 결과:
   `docs/decisions/RESULT_common_pron_r3_selection_readiness_v2_20260808.md`
+- r3 readiness v2 잔여 hold 우선순위:
+  `docs/decisions/RESULT_common_pron_r3_readiness_v2_residual_priorities_20260808.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`
