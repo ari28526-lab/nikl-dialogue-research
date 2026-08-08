@@ -235,10 +235,14 @@ D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
   14_selection_readiness_v3\SELECTION_READINESS_V3_MANIFEST.json
   15_unanimous_phone_change_audit\UNANIMOUS_PHONE_CHANGE_AUDIT_MANIFEST.json
   16_morph_context_evidence\MORPH_CONTEXT_EVIDENCE_MANIFEST.json
+  17_attested_full_sequence_projection\ATTESTED_FULL_SEQUENCE_PROJECTION_MANIFEST.json
+  18_selection_readiness_v4\SELECTION_READINESS_V4_MANIFEST.json
 outputs/reports/AUDIT_common_pron_r3_contextual_dictionary_donor_20260808.json
 outputs/reports/AUDIT_common_pron_r3_selection_readiness_v3_20260808.json
 outputs/reports/AUDIT_common_pron_r3_unanimous_phone_change_20260808.json
 outputs/reports/AUDIT_common_pron_r3_morph_context_evidence_20260808.json
+outputs/reports/AUDIT_common_pron_r3_attested_full_sequence_projection_20260808.json
+outputs/reports/AUDIT_common_pron_r3_selection_readiness_v4_20260808.json
 ```
 
 ```text
@@ -248,15 +252,18 @@ new phone-unchanged secondary candidates: 6,141형 / 90,544회
 unanimous but phone-change hold classified: 4,453형 / 72,030회 / 4,900 issue
 Stage 16 exact surface linked: 68,285회
 Stage 16 safe morph/POS linked: 60,292회
+Stage 17 attested full-sequence candidate-only: 14형 / 200회
+readiness v4 candidate: 795,804형 / 27,043,261회
+readiness v4 zero-fallback hold: 85,398형 / 803,644회
 canonical selection false / adoption false / MFA false / TextGrid 변경 false
 ```
 
-새 대화에서 Stage 13·14·15·16을 다시 실행하지 않는다. 다음 허용 작업은 사전·규칙
-Roman exact인 좁은 집합의 전체 phone열을 canonical/frozen 문맥 donor로 완전하고
-단일하게 재구성할 수 있는지 감사하는 것이다. 기존 phone의 문제 분절만 바꾸는
-부분 교정, 사용자 전수 청취, 같은 G2P 재실행, r3 adoption 전 MFA는 금지한다.
-Stage 16 정본은
-`docs/decisions/RESULT_common_pron_r3_morph_context_evidence_20260808.md`다.
+새 대화에서 Stage 13–18을 다시 실행하지 않는다. 다음 허용 작업은 readiness v4의
+candidate·hold·기존 정책결정 35형을 요약해 canonical selection/adoption 전 남은
+결정 단위와 Gate를 고정하는 것이다. Stage 17 잔여 51형은 model allophone 복수·
+충돌 hold이며 사용자 청취 대상이 아니다. 부분 phone 교정, 사용자 전수 청취,
+같은 G2P 재실행, r3 adoption 전 MFA는 금지한다. 최신 정본은
+`docs/decisions/RESULT_common_pron_r3_selection_readiness_v4_20260808.md`다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

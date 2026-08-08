@@ -351,6 +351,18 @@ group 수가 표면 어절 수 및 `n_eojeol`과 같을 때에만 같은 위치�
 phone 문맥 donor로 완전하고 단일하게 재구성되고 독립 감사된 경우에만
 candidate-only로 제안하며, 그 자체를 표준발음이나 실제 실현으로 선언하지 않는다.
 
+Stage 17에서는 이 원칙을 적용해 dictionary Roman·rule Roman exact 141형을 실제
+등재 `pron_1/2` 65형과 legacy 기계 생성 `pron_g2p` 76형으로 구분했다. 65형의
+전체 rule-unit phone열을 canonical exact donor와 동결 MFA 사전 문맥으로 다시
+구성한 결과 14형·200회만 모든 단위가 단일·호환 근거를 가졌다. 51형·2,851회는
+복수 phone 또는 출처 충돌로 hold했고, 기계 `pron_g2p` 76형도 사전 등재 근거로
+사용하지 않았다.
+
+Stage 18 readiness v4에는 이 14형만 정렬용 candidate-only로 병합했다. v3/v4
+881,237행 전수 비교에서 비대상 행 변화 0을 확인했으며 candidate 준비는
+795,804형·27,043,261회, zero-fallback hold는 85,398형·803,644회가 됐다.
+canonical 최종 선택, adoption, 재정렬, TextGrid materialization은 수행하지 않았다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch

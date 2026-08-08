@@ -334,6 +334,13 @@ adoption·MFA·TextGrid를 만들거나 바꾸지 않는다.
 4,453형을 전수 청취하지 않는다. 부분 phone 교정은 허용하지 않는다. canonical
 선택과 adoption 전에는 MFA·TextGrid를 변경하지 않는다.
 
+이 감사(Stage 17)는 실제 사전 등재 `pron_1/2` exact 65형 중 14형·200회만 전체
+phone열을 완전·단일하게 구성했다. legacy 기계 `pron_g2p` 76형은 사전 등재
+근거에서 제외했고, 복수·충돌 51형은 기술 hold로 남겼다. Stage 18 readiness v4는
+14형만 candidate-only로 병합했으며 비대상 행 변화는 0이다. 현재 사용자가 51형을
+청취하거나 승인하지 않는다. 다음은 adoption 전 잔여 결정 단위와 Gate를 다시
+고정하는 단계다.
+
 ## 4. 2021 Gate 종료 — 완료
 
 현행 2021 생산 queue는 다음이다.

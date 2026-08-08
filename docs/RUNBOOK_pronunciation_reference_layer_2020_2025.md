@@ -167,3 +167,10 @@ Bareun group 수가 표면 어절 수와 같은 행에 한해 형태소·품사 
 형태소 미연결로 보존한다. 이 층은 발음 정답이나 실현 판정이 아니라 후속 규칙·
 사전 감사의 검색 문맥이다. 자동 후보는 0형이다. 정본 결과는
 `docs/decisions/RESULT_common_pron_r3_morph_context_evidence_20260808.md`다.
+
+Stage 17은 사전 Roman·규칙 Roman exact 141형을 실제 등재 `pron_1/2` 65형과
+legacy 기계 `pron_g2p` 76형으로 분리했다. 등재 65형의 전체 rule-unit phone열을
+문맥 donor로 다시 구성해 14형·200회만 candidate-only로 준비했고 51형은 복수·
+충돌로 hold했다. Stage 18 readiness v4는 이 14형만 병합해 candidate
+795,804형·27,043,261회, hold 85,398형·803,644회가 됐다. 최종 선택·adoption·
+MFA·TextGrid 반영은 아직 하지 않는다.

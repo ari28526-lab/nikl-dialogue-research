@@ -2549,3 +2549,33 @@ shard 2–23을 재개하는 것이다.
 - 사전·규칙 Roman exact형도 기존 phone의 한 분절만 바꾸면 주변 변이음이 남을 수
   있음을 확인했다. 다음은 이 좁은 집합의 전체 phone열을 문맥 donor로 완전하고
   단일하게 재구성할 수 있는지 감사하는 단계이며, 부분 교정 자동 채택은 금지한다.
+
+## 2026-08-08 — r3 Stage 17 사전 등재 발음 전체 phone열 projection
+
+- Stage 15 보류 4,453형에서 dictionary Roman과 rule Roman이 같은 141형을
+  추출했다. 이 중 76형은 우리말샘 등재가 아닌 legacy 기계 `pron_g2p`만 가진
+  경우라 사전 근거에서 제외했다. 어휘목록 v2 `pron_1/2` exact는 65형이었다.
+- 기존 phone의 문제 분절만 바꾸지 않고 65형의 모든 rule unit을 canonical exact
+  donor 382,891형과 동결 MFA 사전 문맥에서 다시 projection했다. 14형·200회는
+  모든 unit이 단일하고 출처 간 호환되는 phone을 가졌고, 51형·2,851회는 복수
+  phone 또는 출처 충돌로 보류했다.
+- 14형은 정렬용 candidate-only 계획이며 canonical 선택·adoption·표준발음·실현
+  판정이 아니다. 51형은 연구자 청취 문제가 아니라 model allophone 선택 문제라
+  사용자 검토표로 넘기지 않았다.
+- 첫 호출은 관찰 timeout으로 manifest 전에 종료됐고, 다음 호출은 CSV 생성 뒤
+  `runtime_snapshot`의 프로젝트 root 인수 누락으로 final 승격 전에 안전 중단됐다.
+  인수를 명시하고 회귀 테스트를 추가한 뒤 성공·독립 감사를 통과했다. 두 실패
+  partial은 `archive_intermediate`에 보존했다.
+
+## 2026-08-08 — r3 selection-readiness v4 병합
+
+- 독립 감사된 Stage 17의 14형·200회만 v3 hold에서 candidate-only로 옮겼다.
+  candidate 준비는 795,804형·27,043,261회, zero-fallback hold는
+  85,398형·803,644회가 됐다.
+- 첫 실행은 기존 별도 정책결정 35형·163회를 candidate/hold 합에 포함하지 않고
+  전체 출현 기대치를 적은 회계 오류를 잡아 final 전 안전 중단됐다. Stage 14 정본
+  총계 27,847,068을 다시 묶고 회귀 테스트를 추가했다.
+- 재실행 뒤 독립 감사기는 v3/v4 881,237행을 전수 비교해 대상 14형의 허용 planning
+  필드만 바뀌고 비대상 881,223행 변화 0임을 확인했다. canonical selection,
+  adoption, MFA, TextGrid, 2020–2022 완성본은 변경하지 않았다.
+- 표준 pipeline Python으로 `test_*common_pron*.py` 190개를 실행해 모두 통과했다.

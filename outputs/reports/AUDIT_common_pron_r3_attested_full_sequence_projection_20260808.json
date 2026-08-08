@@ -1,0 +1,37 @@
+{
+  "schema_version": "common_pron_r3_attested_full_sequence_projection_audit.v1",
+  "status": "passed_independent_candidate_plan_audit",
+  "recorded_at": "2026-08-08T20:24:21+09:00",
+  "manifest": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\17_attested_full_sequence_projection\\ATTESTED_FULL_SEQUENCE_PROJECTION_MANIFEST.json",
+    "sha256": "7ffb5ccfd59c2f48902cf924d2578d11058da1b1036bb7fa46b9a23b6d914ad7"
+  },
+  "counts": {
+    "target_types": 141,
+    "attested_exact_types": 65,
+    "legacy_machine_only_types": 76,
+    "candidate_types": 14,
+    "candidate_occurrences": 200,
+    "status_types": {
+      "attested_pron_1_or_2_rule_exact|complete_unanimous_full_sequence": 14,
+      "attested_pron_1_or_2_rule_exact|incomplete_or_conflicting_full_sequence": 51,
+      "legacy_machine_only_rule_exact|excluded_nonattested_legacy_machine_evidence": 76
+    },
+    "status_occurrences": {
+      "attested_pron_1_or_2_rule_exact|complete_unanimous_full_sequence": 200,
+      "attested_pron_1_or_2_rule_exact|incomplete_or_conflicting_full_sequence": 2851,
+      "legacy_machine_only_rule_exact|excluded_nonattested_legacy_machine_evidence": 923
+    }
+  },
+  "invariants": {
+    "candidate_role": "alignment_lexicon_candidate_only",
+    "partial_phone_edit_performed": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

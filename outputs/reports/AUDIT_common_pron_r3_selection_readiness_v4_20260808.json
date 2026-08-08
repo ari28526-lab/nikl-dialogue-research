@@ -1,0 +1,60 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_v4_audit.v1",
+  "status": "passed_full_v3_delta_audit",
+  "recorded_at": "2026-08-08T20:34:10+09:00",
+  "manifest": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\18_selection_readiness_v4\\SELECTION_READINESS_V4_MANIFEST.json",
+    "sha256": "1664c07bb336b9e8a1e150b8733e5df6f949dedc34e1e73533abfcfbba1951c9"
+  },
+  "counts": {
+    "canonical_types": 881237,
+    "total_occurrences": 27847068,
+    "candidate_ready_types": 795804,
+    "candidate_ready_occurrences": 27043261,
+    "zero_fallback_hold_types": 85398,
+    "zero_fallback_hold_occurrences": 803644,
+    "changed_target_types": 14,
+    "changed_target_occurrences": 200,
+    "planning_status_types": {
+      "candidate_attested_rule_exact_full_context_projection": 14,
+      "candidate_r2_contextual_secondary_articulation_equivalent": 6141,
+      "candidate_r2_dictionary_supported_exception": 426,
+      "candidate_r2_exact_frozen_dictionary_alignment_variant": 811,
+      "candidate_r2_exact_mandatory_rule": 382891,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 99660,
+      "candidate_r2_optional_place_assimilation_alignment_variant": 36568,
+      "candidate_rule_projection_dictionary_agree": 6020,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 262927,
+      "candidate_surface_donor_exact_mandatory_rule": 346,
+      "hold_no_surface_rule_substantive_mismatch": 43902,
+      "hold_target_projection_unresolved": 41496,
+      "policy_candidate_multiple_rule_dictionary_conflict": 35
+    },
+    "planning_status_occurrences": {
+      "candidate_attested_rule_exact_full_context_projection": 200,
+      "candidate_r2_contextual_secondary_articulation_equivalent": 90544,
+      "candidate_r2_dictionary_supported_exception": 46197,
+      "candidate_r2_exact_frozen_dictionary_alignment_variant": 229177,
+      "candidate_r2_exact_mandatory_rule": 19765802,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 2176473,
+      "candidate_r2_optional_place_assimilation_alignment_variant": 525747,
+      "candidate_rule_projection_dictionary_agree": 377651,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 3585873,
+      "candidate_surface_donor_exact_mandatory_rule": 245597,
+      "hold_no_surface_rule_substantive_mismatch": 335522,
+      "hold_target_projection_unresolved": 468122,
+      "policy_candidate_multiple_rule_dictionary_conflict": 163
+    }
+  },
+  "invariants": {
+    "existing_non_target_rows_changed": false,
+    "planning_candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

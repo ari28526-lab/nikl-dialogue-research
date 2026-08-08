@@ -1,0 +1,32 @@
+{
+  "schema_version": "common_pron_r3_attested_full_sequence_projection_policy.v1",
+  "status": "read_only_candidate_planning",
+  "scope_years": ["2020", "2021", "2022", "2023", "2024", "2025"],
+  "input_contract": {
+    "expected_stage15_types": 4453,
+    "expected_stage15_occurrences": 72030,
+    "expected_dictionary_rule_exact_types": 141,
+    "expected_attested_pron_1_or_2_exact_types": 65,
+    "expected_legacy_machine_only_exact_types": 76
+  },
+  "evidence_policy": {
+    "pron_1_or_pron_2_is_attested_dictionary_evidence": true,
+    "legacy_pron_g2p_is_not_attested_dictionary_evidence": true,
+    "full_rule_unit_sequence_must_be_reconstructed": true,
+    "every_unit_must_have_one_cross_source_compatible_phone": true,
+    "candidate_must_map_exactly_to_rule_roman_units": true,
+    "candidate_is_alignment_lexicon_only": true,
+    "morphology_is_context_metadata_not_pronunciation_truth": true,
+    "partial_phone_edit_is_forbidden": true,
+    "frequency_majority_is_forbidden": true
+  },
+  "invariants": {
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

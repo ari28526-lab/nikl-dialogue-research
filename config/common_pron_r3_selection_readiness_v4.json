@@ -1,0 +1,30 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_v4_policy.v1",
+  "status": "planning_merge_only",
+  "eligibility": {
+    "required_stage17_status": "complete_unanimous_full_sequence",
+    "required_dictionary_evidence_class": "attested_pron_1_or_2_rule_exact",
+    "required_candidate_role": "alignment_lexicon_candidate_only",
+    "expected_newly_eligible_types": 14,
+    "expected_newly_eligible_occurrences": 200
+  },
+  "expected_output": {
+    "canonical_types": 881237,
+    "total_occurrences": 27847068,
+    "candidate_ready_types": 795804,
+    "candidate_ready_occurrences": 27043261,
+    "zero_fallback_hold_types": 85398,
+    "zero_fallback_hold_occurrences": 803644
+  },
+  "invariants": {
+    "existing_non_target_rows_changed": false,
+    "planning_candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "standard_pronunciation_claimed": false,
+    "actual_realization_claimed": false
+  }
+}

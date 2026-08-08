@@ -219,9 +219,17 @@ exact 표면 어절은 68,285회, Bareun group과 표면 어절이 1:1일 때의
 자동 후보는 0형이며 4,453형 hold, MFA·TextGrid 미변경을 유지했고 독립 감사가
 통과했다.
 
-현재 허용 작업은 사전·규칙 Roman exact인 좁은 집합의 전체 phone열을 동결
-canonical/frozen 문맥 donor로 완전 재구성할 수 있는지 감사하는 것이다. 기존
-phone의 문제 분절만 바꾸는 부분 교정은 주변 변이음이 남으므로 허용하지 않는다.
+Stage 17은 사전·규칙 Roman exact 141형을 실제 등재 `pron_1/2` 65형과 legacy
+기계 `pron_g2p` 76형으로 분리했다. 등재 65형의 전체 phone열을 동결 문맥 donor로
+재구성해 14형·200회만 candidate-only로 준비하고 51형·2,851회는 복수·충돌로
+hold했다. Stage 18 readiness v4는 이 14형만 병합했다. candidate 준비는
+795,804형·27,043,261회, zero-fallback hold는 85,398형·803,644회다. v3/v4
+881,237행 전수 감사에서 비대상 변화 0을 확인했다.
+
+현재 허용 작업은 readiness v4의 candidate·hold·기존 정책결정 35형을 다시
+요약해 canonical selection/adoption 전 남은 결정 단위와 Gate를 고정하는 것이다.
+51형은 연구자 청취가 아니라 model allophone 복수·충돌 문제이므로 사용자에게
+발음 판정을 요구하지 않는다. 기존 phone의 부분 교정도 허용하지 않는다.
 수의적 위치동화를 의무 표준발음 규칙에 추가하거나 frozen 사전 변이를 표준·실현
 발음으로 선언하지 않는다. 같은 Jamo G2P 반복, 기존 56행 전수 청취, 자동 승인,
 canonical selection·adoption 전 MFA는 허용하지 않는다.

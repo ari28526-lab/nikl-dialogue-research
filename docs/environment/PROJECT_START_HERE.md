@@ -119,9 +119,12 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
   통과했다. Stage 16은 이 4,453형을 동결 검색 master와 연결해 exact 표면
   68,285회, 안전한 형태소·품사 문맥 60,292회를 확보했다. 비1:1 Bareun 분석은
   억지로 위치 대응하지 않았다. 후보 생성은 여전히 0형이고 4,453형 모두 hold다.
-  다음은 사전·규칙 Roman exact인 좁은 집합의 전체 phone열을 문맥 donor로 완전
-  재구성할 수 있는지 감사하는 단계다. 부분 phone 교정, 새 근거 없는 fallback,
-  같은 G2P 재실행, MFA·TextGrid 변경은 금지한다.
+  Stage 17은 사전·규칙 exact 141형 중 실제 `pron_1/2` 등재 65형만 전체 phone열로
+  재구성해 14형·200회를 candidate-only로 준비하고, legacy 기계발음 76형과
+  복수·충돌 51형을 hold했다. Stage 18 readiness v4는 이 14형만 병합했으며
+  candidate 795,804형, hold 85,398형이다. 다음은 adoption 전 남은 결정 단위와
+  Gate 고정이다. 부분 phone 교정, 새 근거 없는 fallback, 같은 G2P 재실행,
+  MFA·TextGrid 변경은 금지한다.
 
 ## 문서 사용 규칙
 
