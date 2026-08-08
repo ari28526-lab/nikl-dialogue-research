@@ -86,11 +86,13 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
   보류했고 56행 handoff가 95.136%를 포괄한다. 다음 단계는 이 표를 전부
   청취하는 일이 아니라 canonical 선택 우선순위·zero-fallback·adoption Gate를
   구현하는 것이다.
-- 881,237형 전수 selection-readiness 조인은 candidate 준비 749,779형
-  (93.289% 출현), zero-fallback 보류 131,434형을 확인하고 독립 감사를
-  통과했다. 보류 중 83,922형은 이미 같은 Jamo G2P 결과이므로 같은 G2P를
-  반복하지 않는다. 다음은 canonical exact donor 382,891형으로 문맥 projection
-  pool을 확장하는 후보 단계다.
+- canonical exact donor를 96,284형에서 382,891형으로 확장한 전역 projection과
+  독립 감사를 완료했다. 새 후보 13,172형을 얻고, 전역 변이가 드러난 기존 후보
+  10,799형은 보류로 되돌렸다. 갱신된 881,237형 readiness는 candidate 준비
+  752,270형(출현 26,197,593회), zero-fallback 보류 128,932형이다.
+- 같은 Jamo G2P를 반복하지 않는다. 다음 허용 작업은 아직 projection target이
+  아니었던 no-rule 실질 불일치 85,504형을 사전 예외·기호·숫자·외래어와
+  구분하는 candidate-only 계약 설계다. adoption 전 MFA·TextGrid 변경은 금지한다.
 
 ## 문서 사용 규칙
 

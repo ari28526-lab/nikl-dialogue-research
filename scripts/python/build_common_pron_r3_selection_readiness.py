@@ -193,6 +193,19 @@ def projection_values(row: dict[str, str] | None) -> tuple[list[str], list[str]]
     return dedupe_variants(phones, romans)
 
 
+def projection_source_record(manifest: dict[str, object]) -> dict[str, object]:
+    """Accept the frozen v1 projection or its audited global-donor v2 successor."""
+
+    outputs = manifest.get("outputs", {})
+    if not isinstance(outputs, dict):
+        raise RuntimeError("projection manifest outputs differ")
+    for key in ("source_global_projection", "source_projection_candidates"):
+        record = outputs.get(key)
+        if isinstance(record, dict):
+            return record
+    raise RuntimeError("projection source output is missing")
+
+
 def planning_decision(
     row: dict[str, str],
     projection: dict[str, str] | None,
@@ -348,10 +361,11 @@ def build_readiness(
         raise RuntimeError("readiness policy exceeds planning scope")
 
     donor_path = Path(donor_manifest["outputs"]["candidate_inventory"]["path"]).resolve()
-    projection_path = Path(projection_manifest["outputs"]["source_projection_candidates"]["path"]).resolve()
+    projection_record = projection_source_record(projection_manifest)
+    projection_path = Path(str(projection_record["path"])).resolve()
     acoustic_path = Path(projection_manifest["inputs"]["acoustic_model"]["path"]).resolve()
     verify_fingerprint(donor_manifest["outputs"]["candidate_inventory"], donor_path, label="donor inventory")
-    verify_fingerprint(projection_manifest["outputs"]["source_projection_candidates"], projection_path, label="projection source")
+    verify_fingerprint(projection_record, projection_path, label="projection source")
     verify_fingerprint(projection_manifest["inputs"]["acoustic_model"], acoustic_path, label="acoustic model")
     group_lookup = model_group_lookup(load_acoustic_meta(acoustic_path))
     inventory = set(group_lookup)
@@ -530,10 +544,11 @@ def recover_complete_partial(
         raise RuntimeError("recovery policy exceeds planning scope")
 
     donor_path = Path(donor_manifest["outputs"]["candidate_inventory"]["path"]).resolve()
-    projection_path = Path(projection_manifest["outputs"]["source_projection_candidates"]["path"]).resolve()
+    projection_record = projection_source_record(projection_manifest)
+    projection_path = Path(str(projection_record["path"])).resolve()
     acoustic_path = Path(projection_manifest["inputs"]["acoustic_model"]["path"]).resolve()
     verify_fingerprint(donor_manifest["outputs"]["candidate_inventory"], donor_path, label="recovery donor inventory")
-    verify_fingerprint(projection_manifest["outputs"]["source_projection_candidates"], projection_path, label="recovery projection source")
+    verify_fingerprint(projection_record, projection_path, label="recovery projection source")
     verify_fingerprint(projection_manifest["inputs"]["acoustic_model"], acoustic_path, label="recovery acoustic model")
     inventory = set(model_group_lookup(load_acoustic_meta(acoustic_path)))
     allowed_rules = set(policy["mandatory_surface_rules"])

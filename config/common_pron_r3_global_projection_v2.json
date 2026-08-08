@@ -1,0 +1,49 @@
+{
+  "schema_version": "common_pron_r3_global_projection_policy.v2",
+  "status": "candidate_generation_only",
+  "purpose": "Re-evaluate the frozen 310,605 G2P target candidates against the complete canonical exact-rule donor pool without selecting or adopting pronunciations.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "frozen_acoustic_model": {
+    "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+    "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+  },
+  "target_policy": {
+    "scope": "all target rows frozen by common_pron_r3_projection_candidates.v1",
+    "candidate_phone_source": "unchanged frozen G2P target candidate",
+    "same_g2p_rerun_allowed": false,
+    "previous_projection_is_donor_evidence": false,
+    "previous_projection_is_final_selection": false
+  },
+  "exact_context_donor_policy": {
+    "donor_pool": "all canonical rows with planning_status=candidate_r2_exact_mandatory_rule",
+    "donor_phone_field": "planning_candidate_phones_json",
+    "weighting": "one distinct target-type support per context; every exact phone variant contributes to unanimity testing; occurrence frequency is not used",
+    "specificity_order": [
+      "window2_boundary",
+      "window1_boundary",
+      "unit_boundary"
+    ],
+    "minimum_distinct_target_types": 2,
+    "accepted_phone_rule": "all eligible donor variants at the chosen context must contain exactly one acoustic phone value",
+    "mode_or_first_variant_selection_allowed": false,
+    "fallback_to_handwritten_phone_allowed": false,
+    "fallback_to_base_dictionary_membership_allowed": false,
+    "candidate_phone_must_be_in_frozen_inventory": true,
+    "projected_sequence_must_satisfy_representation_relation": true
+  },
+  "comparison_policy": {
+    "compare_every_target_to_projection_v1": true,
+    "candidate_gain_is_not_automatic_adoption": true,
+    "candidate_loss_or_phone_change_must_be_reported": true,
+    "human_listening_review_started": false
+  },
+  "invariants": {
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  }
+}

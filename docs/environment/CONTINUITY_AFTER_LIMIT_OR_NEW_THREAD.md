@@ -137,6 +137,28 @@ canonical selection false / adoption false / MFA false / TextGrid 변경 false
 canonical exact-rule 382,891형 전역 donor projection이며, 기존 06 후보와의
 변경 비교를 반드시 남긴다.
 
+### 2026-08-08 전역 donor·09 readiness 이후 재개점
+
+위 전역 donor 단계까지 완료됐다. 정본은 다음 두 manifest다.
+
+```text
+D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\
+  08_global_projection_candidates\GLOBAL_PROJECTION_MANIFEST.json
+  09_global_selection_readiness\SELECTION_READINESS_MANIFEST.json
+```
+
+```text
+candidate 준비 752,270형 / zero-fallback 보류 128,932형
+target projection 미해결 43,428형 / no-rule 미대상 85,504형
+canonical selection false / adoption false / MFA false / TextGrid 변경 false
+```
+
+08·09 독립 감사가 모두 `passed_read_only`다. 같은 G2P, 06 projection, 07
+readiness를 다시 실행하지 않는다. 다음은 no-rule 85,504형을 별도 신분으로
+다루는 candidate-only 계약 설계이며, 곧바로 최종 선택하거나 MFA를 실행하지
+않는다. 상세 결과는
+`docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`다.
+
 ## 새 대화에 붙일 최소 프롬프트
 
 ```text

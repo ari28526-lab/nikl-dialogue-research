@@ -234,10 +234,25 @@ candidate 준비는 749,779형(85.083%)·25,978,186회(93.289%), zero-fallback
 재계산해 `passed_read_only`로 통과했다. 상세 결과는
 `RESULT_common_pron_r3_selection_readiness_20260808.md`에 기록했다.
 
+### 5.6 전역 exact donor 재검증과 fail-closed 후보 회수
+
+제한 donor의 우연한 unanimity를 피하기 위해 canonical exact-rule 382,891형의
+모든 exact phone 변이를 donor pool로 사용해 기존 310,605 G2P target을 다시
+비교했다. 출현 빈도 다수결이나 first variant 선택은 하지 않았다. 그 결과 새
+후보 13,172형을 얻었지만, 더 넓은 donor에서 변이가 드러난 기존 후보
+10,799형은 보류로 되돌렸다. phone 후보가 바뀐 것은 78형이었다.
+
+전역 결과를 881,237형에 재연결한 09 readiness는 candidate 준비 752,270형·
+26,197,593회, zero-fallback 보류 128,932형·1,649,312회다. 생성기와 독립
+감사기가 08 projection과 09 readiness를 각각 전수 재계산해 통과했다. 같은
+G2P를 재실행하지 않았고 canonical selection, adoption, MFA, TextGrid 변경도
+수행하지 않았다. 상세 결과는
+`RESULT_common_pron_r3_global_projection_v2_20260808.md`에 기록했다.
+
 ## 6. 논문 각주용 축약문 초안
 
 아래 문안은 방법론 방향을 고정하기 위한 초안이다. 현재 G2P·agreement·mismatch
-진단·model projection 후보·881,237형 selection-readiness까지 완료됐지만,
+진단·model projection·전역 donor 재검증·881,237형 readiness까지 완료됐지만,
 canonical 최종 선택·r3 adoption·재정렬·TextGrid materialization은 미완료다.
 따라서 논문에 완료형으로 그대로 사용하지 않는다. 최종 각주에는
 manifest에서 확인한 다음
@@ -289,7 +304,8 @@ manifest에서 확인한 다음
 | `a89debb` | G2P–규칙 목표 ordered broad-Roman 전수 Gate·연도별 회계·독립 감사 |
 | `93e52a9` | mismatch 편집·model 표상·사전/형태소/연도 근거 전수 진단과 56행 handoff·독립 감사 |
 | `534eeb4` | 좁은 model 단위화 계약, exact 문맥 donor projection, 잔여 56행 축약과 독립 전수 감사 |
-| 현 변경 묶음 | 881,237형 selection-readiness, zero-fallback 회계, partial 국소 복구와 독립 감사 |
+| `b6bc12d` | 881,237형 selection-readiness, zero-fallback 회계, partial 국소 복구와 독립 감사 |
+| 현 변경 묶음 | canonical exact donor 전역 projection, 후보 획득·상실 비교, 09 readiness와 독립 감사 |
 
 상세 결정은 다음 문서를 함께 참조한다.
 
@@ -299,6 +315,7 @@ manifest에서 확인한 다음
 - `RESULT_common_pron_r3_g2p_mismatch_diagnostics_20260808.md`
 - `RESULT_common_pron_r3_model_projection_candidates_20260808.md`
 - `RESULT_common_pron_r3_selection_readiness_20260808.md`
+- `RESULT_common_pron_r3_global_projection_v2_20260808.md`
 - `../environment/PROJECT_CURRENT_STATE.md`
 - `../RUNBOOK_production_2020_2025.md`
 - `../WORK_HISTORY_2026-08.md`

@@ -1,0 +1,164 @@
+{
+  "schema_version": "common_pron_r3_global_projection_audit.v2",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T13:19:55+09:00",
+  "counts": {
+    "target_rows": 310605,
+    "source_rows": 312410,
+    "donor_exact_target_rows": 382891,
+    "donor_exact_variant_rows": 382994,
+    "donor_exact_target_units": 3408622,
+    "donor_exact_variant_units": 3409021,
+    "query_contexts": {
+      "window2_boundary": 9347,
+      "window1_boundary": 810,
+      "unit_boundary": 44
+    },
+    "indexed_query_contexts": {
+      "window2_boundary": 1053,
+      "window1_boundary": 548,
+      "unit_boundary": 44
+    },
+    "used_projection_evidence_rows": 931,
+    "target_projection_status": {
+      "candidate_exact_context_projection": 46431,
+      "candidate_exact_gate_unchanged": 96284,
+      "candidate_model_unitization_equivalent_unchanged": 124564,
+      "hold_candidate_only_deletion_requires_policy": 588,
+      "hold_no_unanimous_exact_context_donor": 42738
+    },
+    "target_representation_relation": {
+      "equivalent_combined_unitization": 12800,
+      "equivalent_glide_unitization": 102551,
+      "equivalent_length_unitization": 24221,
+      "exact_comparison_keys": 127707,
+      "not_equivalent": 43326
+    },
+    "target_occurrences_by_projection_status": {
+      "candidate_exact_context_projection": 600779,
+      "candidate_exact_gate_unchanged": 1676283,
+      "candidate_model_unitization_equivalent_unchanged": 1686625,
+      "hold_candidate_only_deletion_requires_policy": 2801,
+      "hold_no_unanimous_exact_context_donor": 506404
+    },
+    "comparison_class_types": {
+      "candidate_gained": 13172,
+      "candidate_lost": 10799,
+      "candidate_phone_changed": 78,
+      "unchanged": 286556
+    },
+    "comparison_class_occurrences": {
+      "candidate_gained": 345783,
+      "candidate_lost": 126339,
+      "candidate_phone_changed": 213,
+      "unchanged": 4000557
+    },
+    "source_projection_gate_class": {
+      "candidate_projection_dictionary_agree": 6020,
+      "hold_projection_dictionary_conflict": 35,
+      "hold_projection_no_independent_dictionary": 262927,
+      "hold_target_projection_unresolved": 43428
+    },
+    "source_occurrences_by_gate_class": {
+      "candidate_projection_dictionary_agree": 377651,
+      "hold_projection_dictionary_conflict": 163,
+      "hold_projection_no_independent_dictionary": 3585873,
+      "hold_target_projection_unresolved": 509205
+    }
+  },
+  "regression_examples": {
+    "놨던": {
+      "target_hangul": "놛떤",
+      "rule_pron_roman": "N WA t _ TT EO n",
+      "g2p_candidate_phones": "n w ɐ d t͈ ʌ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"n w ɐ d t͈ ʌ n\"]"
+    },
+    "어쨌든": {
+      "target_hangul": "어짿뜬",
+      "rule_pron_roman": "EO _ JJ AE t _ TT EU n",
+      "g2p_candidate_phones": "ʌ tɕ͈ ɛː t̚ t͈ ɨ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "candidate_projection_dictionary_agree",
+      "projected_pron_phones_json": "[\"ʌ tɕ͈ ɛː t̚ t͈ ɨ n\"]"
+    },
+    "없는": {
+      "target_hangul": "엄는",
+      "rule_pron_roman": "EO m _ N EU n",
+      "g2p_candidate_phones": "ʌː m n ɨ n",
+      "target_projection_status": "candidate_exact_gate_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"ʌː m n ɨ n\"]"
+    },
+    "있는": {
+      "target_hangul": "인는",
+      "rule_pron_roman": "I n _ N EU n",
+      "g2p_candidate_phones": "i nː ɨ n",
+      "target_projection_status": "candidate_model_unitization_equivalent_unchanged",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"i nː ɨ n\"]"
+    },
+    "있지": {
+      "target_hangul": "읻찌",
+      "rule_pron_roman": "I t _ JJ I",
+      "g2p_candidate_phones": "iː tɕ͈ː tɕ͈ i",
+      "target_projection_status": "candidate_exact_context_projection",
+      "source_projection_gate_class": "hold_projection_no_independent_dictionary",
+      "projected_pron_phones_json": "[\"iː t̚ tɕ͈ i\"]"
+    }
+  },
+  "contracts": {
+    "same_g2p_rerun_performed": false,
+    "candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "global_projection_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\08_global_projection_candidates\\GLOBAL_PROJECTION_MANIFEST.json",
+      "bytes": 6929,
+      "mtime_ns": 1786162135317553800,
+      "sha256": "2edc1ca871424bbe95659a176615961bcdbeccc86c28301f558733963525f90f"
+    },
+    "target_global_projection": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\08_global_projection_candidates\\g2p_target_global_projection_candidates.csv.gz",
+      "bytes": 16706728,
+      "mtime_ns": 1786162096599189000,
+      "sha256": "ef3c7bde65e7da42009236b66124a07f14cb6e92b9151d44ca6bd3892ac92c72"
+    },
+    "source_global_projection": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\08_global_projection_candidates\\g2p_source_global_projection_candidates.csv.gz",
+      "bytes": 18900464,
+      "mtime_ns": 1786162134830678900,
+      "sha256": "c650171d7be1284dfd4453500c31d13631dad18ba0ec920f0ab3b2807997fa56"
+    },
+    "global_projection_evidence": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\08_global_projection_candidates\\global_exact_context_projection_evidence.csv",
+      "bytes": 207158,
+      "mtime_ns": 1786162134862050400,
+      "sha256": "b26c8c20ebf3f8ab47a1fdac96fdd631893e7a370757f4fbbecac3fbfa385bf5"
+    },
+    "projection_comparison": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\08_global_projection_candidates\\projection_v1_to_global_v2_comparison.csv.gz",
+      "bytes": 4876317,
+      "mtime_ns": 1786162096597183000,
+      "sha256": "573622dceaf0d98d4292c89927459eabcd8a353eaa4dcde0262d9fbc554410e8"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T13:19:55+09:00",
+    "git_commit": "b6bc12df73960ed361940c3b320a2972098def6e",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 18640
+  }
+}

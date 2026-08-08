@@ -67,7 +67,8 @@
   → G2P–규칙 mismatch 전수 진단·반복 패턴 축약 완료
   → model 표상·exact 문맥 projection 후보·독립 감사 완료
   → 881,237형 selection-readiness·독립 감사 완료
-  → canonical exact donor 전역 projection·비교  ← 현재
+  → canonical exact donor 전역 projection·09 readiness·독립 감사 완료
+  → no-rule 잔여 85,504형 candidate-only 계약  ← 현재
   → 단일 canonical 선택 계약·zero-fallback·adoption Gate
   → r3 채택
   → 2020–2022 영향 inventory·변경 세션 delta 재정렬
@@ -193,6 +194,19 @@ candidate 준비 749,779형(출현 93.289%), 복수 변이 정책 24형, zero-fa
 96,284 exact target donor 대신 canonical 382,891 exact-rule 형을 donor로 사용한
 projection v2와 기존 후보 유지·변경 비교다. 상세 근거는
 `docs/decisions/RESULT_common_pron_r3_selection_readiness_20260808.md`를 따른다.
+
+### 3.6 r3 전역 donor projection·09 readiness 완료 checkpoint
+
+canonical exact donor 382,891형을 사용해 기존 310,605 G2P target을 전수
+재비교했다. 새 후보 13,172형을 얻었고, 좁은 donor에서만 unanimous였던 기존
+후보 10,799형은 보류로 되돌렸다. 이는 오류가 아니라 전역 변이를 반영한
+fail-closed 결과다. 생성기와 별도 감사기가 모두 통과했다.
+
+09 readiness는 candidate 준비 752,270형·26,197,593회, 복수 변이 정책 35형,
+zero-fallback 보류 128,932형·1,649,312회다. 다음은 아직 projection target이
+아닌 no-rule 85,504형의 별도 후보 계약이다. 동일 G2P 재실행, canonical 자동
+선택, MFA·TextGrid 변경은 금지한다. 상세 근거는
+`docs/decisions/RESULT_common_pron_r3_global_projection_v2_20260808.md`를 따른다.
 
 ## 4. 2021 Gate 종료 — 완료
 

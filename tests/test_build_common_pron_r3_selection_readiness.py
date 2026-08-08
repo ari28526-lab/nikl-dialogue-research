@@ -9,7 +9,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "python"))
 
-from build_common_pron_r3_selection_readiness import planning_decision  # noqa: E402
+from build_common_pron_r3_selection_readiness import (  # noqa: E402
+    planning_decision,
+    projection_source_record,
+)
 
 
 def row(**overrides: str) -> dict[str, str]:
@@ -43,6 +46,24 @@ def projection(**overrides: str) -> dict[str, str]:
 
 
 class SelectionReadinessTests(unittest.TestCase):
+    def test_global_projection_source_precedes_legacy_source(self) -> None:
+        global_record = {"path": "global.csv.gz"}
+        self.assertIs(
+            projection_source_record(
+                {
+                    "outputs": {
+                        "source_projection_candidates": {"path": "legacy.csv.gz"},
+                        "source_global_projection": global_record,
+                    }
+                }
+            ),
+            global_record,
+        )
+
+    def test_projection_source_must_be_explicit(self) -> None:
+        with self.assertRaises(RuntimeError):
+            projection_source_record({"outputs": {}})
+
     def test_exact_r2_is_carried_as_candidate_not_selection(self) -> None:
         decision = planning_decision(
             row(

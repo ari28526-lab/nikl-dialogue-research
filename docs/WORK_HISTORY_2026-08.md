@@ -2351,3 +2351,29 @@ shard 2–23을 재개하는 것이다.
   모델을 다시 돌리지 않고 canonical exact-rule 382,891형을 전역 donor로
   확장한 projection v2를 다음 후보 단계로 정했다.
 - canonical selection·adoption·MFA·TextGrid 변경은 수행하지 않았다.
+
+## 2026-08-08 — r3 전역 exact donor projection·09 readiness 완료
+
+- 제한 donor 96,284형의 우연한 unanimity를 피하기 위해 canonical exact-rule
+  382,891형·382,994 phone 변이를 donor로 사용했다. 기존 310,605 G2P target을
+  재사용했고 같은 G2P는 실행하지 않았다.
+- 기존 projection과 완전히 같은 target은 286,556형·4,000,557회였다. 전역
+  근거에서 후보 13,172형·345,783회를 새로 얻었고, 변이가 드러난 기존 후보
+  10,799형·126,339회는 fail-closed 보류로 되돌렸다. 후보 phone 변경은
+  78형·213회다.
+- `있지`는 전역 exact donor에서 `[iː t̚ tɕ͈ i]` 후보로 회수됐다. `있는`은
+  model 단위화, `없는`·`놨던`·`어쨌든`은 기존 exact 근거 경로를 유지했다.
+- 첫 실행은 제한 환경의 D: 폴더 쓰기 권한에서 출력 전 안전 중단됐다. 다음
+  실행은 Python dictionary 삽입 순서를 CSV 고정 열 순서로 오인한 과도한
+  검사에서 첫 행에 중단됐다. 343B·192B partial은
+  `archive_intermediate\08_global_projection_failed_field_order_20260808_1301`에
+  보존하고, field 집합 검사로 고친 뒤 단위 테스트와 전수 재실행을 수행했다.
+- 독립 감사기는 382,891 donor, 310,605 target, 312,410 source, evidence 931행과
+  후보 획득·상실·변경을 다시 계산해 `passed_read_only`로 통과했다.
+- 감사된 전역 결과를 canonical 881,237형에 다시 연결한 09 readiness는
+  candidate 준비 752,270형·26,197,593회, 복수 변이 정책 35형·163회,
+  zero-fallback 보류 128,932형·1,649,312회다. 별도 readiness 감사도 통과했다.
+- 다음 범위는 기존 target projection 미해결 43,428형과 별도로, 아직 target이
+  아닌 no-rule 실질 불일치 85,504형의 candidate-only 계약 설계다. 사전 예외·
+  기호·숫자·외래어와 분리하기 전에는 자동 선택하지 않는다.
+- canonical selection·adoption·MFA·TextGrid 변경은 수행하지 않았다.

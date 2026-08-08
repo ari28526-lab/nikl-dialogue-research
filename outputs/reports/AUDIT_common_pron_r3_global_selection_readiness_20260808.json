@@ -1,0 +1,118 @@
+{
+  "schema_version": "common_pron_r3_selection_readiness_audit.v1",
+  "status": "passed_read_only",
+  "recorded_at": "2026-08-08T13:38:06+09:00",
+  "counts": {
+    "canonical_types": 881237,
+    "projection_linked_types": 312410,
+    "candidate_ready_types": 752270,
+    "candidate_ready_occurrences": 26197593,
+    "policy_decision_types": 35,
+    "policy_decision_occurrences": 163,
+    "zero_fallback_hold_types": 128932,
+    "zero_fallback_hold_occurrences": 1649312,
+    "planning_status_types": {
+      "candidate_r2_dictionary_supported_exception": 426,
+      "candidate_r2_exact_mandatory_rule": 382891,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 99660,
+      "candidate_rule_projection_dictionary_agree": 6020,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 262927,
+      "candidate_surface_donor_exact_mandatory_rule": 346,
+      "hold_no_surface_rule_substantive_mismatch": 85504,
+      "hold_target_projection_unresolved": 43428,
+      "policy_candidate_multiple_rule_dictionary_conflict": 35
+    },
+    "planning_status_occurrences": {
+      "candidate_r2_dictionary_supported_exception": 46197,
+      "candidate_r2_exact_mandatory_rule": 19765802,
+      "candidate_r2_model_unitization_equivalent_no_rule_change": 2176473,
+      "candidate_rule_projection_dictionary_agree": 377651,
+      "candidate_rule_projection_mandatory_rule_no_conflict": 3585873,
+      "candidate_surface_donor_exact_mandatory_rule": 245597,
+      "hold_no_surface_rule_substantive_mismatch": 1140107,
+      "hold_target_projection_unresolved": 509205,
+      "policy_candidate_multiple_rule_dictionary_conflict": 163
+    },
+    "mandatory_rule_types": {
+      "aspiration": 33598,
+      "cluster": 4691,
+      "fortis": 150459,
+      "h_deletion": 18992,
+      "liaison": 295764,
+      "nasal_assim": 50638,
+      "neutralize": 102565,
+      "palatalization": 1843
+    }
+  },
+  "regression_examples": {
+    "놨던": {
+      "rule_pron_hangul": "놛떤",
+      "surface_rule_names": "neutralize|fortis",
+      "planning_status": "candidate_rule_projection_mandatory_rule_no_conflict",
+      "planning_candidate_phones_json": "[\"n w ɐ d t͈ ʌ n\"]",
+      "planning_zero_fallback_hold": false
+    },
+    "어쨌든": {
+      "rule_pron_hangul": "어짿뜬",
+      "surface_rule_names": "neutralize|fortis",
+      "planning_status": "candidate_rule_projection_dictionary_agree",
+      "planning_candidate_phones_json": "[\"ʌ tɕ͈ ɛː t̚ t͈ ɨ n\"]",
+      "planning_zero_fallback_hold": false
+    },
+    "없는": {
+      "rule_pron_hangul": "엄는",
+      "surface_rule_names": "cluster|nasal_assim",
+      "planning_status": "candidate_rule_projection_mandatory_rule_no_conflict",
+      "planning_candidate_phones_json": "[\"ʌː m n ɨ n\"]",
+      "planning_zero_fallback_hold": false
+    },
+    "있는": {
+      "rule_pron_hangul": "인는",
+      "surface_rule_names": "neutralize|nasal_assim",
+      "planning_status": "candidate_rule_projection_mandatory_rule_no_conflict",
+      "planning_candidate_phones_json": "[\"i nː ɨ n\"]",
+      "planning_zero_fallback_hold": false
+    },
+    "있지": {
+      "rule_pron_hangul": "읻찌",
+      "surface_rule_names": "neutralize|fortis",
+      "planning_status": "candidate_rule_projection_mandatory_rule_no_conflict",
+      "planning_candidate_phones_json": "[\"iː t̚ tɕ͈ i\"]",
+      "planning_zero_fallback_hold": false
+    }
+  },
+  "contracts": {
+    "planning_candidate_is_final_selection": false,
+    "canonical_selection_performed": false,
+    "adoption_performed": false,
+    "annual_mfa_started": false,
+    "textgrids_modified": false,
+    "source_files_modified": false,
+    "actual_realization_claimed": false
+  },
+  "evidence": {
+    "readiness_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\09_global_selection_readiness\\SELECTION_READINESS_MANIFEST.json",
+      "bytes": 4914,
+      "mtime_ns": 1786163398578768100,
+      "sha256": "187b726c0c9bfc46c2cb232bbe22f586cab71fa8caf76562c4cde4e01f541502"
+    },
+    "selection_readiness": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\09_global_selection_readiness\\common_pron_r3_selection_readiness.csv.gz",
+      "bytes": 44570080,
+      "mtime_ns": 1786163397838600400,
+      "sha256": "c5fc77dd40f4988b139dc5b975ee289ea914a11bd64146b4621b078c13beb6f5"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-08T13:38:06+09:00",
+    "git_commit": "b6bc12df73960ed361940c3b320a2972098def6e",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 16112
+  }
+}
