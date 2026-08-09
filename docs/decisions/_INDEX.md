@@ -53,6 +53,13 @@
 | `RESULT_common_pron_r3_targeted_regression_20260808.md` | 기존 2022 문제 표본 네 발화의 r3 표적 정렬·자동 구조 검사와 최소 연구자 검토 절차 |
 | `DECISION_common_pron_r3_adoption_choice_pending_20260808.md` | 단계적 safe-body 채택 전 선택 Gate의 역사 기록; 2026-08-09 승인으로 해소됨 |
 | `DECISION_common_pron_r3_full_realign_2020_2025_20260809.md` | safe-body 4,384,992발화의 6개년 신규 r3 정렬, r2 interval 비재사용, follow-up 718,364 별도 보존을 확정한 현행 결정 |
+| `DECISION_common_pron_r3_v3_1_staged_adoption_amendment_20260809.md` | 승인된 단계적 safe-body 범위를 v3.1 계약으로 고정하고 최초 승인과 provenance sidecar를 분리한 결정 |
+| `RESULT_common_pron_mfa_r3_staged_release_20260809.md` | staged selected projection·796,061행 MFA 사전 byte 동등성과 독립 adoption 감사 결과 |
+| `RESULT_mfa_r3_year_input_contract_2020_20260809.md` | 2020 safe/follow-up·pre-MFA 기술 제외·복구 corpus를 exact-ID로 결속한 입력 계약 결과 |
+| `RESULT_mfa_r3_alignment_contract_2020_20260809.md` | r3 release·routing·입력·모델·사전을 단일 alignment contract ID로 동결한 결과 |
+| `RESULT_mfa_r3_runner_preflight_2020_20260809.md` | r3 전용 이름공간·checkpoint·lock·용량 산식 runner와 Gate-closed 실자료 preflight 결과 |
+| `RESULT_mfa_r3_exporter_audit_contract_20260809.md` | 승인 6-tier를 유지하며 r3 provenance 10필드·DB SHA·phoneme label 독립 감사를 추가한 결과 |
+| `RESULT_mfa_r3_checklist_1_7_candidate_20260809.md` | 외부 리뷰 체크리스트 1–7 통합 통과와 release Gate 직전 안전 정지점 |
 
 ## 현재 생산과 안전 계약
 
@@ -102,9 +109,6 @@
   2021 v5 끝검사에서 발견된 구 float32 종단 TextGrid 19개를 archive 후 표적
   교체하고, 전수 checkpoint 증거를 이어받아 동반표부터 재개하는 결정
 - [MFA 체크포인트 감사 LAB 루트 계약 교정 (2026-08-05)](DECISION_MFA_checkpoint_audit_lab_root_contract_20260805.md)
-- `RESULT_mfa_r3_year_input_contract_2020_20260809.md` | 2020 발음 안전/후속·정렬 전 기술 제외·r2 정렬 실패 재진입을 exact-ID와 SHA로 고정한 r3 연도 입력 계약 결과 |
-- `RESULT_mfa_r3_alignment_contract_2020_20260809.md` | r3 release·라우팅·연도 입력·사전·음향모델·G2P·runtime을 단일 alignment contract ID로 고정한 결과 |
-
 ## 대화 음원·분절 품질
 
 | 문서 | 역할 |

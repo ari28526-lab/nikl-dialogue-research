@@ -1,0 +1,11 @@
+{
+    "schema_version":  "mfa_r3_repository_test_receipt.v1",
+    "status":  "passed",
+    "recorded_at":  "2026-08-09T12:28:38.1198861+09:00",
+    "started_at":  "2026-08-09T12:27:42.7564863+09:00",
+    "release_id":  "common_pron_mfa_r3_20260809",
+    "year":  "2020",
+    "powershell_safety_passed":  true,
+    "powershell_runtime_compat_passed":  true,
+    "python_full_suite_passed":  true
+}

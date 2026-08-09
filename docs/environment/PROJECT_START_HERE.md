@@ -2,15 +2,14 @@
 
 최종 갱신: 2026-08-09 KST
 
-> **현재 안전 정지점:** r3 readiness v4, 실제 pre-MFA 발화 라우팅, safe-body
-> 후보 사전과 독립 감사가 완료됐다. 5,103,356발화 중 4,384,992발화가 safe body,
-> 718,364발화가 follow-up이다. 연구자는 표적 네 발화의 경계와 2020–2025
-> pronunciation-safe pool의 정렬 가능 발화 전체를 r3로 새로 정렬하는 단계적
-> 채택을 승인했다. 기술적 제외는 exact-ID로 별도 회계한다. 기존 r2 interval은
-> 최종 r3에 재사용하지 않고 읽기 전용 방법론 증거로만 보존한다. 후보 사전은 아직
-> `NOT_ADOPTED`이며 생산 MFA도 시작하지 않았다. 다음 행동은 전체 workflow의 외부
-> 코드리뷰와 r3 전용 실행기·release Gate 구현이다. Stage 01–21과 광범위 파일럿은
-> 다시 실행하지 않는다.
+> **현재 안전 정지점:** 외부 리뷰의 2020 실행 전 체크리스트 1–7이 구현·검증됐다.
+> v3.1 계약, staged r3 release, 2020 exact-ID 입력·alignment 계약, r3 전용
+> runner, 6-tier exporter·독립 감사, PowerShell/Python 전수 테스트가 통과했다.
+> 2020 실자료 `-PreflightOnly` 18개 검사 중 17개가 통과했고, 아직 열지 않은
+> `production_release_gate` 하나만 의도적으로 실패했다. 생산 MFA·r3 corpus·
+> TextGrid는 시작되지 않았다. 다음 한 단계는 연구자가 체크리스트 1–7 결과를
+> 확인한 뒤 8번 release Gate 개방을 별도로 승인하는 것이다. Stage 01–21,
+> D: 원자료, r2 완성본과 광범위 파일럿은 다시 실행하지 않는다.
 
 이 저장소에서 새 작업을 시작할 때는 아래 문서만 순서대로 읽는다.
 

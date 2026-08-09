@@ -2730,3 +2730,27 @@ shard 2–23을 재개하는 것이다.
 - 정상·phoneme label 변조·manifest provenance 변조·행 contract ID 변조 합성
   fixture와 기존 r2 회귀를 합쳐 40건이 통과했다. MFA·TextGrid 생산 실행과
   Gate 개방은 하지 않았고 Stage 01–21·원자료·r2 산출물은 변경하지 않았다.
+
+## 2026-08-09 — r3 체크리스트 7 테스트 배선과 Gate 직전 안전 정지
+
+- `test_powershell_safety.ps1`의 고정 allowlist를 top-level `scripts/*.ps1` 전수
+  검사로 보강했다. 64개 파일의 UTF-8 BOM·parse와 전문 안전 규칙을 검사하고,
+  기존 dead block이던 상태판 검사와 새 r3 runner 검사를 실제 적용했다.
+- r3 runner는 실행 때마다 Windows PowerShell 5.1 safety/runtime 두 묶음과
+  Python 전체 suite를 먼저 실행하고 `REPOSITORY_TESTS_<release>_<year>.json`
+  영수증을 만든다. 이 세 결과는 Python preflight의 hard check라 하나라도
+  실패하면 MFA에 진입하지 않는다.
+- 최초 실제 preflight에서는 검사 프로세스의 표준출력이 PowerShell 함수 반환
+  파이프라인에 섞여 영수증 객체가 배열로 풀렸고,
+  `powershell_safety_passed` 속성 조회에서 안전 중단됐다. 검사 출력은
+  `Out-Host`로 보내고 함수 반환값을 단일 객체로 고정했다. D: 자료·MFA·TextGrid는
+  변경되지 않았다.
+- 수정 뒤 PowerShell safety 64파일, runtime compatibility 64스크립트,
+  Python 540테스트가 모두 통과했다. 2020 실자료 `-PreflightOnly` 18개 검사 중
+  17개가 통과하고 아직 닫힌 `production_release_gate`만 실패했다.
+- 2020 입력은 782,715발화, 필요 공간 53.726 GiB, 관측 공간 194.869 GiB,
+  D: 라벨 `DATA_SSD`, live lock 0으로 확인됐다. release Gate를 열거나 r3 corpus,
+  MFA DB, TextGrid를 만들지 않았다.
+- 체크리스트 1–7 통합 결과와 핵심 증거 SHA는
+  `outputs/reports/AUDIT_mfa_r3_checklist_1_7_candidate_20260809.json`에 고정했다.
+  다음 단계는 연구자의 체크리스트 8 release Gate 승인이다.

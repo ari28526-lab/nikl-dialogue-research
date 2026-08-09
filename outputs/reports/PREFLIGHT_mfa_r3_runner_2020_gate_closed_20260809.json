@@ -1,7 +1,7 @@
 {
   "schema_version": "mfa_r3_year_safe_body_preflight.v1",
   "status": "no_go",
-  "recorded_at": "2026-08-09T11:53:14+09:00",
+  "recorded_at": "2026-08-09T12:28:38+09:00",
   "year": "2020",
   "release_id": "common_pron_mfa_r3_20260809",
   "alignment_contract_id": "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a",
@@ -28,6 +28,27 @@
       "passed": true,
       "detail": {
         "lock_problem_count": 0
+      }
+    },
+    {
+      "name": "powershell_safety_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
+      }
+    },
+    {
+      "name": "powershell_runtime_compat_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
+      }
+    },
+    {
+      "name": "python_full_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
       }
     },
     {
@@ -145,14 +166,14 @@
     }
   },
   "runtime": {
-    "recorded_at": "2026-08-09T11:53:14+09:00",
-    "git_commit": "ca45a95fd9b5c6f566ac8a5233669546f6c60e8c",
+    "recorded_at": "2026-08-09T12:28:38+09:00",
+    "git_commit": "b7f2241b7cf28039c9b133d5ee62c27fc0839928",
     "python": {
       "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
       "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
       "implementation": "CPython"
     },
     "platform": "Windows-11-10.0.26200-SP0",
-    "pid": 12912
+    "pid": 9876
   }
 }

@@ -1,0 +1,133 @@
+{
+  "schema_version": "mfa_r3_checklist_1_7_candidate.v1",
+  "status": "passed_checklist_1_7_pending_researcher_release_gate",
+  "recorded_at": "2026-08-09T12:28:38+09:00",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "year": "2020",
+  "tested_git_commit": "b7f2241b7cf28039c9b133d5ee62c27fc0839928",
+  "alignment_contract_id": "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a",
+  "scope": "external review section 7 checklist items 1 through 7 only",
+  "checks": [
+    {
+      "item": 1,
+      "name": "v3.1 staged adoption and immutable approval sidecar",
+      "passed": true,
+      "evidence": "config/common_pronunciation_resource_contract_v3_1.json"
+    },
+    {
+      "item": 2,
+      "name": "staged r3 release and independent adoption audit",
+      "passed": true,
+      "evidence": "outputs/reports/AUDIT_common_pron_mfa_r3_staged_release_20260809.json"
+    },
+    {
+      "item": 3,
+      "name": "2020 exact-ID year input contract and independent audit",
+      "passed": true,
+      "evidence": "outputs/reports/AUDIT_mfa_r3_year_input_contract_2020_20260809.json"
+    },
+    {
+      "item": 4,
+      "name": "2020 r3 alignment identity contract",
+      "passed": true,
+      "evidence": "outputs/reports/AUDIT_mfa_r3_alignment_contract_2020_20260809.json"
+    },
+    {
+      "item": 5,
+      "name": "release-scoped runner and all non-gate preflight checks",
+      "passed": true,
+      "evidence": "outputs/reports/PREFLIGHT_mfa_r3_runner_2020_gate_closed_20260809.json",
+      "note": "The preflight is intentionally NO_GO only because checklist item 8 has not opened the production release gate."
+    },
+    {
+      "item": 6,
+      "name": "r3 exporter and independent audit provenance binding",
+      "passed": true,
+      "evidence": "docs/decisions/RESULT_mfa_r3_exporter_audit_contract_20260809.md"
+    },
+    {
+      "item": 7,
+      "name": "PowerShell and Python repository test wiring",
+      "passed": true,
+      "evidence": "outputs/reports/REPOSITORY_TESTS_common_pron_mfa_r3_20260809_2020.json",
+      "counts": {
+        "powershell_safety_files": 64,
+        "powershell_runtime_compat_scripts": 64,
+        "python_tests": 540
+      }
+    }
+  ],
+  "closed_gate_preflight": {
+    "status": "no_go",
+    "check_count": 18,
+    "failed_checks": [
+      "production_release_gate"
+    ],
+    "expected_utterances": 782715,
+    "required_free_gib": 53.726,
+    "observed_free_gib": 194.869,
+    "observed_drive_label": "DATA_SSD",
+    "live_lock_problems": 0
+  },
+  "production_release_gate": {
+    "status": "blocked_pending_r3_staged_contract_implementation_review",
+    "allowed_release_ids": []
+  },
+  "evidence_fingerprints": [
+    {
+      "path": "config/common_pronunciation_resource_contract_v3_1.json",
+      "bytes": 9832,
+      "sha256": "937e9b2369eeb6dc58f6467900e3b87e7bc8cefa0527ef75674fe3c18e7b4539"
+    },
+    {
+      "path": "outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json",
+      "bytes": 3777,
+      "sha256": "9e5e1a0827984cb2820c14be0990785bd8d1b7056058b1e84bbde2b52cb38a90"
+    },
+    {
+      "path": "outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.provenance.v2.json",
+      "bytes": 3081,
+      "sha256": "471650c766e222f68532fb84fb7b33443933bc017722ed33d84352dc2f186cc0"
+    },
+    {
+      "path": "outputs/reports/AUDIT_common_pron_mfa_r3_staged_release_20260809.json",
+      "bytes": 3831,
+      "sha256": "528ae90d1ca50ae751fb5389830926b42267981ede26194b4dbe5f921f203b3d"
+    },
+    {
+      "path": "outputs/reports/AUDIT_mfa_r3_year_input_contract_2020_20260809.json",
+      "bytes": 4294,
+      "sha256": "7590c4aea0bddc7c7f1e140b8ae8b34f68ded477cf673faf2f916808a126ed50"
+    },
+    {
+      "path": "outputs/reports/AUDIT_mfa_r3_alignment_contract_2020_20260809.json",
+      "bytes": 3225,
+      "sha256": "9d1ba6a1934cb855453ef5696c3a309d9e6cd19e917366ff273b2217afcb7e8d"
+    },
+    {
+      "path": "outputs/reports/PREFLIGHT_mfa_r3_runner_2020_gate_closed_20260809.json",
+      "bytes": 5316,
+      "sha256": "61306442ace260811fad18705b2fee8da2eb47f53d99fa3a41315864b88cdb57"
+    },
+    {
+      "path": "outputs/reports/REPOSITORY_TESTS_common_pron_mfa_r3_20260809_2020.json",
+      "bytes": 408,
+      "sha256": "64eb76d6852ebb55abb609d504d945b08bb37d7404fc51e93e9de92245d720f1"
+    },
+    {
+      "path": "config/mfa_pronunciation_release_gate.json",
+      "bytes": 2870,
+      "sha256": "3293a087e7192b81b79f0c1623dba2cf54e9e9ef71e7d047fb29f3aee8298bb3"
+    }
+  ],
+  "mutations_not_performed": [
+    "production release gate opening",
+    "MFA alignment",
+    "TextGrid export",
+    "r3 production corpus materialization",
+    "Stage 01-21 regeneration",
+    "D drive raw corpus modification",
+    "r2 database, TextGrid, or CSV modification"
+  ],
+  "next_step": "Researcher reviews this checklist 1-7 candidate, then separately authorizes checklist item 8 release-gate opening."
+}
