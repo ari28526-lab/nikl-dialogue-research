@@ -2,13 +2,14 @@
 
 최종 갱신: 2026-08-09 KST
 
-> **2026-08-09 r3 생산 전 현재 상태:** 외부 리뷰 §7 체크리스트 1–7을 모두
+> **2026-08-09 r3 2020 실행 직전 상태:** 외부 리뷰 §7 체크리스트 1–7을 모두
 > 구현·검증했다. 2020 exact-ID 입력은 782,715발화로 고정됐고 alignment contract
 > ID는 `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
-> 실제 `-PreflightOnly` 18개 검사 중 코드·모델·입력·D: 라벨·용량·lock·테스트
-> 17개가 통과하고, 연구자가 아직 열지 않은 release Gate만 실패했다. MFA·r3
-> corpus·TextGrid는 시작하지 않았다. 다음 단계는 8번 Gate 개방에 대한 연구자
-> 확인이며, 그 전에는 장시간 실행 명령을 사용하지 않는다.
+> 연구자 `ari30`이 `common_pron_mfa_r3_20260809`의 production release Gate와
+> 2020 preflight를 승인했다. Gate-adopted 정책 감사와 실제 `-PreflightOnly`
+> 18/18이 통과했다. MFA·r3 corpus·TextGrid는 아직 시작하지 않았고 상태는
+> `ready_not_started`다. 다음 단계는 정본 RUNBOOK의 2020 장시간 명령을 한 번
+> 실행하는 것이다.
 
 > **2026-08-07 발음 입력 Gate 보정:** 2022 공식 표본에서 `있지·있는·없는·
 > 어쨌든` 등의 MFA 입력 phone이 기존 규칙 예상형과 불일치함을 확인했다. 전수
@@ -53,7 +54,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 
 | 연도 | 검색표 | r2 계산·6-tier 보존 | 연구자 검토 | r3 최종 정렬 |
 |---:|---|---|---|---|
-| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 exact-ID 입력 782,715; 계약·감사 통과, release Gate 대기 |
+| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 exact-ID 782,715; Gate·preflight 18/18 GO, 장시간 실행 대기 |
 | 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | pron-safe 1,208,236; 교집합 산정 대기 |
 | 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | pron-safe 752,591; 교집합 산정 대기 |
 | 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |
@@ -246,7 +247,10 @@ Stage 19는 동결 pre-MFA `pron_reference_form`과 실제 LAB tokenizer로
 Stage 20은 795,804형·796,061변이의 safe-body MFA 후보 사전을 물질화하고
 107-phone 동결 acoustic inventory와 전수 byte projection을 독립 감사했다.
 inventory 밖 phone, lexical `spn`/`sil`, non-candidate 누출은 모두 0이다. 파일명과
-manifest는 `NOT_ADOPTED` 상태를 명시하며 아직 최종 선택·release가 아니다.
+manifest의 `NOT_ADOPTED`는 당시 Stage 20 후보 상태를 보존한다. 이 후보를
+byte-exact selected projection으로 물질화한 별도
+`common_pron_mfa_r3_20260809` release는 2026-08-09 production Gate에서
+채택됐다. Stage 폴더 자체를 production release로 사용하지 않는다.
 
 Stage 21은 기존 연구자 지적 표본 `있지·놨던·슬프겠지만·없는` 네 발화만 새
 후보 사전으로 표적 정렬했다. 입력 phone exact 4/4, interval 연속 4/4,
@@ -259,9 +263,9 @@ word–phone 바깥 경계 4/4, `spn` 0으로 자동 검사를 통과했다. 연
 pool로 삼고, 독립 정렬 가능성 Gate를 통과한 발화를 모두 동일 r3 계약으로 새로
 정렬하며 follow-up 718,364발화를 별도 shard로 보존하도록 결정했다.
 따라서 더 이상 full-coverage/단계 채택이나 r2 interval 재사용을 다시 선택하지
-않는다. 현재 Gate가 막는 것은 연구자 결정이 아니라 외부 workflow 리뷰,
-r3 전용 release/adoption 계약과 연도별 checkpoint runner 구현이다. 그 전에는
-생산 MFA·TextGrid materialization을 시작하지 않는다.
+않는다. 외부 workflow 리뷰, r3 전용 release/adoption, 연도별 checkpoint runner,
+정책 감사와 2020 preflight는 완료됐다. 현재는 2020 장시간 runner를 사용자가
+시작하기 직전이며, DB 완료 전 TextGrid materialization은 시작하지 않는다.
 
 ## 정본 문서
 

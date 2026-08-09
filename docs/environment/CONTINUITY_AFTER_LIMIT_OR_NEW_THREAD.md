@@ -1,6 +1,6 @@
 # Codex 리밋·새 대화 뒤 프로젝트 연속성
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 이 절차는 새 계정을 만들기 위한 것이 아니다. 같은 계정에서 Codex 사용 한도가
 초기화되기를 기다리거나 새 대화를 열어도, 로컬 계산과 연구 계약을 잃지 않고
@@ -13,7 +13,8 @@
    확인한다.
 3. `*.partial`, MFA DB, shard manifest, lock을 임의로 삭제하지 않는다.
 4. 채팅 기억이 아니라 현재 파일·manifest·Git commit을 정본으로 사용한다.
-5. 2020 완성본과 원본 WAV/CSV는 변경하지 않는다.
+5. 2020–2022 r2 완성본과 원본 WAV/CSV는 변경하지 않는다. r3는 release 전용
+   경로에서만 생성한다.
 
 ## 새 대화에서 가장 먼저 할 일
 
@@ -50,7 +51,20 @@ git log -3 --oneline
   조사한다. 자동 삭제·처음부터 재실행을 하지 않는다.
 - `not_started`: RUNBOOK의 현재 한 단계만 실행한다.
 
-MFA 단계에서는 `show_mfa_year_queue_status.ps1`를 사용하고 같은 원칙을 적용한다.
+r2 역사·복구 단계에서는 `show_mfa_year_queue_status.ps1`를 쓴다. 현재 r3
+연도 MFA 단계에서는 다음 release 전용 읽기 상태판만 사용한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\show_mfa_r3_year_status.ps1" `
+  -Year 2020
+```
+
+`ready_not_started`면 RUNBOOK 3.0의 명령을 한 번 실행한다.
+`corpus_materializing_or_mfa_starting` 또는 `mfa_running`이면 기존 PowerShell을
+그대로 둔다. 중단 상태면 corpus·temp·DB를 삭제하지 않고 같은 명령으로 한 번만
+재개한다.
 
 ## 2026-08-07 r3 공통발음 후보 단계
 
@@ -269,14 +283,17 @@ D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\21_targeted_regression_20
 outputs/reports/AUDIT_common_pron_r3_adoption_readiness_20260808.json
 ```
 
-safe body는 4,384,992발화, follow-up은 718,364발화다. 후보 사전은
-795,804형·796,061변이이며 `NOT_ADOPTED`다. 연구자는 표적 네 발화의 경계와
+safe body는 4,384,992발화, follow-up은 718,364발화다. Stage 20 후보 사전은
+795,804형·796,061변이이며 역사적 `NOT_ADOPTED` 상태로 보존한다. 이를 byte-exact
+물질화한 `common_pron_mfa_r3_20260809` release는 production Gate에서 채택됐다.
+연구자는 표적 네 발화의 경계와
 2020–2025 pronunciation-safe pool의 정렬 가능 집합 전체 신규 r3 정렬을
 승인했다. 기술적 제외는 exact-ID로 별도 회계한다. r2 interval은 최종 r3에
-재사용하지 않으며 follow-up은 exact-ID 별도 shard로 보존한다. 다음 행동은
-`docs/reviews/PROMPT_external_review_mfa_r3_full_realign_20260809.md`에 따른 외부
-workflow 리뷰와 r3 전용 release/runner 구현이다. 그 전에는 생산 MFA,
-TextGrid materialization, r2 label 제자리 치환을 시작하지 않는다.
+재사용하지 않으며 follow-up은 exact-ID 별도 shard로 보존한다. 외부 workflow
+리뷰, r3 전용 release/runner, 정책 감사 v2와 2020 preflight 18/18은 완료됐다.
+현재 상태는 `ready_not_started`이며 다음 행동은 RUNBOOK 3.0의 2020 장시간
+명령을 한 번 실행하는 것이다. DB 완료 전 TextGrid materialization과 r2 label
+제자리 치환은 하지 않는다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

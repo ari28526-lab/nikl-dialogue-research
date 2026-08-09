@@ -6,7 +6,7 @@
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
 보존한다.
 
-> **2026-08-07 발음 입력 안전 중단:** `common_pron_mfa_r2_20260728`은 기존
+> **2026-08-09 r3 production Gate 개방:** `common_pron_mfa_r2_20260728`은 기존
 > 규칙 예상 발음층을 실제 MFA 입력 사전에 일관되게 전달하지 않았음이 2022
 > 연구자 표본과 881,237 표면형 전수 감사에서 확인됐다. r2 산출물은 삭제·수정하지
 > 않고 방법론 증거로 보존하되, r2를 이용한 새 MFA와 2023 진입은 금지한다.
@@ -15,8 +15,11 @@
 > 정렬 가능 발화를 r3로 새로 정렬하는 단계적 채택을 승인했다. 기술적 제외는
 > exact-ID로 별도 회계하며 기존 r2 interval은 최종 r3에 재사용하지
 > 않는다. 광범위한 파일·tier 검토와 2022 24표본 청취는 반복하지 않고 회귀
-> 근거로 보존한다. 후보 사전은 아직 `NOT_ADOPTED`이며, production 명령은 외부
-> workflow 리뷰와 r3 전용 release/runner 구현·검사가 끝난 뒤에만 제공한다.
+> 근거로 보존한다. 연구자 `ari30`은 체크리스트 1–7을 확인하고
+> `common_pron_mfa_r3_20260809`의 단일 production release Gate와 2020 안전
+> 본체 782,715발화의 preflight를 승인했다. Gate-adopted 정책 감사와 2020
+> 실자료 preflight 18/18이 통과했으며, 현재 상태는 `ready_not_started`다.
+> 실제 MFA·r3 corpus·TextGrid는 아직 생성하지 않았다.
 
 ## 1. 완료 산출물
 
@@ -71,14 +74,49 @@
   → model 표상·exact 문맥 projection 후보·독립 감사 완료
   → 881,237형 selection-readiness·독립 감사 완료
   → canonical exact donor 전역 projection·09 readiness·독립 감사 완료
-  → no-rule 잔여 85,504형 candidate-only 계약  ← 현재
+  → no-rule 잔여 85,504형 candidate-only 계약
   → 단일 canonical 선택 계약·zero-fallback·adoption Gate
   → Stage 19 routing·Stage 20 후보 사전·Stage 21 표적 회귀 완료
   → 연구자 단계적 safe-body·6개년 전체 신규 정렬 승인
-  → 외부 workflow 리뷰와 r3 전용 release/runner 구현  ← 현재
-  → 2020부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
+  → 외부 workflow 리뷰와 r3 전용 release/runner 구현
+  → 체크리스트 1–7 확인·단일 release Gate 채택·정책 감사 통과
+  → 2020 exact-ID 782,715발화 preflight 18/18 GO
+  → 2020 장시간 MFA 사용자 시작  ← 현재
+  → 2021부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
+
+### 3.0 2020 r3 전수 MFA 시작
+
+2020 입력은 exact-ID 782,715발화이며 release ID는
+`common_pron_mfa_r3_20260809`, alignment contract ID는
+`3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
+Gate-adopted 정책 감사와 2020 preflight 18/18이 통과했으므로 아래 명령이 현재
+유일한 장시간 생산 진입점이다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_year_safe_body.ps1" `
+  -Year 2020 -NumJobs 4
+```
+
+장시간 창은 그대로 열어 둔다. 상태는 별도 PowerShell 창에서 다음 읽기 전용
+명령으로 확인한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\show_mfa_r3_year_status.ps1" `
+  -Year 2020
+```
+
+첫 단계는 WAV hardlink와 LAB 782,715쌍을 release 전용 corpus에 checkpoint로
+물질화하므로 MFA child PID가 나타나기 전에도 시간이 걸릴 수 있다. 이때 상태판의
+`corpus_materializing_or_mfa_starting`은 정상이다. 중단되면 corpus·temp·DB를
+삭제하지 말고 같은 명령을 한 번만 다시 실행한다. 동시에 두 개를 실행하지 않는다.
+이 명령은 MFA DB 계산까지가 본체이며 TextGrid와 동반표 export는 DB 완료 marker
+`ALIGN_DONE_2020.json`을 확인한 뒤 별도 단계에서 수행한다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 
@@ -349,7 +387,9 @@ Stage 19는 동결 pre-MFA root의 `pron_reference_form`을 실제 LAB tokenizer
 전수 라우팅했다. 발화 안에 hold/policy/unknown/empty가 하나라도 있으면 발화
 전체를 follow-up으로 보내고 어절을 부분 삭제하지 않는다. 결과는 safe body
 4,384,992발화, follow-up 718,364발화, unknown 0이다. Stage 20의 후보 사전은
-795,804형·796,061변이이며 독립 전수 감사를 통과했지만 `NOT_ADOPTED`다.
+795,804형·796,061변이이며 Stage 20 자체는 역사적 `NOT_ADOPTED` 후보로 보존한다.
+이 후보를 byte-exact projection한 별도 `common_pron_mfa_r3_20260809` release가
+현재 production Gate에서 채택됐으며 Stage 폴더를 직접 입력으로 쓰지 않는다.
 
 Stage 21 표적 네 발화의 자동 회귀 검사는 통과했고 연구자는 네 경계를 모두
 승인했다. 또한 4,384,992 pronunciation-safe 발화를 대상 pool로 삼고, 독립
@@ -357,8 +397,8 @@ Stage 21 표적 네 발화의 자동 회귀 검사는 통과했고 연구자는 
 718,364 follow-up 발화를 별도 shard로 보존하는 것을 승인했다. 이를
 전체 코퍼스 완료로 보고하지 않는다. 승인 계약은
 `outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`
-이다. 현재 6절 진입을 막는 Gate는 외부 workflow 리뷰, r3 release/adoption
-materialization, 전용 runner와 자동검사뿐이다.
+이다. 외부 workflow 리뷰, r3 release/adoption materialization, 전용 runner,
+자동검사와 2020 preflight는 완료됐다. 현재 실행은 3.0절의 단일 명령만 따른다.
 
 ## 4. 2021 Gate 종료 — 완료
 
@@ -433,8 +473,9 @@ r3 표적 회귀 입력이며 r2 최종 승인 Gate로 더 진행하지 않는�
 
 재개 명령은 `resume_year_export_after_post_mfa_review.ps1`을 사용한다. 이 명령은
 기존 1,231건과 새 438건을 결합한 계약을 만든 뒤 같은 `direct_db_ready` DB에서
-export부터 시작하도록 만든 역사적 r2 복구 명령이다. 현재 발음 Gate가 닫혔으므로
-새 실행에 사용하지 않는다.
+export부터 시작하도록 만든 역사적 r2 복구 명령이다. r3 Gate 상태와 무관하게 새
+실행에 사용하지 않는다. 현재 열린 Gate는 r3 release
+하나만 허용하며 이 r2 복구 명령을 다시 허용하지 않는다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.

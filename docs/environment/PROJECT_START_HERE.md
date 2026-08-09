@@ -2,14 +2,15 @@
 
 최종 갱신: 2026-08-09 KST
 
-> **현재 안전 정지점:** 외부 리뷰의 2020 실행 전 체크리스트 1–7이 구현·검증됐다.
+> **현재 생산 진입점:** 외부 리뷰의 2020 실행 전 체크리스트 1–7이 구현·검증됐다.
 > v3.1 계약, staged r3 release, 2020 exact-ID 입력·alignment 계약, r3 전용
 > runner, 6-tier exporter·독립 감사, PowerShell/Python 전수 테스트가 통과했다.
-> 2020 실자료 `-PreflightOnly` 18개 검사 중 17개가 통과했고, 아직 열지 않은
-> `production_release_gate` 하나만 의도적으로 실패했다. 생산 MFA·r3 corpus·
-> TextGrid는 시작되지 않았다. 다음 한 단계는 연구자가 체크리스트 1–7 결과를
-> 확인한 뒤 8번 release Gate 개방을 별도로 승인하는 것이다. Stage 01–21,
-> D: 원자료, r2 완성본과 광범위 파일럿은 다시 실행하지 않는다.
+> 연구자 `ari30`이 `common_pron_mfa_r3_20260809`의 production release Gate와
+> 2020 안전 본체 782,715발화의 preflight를 승인했다. Gate-adopted 정책 감사와
+> 2020 실자료 `-PreflightOnly` 18/18이 통과했다. 현재는
+> `ready_not_started`이며 생산 MFA·r3 corpus·TextGrid는 아직 시작되지 않았다.
+> 다음 한 단계는 정본 RUNBOOK의 2020 장시간 명령을 사용자가 한 번 실행하는
+> 것이다. Stage 01–21, D: 원자료, r2 완성본과 광범위 파일럿은 다시 실행하지 않는다.
 
 이 저장소에서 새 작업을 시작할 때는 아래 문서만 순서대로 읽는다.
 
@@ -118,8 +119,9 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
   718,364발화를 고정했고, Stage 20 후보 사전의 796,061변이도 독립 감사를
   통과했다. Stage 21의 기존 문제 표본 네 발화는 자동 회귀 검사와 연구자 경계
   승인 4/4를 통과했다. 단계적 safe-body와 6개년 신규 r3 정렬 범위도 승인됐다.
-  현재 생산 MFA 전 필요한 것은 외부 workflow 검토와 r3 전용 release·runner
-  구현·검사다.
+  r3 release·runner·exporter·독립 감사 구현, 체크리스트 1–7, 단일 production
+  Gate 채택과 2020 preflight 18/18까지 완료됐다. 현재는 실제 2020 장시간 MFA
+  시작 직전이며, 아직 corpus·DB·TextGrid를 생성하지 않았다.
 
 ## 문서 사용 규칙
 

@@ -1,6 +1,6 @@
-# 데이터 배치도 — r2 증거 보존·r3 준비 기준
+# 데이터 배치도 — r2 증거 보존·r3 생산 기준
 
-최종 갱신: 2026-08-05 KST
+최종 갱신: 2026-08-09 KST
 
 자산의 존재·완료 상태는 [ASSETS_LEDGER.md](ASSETS_LEDGER.md)가 정본이다. 이
 문서는 현재 생산에서 사용하는 좌표와 폴더 역할만 설명한다.
@@ -21,9 +21,20 @@ D:\
 │  └─ 08_textgrid_research_v2_staging
 │                                  신규 r2 6-tier·동반표(2020 완료)
 ├─ mfa_common_pron
-│  └─ releases\common_pron_mfa_r2_20260728
-│                                  구 r2 증거(신규 MFA 사용 금지)
-├─ mfa_eojeol                     marker·lock·log·계약
+│  └─ releases
+│     ├─ common_pron_mfa_r2_20260728
+│     │                            구 r2 증거(신규 MFA 사용 금지)
+│     └─ common_pron_mfa_r3_20260809
+│                                  채택된 r3 사전·projection·감사
+├─ mfa_eojeol
+│  └─ r3\common_pron_mfa_r3_20260809
+│     ├─ corpus\<year>             exact-ID WAV hardlink·LAB
+│     ├─ contracts                 입력·물질화·temp 계약
+│     ├─ temp\<year>               release 전용 MFA temp/DB
+│     ├─ mfa_output\<year>         DB 완료 뒤 별도 export
+│     ├─ logs                      stdout·stderr·heartbeat
+│     ├─ markers                   연도 완료 marker
+│     └─ locks                     중복 실행 차단
 ├─ mfa_tmp                        D: 선택 시 연도별 MFA 임시 DB
 └─ mfa_eojeol_out                 legacy export 폴백 경로
 ```
@@ -46,11 +57,18 @@ C:\Users\ari30\research\2026_summer_research
 
 대형 WAV·TextGrid·MFA DB는 Git에 넣지 않는다.
 
-2020은 `08_textgrid_research_v2_staging\2020`에 TextGrid 868,187개와 동반표
-4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021도 1,371,883개
-TextGrid·동반표·독립 전수 감사·DB 표본 재수출을 완료했고 연구자 표본 Gate를
-진행 중이다. 2022–2025는 승인 제외 계약과 LAB marker까지 준비됐지만 신규 MFA
-결과는 아직 없다.
+2020의 r3 production root는 runner가 처음 실행될 때만 만든다. 현재 Gate와
+preflight는 통과했지만 root는 `ready_not_started`다. corpus는 원 WAV를 바꾸지
+않는 same-volume hardlink와 생성 LAB로 구성하고, 중단 시 `.building` 계약·temp·
+DB를 삭제하지 않은 채 같은 명령으로 재개한다. 수동 폴더 생성·이름 변경·정리는
+금지한다.
+
+2020은 `08_textgrid_research_v2_staging\2020`에 r2 TextGrid 868,187개와 동반표
+4개를 완성했고 독립 감사·24개 표본·Gate B를 통과했다. 2021도 r2 TextGrid
+1,371,883개·동반표·독립 전수 감사·연구자 24/24 검토를 완료했다. 2022는 r2
+TextGrid 864,690개·동반표·독립 기계 QC·24표본 검토까지 완료했으며 발음 입력
+문제를 발견한 회귀 근거다. 2023–2025에는 r2 최종 생산본이 없다. 이 모든 r2
+산출은 읽기 전용 증거이고 최종 r3와 섞지 않는다.
 
 `10_pronunciation_reference`는 기존 MFA phone을 바꾸는 사전 폴더가 아니다.
 우리말샘 `pron_1/pron_2`와 명시적으로 구분한 legacy 기계 fallback을 한 번만

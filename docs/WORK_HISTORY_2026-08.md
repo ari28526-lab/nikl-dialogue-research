@@ -1,5 +1,50 @@
 # 2026년 8월 작업 기록
 
+## 2026-08-09 — r3 production Gate 채택·2020 preflight 18/18 GO
+
+### 연구자 승인과 단일 Gate 개방
+
+- 연구자 `ari30`은 외부 리뷰 체크리스트 1–7 결과를 확인하고
+  `common_pron_mfa_r3_20260809`의 production release Gate와 2020 안전 본체
+  782,715발화의 r3 preflight 진행을 명시 승인했다.
+- 승인 원문·승인자·범위는
+  `outputs/reviews/common_pron_r3_production_gate_20260809/
+  RESEARCHER_APPROVAL_PRODUCTION_GATE.json`에 불변 기록했다.
+- `config/mfa_pronunciation_release_gate.json`은 허용 release를 r3 하나로만
+  채택했다. `common_pron_mfa_r2_20260728` 차단은 유지했다.
+
+### 정책 감사 v2와 최종 preflight
+
+- `audit_mfa_r3_full_realign_policy.py`를 v2로 보강해 workflow의 기대 수량뿐
+  아니라 Stage 19 실제 `year_routing_summary.csv`, v3.1 계약, 단계 승인과
+  production Gate 승인, Gate evidence SHA, 실제 r3 실행 경로의 legacy token을
+  전수 검사했다.
+- Gate-adopted 감사 결과는 `failures=0`, `gaps=0`,
+  `production_allowed=true`다.
+- 2020 final preflight는 18/18 `GO`다. PowerShell safety/runtime 65개와 Python
+  전체 suite 542시험이 통과했다. 검사한 실행 코드 commit은
+  `c48a8016cbe308b8602abfb2a5f7b25fb41a45bc`다.
+- exact-ID 입력은 782,715발화, alignment contract ID는
+  `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
+  D: 여유 약 194.869 GiB는 산정 필요량 약 53.726 GiB보다 컸다.
+
+### 실행 준비와 현재 무변경 경계
+
+- `show_mfa_r3_year_status.ps1`을 추가했다. Gate·preflight·corpus materialization·
+  lock/PID·temp/DB·완료 marker를 읽기 전용으로 보여 주고, 수십만 파일을 매번
+  재귀 스캔하지 않는다.
+- 현재 상태는 `ready_not_started`다. 이 기록 시점까지 r3 production corpus,
+  MFA DB, TextGrid를 생성하지 않았다.
+- 장시간 runner는 release 전용 root 아래 hardlink WAV·LAB corpus를 checkpoint로
+  만든 뒤 MFA DB를 계산한다. 중단 시 같은 명령으로 재개하며 자동 full-clean,
+  실패 temp/DB 삭제, r2/legacy DB 재사용을 금지한다.
+- 본 장시간 단계는 DB-first다. `ALIGN_DONE_2020.json` 뒤에만 6-tier TextGrid와
+  동반표 export·독립 감사를 진행한다. follow-up 718,364발화는 exact-ID 별도
+  shard로 계속 보존한다.
+
+정본 결과 문서는
+`docs/decisions/RESULT_mfa_r3_production_gate_and_2020_go_20260809.md`다.
+
 ## 2026-08-07 — r2 발음 입력 배선 공백 전수 감사·신규 실행 차단
 
 ### 반복 원인

@@ -1,0 +1,179 @@
+{
+  "schema_version": "mfa_r3_year_safe_body_preflight.v1",
+  "status": "go",
+  "recorded_at": "2026-08-09T13:29:46+09:00",
+  "year": "2020",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "alignment_contract_id": "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a",
+  "go": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "name": "runner_policy",
+      "passed": true,
+      "detail": "approved_runner_implementation_gate_controlled"
+    },
+    {
+      "name": "drive_label",
+      "passed": true,
+      "detail": {
+        "observed": "DATA_SSD",
+        "expected": "DATA_SSD"
+      }
+    },
+    {
+      "name": "lock_state_clear",
+      "passed": true,
+      "detail": {
+        "lock_problem_count": 0
+      }
+    },
+    {
+      "name": "powershell_safety_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
+      }
+    },
+    {
+      "name": "powershell_runtime_compat_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
+      }
+    },
+    {
+      "name": "python_full_suite",
+      "passed": true,
+      "detail": {
+        "passed": true
+      }
+    },
+    {
+      "name": "alignment_contract_identity",
+      "passed": true,
+      "detail": "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a"
+    },
+    {
+      "name": "alignment_independent_audit",
+      "passed": true,
+      "detail": "passed_independent_identity_audit_pending_runner_and_release_gate"
+    },
+    {
+      "name": "model_acoustic",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "model_dictionary",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "model_g2p_provenance",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "year_input_expected_mfa_input_ids",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "year_input_pronunciation_followup_ids",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "year_input_pre_mfa_exclusion_ids",
+      "passed": true,
+      "detail": "SHA-256/path/bytes"
+    },
+    {
+      "name": "capacity_formula",
+      "passed": true,
+      "detail": {
+        "expected_utterances": 782715,
+        "per_utterance_bytes": 42500,
+        "variable_gib": 30.981,
+        "fixed_overhead_gib": 12.0,
+        "safety_multiplier": 1.25,
+        "required_gib": 53.726,
+        "observed_free_gib": 194.869
+      }
+    },
+    {
+      "name": "release_scoped_path",
+      "passed": true,
+      "detail": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809"
+    },
+    {
+      "name": "legacy_artifacts_absent",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "production_release_gate",
+      "passed": true,
+      "detail": {
+        "status": "adopted",
+        "allowed_release_ids": [
+          "common_pron_mfa_r3_20260809"
+        ]
+      }
+    }
+  ],
+  "capacity": {
+    "expected_utterances": 782715,
+    "per_utterance_bytes": 42500,
+    "variable_gib": 30.981,
+    "fixed_overhead_gib": 12.0,
+    "safety_multiplier": 1.25,
+    "required_gib": 53.726
+  },
+  "paths": {
+    "release_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809",
+    "corpus_year": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2020",
+    "temporary_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp",
+    "mfa_output_year": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\mfa_output\\2020",
+    "logs": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\logs",
+    "markers": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers"
+  },
+  "inputs": {
+    "runner_policy": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_r3_runner_v1.json",
+      "bytes": 1221,
+      "mtime_ns": 1786243188595398600,
+      "sha256": "ea83766e58fe4d086aba0a54755e406196048690eb9c5eed5dd537b715acb3df"
+    },
+    "alignment_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2020\\ALIGNMENT_CONTRACT_2020.json",
+      "bytes": 7589,
+      "mtime_ns": 1786242875191940700,
+      "sha256": "be5d8ec3fcc34e50eb16579fb95ba8a558bb20f366df43eecc68eac45e80b220"
+    },
+    "alignment_independent_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_r3_alignment_contract_2020_20260809.json",
+      "bytes": 3225,
+      "mtime_ns": 1786242883418160100,
+      "sha256": "9d1ba6a1934cb855453ef5696c3a309d9e6cd19e917366ff273b2217afcb7e8d"
+    },
+    "release_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_pronunciation_release_gate.json",
+      "bytes": 3391,
+      "mtime_ns": 1786249143524388600,
+      "sha256": "92702ba2d0ff220307829e28848be777e8abf39000e452179219aa27a7bcfe97"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-09T13:29:46+09:00",
+    "git_commit": "c48a8016cbe308b8602abfb2a5f7b25fb41a45bc",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 8188
+  }
+}

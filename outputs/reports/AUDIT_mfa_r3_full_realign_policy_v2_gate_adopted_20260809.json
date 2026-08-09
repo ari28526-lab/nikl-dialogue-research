@@ -1,0 +1,55 @@
+{
+  "schema_version": "mfa_r3_full_realign_policy_audit.v2",
+  "status": "passed_policy_consistency_release_gate_adopted",
+  "observed_at": "2026-08-09T13:28:45+09:00",
+  "expected_gate_state": "adopted",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "policy_failures": [],
+  "r3_execution_legacy_identity_gaps": [],
+  "production_mfa_allowed_now": true,
+  "stage19_year_routing_summary": {
+    "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\year_routing_summary.csv",
+    "bytes": 938,
+    "sha256": "90ee101fa2b10618d4c04d2e69b2a13706b901b4729864c094d3af981417bd77"
+  },
+  "inputs": {
+    "workflow": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_r3_full_realign_workflow_v1.json",
+      "bytes": 4476,
+      "sha256": "6f1eed7f698d9089cdddbff56d9f71ccf6cc9fdf81cd11a6a2258dba0198e77b"
+    },
+    "contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\common_pronunciation_resource_contract_v3_1.json",
+      "bytes": 9832,
+      "sha256": "937e9b2369eeb6dc58f6467900e3b87e7bc8cefa0527ef75674fe3c18e7b4539"
+    },
+    "release_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_pronunciation_release_gate.json",
+      "bytes": 3391,
+      "sha256": "92702ba2d0ff220307829e28848be777e8abf39000e452179219aa27a7bcfe97"
+    },
+    "approval": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_targeted_regression_20260808\\RESEARCHER_APPROVAL.json",
+      "bytes": 3777,
+      "sha256": "9e5e1a0827984cb2820c14be0990785bd8d1b7056058b1e84bbde2b52cb38a90"
+    },
+    "gate_approval": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_production_gate_20260809\\RESEARCHER_APPROVAL_PRODUCTION_GATE.json",
+      "bytes": 2571,
+      "sha256": "3a45c49769a4f7affef45f97a8f96002a9f665fde80c06a38ce5090f5b3bcc36"
+    },
+    "checklist": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_r3_checklist_1_7_candidate_20260809.json",
+      "bytes": 4937,
+      "sha256": "bfd0a5c3fe960f9939c1da0d9601c478b42317cf36e2c763309ee510090ce7d9"
+    },
+    "routing_manifest": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\19_pre_adoption_routing\\PRE_ADOPTION_ROUTING_MANIFEST.json",
+      "bytes": 4560,
+      "sha256": "7e00bf5bf28dc7cb1c97a4b5d14584d78cfef0957e6e71c4c42a23c144ce7ddb"
+    }
+  },
+  "runtime": {
+    "git_commit": "c48a8016cbe308b8602abfb2a5f7b25fb41a45bc"
+  }
+}

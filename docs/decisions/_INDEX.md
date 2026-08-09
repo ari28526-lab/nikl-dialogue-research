@@ -60,6 +60,7 @@
 | `RESULT_mfa_r3_runner_preflight_2020_20260809.md` | r3 전용 이름공간·checkpoint·lock·용량 산식 runner와 Gate-closed 실자료 preflight 결과 |
 | `RESULT_mfa_r3_exporter_audit_contract_20260809.md` | 승인 6-tier를 유지하며 r3 provenance 10필드·DB SHA·phoneme label 독립 감사를 추가한 결과 |
 | `RESULT_mfa_r3_checklist_1_7_candidate_20260809.md` | 외부 리뷰 체크리스트 1–7 통합 통과와 release Gate 직전 안전 정지점 |
+| `RESULT_mfa_r3_production_gate_and_2020_go_20260809.md` | 연구자 Gate 승인, r3 단일 release 채택, 정책 감사 v2와 2020 preflight 18/18 GO, 장시간 실행·재개 경계 |
 
 ## 현재 생산과 안전 계약
 

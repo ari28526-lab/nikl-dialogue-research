@@ -25,7 +25,8 @@
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\2021` | 세션 checkpoint형 7-tier 파생 생산본 | 4,139세션·1,371,883개; 기존 6-tier 변경 0, 독립 감사 오류 0 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
-| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 발화 라우팅, safe-body 후보, 표적 회귀 | Stage 01–21 완료; safe 4,384,992·follow-up 718,364; 후보 사전 795,804형·796,061변이; 연구자 단계 채택 승인, release materialization·생산 전 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 발화 라우팅, safe-body 후보, 표적 회귀 | Stage 01–21 완료; safe 4,384,992·follow-up 718,364; 채택 release의 역사적 입력 근거, 직접 생산 입력으로 임의 변경 금지 |
+| `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809` | 채택된 r3 selected projection·796,061행 MFA 사전·독립 감사 | production Gate `adopted`; 2020–2025의 유일한 신규 MFA 발음 release, r2와 혼합 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\10_no_rule_hold_characterization` | no-rule 85,504형의 문자·사전·r2 출처·편집 유형 전수 특성화 | `success_characterized_not_candidate`; 모두 완성형 한글, 독립 감사 통과, 후보·selection·adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\11_rule_phone_coverage_audit` | no-rule 변이의 수의적 위치동화, frozen 기본사전 정확 일치, phone↔규칙키 비일대일성 전수 진단 | `success_audited_not_candidate`; 36,568형 all-optional, 811형 비중복 all-frozen, 48,043형 미해결, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\12_selection_readiness_v2` | stage 09 전체 readiness에 감사된 no-rule 정렬 후보 37,379형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 789,649형, zero-fallback hold 91,553형, 독립 감사 통과, adoption 아님 |
@@ -41,7 +42,8 @@
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\19_pre_adoption_routing_failed_*` | 구 검색 root·LAB tokenizer count 가정으로 안전 중단된 Stage 19 두 partial | 삭제하지 않고 원인별 이름으로 보존, 생산 입력 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
-| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 준비 중 |
+| `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 production namespace 분리 |
+| `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 현재 `ready_not_started`; runner가 2020 장시간 실행 때 생성, 수동 생성·삭제·legacy 재사용 금지 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
 | `D:\mfa_tmp\2022\2022.db` | 2022 공통 Jamo r2 보존 정렬 DB | 864,690 정렬 산출; 발음 입력 문제 발견 근거로 읽기 전용 보존 |
@@ -90,11 +92,17 @@ C:\Users\ari30\research\2026_summer_research
 넣지 않는다. 현재 작업 브랜치는 `agent/harden-pre-bulk-pipelines`이며, 정리 기록은
 검증 완료 뒤 커밋·푸시한다.
 
-현행 r3 범위 계약은 `config/mfa_r3_full_realign_workflow_v1.json`, 연구자 승인은
+현행 r3 범위 계약은 `config/mfa_r3_full_realign_workflow_v1.json`이다. 단계적
+범위 승인은
 `outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`,
-정책 일관성 감사는
-`outputs/reports/AUDIT_mfa_r3_full_realign_policy_20260809.json`이다. 이 감사가
-통과해도 production Gate는 자동으로 열리지 않는다.
+단일 production Gate 승인은
+`outputs/reviews/common_pron_r3_production_gate_20260809/RESEARCHER_APPROVAL_PRODUCTION_GATE.json`에
+불변 기록했다. 정책 감사
+`outputs/reports/AUDIT_mfa_r3_full_realign_policy_v2_gate_adopted_20260809.json`은
+실제 Stage 19 연도 수량·Gate 증거·r3 실행 경로의 legacy token을 검사해 통과했고,
+2020 final preflight
+`outputs/reports/PREFLIGHT_mfa_r3_runner_2020_gate_adopted_go_20260809.json`은
+18/18 `GO`다. 현재 MFA 실물은 아직 시작되지 않았다.
 
 ## 2020 현재 계약
 

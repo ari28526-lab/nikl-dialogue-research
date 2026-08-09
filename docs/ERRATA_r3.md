@@ -35,3 +35,10 @@
 산출물을 오염시키지 않았다.
 
 - [RESOLVED] 2026-08-09 | `build_common_pron_r3_staged_approval.py` | 체크리스트 1에서 승인 JSON을 불변화하고 내용 SHA별 provenance를 별도 v2 sidecar에 append하도록 구현·회귀 검사함 | M3
+- [RESOLVED] 2026-08-09 | `run_eojeol_realign.ps1` `Archive-StaleTemp` | r3 runner는 해당 legacy clean 함수를 호출하지 않고, release-scoped 동일 계약만 재개하며 자동 clean을 금지하는 별도 경로로 구현·시험함 | 체크리스트 5
+- [RESOLVED] 2026-08-09 | `audit_mfa_r3_full_realign_policy.py` | v2가 실제 r3 실행 경로 전체와 구체 legacy token, Stage 19 실제 연도 요약, Gate 승인 SHA를 검사함 | Gate-adopted 감사 failures 0
+- [RESOLVED] 2026-08-09 | `tests/test_powershell_safety.ps1` | 신규 r3 스크립트를 자동 포함하고 dashboard 읽기 전용 제약까지 검사함 | safety/runtime 각 65개 통과
+- [RESOLVED] 2026-08-09 | r3 checkpoint·lock·절전·공간·temp | release-scoped lock, `DATA_SSD` 확인, 절전 enable/restore, 연도별 용량 산식, D: release 전용 temp를 runner·preflight에 구현함 | 2020 preflight 18/18 GO
+- [RESOLVED] 2026-08-09 | follow-up·화자 적응 근거 | 2020 exact-ID 입력 계약과 독립 감사에 safe/follow-up/기술 제외 분모를 고정하고, exporter·감사 계약이 후속 coverage와 provenance를 보존하도록 구현함; 실제 정렬 후 통계는 연도 산출물에서 기록 | 체크리스트 3·6
+- [RESOLVED] 2026-08-09 | r3 validator·release identity | 발음 release·사전·alignment contract·DB SHA를 r3 manifest에서 유도하고 10개 provenance 필드를 exporter와 독립 감사가 재검증함 | 체크리스트 2·4·6
+- [RECORD] 2026-08-09 | production Gate | 위의 “Gate가 닫혀” 문장은 FIX-NEXT 작성 당시의 역사 상태다. 연구자 승인 뒤 r3 하나에 Gate를 열었고 r2 차단은 유지한다. 현재 `STOP` 0, 2020 `ready_not_started` | `RESULT_mfa_r3_production_gate_and_2020_go_20260809.md`
