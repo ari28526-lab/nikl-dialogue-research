@@ -21,7 +21,8 @@
 > occurrence 연결 정본이 빠진 것을 실제 MFA 전에 발견했다. 이 연결표와 독립
 > 감사가 통과해야만 장시간 runner가 열리도록 Gate를 보강했다. 원 CSV와 사전은
 > 덮어쓰지 않는다.
-> 실제 MFA·r3 corpus·TextGrid는 아직 생성하지 않았다.
+> 2020 r3 corpus와 보존 정렬 DB는 2026-08-09에 완료됐다. 6-tier TextGrid와
+> post-MFA 동반표는 아직 생성하지 않았고 2021은 시작하지 않았다.
 
 ## 1. 완료 산출물
 
@@ -84,7 +85,8 @@
   → 체크리스트 1–7 확인·단일 release Gate 채택·정책 감사 통과
   → 2020 발음 연구 DB 870,437발화·3,056,807 occurrence 감사 passed
   → 2020 exact-ID 782,715발화 보강 preflight 19/19 GO
-  → 2020 장시간 MFA 사용자 시작  ← 현재
+  → 2020 r3 정렬 DB 완료: 782,432 정렬·283 post-MFA 미정렬
+  → 2020 exact-ID 회계·6-tier export·독립 QC  ← 현재
   → 2021부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
@@ -110,7 +112,7 @@ checkpoint로 재사용하며 23/23 완료했다. 이 명령은 MFA·WAV·TextGr
 782,715 + 1,675 + 86,047 = 870,437로 정확히 회계됐다. 이 파일이 없거나 달라지면
 다음 runner는 자동으로 NO-GO한다.
 
-### 3.1 2020 r3 전수 MFA 시작
+### 3.1 2020 r3 전수 MFA 완료 checkpoint
 
 2020 입력은 exact-ID 782,715발화이며 release ID는
 `common_pron_mfa_r3_20260809`, alignment contract ID는
@@ -141,6 +143,12 @@ Gate-adopted 정책 감사, 2020 occurrence DB 독립 감사와 보강된 prefli
 삭제하지 말고 같은 명령을 한 번만 다시 실행한다. 동시에 두 개를 실행하지 않는다.
 이 명령은 MFA DB 계산까지가 본체이며 TextGrid와 동반표 export는 DB 완료 marker
 `ALIGN_DONE_2020.json`을 확인한 뒤 별도 단계에서 수행한다.
+
+2026-08-09 완료값은 입력 782,715, word·phone interval 모두 존재 782,432,
+post-MFA 미정렬 283, `spn` 0이다. 보존 DB SHA와 SQLite 무결성은 독립 감사에서
+통과했다. 이 283건은 다음 exact-ID 회계 대상으로 넘기며 2020 전량을 다시
+정렬하지 않는다. 완료 결과는
+`docs/decisions/RESULT_mfa_r3_alignment_database_2020_20260809.md`를 따른다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 

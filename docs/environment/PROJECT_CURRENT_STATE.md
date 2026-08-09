@@ -315,14 +315,19 @@ pool로 삼고, 독립 정렬 가능성 Gate를 통과한 발화를 모두 동�
   `docs/WORKFLOW_mfa_r3_full_realign_2020_2025.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`
 
-## 2026-08-09 17:23 현재: 2020 r3 안전 재개 직전
+## 2026-08-09 21:30 현재: 2020 r3 정렬 DB 완료·export 전 정지
 
-- 2020 r3 코퍼스 materialization은 2,231세션·782,715발화로 완료됐다.
-- 최초 MFA 시작은 conda `Library\\bin` PATH 미상속으로 `fstcompile`을 찾지 못해
-  즉시 안전 종료됐다. `ALIGN_DONE_2020.json`은 없으며 2021은 시작되지 않았다.
-- runner는 conda runtime PATH 상속과 `check_third_party()` preflight hard Gate로
-  보강됐다. 전체 Python 544개, PowerShell safety/runtime 각 66개 및 실제 2020
-  preflight 20/20이 통과했다.
-- 다음 허용 작업은 사용자가 같은 2020 runner 명령을 다시 실행하는 것이다. 완성
-  코퍼스를 재사용하며, 정상 완료 뒤 보존 DB SHA·SQLite·interval 감사를 통과하기
-  전에는 TextGrid export나 2021로 넘어가지 않는다.
+- 2020 r3 코퍼스는 2,231세션·782,715 WAV/LAB 쌍으로 완료됐고, 같은 계약의
+  재개 실행이 17:28–21:20에 정상 종료됐다.
+- `ALIGN_DONE_2020.json`은 `status=passed`다. 보존 DB는 5,534,134,272 bytes이며
+  marker와 실제 SHA-256이 일치하고 SQLite `quick_check=ok`다.
+- 782,715발화 중 782,432발화에 word·phone interval이 모두 있고 post-MFA
+  미정렬은 283건이다. `spn` interval은 0이며 coverage는 99.9638%다.
+- 최초 `fstcompile` PATH 실패는 runner의 conda runtime 상속과
+  `check_third_party()` preflight hard Gate로 보정했다. 실패 당시 코퍼스·DB를
+  삭제하지 않고 같은 계약에서 재개했다.
+- 2021 corpus·temp·marker는 생성되지 않았다. 현재 허용 작업은 283건 exact-ID
+  회계와 보존 DB 기반 6-tier/export preflight이며, TextGrid·CSV·tier 수정 때문에
+  2020 MFA 전체를 다시 계산하지 않는다.
+- 완료 기록:
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2020_20260809.md`

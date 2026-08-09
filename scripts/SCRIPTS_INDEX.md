@@ -4,8 +4,9 @@
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
 > 정렬을 승인했다. 별도 `run_mfa_r3_year_safe_body.ps1`과 2020
 > `-PreflightOnly`, exporter·감사·테스트 배선과 연구자 Gate 승인이 완료됐다.
-> 2020 r3 사전–검색 CSV occurrence 연결표와 독립 감사, 보강 preflight 19/19가
-> 통과해 `ready_not_started`다. r3 전용 runner만 사용한다.
+> 2020 r3 사전–검색 CSV occurrence 연결표와 독립 감사, 보강 preflight를 거쳐
+> 정렬 DB 계산이 완료됐다. `ALIGN_DONE_2020.json`은 passed이며 다음 단계는
+> 보존 DB 기반 exact-ID 회계와 export다. r3 전용 runner만 사용한다.
 
 ## 현재 생산 진입점
 
@@ -242,7 +243,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | build_simple_post_mfa_review_bundle.py | 위 16개 post-MFA 표본을 번호순 단일 폴더로 재구성. WAV·LAB·동결 search-master 1행 CSV·문맥을 붙이고, 대조군만 현행 6-tier를 직접 생성. 검토본 WAV 좌우 0.05초 무음과 모든 tier의 같은 경계를 추가하되 source time을 manifest에 보존하며, 연구자 청취 불가 ID는 정확한 `audio_unusable` 승인 부록으로 기록 | V2 16행·84파일, 13 match+3 audio_unusable, DB 크기·mtime 불변, Dropbox SHA 검증 통과 |
 | audit_review_textgrid_boundaries.py | 검토 묶음의 WAV 신호량과 TextGrid 0--xmax·tier별 좌우 빈 경계를 감사하고 각 TextGrid를 Python PNG로 그려 사람과 기계가 같은 구조를 확인 | V2 4/4 TextGrid × 6/6 tier의 0.05초 좌우 경계 통과 |
 | audit_mfa_db_tier_edges.py | 전수 6-tier export 전에 보존 MFA DB의 유표 word·phone 바깥 발화 경계를 읽기 전용 집계해 검토본 표시 문제와 생산 시간계약을 분리 | 2020 정렬 성공 868,187/868,187 word-phone 시작·끝 일치 |
-| inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 1시험·실 DB 6/6 success, 60/60 coverage·spn 0 |
+| inspect_mfa_db_checkpoint.py | MFA 출력 schema 실패가 비싼 재정렬로 이어지지 않도록 SQLite quick-check·interval 수·word+phone 동시 정렬 exact 수·미정렬 합집합·coverage·spn을 읽기 전용으로 기록. 계산 재사용 가능과 분석 승인을 분리 | 합성 회귀 2시험; 2020 r3 실 DB quick-check ok·782,432 정렬·283 미정렬·spn 0 |
 
 ## 사전 발음 참조 레이어 (2026-08-05)
 

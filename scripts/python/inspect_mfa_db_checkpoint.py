@@ -68,6 +68,23 @@ def inspect_database(db_path: Path, year: str) -> dict[str, object]:
                 """
             ).fetchone()[0]
         )
+        missing_alignment_count = int(
+            connection.execute(
+                """
+                SELECT COUNT(*)
+                FROM utterance u
+                WHERE u.ignored=0 AND (
+                    NOT EXISTS(
+                        SELECT 1 FROM word_interval wi
+                        WHERE wi.utterance_id=u.id
+                    ) OR NOT EXISTS(
+                        SELECT 1 FROM phone_interval pi
+                        WHERE pi.utterance_id=u.id
+                    )
+                )
+                """
+            ).fetchone()[0]
+        )
         missing_examples = [
             str(row[0])
             for row in connection.execute(
@@ -98,7 +115,7 @@ def inspect_database(db_path: Path, year: str) -> dict[str, object]:
         and word_rows > 0
         and phone_rows > 0
     )
-    aligned_utterances = min(utterances_with_words, utterances_with_phones)
+    aligned_utterances = source_utterances - missing_alignment_count
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "success" if computation_complete else "failed",
@@ -113,7 +130,9 @@ def inspect_database(db_path: Path, year: str) -> dict[str, object]:
             "source_utterances": source_utterances,
             "utterances_with_words": utterances_with_words,
             "utterances_with_phones": utterances_with_phones,
+            "utterances_with_words_and_phones": aligned_utterances,
             "aligned_utterances_lower_bound": aligned_utterances,
+            "missing_alignment_utterances": missing_alignment_count,
             "word_intervals": word_rows,
             "phone_intervals": phone_rows,
             "spn_intervals": spn_intervals,

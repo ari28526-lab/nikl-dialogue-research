@@ -2864,3 +2864,26 @@ shard 2–23을 재개하는 것이다.
   최초 감시기가 한 시간 sleep 중이라 16:53 실패를 17:13에야 기록한 점은 감시 설계
   결함으로 분류하며, 재개 감시기는 짧게 실패 신호를 확인하고 정상 진행만 시간별로
   요약한다.
+
+## 2026-08-09 2020 r3 안전 본체 정렬 DB 완료·2021 진입 정지
+
+- 보강된 동일 runner를 17:28에 재개했다. 완성된 2,231세션·782,715 WAV/LAB
+  코퍼스를 재사용했고 MFA 계산은 21:20에 exit 0으로 완료됐다.
+- `ALIGN_DONE_2020.json`은 `passed`, `r3_full_realign=true`, 입력 782,715,
+  `textgrid_materialized=false`를 기록했다. lock·wrapper·MFA 자식은 정상 종료했고
+  2021 corpus·temp·marker는 만들지 않았다.
+- 보존 DB는 5,534,134,272 bytes이며 marker SHA-256
+  `e2fec7300f9a70a6553f0f9d81d9c7a3c5cdfbc514b77cc7b6de87f933d7f991`와
+  실제 재계산값이 일치했다. SQLite `quick_check=ok`다.
+- 독립 checkpoint 감사는 입력 782,715, word·phone 모두 있는 발화 782,432,
+  post-MFA 미정렬 283, coverage 99.9638%, word interval 4,315,723,
+  phone interval 16,458,699, `spn` 0을 확인했다.
+- checkpoint 감사기가 word 집합과 phone 집합의 작은 차이를 `min()`으로만
+  근사하지 않도록, 둘 모두 존재하는 발화와 미정렬 합집합의 exact count를 별도
+  기록하게 보강하고 합성 회귀를 추가했다.
+- 283건은 exact-ID 후속 회계 대상이지 전체 재정렬 사유가 아니다. 다음 단계는
+  보존 DB에서 post-MFA exact-ID 대사→6-tier/export→독립 QC이며, 이 단계가 끝나기
+  전 2021을 열지 않는다.
+- 결과 정본은
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2020_20260809.md`, 감사 실물은
+  `outputs/reports/AUDIT_mfa_r3_alignment_checkpoint_2020_20260809.json`이다.

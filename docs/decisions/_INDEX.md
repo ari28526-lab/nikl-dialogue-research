@@ -21,6 +21,7 @@
 | `WORKFLOW_r2_MFA_research_data_contract_20260730.md` | 좌표계·provenance·연결 계약 |
 | `DECISION_r3_pronunciation_research_database_contract_20260809.md` | r3 선택 발음 type catalog–발화 scope–참조 어절 occurrence–post-MFA interval을 정규화 키와 SHA Gate로 연결 |
 | `RESULT_mfa_r3_research_database_2020_20260809.md` | 2020 870,437발화·3,056,807 occurrence 전수 구축, 23-shard 재개, 독립 감사와 runner preflight 19/19 GO 결과 |
+| `RESULT_mfa_r3_alignment_database_2020_20260809.md` | 2020 r3 782,715발화 신규 정렬, 보존 DB SHA·SQLite·interval 독립 감사, 782,432 성공·283 exact-ID 후속 회계와 2021 정지점 |
 
 ## 공통 발음사전과 6개년 동일성
 
