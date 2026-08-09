@@ -17,17 +17,37 @@ import wave
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable, Mapping
 
+from audit_mfa_r3_alignment_contract import independent_contract_id
 from mfa_exclusion_contract import load_contract as load_exclusion_contract
-from phoneme_roman import load_acoustic_meta, model_group_lookup
+from phoneme_roman import classify_phone, load_acoustic_meta, model_group_lookup
 from pipeline_common import atomic_text_writer, atomic_write_json, sha256_file
 from research_companion_schema import load_schema as load_companion_schema
-from research_textgrid_v2 import BASE_TIERS, SILENCE
+from research_textgrid_v2 import (
+    BASE_TIERS,
+    SCHEMA_VERSION as TEXTGRID_SCHEMA_VERSION,
+    SILENCE,
+)
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 
 SCHEMA_VERSION = "mfa_research_6tier_year_audit.v1"
 TABLE_SCHEMA_VERSION = "mfa_research_companion_tables.v2"
+R3_ALIGNMENT_SCHEMA_VERSION = "mfa_r3_alignment_contract.v1"
+R3_ALIGNMENT_STATUS = "materialized_pending_runner_preflight_and_release_gate"
+R3_REQUIRED_MANIFEST_FIELDS = (
+    "pronunciation_release_id",
+    "pronunciation_contract_id",
+    "mfa_dictionary_sha256",
+    "alignment_contract_id",
+    "textgrid_schema",
+    "source_db_sha256",
+    "alignment_origin",
+    "r3_full_realign",
+    "safe_body_routing_contract_id",
+    "followup_inventory_sha256",
+)
+PhoneMapper = Callable[[str], str]
 
 
 def iter_files(root: Path, suffix: str) -> Iterable[Path]:
@@ -58,6 +78,7 @@ def inspect_textgrid(
     *,
     wav_path: Path,
     allowed_phones: set[str],
+    phone_mapper: PhoneMapper,
     tolerance: float,
 ) -> dict[str, object]:
     reasons: list[str] = []
@@ -94,12 +115,31 @@ def inspect_textgrid(
                         phone_outside.add(normalized)
             if abs(cursor - float(duration)) > tolerance:
                 reasons.append(f"right_boundary:{name}:{cursor}/{duration}")
-        if not _same_edges(
-            list(tiers.get("phones_mfa", [])),
-            list(tiers.get("phoneme_r_auto", [])),
+        phone_intervals = list(tiers.get("phones_mfa", []))
+        phoneme_intervals = list(tiers.get("phoneme_r_auto", []))
+        same_phone_edges = _same_edges(
+            phone_intervals,
+            phoneme_intervals,
             tolerance,
-        ):
+        )
+        if not same_phone_edges:
             reasons.append("phone_phoneme_edges")
+        else:
+            for index, (phone_row, phoneme_row) in enumerate(
+                zip(phone_intervals, phoneme_intervals)
+            ):
+                phone = str(phone_row[2]).strip()
+                actual = str(phoneme_row[2]).strip()
+                if phone.lower() in SILENCE:
+                    expected = ""
+                elif phone in allowed_phones:
+                    expected = phone_mapper(phone)
+                else:
+                    continue
+                if actual != expected:
+                    reasons.append(
+                        f"phoneme_label:{index}:{phone}:{actual}:{expected}"
+                    )
         speech = [
             list(tiers.get(name, []))
             for name in ("utterance", "utterance_orth_r", "morph_analysis_utt")
@@ -121,11 +161,99 @@ def inspect_textgrid(
     }
 
 
+def _verify_contract_file(record: Mapping[str, object], label: str) -> Path:
+    path = Path(str(record.get("path", ""))).resolve()
+    if (
+        not path.is_file()
+        or int(record.get("bytes", -1)) != path.stat().st_size
+        or str(record.get("sha256", "")).lower() != sha256_file(path).lower()
+    ):
+        raise RuntimeError(f"r3 audit contract file mismatch: {label}")
+    return path
+
+
+def expected_r3_manifest_fields(
+    *,
+    alignment_contract_path: Path,
+    source_db: Path,
+    acoustic_model: Path,
+    year: str,
+    alignment_contract_id: str,
+) -> dict[str, object]:
+    contract = json.loads(
+        alignment_contract_path.read_text(encoding="utf-8-sig")
+    )
+    if contract.get("schema_version") != R3_ALIGNMENT_SCHEMA_VERSION:
+        return {}
+    if (
+        contract.get("status") != R3_ALIGNMENT_STATUS
+        or str(contract.get("year")) != str(year)
+        or contract.get("alignment_contract_id") != alignment_contract_id
+        or contract.get("r3_full_realign") is not True
+        or contract.get("alignment_origin") != "fresh_r3_full_realign"
+        or independent_contract_id(contract) != alignment_contract_id
+    ):
+        raise RuntimeError("r3 alignment identity differs in independent export audit")
+    identity = contract.get("identity")
+    models = contract.get("models")
+    if not isinstance(identity, Mapping) or not isinstance(models, Mapping):
+        raise RuntimeError("r3 alignment identity/models missing in audit")
+    dictionary = models.get("dictionary")
+    acoustic = models.get("acoustic")
+    g2p = models.get("g2p_provenance")
+    if not all(isinstance(item, Mapping) for item in (dictionary, acoustic, g2p)):
+        raise RuntimeError("r3 alignment model records missing in audit")
+    dictionary_path = _verify_contract_file(dictionary, "dictionary")
+    acoustic_path = _verify_contract_file(acoustic, "acoustic")
+    _verify_contract_file(g2p, "g2p_provenance")
+    if acoustic_path != acoustic_model.resolve():
+        raise RuntimeError("r3 audit acoustic path differs from alignment contract")
+    if (
+        str(identity.get("mfa_dictionary_sha256", "")).lower()
+        != str(dictionary.get("sha256", "")).lower()
+        or str(identity.get("acoustic_model_sha256", "")).lower()
+        != str(acoustic.get("sha256", "")).lower()
+        or str(identity.get("g2p_model_sha256", "")).lower()
+        != str(g2p.get("sha256", "")).lower()
+    ):
+        raise RuntimeError("r3 audit model identity differs")
+    expected: dict[str, object] = {
+        "pronunciation_release_id": str(
+            identity.get("pronunciation_release_id", "")
+        ).strip(),
+        "pronunciation_contract_id": str(
+            identity.get("pronunciation_contract_id", "")
+        ).strip(),
+        "mfa_dictionary_sha256": str(
+            identity.get("mfa_dictionary_sha256", "")
+        ).strip(),
+        "alignment_contract_id": alignment_contract_id,
+        "textgrid_schema": TEXTGRID_SCHEMA_VERSION,
+        "source_db_sha256": sha256_file(source_db.resolve()),
+        "alignment_origin": str(contract.get("alignment_origin", "")).strip(),
+        "r3_full_realign": contract.get("r3_full_realign"),
+        "safe_body_routing_contract_id": str(
+            identity.get("safe_body_routing_contract_id", "")
+        ).strip(),
+        "followup_inventory_sha256": str(
+            identity.get("followup_inventory_sha256", "")
+        ).strip(),
+    }
+    if any(
+        not expected[field]
+        for field in R3_REQUIRED_MANIFEST_FIELDS
+        if field != "r3_full_realign"
+    ) or expected["r3_full_realign"] is not True:
+        raise RuntimeError("r3 independent expected manifest fields are incomplete")
+    return expected
+
+
 def _scan_gzip_table(
     path: Path,
     *,
     table_name: str,
     expected_fields: list[str],
+    expected_alignment_contract_id: str | None = None,
 ) -> dict[str, object]:
     """Scan a large table without retaining its interval rows in memory."""
 
@@ -133,6 +261,7 @@ def _scan_gzip_table(
     ids: set[str] = set()
     duplicate_keys = 0
     invalid_key_order = 0
+    alignment_contract_mismatch = 0
     completed_ids: set[str] = set()
     current_id = ""
     current_index = 0
@@ -149,6 +278,12 @@ def _scan_gzip_table(
             )
         for row in reader:
             row_count += 1
+            if (
+                expected_alignment_contract_id is not None
+                and str(row.get("alignment_contract_id", ""))
+                != expected_alignment_contract_id
+            ):
+                alignment_contract_mismatch += 1
             utt_id = str(row.get("utt_id", ""))
             if not utt_id:
                 invalid_key_order += 1
@@ -181,6 +316,7 @@ def _scan_gzip_table(
         "ids": ids,
         "duplicate_keys": duplicate_keys,
         "invalid_key_order": invalid_key_order,
+        "alignment_contract_mismatch": alignment_contract_mismatch,
     }
 
 
@@ -197,10 +333,29 @@ def audit_year(
     missing_csv_path: Path,
     workers: int = 4,
     tolerance: float = 0.001,
+    alignment_contract: Path | None = None,
+    source_db: Path | None = None,
 ) -> dict[str, object]:
     started = time.monotonic()
     lab_year = lab_root.resolve() / year
     tg_year = textgrid_root.resolve() / year
+    r3_expected: dict[str, object] = {}
+    r3_provenance_error = ""
+    if alignment_contract is not None:
+        try:
+            if source_db is None:
+                raise RuntimeError(
+                    "alignment contract audit에는 source DB 경로가 필요함"
+                )
+            r3_expected = expected_r3_manifest_fields(
+                alignment_contract_path=alignment_contract.resolve(),
+                source_db=source_db.resolve(),
+                acoustic_model=acoustic_model.resolve(),
+                year=year,
+                alignment_contract_id=alignment_contract_id,
+            )
+        except Exception as exc:
+            r3_provenance_error = f"{type(exc).__name__}: {exc}"
     contract_data, exclusions = load_exclusion_contract(
         approved_exclusions_contract,
         year=year,
@@ -262,7 +417,11 @@ def audit_year(
     missing = sorted(expected_tg_ids - set(tg_paths))
     extras = sorted(set(tg_paths) - expected_tg_ids)
 
-    allowed_phones = set(model_group_lookup(load_acoustic_meta(acoustic_model)))
+    groups = model_group_lookup(load_acoustic_meta(acoustic_model))
+    allowed_phones = set(groups)
+
+    def phone_mapper(phone: str) -> str:
+        return classify_phone(phone, groups).phone_class_r_auto
     reason_counts: Counter[str] = Counter()
     invalid_ids: list[str] = []
     spn = 0
@@ -276,6 +435,7 @@ def audit_year(
             path,
             wav_path=wav_path,
             allowed_phones=allowed_phones,
+            phone_mapper=phone_mapper,
             tolerance=tolerance,
         )
 
@@ -302,6 +462,22 @@ def audit_year(
             raise RuntimeError("table input contract 불일치")
         if manifest.get("alignment_contract_id") != alignment_contract_id:
             raise RuntimeError("table alignment contract 불일치")
+        if r3_provenance_error:
+            raise RuntimeError(r3_provenance_error)
+        if r3_expected:
+            mismatches = {
+                field: {
+                    "expected": r3_expected[field],
+                    "observed": manifest.get(field),
+                }
+                for field in R3_REQUIRED_MANIFEST_FIELDS
+                if manifest.get(field) != r3_expected[field]
+            }
+            if mismatches:
+                raise RuntimeError(
+                    "r3 table manifest provenance mismatch: "
+                    + json.dumps(mismatches, ensure_ascii=False, sort_keys=True)
+                )
         _schema_path, companion_schema = load_companion_schema()
         if (
             manifest.get("column_schema", {}).get("sha256")
@@ -328,6 +504,7 @@ def audit_year(
                 path,
                 table_name=name,
                 expected_fields=expected_fields,
+                expected_alignment_contract_id=alignment_contract_id,
             )
     except Exception as exc:
         manifest = {}
@@ -341,6 +518,7 @@ def audit_year(
                 "ids": set(),
                 "duplicate_keys": 0,
                 "invalid_key_order": 0,
+                "alignment_contract_mismatch": 0,
             },
         )
 
@@ -366,6 +544,18 @@ def audit_year(
         "duplicate_phone_keys": int(phone_scan["duplicate_keys"]),
         "invalid_word_key_order": int(word_scan["invalid_key_order"]),
         "invalid_phone_key_order": int(phone_scan["invalid_key_order"]),
+        "utterance_table_contract_id_mismatch": int(
+            utterance_scan["alignment_contract_mismatch"]
+        ),
+        "word_table_contract_id_mismatch": int(
+            word_scan["alignment_contract_mismatch"]
+        ),
+        "phone_table_contract_id_mismatch": int(
+            phone_scan["alignment_contract_mismatch"]
+        ),
+        "excluded_table_contract_id_mismatch": int(
+            excluded_scan["alignment_contract_mismatch"]
+        ),
         "excluded_table_id_mismatch": int(excluded_ids != set(exclusions)),
         "duplicate_excluded_table_ids": int(excluded_scan["duplicate_keys"]),
         "analysis_only_without_textgrid": len(analysis_only - set(tg_paths)),
@@ -430,6 +620,7 @@ def audit_year(
         },
         "table_manifest": manifest,
         "table_manifest_error": manifest_error,
+        "required_r3_materialization_provenance": r3_expected,
         "missing_csv": str(missing_csv_path.resolve()),
         "elapsed_seconds": round(time.monotonic() - started, 3),
     }
@@ -446,6 +637,8 @@ def main() -> int:
     parser.add_argument("--approved-exclusions-contract", type=Path, required=True)
     parser.add_argument("--input-contract-id", required=True)
     parser.add_argument("--alignment-contract-id", required=True)
+    parser.add_argument("--alignment-contract", type=Path)
+    parser.add_argument("--source-db", type=Path)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--missing-csv", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=4)
@@ -461,6 +654,8 @@ def main() -> int:
         report_path=args.report,
         missing_csv_path=args.missing_csv,
         workers=args.workers,
+        alignment_contract=args.alignment_contract,
+        source_db=args.source_db,
     )
     console_summary = {
         "schema_version": report.get("schema_version"),

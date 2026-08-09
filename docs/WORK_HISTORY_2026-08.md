@@ -2715,3 +2715,18 @@ shard 2–23을 재개하는 것이다.
   53.726 GiB 산식 용량, r3 경로 청정성을 모두 통과했다. Gate만 닫혀 있어
   `NO_GO`가 되었으며 MFA는 시작하지 않았다. Stage 01–21·원자료·r2 산출물은
   변경하지 않았다.
+
+## 2026-08-09 — 외부 리뷰 체크리스트 6: r3 exporter·독립 감사
+
+- 승인 6-tier 구조는 바꾸지 않고, r3 export 보고서와 동반표 manifest에 발음
+  release·계약·사전 SHA·alignment ID·TextGrid schema·source DB SHA·정렬 출처·
+  full-realign·Stage 19 routing SHA·follow-up 목록 SHA의 10필드를 추가했다.
+- 값은 r3 alignment contract와 실제 model/DB 바이트에서만 만들며, 사전·acoustic·
+  G2P 경로/크기/SHA와 alignment ID를 다시 검증한다. r2 입력에는 새 hard gate를
+  소급 적용하지 않아 기존 재현 경로를 보존했다.
+- 독립 감사기는 `phones_mfa`마다 acoustic phone group의 Roman 범주를 다시
+  계산해 `phoneme_r_auto` label을 전수 대조하고, gzip 4표의 모든 행에서
+  `alignment_contract_id`를 검사한다.
+- 정상·phoneme label 변조·manifest provenance 변조·행 contract ID 변조 합성
+  fixture와 기존 r2 회귀를 합쳐 40건이 통과했다. MFA·TextGrid 생산 실행과
+  Gate 개방은 하지 않았고 Stage 01–21·원자료·r2 산출물은 변경하지 않았다.

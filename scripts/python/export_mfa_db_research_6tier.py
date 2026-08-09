@@ -34,6 +34,9 @@ from pathlib import Path
 from typing import Callable, Mapping, Sequence
 
 from build_mfa_alignment_contract import recompute_alignment_contract_id
+from build_mfa_r3_alignment_contract import (
+    recompute_alignment_contract_id as recompute_r3_alignment_contract_id,
+)
 from mfa_exclusion_contract import load_contract as load_exclusion_contract
 from morph_schema import canonicalize_tagged, orth_roman_v2, tagged_roman_v2
 from phoneme_roman import (
@@ -48,6 +51,7 @@ from pipeline_common import (
     atomic_write_json,
     file_fingerprint,
     load_bad_wav_inventory_ids,
+    sha256_file,
 )
 from realign_eojeol_build_corpus import (
     LAB_INPUT_VERSION,
@@ -79,6 +83,20 @@ if hasattr(sys.stdout, "reconfigure"):
 
 SCHEMA_VERSION = "mfa_research_6tier_export.v1"
 TABLE_SCHEMA_VERSION = "mfa_research_companion_tables.v2"
+R3_ALIGNMENT_SCHEMA_VERSION = "mfa_r3_alignment_contract.v1"
+R3_ALIGNMENT_STATUS = "materialized_pending_runner_preflight_and_release_gate"
+R3_REQUIRED_MANIFEST_FIELDS = (
+    "pronunciation_release_id",
+    "pronunciation_contract_id",
+    "mfa_dictionary_sha256",
+    "alignment_contract_id",
+    "textgrid_schema",
+    "source_db_sha256",
+    "alignment_origin",
+    "r3_full_realign",
+    "safe_body_routing_contract_id",
+    "followup_inventory_sha256",
+)
 SILENCE_WORDS = {"", "<eps>", "sil", "<unk>"}
 REQUIRED_SEARCH_FIELDS = {
     "utt_id",
@@ -228,11 +246,103 @@ def count_spn_intervals(connection: sqlite3.Connection) -> int:
 def load_alignment_contract(path: Path, year: str) -> tuple[str, dict]:
     data = json.loads(path.read_text(encoding="utf-8-sig"))
     contract_id = str(data.get("alignment_contract_id", "")).strip()
-    if data.get("status") != "passed" or str(data.get("year")) != str(year):
+    schema = str(data.get("schema_version", "")).strip()
+    old_contract = data.get("status") == "passed"
+    r3_contract = bool(
+        schema == R3_ALIGNMENT_SCHEMA_VERSION
+        and data.get("status") == R3_ALIGNMENT_STATUS
+        and data.get("r3_full_realign") is True
+        and data.get("alignment_origin") == "fresh_r3_full_realign"
+        and recompute_r3_alignment_contract_id(data) == contract_id
+    )
+    if (not old_contract and not r3_contract) or str(data.get("year")) != str(year):
         raise RuntimeError(f"alignment contract status/year 불일치: {path}")
     if not contract_id:
         raise RuntimeError(f"alignment_contract_id 누락: {path}")
     return contract_id, data
+
+
+def _verify_contract_file(record: Mapping[str, object], label: str) -> Path:
+    path = Path(str(record.get("path", ""))).resolve()
+    if (
+        not path.is_file()
+        or int(record.get("bytes", -1)) != path.stat().st_size
+        or str(record.get("sha256", "")).lower() != sha256_file(path).lower()
+    ):
+        raise RuntimeError(f"r3 alignment contract file mismatch: {label}")
+    return path
+
+
+def r3_materialization_provenance(
+    *,
+    contract: Mapping[str, object],
+    db_path: Path,
+    acoustic_model: Path,
+) -> dict[str, object]:
+    """Return the ten method fields required only for an r3 materialization."""
+
+    if contract.get("schema_version") != R3_ALIGNMENT_SCHEMA_VERSION:
+        return {}
+    contract_id = str(contract.get("alignment_contract_id", "")).strip()
+    if (
+        contract.get("status") != R3_ALIGNMENT_STATUS
+        or contract.get("r3_full_realign") is not True
+        or contract.get("alignment_origin") != "fresh_r3_full_realign"
+        or recompute_r3_alignment_contract_id(contract) != contract_id
+    ):
+        raise RuntimeError("r3 alignment contract identity differs at export")
+    identity = contract.get("identity")
+    models = contract.get("models")
+    if not isinstance(identity, Mapping) or not isinstance(models, Mapping):
+        raise RuntimeError("r3 alignment contract identity/models missing")
+    dictionary = models.get("dictionary")
+    acoustic = models.get("acoustic")
+    g2p = models.get("g2p_provenance")
+    if not all(isinstance(item, Mapping) for item in (dictionary, acoustic, g2p)):
+        raise RuntimeError("r3 alignment model records missing")
+    dictionary_path = _verify_contract_file(dictionary, "dictionary")
+    acoustic_path = _verify_contract_file(acoustic, "acoustic")
+    _verify_contract_file(g2p, "g2p_provenance")
+    if acoustic_path != acoustic_model.resolve():
+        raise RuntimeError("r3 exporter acoustic path differs from alignment contract")
+    if (
+        str(identity.get("mfa_dictionary_sha256", "")).lower()
+        != str(dictionary.get("sha256", "")).lower()
+        or str(identity.get("acoustic_model_sha256", "")).lower()
+        != str(acoustic.get("sha256", "")).lower()
+        or str(identity.get("g2p_model_sha256", "")).lower()
+        != str(g2p.get("sha256", "")).lower()
+    ):
+        raise RuntimeError("r3 exporter model identity differs")
+    result: dict[str, object] = {
+        "pronunciation_release_id": str(
+            identity.get("pronunciation_release_id", "")
+        ).strip(),
+        "pronunciation_contract_id": str(
+            identity.get("pronunciation_contract_id", "")
+        ).strip(),
+        "mfa_dictionary_sha256": str(
+            identity.get("mfa_dictionary_sha256", "")
+        ).strip(),
+        "alignment_contract_id": contract_id,
+        "textgrid_schema": TEXTGRID_SCHEMA_VERSION,
+        "source_db_sha256": sha256_file(db_path),
+        "alignment_origin": str(contract.get("alignment_origin", "")).strip(),
+        "r3_full_realign": contract.get("r3_full_realign"),
+        "safe_body_routing_contract_id": str(
+            identity.get("safe_body_routing_contract_id", "")
+        ).strip(),
+        "followup_inventory_sha256": str(
+            identity.get("followup_inventory_sha256", "")
+        ).strip(),
+    }
+    if any(
+        not result[field]
+        for field in R3_REQUIRED_MANIFEST_FIELDS
+        if field != "r3_full_realign"
+    ) or result["r3_full_realign"] is not True:
+        raise RuntimeError("r3 materialization provenance has a blank required field")
+    return result
 
 
 def load_session_rows(
@@ -703,6 +813,7 @@ def write_companion_tables(
     exclusion_contract_fingerprint: Mapping[str, object] | None,
     companion_schema_path: Path,
     companion_schema: Mapping[str, object],
+    materialization_provenance: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     table_root = output_root / year / "_tables"
     archived_stale_partials = _archive_stale_table_partials(
@@ -1213,6 +1324,19 @@ def write_companion_tables(
         },
         "counts": dict(sorted(counts.items())),
     }
+    if materialization_provenance:
+        missing = [
+            field
+            for field in R3_REQUIRED_MANIFEST_FIELDS
+            if field not in materialization_provenance
+        ]
+        if missing:
+            raise RuntimeError(f"r3 table manifest fields missing: {missing}")
+        for field in R3_REQUIRED_MANIFEST_FIELDS:
+            value = materialization_provenance[field]
+            if field in manifest and manifest[field] != value:
+                raise RuntimeError(f"r3 table manifest field collision: {field}")
+            manifest[field] = value
     atomic_write_json(table_root / "TABLES_MANIFEST.json", manifest)
     return manifest
 
@@ -1629,9 +1753,19 @@ def export_database(
     contract_id, contract_data = load_alignment_contract(
         alignment_contract, year
     )
-    input_contract_id = str(
-        contract_data.get("lab_input_contract_id", "") or ""
-    ).strip()
+    r3_provenance = r3_materialization_provenance(
+        contract=contract_data,
+        db_path=db_path,
+        acoustic_model=acoustic_model,
+    )
+    if contract_data.get("schema_version") == R3_ALIGNMENT_SCHEMA_VERSION:
+        input_contract_id = str(
+            contract_data.get("identity", {}).get("year_input_contract_id", "")
+        ).strip()
+    else:
+        input_contract_id = str(
+            contract_data.get("lab_input_contract_id", "") or ""
+        ).strip()
     exclusion_contract_data: dict[str, object] | None = None
     approved_exclusions: dict[str, dict[str, str]] = {}
     if approved_exclusions_contract is not None:
@@ -1927,6 +2061,7 @@ def export_database(
                 ),
                 companion_schema_path=companion_schema_path,
                 companion_schema=companion_schema,
+                materialization_provenance=r3_provenance,
             )
         except Exception as exc:
             hard_failure = True
@@ -1936,7 +2071,7 @@ def export_database(
 
     status = "failed" if hard_failure else "success"
     elapsed = time.monotonic() - started
-    return {
+    report = {
         "schema_version": SCHEMA_VERSION,
         "status": status,
         "analysis_ready_status": (
@@ -2008,6 +2143,9 @@ def export_database(
         "alignment_missing_inventory": sorted(set(missing_alignment)),
         "elapsed_seconds": round(elapsed, 3),
     }
+    if r3_provenance:
+        report.update(r3_provenance)
+    return report
 
 
 def main() -> int:
