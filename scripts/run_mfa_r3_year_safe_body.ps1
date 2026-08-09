@@ -156,6 +156,83 @@ function Disable-SleepGuard {
     }
 }
 
+function Get-MfaRuntimeState {
+    param(
+        [string]$MfaExecutable,
+        [string]$PythonExecutable
+    )
+    $mfaExists = Test-Path -LiteralPath $MfaExecutable -PathType Leaf
+    $pythonExists = Test-Path -LiteralPath $PythonExecutable -PathType Leaf
+    $envRoot = Split-Path -Parent (Split-Path -Parent $MfaExecutable)
+    $pathEntries = [Collections.Generic.List[string]]::new()
+    foreach ($candidate in @(
+        $envRoot,
+        (Join-Path $envRoot 'Library\mingw-w64\bin'),
+        (Join-Path $envRoot 'Library\usr\bin'),
+        (Join-Path $envRoot 'Library\bin'),
+        (Join-Path $envRoot 'Scripts'),
+        (Join-Path $envRoot 'bin')
+    )) {
+        if ((Test-Path -LiteralPath $candidate -PathType Container) -and
+            -not $pathEntries.Contains($candidate)) {
+            $pathEntries.Add($candidate)
+        }
+    }
+    $priorPath = [string]$env:Path
+    $pathParts = [Collections.Generic.List[string]]::new()
+    foreach ($entry in $pathEntries) { $pathParts.Add($entry) }
+    if (-not [string]::IsNullOrWhiteSpace($priorPath)) {
+        $pathParts.Add($priorPath)
+    }
+    $runtimePath = [string]::Join(';', $pathParts.ToArray())
+    $fstcompilePath = Join-Path $envRoot 'Library\bin\fstcompile.exe'
+    $resolvedFstcompile = ''
+    $thirdPartyExit = -1
+    $thirdPartyOutput = [Collections.Generic.List[string]]::new()
+    if ($mfaExists -and $pythonExists -and
+        (Test-Path -LiteralPath $fstcompilePath -PathType Leaf)) {
+        try {
+            $env:Path = $runtimePath
+            $resolved = Get-Command 'fstcompile.exe' -CommandType Application `
+                -ErrorAction SilentlyContinue
+            if ($null -ne $resolved) {
+                $resolvedFstcompile = [string]$resolved.Source
+            }
+            foreach ($line in @(
+                & $PythonExecutable -c (
+                    'from montreal_forced_aligner.utils import ' +
+                    'check_third_party; check_third_party()'
+                ) 2>&1
+            )) {
+                $thirdPartyOutput.Add([string]$line)
+            }
+            $thirdPartyExit = $LASTEXITCODE
+        } catch {
+            $thirdPartyOutput.Add([string]$_.Exception.Message)
+        } finally {
+            $env:Path = $priorPath
+        }
+    }
+    $ready = [bool](
+        $mfaExists -and $pythonExists -and
+        (Test-Path -LiteralPath $fstcompilePath -PathType Leaf) -and
+        -not [string]::IsNullOrWhiteSpace($resolvedFstcompile) -and
+        $thirdPartyExit -eq 0
+    )
+    return [pscustomobject]@{
+        ready = $ready
+        env_root = $envRoot
+        mfa_executable_exists = $mfaExists
+        python_executable_exists = $pythonExists
+        fstcompile_path = $fstcompilePath
+        fstcompile_resolved = $resolvedFstcompile
+        third_party_exit = $thirdPartyExit
+        third_party_output = @($thirdPartyOutput)
+        path_entries = @($pathEntries)
+        path_value = $runtimePath
+    }
+}
+
 function Invoke-RepositoryPreflightTests {
     param([string]$ReceiptPath)
     $ps51 = Join-Path $env:SystemRoot (
@@ -212,6 +289,9 @@ $lockPaths = @(
 $repositoryTestReceipt = Join-Path $preflightParent (
     'REPOSITORY_TESTS_{0}_{1}.json' -f $releaseId, $Year
 )
+$mfaRuntime = Get-MfaRuntimeState `
+    -MfaExecutable $mfa `
+    -PythonExecutable $python
 $repositoryTests = Invoke-RepositoryPreflightTests `
     -ReceiptPath $repositoryTestReceipt
 $lockProblems = @(Get-LockProblems -Paths $lockPaths)
@@ -231,6 +311,10 @@ $preflightArgs = @(
     '--observed-drive-label', $driveLabel,
     '--observed-free-gib', [string]$freeGiB,
     '--lock-problem-count', [string]$lockProblems.Count,
+    '--mfa-runtime-ready', $(
+        if ($mfaRuntime.ready) { 'true' }
+        else { 'false' }
+    ),
     '--powershell-safety-passed', $(
         if ($repositoryTests.powershell_safety_passed) { 'true' }
         else { 'false' }
@@ -261,8 +345,12 @@ if ($PreflightOnly) {
 if ($preflightExit -ne 0) {
     throw "r3 $Year preflight NO-GO; MFA를 시작하지 않음: $PreflightReport"
 }
-if (-not (Test-Path -LiteralPath $mfa -PathType Leaf)) {
-    throw "MFA executable 없음: $mfa"
+if (-not $mfaRuntime.ready) {
+    throw (
+        "MFA runtime dependency 검사 실패; 코퍼스 materialization 전에 중단: " +
+        ($mfaRuntime | Select-Object -Property * -ExcludeProperty path_value |
+            ConvertTo-Json -Compress -Depth 8)
+    )
 }
 
 $alignment = Get-Content -LiteralPath $alignmentContract -Raw -Encoding UTF8 |
@@ -374,7 +462,9 @@ try {
         '--output_format', 'long_textgrid'
     )
     if (-not $resume) { $arguments += '--clean' }
+    $priorRuntimePath = [string]$env:Path
     $priorSkipExport = $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT
+    $env:Path = [string]$mfaRuntime.path_value
     $env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT = '1'
     try {
         $process = Start-Process -FilePath $mfa -ArgumentList $arguments `
@@ -382,6 +472,7 @@ try {
             -RedirectStandardOutput $stdoutLog `
             -RedirectStandardError $stderrLog
     } finally {
+        $env:Path = $priorRuntimePath
         if ($null -eq $priorSkipExport) {
             Remove-Item Env:MFA_PROJECT_SKIP_TEXTGRID_EXPORT `
                 -ErrorAction SilentlyContinue

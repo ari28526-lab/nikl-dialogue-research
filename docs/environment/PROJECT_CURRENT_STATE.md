@@ -314,3 +314,15 @@ pool로 삼고, 독립 정렬 가능성 Gate를 통과한 발화를 모두 동�
 - r3 전수 재정렬 workflow:
   `docs/WORKFLOW_mfa_r3_full_realign_2020_2025.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`
+
+## 2026-08-09 17:23 현재: 2020 r3 안전 재개 직전
+
+- 2020 r3 코퍼스 materialization은 2,231세션·782,715발화로 완료됐다.
+- 최초 MFA 시작은 conda `Library\\bin` PATH 미상속으로 `fstcompile`을 찾지 못해
+  즉시 안전 종료됐다. `ALIGN_DONE_2020.json`은 없으며 2021은 시작되지 않았다.
+- runner는 conda runtime PATH 상속과 `check_third_party()` preflight hard Gate로
+  보강됐다. 전체 Python 544개, PowerShell safety/runtime 각 66개 및 실제 2020
+  preflight 20/20이 통과했다.
+- 다음 허용 작업은 사용자가 같은 2020 runner 명령을 다시 실행하는 것이다. 완성
+  코퍼스를 재사용하며, 정상 완료 뒤 보존 DB SHA·SQLite·interval 감사를 통과하기
+  전에는 TextGrid export나 2021로 넘어가지 않는다.

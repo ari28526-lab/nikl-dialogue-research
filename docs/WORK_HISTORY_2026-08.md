@@ -2841,3 +2841,26 @@ shard 2–23을 재개하는 것이다.
   발음사전과 옛 CSV가 조용히 혼용될 수 없다.
 - 합성 회귀 20건, Windows PowerShell 5.1 safety/runtime 66개 스크립트 검사를 먼저
   통과했다. 실제 2020 DB는 MFA와 분리된 단계로 생성·감사한다.
+
+## 2026-08-09 2020 r3 최초 실행의 conda runtime PATH 실패와 안전 재개
+
+- 2020 r3 runner는 14:56에 시작하여 2,231개 세션, 782,715발화의 release-scoped
+  hardlink+LAB 코퍼스를 완성했다. 원 WAV, Stage 01–21, r2 산출물은 변경하지 않았다.
+- 16:53 MFA 자식 프로세스가 시작 직후 `fstcompile`을 찾지 못해 exit 1로 종료됐다.
+  원인은 `mfa.exe`를 직접 실행하면서 conda 환경의 `Library\\bin`을 자식 PATH에
+  전달하지 않은 runner 결함이다. 발음사전·음향모델·코퍼스 내용의 실패가 아니다.
+- fail-closed 정책에 따라 `ALIGN_DONE_2020.json`은 생성되지 않았고, 코퍼스와
+  TEMP_CONTRACT 및 생성된 temp/DB가 있다면 모두 보존했다. 자동 clean·자동 전체
+  재시도·2021 진입은 수행하지 않았다.
+- runner에 conda 환경 root, `Library\\bin`, `Scripts` 등 활성화 PATH를 명시적으로
+  자식 프로세스에 상속하고, 실행 직후 부모 PATH를 복원하도록 수정했다.
+  `Get-Command fstcompile.exe`와 MFA `check_third_party()`를 장시간 materialization 전
+  preflight hard Gate로 추가했다.
+- 수정 후 targeted 5/5, Python 전체 544/544, PowerShell safety 66/66,
+  Windows PowerShell 5.1 runtime 66/66이 통과했다. 실제 2020 `-PreflightOnly`는
+  새 `mfa_runtime_dependencies`를 포함한 20/20 GO이며, 같은 release·연도 명령으로
+  완성 코퍼스를 재사용해 재개한다.
+- 운영 교훈: 사용자 보고는 1시간 간격이어도 실패 감지는 1분 이하로 분리해야 한다.
+  최초 감시기가 한 시간 sleep 중이라 16:53 실패를 17:13에야 기록한 점은 감시 설계
+  결함으로 분류하며, 재개 감시기는 짧게 실패 신호를 확인하고 정상 진행만 시간별로
+  요약한다.

@@ -70,6 +70,7 @@ def preflight(
     observed_drive_label: str,
     observed_free_gib: float,
     lock_problem_count: int,
+    mfa_runtime_ready: bool,
     powershell_safety_passed: bool,
     powershell_runtime_compat_passed: bool,
     python_suite_passed: bool,
@@ -100,6 +101,14 @@ def preflight(
         "lock_state_clear",
         lock_problem_count == 0,
         {"lock_problem_count": lock_problem_count},
+    )
+    check(
+        "mfa_runtime_dependencies",
+        mfa_runtime_ready,
+        {
+            "passed": mfa_runtime_ready,
+            "criterion": "activated conda PATH resolves fstcompile and MFA check_third_party passes",
+        },
     )
     check(
         "powershell_safety_suite",
@@ -294,6 +303,9 @@ def main() -> int:
     parser.add_argument("--observed-free-gib", type=float, required=True)
     parser.add_argument("--lock-problem-count", type=int, required=True)
     parser.add_argument(
+        "--mfa-runtime-ready", choices=("true", "false"), required=True
+    )
+    parser.add_argument(
         "--powershell-safety-passed", choices=("true", "false"), required=True
     )
     parser.add_argument(
@@ -316,6 +328,7 @@ def main() -> int:
         observed_drive_label=args.observed_drive_label,
         observed_free_gib=args.observed_free_gib,
         lock_problem_count=args.lock_problem_count,
+        mfa_runtime_ready=args.mfa_runtime_ready == "true",
         powershell_safety_passed=args.powershell_safety_passed == "true",
         powershell_runtime_compat_passed=(
             args.powershell_runtime_compat_passed == "true"
