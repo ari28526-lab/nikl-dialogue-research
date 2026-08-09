@@ -1,0 +1,73 @@
+{
+  "schema_version": "mfa_r3_alignment_contract_audit.v1",
+  "status": "passed_independent_identity_audit_pending_runner_and_release_gate",
+  "recorded_at": "2026-08-09T11:34:43+09:00",
+  "year": "2020",
+  "pronunciation_release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "alignment_contract_id": "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a",
+  "verdict": {
+    "identity_recomputed_exact": true,
+    "release_and_year_input_cross_checks_passed": true,
+    "model_and_dictionary_fingerprints_passed": true,
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "release_gate_remains_closed": true
+  },
+  "checks": {
+    "required_identity_fields": 17,
+    "legacy_marker_reuse_allowed": false,
+    "legacy_db_reuse_allowed": false,
+    "r3_full_realign": true,
+    "expected_mfa_input": 782715
+  },
+  "inputs": {
+    "alignment_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2020\\ALIGNMENT_CONTRACT_2020.json",
+      "bytes": 7589,
+      "mtime_ns": 1786242875191940700,
+      "sha256": "be5d8ec3fcc34e50eb16579fb95ba8a558bb20f366df43eecc68eac45e80b220"
+    },
+    "pronunciation_release_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\RELEASE_MANIFEST.json",
+      "bytes": 6822,
+      "mtime_ns": 1786240949117555800,
+      "sha256": "6292c92f3de9433d69bc1e9558c6c6d544608fc84d516c1080be6e9e9c58b416"
+    },
+    "year_input_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\YEAR_INPUT_CONTRACT_2020.json",
+      "bytes": 8551,
+      "mtime_ns": 1786242121165366600,
+      "sha256": "1dcccbd5bce7a5c51ea99d19c8352c3c41c1959e654fc06d39de5e0cce6fa49e"
+    },
+    "mfa_dictionary": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\common_pron_mfa_r3_20260809.dict",
+      "bytes": 33413724,
+      "mtime_ns": 1786240948582068300,
+      "sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a"
+    },
+    "acoustic_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    },
+    "g2p_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_jamo_g2p_v3.2.0.zip",
+      "bytes": 5456781,
+      "mtime_ns": 1785218534614983300,
+      "sha256": "4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-09T11:34:43+09:00",
+    "git_commit": "2e86a0720ebcacc8c86e261dd73924f2c7fe1154",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 10200
+  }
+}

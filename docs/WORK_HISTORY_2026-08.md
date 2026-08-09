@@ -2683,3 +2683,19 @@ shard 2–23을 재개하는 것이다.
 - 새 파일은 r3 release의 `03_year_input_contracts\2020`에만 생성했다.
   Stage 01–21, 원자료, r2 산출물은 변경하지 않았고 production/TextGrid Gate는
   계속 닫아 두었다.
+
+## 2026-08-09 — 외부 리뷰 체크리스트 4: r3 alignment contract
+
+- r3 전용 `mfa_r3_alignment_contract.v1` builder와 독립 감사기를 만들었다.
+  release ID·manifest SHA, staged adoption 계약·감사·연구자 승인 SHA,
+  Stage 19 manifest SHA, 2020 exact-ID 입력 계약 ID·SHA, expected-input와
+  follow-up 목록 SHA, recovered corpus ID, 사전·음향모델·G2P·model pin SHA,
+  Python·MFA·Pynini 판본을 하나의 identity에 묶었다.
+- 실자료 2020 alignment contract ID는
+  `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`이다.
+  r3 예상 입력 782,715개와 `fresh_r3_full_realign`을 고정했다.
+- r3 builder에는 구 release 접두사나 release 고유 magic count 상수가 없음을
+  회귀 검사했다. 기존 marker와 DB 재사용은 명시적으로 금지했다.
+- 독립 감사기가 identity를 재계산하고 모든 실제 파일 SHA와 닫힌 Gate를
+  대조해 통과했다. MFA·TextGrid는 시작하지 않았으며 Stage 01–21, 원자료,
+  r2 산출물은 변경하지 않았다.
