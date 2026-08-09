@@ -274,6 +274,38 @@ foreach ($path in $files) {
             }
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'show_mfa_r3_year_status.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            'MFA r3 annual status - read only',
+            'mfa_r3_runner_v1.json',
+            'mfa_pronunciation_release_gate.json',
+            '[IO.FileShare]::ReadWrite',
+            'CORPUS_MATERIALIZATION_$Year.building.json',
+            'TEMP_CONTRACT_$Year.json',
+            'ALIGN_DONE_$Year.json',
+            'corpus_materialization_interrupted_resume_same_command',
+            'mfa_checkpoint_present_not_running_resume_same_command',
+            'active corpus file totals are not recursively counted'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("r3 status dashboard token missing: $required")
+            }
+        }
+        foreach ($forbidden in @(
+            'New-Item',
+            'Remove-Item',
+            'Move-Item',
+            'Copy-Item',
+            'Set-Content',
+            'Add-Content',
+            'Start-Process'
+        )) {
+            if ($text.Contains($forbidden)) {
+                $failures.Add("r3 status dashboard mutating token present: $forbidden")
+            }
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'mfa_wav_corpus.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(
