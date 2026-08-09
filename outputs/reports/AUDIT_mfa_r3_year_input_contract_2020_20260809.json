@@ -1,0 +1,92 @@
+{
+  "schema_version": "mfa_r3_year_input_contract_audit.v1",
+  "status": "passed_independent_exact_id_audit_pending_alignment_contract_gate_closed",
+  "recorded_at": "2026-08-09T11:23:56+09:00",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "year": "2020",
+  "year_input_contract_id": "d75fa5bc50cc31c3912220d1cb292eb74ab8e9da4216988926dbaa89c34919ce",
+  "verdict": {
+    "exact_id_partition_passed": true,
+    "recovered_wav_binding_passed": true,
+    "r2_post_mfa_failures_reentered_when_eligible": true,
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "release_gate_remains_closed": true
+  },
+  "checks": {
+    "source_equals_safe_union_followup": true,
+    "safe_followup_intersection_empty": true,
+    "unknown_ids": 0,
+    "year_summary_exact": true,
+    "expected_mfa_input_equation_exact": true,
+    "recovered_wav_equation_exact": true,
+    "output_row_content_and_order_exact": true,
+    "output_fingerprints_exact": true
+  },
+  "counts": {
+    "source_utterances": 870437,
+    "pronunciation_safe": 784390,
+    "pronunciation_followup": 86047,
+    "pre_mfa_exclusions_applied_to_pron_safe": 1675,
+    "expected_mfa_input": 782715,
+    "r2_post_mfa_reentered": 284,
+    "recovered_wav_ids": 868603
+  },
+  "output_row_digests": {
+    "pronunciation_safe_ids": "10f96edbff1fe7e2cfca98ea0fefd6805f6156dd435556d20c18d03a01dbaf29",
+    "pronunciation_followup_ids": "fb18a431020f941d9f86a1e212023e7da1c2af879d7de148c13dbe8ca41e104d",
+    "pre_mfa_exclusion_ids": "449748c73495293c74223c836d418f12c30ff9a3ddc877465b62ae4d6c5e3247",
+    "expected_mfa_input_ids": "2c0f6535befd11d9ff2d6518f15c579d78eb20e7dc0112c5db79308494c72dbe",
+    "r2_post_mfa_reentry_ids": "86bfec2cbd5cc71c2e878198996efe65cd30740270c6abc519217aff94b6d943"
+  },
+  "inputs": {
+    "year_input_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\YEAR_INPUT_CONTRACT_2020.json",
+      "bytes": 8551,
+      "mtime_ns": 1786242121165366600,
+      "sha256": "1dcccbd5bce7a5c51ea99d19c8352c3c41c1959e654fc06d39de5e0cce6fa49e"
+    },
+    "pronunciation_safe_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\pronunciation_safe_ids_2020.csv.gz",
+      "bytes": 2300329,
+      "mtime_ns": 1786242120100793800,
+      "sha256": "9c2c8147ff912dbd94a1729ec2a3ec6303d33a1e5252e689e7131715e150d9c2"
+    },
+    "pronunciation_followup_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\pronunciation_followup_ids_2020.csv.gz",
+      "bytes": 831965,
+      "mtime_ns": 1786242120099796000,
+      "sha256": "e75de9f3e467648e7ad4ad521329d1e957346cb001221417c46acce504927dd2"
+    },
+    "pre_mfa_exclusion_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\pre_mfa_exclusion_ids_2020.csv.gz",
+      "bytes": 6482,
+      "mtime_ns": 1786242120097794800,
+      "sha256": "e2ac7653b295239daca077533971e0b647891ae295d4681efbcb2902a18f37b0"
+    },
+    "expected_mfa_input_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\expected_mfa_input_ids_2020.csv.gz",
+      "bytes": 2296044,
+      "mtime_ns": 1786242120096792400,
+      "sha256": "52592b41c01ad2d4038c7a9683fb882dd9d3096a9f720e03afa4bf60dfe0a748"
+    },
+    "r2_post_mfa_reentry_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\r2_post_mfa_reentry_ids_2020.csv.gz",
+      "bytes": 1703,
+      "mtime_ns": 1786242120094788000,
+      "sha256": "797be0b36d5820b6d6b6fd884e7950332cb6c34ef6bb1895d2b0d3f13d7bcaac"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-09T11:23:56+09:00",
+    "git_commit": "e2ccee22dad40602b0ede41701feea6f0cf8e65d",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 22040
+  }
+}
