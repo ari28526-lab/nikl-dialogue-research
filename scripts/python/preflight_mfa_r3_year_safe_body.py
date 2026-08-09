@@ -69,6 +69,9 @@ def preflight(
     observed_drive_label: str,
     observed_free_gib: float,
     lock_problem_count: int,
+    powershell_safety_passed: bool,
+    powershell_runtime_compat_passed: bool,
+    python_suite_passed: bool,
     output_path: Path,
 ) -> dict:
     checks: list[dict[str, object]] = []
@@ -96,6 +99,21 @@ def preflight(
         "lock_state_clear",
         lock_problem_count == 0,
         {"lock_problem_count": lock_problem_count},
+    )
+    check(
+        "powershell_safety_suite",
+        powershell_safety_passed,
+        {"passed": powershell_safety_passed},
+    )
+    check(
+        "powershell_runtime_compat_suite",
+        powershell_runtime_compat_passed,
+        {"passed": powershell_runtime_compat_passed},
+    )
+    check(
+        "python_full_suite",
+        python_suite_passed,
+        {"passed": python_suite_passed},
     )
 
     contract = load_json(alignment_contract_path)
@@ -223,6 +241,17 @@ def main() -> int:
     parser.add_argument("--observed-drive-label", required=True)
     parser.add_argument("--observed-free-gib", type=float, required=True)
     parser.add_argument("--lock-problem-count", type=int, required=True)
+    parser.add_argument(
+        "--powershell-safety-passed", choices=("true", "false"), required=True
+    )
+    parser.add_argument(
+        "--powershell-runtime-compat-passed",
+        choices=("true", "false"),
+        required=True,
+    )
+    parser.add_argument(
+        "--python-suite-passed", choices=("true", "false"), required=True
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     report = preflight(
@@ -234,6 +263,11 @@ def main() -> int:
         observed_drive_label=args.observed_drive_label,
         observed_free_gib=args.observed_free_gib,
         lock_problem_count=args.lock_problem_count,
+        powershell_safety_passed=args.powershell_safety_passed == "true",
+        powershell_runtime_compat_passed=(
+            args.powershell_runtime_compat_passed == "true"
+        ),
+        python_suite_passed=args.python_suite_passed == "true",
         output_path=args.output.resolve(),
     )
     failed = ",".join(report["failed_checks"]) or "none"

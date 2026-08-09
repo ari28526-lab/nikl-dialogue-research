@@ -158,6 +158,9 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=10,
                 lock_problem_count=0,
+                powershell_safety_passed=True,
+                powershell_runtime_compat_passed=True,
+                python_suite_passed=True,
                 output_path=paths["output"],
             )
             self.assertTrue(report["go"])
@@ -171,6 +174,9 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=10,
                 lock_problem_count=0,
+                powershell_safety_passed=True,
+                powershell_runtime_compat_passed=True,
+                python_suite_passed=True,
                 output_path=paths["output"],
             )
             self.assertFalse(blocked["go"])
@@ -188,11 +194,34 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=0.1,
                 lock_problem_count=1,
+                powershell_safety_passed=True,
+                powershell_runtime_compat_passed=True,
+                python_suite_passed=True,
                 output_path=paths["output"],
             )
             self.assertFalse(report["go"])
             self.assertIn("lock_state_clear", report["failed_checks"])
             self.assertIn("capacity_formula", report["failed_checks"])
+
+    def test_preflight_repository_test_failure_is_hard_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.preflight_fixture(Path(temp))
+            report = preflight(
+                year="2020",
+                policy_path=paths["policy"],
+                alignment_contract_path=paths["contract"],
+                alignment_audit_path=paths["audit"],
+                release_gate_path=paths["gate"],
+                observed_drive_label="TEST_DRIVE",
+                observed_free_gib=10,
+                lock_problem_count=0,
+                powershell_safety_passed=True,
+                powershell_runtime_compat_passed=True,
+                python_suite_passed=False,
+                output_path=paths["output"],
+            )
+            self.assertFalse(report["go"])
+            self.assertEqual(report["failed_checks"], ["python_full_suite"])
 
     def test_release_scoped_corpus_is_hardlinked_and_idempotent(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

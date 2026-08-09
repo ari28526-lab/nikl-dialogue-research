@@ -153,6 +153,52 @@ function Disable-SleepGuard {
     }
 }
 
+function Invoke-RepositoryPreflightTests {
+    param([string]$ReceiptPath)
+    $ps51 = Join-Path $env:SystemRoot (
+        'System32\WindowsPowerShell\v1.0\powershell.exe'
+    )
+    $safetyPath = Join-Path $projectRoot 'tests\test_powershell_safety.ps1'
+    $runtimePath = Join-Path $projectRoot (
+        'tests\test_powershell_runtime_compat.ps1'
+    )
+    $safetyPassed = $false
+    $runtimePassed = $false
+    $pythonPassed = $false
+    $started = (Get-Date).ToString('o')
+    Push-Location $projectRoot
+    try {
+        & $ps51 -NoProfile -ExecutionPolicy Bypass -File $safetyPath |
+            Out-Host
+        $safetyPassed = ($LASTEXITCODE -eq 0)
+        & $ps51 -NoProfile -ExecutionPolicy Bypass -File $runtimePath |
+            Out-Host
+        $runtimePassed = ($LASTEXITCODE -eq 0)
+        & $python -m unittest discover -s (Join-Path $projectRoot 'tests') `
+            -p 'test_*.py' | Out-Host
+        $pythonPassed = ($LASTEXITCODE -eq 0)
+    } finally {
+        Pop-Location
+    }
+    $receipt = [ordered]@{
+        schema_version = 'mfa_r3_repository_test_receipt.v1'
+        status = $(
+            if ($safetyPassed -and $runtimePassed -and $pythonPassed) {
+                'passed'
+            } else { 'failed' }
+        )
+        recorded_at = (Get-Date).ToString('o')
+        started_at = $started
+        release_id = $releaseId
+        year = $Year
+        powershell_safety_passed = $safetyPassed
+        powershell_runtime_compat_passed = $runtimePassed
+        python_full_suite_passed = $pythonPassed
+    }
+    Write-JsonAtomic -Path $ReceiptPath -Value $receipt
+    return [pscustomobject]$receipt
+}
+
 $globalLockRoot = 'D:\mfa_eojeol\locks'
 $r3Lock = Join-Path $releaseRoot 'locks\mfa_r3_year.lock'
 $lockPaths = @(
@@ -160,6 +206,11 @@ $lockPaths = @(
     (Join-Path $globalLockRoot 'mfa_year_queue.lock'),
     $r3Lock
 )
+$repositoryTestReceipt = Join-Path $preflightParent (
+    'REPOSITORY_TESTS_{0}_{1}.json' -f $releaseId, $Year
+)
+$repositoryTests = Invoke-RepositoryPreflightTests `
+    -ReceiptPath $repositoryTestReceipt
 $lockProblems = @(Get-LockProblems -Paths $lockPaths)
 $driveLabel = Get-DataDriveLabel
 $freeGiB = [math]::Round(
@@ -176,6 +227,18 @@ $preflightArgs = @(
     '--observed-drive-label', $driveLabel,
     '--observed-free-gib', [string]$freeGiB,
     '--lock-problem-count', [string]$lockProblems.Count,
+    '--powershell-safety-passed', $(
+        if ($repositoryTests.powershell_safety_passed) { 'true' }
+        else { 'false' }
+    ),
+    '--powershell-runtime-compat-passed', $(
+        if ($repositoryTests.powershell_runtime_compat_passed) { 'true' }
+        else { 'false' }
+    ),
+    '--python-suite-passed', $(
+        if ($repositoryTests.python_full_suite_passed) { 'true' }
+        else { 'false' }
+    ),
     '--output', $PreflightReport
 )
 & $python @preflightArgs

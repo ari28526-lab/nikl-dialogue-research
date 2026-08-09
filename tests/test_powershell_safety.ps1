@@ -59,6 +59,14 @@ $files = @(
         'scripts\prune_pre_jamo_outputs_after_compressed_archive.ps1'
     ))
 )
+# 고정 allowlist는 새 production 스크립트를 조용히 누락시켰다. 전문 안전
+# 블록과 BOM/Parser 검사를 scripts 최상위의 모든 PowerShell에 적용한다.
+$files = @(
+    Get-ChildItem -LiteralPath (Join-Path $root 'scripts') `
+        -Filter '*.ps1' -File |
+        Sort-Object FullName |
+        ForEach-Object { $_.FullName }
+)
 $failures = New-Object System.Collections.Generic.List[string]
 
 foreach ($path in $files) {
@@ -224,6 +232,46 @@ foreach ($path in $files) {
         }
         if ($text.Contains('--root $wavRoot --apply')) {
             $failures.Add('MFA 러너가 원 WAV를 quarantine으로 이동함')
+        }
+    }
+    if ((Split-Path $path -Leaf) -eq 'run_mfa_r3_year_safe_body.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$PreflightOnly',
+            'mfa_r3_runner_v1.json',
+            '--lock-problem-count',
+            'TEMP_CONTRACT_$Year.json',
+            'ALIGN_DONE_$Year.json',
+            '기존 r3 temp에 TEMP_CONTRACT가 없음; 자동 clean 금지',
+            "if (-not `$resume) { `$arguments += '--clean' }",
+            'Write-JsonLineRetry',
+            '[IO.FileShare]::ReadWrite',
+            'heartbeat append를 건너뜀; MFA 계산은 계속함.',
+            'Enable-SleepGuard',
+            'Disable-SleepGuard',
+            'MFA_PROJECT_SKIP_TEXTGRID_EXPORT',
+            'textgrid_materialized = $false',
+            'test_powershell_safety.ps1',
+            'test_powershell_runtime_compat.ps1',
+            '-m unittest discover',
+            'mfa_r3_repository_test_receipt.v1',
+            '--powershell-safety-passed',
+            '--powershell-runtime-compat-passed',
+            '--python-suite-passed'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("r3 runner safety token missing: $required")
+            }
+        }
+        foreach ($forbidden in @(
+            'common_pron_mfa_r2_',
+            'direct_db_research_6tier_v1',
+            'Remove-Item -LiteralPath $tempYear',
+            'Remove-Item -LiteralPath $db'
+        )) {
+            if ($text.Contains($forbidden)) {
+                $failures.Add("r3 runner legacy/destructive token present: $forbidden")
+            }
         }
     }
     if ((Split-Path $path -Leaf) -eq 'mfa_wav_corpus.ps1') {
