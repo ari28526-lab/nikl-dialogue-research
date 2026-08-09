@@ -65,6 +65,7 @@ def preflight(
     policy_path: Path,
     alignment_contract_path: Path,
     alignment_audit_path: Path,
+    research_database_audit_path: Path,
     release_gate_path: Path,
     observed_drive_label: str,
     observed_free_gib: float,
@@ -142,6 +143,53 @@ def preflight(
         )
     )
     check("alignment_independent_audit", audit_ok, alignment_audit.get("status"))
+
+    research_database_audit = load_json(research_database_audit_path)
+    database_inputs = research_database_audit.get("inputs", {})
+    database_input_checks: dict[str, bool] = {}
+    for label in (
+        "type_catalog_audit",
+        "year_database_manifest",
+        "year_input_contract",
+        "utterance_scope",
+        "occurrences",
+    ):
+        record = database_inputs.get(label, {})
+        path = Path(clean(record.get("path"))).resolve()
+        database_input_checks[label] = verify(record, path)
+    database_ok = bool(
+        research_database_audit.get("schema_version")
+        == "mfa_r3_pronunciation_occurrence_year_audit.v1"
+        and research_database_audit.get("status") == "passed"
+        and clean(research_database_audit.get("year")) == year
+        and clean(research_database_audit.get("release_id")) == release_id
+        and clean(research_database_audit.get("pronunciation_contract_id"))
+        == clean(identity.get("pronunciation_contract_id"))
+        and research_database_audit.get("post_mfa_join_key")
+        == ["year", "utt_id", "reference_eojeol_idx"]
+        and research_database_audit.get("verdict", {}).get(
+            "all_source_utterances_accounted"
+        )
+        is True
+        and research_database_audit.get("verdict", {}).get(
+            "safe_body_uses_selected_types_only"
+        )
+        is True
+        and research_database_audit.get("verdict", {}).get(
+            "ready_for_mfa_preflight"
+        )
+        is True
+        and all(database_input_checks.values())
+    )
+    check(
+        "research_database_occurrence_contract",
+        database_ok,
+        {
+            "status": research_database_audit.get("status"),
+            "join_key": research_database_audit.get("post_mfa_join_key"),
+            "input_fingerprints": database_input_checks,
+        },
+    )
 
     fingerprint_checks = {}
     for label, record in contract.get("models", {}).items():
@@ -223,6 +271,9 @@ def preflight(
             "alignment_independent_audit": file_fingerprint(
                 alignment_audit_path, with_sha256=True
             ),
+            "research_database_audit": file_fingerprint(
+                research_database_audit_path, with_sha256=True
+            ),
             "release_gate": file_fingerprint(release_gate_path, with_sha256=True),
         },
         "runtime": runtime_snapshot(PROJECT_ROOT),
@@ -237,6 +288,7 @@ def main() -> int:
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--alignment-contract", type=Path, required=True)
     parser.add_argument("--alignment-audit", type=Path, required=True)
+    parser.add_argument("--research-database-audit", type=Path, required=True)
     parser.add_argument("--release-gate", type=Path, required=True)
     parser.add_argument("--observed-drive-label", required=True)
     parser.add_argument("--observed-free-gib", type=float, required=True)
@@ -259,6 +311,7 @@ def main() -> int:
         policy_path=args.policy.resolve(),
         alignment_contract_path=args.alignment_contract.resolve(),
         alignment_audit_path=args.alignment_audit.resolve(),
+        research_database_audit_path=args.research_database_audit.resolve(),
         release_gate_path=args.release_gate.resolve(),
         observed_drive_label=args.observed_drive_label,
         observed_free_gib=args.observed_free_gib,

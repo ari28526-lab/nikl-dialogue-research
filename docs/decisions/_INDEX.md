@@ -19,6 +19,8 @@
 | `PROPOSAL_Seoul_corpus_inspired_TextGrid_tiers_20260801.md` | 서울 코퍼스·KOINA·이어붙이기 설계 근거 |
 | `DECISION_auto_phoneme_roman_aux_layer_20260731.md` | `phoneme_r_auto`의 보조적 범위 |
 | `WORKFLOW_r2_MFA_research_data_contract_20260730.md` | 좌표계·provenance·연결 계약 |
+| `DECISION_r3_pronunciation_research_database_contract_20260809.md` | r3 선택 발음 type catalog–발화 scope–참조 어절 occurrence–post-MFA interval을 정규화 키와 SHA Gate로 연결 |
+| `RESULT_mfa_r3_research_database_2020_20260809.md` | 2020 870,437발화·3,056,807 occurrence 전수 구축, 23-shard 재개, 독립 감사와 runner preflight 19/19 GO 결과 |
 
 ## 공통 발음사전과 6개년 동일성
 

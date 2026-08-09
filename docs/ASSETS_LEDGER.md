@@ -27,6 +27,7 @@
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 발화 라우팅, safe-body 후보, 표적 회귀 | Stage 01–21 완료; safe 4,384,992·follow-up 718,364; 채택 release의 역사적 입력 근거, 직접 생산 입력으로 임의 변경 금지 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809` | 채택된 r3 selected projection·796,061행 MFA 사전·독립 감사 | production Gate `adopted`; 2020–2025의 유일한 신규 MFA 발음 release, r2와 혼합 금지 |
+| `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809\05_research_database` | r3 발음 유형–발화 scope–참조 어절 occurrence 정규화 정본 | 2020 발화 870,437·occurrence 3,056,807·23/23 shard·독립 감사 passed; post-MFA 결합 키와 SHA 고정 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\10_no_rule_hold_characterization` | no-rule 85,504형의 문자·사전·r2 출처·편집 유형 전수 특성화 | `success_characterized_not_candidate`; 모두 완성형 한글, 독립 감사 통과, 후보·selection·adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\11_rule_phone_coverage_audit` | no-rule 변이의 수의적 위치동화, frozen 기본사전 정확 일치, phone↔규칙키 비일대일성 전수 진단 | `success_audited_not_candidate`; 36,568형 all-optional, 811형 비중복 all-frozen, 48,043형 미해결, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\12_selection_readiness_v2` | stage 09 전체 readiness에 감사된 no-rule 정렬 후보 37,379형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 789,649형, zero-fallback hold 91,553형, 독립 감사 통과, adoption 아님 |
@@ -100,9 +101,11 @@ C:\Users\ari30\research\2026_summer_research
 불변 기록했다. 정책 감사
 `outputs/reports/AUDIT_mfa_r3_full_realign_policy_v2_gate_adopted_20260809.json`은
 실제 Stage 19 연도 수량·Gate 증거·r3 실행 경로의 legacy token을 검사해 통과했고,
-2020 final preflight
+기존 Gate 직후 preflight
 `outputs/reports/PREFLIGHT_mfa_r3_runner_2020_gate_adopted_go_20260809.json`은
-18/18 `GO`다. 현재 MFA 실물은 아직 시작되지 않았다.
+18/18 `GO`였고, 발음 연구 DB Gate를 추가한 최신 runtime preflight
+`work/mfa_r3_preflight/PREFLIGHT_common_pron_mfa_r3_20260809_2020.json`은
+19/19 `GO`다. 현재 MFA 실물은 아직 시작되지 않았다.
 
 ## 2020 현재 계약
 

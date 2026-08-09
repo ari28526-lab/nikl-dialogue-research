@@ -68,6 +68,36 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
                 "pynini": "2.1.fixture",
             },
         }
+        research_root = root / "05_research_database" / self.year
+        research_root.mkdir(parents=True)
+        research_inputs = {}
+        for name in (
+            "type_catalog_audit",
+            "year_database_manifest",
+            "year_input_contract",
+            "utterance_scope",
+            "occurrences",
+        ):
+            path = research_root / f"{name}.dat"
+            path.write_bytes(name.encode("utf-8"))
+            research_inputs[name] = file_fingerprint(path, with_sha256=True)
+        research_audit = research_root / f"AUDIT_RESEARCH_DATABASE_{self.year}.json"
+        research_audit.write_text(
+            json.dumps(
+                {
+                    "schema_version": "mfa_r3_pronunciation_occurrence_year_audit.v1",
+                    "status": "passed",
+                    "year": self.year,
+                    "release_id": identity["pronunciation_release_id"],
+                    "pronunciation_contract_id": identity["pronunciation_contract_id"],
+                    "post_mfa_join_key": ["year", "utt_id", "reference_eojeol_idx"],
+                    "verdict": {"ready_for_mfa_preflight": True},
+                    "inputs": research_inputs,
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
         contract = {
             "schema_version": "mfa_r3_alignment_contract.v1",
             "status": "materialized_pending_runner_preflight_and_release_gate",

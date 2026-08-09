@@ -1,6 +1,6 @@
 # 2026년 8월 작업 기록
 
-## 2026-08-09 — r3 production Gate 채택·2020 preflight 18/18 GO
+## 2026-08-09 — r3 production Gate 채택·2020 연구 DB·preflight 19/19 GO
 
 ### 연구자 승인과 단일 Gate 개방
 
@@ -42,7 +42,29 @@
   동반표 export·독립 감사를 진행한다. follow-up 718,364발화는 exact-ID 별도
   shard로 계속 보존한다.
 
+### 발음사전–형태소 CSV 연결 DB 보강
+
+- 장시간 MFA 직전에 r3 선택 발음 유형을 발화·참조 어절 좌표와 직접 연결하는
+  정본 표가 없음을 발견했다. 원 형태소 CSV나 사전을 덮어쓰지 않고
+  `type catalog → utterance scope → pronunciation occurrence`의 정규화 계층을
+  추가했다.
+- 2020 실자료 결과는 발화 870,437개, 참조 어절 occurrence 3,056,807개다.
+  scope는 r3 안전 본체 782,715개, pre-MFA 제외 1,675개, 발음 follow-up
+  86,047개로 정확히 분할됐고, 미등록 nonempty LAB token은 0개다.
+- 정본 결합 키는 `(year, utt_id, reference_eojeol_idx)`다. 철자·형태소 어절
+  수가 다른 경우 좌표를 임의 추정하지 않는다. post-MFA exporter와 독립 감사는
+  occurrence·scope·감사 SHA-256과 결합 키를 manifest에 고정한다.
+- 첫 실행 제어 채널이 shard 1 뒤 끊겼으나, 재실행은 type catalog와 shard 1을
+  SHA로 검증해 재사용하고 shard 2부터 이어서 23/23을 완료했다. `.partial` 잔여는
+  0개이며 정본 파일은 원자 승격됐다. 이는 연도 전체 재시작 방지 checkpoint가
+  실자료에서 작동한 근거다.
+- 보강 후 2020 final preflight는 19/19 `GO`다. 새
+  `research_database_occurrence_contract` 검사는 `passed`이며, PowerShell
+  safety/runtime와 Python 전체 suite도 모두 통과했다. MFA·r3 corpus·TextGrid는
+  아직 시작하지 않았다.
+
 정본 결과 문서는
+`docs/decisions/RESULT_mfa_r3_research_database_2020_20260809.md`와
 `docs/decisions/RESULT_mfa_r3_production_gate_and_2020_go_20260809.md`다.
 
 ## 2026-08-07 — r2 발음 입력 배선 공백 전수 감사·신규 실행 차단
@@ -2799,3 +2821,23 @@ shard 2–23을 재개하는 것이다.
 - 체크리스트 1–7 통합 결과와 핵심 증거 SHA는
   `outputs/reports/AUDIT_mfa_r3_checklist_1_7_candidate_20260809.json`에 고정했다.
   다음 단계는 연구자의 체크리스트 8 release Gate 승인이다.
+## 2026-08-09 r3 발음사전–CSV 연결 공백의 production 전 보정
+
+- r3 staged 사전과 2020 alignment Gate를 연 뒤, 기존 형태소 검색 CSV가 규칙
+  예상 발음은 보존하지만 r3 최종 선택 발음의 발화별 출현 좌표를 직접 고정하지
+  않는다는 점을 발견했다. MFA·corpus·TextGrid는 아직 생성되지 않았으므로 외부
+  프로세스 리뷰 기준 `FIX-NEXT`로 처리했다. 오염된 생산 결과는 없다.
+- 원 검색 CSV를 덮어쓰지 않고 release-level `pronunciation_type_catalog`, 연도별
+  `utterance_pronunciation_scope`, `pronunciation_occurrences`의 세 정규화 표를
+  추가했다. 공통 결합 키는 `(year, utt_id, reference_eojeol_idx)`다.
+- 숫자·기호 제거 전 참조 어절 인덱스와 제거 후 MFA word 인덱스를 분리했다.
+  철자·형태소·참조 어절 수가 다르면 좌표를 추측하지 않고 명시적으로 unlinked한다.
+- 연도별 builder는 기존 형태소 shard를 checkpoint로 사용하며, 같은 SHA의 성공
+  shard만 재사용한다. 별도 auditor가 원 참조형에서 전 행을 재생성해 유형 분할,
+  exact-ID scope, 어절 좌표와 출력 SHA를 독립 검사한다.
+- post-MFA exporter와 연도 감사 manifest에 occurrence scope/table/audit SHA와 결합
+  키를 추가했다. CSV만 수정할 때는 보존 MFA DB에서 재수출하며 재정렬하지 않는다.
+- r3 장시간 runner preflight에 이 독립 감사 hard Gate를 추가했다. 따라서 새
+  발음사전과 옛 CSV가 조용히 혼용될 수 없다.
+- 합성 회귀 20건, Windows PowerShell 5.1 safety/runtime 66개 스크립트 검사를 먼저
+  통과했다. 실제 2020 DB는 MFA와 분리된 단계로 생성·감사한다.

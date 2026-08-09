@@ -17,8 +17,10 @@
 > 않는다. 광범위한 파일·tier 검토와 2022 24표본 청취는 반복하지 않고 회귀
 > 근거로 보존한다. 연구자 `ari30`은 체크리스트 1–7을 확인하고
 > `common_pron_mfa_r3_20260809`의 단일 production release Gate와 2020 안전
-> 본체 782,715발화의 preflight를 승인했다. Gate-adopted 정책 감사와 2020
-> 실자료 preflight 18/18이 통과했으며, 현재 상태는 `ready_not_started`다.
+> 본체 782,715발화를 승인했다. 이후 r3 사전과 형태소 검색 CSV 사이에 발화·어절
+> occurrence 연결 정본이 빠진 것을 실제 MFA 전에 발견했다. 이 연결표와 독립
+> 감사가 통과해야만 장시간 runner가 열리도록 Gate를 보강했다. 원 CSV와 사전은
+> 덮어쓰지 않는다.
 > 실제 MFA·r3 corpus·TextGrid는 아직 생성하지 않았다.
 
 ## 1. 완료 산출물
@@ -80,19 +82,41 @@
   → 연구자 단계적 safe-body·6개년 전체 신규 정렬 승인
   → 외부 workflow 리뷰와 r3 전용 release/runner 구현
   → 체크리스트 1–7 확인·단일 release Gate 채택·정책 감사 통과
-  → 2020 exact-ID 782,715발화 preflight 18/18 GO
+  → 2020 발음 연구 DB 870,437발화·3,056,807 occurrence 감사 passed
+  → 2020 exact-ID 782,715발화 보강 preflight 19/19 GO
   → 2020 장시간 MFA 사용자 시작  ← 현재
   → 2021부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
 
-### 3.0 2020 r3 전수 MFA 시작
+### 3.0 r3 발음사전–검색 CSV 연결 DB 생성
+
+연도별 전수 MFA 전에 한 번 실행한다. 2020은 기존 형태소 검색 23 shard를
+checkpoint로 재사용하며 23/23 완료했다. 이 명령은 MFA·WAV·TextGrid를 만들거나
+수정하지 않는다. 이미 통과한 연도에는 입력 SHA가 달라지지 않는 한 반복 실행할
+필요가 없다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_research_database.ps1" `
+  -Year 2020
+```
+
+완료 조건은
+`D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809\05_research_database\2020\AUDIT_RESEARCH_DATABASE_2020.json`의
+`status=passed`다. `pronunciation_type_catalog`, 발화 scope, occurrence 표와 SHA가
+모두 고정된다. 2020 실측은 발화 870,437개·occurrence 3,056,807개이며 scope
+782,715 + 1,675 + 86,047 = 870,437로 정확히 회계됐다. 이 파일이 없거나 달라지면
+다음 runner는 자동으로 NO-GO한다.
+
+### 3.1 2020 r3 전수 MFA 시작
 
 2020 입력은 exact-ID 782,715발화이며 release ID는
 `common_pron_mfa_r3_20260809`, alignment contract ID는
 `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
-Gate-adopted 정책 감사와 2020 preflight 18/18이 통과했으므로 아래 명령이 현재
-유일한 장시간 생산 진입점이다.
+Gate-adopted 정책 감사, 2020 occurrence DB 독립 감사와 보강된 preflight 19/19가
+모두 통과했다. 아래 명령이 유일한 장시간 생산 진입점이다.
 
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
@@ -398,7 +422,8 @@ Stage 21 표적 네 발화의 자동 회귀 검사는 통과했고 연구자는 
 전체 코퍼스 완료로 보고하지 않는다. 승인 계약은
 `outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`
 이다. 외부 workflow 리뷰, r3 release/adoption materialization, 전용 runner,
-자동검사와 2020 preflight는 완료됐다. 현재 실행은 3.0절의 단일 명령만 따른다.
+자동검사와 2020 occurrence DB 감사가 완료된 뒤 현재 실행은 3.1절의 단일
+명령만 따른다.
 
 ## 4. 2021 Gate 종료 — 완료
 

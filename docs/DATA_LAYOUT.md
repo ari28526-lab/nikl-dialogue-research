@@ -25,7 +25,8 @@ D:\
 │     ├─ common_pron_mfa_r2_20260728
 │     │                            구 r2 증거(신규 MFA 사용 금지)
 │     └─ common_pron_mfa_r3_20260809
-│                                  채택된 r3 사전·projection·감사
+│        ├─ 05_research_database   발음 type·발화 scope·어절 occurrence 정본
+│        └─ ...                    채택된 r3 사전·projection·감사
 ├─ mfa_eojeol
 │  └─ r3\common_pron_mfa_r3_20260809
 │     ├─ corpus\<year>             exact-ID WAV hardlink·LAB
@@ -57,8 +58,8 @@ C:\Users\ari30\research\2026_summer_research
 
 대형 WAV·TextGrid·MFA DB는 Git에 넣지 않는다.
 
-2020의 r3 production root는 runner가 처음 실행될 때만 만든다. 현재 Gate와
-preflight는 통과했지만 root는 `ready_not_started`다. corpus는 원 WAV를 바꾸지
+2020의 r3 production root는 runner가 처음 실행될 때만 만든다. 발음 연구 DB
+감사와 19/19 preflight는 통과했지만 root는 `ready_not_started`다. corpus는 원 WAV를 바꾸지
 않는 same-volume hardlink와 생성 LAB로 구성하고, 중단 시 `.building` 계약·temp·
 DB를 삭제하지 않은 채 같은 명령으로 재개한다. 수동 폴더 생성·이름 변경·정리는
 금지한다.
@@ -101,6 +102,7 @@ year       = session ID의 연도 코드 → 2020
 ## 연구 출력 좌표
 
 - 원자료 좌표: 발화·어절·형태소·기호 검색 7표
+- 발음 입력 좌표: type catalog·발화 scope·참조 어절 occurrence
 - MFA 좌표: word/phone interval과 6-tier TextGrid
 - post-MFA 좌표: 발화·word·phone·QC 동반표 4개
 - 연구자 판정 좌표: 선별 bundle의 수동 실현 여부·KOINA·보조모델

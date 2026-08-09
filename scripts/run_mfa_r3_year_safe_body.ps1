@@ -28,6 +28,9 @@ $alignmentAudit = Join-Path $projectRoot (
     'outputs\reports\AUDIT_mfa_r3_alignment_contract_{0}_20260809.json' -f
     $Year
 )
+$researchDatabaseAudit = Join-Path $commonReleaseRoot (
+    '05_research_database\{0}\AUDIT_RESEARCH_DATABASE_{0}.json' -f $Year
+)
 $mfa = [IO.Path]::GetFullPath([string]$policy.mfa_executable)
 $heartbeatSeconds = [int]$policy.heartbeat_seconds
 
@@ -223,6 +226,7 @@ $preflightArgs = @(
     '--policy', $policyPath,
     '--alignment-contract', $alignmentContract,
     '--alignment-audit', $alignmentAudit,
+    '--research-database-audit', $researchDatabaseAudit,
     '--release-gate', $gatePath,
     '--observed-drive-label', $driveLabel,
     '--observed-free-gib', [string]$freeGiB,

@@ -68,7 +68,10 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                     "legacy_marker_reuse_allowed": False,
                     "legacy_db_reuse_allowed": False,
                 },
-                "identity": {"pronunciation_release_id": release_id},
+                "identity": {
+                    "pronunciation_release_id": release_id,
+                    "pronunciation_contract_id": "pronunciation-test",
+                },
                 "models": {
                     "acoustic": file_fingerprint(model, with_sha256=True),
                     "dictionary": file_fingerprint(dictionary, with_sha256=True),
@@ -138,11 +141,41 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
             gate,
             {"status": "adopted", "allowed_release_ids": [release_id]},
         )
+        database_inputs = {}
+        for name in (
+            "type_catalog_audit",
+            "year_database_manifest",
+            "year_input_contract",
+            "utterance_scope",
+            "occurrences",
+        ):
+            path = root / f"database_{name}.dat"
+            path.write_bytes(name.encode("utf-8"))
+            database_inputs[name] = file_fingerprint(path, with_sha256=True)
+        research_database_audit = root / "research_database_audit.json"
+        write_json(
+            research_database_audit,
+            {
+                "schema_version": "mfa_r3_pronunciation_occurrence_year_audit.v1",
+                "status": "passed",
+                "year": "2020",
+                "release_id": release_id,
+                "pronunciation_contract_id": "pronunciation-test",
+                "post_mfa_join_key": ["year", "utt_id", "reference_eojeol_idx"],
+                "verdict": {
+                    "all_source_utterances_accounted": True,
+                    "safe_body_uses_selected_types_only": True,
+                    "ready_for_mfa_preflight": True,
+                },
+                "inputs": database_inputs,
+            },
+        )
         return {
             "policy": policy,
             "contract": contract,
             "audit": audit,
             "gate": gate,
+            "research_database_audit": research_database_audit,
             "output": root / "preflight.json",
         }
 
@@ -154,6 +187,7 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 policy_path=paths["policy"],
                 alignment_contract_path=paths["contract"],
                 alignment_audit_path=paths["audit"],
+                research_database_audit_path=paths["research_database_audit"],
                 release_gate_path=paths["gate"],
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=10,
@@ -170,6 +204,7 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 policy_path=paths["policy"],
                 alignment_contract_path=paths["contract"],
                 alignment_audit_path=paths["audit"],
+                research_database_audit_path=paths["research_database_audit"],
                 release_gate_path=paths["gate"],
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=10,
@@ -190,6 +225,7 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 policy_path=paths["policy"],
                 alignment_contract_path=paths["contract"],
                 alignment_audit_path=paths["audit"],
+                research_database_audit_path=paths["research_database_audit"],
                 release_gate_path=paths["gate"],
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=0.1,
@@ -211,6 +247,7 @@ class R3RunnerPreflightAndCorpusTests(unittest.TestCase):
                 policy_path=paths["policy"],
                 alignment_contract_path=paths["contract"],
                 alignment_audit_path=paths["audit"],
+                research_database_audit_path=paths["research_database_audit"],
                 release_gate_path=paths["gate"],
                 observed_drive_label="TEST_DRIVE",
                 observed_free_gib=10,

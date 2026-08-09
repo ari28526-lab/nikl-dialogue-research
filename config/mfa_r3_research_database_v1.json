@@ -1,0 +1,54 @@
+{
+  "schema_version": "mfa_r3_research_database.v1",
+  "status": "approved_fail_closed_before_first_r3_alignment",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "scope_years": ["2020", "2021", "2022", "2023", "2024", "2025"],
+  "paths": {
+    "release_root": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809",
+    "readiness_table": "D:/mfa_common_pron/staging/common_pron_mfa_r3_20260807/18_selection_readiness_v4/common_pron_r3_selection_readiness_v4.csv.gz",
+    "selected_projection": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809/selected_pronunciation_projection.csv.gz",
+    "release_manifest": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809/RELEASE_MANIFEST.json",
+    "release_gate": "config/mfa_pronunciation_release_gate.json",
+    "morph_search_root": "D:/10_LAYERS/09_morph_search_v3_staging/morph_search_v3_20260801",
+    "year_input_contract_root": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809/03_year_input_contracts",
+    "output_root": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809/05_research_database"
+  },
+  "tables": {
+    "pronunciation_type_catalog": {
+      "row_unit": "one observed surface word type",
+      "primary_key": ["pronunciation_release_id", "token"],
+      "variant_table": "selected_pronunciation_projection.csv.gz"
+    },
+    "utterance_pronunciation_scope": {
+      "row_unit": "one corpus utterance",
+      "primary_key": ["year", "utt_id"]
+    },
+    "pronunciation_occurrences": {
+      "row_unit": "one source reference eojeol, including an explicitly marked empty MFA token",
+      "primary_key": ["year", "utt_id", "reference_eojeol_idx"],
+      "post_mfa_join_key": ["year", "utt_id", "reference_eojeol_idx"]
+    }
+  },
+  "coordinate_policy": {
+    "reference_eojeol_idx": "one-based source index in pron_reference_form before Hangul-only MFA filtering",
+    "mfa_word_idx": "one-based index after Hangul-only MFA filtering; blank when excluded from the LAB",
+    "orth_eojeol_idx_if_count_aligned": "populate only when reference and orthographic eojeol counts are equal",
+    "morph_eojeol_idx_if_count_aligned": "populate only when reference and morph eojeol counts are equal",
+    "silent_index_guessing_allowed": false
+  },
+  "invariants": {
+    "canonical_types": 881237,
+    "selected_types": 795804,
+    "selected_variant_rows": 796061,
+    "zero_fallback_hold_types": 85398,
+    "explicit_policy_hold_types": 35,
+    "unknown_nonempty_lab_tokens": 0,
+    "all_source_utterances_accounted": true,
+    "source_equals_expected_plus_pre_mfa_excluded_plus_pronunciation_followup": true,
+    "raw_search_tables_modified": false,
+    "mfa_or_textgrid_started_by_builder": false
+  },
+  "canonical_storage": "gzip_csv_with_sha256_manifest",
+  "analysis_mirror_policy": "Parquet or DuckDB may be generated later from canonical gzip tables; it is never the audit source of truth."
+}

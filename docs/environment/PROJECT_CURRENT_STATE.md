@@ -2,14 +2,16 @@
 
 최종 갱신: 2026-08-09 KST
 
-> **2026-08-09 r3 2020 실행 직전 상태:** 외부 리뷰 §7 체크리스트 1–7을 모두
-> 구현·검증했다. 2020 exact-ID 입력은 782,715발화로 고정됐고 alignment contract
-> ID는 `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
-> 연구자 `ari30`이 `common_pron_mfa_r3_20260809`의 production release Gate와
-> 2020 preflight를 승인했다. Gate-adopted 정책 감사와 실제 `-PreflightOnly`
-> 18/18이 통과했다. MFA·r3 corpus·TextGrid는 아직 시작하지 않았고 상태는
-> `ready_not_started`다. 다음 단계는 정본 RUNBOOK의 2020 장시간 명령을 한 번
-> 실행하는 것이다.
+> **2026-08-09 r3 2020 실행 직전 보강 상태:** 2020 exact-ID 입력은
+> 782,715발화이며 alignment contract ID는
+> `3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a`다.
+> production Gate 승인 뒤, r3 발음 유형표가 연도별 발화·참조 어절 CSV에 직접
+> 연결되지 않은 마지막 DB 공백을 MFA 전에 발견했다. 원 형태소 CSV를 덮어쓰지
+> 않고 type catalog–utterance scope–reference-eojeol occurrence의 정규화 DB와
+> 독립 감사를 추가했다. 보강된 runner는 이 감사가 없으면 NO-GO한다.
+> 2020 정규화 DB는 발화 870,437개·참조 어절 3,056,807개를 전수 회계해 독립
+> 감사 `passed`를 받았고, 보강 preflight도 19/19 `GO`다. MFA·r3 corpus·TextGrid는
+> 아직 시작하지 않았다. 이제 정본 RUNBOOK 3.1절의 장시간 명령만 실행한다.
 
 > **2026-08-07 발음 입력 Gate 보정:** 2022 공식 표본에서 `있지·있는·없는·
 > 어쨌든` 등의 MFA 입력 phone이 기존 규칙 예상형과 불일치함을 확인했다. 전수
@@ -54,7 +56,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 
 | 연도 | 검색표 | r2 계산·6-tier 보존 | 연구자 검토 | r3 최종 정렬 |
 |---:|---|---|---|---|
-| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 exact-ID 782,715; Gate·preflight 18/18 GO, 장시간 실행 대기 |
+| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 DB 감사 passed·exact-ID 782,715·preflight 19/19 GO, 장시간 실행 대기 |
 | 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | pron-safe 1,208,236; 교집합 산정 대기 |
 | 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | pron-safe 752,591; 교집합 산정 대기 |
 | 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |

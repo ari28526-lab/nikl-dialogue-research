@@ -46,6 +46,10 @@ R3_REQUIRED_MANIFEST_FIELDS = (
     "r3_full_realign",
     "safe_body_routing_contract_id",
     "followup_inventory_sha256",
+    "pronunciation_occurrence_scope_sha256",
+    "pronunciation_occurrence_table_sha256",
+    "pronunciation_occurrence_audit_sha256",
+    "pronunciation_occurrence_join_key",
 )
 PhoneMapper = Callable[[str], str]
 
@@ -217,6 +221,41 @@ def expected_r3_manifest_fields(
         != str(g2p.get("sha256", "")).lower()
     ):
         raise RuntimeError("r3 audit model identity differs")
+    research_audit_path = (
+        dictionary_path.parent
+        / "05_research_database"
+        / year
+        / f"AUDIT_RESEARCH_DATABASE_{year}.json"
+    )
+    if not research_audit_path.is_file():
+        raise RuntimeError("r3 pronunciation occurrence audit missing in export audit")
+    research_audit = json.loads(
+        research_audit_path.read_text(encoding="utf-8-sig")
+    )
+    research_inputs = research_audit.get("inputs", {})
+    scope_path = _verify_contract_file(
+        research_inputs.get("utterance_scope", {}),
+        "pronunciation occurrence utterance scope",
+    )
+    occurrence_path = _verify_contract_file(
+        research_inputs.get("occurrences", {}),
+        "pronunciation occurrences",
+    )
+    if (
+        research_audit.get("schema_version")
+        != "mfa_r3_pronunciation_occurrence_year_audit.v1"
+        or research_audit.get("status") != "passed"
+        or str(research_audit.get("year")) != str(year)
+        or str(research_audit.get("release_id"))
+        != str(identity.get("pronunciation_release_id"))
+        or str(research_audit.get("pronunciation_contract_id"))
+        != str(identity.get("pronunciation_contract_id"))
+        or research_audit.get("post_mfa_join_key")
+        != ["year", "utt_id", "reference_eojeol_idx"]
+        or research_audit.get("verdict", {}).get("ready_for_mfa_preflight")
+        is not True
+    ):
+        raise RuntimeError("r3 pronunciation occurrence audit identity differs")
     expected: dict[str, object] = {
         "pronunciation_release_id": str(
             identity.get("pronunciation_release_id", "")
@@ -238,6 +277,14 @@ def expected_r3_manifest_fields(
         "followup_inventory_sha256": str(
             identity.get("followup_inventory_sha256", "")
         ).strip(),
+        "pronunciation_occurrence_scope_sha256": sha256_file(scope_path),
+        "pronunciation_occurrence_table_sha256": sha256_file(occurrence_path),
+        "pronunciation_occurrence_audit_sha256": sha256_file(
+            research_audit_path
+        ),
+        "pronunciation_occurrence_join_key": [
+            "year", "utt_id", "reference_eojeol_idx"
+        ],
     }
     if any(
         not expected[field]

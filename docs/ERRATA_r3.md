@@ -42,3 +42,16 @@
 - [RESOLVED] 2026-08-09 | follow-up·화자 적응 근거 | 2020 exact-ID 입력 계약과 독립 감사에 safe/follow-up/기술 제외 분모를 고정하고, exporter·감사 계약이 후속 coverage와 provenance를 보존하도록 구현함; 실제 정렬 후 통계는 연도 산출물에서 기록 | 체크리스트 3·6
 - [RESOLVED] 2026-08-09 | r3 validator·release identity | 발음 release·사전·alignment contract·DB SHA를 r3 manifest에서 유도하고 10개 provenance 필드를 exporter와 독립 감사가 재검증함 | 체크리스트 2·4·6
 - [RECORD] 2026-08-09 | production Gate | 위의 “Gate가 닫혀” 문장은 FIX-NEXT 작성 당시의 역사 상태다. 연구자 승인 뒤 r3 하나에 Gate를 열었고 r2 차단은 유지한다. 현재 `STOP` 0, 2020 `ready_not_started` | `RESULT_mfa_r3_production_gate_and_2020_go_20260809.md`
+## 2026-08-09: r3 최종 선택 발음의 발화별 occurrence 연결표 누락
+
+- 발견 시점: release Gate 채택 뒤, 최초 2020 r3 MFA 시작 전
+- 영향: 기존 형태소 검색 CSV에는 철자·형태소·규칙 예상 발음이 있었지만 r3 선택
+  발음 유형과 발화 내 참조 어절 좌표를 직접 잇는 정본 표가 없었다.
+- 비영향: MFA·r3 corpus·DB·TextGrid는 시작 전이어서 생산 산출물 오염은 없다.
+- 보정: 원 CSV를 변경하지 않고 type catalog, utterance scope, occurrence 표와 독립
+  감사를 추가했다. runner가 해당 감사를 요구하도록 fail-closed했다.
+- 재발 방지: 발음 release 변경 시 occurrence 감사 SHA도 달라지므로, 연도 runner와
+  post-MFA exporter가 기존 연결표를 재사용하지 못한다.
+- 실자료 해결: 2020 870,437발화·3,056,807 occurrence, 23/23 shard를 생성했고
+  독립 감사 `passed`, 보강 runner preflight 19/19 `GO`, 잔여 `.partial` 0을
+  확인했다. MFA·TextGrid는 이 해결 뒤에도 아직 시작하지 않았다.
