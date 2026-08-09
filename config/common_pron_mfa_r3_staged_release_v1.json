@@ -1,0 +1,29 @@
+{
+  "schema_version": "common_pron_mfa_r3_staged_release_policy.v1",
+  "status": "approved_to_materialize_pending_independent_audit_and_gate",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "expected": {
+    "selected_types": 795804,
+    "selected_occurrences": 27043261,
+    "dictionary_rows": 796061,
+    "safe_utterances": 4384992,
+    "followup_utterances": 718364,
+    "acoustic_phone_count": 107,
+    "acoustic_phone_sorted_sha256": "6fbbb2cf1853573e0c387b286ddabfe6073ad64e42282317f73fdef95418940d"
+  },
+  "promotion": {
+    "source": "Stage 20 audited candidate projection",
+    "selected_scope": "pronunciation-safe staged release only",
+    "candidate_source_is_modified": false,
+    "dictionary_must_be_byte_identical_to_stage20": true,
+    "full_corpus_selection_claimed": false,
+    "actual_realization_claimed": false
+  },
+  "gates": {
+    "allow_release_materialization": true,
+    "require_independent_adoption_audit": true,
+    "allow_production_mfa": false,
+    "allow_textgrid_materialization": false,
+    "allow_release_gate_edit": false
+  }
+}

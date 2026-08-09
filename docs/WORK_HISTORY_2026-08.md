@@ -2649,3 +2649,17 @@ shard 2–23을 재개하는 것이다.
   입력 내용 SHA 이력은 별도 `RESEARCHER_APPROVAL.provenance.v2.json`에만
   append한다. 동일 입력 재실행에서는 sidecar 바이트도 바뀌지 않았다.
 - production Gate, Stage 01–21, D: 원자료와 r2 산출물은 변경하지 않았다.
+
+## 2026-08-09 — 외부 리뷰 체크리스트 2: staged r3 release
+
+- `common_pron_mfa_r3_20260809` 새 이름공간에 795,804 selected형,
+  796,061 사전 변이 행을 물질화했다. Stage 20 후보 projection은 읽기 전용으로
+  두고 새 projection에서만 `final_selection=true, adopted=false`로 승격했다.
+- MFA 사전은 Stage 20 `NOT_ADOPTED` 후보 사전과 SHA-256
+  `84a047ccd87...8152a514a`가 byte 동일하다. release contract ID는
+  `58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af`이다.
+- 독립 감사기가 후보·selected·사전 796,061행을 전수 lockstep 대조했다.
+  inventory 밖 phone과 lexical `sil`/`spn`은 0이고, Stage 19/20·연구자 승인
+  SHA와 닫힌 Gate가 모두 고정되어 있음을 확인했다.
+- release 생성은 32초, 독립 전수 감사는 약 34초였다. MFA·TextGrid는 시작하지
+  않았고 Stage 01–21, 원자료, r2 산출물과 Production Gate는 변경하지 않았다.

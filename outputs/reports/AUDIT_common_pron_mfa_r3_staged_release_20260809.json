@@ -1,0 +1,89 @@
+{
+  "schema_version": "common_pron_mfa_r3_staged_release_audit.v1",
+  "status": "passed_independent_staged_adoption_audit_pending_release_gate",
+  "recorded_at": "2026-08-09T11:03:12+09:00",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "verdict": {
+    "staged_release_materialization_passed": true,
+    "selected_projection_passed": true,
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "release_gate_remains_closed": true,
+    "full_corpus_completion_claimed": false
+  },
+  "checks": {
+    "stage19_and_stage20_sha_pinned": true,
+    "researcher_approval_sha_pinned": true,
+    "candidate_to_selected_projection_exact": true,
+    "dictionary_byte_identical_to_stage20": true,
+    "dictionary_row_projection_exact": true,
+    "phones_inside_frozen_inventory": true,
+    "lexical_sil_or_spn": 0,
+    "candidate_source_modified": false,
+    "release_gate_opened": false
+  },
+  "counts": {
+    "canonical_types": 881237,
+    "selected_types": 795804,
+    "selected_occurrences": 27043261,
+    "dictionary_rows": 796061,
+    "safe_utterances": 4384992,
+    "followup_utterances": 718364
+  },
+  "inputs": {
+    "release_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\RELEASE_MANIFEST.json",
+      "bytes": 6822,
+      "mtime_ns": 1786240949117555800,
+      "sha256": "6292c92f3de9433d69bc1e9558c6c6d544608fc84d516c1080be6e9e9c58b416"
+    },
+    "selected_projection": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\selected_pronunciation_projection.csv.gz",
+      "bytes": 17207087,
+      "mtime_ns": 1786240948502021900,
+      "sha256": "c0ed7d6d798d3dbab04f00b4afa9b30e806acffd767783a2ff285f1bdb2a9361"
+    },
+    "mfa_dictionary": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\common_pron_mfa_r3_20260809.dict",
+      "bytes": 33413724,
+      "mtime_ns": 1786240948582068300,
+      "sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a"
+    },
+    "stage20_candidate_projection": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\20_safe_body_candidate\\safe_body_candidate_projection.csv.gz",
+      "bytes": 15501158,
+      "mtime_ns": 1786196225728183400,
+      "sha256": "655c1ce3053d2b132c60d2084a300b7b4b3f534089b2884f1fd4f86f4e9cbedc"
+    },
+    "stage20_candidate_dictionary": {
+      "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\20_safe_body_candidate\\common_pron_r3_safe_body_candidate.NOT_ADOPTED.dict",
+      "bytes": 33413724,
+      "mtime_ns": 1786196225726188700,
+      "sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a"
+    },
+    "frozen_acoustic_model": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    },
+    "closed_release_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_pronunciation_release_gate.json",
+      "bytes": 2870,
+      "mtime_ns": 1786236995920530100,
+      "sha256": "3293a087e7192b81b79f0c1623dba2cf54e9e9ef71e7d047fb29f3aee8298bb3"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-09T11:03:12+09:00",
+    "git_commit": "d82795b98fe2d0b4a3b4f49fbfa1b6d2058584d0",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 2616
+  }
+}
