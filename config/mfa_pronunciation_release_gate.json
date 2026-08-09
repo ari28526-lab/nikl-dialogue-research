@@ -1,12 +1,14 @@
 {
   "schema_version": "mfa_pronunciation_release_gate.v1",
-  "status": "blocked_pending_r3_staged_contract_implementation_review",
-  "recorded_at": "2026-08-09T00:00:00+09:00",
+  "status": "adopted",
+  "recorded_at": "2026-08-09T13:17:20+09:00",
   "blocked_release_ids": [
     "common_pron_mfa_r2_20260728"
   ],
-  "allowed_release_ids": [],
-  "reason": "The researcher approved staged r3 safe-body adoption and full r3 realignment for 2020-2025, but the release and runner contracts must be implemented and externally reviewed before production MFA is allowed.",
+  "allowed_release_ids": [
+    "common_pron_mfa_r3_20260809"
+  ],
+  "reason": "Checklist items 1-7 passed and researcher ari30 explicitly approved opening the production release Gate for common_pron_mfa_r3_20260809 and running the 2020 782715-utterance preflight. Long-running MFA still requires a passing adopted-gate preflight and a researcher-started command.",
   "evidence": {
     "r2_hold_decision": "docs/decisions/DECISION_2022_pronunciation_input_gate_hold_20260807.md",
     "current_scope_decision": "docs/decisions/DECISION_common_pron_r3_full_realign_2020_2025_20260809.md",
@@ -15,7 +17,15 @@
       "path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/AUDIT_MANIFEST.json",
       "sha256": "9d62f7cc0d6a12ce7bba3b315e2e2cd0fa63b3447702082852e207a63de7a0ee"
     },
-    "blocked_release_manifest_sha256": "01b7001c41e3d23858fd57878a958e4fd4ada56dec42453291b2ec5a96c11cce"
+    "blocked_release_manifest_sha256": "01b7001c41e3d23858fd57878a958e4fd4ada56dec42453291b2ec5a96c11cce",
+    "checklist_1_7_candidate": {
+      "path": "outputs/reports/AUDIT_mfa_r3_checklist_1_7_candidate_20260809.json",
+      "sha256": "bfd0a5c3fe960f9939c1da0d9601c478b42317cf36e2c763309ee510090ce7d9"
+    },
+    "production_gate_researcher_approval": {
+      "path": "outputs/reviews/common_pron_r3_production_gate_20260809/RESEARCHER_APPROVAL_PRODUCTION_GATE.json",
+      "sha256": "3a45c49769a4f7affef45f97a8f96002a9f665fde80c06a38ce5090f5b3bcc36"
+    }
   },
   "approved_staged_scope": {
     "approved_by": "ari30",

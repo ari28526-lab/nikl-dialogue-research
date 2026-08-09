@@ -1,0 +1,59 @@
+{
+  "schema_version": "mfa_r3_production_release_gate_approval.v1",
+  "status": "passed_explicit_researcher_approval",
+  "recorded_at": "2026-08-09T13:17:20+09:00",
+  "researcher": {
+    "approved_by": "ari30",
+    "approved_date": "2026-08-09",
+    "source": "explicit_researcher_statement_in_codex_chat",
+    "statement": "체크리스트 1–7 결과를 확인했다. common_pron_mfa_r3_20260809의 production release Gate 개방과 2020 안전 본체 782,715발화의 r3 preflight 진행을 승인한다. 승인자 ari30."
+  },
+  "release": {
+    "release_id": "common_pron_mfa_r3_20260809",
+    "production_release_gate_opening_approved": true,
+    "preflight_years_approved": [
+      2020
+    ],
+    "preflight_expected_utterances_2020": 782715,
+    "long_running_mfa_start_rule": "Only after the adopted-gate policy audit and the 2020 preflight both pass; the researcher starts the supplied PowerShell command.",
+    "actual_phonological_realization_claimed": false
+  },
+  "preservation_contract": {
+    "r2_release_id": "common_pron_mfa_r2_20260728",
+    "r2_remains_blocked": true,
+    "r2_intervals_allowed_in_final_r3": false,
+    "followup_utterances": 718364,
+    "followup_exact_id_preserved": true,
+    "stage_01_21_regenerated": false,
+    "raw_corpus_modified": false
+  },
+  "evidence": {
+    "checklist_1_7_candidate": {
+      "path": "outputs/reports/AUDIT_mfa_r3_checklist_1_7_candidate_20260809.json",
+      "bytes": 4937,
+      "sha256": "bfd0a5c3fe960f9939c1da0d9601c478b42317cf36e2c763309ee510090ce7d9"
+    },
+    "closed_gate_preflight": {
+      "path": "outputs/reports/PREFLIGHT_mfa_r3_runner_2020_gate_closed_20260809.json",
+      "bytes": 5316,
+      "sha256": "61306442ace260811fad18705b2fee8da2eb47f53d99fa3a41315864b88cdb57"
+    },
+    "staged_release_audit": {
+      "path": "outputs/reports/AUDIT_common_pron_mfa_r3_staged_release_20260809.json",
+      "bytes": 3831,
+      "sha256": "528ae90d1ca50ae751fb5389830926b42267981ede26194b4dbe5f921f203b3d"
+    },
+    "year_input_audit_2020": {
+      "path": "outputs/reports/AUDIT_mfa_r3_year_input_contract_2020_20260809.json",
+      "bytes": 4294,
+      "sha256": "7590c4aea0bddc7c7f1e140b8ae8b34f68ded477cf673faf2f916808a126ed50"
+    },
+    "alignment_contract_audit_2020": {
+      "path": "outputs/reports/AUDIT_mfa_r3_alignment_contract_2020_20260809.json",
+      "bytes": 3225,
+      "sha256": "9d1ba6a1934cb855453ef5696c3a309d9e6cd19e917366ff273b2217afcb7e8d"
+    },
+    "approval_code_commit": "2ee3fe53d80bd827b19ffdb827c8fc5f63ce77b6"
+  },
+  "automatic_approval_performed": false
+}
