@@ -1,0 +1,90 @@
+{
+  "schema_version": "mfa_r3_full_realign_workflow.v1",
+  "status": "researcher_approved_policy_pending_external_review_and_runner_implementation",
+  "recorded_date": "2026-08-09",
+  "researcher_decision": {
+    "approved_by": "ari30",
+    "source": "explicit_researcher_statement_in_codex_chat",
+    "targeted_regression_boundaries_approved": true,
+    "staged_safe_body_adoption_approved": true,
+    "full_r3_realign_safe_body_all_years": true,
+    "reuse_r2_intervals_in_final_r3": false,
+    "statement": "4개 표적 회귀 TextGrid의 경계를 모두 승인한다. 2020–2025에 동일한 기준을 적용하는 단계적 safe-body adoption을 승인하며, 718,364개 후속 발화는 별도 shard로 보존한다. 승인자 ari30."
+  },
+  "scope": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "source_utterances": 5103356,
+    "safe_body_utterances": 4384992,
+    "followup_utterances": 718364,
+    "safe_body_definition": "every actual MFA LAB token has an audited r3 candidate pronunciation",
+    "followup_definition": "utterance contains at least one hold, unresolved policy, unknown, or empty LAB condition",
+    "production_alignment_set": "pronunciation-safe utterances intersected by the independently approved audio/CSV/alignment-eligibility contract",
+    "pronunciation_safe_is_not_alignment_eligibility": true,
+    "partial_token_deletion_allowed": false,
+    "followup_deletion_allowed": false
+  },
+  "year_accounting": {
+    "2020": {"source": 870437, "safe_body": 784390, "followup": 86047},
+    "2021": {"source": 1373920, "safe_body": 1208236, "followup": 165684},
+    "2022": {"source": 866359, "safe_body": 752591, "followup": 113768},
+    "2023": {"source": 677262, "safe_body": 582389, "followup": 94873},
+    "2024": {"source": 728257, "safe_body": 595743, "followup": 132514},
+    "2025": {"source": 587121, "safe_body": 461643, "followup": 125478}
+  },
+  "global_once_only_stages": [
+    "canonical inventory and readiness stages 01 through 18",
+    "pre-adoption utterance routing stage 19",
+    "safe-body candidate materialization and audit stage 20",
+    "four-utterance targeted regression stage 21",
+    "researcher approval of targeted boundaries and staged scope"
+  ],
+  "annual_order": [
+    "year_input_contract",
+    "safe_body_corpus_materialization",
+    "production_preflight",
+    "mfa_alignment_database",
+    "post_mfa_exact_id_reconciliation",
+    "six_tier_textgrid_export",
+    "companion_table_export",
+    "independent_full_audit",
+    "year_completion_manifest",
+    "next_year_gate"
+  ],
+  "recovery_policy": {
+    "automatic_clean_rerun_allowed": false,
+    "technical_process_interruption": "resume the same release/year database and checkpoint",
+    "individual_audio_or_alignment_failure": "preserve exact IDs in follow-up; do not restart the year",
+    "textgrid_or_tier_export_bug": "re-export from the preserved r3 database only",
+    "companion_csv_bug": "regenerate companion tables only",
+    "localized_pronunciation_patch": "create a new point contract, compute token-to-session impact, and realign only complete affected adaptation units",
+    "global_dictionary_phone_inventory_or_acoustic_change": "invalidate and realign every completed year affected by the changed contract",
+    "disk_or_sidecar_logging_failure": "safe-stop or retry the sidecar; preserve MFA computation and all partial evidence"
+  },
+  "annual_completion_invariants": {
+    "all_alignment_eligible_utterances_within_pronunciation_safe_body_newly_aligned_under_r3": true,
+    "technically_unalignable_pronunciation_safe_ids_preserved_with_explicit_reason": true,
+    "r2_alignment_origin_allowed_in_final_r3": false,
+    "source_equals_safe_plus_followup": true,
+    "one_pronunciation_contract_id_per_six_year_release": true,
+    "one_dictionary_sha_per_six_year_release": true,
+    "same_frozen_acoustic_inventory_all_years": true,
+    "textgrid_schema": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ],
+    "all_tiers_cover_zero_to_xmax": true,
+    "actual_realization_claimed": false
+  },
+  "execution_gate": {
+    "external_workflow_review_required_before_runner_changes": true,
+    "staged_release_materialization_required": true,
+    "independent_adoption_audit_required": true,
+    "windows_powershell_51_tests_required": true,
+    "target_runner_preflight_required": true,
+    "production_mfa_allowed_now": false
+  }
+}

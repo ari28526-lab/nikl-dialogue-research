@@ -23,3 +23,10 @@ production MFA나 기존 TextGrid를 변경하지 않았다.
 
 자동 검사는 네 건 모두 후보 phone 일치, phone 경계 연속, word-phone 양끝 일치,
 `spn=0`으로 통과했다.
+
+## 승인 기록
+
+2026-08-09 연구자 ari30이 네 건의 경계를 모두 승인하고, 2020–2025 동일 기준의
+단계적 safe-body adoption과 718,364개 follow-up 발화의 별도 shard 보존을
+명시 승인했다. `REVIEW.csv`와 `RESEARCHER_APPROVAL.json`이 현재 정본이며 같은
+검토를 반복하지 않는다.

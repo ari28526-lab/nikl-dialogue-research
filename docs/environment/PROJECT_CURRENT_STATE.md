@@ -1,14 +1,16 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 > **2026-08-07 발음 입력 Gate 보정:** 2022 공식 표본에서 `있지·있는·없는·
 > 어쨌든` 등의 MFA 입력 phone이 기존 규칙 예상형과 불일치함을 확인했다. 전수
 > 감사 결과 이 문제는 특정 연도나 표본 파일만의 문제가 아니므로 r2 신규 실행을
 > 차단했다. 아래 2020–2022의 “완료”는 r2 계산·자료구조·감사 증거의 완료를
-> 뜻하며 최종 공통발음 정본 승인을 뜻하지 않는다. r3 채택 뒤 2020–2022는
-> 발음이 달라진 화자/세션 단위만 재정렬하고, 동일 단위는 동등성 증명으로
-> 재사용한다. 2023–2025는 같은 r3 계약으로 최초 정렬한다.
+> 뜻하며 최종 공통발음 정본 승인을 뜻하지 않는다. 연구자는 2026-08-09에
+> 2020–2025 pronunciation-safe pool의 정렬 가능 발화 전체를 동일 r3 계약으로
+> 새로 정렬하고, 기술적 제외는 exact-ID로 별도 회계하며 기존 r2 interval은
+> 최종 r3에 재사용하지 않는 방안을 승인했다. 718,364 follow-up 발화는 별도
+> exact-ID shard로 보존한다.
 
 > 2026-08-07 18:02 보정: 2022 MFA 계산과 보존 DB direct export, 연구용 6-tier
 > 864,690개, gzip 동반표 4종, 독립 전수 감사와 DB 재수출 24/24 동등성 검사가
@@ -16,8 +18,9 @@
 > 연구자가 표본에서 발견한 겹침·잘림 의심·소음 문제는 2020–2025 공통 품질
 > 감사로 확장했다. 정렬 가능한 발화는 데이터 구축을 위해 보존하고 승인된 연구
 > 주 분석 제외만 `analysis_only`로 붙인다. 이 품질 결정 자체는 유지하되,
-> 발음 입력 r3가 채택되면 2020–2022의 영향 세션만 다시 정렬하고 2023–2025는
-> 같은 품질 Gate를 정렬 전·후에 적용한다. 근거는
+> 발음 입력 r3가 채택되면 2020–2025 pronunciation-safe 중 정렬 가능 집합 전체를
+> 다시 정렬하고 같은 품질
+> Gate를 정렬 전·후에 적용한다. 근거는
 > `docs/decisions/DECISION_dialogue_audio_quality_gate_2020_2025_20260807.md`와
 > `outputs/reviews/dialogue_audio_quality_2020_2025_20260807/`에 있다.
 
@@ -42,12 +45,12 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 
 | 연도 | 검색표 | r2 계산·6-tier 보존 | 연구자 검토 | r3 최종 정렬 |
 |---:|---|---|---|---|
-| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토 재사용 | r3 영향 세션만 재정렬 |
-| 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토 재사용 | r3 영향 세션만 재정렬 |
-| 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | r3 영향 세션만 재정렬 |
-| 2023 | 생성 전 | 시작 금지 | 해당 없음 | r3 채택 뒤 시작 |
-| 2024 | 생성 전 | 시작 금지 | 해당 없음 | r3 채택 뒤 시작 |
-| 2025 | 생성 전 | 시작 금지 | 해당 없음 | r3 채택 뒤 시작 |
+| 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | pron-safe 784,390; 정렬 가능 교집합 산정 대기 |
+| 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | pron-safe 1,208,236; 교집합 산정 대기 |
+| 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | pron-safe 752,591; 교집합 산정 대기 |
+| 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |
+| 2024 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 595,743; 교집합 산정 대기 |
+| 2025 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 461,643; 교집합 산정 대기 |
 
 ## 2020 — r2 계산·검토 완료, 읽기 전용 보존
 
@@ -239,16 +242,18 @@ manifest는 `NOT_ADOPTED` 상태를 명시하며 아직 최종 선택·release�
 
 Stage 21은 기존 연구자 지적 표본 `있지·놨던·슬프겠지만·없는` 네 발화만 새
 후보 사전으로 표적 정렬했다. 입력 phone exact 4/4, interval 연속 4/4,
-word–phone 바깥 경계 4/4, `spn` 0으로 자동 검사를 통과했다. 연구자의 짧은
-음성–경계 검토만 대기한다. 검토 root는
-`C:\Users\ari30\Dropbox\REVIEW_r3_TARGETED_4_20260808`이다.
+word–phone 바깥 경계 4/4, `spn` 0으로 자동 검사를 통과했다. 연구자는 네 경계를
+모두 승인했다. 승인 계약은
+`outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`
+이다.
 
-현재 자동으로 더 진행할 수 있는 작업은 끝났다. 35개 policy형에는 재사용 가능한
-과거 명시 결정이 없고, 기존 생성 phone을 승인으로 간주하지 않았다. 다음은
-연구자가 (1) 네 표적 경계를 승인하고 (2) 881,237형 전부가 해결될 때까지
-기다릴지, 또는 같은 6개년 기준으로 safe body만 단계 채택하고 follow-up을
-보존할지 결정하는 Gate다. 그 전에는 생산 MFA·TextGrid materialization을
-시작하지 않는다.
+연구자는 같은 승인에서 2020–2025 pronunciation-safe 4,384,992발화를 r3 대상
+pool로 삼고, 독립 정렬 가능성 Gate를 통과한 발화를 모두 동일 r3 계약으로 새로
+정렬하며 follow-up 718,364발화를 별도 shard로 보존하도록 결정했다.
+따라서 더 이상 full-coverage/단계 채택이나 r2 interval 재사용을 다시 선택하지
+않는다. 현재 Gate가 막는 것은 연구자 결정이 아니라 외부 workflow 리뷰,
+r3 전용 release/adoption 계약과 연도별 checkpoint runner 구현이다. 그 전에는
+생산 MFA·TextGrid materialization을 시작하지 않는다.
 
 ## 정본 문서
 
@@ -291,5 +296,7 @@ word–phone 바깥 경계 4/4, `spn` 0으로 자동 검사를 통과했다. 연
 - r3 2022 표적 회귀 정렬:
   `docs/decisions/RESULT_common_pron_r3_targeted_regression_20260808.md`
 - r3 adoption 선택 Gate:
-  `docs/decisions/DECISION_common_pron_r3_adoption_choice_pending_20260808.md`
+  `docs/decisions/DECISION_common_pron_r3_full_realign_2020_2025_20260809.md`
+- r3 전수 재정렬 workflow:
+  `docs/WORKFLOW_mfa_r3_full_realign_2020_2025.md`
 - 리밋·새 대화 재개: `docs/environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md`

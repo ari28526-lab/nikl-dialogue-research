@@ -165,7 +165,7 @@ class MfaR2AdoptionValidationTests(unittest.TestCase):
         self.assertFalse(materialization["in_place_r2_label_rewrite_allowed"])
         self.assertEqual(
             materialization["source_of_words_and_phones"],
-            "either a new MFA database aligned with r3 or an existing r2 interval set proven pronunciation-equivalent for the complete MFA adaptation unit",
+            "a new MFA database aligned with the adopted r3 safe-body dictionary; r2 intervals remain read-only comparison evidence only",
         )
         self.assertEqual(
             materialization["required_tiers"],
@@ -182,10 +182,10 @@ class MfaR2AdoptionValidationTests(unittest.TestCase):
         self.assertIn("2020 through 2025", requirements)
         self.assertIn("TextGrid", requirements)
         self.assertIn("dictionary SHA", requirements)
-        self.assertTrue(draft["rerun_policy"]["unchanged_r2_reuse_allowed"])
+        self.assertFalse(draft["rerun_policy"]["unchanged_r2_reuse_allowed"])
         self.assertEqual(
-            draft["rerun_policy"]["changed_unit_scope"],
-            "realign the complete MFA speaker/session adaptation unit when any token pronunciation variant changes",
+            draft["rerun_policy"]["initial_r3_scope"],
+            "full realignment of every alignment-eligible utterance in each year's pronunciation-safe pool, with technical exact-ID exclusions accounted separately",
         )
 
 

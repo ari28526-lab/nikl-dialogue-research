@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -10,14 +10,13 @@
 > 규칙 예상 발음층을 실제 MFA 입력 사전에 일관되게 전달하지 않았음이 2022
 > 연구자 표본과 881,237 표면형 전수 감사에서 확인됐다. r2 산출물은 삭제·수정하지
 > 않고 방법론 증거로 보존하되, r2를 이용한 새 MFA와 2023 진입은 금지한다.
-> Stage 19 발화 라우팅과 Stage 20 후보 사전 감사까지 완료됐으나 후보 사전은
-> `NOT_ADOPTED`다. 현재 다음 단계는 표적 네 발화의 연구자 경계 확인과
-> full-coverage/단계적 safe-body adoption 선택이다. 채택 뒤 2020–2022는 발음 변이가
-> 달라진 화자/세션 적응 단위만 재정렬하고, 완전히 동일한 단위는 엄격한 동등성
-> 증명 아래 재사용한다. 2023–2025는 r3로 한 번만 정렬한다. 이미 수행한
-> 광범위한 파일·tier 검토와 2022 24표본
-> 청취는 반복하지 않고 표적 회귀 자료로 재사용한다. production 명령은 이 두
-> Gate가 문서와 release contract에 반영된 뒤에만 제공한다.
+> Stage 19 발화 라우팅과 Stage 20 후보 사전 감사, Stage 21 표적 회귀까지
+> 완료됐다. 연구자는 표적 네 발화와 2020–2025 pronunciation-safe pool의
+> 정렬 가능 발화를 r3로 새로 정렬하는 단계적 채택을 승인했다. 기술적 제외는
+> exact-ID로 별도 회계하며 기존 r2 interval은 최종 r3에 재사용하지
+> 않는다. 광범위한 파일·tier 검토와 2022 24표본 청취는 반복하지 않고 회귀
+> 근거로 보존한다. 후보 사전은 아직 `NOT_ADOPTED`이며, production 명령은 외부
+> workflow 리뷰와 r3 전용 release/runner 구현·검사가 끝난 뒤에만 제공한다.
 
 ## 1. 완료 산출물
 
@@ -43,11 +42,13 @@
 - 기존 2020–2022 r2 MFA·DB·TextGrid·동반표는 읽기 전용 비교 증거로 보존한다.
 - `common_pron_mfa_r2_20260728`로 새 MFA를 실행하지 않는다. 프로젝트 release
   gate가 fail-closed로 차단한다.
-- r3 채택 뒤 2020–2022는 LAB token별 r2/r3 발음 변이 집합을 전수 비교한다.
-  하나라도 달라진 화자/세션 적응 단위만 전체 재정렬한다. 모두 같은 단위는 WAV·
-  LAB·모델·설정·기존 QC와 표본 경계 동등성까지 확인한 뒤 재사용한다.
-- 2023–2025는 같은 acoustic phone inventory와 r3 계약으로 한 번만 정렬한다.
-  구 TextGrid의 phone label만 바꾸는 방식은 어떤 경우에도 금지한다.
+- 2020–2025 pronunciation-safe 4,384,992발화와 독립 정렬 가능성 계약의
+  교집합을 같은 acoustic phone inventory와 r3 계약으로 연도별 새 DB에
+  정렬한다. 기술적 제외는 exact-ID로 따로 보존하며 2020–2022 r2 interval·
+  TextGrid는 최종 r3에 재사용하지 않는다.
+- follow-up 718,364발화는 정확 ID·사유·원 입력 fingerprint를 보존한 별도 shard로
+  유지한다. 구 TextGrid의 phone label만 바꾸거나 발화 안의 문제 어절만 삭제하는
+  방식은 금지한다.
 - 한 번에 한 연도만 실행한다.
 - 직전 연도 연구자 Gate와 당해 연도 source contract가 없으면 시작하지 않는다.
 - 승인 제외·post-MFA 미정렬은 삭제하지 않고 ID·사유·계약을 보존한다.
@@ -72,9 +73,11 @@
   → canonical exact donor 전역 projection·09 readiness·독립 감사 완료
   → no-rule 잔여 85,504형 candidate-only 계약  ← 현재
   → 단일 canonical 선택 계약·zero-fallback·adoption Gate
-  → r3 채택
-  → 2020–2022 영향 inventory·변경 세션 delta 재정렬
-  → 2023–2025 동일 r3 계약으로 최초 정렬
+  → Stage 19 routing·Stage 20 후보 사전·Stage 21 표적 회귀 완료
+  → 연구자 단계적 safe-body·6개년 전체 신규 정렬 승인
+  → 외부 workflow 리뷰와 r3 전용 release/runner 구현  ← 현재
+  → 2020부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
+  → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
 
 ### 3.1 r3 후보 생성 완료 checkpoint
@@ -348,14 +351,14 @@ Stage 19는 동결 pre-MFA root의 `pron_reference_form`을 실제 LAB tokenizer
 4,384,992발화, follow-up 718,364발화, unknown 0이다. Stage 20의 후보 사전은
 795,804형·796,061변이이며 독립 전수 감사를 통과했지만 `NOT_ADOPTED`다.
 
-Stage 21 표적 네 발화의 자동 회귀 검사는 통과했다. 아래 두 연구자 Gate가 끝나기
-전에는 6절의 생산 반복 절차에 진입하지 않는다.
-
-1. `C:\Users\ari30\Dropbox\REVIEW_r3_TARGETED_4_20260808`의 네 r3 TextGrid 경계 승인
-2. full-coverage 또는 단계적 safe-body adoption의 명시 선택
-
-단계적 채택을 선택하면 4,384,992발화만 생산 queue로 승격하고 718,364발화는
-후속 shard로 보존한다. 이를 전체 코퍼스 완료로 보고하지 않는다.
+Stage 21 표적 네 발화의 자동 회귀 검사는 통과했고 연구자는 네 경계를 모두
+승인했다. 또한 4,384,992 pronunciation-safe 발화를 대상 pool로 삼고, 독립
+정렬 가능성 Gate를 통과한 발화를 2020–2025 전 연도에서 새 r3 DB로 정렬하며
+718,364 follow-up 발화를 별도 shard로 보존하는 것을 승인했다. 이를
+전체 코퍼스 완료로 보고하지 않는다. 승인 계약은
+`outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`
+이다. 현재 6절 진입을 막는 Gate는 외부 workflow 리뷰, r3 release/adoption
+materialization, 전용 runner와 자동검사뿐이다.
 
 ## 4. 2021 Gate 종료 — 완료
 
@@ -409,9 +412,10 @@ outputs/reviews/
 
 2022 r2 MFA 계산은 완료됐고 `D:\mfa_tmp\2022\2022.db`를 보존했다. 활성 LAB
 865,128개 중 864,690개가 정렬됐으며 interval이 없는 438개는 exact-ID 검토
-집합이다. 이 r2 DB에서 export·검토를 반복하지 않는다. r3가 채택되면 기존 DB를
-수정하지 않고 별도 경로에서 발음 변이가 달라진 적응 단위만 재정렬한다. 전부
-동등한 단위는 계약·QC·표본 경계 동등성 증명 뒤 최종 index로 재사용한다.
+집합이다. 이 r2 DB에서 export·검토를 반복하지 않는다. r3 생산에서는 기존 DB를
+수정하지 않고 별도 경로에서 2022 pronunciation-safe 중 정렬 가능 집합 전체를
+새로 정렬한다. 기술적 제외는 exact-ID로 보존한다. r2 DB와
+TextGrid는 비교·회귀·시행착오 근거로만 보존한다.
 
 1. 438개와 aligned control의 연결·구조·음향 근거표를 확정했다.
 2. 연구자는 438건의 기술적 미정렬 exact-ID 범위를 명시 승인했다.
@@ -437,7 +441,10 @@ export부터 시작하도록 만든 역사적 r2 복구 명령이다. 현재 발
 
 ## 6. 연도별 반복 절차
 
-2020–2025 r3는 다음 순서만 반복한다.
+2020–2025 r3는
+`docs/WORKFLOW_mfa_r3_full_realign_2020_2025.md`의 checkpoint 계약을 정본으로
+삼고 다음 순서만 반복한다. 연도 전체를 지우고 처음부터 다시 시작하는 자동
+경로는 두지 않는다.
 
 ```text
 직전 연도 Gate

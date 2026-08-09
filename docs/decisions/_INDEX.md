@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -30,7 +30,7 @@
 | `METHODS_MFA_phone_criterion_consistency_2020_2025_20260728.md` | 연도간 phone 기준 동일성 근거 |
 | `DECISION_dictionary_pronunciation_registry_and_reference_tier_20260805.md` | 우리말샘 1:N·예외 발음 registry, occurrence 조인표, 7번째 규칙 참조 tier와 공통발음열 감사 계약 |
 | `DECISION_2022_pronunciation_input_gate_hold_20260807.md` | 2022 표본·881,237형 전수 감사로 r2 규칙 배선 공백을 확인하고 신규 실행을 차단한 결정; r3 단일 선택표와 6개년 재정렬 요구 |
-| `DECISION_common_pron_r3_candidate_resolution_20260807.md` | r3 canonical·donor·G2P 후보를 최종 선택과 분리하고, 2020–2022 동등 단위 증명 재사용·변경 단위 재정렬·2023–2025 최초 정렬을 규정 |
+| `DECISION_common_pron_r3_candidate_resolution_20260807.md` | r3 canonical·donor·G2P 후보를 최종 선택과 분리한 결정; 정렬 재사용 범위는 2026-08-09 후속 결정으로 대체됨 |
 | `METHODS_NOTE_common_pron_r3_revision_for_reporting_20260807.md` | r2 입력 배선 문제 발견, 881,237형 전수 감사, r3 후보·선택 분리, 재정렬 범위 수정과 논문 각주용 축약문을 기록 |
 | `RESULT_common_pron_r3_g2p_candidate_phase_20260808.md` | Jamo G2P 310,605개 후보의 13 shard 완결성·no-path/`spn` 0·읽기 전용 감사 기록 |
 | `RESULT_common_pron_r3_g2p_agreement_gate_20260808.md` | 후보–독립 규칙 Roman 전수 exact/mismatch, 사전 근거별 보류, 연도별 동일 기준 회계와 독립 감사 기록 |
@@ -51,7 +51,8 @@
 | `RESULT_common_pron_r3_pre_adoption_routing_20260808.md` | 실제 pre-MFA tokenizer로 5,103,356발화를 safe body 4,384,992와 follow-up 718,364로 전수 라우팅한 Stage 19 |
 | `RESULT_common_pron_r3_safe_body_candidate_20260808.md` | 795,804형·796,061변이의 `NOT_ADOPTED` 후보 사전과 frozen acoustic inventory 전수 감사 |
 | `RESULT_common_pron_r3_targeted_regression_20260808.md` | 기존 2022 문제 표본 네 발화의 r3 표적 정렬·자동 구조 검사와 최소 연구자 검토 절차 |
-| `DECISION_common_pron_r3_adoption_choice_pending_20260808.md` | full-coverage와 단계적 safe-body adoption 사이의 명시 연구자 선택 Gate |
+| `DECISION_common_pron_r3_adoption_choice_pending_20260808.md` | 단계적 safe-body 채택 전 선택 Gate의 역사 기록; 2026-08-09 승인으로 해소됨 |
+| `DECISION_common_pron_r3_full_realign_2020_2025_20260809.md` | safe-body 4,384,992발화의 6개년 신규 r3 정렬, r2 interval 비재사용, follow-up 718,364 별도 보존을 확정한 현행 결정 |
 
 ## 현재 생산과 안전 계약
 

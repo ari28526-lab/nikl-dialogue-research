@@ -83,24 +83,26 @@ G2P target inventory SHA-256:
 65b51abc7a76ca5a84bf41379422c4d21333d0781ef150dba2be1c5d91408fde
 ```
 
-## 4. 재정렬 범위에 관한 중간 결정 수정
+## 4. 재정렬 범위의 최종 결정
 
-초기에는 연도 간 동일성을 위해 2020–2025를 모두 처음부터 재정렬하는 방안을
-채택했으나, r2 입력 자체의 문제를 확인한 뒤 이 결정은 폐기했다. 최종 r3 정책은
-계산량만 줄이는 임의 재사용이 아니라 다음의 증명 기반 선택 재사용이다.
+2026-08-09 연구자 승인으로 최종 r3 정책을 다음과 같이 확정했다.
 
-- 2020–2022: 전체 화자/세션 적응 단위의 모든 LAB token에 대해 r2/r3 발음
-  변이 집합을 비교한다. 하나라도 다르면 해당 적응 단위 전체를 r3로 재정렬한다.
-- 완전히 같은 단위: WAV·LAB·모델·feature/alignment 설정·기존 QC가 동일하고,
-  층화 표본을 r3로 재실행한 경계·label 동등성 검사를 통과할 때만 기존 결과를
-  `reused_r2_equivalent`로 사용한다.
-- 2023–2025: 최종 정렬 전이므로 r3로 한 번만 정렬한다.
-- 최종 발화 index에는 `alignment_origin`, r3 contract ID, MFA 사전 SHA,
-  equivalence proof SHA를 기록한다.
+- 2020–2025 pronunciation-safe 4,384,992발화를 공통 대상 pool로 삼고, 독립
+  음원·CSV·정렬 가능성 계약을 통과한 발화를 모두 같은 r3 발음 선택 계약,
+  acoustic model, phone inventory, 정렬 설정으로 연도별 새 DB에 정렬한다.
+  기술적 제외·미정렬 exact ID는 사유와 함께 별도 보존한다.
+- 2020–2022 r2 interval과 TextGrid는 최종 r3에 재사용하거나 제자리 수정하지
+  않고 읽기 전용 비교·회귀·시행착오 증거로 보존한다.
+- 미해결 항목이 포함된 718,364발화는 부분 token 삭제 없이 exact-ID follow-up
+  shard로 보존하며, 전체 코퍼스 완료율과 safe-body 완료율을 구분해 보고한다.
+- 최종 발화 index에는 `alignment_origin=realigned_r3`, r3 contract ID, MFA
+  사전 SHA와 routing contract ID를 기록한다.
 
-따라서 논문에서는 여섯 연도가 동일한 발음 선택 계약과 acoustic phone
-inventory를 사용했다고 보고할 수 있고, 동시에 불필요한 전년 전체 재계산을
-피한 근거도 제시할 수 있다.
+이 결정은 계산 비용보다 연도 간 방법론 일관성과 설명 가능성을 우선한다. 따라서
+논문에서는 여섯 연도의 pronunciation-safe 중 정렬 가능 집합이 동일 r3 기준으로
+새로 정렬됐다고 직접 보고할 수 있다. 기술적 제외는 별도 exact-ID로 보고한다.
+과거 r2 결과를 최종 자료에 혼합하지 않으므로 별도의 경계
+동등성 추론도 최종 방법의 일부가 아니다.
 
 ## 5. 중단·재개 방식의 수정
 
@@ -409,8 +411,9 @@ manifest에서 확인한 다음
 
 - G2P 생성 후보·no-path·규칙 Roman 정확 일치·불일치·보류 유형 수
 - canonical r3 최종 선택 유형·변이 수와 최종 사전 SHA
-- 2020–2022 `reused_r2_equivalent` 및 `realigned_r3` 적응 단위·발화 수
-- 2023–2025 r3 최초 정렬 발화·제외·후속 회수 수
+- 2020–2025 pronunciation-safe pool, 정렬 가능 교집합, `realigned_r3`, 기술적
+  제외 발화 수와 연도별 새 DB·release ID
+- 2020–2025 follow-up exact-ID 보존·제외 사유·후속 회수 수
 - 연도별 최종 6-tier TextGrid 및 동반표 행 수
 - 여섯 연도 공통 r3 contract ID·acoustic inventory SHA·사전 SHA
 - 기존 TextGrid phone label 제자리 치환 0건 확인
@@ -419,8 +422,8 @@ manifest에서 확인한 다음
 > MFA 입력사전에 일관되게 반영되지 않은 사실을 확인하였다. 이에 신규 정렬을
 > 중단하고 2020–2025 관측 표면형 881,237개를 전수 감사한 뒤, 표기·규칙
 > 예상형·사전 후보·G2P 후보·최종 선택을 분리한 r3 공통발음 계약으로 수정하였다.
-> 기존 2020–2022 결과는 적응 단위별 r2/r3 발음 변이 집합과 경계 동등성이
-> 입증된 경우에만 재사용하고, 차이가 있는 단위는 재정렬하였다.
+> 기존 2020–2022 정렬은 읽기 전용 비교 근거로 보존하되 최종 자료에 재사용하지
+> 않았으며, 2020–2025 안전 본체를 동일 r3 계약으로 새로 정렬하였다.
 
 단계적 safe-body 경로를 채택할 경우 다음 문장을 추가하되, 실제 adoption과 연도별
 생산 manifest가 통과한 뒤에만 완료형으로 쓴다.
@@ -434,8 +437,8 @@ manifest에서 확인한 다음
 
 > 표본 검토에서 규칙 예상 발음의 MFA 입력 배선 누락을 발견하여 881,237개
 > 표면형을 전수 감사하고 발음 선택 계약을 r3로 수정하였다. 후보 발음과 최종
-> 선택을 분리했으며, 기존 정렬은 발음·경계 동등성이 입증된 단위에 한해
-> 재사용하였다.
+> 선택을 분리했으며, 기존 정렬은 읽기 전용 방법론 증거로 보존하되 최종 r3
+> 정렬에는 재사용하지 않았다.
 
 ### 최종 각주 확정 Gate
 
@@ -443,8 +446,9 @@ manifest에서 확인한 다음
 
 1. r3 adoption manifest가 `passed`이고 선택 phone 누락·`spn`·inventory 밖 phone이
    모두 0이다.
-2. 2020–2025 최종 발화 index의 모든 행이 `reused_r2_equivalent` 또는
-   `realigned_r3`로 해소됐다.
+2. 2020–2025 pronunciation-safe pool의 모든 행이 `realigned_r3` 또는 명시적
+   기술 제외로 해소됐으며, 발음 follow-up의 exact-ID와 사유도 별도 index에
+   전수 보존됐다.
 3. 모든 연도 TextGrid·동반표 manifest가 같은 r3 contract ID와 사전 SHA를
    기록한다.
 4. 실제 manifest의 수치를 위 목록과 각주에 옮기고 두 값이 일치한다.

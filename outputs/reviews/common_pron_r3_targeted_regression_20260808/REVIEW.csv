@@ -1,5 +1,5 @@
 review_id,utt_id,target_word,automatic_verdict,decision,notes
-08,SDRW2200000232.1.1.84,있지,pass,pending,
-09,SDRW2200001945.1.1.10,놨던,pass,pending,
-15,SDRW2200001283.1.1.87,슬프겠지만,pass,pending,
-24,SDRW2200001947.1.1.192,없는,pass,pending,
+08,SDRW2200000232.1.1.84,있지,pass,approved,연구자 4건 일괄 경계 승인
+09,SDRW2200001945.1.1.10,놨던,pass,approved,연구자 4건 일괄 경계 승인
+15,SDRW2200001283.1.1.87,슬프겠지만,pass,approved,연구자 4건 일괄 경계 승인
+24,SDRW2200001947.1.1.192,없는,pass,approved,연구자 4건 일괄 경계 승인

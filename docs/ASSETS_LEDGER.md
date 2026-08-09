@@ -1,6 +1,6 @@
 # 자산 대장 — 현재 생산 기준
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 이 문서는 현재 필요한 자산의 위치만 기록한다. 2026-07-24 전체 인벤토리는
 [archive/ASSETS_LEDGER_20260724_full.md](archive/ASSETS_LEDGER_20260724_full.md)에
@@ -25,7 +25,7 @@
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_pilot_20260805` | 7번째 `pron_reference_utt` 구현 파일럿 | 2020 2세션 914개; 기존 6-tier 변경 0, 독립 감사 통과 |
 | `D:\20_AUDIO\09_textgrid_pron_reference_v1_staging\2021` | 세션 checkpoint형 7-tier 파생 생산본 | 4,139세션·1,371,883개; 기존 6-tier 변경 0, 독립 감사 오류 0 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
-| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 문맥 donor, 전수 readiness | 15 phone 변경 감사까지 완료; readiness v3 candidate 준비 795,790, zero-fallback 보류 85,412; 자동 추가 후보 0; 독립 감사 통과; canonical 선택·adoption 전 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 발화 라우팅, safe-body 후보, 표적 회귀 | Stage 01–21 완료; safe 4,384,992·follow-up 718,364; 후보 사전 795,804형·796,061변이; 연구자 단계 채택 승인, release materialization·생산 전 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\10_no_rule_hold_characterization` | no-rule 85,504형의 문자·사전·r2 출처·편집 유형 전수 특성화 | `success_characterized_not_candidate`; 모두 완성형 한글, 독립 감사 통과, 후보·selection·adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\11_rule_phone_coverage_audit` | no-rule 변이의 수의적 위치동화, frozen 기본사전 정확 일치, phone↔규칙키 비일대일성 전수 진단 | `success_audited_not_candidate`; 36,568형 all-optional, 811형 비중복 all-frozen, 48,043형 미해결, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\12_selection_readiness_v2` | stage 09 전체 readiness에 감사된 no-rule 정렬 후보 37,379형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 789,649형, zero-fallback hold 91,553형, 독립 감사 통과, adoption 아님 |
@@ -37,7 +37,7 @@
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\18_selection_readiness_v4` | Stage 17 독립 감사 후보 14형만 병합한 881,237형 readiness v4 | `success_planning_not_selected`; candidate 795,804형, hold 85,398형, 비대상 행 변화 0, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\19_pre_adoption_routing` | 실제 pre-MFA tokenizer로 2020–2025 발화를 safe body/follow-up으로 전수 라우팅 | `passed_independent_full_scan`; 5,103,356발화 중 safe 4,384,992, follow-up 718,364, unknown 0 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\20_safe_body_candidate` | readiness candidate-only MFA 사전·projection | `passed_candidate_only_not_adopted`; 795,804형·796,061변이, inventory 밖 phone·`spn` 0, adoption 아님 |
-| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\21_targeted_regression_2022` | 기존 2022 발음 문제 네 발화의 r3 raw 표적 회귀 정렬 | 자동 검사 4/4 통과, 연구자 음성–경계 검토 대기; r2 원본 무변경 |
+| `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\21_targeted_regression_2022` | 기존 2022 발음 문제 네 발화의 r3 raw 표적 회귀 정렬 | 자동 검사 4/4·연구자 경계 승인 4/4; r2 원본 무변경; 승인 계약은 저장소 outputs에 보존 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\19_pre_adoption_routing_failed_*` | 구 검색 root·LAB tokenizer count 가정으로 안전 중단된 Stage 19 두 partial | 삭제하지 않고 원인별 이름으로 보존, 생산 입력 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
@@ -90,6 +90,12 @@ C:\Users\ari30\research\2026_summer_research
 넣지 않는다. 현재 작업 브랜치는 `agent/harden-pre-bulk-pipelines`이며, 정리 기록은
 검증 완료 뒤 커밋·푸시한다.
 
+현행 r3 범위 계약은 `config/mfa_r3_full_realign_workflow_v1.json`, 연구자 승인은
+`outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json`,
+정책 일관성 감사는
+`outputs/reports/AUDIT_mfa_r3_full_realign_policy_20260809.json`이다. 이 감사가
+통과해도 production Gate는 자동으로 열리지 않는다.
+
 ## 2020 현재 계약
 
 - source contract: `morph_search_v3_20260801/2020/SOURCE_CONTRACT.json`
@@ -119,6 +125,11 @@ C:\Users\ari30\research\2026_summer_research
 r3 재정렬에서도 재사용하되 r2 MFA를 새로 시작하는 근거로 쓰지 않는다. 다음
 생산 단계는 r3 발음 release 채택이며 실행 순서는
 [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md)만 따른다.
+
+위 4,120,627은 과거 음원·CSV·승인제외 기준의 safe-body 수이며, Stage 19의
+발음 coverage safe-body 4,384,992와 다른 집합이다. r3 연도 입력기는 두 값을
+혼용하지 않고 `pron_safe_body`와 기존 제외 계약의 exact-ID 교집합을 별도로
+계산·보고해야 한다.
 
 2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. r3 재정렬 시에도
 LAB 자체는 전수 재생성하지 않고 frozen source contract를 재검증해 불일치만

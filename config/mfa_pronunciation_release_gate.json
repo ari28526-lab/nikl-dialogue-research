@@ -1,31 +1,43 @@
 {
   "schema_version": "mfa_pronunciation_release_gate.v1",
-  "status": "blocked_pending_r3",
-  "recorded_at": "2026-08-07T19:30:00+09:00",
+  "status": "blocked_pending_r3_staged_contract_implementation_review",
+  "recorded_at": "2026-08-09T00:00:00+09:00",
   "blocked_release_ids": [
     "common_pron_mfa_r2_20260728"
   ],
   "allowed_release_ids": [],
-  "reason": "Researcher review and a full 881237-type audit found that common_pron_mfa_r2 does not consistently carry the existing surface-rule pronunciation layer into the MFA input lexicon.",
+  "reason": "The researcher approved staged r3 safe-body adoption and full r3 realignment for 2020-2025, but the release and runner contracts must be implemented and externally reviewed before production MFA is allowed.",
   "evidence": {
-    "decision": "docs/decisions/DECISION_2022_pronunciation_input_gate_hold_20260807.md",
+    "r2_hold_decision": "docs/decisions/DECISION_2022_pronunciation_input_gate_hold_20260807.md",
+    "current_scope_decision": "docs/decisions/DECISION_common_pron_r3_full_realign_2020_2025_20260809.md",
+    "researcher_approval": "outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json",
     "audit_manifest": {
       "path": "D:/mfa_common_pron/audits/common_pron_r2_rule_audit_20260807/AUDIT_MANIFEST.json",
       "sha256": "9d62f7cc0d6a12ce7bba3b315e2e2cd0fa63b3447702082852e207a63de7a0ee"
     },
     "blocked_release_manifest_sha256": "01b7001c41e3d23858fd57878a958e4fd4ada56dec42453291b2ec5a96c11cce"
   },
+  "approved_staged_scope": {
+    "approved_by": "ari30",
+    "approved_date": "2026-08-09",
+    "targeted_regression_review_ids": ["08", "09", "15", "24"],
+    "safe_body_utterances": 4384992,
+    "followup_utterances": 718364,
+    "full_r3_realign_years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "r2_intervals_allowed_in_final_r3": false,
+    "full_corpus_completion_claimed": false
+  },
   "r3_adoption_requirements": [
-    "one canonical pronunciation-selection table for all 881237 observed surface types",
+    "one audited candidate projection for every token used by the staged safe body",
     "explicit orthographic, surface-rule, dictionary-candidate, selected-backend-phone, and provenance fields",
     "same frozen acoustic phone inventory for all six years",
-    "zero missing selected pronunciations and zero phones outside the acoustic inventory",
+    "zero missing candidate pronunciations within safe-body utterances and zero phones outside the acoustic inventory",
     "byte/fingerprint identity between canonical selected phones and the emitted MFA dictionary",
-    "rule-sensitive mismatches either resolved or explicitly retained with a documented reason",
-    "targeted regression using the already-reviewed 2022 samples rather than a repeated broad pilot",
+    "all hold and unresolved policy utterances preserved in an exact-ID follow-up inventory",
+    "targeted regression IDs 08, 09, 15, and 24 explicitly approved by the researcher",
     "one adopted contract id used for 2020 through 2025",
-    "changed MFA adaptation units use new r3-aligned DB intervals; r2 TextGrids are never relabeled in place",
-    "unchanged 2020-2022 units may be retained only with exact r2-r3 pronunciation-set equivalence and sampled boundary equivalence proof",
-    "every annual final TextGrid index and companion-table manifest records the same r3 contract id, dictionary SHA, alignment origin, and equivalence proof when reused"
+    "every alignment-eligible utterance in the pronunciation-safe pool receives a new r3-aligned DB interval; technically unalignable exact IDs are separately accounted; r2 TextGrids are never relabeled or reused as final r3",
+    "every annual final TextGrid index and companion-table manifest records the same r3 contract id, dictionary SHA, safe-body routing contract, and full-realignment origin",
+    "the staged release builder, independent adoption audit, r3 runner, Windows PowerShell 5.1 tests, and 2020 production preflight pass after external workflow review"
   ]
 }

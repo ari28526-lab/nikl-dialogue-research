@@ -67,8 +67,9 @@ MFA 단계에서는 `show_mfa_year_queue_status.ps1`를 사용하고 같은 원�
 - `g2p_running`: 별도 PowerShell 계산이 진행 중이므로 창과 lock을 그대로 둔다.
 - `interrupted_resumable`: 같은 실행 명령을 사용하면 완료 보고서가 있는 shard는
   건너뛰고 중단 shard만 다시 계산한다.
-- `success_candidates_not_selected`: 후보 생성만 끝난 상태다. 최종 사전이나 연도별
-  MFA가 시작된 것은 아니며, 규칙 Roman 정확 일치 선택 Gate가 다음 단계다.
+- `success_candidates_not_selected`: 후보 생성만 끝난 역사적 상태다. 현재는 이후
+  Stage 19–21과 연구자 단계적 범위 승인까지 완료됐으며, 다음 단계는 외부
+  workflow 리뷰와 r3 전용 release/runner 구현이다.
 
 부분 `.dict`만 보고 완료로 판단하지 않는다. 입력·출력·동결 모델 SHA가 묶인
 shard 보고서가 있어야 완료다. r3 실행 명령은
@@ -269,9 +270,13 @@ outputs/reports/AUDIT_common_pron_r3_adoption_readiness_20260808.json
 ```
 
 safe body는 4,384,992발화, follow-up은 718,364발화다. 후보 사전은
-795,804형·796,061변이이며 `NOT_ADOPTED`다. 다음 행동은 Dropbox의 표적 네 발화
-경계 검토와 full-coverage/단계적 safe-body adoption 선택뿐이다. 그 전에는 생산
-MFA, TextGrid materialization, r2 label 제자리 치환을 시작하지 않는다.
+795,804형·796,061변이이며 `NOT_ADOPTED`다. 연구자는 표적 네 발화의 경계와
+2020–2025 pronunciation-safe pool의 정렬 가능 집합 전체 신규 r3 정렬을
+승인했다. 기술적 제외는 exact-ID로 별도 회계한다. r2 interval은 최종 r3에
+재사용하지 않으며 follow-up은 exact-ID 별도 shard로 보존한다. 다음 행동은
+`docs/reviews/PROMPT_external_review_mfa_r3_full_realign_20260809.md`에 따른 외부
+workflow 리뷰와 r3 전용 release/runner 구현이다. 그 전에는 생산 MFA,
+TextGrid materialization, r2 label 제자리 치환을 시작하지 않는다.
 
 ## 새 대화에 붙일 최소 프롬프트
 

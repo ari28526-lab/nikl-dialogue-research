@@ -1,0 +1,53 @@
+{
+  "schema_version": "mfa_r3_full_realign_policy_audit.v1",
+  "status": "passed_policy_consistency_blocked_as_expected_pending_external_review_and_runner",
+  "observed_at": "2026-08-09T09:59:17+09:00",
+  "policy_failures": [],
+  "production_mfa_allowed_now": false,
+  "implementation_gaps_expected_before_external_review": [
+    {
+      "path": "scripts/run_eojeol_realign.ps1",
+      "reason": "legacy r2-specific contract tokens remain",
+      "matched_tokens": [
+        "mfa_r2",
+        "common_pron_mfa_r2"
+      ]
+    },
+    {
+      "path": "scripts/python/validate_mfa_r2_adoption.py",
+      "reason": "legacy r2-specific contract tokens remain",
+      "matched_tokens": [
+        "r2"
+      ]
+    },
+    {
+      "path": "scripts/python/build_mfa_alignment_contract.py",
+      "reason": "legacy r2-specific contract tokens remain",
+      "matched_tokens": [
+        "r2"
+      ]
+    },
+    {
+      "path": "scripts/run_mfa_r3_year_safe_body.ps1",
+      "reason": "dedicated r3 annual runner not implemented"
+    }
+  ],
+  "inputs": {
+    "workflow": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_r3_full_realign_workflow_v1.json",
+      "sha256": "6f1eed7f698d9089cdddbff56d9f71ccf6cc9fdf81cd11a6a2258dba0198e77b"
+    },
+    "draft": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\common_pronunciation_resource_contract_v3_draft.json",
+      "sha256": "f4e8a2b52fb259ac4389a9f03e263c1405dd4ad4558ab1c03b07ddfc49d16871"
+    },
+    "release_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_pronunciation_release_gate.json",
+      "sha256": "3293a087e7192b81b79f0c1623dba2cf54e9e9ef71e7d047fb29f3aee8298bb3"
+    },
+    "approval": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_targeted_regression_20260808\\RESEARCHER_APPROVAL.json",
+      "sha256": "9e5e1a0827984cb2820c14be0990785bd8d1b7056058b1e84bbde2b52cb38a90"
+    }
+  }
+}

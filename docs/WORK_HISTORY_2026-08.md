@@ -2614,3 +2614,24 @@ shard 2–23을 재개하는 것이다.
 - 연구자 최소 검토용 WAV/LAB/r2/r3 TextGrid를 Dropbox 한 폴더에 모았다.
   자동 adoption 감사는 production MFA·TextGrid 생성을 차단한 채, 네 경계 검토와
   full-coverage/단계적 safe-body 선택만 실제 연구자 결정으로 남겼다.
+
+## 2026-08-09 — 단계적 safe-body 승인과 6개년 신규 r3 정렬 workflow 확정
+
+- 연구자는 Stage 21의 네 표적 회귀 TextGrid 경계를 모두 승인했다. 동시에
+  2020–2025 pronunciation-safe 4,384,992발화를 r3 대상 pool로 삼고 정렬 가능
+  발화를 동일 r3 기준으로 새로 정렬하며, follow-up 718,364발화를 exact-ID 별도
+  shard로 보존하는 방안을 승인했다. 음원·CSV 기술 제외는 별도 축으로 회계한다.
+- 최종 r3에 기존 r2 interval·TextGrid를 섞는 선택 재사용 정책을 폐기했다.
+  2020–2022 r2 DB·TextGrid는 삭제·수정하지 않고 비교·회귀·시행착오의 읽기 전용
+  근거로 보존한다.
+- Stage 01–18 canonical/readiness, Stage 19 라우팅, Stage 20 후보 사전,
+  Stage 21 표적 회귀와 기존 광범위 사람 검토는 입력 계약이 바뀌지 않는 한 다시
+  하지 않는 전역 checkpoint로 고정했다.
+- 연도별 작업을 입력 계약, corpus, preflight, MFA DB, exact-ID 회계, 6-tier,
+  동반표, 독립 감사, completion manifest로 분리했다. 따라서 TextGrid 경계·tier
+  오류는 export만, CSV 열·조인 오류는 동반표만, 일부 미정렬은 exact-ID
+  follow-up만 처리하며 연도 전체 자동 clean 재시작을 금지한다.
+- 연구자 승인 계약과 정책 일관성 독립 감사기를 추가했다. 감사 결과 정책 모순은
+  0건이고, r2 전용 코드 세 곳과 아직 없는 r3 연도 runner를 의도적 구현 gap으로
+  기록했다. release Gate는 외부 workflow 리뷰와 구현이 끝날 때까지 닫아 뒀다.
+- 이 단계에서는 생산 MFA, D: 원자료, 기존 r2 DB·TextGrid를 변경하지 않았다.

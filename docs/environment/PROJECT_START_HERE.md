@@ -1,15 +1,16 @@
 # 프로젝트 시작 안내 — 현재 정본
 
-최종 갱신: 2026-08-08 KST
+최종 갱신: 2026-08-09 KST
 
 > **현재 안전 정지점:** r3 readiness v4, 실제 pre-MFA 발화 라우팅, safe-body
-> 후보 사전과 독립 감사까지 완료했다. 후보는 795,804형·27,043,261회이고,
-> 5,103,356발화 중 4,384,992발화(85.923694%)가 safe body,
-> 718,364발화가 follow-up이다. 기존 문제 표본 네 발화의 표적 r3 정렬도 자동
-> 검사를 통과했다. 후보 사전은 아직 `NOT_ADOPTED`이며 생산 MFA·TextGrid 생성은
-> 시작하지 않는다. 다음 행동은 네 표적 경계의 짧은 연구자 확인과
-> full-coverage/단계적 safe-body adoption의 명시 선택이다. 이전 Stage를
-> 재실행하거나 광범위 파일럿을 반복하지 않는다.
+> 후보 사전과 독립 감사가 완료됐다. 5,103,356발화 중 4,384,992발화가 safe body,
+> 718,364발화가 follow-up이다. 연구자는 표적 네 발화의 경계와 2020–2025
+> pronunciation-safe pool의 정렬 가능 발화 전체를 r3로 새로 정렬하는 단계적
+> 채택을 승인했다. 기술적 제외는 exact-ID로 별도 회계한다. 기존 r2 interval은
+> 최종 r3에 재사용하지 않고 읽기 전용 방법론 증거로만 보존한다. 후보 사전은 아직
+> `NOT_ADOPTED`이며 생산 MFA도 시작하지 않았다. 다음 행동은 전체 workflow의 외부
+> 코드리뷰와 r3 전용 실행기·release Gate 구현이다. Stage 01–21과 광범위 파일럿은
+> 다시 실행하지 않는다.
 
 이 저장소에서 새 작업을 시작할 때는 아래 문서만 순서대로 읽는다.
 
@@ -35,7 +36,8 @@ C:\Users\ari30\research\2026_summer_research
 ```text
 동결 CSV·형태소/Roman 검색층
   → 규칙·사전·형태소 근거와 MFA phone을 잇는 단일 r3 발음 선택표
-  → 2020–2022 동등 단위 증명 재사용·변경 단위 재정렬, 2023–2025 최초 정렬
+  → 2020–2025 pronunciation-safe와 정렬 가능 집합의 교집합을 동일 r3 계약으로 연도별 신규 정렬
+  → 미해결 718,364발화는 exact-ID follow-up shard로 보존
   → 6-tier TextGrid와 연도별 동반 CSV/Parquet
   → 우리말샘 후보·규칙 예상형·MFA phone을 분리한 발음 참조표와 파생 7번째 tier
   → 형태소·표기상 환경으로 후보 검색 및 WAV·TextGrid 수집
@@ -50,9 +52,12 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
 
 - acoustic phone inventory는 Korean MFA v3.3.0 기준으로 동결한다. 기존
   `common_pron_mfa_r2_20260728`은 보존 증거이며 새 실행에는 쓰지 않는다.
-- 2020–2022는 채택될 r3와 발음 변이 집합이 달라진 화자/세션 적응 단위만 다시
-  정렬하고, 완전히 같은 단위는 동등성 증명과 최종 index를 붙여 재사용한다.
-  2023–2025는 같은 r3 계약으로 한 번만 정렬한다.
+- 2020–2025 pronunciation-safe pool 중 독립 음원·CSV·정렬 가능성 Gate를 통과한
+  발화는 모두 같은 r3 사전·acoustic model·실행 설정으로 새 DB에 정렬한다.
+  기술적 제외는 exact-ID로 별도 회계하고, 2020–2022 r2 interval/TextGrid는
+  최종 r3에 섞지 않는다.
+- follow-up 718,364발화는 어절을 부분 삭제하지 않고 exact-ID·사유·원 입력
+  fingerprint를 유지한 별도 shard로 보존한다. 이는 코퍼스 전체 완료와 구분한다.
 - TextGrid 정본 형식은 6-tier다:
   `words / phones_mfa / phoneme_r_auto / utterance / utterance_orth_r /
   morph_analysis_utt`.
@@ -65,8 +70,8 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
 - 과거 광범위 검토를 반복하지 않는다. r3는 이미 검토한 문제 발화와 음운현상별
   자동 회귀 표본만 통과시키고, 새 대규모 사람 파일럿은 만들지 않는다.
 - 2020 r2 계산·6-tier·동반표·독립 감사·24표본 Gate B는 완료된 역사적 근거다.
-  r3 채택 뒤 사람 검토는 재사용하고, 적응 단위의 발음 변이 집합이 달라진
-  부분만 r3로 재정렬한다. 동등 단위는 계약·경계 동등성 증거와 함께 재사용한다.
+  사람 검토 결과는 회귀 근거로 재사용하되, 최종 r3 시간 interval은
+  pronunciation-safe 중 정렬 가능 집합 전체를 새로 계산한다.
 - 2021 r2 MFA·6-tier·동반표·독립 전수 감사와 연구자 24/24 검토, 7-tier
   1,371,883개 검증까지 완료돼 비교·회귀 자료로 보존한다.
 - 2022 r2 MFA·6-tier·동반표·독립 기계 QC와 24표본 검토까지 완료됐고, 그
@@ -112,9 +117,10 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
   candidate 795,804형, hold 85,398형이다. Stage 19는 실제 pre-MFA tokenizer로
   5,103,356발화를 전수 라우팅해 safe body 4,384,992발화와 follow-up
   718,364발화를 고정했고, Stage 20 후보 사전의 796,061변이도 독립 감사를
-  통과했다. Stage 21의 기존 문제 표본 네 발화는 자동 회귀 검사를 통과해 짧은
-  연구자 경계 검토만 남았다. 현재 생산 MFA 전 필요한 것은 네 표본 승인과
-  full-coverage 또는 단계적 safe-body adoption의 명시 선택이다.
+  통과했다. Stage 21의 기존 문제 표본 네 발화는 자동 회귀 검사와 연구자 경계
+  승인 4/4를 통과했다. 단계적 safe-body와 6개년 신규 r3 정렬 범위도 승인됐다.
+  현재 생산 MFA 전 필요한 것은 외부 workflow 검토와 r3 전용 release·runner
+  구현·검사다.
 
 ## 문서 사용 규칙
 
