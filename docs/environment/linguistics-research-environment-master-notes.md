@@ -412,5 +412,10 @@ MFA용 pilot subset을 만들고,
 - API 키, 개인정보, 연구대상 원자료는 채팅에 붙이지 않는다.
 - 외장하드 드라이브 문자는 바뀔 수 있으므로 스크립트에서 경로를 매번 확인한다.
 - Codex 일반 실행과 권한 승인 실행에서 PATH나 라이브러리 탐색 결과가 다르게 보일 수 있다.
+- GitHub HTTPS 인증도 제한된 Codex shell에서는 Windows Credential Manager
+  접근이 차단될 수 있다. 2026-08-09 확인 기준 Git 2.52.0, Git Credential
+  Manager 2.6.1, `credential.helper=manager`는 정상이며 권한 있는 shell의
+  credential 조회와 push는 통과했다. 제한 shell의 `wincredman` 또는
+  `SEC_E_NO_CREDENTIALS` 오류만 보고 자격증명을 지우거나 재설정하지 않는다.
 - Windows에서는 R/Python/conda 실행 시 전체 경로를 쓰는 편이 가장 안정적이다.
 - 설치 기록은 성공 로그보다 검증 명령 결과를 기준으로 판단한다.

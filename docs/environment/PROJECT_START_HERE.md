@@ -145,3 +145,12 @@ MFA/G2P phone은 분절 인프라이지 실제 발음 판정값이 아니다. �
 
 제한된 Codex shell에서 AppData Python이 보이지 않는 결과만으로 설치 부재를
 판정하지 않는다. 필요하면 `scripts/check_python_environment.ps1`로 확인한다.
+
+GitHub HTTPS 인증도 같은 원칙을 적용한다. 이 컴퓨터의 Git 2.52.0과 Git
+Credential Manager 2.6.1, `credential.helper=manager` 설정은 정상이다. 제한된
+Codex shell은 Windows Credential Manager(`wincredman`) 접근이 차단되어
+`Unable to persist credentials` 또는 `SEC_E_NO_CREDENTIALS`를 낼 수 있지만,
+권한 있는 shell에서는 저장된 자격증명 조회와 `git push`가 정상 동작한다.
+이 결과만으로 자격증명을 삭제·재등록하거나 Git/PowerShell을 재설치하지 말고,
+인증이 필요한 Git 네트워크 작업만 권한 있는 실행으로 수행한다. 사용자명·토큰은
+로그나 채팅에 출력하지 않는다.
