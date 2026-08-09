@@ -51,6 +51,65 @@ if ($archiveScript -match '\$history\s*\+=') {
     $failures.Add('archive failure_history에 PS5 scalar += 사용 금지')
 }
 
+# M1 회귀: 명시적 full-clean 재시도의 보존 이동 함수를 합성 temp에서
+# 실제 호출한다. D: 자료나 MFA 산출물에는 접근하지 않는다.
+$legacyRunnerPath = Join-Path $root 'scripts\run_eojeol_realign.ps1'
+$legacyTokens = $null
+$legacyErrors = $null
+$legacyAst = [Management.Automation.Language.Parser]::ParseFile(
+    $legacyRunnerPath, [ref]$legacyTokens, [ref]$legacyErrors
+)
+$archiveFunction = $legacyAst.Find({
+    param($node)
+    $node -is [Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Archive-StaleTemp'
+}, $true)
+$legacyText = Get-Content -LiteralPath $legacyRunnerPath -Raw -Encoding UTF8
+if ($null -eq $archiveFunction) {
+    $failures.Add('Archive-StaleTemp 함수 AST를 찾지 못함')
+} elseif (-not $legacyText.Contains(
+    'Archive-StaleTemp $tmpYear $tmp $y'
+)) {
+    $failures.Add('명시적 full-clean 재시도 호출의 allowedRoot 인자 누락')
+} else {
+    $archiveTestRoot = Join-Path ([IO.Path]::GetTempPath()) (
+        'mfa_archive_stale_test_' + [guid]::NewGuid().ToString('N')
+    )
+    try {
+        $allowedRoot = Join-Path $archiveTestRoot 'allowed'
+        $sourceYear = Join-Path $allowedRoot '2020'
+        $stateRoot = Join-Path $archiveTestRoot 'state'
+        New-Item -ItemType Directory -Force -Path $sourceYear | Out-Null
+        Set-Content -LiteralPath (Join-Path $sourceYear 'checkpoint.txt') `
+            -Value 'preserve-me' -Encoding UTF8
+        function Say { param([string]$Message) }
+        Invoke-Expression $archiveFunction.Extent.Text
+        $archived = Archive-StaleTemp $sourceYear $allowedRoot '2020' `
+            'synthetic_actual_invocation'
+        if (Test-Path -LiteralPath $sourceYear) {
+            $failures.Add('Archive-StaleTemp 실제 호출 후 원 temp가 남음')
+        }
+        if (-not (Test-Path -LiteralPath (
+            Join-Path $archived 'checkpoint.txt'
+        ) -PathType Leaf)) {
+            $failures.Add('Archive-StaleTemp 실제 호출이 checkpoint를 보존하지 못함')
+        }
+    } catch {
+        $failures.Add("Archive-StaleTemp 실제 호출 실패: $($_.Exception.Message)")
+    } finally {
+        $resolvedTestRoot = [IO.Path]::GetFullPath($archiveTestRoot)
+        $resolvedSystemTemp = [IO.Path]::GetFullPath(
+            [IO.Path]::GetTempPath()
+        )
+        if ($resolvedTestRoot.StartsWith(
+            $resolvedSystemTemp, [StringComparison]::OrdinalIgnoreCase
+        )) {
+            Remove-Item -LiteralPath $resolvedTestRoot -Recurse -Force `
+                -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 . (Join-Path $root 'scripts\mfa_year_selection.ps1')
 $csvYears = @(
     Resolve-MfaYearSelection -YearsCsv '2021,2022,2023,2024,2025'

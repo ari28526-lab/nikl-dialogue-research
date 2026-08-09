@@ -2,13 +2,15 @@
 
 > **현재 r3 생산 차단:** 아래 2020–2022 생산 entrypoint는 r2 역사·복구 근거다.
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
-> 정렬을 승인했으며, 외부 workflow 리뷰 뒤 별도
-> `run_mfa_r3_year_safe_body.ps1`을 구현·검증할 때까지 production Gate는 닫혀 있다.
+> 정렬을 승인했다. 별도 `run_mfa_r3_year_safe_body.ps1`과 2020
+> `-PreflightOnly` 구조 검증은 완료됐지만, exporter·감사·테스트 배선과 연구자
+> Gate 승인이 남아 있으므로 production Gate는 계속 닫혀 있다.
 
 ## 현재 생산 진입점
 
-이 절의 wrapper 순서는 r2 당시의 완료·복구 흐름을 설명한다. r3 실행 진입점은
-아직 없으며 이를 파일명만 바꿔 재사용하지 않는다.
+이 절의 wrapper 순서는 r2 당시의 완료·복구 흐름을 설명한다. r3 실행기는 아래
+인프라 절에 별도로 있으며, Gate가 닫힌 현재는 `-PreflightOnly` 외 실행을
+허용하지 않는다. r2 진입점을 파일명만 바꿔 재사용하지 않는다.
 
 | 순서 | wrapper | 상태 |
 |---:|---|---|
@@ -99,6 +101,9 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | build_common_pron_mfa_r3_staged_release.py | v3.1 계약·불변 연구자 승인·Stage 19/20 SHA·닫힌 Gate를 검증한 뒤 Stage 20 후보를 수정하지 않고 새 release-scoped selected projection과 byte 동일 MFA 사전으로 원자 물질화. selected와 adopted를 분리하며 MFA·TextGrid는 시작하지 않음 |
 | audit_common_pron_mfa_r3_staged_release.py | Stage 20 후보, 새 selected projection, MFA 사전 796,061행을 전수 lockstep 대조하고 candidate→selected provenance, 사전 byte 동일성, 동결 phone inventory, Stage 19/20·승인 SHA, Gate 폐쇄를 독립 검증 |
 | audit_mfa_r3_full_realign_policy.py | workflow·r3 draft·release Gate·연구자 승인 간 6개년 수량, r2 interval 비재사용, production fail-closed를 독립 검사하고 r2 hard-code와 미구현 r3 runner를 명시한 외부 리뷰용 감사 보고서 생성 |
+| preflight_mfa_r3_year_safe_body.py | r3 runner 정책·D: label·잠금·alignment 계약/감사·모델과 exact-ID SHA·연도별 산식 용량·release-scoped 경로·legacy artifact·단일 release Gate를 검사하고 GO/NO-GO JSON을 원자 기록 | 2020 실자료는 Gate만 닫혀 `NO_GO`; 나머지 검사 통과 |
+| materialize_mfa_r3_safe_body_corpus.py | 연도 expected-input exact ID만 recovered WAV와 결합해 r3 release corpus에 WAV hardlink와 LAB를 물질화. contract-bound `.building` checkpoint로 재개하며 원 WAV·r2·Stage를 수정하지 않음 | 합성 corpus hardlink·멱등·불일치 차단 회귀 통과; 생산 Gate 전 실물 생성 안 함 |
+| run_mfa_r3_year_safe_body.ps1 | release ID를 모든 corpus/temp/DB/output/marker에 넣는 r3 전용 runner. 동일 temp contract만 재개하고 자동 full-clean·실패 temp/DB 삭제·legacy 재사용을 금지하며 lock·절전 방지·공유 heartbeat를 내장. MFA DB 계산과 TextGrid 수출을 분리 | 2020 `-PreflightOnly` 구조 검증 통과, Gate 폐쇄로 MFA 미실행 |
 | build_common_pron_researcher_approval.py | 이미 명시 승인된 27건 workbook·결정 적용 transaction·6개년 전면 재정렬 결정문·완료 difference inventory를 다시 검증해 researcher approval v2를 생성. 새 언어학 판단을 자동 생성하지 않고 기존 명시 결정의 SHA 연결만 기계 판독화 |
 | validate_mfa_r2_adoption.py | 연도별 실행 직전에 adoption v3가 `passed/allow_yearly_mfa=true`인지 확인하고 공통사전·acoustic·Jamo G2P·model bundle 실물 SHA를 동결 계약과 다시 대조. inline G2P가 아닌 승인 공통사전 경로만 허용 |
 | build_mfa_year_phone_inventory.py | 연도별 보존 MFA DB의 실제 phone interval을 집계하고, 동결 acoustic 허용 inventory SHA와 `spn`·inventory 밖 phone을 hard gate로 기록. 코퍼스별 관측 phone 집합 차이는 기술 통계로 보존 |

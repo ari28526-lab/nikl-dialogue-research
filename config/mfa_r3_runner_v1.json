@@ -1,0 +1,34 @@
+{
+  "schema_version": "mfa_r3_runner_policy.v1",
+  "status": "approved_runner_implementation_gate_controlled",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "expected_drive_letter": "D",
+  "expected_drive_label": "DATA_SSD",
+  "release_root": "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809",
+  "common_pron_release_root": "D:/mfa_common_pron/releases/common_pron_mfa_r3_20260809",
+  "mfa_executable": "C:/Users/ari30/miniforge3/envs/mfa/Scripts/mfa.exe",
+  "default_num_jobs": 4,
+  "heartbeat_seconds": 60,
+  "capacity_formula": {
+    "temporary_bytes_per_utterance": 32000,
+    "database_bytes_per_utterance": 6000,
+    "corpus_lab_and_metadata_bytes_per_utterance": 2500,
+    "output_and_log_bytes_per_utterance": 2000,
+    "fixed_overhead_gib": 12,
+    "safety_multiplier": 1.25
+  },
+  "safety": {
+    "automatic_full_clean_retry": false,
+    "delete_temp_on_failure": false,
+    "delete_database_on_failure": false,
+    "reuse_legacy_marker": false,
+    "reuse_legacy_database": false,
+    "source_wav_mutation": false,
+    "stage_01_21_mutation": false,
+    "r2_artifact_mutation": false
+  },
+  "production_gate": {
+    "required_status": "adopted",
+    "allowed_release_ids_must_equal_single_release": true
+  }
+}

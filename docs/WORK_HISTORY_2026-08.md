@@ -2699,3 +2699,19 @@ shard 2–23을 재개하는 것이다.
 - 독립 감사기가 identity를 재계산하고 모든 실제 파일 SHA와 닫힌 Gate를
   대조해 통과했다. MFA·TextGrid는 시작하지 않았으며 Stage 01–21, 원자료,
   r2 산출물은 변경하지 않았다.
+
+## 2026-08-09 — 외부 리뷰 체크리스트 5: r3 runner와 fail-closed preflight
+
+- `common_pron_mfa_r3_20260809` 전용 corpus·temp·DB·output·marker 이름공간을
+  쓰는 2020 runner를 구현했다. r2 marker·DB 재사용, 실패 시 temp/DB 삭제,
+  자동 full-clean 재시도를 금지하고 계약이 같은 checkpoint만 이어가게 했다.
+- recovered WAV는 원자료를 고치거나 복사하지 않고 r3 corpus에 hardlink하며,
+  LAB만 release 내부에 생성한다. MFA 계산과 TextGrid/동반표 수출도 분리했다.
+- heartbeat는 공유 읽기·쓰기와 재시도를 사용해 기록 충돌이 MFA를 죽이지 않게
+  했고, runner 본체에 Windows 절전 방지 enable/restore를 넣었다.
+- 구 runner의 `Archive-StaleTemp` 4번째 인자 누락을 교정하고, PowerShell 5.1
+  검사에서 합성 checkpoint를 실제 보존 이동하는 회귀를 통과시켰다.
+- 실제 2020 `-PreflightOnly`는 D: label, lock 0, 계약·모델·exact-ID SHA,
+  53.726 GiB 산식 용량, r3 경로 청정성을 모두 통과했다. Gate만 닫혀 있어
+  `NO_GO`가 되었으며 MFA는 시작하지 않았다. Stage 01–21·원자료·r2 산출물은
+  변경하지 않았다.

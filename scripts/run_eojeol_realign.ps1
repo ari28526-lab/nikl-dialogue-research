@@ -2413,7 +2413,7 @@ foreach ($y in $years) {
                 if ($AllowFullCleanRetry) {
                     Say "$y 이어가기 실패 → 명시적 허용에 따라 temp를 archive한 뒤 --clean 전체 재시도"
                     try {
-                        Archive-StaleTemp $tmpYear $y `
+                        Archive-StaleTemp $tmpYear $tmp $y `
                             "explicit_full_clean_retry_after_resume_failure"
                     } catch {
                         Say "!! temp 안전 archive 실패: $($_.Exception.Message)"
