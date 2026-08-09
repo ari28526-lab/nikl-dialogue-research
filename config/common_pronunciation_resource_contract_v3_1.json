@@ -1,0 +1,170 @@
+{
+  "schema_version": "common_pronunciation_resource_contract.v3.1",
+  "status": "researcher_approved_staged_scope_pending_release_materialization_and_independent_audit",
+  "supersedes_planning_contract": "config/common_pronunciation_resource_contract_v3_draft.json",
+  "amendment_decision": "docs/decisions/DECISION_common_pron_r3_v3_1_staged_adoption_amendment_20260809.md",
+  "purpose": "A single pre-MFA pronunciation source of truth shared by search tables, MFA lexicon generation, TextGrid provenance, and six-year methods reporting.",
+  "scope_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "invariants": {
+    "same_acoustic_phone_inventory_all_years": true,
+    "same_selection_contract_all_years": true,
+    "raw_audio_or_transcript_modified": false,
+    "actual_realization_claimed": false,
+    "silent_surface_g2p_1best_fallback_allowed": false,
+    "unconditional_base_dictionary_preservation_allowed": false,
+    "existing_review_samples_reused": true,
+    "all_alignment_eligible_utterances_within_pronunciation_safe_body_newly_aligned_under_r3": true,
+    "pronunciation_safe_is_not_alignment_eligibility": true,
+    "r2_alignment_intervals_used_in_final_r3": false,
+    "followup_utterances_preserved_as_separate_shards": true,
+    "production_gate_opened_by_this_contract": false
+  },
+  "researcher_approval": {
+    "path": "outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.json",
+    "approval_contract_id": "102a3b1a0641ef28cfe1c6115fc61e392005289ce7dc0c09d188bc6c7c181008",
+    "bytes": 3777,
+    "sha256": "9e5e1a0827984cb2820c14be0990785bd8d1b7056058b1e84bbde2b52cb38a90",
+    "immutable": true,
+    "provenance_sidecar": "outputs/reviews/common_pron_r3_targeted_regression_20260808/RESEARCHER_APPROVAL.provenance.v2.json"
+  },
+  "canonical_type_table": {
+    "row_unit": "one_observed_surface_word_type",
+    "required_columns": [
+      "token",
+      "total_occurrences",
+      "count_2020",
+      "count_2021",
+      "count_2022",
+      "count_2023",
+      "count_2024",
+      "count_2025",
+      "orth_roman",
+      "rule_pron_hangul",
+      "rule_pron_roman",
+      "surface_rule_names",
+      "dictionary_pron_candidates_json",
+      "dictionary_candidate_provenance_json",
+      "r2_pron_phones_json",
+      "r2_pron_source",
+      "candidate_variant_count",
+      "candidate_pron_phones_json",
+      "candidate_pron_roman_json",
+      "candidate_status",
+      "candidate_source",
+      "candidate_reason",
+      "selected_variant_count",
+      "selected_pron_phones_json",
+      "selected_pron_roman_json",
+      "selection_status",
+      "selection_source",
+      "selection_reason",
+      "morph_context_required",
+      "manual_decision_id"
+    ],
+    "full_canonical_type_coverage_required": 881237,
+    "selected_phone_coverage_required_before_adoption": 795804,
+    "selected_phone_coverage_required_before_full_corpus_adoption": 881237,
+    "duplicate_token_allowed": false
+  },
+  "staged_selection_scope": {
+    "mode": "pronunciation_safe_body",
+    "selection_unit": "one candidate-ready observed surface word type whose variants are emitted by the Stage 20 audited projection",
+    "candidate_types_to_promote": 795804,
+    "candidate_occurrences_in_canonical_table": 27043261,
+    "projected_dictionary_variant_rows": 796061,
+    "pronunciation_safe_utterances": 4384992,
+    "followup_utterances": 718364,
+    "not_selected_for_staged_release": {
+      "zero_fallback_hold_types": 85398,
+      "explicit_policy_types": 35,
+      "total_types": 85433
+    },
+    "partition_equation": "881237 = 795804 + 85398 + 35",
+    "promotion_rule": "Stage 20 candidate variants become selected only in a new staged release after byte-identical materialization and an independent adoption audit; the Stage 20 NOT_ADOPTED artifact itself remains candidate-only evidence.",
+    "full_corpus_claim_allowed": false,
+    "actual_realization_claimed": false
+  },
+  "variant_policy": {
+    "canonical_table_unit": "one observed surface type with a JSON list of zero or more explicitly selected variants",
+    "mfa_projection_unit": "one token-pronunciation variant row",
+    "arbitrary_first_variant_selection_allowed": false,
+    "candidate_is_not_selection": true,
+    "candidate_promotion_requires_new_release_materialization": true,
+    "candidate_promotion_requires_independent_byte_audit": true,
+    "morphologically_conditioned_variants": "retain explicit morphology evidence; use multiple variants or a separately adopted occurrence-key remap rather than silently collapsing distinct readings"
+  },
+  "selection_policy": [
+    "Preserve an r2 phone sequence only when its model-group Roman sequence agrees with the mandatory surface-rule reference.",
+    "Audit observed base-dictionary entries under the same rule; base-dictionary membership is not automatic approval.",
+    "Use dictionary-attested pronunciations as independent evidence, not as realized-speech truth.",
+    "Use morphology and POS to resolve lexical candidates where an inflected eojeol cannot be matched as a plain dictionary headword.",
+    "Do not activate optional rules, cross-eojeol sandhi, n-insertion, or unresolved l-nasalization as a single truth without an explicit status.",
+    "Do not feed a respelled Hangul form to Jamo G2P and accept arbitrary 1-best output; candidate phones must map exactly to the selected Roman target or remain unresolved.",
+    "Never repair a completed TextGrid by relabeling phone intervals in place; accepted r3 pronunciations require re-alignment."
+  ],
+  "staged_adoption_gates": [
+    "canonical table input fingerprints recorded and all 881237 observed types represented exactly once",
+    "exactly 795804 candidate-ready types are promoted through a new release projection and 85433 unresolved types remain unselected",
+    "the emitted staged MFA dictionary is byte-equivalent to the audited Stage 20 candidate projection",
+    "all selected phones are inside the frozen acoustic inventory and lexical sil or spn count is zero",
+    "Stage 19 routing and Stage 20 candidate artifacts are pinned by content SHA256",
+    "the four 2022 reviewed regression IDs 08, 09, 15, and 24 pass the intended boundary and label checks",
+    "one r3 contract id is pinned by every annual alignment contract",
+    "every annual TextGrid and companion-table manifest pins the same r3 contract id and MFA dictionary SHA",
+    "every alignment-eligible utterance in the pronunciation-safe pool is newly aligned under r3",
+    "followup utterances remain exact-ID-preserved and are not counted as staged-release failures",
+    "phoneme_r_auto is regenerated or verified deterministically against the final phones_mfa tier"
+  ],
+  "full_corpus_release_gates_deferred": [
+    "all 881237 observed types have explicit selected phones",
+    "all 85398 zero-fallback hold types are resolved",
+    "all 35 explicit-policy types have decision provenance",
+    "the full-corpus dictionary passes independent byte equivalence and frozen-inventory audit"
+  ],
+  "output_policy": {
+    "phones_mfa": "time-aligned phones from the selected r3 MFA input pronunciation; not realized-speech truth",
+    "phoneme_r_auto": "deterministic broad Roman mapping of phones_mfa; never a correction layer",
+    "search_tables": "retain orthographic Roman, rule reference, dictionary candidates, selected backend phones, and provenance as separate columns",
+    "textgrid_tier_count": "no automatic tier increase is required for r3; detailed provenance remains in companion CSV tables"
+  },
+  "textgrid_materialization_gate": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "in_place_r2_label_rewrite_allowed": false,
+    "source_of_words_and_phones": "a new MFA database aligned with the adopted r3 safe-body dictionary; r2 intervals remain read-only comparison evidence only",
+    "required_tiers": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ],
+    "required_manifest_fields": [
+      "pronunciation_release_id",
+      "pronunciation_contract_id",
+      "mfa_dictionary_sha256",
+      "alignment_contract_id",
+      "textgrid_schema",
+      "source_db_sha256",
+      "alignment_origin",
+      "r3_full_realign",
+      "safe_body_routing_contract_id",
+      "followup_inventory_sha256"
+    ],
+    "completion_rule": "an annual result is not complete until every alignment-eligible utterance in the pronunciation-safe pool has a new r3-aligned TextGrid, every technically unalignable pronunciation-safe ID and every pronunciation follow-up ID is preserved with a distinct exact-ID reason, and all companion tables pass the same-contract audit"
+  },
+  "rerun_policy": {
+    "existing_r2_years": [2020, 2021, 2022],
+    "not_yet_finally_aligned_years": [2023, 2024, 2025],
+    "required_after_adoption": "newly align every alignment-eligible utterance within the 2020-2025 pronunciation-safe pool under one frozen r3 contract, account for technical exclusions separately, begin with 2020, and pass an annual gate before the next year",
+    "preserve_r2_outputs_as_read_only_method_evidence": true,
+    "unchanged_r2_reuse_allowed": false,
+    "unchanged_reuse_requirements": [],
+    "initial_r3_scope": "full realignment of every alignment-eligible utterance in each year's pronunciation-safe pool, with technical exact-ID exclusions accounted separately",
+    "post_adoption_local_patch_scope": "after the first full r3 alignment, a pronunciation point release may reuse unaffected r3 units only with an exact token-to-session impact inventory; every affected complete adaptation unit is realigned",
+    "repeat_broad_researcher_pilot": false,
+    "repeat_existing_2022_review": false,
+    "targeted_regression_only_before_bulk": true,
+    "automatic_clean_year_restart_allowed": false
+  }
+}

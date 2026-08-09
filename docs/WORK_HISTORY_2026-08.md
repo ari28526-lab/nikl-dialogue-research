@@ -2635,3 +2635,17 @@ shard 2–23을 재개하는 것이다.
   0건이고, r2 전용 코드 세 곳과 아직 없는 r3 연도 runner를 의도적 구현 gap으로
   기록했다. release Gate는 외부 workflow 리뷰와 구현이 끝날 때까지 닫아 뒀다.
 - 이 단계에서는 생산 MFA, D: 원자료, 기존 r2 DB·TextGrid를 변경하지 않았다.
+
+## 2026-08-09 — 외부 리뷰 체크리스트 1: v3.1 staged-adoption 계약
+
+- 외부 리뷰 C2에 따라 전체 881,237형 채택과 795,804 candidate-ready형의 첫
+  staged release를 분리했다. 85,398 hold형과 35 policy형은 selected coverage
+  분모에서 제외하고 718,364 follow-up 발화에 그대로 보존한다.
+- Stage 20 `NOT_ADOPTED` 실물은 후보 증거로 유지하며, 체크리스트 2에서 새
+  release의 byte-identical projection과 독립 감사를 통과할 때만 candidate를
+  staged selected로 승격하도록 v3.1 계약에 명시했다.
+- 외부 리뷰 M3에 따라 기존 `RESEARCHER_APPROVAL.json`의 SHA-256
+  `9e5e1a082798...2cb38a90`을 고정했다. 실제 실행 전후 SHA가 동일함을 확인했고,
+  입력 내용 SHA 이력은 별도 `RESEARCHER_APPROVAL.provenance.v2.json`에만
+  append한다. 동일 입력 재실행에서는 sidecar 바이트도 바뀌지 않았다.
+- production Gate, Stage 01–21, D: 원자료와 r2 산출물은 변경하지 않았다.

@@ -13,6 +13,7 @@ from pipeline_common import atomic_write_json, file_fingerprint, now_iso
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_VERSION = "common_pron_r3_researcher_approval.v1"
+PROVENANCE_SCHEMA_VERSION = "common_pron_r3_researcher_approval_provenance.v2"
 EXPECTED_REVIEW = {
     "08": ("SDRW2200000232.1.1.84", "있지"),
     "09": ("SDRW2200001945.1.1.10", "놨던"),
@@ -69,6 +70,89 @@ def stable_contract_id(identity: dict) -> str:
         separators=(",", ":"),
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def provenance_content_identity(input_records: dict[str, dict]) -> dict:
+    """Return the content-only identity used to deduplicate provenance records."""
+    return {
+        key: {
+            "bytes": int(value["bytes"]),
+            "sha256": str(value["sha256"]),
+        }
+        for key, value in sorted(input_records.items())
+    }
+
+
+def record_approval_provenance(
+    *,
+    approval_contract_id: str,
+    approval_fingerprint: dict,
+    input_records: dict[str, dict],
+    sidecar: Path,
+) -> tuple[dict, bool]:
+    """Append one content-distinct provenance observation to a v2 sidecar.
+
+    The researcher approval itself is immutable.  This sidecar may only gain a
+    new record; existing records are validated and preserved byte-for-byte at
+    the logical JSON-object level.
+    """
+    content_identity = provenance_content_identity(input_records)
+    approval_content_identity = {
+        "bytes": int(approval_fingerprint["bytes"]),
+        "sha256": str(approval_fingerprint["sha256"]),
+    }
+    record_id = stable_contract_id(
+        {
+            "approval_contract_id": approval_contract_id,
+            "content_fingerprints": content_identity,
+        }
+    )
+    new_record = {
+        "sequence": 1,
+        "observed_at": now_iso(),
+        "provenance_record_id": record_id,
+        "content_fingerprints": content_identity,
+        "inputs": input_records,
+    }
+    if sidecar.is_file():
+        payload = load_json(sidecar)
+        if (
+            payload.get("schema_version") != PROVENANCE_SCHEMA_VERSION
+            or payload.get("status") != "append_only_provenance"
+            or payload.get("approval_contract_id") != approval_contract_id
+            or payload.get("immutable_approval") != approval_content_identity
+            or not isinstance(payload.get("records"), list)
+        ):
+            raise RuntimeError("existing approval provenance sidecar differs")
+        records = payload["records"]
+        seen: set[str] = set()
+        for index, record in enumerate(records, start=1):
+            if not isinstance(record, dict) or record.get("sequence") != index:
+                raise RuntimeError("approval provenance sequence differs")
+            existing_id = str(record.get("provenance_record_id", ""))
+            expected_id = stable_contract_id(
+                {
+                    "approval_contract_id": approval_contract_id,
+                    "content_fingerprints": record.get("content_fingerprints"),
+                }
+            )
+            if not existing_id or existing_id != expected_id or existing_id in seen:
+                raise RuntimeError("approval provenance record identity differs")
+            seen.add(existing_id)
+        if record_id in seen:
+            return payload, False
+        new_record["sequence"] = len(records) + 1
+        payload["records"] = [*records, new_record]
+    else:
+        payload = {
+            "schema_version": PROVENANCE_SCHEMA_VERSION,
+            "status": "append_only_provenance",
+            "approval_contract_id": approval_contract_id,
+            "immutable_approval": approval_content_identity,
+            "records": [new_record],
+        }
+    atomic_write_json(sidecar, payload)
+    return payload, True
 
 
 def build_approval(
@@ -204,14 +288,10 @@ def build_approval(
             existing.get("status") == result["status"]
             and existing.get("approval_contract_id") == contract_id
         ):
-            if existing.get("inputs") == input_records:
-                return existing, False
-            # Preserve the decision identity and its original timestamp while
-            # refreshing non-binding provenance after reviewed workflow edits.
-            result["recorded_at"] = existing.get("recorded_at", result["recorded_at"])
-            result["provenance_refreshed_at"] = now_iso()
-            atomic_write_json(output, result)
-            return result, True
+            # The approval record is immutable after first materialization.
+            # Changed implementation provenance is recorded in the separate
+            # v2 sidecar by main(), never by rewriting this file.
+            return existing, False
         raise RuntimeError("existing approval output has a different identity")
     atomic_write_json(output, result)
     return result, True
@@ -259,6 +339,14 @@ def main() -> int:
     parser.add_argument(
         "--output", type=Path, default=review_root / "RESEARCHER_APPROVAL.json"
     )
+    parser.add_argument(
+        "--provenance-sidecar",
+        type=Path,
+        help=(
+            "append-only provenance JSON; defaults beside --output as "
+            "<stem>.provenance.v2.json"
+        ),
+    )
     args = parser.parse_args()
     result, wrote = build_approval(
         review_csv=args.review_csv.resolve(),
@@ -268,10 +356,41 @@ def main() -> int:
         workflow_policy_path=args.workflow_policy.resolve(),
         output=args.output.resolve(),
     )
+    sidecar = (
+        args.provenance_sidecar.resolve()
+        if args.provenance_sidecar is not None
+        else args.output.resolve().with_name(
+            f"{args.output.resolve().stem}.provenance.v2.json"
+        )
+    )
+    input_records = {
+        "review_csv": file_fingerprint(args.review_csv.resolve(), with_sha256=True),
+        "targeted_regression_audit": file_fingerprint(
+            args.targeted_audit.resolve(), with_sha256=True
+        ),
+        "routing_independent_audit": file_fingerprint(
+            args.routing_audit.resolve(), with_sha256=True
+        ),
+        "candidate_independent_audit": file_fingerprint(
+            args.candidate_audit.resolve(), with_sha256=True
+        ),
+        "workflow_policy": file_fingerprint(
+            args.workflow_policy.resolve(), with_sha256=True
+        ),
+    }
+    _, sidecar_wrote = record_approval_provenance(
+        approval_contract_id=result["approval_contract_id"],
+        approval_fingerprint=file_fingerprint(
+            args.output.resolve(), with_sha256=True
+        ),
+        input_records=input_records,
+        sidecar=sidecar,
+    )
     print(
         "[OK] staged r3 researcher approval: "
         f"{result['approval_contract_id'][:12]} "
-        f"({'written' if wrote else 'unchanged'})",
+        f"(approval={'written' if wrote else 'immutable'}, "
+        f"provenance={'appended' if sidecar_wrote else 'unchanged'})",
         flush=True,
     )
     return 0

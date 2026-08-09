@@ -1,0 +1,70 @@
+{
+  "schema_version": "common_pron_r3_researcher_approval_provenance.v2",
+  "status": "append_only_provenance",
+  "approval_contract_id": "102a3b1a0641ef28cfe1c6115fc61e392005289ce7dc0c09d188bc6c7c181008",
+  "immutable_approval": {
+    "bytes": 3777,
+    "sha256": "9e5e1a0827984cb2820c14be0990785bd8d1b7056058b1e84bbde2b52cb38a90"
+  },
+  "records": [
+    {
+      "sequence": 1,
+      "observed_at": "2026-08-09T10:52:58+09:00",
+      "provenance_record_id": "0166c5ec51716133a595259d836965f2b54de69b9101528f8060e8eee1a4acbf",
+      "content_fingerprints": {
+        "candidate_independent_audit": {
+          "bytes": 2752,
+          "sha256": "e1178d915e98e1624d4f879fee428f533cb3f98b40002044c52b50945409ba26"
+        },
+        "review_csv": {
+          "bytes": 400,
+          "sha256": "b367419256252087c58992b59cec2b0b39abc8d1b6e8864b2b36a3111210caae"
+        },
+        "routing_independent_audit": {
+          "bytes": 2844,
+          "sha256": "5ce19e9602f9f3bcfea4acfce04f76948d8f7354c815f869c0eb6cc1f9453cfe"
+        },
+        "targeted_regression_audit": {
+          "bytes": 6940,
+          "sha256": "0db5b17c1dab0e83131eed2058179248f65dce1695b56a51669dda9875e12e4f"
+        },
+        "workflow_policy": {
+          "bytes": 4476,
+          "sha256": "6f1eed7f698d9089cdddbff56d9f71ccf6cc9fdf81cd11a6a2258dba0198e77b"
+        }
+      },
+      "inputs": {
+        "review_csv": {
+          "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\common_pron_r3_targeted_regression_20260808\\REVIEW.csv",
+          "bytes": 400,
+          "mtime_ns": 1786235902333387400,
+          "sha256": "b367419256252087c58992b59cec2b0b39abc8d1b6e8864b2b36a3111210caae"
+        },
+        "targeted_regression_audit": {
+          "path": "D:\\mfa_common_pron\\staging\\common_pron_mfa_r3_20260807\\21_targeted_regression_2022\\TARGETED_REGRESSION_AUDIT.json",
+          "bytes": 6940,
+          "mtime_ns": 1786197738413818100,
+          "sha256": "0db5b17c1dab0e83131eed2058179248f65dce1695b56a51669dda9875e12e4f"
+        },
+        "routing_independent_audit": {
+          "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_pre_adoption_routing_20260808.json",
+          "bytes": 2844,
+          "mtime_ns": 1786195935528559500,
+          "sha256": "5ce19e9602f9f3bcfea4acfce04f76948d8f7354c815f869c0eb6cc1f9453cfe"
+        },
+        "candidate_independent_audit": {
+          "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_common_pron_r3_safe_body_candidate_20260808.json",
+          "bytes": 2752,
+          "mtime_ns": 1786196352711696900,
+          "sha256": "e1178d915e98e1624d4f879fee428f533cb3f98b40002044c52b50945409ba26"
+        },
+        "workflow_policy": {
+          "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\mfa_r3_full_realign_workflow_v1.json",
+          "bytes": 4476,
+          "mtime_ns": 1786236992473691600,
+          "sha256": "6f1eed7f698d9089cdddbff56d9f71ccf6cc9fdf81cd11a6a2258dba0198e77b"
+        }
+      }
+    }
+  ]
+}

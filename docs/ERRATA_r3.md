@@ -33,3 +33,5 @@
 
 현재 `STOP` 항목은 없다. production Gate가 닫혀 있어 위 결함은 아직 정본
 산출물을 오염시키지 않았다.
+
+- [RESOLVED] 2026-08-09 | `build_common_pron_r3_staged_approval.py` | 체크리스트 1에서 승인 JSON을 불변화하고 내용 SHA별 provenance를 별도 v2 sidecar에 append하도록 구현·회귀 검사함 | M3
