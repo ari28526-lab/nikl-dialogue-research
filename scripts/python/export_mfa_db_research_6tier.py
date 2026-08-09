@@ -277,6 +277,52 @@ def _verify_contract_file(record: Mapping[str, object], label: str) -> Path:
     return path
 
 
+def load_r3_expected_mfa_input_ids(
+    contract: Mapping[str, object], year: str
+) -> set[str]:
+    """Load the exact r3 alignment denominator pinned by the contract."""
+
+    year_input = contract.get("year_input")
+    if not isinstance(year_input, Mapping):
+        raise RuntimeError("r3 year_input contract section missing")
+    record = year_input.get("expected_mfa_input_ids")
+    if not isinstance(record, Mapping):
+        raise RuntimeError("r3 expected MFA input fingerprint missing")
+    identity = contract.get("identity")
+    if (
+        not isinstance(identity, Mapping)
+        or str(identity.get("expected_mfa_input_sha256", "")).lower()
+        != str(record.get("sha256", "")).lower()
+    ):
+        raise RuntimeError("r3 expected MFA input identity differs")
+    path = _verify_contract_file(record, "expected MFA input IDs")
+    ids: set[str] = set()
+    rows = 0
+    with gzip.open(path, "rt", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        if not {"year", "utt_id"}.issubset(reader.fieldnames or ()):
+            raise RuntimeError("r3 expected MFA input schema differs")
+        for line_number, row in enumerate(reader, 2):
+            if str(row.get("year", "")).strip() != str(year):
+                raise RuntimeError(
+                    f"r3 expected MFA input year differs at row {line_number}"
+                )
+            utt_id = str(row.get("utt_id", "")).strip()
+            if not utt_id or utt_id in ids:
+                raise RuntimeError(
+                    f"r3 expected MFA input empty/duplicate ID at row {line_number}"
+                )
+            ids.add(utt_id)
+            rows += 1
+    expected_count = int(year_input.get("expected_mfa_input", -1))
+    if rows != expected_count:
+        raise RuntimeError(
+            "r3 expected MFA input count differs: "
+            f"rows={rows} contract={expected_count}"
+        )
+    return ids
+
+
 def r3_materialization_provenance(
     *,
     contract: Mapping[str, object],
@@ -391,6 +437,35 @@ def r3_materialization_provenance(
     ) or result["r3_full_realign"] is not True:
         raise RuntimeError("r3 materialization provenance has a blank required field")
     return result
+
+
+def verify_r3_alignment_marker(
+    *,
+    marker_path: Path,
+    contract: Mapping[str, object],
+    db_path: Path,
+    source_db_sha256: str,
+    year: str,
+) -> dict[str, object]:
+    """Bind export to the completed alignment checkpoint without rerunning MFA."""
+
+    marker_path = marker_path.resolve()
+    marker = json.loads(marker_path.read_text(encoding="utf-8-sig"))
+    source_db = marker.get("source_db")
+    if (
+        marker.get("schema_version") != "mfa_r3_alignment_done.v1"
+        or marker.get("status") != "passed"
+        or str(marker.get("year")) != str(year)
+        or marker.get("alignment_contract_id")
+        != contract.get("alignment_contract_id")
+        or not isinstance(source_db, Mapping)
+        or not _resolved_path_equal(source_db.get("path"), db_path)
+        or int(source_db.get("bytes", -1)) != db_path.stat().st_size
+        or str(source_db.get("sha256", "")).lower()
+        != source_db_sha256.lower()
+    ):
+        raise RuntimeError("r3 ALIGN_DONE marker/source DB identity differs")
+    return file_fingerprint(marker_path, with_sha256=True)
 
 
 def load_session_rows(
@@ -1776,11 +1851,13 @@ def export_database(
     output_root: Path,
     acoustic_model: Path,
     alignment_contract: Path,
+    alignment_marker: Path | None = None,
     approved_exclusions_contract: Path | None = None,
     lab_root: Path | None = None,
     quarantine_log: Path | None = None,
     workers: int = 4,
     limit_sessions: int = 0,
+    preflight_only: bool = False,
 ) -> dict[str, object]:
     started = time.monotonic()
     db_path = db_path.resolve()
@@ -1807,6 +1884,16 @@ def export_database(
         acoustic_model=acoustic_model,
         year=year,
     )
+    if alignment_marker is not None:
+        if not r3_provenance:
+            raise RuntimeError("alignment marker is supported only for r3 export")
+        r3_provenance["alignment_done_marker"] = verify_r3_alignment_marker(
+            marker_path=alignment_marker,
+            contract=contract_data,
+            db_path=db_path,
+            source_db_sha256=str(r3_provenance["source_db_sha256"]),
+            year=year,
+        )
     if contract_data.get("schema_version") == R3_ALIGNMENT_SCHEMA_VERSION:
         input_contract_id = str(
             contract_data.get("identity", {}).get("year_input_contract_id", "")
@@ -1921,90 +2008,167 @@ def export_database(
     else:
         active_lab_ids = load_active_lab_ids(lab_root, year)
         source_search_ids = load_search_master_ids(search_master_root, year)
-        unapproved_quarantine = quarantine_ids - alignment_exclusion_ids
-        unknown_active_missing = (
-            active_lab_ids - aligned_ids - alignment_exclusion_ids
-        )
-        # Post-MFA technical exclusions can be present in the retained MFA DB
-        # while their LAB files have already been removed from the active
-        # corpus.  That is an approved, safer inactive state, not an orphan DB
-        # row.  Only DB IDs that are neither active nor explicitly approved
-        # are unauthorized.
-        approved_inactive_database_exclusions = (
-            db_ids - active_lab_ids
-        ) & alignment_exclusion_ids
-        unexpected_db_ids = (
-            db_ids - active_lab_ids - alignment_exclusion_ids
-        )
-        approved_upstream_exclusions = (
-            alignment_exclusion_ids - active_lab_ids
-        )
-        approved_active_exclusions = alignment_exclusion_ids & active_lab_ids
-        unapproved_source_without_active_lab = (
-            source_search_ids - active_lab_ids - alignment_exclusion_ids
-        )
-        active_lab_ids_outside_source = active_lab_ids - source_search_ids
-        approved_exclusion_ids_outside_source = (
-            alignment_exclusion_ids - source_search_ids
-        )
-        invalid_analysis_only = analysis_only_ids - aligned_ids
-        hard_sets = {
-            "unapproved_quarantine_ids": unapproved_quarantine,
-            "unknown_active_lab_without_alignment": unknown_active_missing,
-            "db_ids_without_active_lab": unexpected_db_ids,
-            "unapproved_source_without_active_lab": (
-                unapproved_source_without_active_lab
-            ),
-            "active_lab_ids_outside_source": active_lab_ids_outside_source,
-            "approved_exclusion_ids_outside_source": (
-                approved_exclusion_ids_outside_source
-            ),
-            "analysis_only_ids_without_alignment": invalid_analysis_only,
-        }
-        reconciliation = {
-            "status": (
-                "passed"
-                if all(not values for values in hard_sets.values())
-                else "failed"
-            ),
-            "full_year_gate": True,
-            "counts": {
-                "source_search_ids": len(source_search_ids),
-                "active_lab_ids": len(active_lab_ids),
-                "database_utterance_ids": len(db_ids),
-                "aligned_database_ids": len(aligned_ids),
-                "approved_alignment_exclusions": len(
-                    alignment_exclusion_ids
+        if contract_data.get("schema_version") == R3_ALIGNMENT_SCHEMA_VERSION:
+            expected_input_ids = load_r3_expected_mfa_input_ids(
+                contract_data, year
+            )
+            actual_missing_ids = db_ids - aligned_ids
+            hard_sets = {
+                "expected_input_ids_missing_from_search": (
+                    expected_input_ids - source_search_ids
                 ),
-                "approved_analysis_only_exclusions": len(
-                    analysis_only_ids
+                "database_ids_missing_from_expected_input": (
+                    db_ids - expected_input_ids
                 ),
-                "approved_upstream_alignment_exclusions": len(
-                    approved_upstream_exclusions
+                "expected_input_ids_missing_from_database": (
+                    expected_input_ids - db_ids
                 ),
-                "approved_active_alignment_exclusions": len(
-                    approved_active_exclusions
+                "active_lab_ids_missing_from_expected_input": (
+                    active_lab_ids - expected_input_ids
                 ),
-                "approved_inactive_database_exclusions": len(
-                    approved_inactive_database_exclusions
+                "expected_input_ids_missing_from_active_lab": (
+                    expected_input_ids - active_lab_ids
                 ),
-                "quarantine_ids": len(quarantine_ids),
-                **{
-                    name: len(values) for name, values in hard_sets.items()
+                "unaligned_ids_without_approval": (
+                    actual_missing_ids - alignment_exclusion_ids
+                ),
+                "approved_alignment_exclusions_not_unaligned": (
+                    alignment_exclusion_ids - actual_missing_ids
+                ),
+                "analysis_only_ids_without_alignment": (
+                    analysis_only_ids - aligned_ids
+                ),
+                "unapproved_quarantine_ids": (
+                    quarantine_ids - alignment_exclusion_ids
+                ),
+            }
+            reconciliation = {
+                "status": (
+                    "passed"
+                    if all(not values for values in hard_sets.values())
+                    else "failed"
+                ),
+                "mode": "r3_expected_mfa_input_exact_id",
+                "full_year_gate": True,
+                "counts": {
+                    "source_search_ids": len(source_search_ids),
+                    "expected_mfa_input_ids": len(expected_input_ids),
+                    "active_lab_ids": len(active_lab_ids),
+                    "database_utterance_ids": len(db_ids),
+                    "aligned_database_ids": len(aligned_ids),
+                    "post_mfa_unaligned_ids": len(actual_missing_ids),
+                    "approved_alignment_exclusions": len(
+                        alignment_exclusion_ids
+                    ),
+                    "approved_analysis_only_exclusions": len(
+                        analysis_only_ids
+                    ),
+                    "quarantine_ids": len(quarantine_ids),
+                    **{
+                        name: len(values)
+                        for name, values in hard_sets.items()
+                    },
                 },
-            },
-            "inventories": {
-                name: sorted(values) for name, values in hard_sets.items()
-            },
-            "equation": (
-                "source_search_ids = active_lab_ids union "
-                "approved_upstream_alignment_exclusions; active_lab_ids = "
-                "aligned_database_ids union "
-                "approved_active_alignment_exclusions; database_utterance_ids "
-                "subset active_lab_ids union approved_alignment_exclusions; "
-                "quarantine_ids subset approved_alignment_exclusions"
-            ),
-        }
+                "inventories": {
+                    name: sorted(values)
+                    for name, values in hard_sets.items()
+                },
+                "equation": (
+                    "expected_mfa_input_ids = database_utterance_ids = "
+                    "active_lab_ids = aligned_database_ids disjoint-union "
+                    "approved post-MFA alignment exclusions; full search "
+                    "master may additionally contain pronunciation follow-up "
+                    "and pre-MFA exclusions"
+                ),
+            }
+        else:
+            unapproved_quarantine = quarantine_ids - alignment_exclusion_ids
+            unknown_active_missing = (
+                active_lab_ids - aligned_ids - alignment_exclusion_ids
+            )
+            # Legacy retained DB export can contain approved exclusions whose
+            # LABs were already removed from the active corpus.
+            approved_inactive_database_exclusions = (
+                db_ids - active_lab_ids
+            ) & alignment_exclusion_ids
+            unexpected_db_ids = (
+                db_ids - active_lab_ids - alignment_exclusion_ids
+            )
+            approved_upstream_exclusions = (
+                alignment_exclusion_ids - active_lab_ids
+            )
+            approved_active_exclusions = (
+                alignment_exclusion_ids & active_lab_ids
+            )
+            unapproved_source_without_active_lab = (
+                source_search_ids - active_lab_ids - alignment_exclusion_ids
+            )
+            active_lab_ids_outside_source = active_lab_ids - source_search_ids
+            approved_exclusion_ids_outside_source = (
+                alignment_exclusion_ids - source_search_ids
+            )
+            invalid_analysis_only = analysis_only_ids - aligned_ids
+            hard_sets = {
+                "unapproved_quarantine_ids": unapproved_quarantine,
+                "unknown_active_lab_without_alignment": unknown_active_missing,
+                "db_ids_without_active_lab": unexpected_db_ids,
+                "unapproved_source_without_active_lab": (
+                    unapproved_source_without_active_lab
+                ),
+                "active_lab_ids_outside_source": active_lab_ids_outside_source,
+                "approved_exclusion_ids_outside_source": (
+                    approved_exclusion_ids_outside_source
+                ),
+                "analysis_only_ids_without_alignment": invalid_analysis_only,
+            }
+            reconciliation = {
+                "status": (
+                    "passed"
+                    if all(not values for values in hard_sets.values())
+                    else "failed"
+                ),
+                "mode": "legacy_source_search_exact_id",
+                "full_year_gate": True,
+                "counts": {
+                    "source_search_ids": len(source_search_ids),
+                    "active_lab_ids": len(active_lab_ids),
+                    "database_utterance_ids": len(db_ids),
+                    "aligned_database_ids": len(aligned_ids),
+                    "approved_alignment_exclusions": len(
+                        alignment_exclusion_ids
+                    ),
+                    "approved_analysis_only_exclusions": len(
+                        analysis_only_ids
+                    ),
+                    "approved_upstream_alignment_exclusions": len(
+                        approved_upstream_exclusions
+                    ),
+                    "approved_active_alignment_exclusions": len(
+                        approved_active_exclusions
+                    ),
+                    "approved_inactive_database_exclusions": len(
+                        approved_inactive_database_exclusions
+                    ),
+                    "quarantine_ids": len(quarantine_ids),
+                    **{
+                        name: len(values)
+                        for name, values in hard_sets.items()
+                    },
+                },
+                "inventories": {
+                    name: sorted(values)
+                    for name, values in hard_sets.items()
+                },
+                "equation": (
+                    "source_search_ids = active_lab_ids union "
+                    "approved_upstream_alignment_exclusions; active_lab_ids = "
+                    "aligned_database_ids union "
+                    "approved_active_alignment_exclusions; "
+                    "database_utterance_ids subset active_lab_ids union "
+                    "approved_alignment_exclusions; quarantine_ids subset "
+                    "approved_alignment_exclusions"
+                ),
+            }
         if reconciliation["status"] != "passed":
             return {
                 "schema_version": SCHEMA_VERSION,
@@ -2014,6 +2178,43 @@ def export_database(
                 "alignment_contract_id": contract_id,
                 "exact_id_reconciliation": reconciliation,
             }
+
+    if preflight_only:
+        report: dict[str, object] = {
+            "schema_version": SCHEMA_VERSION,
+            "status": "preflight_passed",
+            "analysis_ready_status": "ready_for_materialization",
+            "year": year,
+            "db_path": str(db_path),
+            "search_master_root": str(search_master_root),
+            "output_root": str(output_root),
+            "tier_names": BASE_TIERS,
+            "alignment_contract": file_fingerprint(
+                alignment_contract, with_sha256=True
+            ),
+            "alignment_contract_id": contract_id,
+            "input_contract_id": input_contract_id,
+            "approved_exclusions_contract": exclusion_contract_data,
+            "counts": {
+                "database_utterance_ids": len(db_ids),
+                "aligned_database_ids": len(aligned_ids),
+                "post_mfa_unaligned_ids": len(db_ids - aligned_ids),
+                "approved_alignment_exclusions": len(
+                    alignment_exclusion_ids
+                ),
+                "spn_intervals": spn_intervals,
+            },
+            "phone_inventory": {
+                "used_non_silence": len(used_phones),
+                "outside_acoustic": outside,
+            },
+            "exact_id_reconciliation": reconciliation,
+            "materialization_started": False,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        }
+        if r3_provenance:
+            report.update(r3_provenance)
+        return report
 
     totals: Counter[str] = Counter(spn_intervals=0)
     failures: list[dict[str, str]] = []
@@ -2205,11 +2406,13 @@ def main() -> int:
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--acoustic-model", type=Path, required=True)
     parser.add_argument("--alignment-contract", type=Path, required=True)
+    parser.add_argument("--alignment-marker", type=Path)
     parser.add_argument("--approved-exclusions-contract", type=Path)
     parser.add_argument("--lab-root", type=Path)
     parser.add_argument("--quarantine-log", type=Path)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--limit-sessions", type=int, default=0)
+    parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
     try:
@@ -2220,11 +2423,13 @@ def main() -> int:
             output_root=args.output_root,
             acoustic_model=args.acoustic_model,
             alignment_contract=args.alignment_contract,
+            alignment_marker=args.alignment_marker,
             approved_exclusions_contract=args.approved_exclusions_contract,
             lab_root=args.lab_root,
             quarantine_log=args.quarantine_log,
             workers=args.workers,
             limit_sessions=args.limit_sessions,
+            preflight_only=args.preflight_only,
         )
     except Exception as exc:
         report = {
@@ -2236,7 +2441,7 @@ def main() -> int:
         }
     atomic_write_json(args.report, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0 if report.get("status") == "success" else 1
+    return 0 if report.get("status") in {"success", "preflight_passed"} else 1
 
 
 if __name__ == "__main__":

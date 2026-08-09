@@ -2887,3 +2887,24 @@ shard 2–23을 재개하는 것이다.
 - 결과 정본은
   `docs/decisions/RESULT_mfa_r3_alignment_database_2020_20260809.md`, 감사 실물은
   `outputs/reports/AUDIT_mfa_r3_alignment_checkpoint_2020_20260809.json`이다.
+
+## 2026-08-09 2020 r3 post-MFA exact-ID 회계·수출 경로 보강
+
+- 보존된 5.53GB r3 DB와 동결 `expected_mfa_input_ids` 782,715건을 다시 정렬하지
+  않고 읽기 전용 exact-ID로 대사했다. DB ID는 입력과 전수 동일하고, 성공
+  782,432건과 미정렬 283건의 합이 정확히 분모와 같다.
+- 283건은 77개 세션에 분포하며 전부 `mfa_alignment_missing`이다. 가장 큰 세션은
+  `SDRW2000000257` 150건이다. 실제 실현 판단이나 음원 품질 판정이 아니라 기술적
+  interval 부재 회계이므로 청취를 자동 요구하지 않되, 자동 승인은 금지했다.
+- 후보표와 pending 결정표, 요약을
+  `outputs/reviews/mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2020/`
+  에 원자 생성했다. 후보 identity SHA는 `065c2cd1d1dd74831ec483786a485a379556c9694536ca5f06cea172a9969906`이다.
+- 구 r2 exporter의 `전체 search = active LAB + 승인 제외` 분모를 r3에 적용하면
+  발음 follow-up과 pre-MFA 제외까지 거짓 누락으로 셀 수 있음을 발견했다. r3는
+  `expected_mfa_input = DB = active LAB = aligned ⊎ 승인된 post-MFA 누락`을 hard
+  equation으로 사용하고, 전체 search는 expected-input 포함 여부만 검사한다.
+- 별도 명시 승인 materializer와 `run_mfa_r3_research_export.ps1`을 추가했다.
+  exporter는 ALIGN_DONE marker와 실제 DB SHA까지 결속하며 `-PreflightOnly`에서는
+  TextGrid를 만들지 않는다. 성공 정렬과 DB는 보존하고 MFA 재실행은 하지 않는다.
+- targeted Python 21건, PowerShell safety 67파일, Windows PowerShell 5.1 runtime
+  67스크립트가 통과했다. 실제 2020 수출 preflight는 연구자 283건 승인 뒤 실행한다.

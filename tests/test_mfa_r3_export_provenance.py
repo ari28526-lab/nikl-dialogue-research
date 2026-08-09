@@ -2,6 +2,7 @@ import csv
 import gzip
 import io
 import json
+import sqlite3
 import tempfile
 import unittest
 import wave
@@ -40,6 +41,20 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
         dictionary.write_text("가\tk\n", encoding="utf-8")
         g2p = root / "jamo_g2p.zip"
         g2p.write_bytes(b"fixture-g2p")
+        expected_ids = root / "expected_mfa_input_ids.csv.gz"
+        with expected_ids.open("wb") as raw:
+            with gzip.GzipFile(
+                filename="", mode="wb", fileobj=raw, mtime=0
+            ) as compressed:
+                with io.TextIOWrapper(
+                    compressed, encoding="utf-8-sig", newline=""
+                ) as text:
+                    writer = csv.DictWriter(
+                        text, fieldnames=["year", "utt_id"], lineterminator="\n"
+                    )
+                    writer.writeheader()
+                    writer.writerow({"year": self.year, "utt_id": "S1.1"})
+        expected_record = file_fingerprint(expected_ids, with_sha256=True)
         models = {
             "dictionary": file_fingerprint(dictionary, with_sha256=True),
             "acoustic": file_fingerprint(acoustic, with_sha256=True),
@@ -55,7 +70,7 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
             "safe_body_routing_contract_id": "6" * 64,
             "year_input_contract_id": self.input_contract_id,
             "year_input_contract_sha256": "7" * 64,
-            "expected_mfa_input_sha256": "8" * 64,
+            "expected_mfa_input_sha256": expected_record["sha256"],
             "followup_inventory_sha256": "9" * 64,
             "corpus_contract_id": "a" * 64,
             "frozen_model_pin_sha256": "b" * 64,
@@ -114,7 +129,10 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
                 "legacy_db_reuse_allowed": False,
             },
             "models": models,
-            "year_input": {"expected_mfa_input": 1},
+            "year_input": {
+                "expected_mfa_input": 1,
+                "expected_mfa_input_ids": expected_record,
+            },
             "fixture_source_db_sha256": sha256_file(db),
         }
         contract["alignment_contract_id"] = recompute_alignment_contract_id(
@@ -142,6 +160,56 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
             approved_at="2026-08-09T00:00:00+09:00",
         )
         return output
+
+    def make_missing_exclusion(self, root: Path) -> Path:
+        review = root / "approved_missing.csv"
+        with review.open("w", encoding="utf-8-sig", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
+            writer.writeheader()
+            writer.writerow(
+                {
+                    "year": self.year,
+                    "input_contract_id": self.input_contract_id,
+                    "utt_id": "S1.1",
+                    "reason_code": "mfa_alignment_missing",
+                    "exclusion_scope": "alignment_and_analysis",
+                    "evidence_path": "fixture-db",
+                    "decision": "approved",
+                    "notes": "fixture exact-ID technical failure",
+                }
+            )
+        output = root / "approved_missing.json"
+        build_contract(
+            review_csv=review,
+            output=output,
+            year=self.year,
+            input_contract_id=self.input_contract_id,
+            approved_by="fixture-researcher",
+            approved_at="2026-08-09T00:00:00+09:00",
+        )
+        return output
+
+    def make_alignment_marker(
+        self, root: Path, *, db: Path, alignment: Path
+    ) -> Path:
+        contract = json.loads(alignment.read_text(encoding="utf-8"))
+        marker = root / "ALIGN_DONE_2021.json"
+        marker.write_text(
+            json.dumps(
+                {
+                    "schema_version": "mfa_r3_alignment_done.v1",
+                    "status": "passed",
+                    "year": self.year,
+                    "alignment_contract_id": contract["alignment_contract_id"],
+                    "source_db": file_fingerprint(db, with_sha256=True),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        return marker
 
     def build_fixture(self, root: Path) -> dict[str, Path | dict]:
         fixture = ExportFixture()
@@ -310,6 +378,120 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
                 1,
             )
 
+    def test_r3_preflight_requires_exact_post_mfa_approval_without_output(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            fixture = ExportFixture()
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            search = root / "search"
+            labs = root / "labs"
+            output = root / "output"
+            fixture.make_db(db)
+            connection = sqlite3.connect(db)
+            connection.execute("DELETE FROM word_interval")
+            connection.execute("DELETE FROM phone_interval")
+            connection.commit()
+            connection.close()
+            fixture.make_acoustic(acoustic)
+            fixture.make_search(search)
+            lab = labs / self.year / "S1" / "S1.1.lab"
+            lab.parent.mkdir(parents=True)
+            lab.write_text("가", encoding="utf-8")
+            alignment = self.make_r3_contract(root, db=db, acoustic=acoustic)
+
+            blocked = export_database(
+                db_path=db,
+                year=self.year,
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=alignment,
+                lab_root=labs,
+                preflight_only=True,
+            )
+            self.assertEqual(blocked["status"], "failed")
+            self.assertEqual(
+                blocked["exact_id_reconciliation"]["counts"]
+                ["unaligned_ids_without_approval"],
+                1,
+            )
+            self.assertFalse(output.exists())
+
+            exclusions = self.make_missing_exclusion(root)
+            passed = export_database(
+                db_path=db,
+                year=self.year,
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=alignment,
+                approved_exclusions_contract=exclusions,
+                lab_root=labs,
+                preflight_only=True,
+            )
+            self.assertEqual(passed["status"], "preflight_passed", passed)
+            self.assertFalse(passed["materialization_started"])
+            self.assertEqual(passed["counts"]["post_mfa_unaligned_ids"], 1)
+            self.assertEqual(
+                passed["counts"]["approved_alignment_exclusions"], 1
+            )
+            self.assertFalse(output.exists())
+
+    def test_r3_preflight_binds_completed_alignment_marker(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            fixture = ExportFixture()
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            search = root / "search"
+            labs = root / "labs"
+            output = root / "output"
+            fixture.make_db(db)
+            fixture.make_acoustic(acoustic)
+            fixture.make_search(search)
+            lab = labs / self.year / "S1" / "S1.1.lab"
+            lab.parent.mkdir(parents=True)
+            lab.write_text("가", encoding="utf-8")
+            alignment = self.make_r3_contract(root, db=db, acoustic=acoustic)
+            marker = self.make_alignment_marker(
+                root, db=db, alignment=alignment
+            )
+            exclusions = self.make_empty_exclusions(root)
+            passed = export_database(
+                db_path=db,
+                year=self.year,
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=alignment,
+                alignment_marker=marker,
+                approved_exclusions_contract=exclusions,
+                lab_root=labs,
+                preflight_only=True,
+            )
+            self.assertEqual(passed["status"], "preflight_passed", passed)
+            self.assertEqual(
+                passed["alignment_done_marker"]["sha256"],
+                sha256_file(marker),
+            )
+
+            marker_data = json.loads(marker.read_text(encoding="utf-8"))
+            marker_data["source_db"]["sha256"] = "0" * 64
+            marker.write_text(json.dumps(marker_data), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "marker/source DB"):
+                export_database(
+                    db_path=db,
+                    year=self.year,
+                    search_master_root=search,
+                    output_root=output,
+                    acoustic_model=acoustic,
+                    alignment_contract=alignment,
+                    alignment_marker=marker,
+                    approved_exclusions_contract=exclusions,
+                    lab_root=labs,
+                    preflight_only=True,
+                )
 
 if __name__ == "__main__":
     unittest.main()

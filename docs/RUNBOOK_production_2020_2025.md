@@ -150,6 +150,31 @@ post-MFA 미정렬 283, `spn` 0이다. 보존 DB SHA와 SQLite 무결성은 독�
 정렬하지 않는다. 완료 결과는
 `docs/decisions/RESULT_mfa_r3_alignment_database_2020_20260809.md`를 따른다.
 
+### 3.1.1 2020 post-MFA exact-ID 승인과 보존 DB 수출
+
+정렬 DB를 다시 돌리지 않는다. 읽기 전용 감사에서 동결 입력 782,715건과 DB ID
+782,715건의 전수 동등성을 확인했고, word·phone interval이 모두 있는 782,432건과
+그렇지 않은 283건을 분리했다. 283건은 모두 `mfa_alignment_missing`이며
+`alignment_and_analysis` 후속 처리 후보다. 실제 음운 실현 판단이 아니므로 전량
+청취를 요구하지 않지만, 자동 승인은 금지하고 연구자의 명시적 범주 승인을 받는다.
+
+승인 뒤 다음 명령의 `-PreflightOnly`가 먼저 통과해야 한다. preflight는 TextGrid를
+만들지 않고 ALIGN_DONE marker·DB SHA·동결 입력·활성 LAB·검색표·승인 exact-ID를
+대사한다. r3의 분모는 전체 검색표가 아니라 `expected_mfa_input_ids`이며, 발음
+follow-up·pre-MFA 제외를 누락으로 잘못 세지 않는다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_research_export.ps1" `
+  -Year 2020 -Workers 4 -PreflightOnly
+```
+
+`preflight_passed` 뒤 같은 명령에서 `-PreflightOnly`만 빼면 782,432건의 6-tier와
+연도별 gzip 동반표 4개를 만든다. 실패하면 생성된 성공 파일과 `.partial`, DB를
+보존하고 전체 MFA를 재실행하지 않는다. 이 수출과 독립 연도 감사가 끝나기 전에는
+2021을 시작하지 않는다.
+
 ### 3.1 r3 후보 생성 완료 checkpoint
 
 2026-08-08 현재 canonical inventory 881,237형, exact-Roman donor 후보 346형,
