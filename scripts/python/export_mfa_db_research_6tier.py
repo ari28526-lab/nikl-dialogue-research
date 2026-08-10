@@ -2012,7 +2012,16 @@ def export_database(
             expected_input_ids = load_r3_expected_mfa_input_ids(
                 contract_data, year
             )
+            # MFA can retain an ignored utterance row after feature generation
+            # fails.  Such an ID belongs to the frozen input and active LAB
+            # sets, but is intentionally absent from the exportable
+            # ``ignored=0`` DB set.  Treat it as a valid technical exclusion
+            # only when the researcher-approved exact-ID contract contains it.
+            database_excluded_ids = expected_input_ids - db_ids
             actual_missing_ids = db_ids - aligned_ids
+            approved_technical_failure_ids = (
+                database_excluded_ids | actual_missing_ids
+            ) & alignment_exclusion_ids
             hard_sets = {
                 "expected_input_ids_missing_from_search": (
                     expected_input_ids - source_search_ids
@@ -2020,8 +2029,8 @@ def export_database(
                 "database_ids_missing_from_expected_input": (
                     db_ids - expected_input_ids
                 ),
-                "expected_input_ids_missing_from_database": (
-                    expected_input_ids - db_ids
+                "expected_input_ids_missing_from_database_without_approval": (
+                    database_excluded_ids - alignment_exclusion_ids
                 ),
                 "active_lab_ids_missing_from_expected_input": (
                     active_lab_ids - expected_input_ids
@@ -2033,7 +2042,8 @@ def export_database(
                     actual_missing_ids - alignment_exclusion_ids
                 ),
                 "approved_alignment_exclusions_not_unaligned": (
-                    alignment_exclusion_ids - actual_missing_ids
+                    alignment_exclusion_ids
+                    - (database_excluded_ids | actual_missing_ids)
                 ),
                 "analysis_only_ids_without_alignment": (
                     analysis_only_ids - aligned_ids
@@ -2056,7 +2066,17 @@ def export_database(
                     "active_lab_ids": len(active_lab_ids),
                     "database_utterance_ids": len(db_ids),
                     "aligned_database_ids": len(aligned_ids),
+                    "database_excluded_ids": len(database_excluded_ids),
                     "post_mfa_unaligned_ids": len(actual_missing_ids),
+                    "approved_database_exclusions": len(
+                        database_excluded_ids & alignment_exclusion_ids
+                    ),
+                    "approved_database_unaligned_ids": len(
+                        actual_missing_ids & alignment_exclusion_ids
+                    ),
+                    "approved_technical_failure_ids": len(
+                        approved_technical_failure_ids
+                    ),
                     "approved_alignment_exclusions": len(
                         alignment_exclusion_ids
                     ),
@@ -2074,9 +2094,12 @@ def export_database(
                     for name, values in hard_sets.items()
                 },
                 "equation": (
-                    "expected_mfa_input_ids = database_utterance_ids = "
-                    "active_lab_ids = aligned_database_ids disjoint-union "
-                    "approved post-MFA alignment exclusions; full search "
+                    "expected_mfa_input_ids = active_lab_ids = "
+                    "database_utterance_ids disjoint-union approved "
+                    "database exclusions; database_utterance_ids = "
+                    "aligned_database_ids disjoint-union approved database "
+                    "unaligned IDs; approved alignment exclusions equal the "
+                    "union of both technical failure sets; full search "
                     "master may additionally contain pronunciation follow-up "
                     "and pre-MFA exclusions"
                 ),

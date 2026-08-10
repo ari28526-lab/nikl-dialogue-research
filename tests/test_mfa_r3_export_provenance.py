@@ -162,7 +162,12 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
         )
         return output
 
-    def make_missing_exclusion(self, root: Path) -> Path:
+    def make_missing_exclusion(
+        self,
+        root: Path,
+        *,
+        reason_code: str = "mfa_alignment_missing",
+    ) -> Path:
         review = root / "approved_missing.csv"
         with review.open("w", encoding="utf-8-sig", newline="") as stream:
             writer = csv.DictWriter(stream, fieldnames=REVIEW_FIELDS)
@@ -172,7 +177,7 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
                     "year": self.year,
                     "input_contract_id": self.input_contract_id,
                     "utt_id": "S1.1",
-                    "reason_code": "mfa_alignment_missing",
+                    "reason_code": reason_code,
                     "exclusion_scope": "alignment_and_analysis",
                     "evidence_path": "fixture-db",
                     "decision": "approved",
@@ -451,6 +456,72 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
             self.assertEqual(passed["counts"]["post_mfa_unaligned_ids"], 1)
             self.assertEqual(
                 passed["counts"]["approved_alignment_exclusions"], 1
+            )
+            self.assertFalse(output.exists())
+
+    def test_r3_preflight_accepts_approved_feature_generation_exclusion(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            fixture = ExportFixture()
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            search = root / "search"
+            labs = root / "labs"
+            output = root / "output"
+            fixture.make_db(db)
+            connection = sqlite3.connect(db)
+            connection.execute("UPDATE utterance SET ignored=1")
+            connection.commit()
+            connection.close()
+            fixture.make_acoustic(acoustic)
+            fixture.make_search(search)
+            lab = labs / self.year / "S1" / "S1.1.lab"
+            lab.parent.mkdir(parents=True)
+            lab.write_text("가", encoding="utf-8")
+            alignment = self.make_r3_contract(root, db=db, acoustic=acoustic)
+
+            blocked = export_database(
+                db_path=db,
+                year=self.year,
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=alignment,
+                lab_root=labs,
+                preflight_only=True,
+            )
+            self.assertEqual(blocked["status"], "failed")
+            self.assertEqual(
+                blocked["exact_id_reconciliation"]["counts"]
+                ["expected_input_ids_missing_from_database_without_approval"],
+                1,
+            )
+
+            exclusions = self.make_missing_exclusion(
+                root, reason_code="mfa_feature_generation_failed"
+            )
+            passed = export_database(
+                db_path=db,
+                year=self.year,
+                search_master_root=search,
+                output_root=output,
+                acoustic_model=acoustic,
+                alignment_contract=alignment,
+                approved_exclusions_contract=exclusions,
+                lab_root=labs,
+                preflight_only=True,
+            )
+            self.assertEqual(passed["status"], "preflight_passed", passed)
+            reconciliation = passed["exact_id_reconciliation"]
+            self.assertEqual(reconciliation["status"], "passed")
+            self.assertEqual(
+                reconciliation["counts"]["approved_database_exclusions"], 1
+            )
+            self.assertEqual(
+                reconciliation["counts"]["approved_database_unaligned_ids"], 0
+            )
+            self.assertEqual(
+                reconciliation["counts"]["approved_technical_failure_ids"], 1
             )
             self.assertFalse(output.exists())
 
