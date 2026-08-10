@@ -30,7 +30,8 @@ $corpusBuildingPath = Join-Path $contractRoot (
 $tempContractPath = Join-Path $contractRoot "TEMP_CONTRACT_$Year.json"
 $doneMarkerPath = Join-Path $markerRoot "ALIGN_DONE_$Year.json"
 $preflightPath = Join-Path $projectRoot (
-    "outputs\reports\PREFLIGHT_mfa_r3_runner_${Year}_gate_adopted_go_20260809.json"
+    'work\mfa_r3_preflight\PREFLIGHT_{0}_{1}.json' -f
+    $releaseId, $Year
 )
 
 function Read-JsonShared {
@@ -150,6 +151,7 @@ Write-Host 'MFA r3 annual status - read only' -ForegroundColor Cyan
     release_id = $releaseId
     gate_status = [string]$gate.status
     gate_allowed_release_ids = @($gate.allowed_release_ids) -join ','
+    preflight_path = $preflightPath
     preflight_status = $preflightStatus
     preflight_failed_checks = $preflightFailed
     release_root = $releaseRoot

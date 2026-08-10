@@ -3017,3 +3017,21 @@ shard 2–23을 재개하는 것이다.
 - 자연 대화 문헌은 AP/IP 자동 후보에 음향 특징뿐 아니라 문법·형태소 정보와
   segment/dephrasing 영향을 함께 고려할 것을 지지한다. 상세 검토는
   `docs/reviews/REVIEW_hyunjung_joo_KOINA_prosody_literature_20260810.md`에 남겼다.
+
+### 2026-08-10 — 2021 r3 장시간 실행 시작·상태판 preflight 경로 교정
+
+- 연구자가 14:26 KST에 동결된 단일 진입점
+  `run_mfa_r3_year_safe_body.ps1 -Year 2021 -NumJobs 4`를 실행했다. 2020 완료본과
+  원자료는 재실행하거나 수정하지 않는다.
+- 실행 preflight는 실제 runner 기본 경로
+  `work/mfa_r3_preflight/PREFLIGHT_common_pron_mfa_r3_20260809_2021.json`에 `go`,
+  실패 검사 0으로 기록됐다. exact-ID 입력은 4,139세션·1,207,299발화다.
+- 읽기 전용 상태판이 과거 2020용 고정 보고서 이름을 참조해 실제 GO를
+  `missing`으로 표시하던 운영 표시 오류를 발견했다. runner·코퍼스·DB에는 영향이
+  없었고, 상태판을 runner와 동일한 release/year 기본 경로를 읽도록 교정했다.
+- 교정 뒤 상태판은 `preflight_status=go`를 표시한다. PowerShell safety 68개 파일과
+  Windows PowerShell 5.1 runtime 68개 스크립트가 모두 통과했고 UTF-8 BOM도
+  유지했다.
+- 14:51 KST 관측에서 release 전용 코퍼스는 501세션까지 계속 증가했고 wrapper가
+  살아 있으며 stderr·완료 marker는 아직 없다. 현 단계는 정상적인 코퍼스
+  materialization이며, 완료 뒤에만 새 r3 DB MFA가 시작된다.
