@@ -2908,3 +2908,19 @@ shard 2–23을 재개하는 것이다.
   TextGrid를 만들지 않는다. 성공 정렬과 DB는 보존하고 MFA 재실행은 하지 않는다.
 - targeted Python 21건, PowerShell safety 67파일, Windows PowerShell 5.1 runtime
   67스크립트가 통과했다. 실제 2020 수출 preflight는 연구자 283건 승인 뒤 실행한다.
+
+## 2026-08-10 2020 r3 post-MFA 승인·실제 export preflight
+
+- 연구자 `ari30`은 동결 후보 283건(candidate digest `065c2cd1d1dd...`)을
+  `alignment_and_analysis` 범위의 후속 exact-ID로 이관하고, 성공한 782,432건을
+  보존 DB에서 6-tier로 수출하는 것을 명시 승인했다.
+- 승인 materializer는 별도 승인 CSV 283행과 input-contract-bound 제외 계약,
+  승인문 SHA를 기록했다. `automatic_approval_performed=false`, DB·원자료 변경 0이다.
+- PowerShell safety 67파일과 Windows PowerShell 5.1 runtime 67스크립트를 다시
+  통과한 뒤 실제 `-PreflightOnly`를 실행했다. 최초 Codex sandbox 시도는 D: lock
+  쓰기 권한에서 계산 전 안전 중단됐고, 승인된 D: 권한으로 즉시 재실행했다.
+- preflight는 159.109초에 통과했다. search 870,437, expected/LAB/DB 782,715,
+  aligned 782,432, 승인 미정렬 283이며 9개 hard difference set이 모두 0이다.
+  `spn` 0, acoustic inventory 밖 phone 0, source DB SHA와 ALIGN_DONE marker 일치다.
+- `materialization_started=false`, output year 폴더 없음, 종료 뒤 export lock 없음으로
+  확인했다. 다음 단계는 같은 wrapper의 full mode이며 MFA 재정렬은 하지 않는다.

@@ -158,7 +158,8 @@ post-MFA 미정렬 283, `spn` 0이다. 보존 DB SHA와 SQLite 무결성은 독�
 `alignment_and_analysis` 후속 처리 후보다. 실제 음운 실현 판단이 아니므로 전량
 청취를 요구하지 않지만, 자동 승인은 금지하고 연구자의 명시적 범주 승인을 받는다.
 
-승인 뒤 다음 명령의 `-PreflightOnly`가 먼저 통과해야 한다. preflight는 TextGrid를
+연구자 `ari30`은 2026-08-10에 동결 후보 digest `065c2cd1d1dd...`의 283건을
+명시 승인했다. 다음 명령의 `-PreflightOnly`도 2026-08-10에 통과했다. preflight는 TextGrid를
 만들지 않고 ALIGN_DONE marker·DB SHA·동결 입력·활성 LAB·검색표·승인 exact-ID를
 대사한다. r3의 분모는 전체 검색표가 아니라 `expected_mfa_input_ids`이며, 발음
 follow-up·pre-MFA 제외를 누락으로 잘못 세지 않는다.
@@ -170,7 +171,9 @@ follow-up·pre-MFA 제외를 누락으로 잘못 세지 않는다.
   -Year 2020 -Workers 4 -PreflightOnly
 ```
 
-`preflight_passed` 뒤 같은 명령에서 `-PreflightOnly`만 빼면 782,432건의 6-tier와
+실측은 159.109초였고 모든 exact-ID hard set 0, `spn` 0, acoustic inventory 밖
+phone 0이었다. `preflight_passed` 뒤 같은 명령에서 `-PreflightOnly`만 빼면
+782,432건의 6-tier와
 연도별 gzip 동반표 4개를 만든다. 실패하면 생성된 성공 파일과 `.partial`, DB를
 보존하고 전체 MFA를 재실행하지 않는다. 이 수출과 독립 연도 감사가 끝나기 전에는
 2021을 시작하지 않는다.

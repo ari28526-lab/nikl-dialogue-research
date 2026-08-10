@@ -1,0 +1,24 @@
+{
+  "schema_version": "mfa_approved_exclusions.v1",
+  "status": "approved",
+  "year": "2020",
+  "input_contract_id": "d75fa5bc50cc31c3912220d1cb292eb74ab8e9da4216988926dbaa89c34919ce",
+  "approved_by": "ari30",
+  "approved_at": "2026-08-10T09:07:27.0689009+09:00",
+  "created_at": "2026-08-10T09:07:27.467105+09:00",
+  "review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2020\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 92277,
+    "mtime_ns": 1786320447450057200,
+    "sha256": "6dbcb86543dd753af7b311e750c0c7e11bfd7cf704f0794b50e82335caf74879"
+  },
+  "row_count": 283,
+  "counts": {
+    "mfa_alignment_missing|alignment_and_analysis": 283
+  },
+  "policy": {
+    "automatic_approval_forbidden": true,
+    "unknown_missing_is_hard_failure": true,
+    "contract_bound_to_input_contract_id": true
+  }
+}

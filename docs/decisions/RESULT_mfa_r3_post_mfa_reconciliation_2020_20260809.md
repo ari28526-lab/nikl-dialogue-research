@@ -1,7 +1,7 @@
 # 2020 r3 post-MFA exact-ID 회계 결과
 
 기록일: 2026-08-09 KST
-상태: 연구자 범주 승인 대기, TextGrid 미생성
+상태: 연구자 범주 승인·실제 export preflight 통과, TextGrid 미생성
 
 ## 결론
 
@@ -47,8 +47,19 @@ expected_mfa_input_ids
 
 ## 다음 Gate
 
-연구자는 이 동결 283건을 `alignment_and_analysis` 범위의 기술적 후속 대상으로
-명시 승인한다. 승인 뒤 `run_mfa_r3_research_export.ps1 -PreflightOnly`가
-ALIGN_DONE·DB SHA·입력·LAB·search·승인 ID를 대사한다. 통과한 뒤에만 같은
+연구자 `ari30`은 2026-08-10 09:07 KST에 동결 283건을
+`alignment_and_analysis` 범위의 기술적 후속 exact-ID로 이관하고 성공한
+782,432건을 보존 DB에서 수출하는 것을 명시 승인했다. 자동 승인은 없었다.
+
+09:08 KST에 시작한 `run_mfa_r3_research_export.ps1 -PreflightOnly`는 159.109초
+뒤 `preflight_passed`를 기록했다. ALIGN_DONE·DB SHA·입력·LAB·search·승인 ID가
+일치했고 모든 hard inventory는 0, `spn` 0, acoustic inventory 밖 phone 0이다.
+`materialization_started=false`이며 TextGrid는 만들지 않았다. 다음 단계에서 같은
 wrapper로 782,432건의 6-tier와 gzip 동반표를 만든다. 독립 연도 감사가 끝나기
 전에는 2021로 넘어가지 않는다.
+
+승인 기록:
+`outputs/reviews/mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2020/06_RESEARCHER_APPROVAL.json`
+
+preflight 보고서:
+`outputs/reports/PREFLIGHT_mfa_r3_research_6tier_2020_20260810_090806.json`
