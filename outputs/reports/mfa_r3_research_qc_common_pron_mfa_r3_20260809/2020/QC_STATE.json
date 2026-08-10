@@ -1,0 +1,57 @@
+{
+    "schema_version":  "mfa_r3_research_qc_state.v1",
+    "status":  "passed",
+    "updated_at":  "2026-08-10T12:32:41.7210022+09:00",
+    "year":  "2020",
+    "release_id":  "common_pron_mfa_r3_20260809",
+    "qc_input_checkpoint_id":  "67515159434e11a8b3fa60e4c9cb12762660f65f1d5171617eb68e7609033a5d",
+    "qc_input":  {
+                     "release_id":  "common_pron_mfa_r3_20260809",
+                     "year":  "2020",
+                     "input_contract_id":  "d75fa5bc50cc31c3912220d1cb292eb74ab8e9da4216988926dbaa89c34919ce",
+                     "alignment_contract_id":  "3eff5ae34eb1015c05532140162636609099f1fd1203f561cc06d837039d8e8a",
+                     "export_report_sha256":  "624ccd483ab59e0dc5b58aa58c082b9391dcdfb4d6c42b73e16ee06a5f046716",
+                     "table_manifest_sha256":  "63332b9e8f4834d8a7664eed6e14272b90de21ba7203364212d02570c8d4b44a",
+                     "alignment_contract_sha256":  "be5d8ec3fcc34e50eb16579fb95ba8a558bb20f366df43eecc68eac45e80b220",
+                     "alignment_marker_sha256":  "8cececf38fd9488a95d4512009378be972a4467dc9db6a1afc67058c97c63d3e",
+                     "approved_contract_sha256":  "1c233f1117bdf9f8b863b2a638fa0739ae1aa1f0641eec99e757424e317a0fbb",
+                     "source_db_expected_sha256":  "e2fec7300f9a70a6553f0f9d81d9c7a3c5cdfbc514b77cc7b6de87f933d7f991",
+                     "source_db_bytes":  5534134272,
+                     "source_db_mtime_utc_ticks":  639218747223484644
+                 },
+    "audit_report":  {
+                         "path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2020\\01_year_audit.json",
+                         "bytes":  8461,
+                         "mtime_utc_ticks":  639219293210354882,
+                         "sha256":  "c0308f7431c97c939d1c59214f02eb5a294b85e9d528b40ea748a6e19a1fac84"
+                     },
+    "missing_csv":  {
+                        "path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2020\\01_id_inventory.csv",
+                        "bytes":  22,
+                        "mtime_utc_ticks":  639219293202846428,
+                        "sha256":  "d9fea7fefa7d4ffe5dcb00a2d38ad20b315cd4b7598a70e2f976b89927966442"
+                    },
+    "sample_report":  {
+                          "path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2020\\02_db_sample.json",
+                          "bytes":  1298,
+                          "mtime_utc_ticks":  639219295615750412,
+                          "sha256":  "b368b78e621ff0bf3964f142f9083aeec9a22e783be895a47f008902089304ee"
+                      },
+    "sample_csv":  {
+                       "path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2020\\02_db_sample.csv",
+                       "bytes":  10203,
+                       "mtime_utc_ticks":  639219295615603046,
+                       "sha256":  "2f56d9ee5c65167582a80ae6067bb6d4fa8523426e6d1bc372c58e4bd2af2e4c"
+                   },
+    "counts":  {
+                   "textgrids":  782432,
+                   "approved_exclusions":  283,
+                   "sample_sessions":  24,
+                   "sample_semantic_equal":  24,
+                   "sample_byte_equal":  24
+               },
+    "next_gate":  "freeze 2020 and prepare the next single year only",
+    "source_mutation_performed":  false,
+    "mfa_recomputed":  false,
+    "full_export_repeated":  false
+}

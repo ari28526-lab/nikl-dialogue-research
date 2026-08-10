@@ -27,6 +27,23 @@ from retrofit_textgrid_2020_2024 import parse_mfa_textgrid
 SCHEMA_VERSION = "mfa_db_research_6tier_sample_equivalence.v1"
 
 
+def _alignment_input_contract_id(alignment_data: dict[str, object]) -> str:
+    """Return the frozen input identity for legacy and r3 contracts."""
+    legacy = str(alignment_data.get("lab_input_contract_id", "") or "")
+    identity = alignment_data.get("identity", {})
+    r3 = (
+        str(identity.get("year_input_contract_id", "") or "")
+        if isinstance(identity, dict)
+        else ""
+    )
+    if legacy and r3 and legacy != r3:
+        raise RuntimeError("alignment input contract identity conflict")
+    input_id = legacy or r3
+    if not input_id:
+        raise RuntimeError("alignment input contract identity missing")
+    return input_id
+
+
 def _sample(
     connection: sqlite3.Connection,
     *,
@@ -103,7 +120,7 @@ def verify_sample(
     alignment_id, alignment_data = load_alignment_contract(
         alignment_contract, year
     )
-    input_id = str(alignment_data.get("lab_input_contract_id", "") or "")
+    input_id = _alignment_input_contract_id(alignment_data)
     _exclusion_data, exclusions = load_exclusion_contract(
         approved_exclusions_contract,
         year=year,

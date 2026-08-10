@@ -1,0 +1,49 @@
+{
+  "schema_version": "mfa_r3_research_qc_incident.v1",
+  "status": "resolved_without_source_mutation",
+  "year": "2020",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "failed_at": "2026-08-10T12:28:46+09:00",
+  "resolved_at": "2026-08-10T12:32:41+09:00",
+  "failed_phase": "db_reexport_sample",
+  "failure": {
+    "class": "r3_input_contract_identity_compatibility",
+    "message": "The sample verifier read only the legacy lab_input_contract_id field and therefore passed an empty input ID to the exclusion contract loader.",
+    "affected_source_artifacts": false,
+    "affected_full_year_audit_result": false
+  },
+  "preserved_checkpoint": {
+    "full_year_audit_status": "success",
+    "coverage_pct": 100.0,
+    "textgrids": 782432,
+    "hard_failure_categories_nonzero": 0,
+    "elapsed_seconds": 1510.689,
+    "report_sha256": "c0308f7431c97c939d1c59214f02eb5a294b85e9d528b40ea748a6e19a1fac84"
+  },
+  "correction": {
+    "legacy_contract_field": "lab_input_contract_id",
+    "r3_contract_field": "identity.year_input_contract_id",
+    "conflicting_dual_identity_is_rejected": true,
+    "missing_identity_is_rejected": true,
+    "regression_fixture_added": true,
+    "targeted_tests_passed": 30
+  },
+  "resume": {
+    "preflight_status": "preflight_passed",
+    "full_year_audit_reusable": true,
+    "db_sample_reusable_before_resume": false,
+    "preflight_sha256": "6e0959e5ccf48d72b66ee4bb5e6ee74471ba5aab5f1c0272db1e628e44239332",
+    "full_year_audit_repeated": false,
+    "mfa_recomputed": false,
+    "full_export_repeated": false
+  },
+  "final_result": {
+    "status": "passed",
+    "sample_sessions": 24,
+    "semantic_equal": 24,
+    "byte_equal": 24,
+    "sample_elapsed_seconds": 55.524,
+    "qc_state_sha256": "fb92b2d22a1f238acebbe226cf3fc347c301c72052cecb4803c1121b30d10146"
+  },
+  "source_mutation_performed": false
+}

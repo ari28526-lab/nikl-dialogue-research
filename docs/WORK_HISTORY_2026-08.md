@@ -2960,3 +2960,24 @@ shard 2–23을 재개하는 것이다.
 - 실제 2020 `-PreflightOnly`는 TextGrid 782,432개, 승인 제외 283개,
   `qc_input_checkpoint_id=67515159...9033a5d`로 `preflight_passed`다. lock·scratch·
   audit output은 만들지 않았고 source mutation·MFA 재계산·전수 export 반복은 0이다.
+
+### 2026-08-10 — 2020 r3 독립 내용·계약 QC 완료와 checkpoint 재개 입증
+
+- 12:03 KST에 본 실행을 시작했다. 전수 audit는 782,432개 TextGrid를 모두 열어
+  1,510.689초에 완료됐다. coverage 100%, hard failure 25범주 모두 0이며 active
+  LAB 782,715는 TextGrid 782,432와 승인 제외 283으로 완전히 회계됐다.
+- 동반표는 발화 782,432, word 4,315,723, phone 16,458,699, 제외 283행이다.
+  duplicate·key order·contract ID·manifest count/SHA·r3 provenance 오류가 모두 0이다.
+- 첫 24세션 DB 재수출 호출은 verifier가 구 r2 `lab_input_contract_id`만 읽고 r3
+  `identity.year_input_contract_id`를 읽지 않아 제외 계약 identity Gate에서 안전
+  중단됐다. 표본 materialization 전 오류였고 원 DB·WAV·LAB·TextGrid·동반표는
+  바뀌지 않았다.
+- verifier에 legacy/r3 두 identity 경로를 추가하고, 둘이 상충하거나 모두 없으면
+  fail-closed하도록 보강했다. 실제 r3 fixture에서 표본 재수출까지 수행하는 회귀를
+  추가했으며 표적 30개가 통과했다.
+- 수정 후 preflight는 `audit=True, sample=False`를 기록했다. 같은 wrapper를 재개해
+  25분짜리 전수 audit를 반복하지 않고 24세션 표본만 55.524초 실행했다. semantic
+  24/24, byte 24/24이며 최종 `QC_STATE.json`은 `passed`다.
+- 구조화 incident는
+  `outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에
+  남겼다. 다음 단계는 2020 state를 동결하고 2021 한 연도만 준비하는 것이다.

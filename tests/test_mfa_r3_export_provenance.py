@@ -25,6 +25,7 @@ from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
 from pipeline_common import file_fingerprint, sha256_file  # noqa: E402
 from research_textgrid_v2 import write_textgrid_exact  # noqa: E402
 from retrofit_textgrid_2020_2024 import parse_mfa_textgrid  # noqa: E402
+from verify_mfa_db_research_6tier_sample import verify_sample  # noqa: E402
 from tests.test_export_mfa_db_research_6tier import (  # noqa: E402
     ExportMfaDbResearch6TierTests as ExportFixture,
 )
@@ -291,6 +292,21 @@ class MfaR3ExportProvenanceTests(unittest.TestCase):
             self.assertTrue(
                 all(value == 0 for value in report["hard_failure_counts"].values())
             )
+            sample = verify_sample(
+                db_path=Path(fixture["db"]),
+                year=self.year,
+                search_master_root=Path(fixture["search"]),
+                final_root=Path(fixture["output"]),
+                scratch_root=root / "r3_sample_scratch",
+                acoustic_model=Path(fixture["acoustic"]),
+                alignment_contract=Path(fixture["alignment"]),
+                approved_exclusions_contract=Path(fixture["exclusions"]),
+                report_path=root / "r3_sample.json",
+                sample_csv_path=root / "r3_sample.csv",
+                sample_size=1,
+            )
+            self.assertEqual(sample["status"], "success", sample)
+            self.assertEqual(sample["input_contract_id"], self.input_contract_id)
 
             textgrid = (
                 Path(fixture["output"])

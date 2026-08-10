@@ -1,12 +1,13 @@
-# 스크립트 색인 — 최종 갱신 2026-08-09
+# 스크립트 색인 — 최종 갱신 2026-08-10
 
 > **현재 r3 생산 진입점:** 아래 2020–2022 생산 entrypoint는 r2 역사·복구 근거다.
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
 > 정렬을 승인했다. 별도 `run_mfa_r3_year_safe_body.ps1`과 2020
 > `-PreflightOnly`, exporter·감사·테스트 배선과 연구자 Gate 승인이 완료됐다.
 > 2020 r3 사전–검색 CSV occurrence 연결표와 독립 감사, 보강 preflight를 거쳐
-> 정렬 DB 계산이 완료됐다. `ALIGN_DONE_2020.json`은 passed이며 다음 단계는
-> 보존 DB 기반 exact-ID 회계와 export다. r3 전용 runner만 사용한다.
+> 정렬 DB·exact-ID 회계·6-tier export와 독립 연도 내용·계약 QC까지 완료됐다.
+> `QC_STATE.json`은 passed이며 다음 단계는 2020을 동결하고 2021 한 연도만 같은
+> r3 계약으로 준비하는 것이다. r3 전용 runner만 사용한다.
 
 ## 현재 생산 진입점
 
@@ -275,7 +276,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | mfa_wav_corpus.ps1 / show_2020_wav_id_recovery_status.ps1 | 2020은 passed 복구 계약의 파생 WAV root만 허용하고 2021–2025는 기존 연도 root를 사용. LAB 준비·MFA·독립 감사·생산 표본에서 같은 resolver를 공유하며 계약이 없거나 변조되면 원본으로 fallback하지 않음. 상태판은 진행·lock·계약을 읽기 전용 표시 | PowerShell 5.1 안전검사 통과 |
 | audit_mfa_research_6tier_year.py | 연도 전체 LAB↔TextGrid 정확 ID 대사, 6-tier·0–xmax·phone inventory·동반표 SHA/count/key를 스트리밍 독립 감사. r3에서는 10필드 provenance·DB SHA·동반표 전 행 alignment ID와 `phones_mfa→phoneme_r_auto` label을 독립 재계산하며 전수 처리 진행률을 표시 | 기존 full-year와 r3 정상·변조 fixture 통과 |
 | verify_mfa_db_research_6tier_sample.py | 보존 DB에서 세션별 결정적 표본을 새 6-tier로 재수출해 final과 의미/바이트 동등성 검사 | 합성 DB 재수출 통과; 연도 gate는 세션 ≥5 요구 |
-| run_mfa_r3_research_qc.ps1 | 완료된 r3 연도의 수출 보고서·DB marker·계약·동반표를 묶어 독립 전수 semantic audit와 24세션 DB 재수출 검사를 순서대로 실행. 전수 감사 성공을 별도 SHA checkpoint로 남겨 표본 단계 중단 시 감사 반복을 막고, MFA·전수 export·원자료 수정은 금지 | 2020 실제 `-PreflightOnly` 통과; TextGrid 782,432·승인 제외 283, audit/sample 재개 상태 false |
+| run_mfa_r3_research_qc.ps1 | 완료된 r3 연도의 수출 보고서·DB marker·계약·동반표를 묶어 독립 전수 내용·계약 audit와 24세션 DB 재수출 검사를 순서대로 실행. 전수 감사 성공을 별도 SHA checkpoint로 남겨 표본 단계 중단 시 감사 반복을 막고, MFA·전수 export·원자료 수정은 금지 | 2020 최종 passed: TextGrid 782,432/782,432, hard failure 0, 표본 semantic·byte 24/24; r3 input-ID 호환 오류 뒤 전수 감사 비반복 재개 입증 |
 | preflight_next_year_after_research_qc.py | 6-tier 연도 감사·marker·retained DB·표본 재수출·생산연도 연구자 검토·동반표 contract ID를 결합해 다음 연도 진입 판정 | 생산연도 review schema와 구 파일럿 schema 합성 exact gate 통과; `preflight_2020_gate_b.ps1`에 배선 |
 | run_mfa_year_queue_safe.ps1 | 2020–2025를 연도별 독립 staging으로 순회. 승인 계약 없는 연도는 pending 검토표만 만들고, 실패 temp·DB를 보존하며, 성공 연도는 독립 6-tier 감사·DB 표본 재수출까지 수행. full clean retry·연구자 승인·정본 승격은 자동화하지 않음 | 장시간 실행 중 시스템 절전 방지 후 종료 시 복원; PowerShell 정적 안전검사 통과 |
 | show_mfa_year_queue_status.ps1 | 연도 큐 JSON·lock·D 여유와 연도별 phase/status를 보여주는 읽기 전용 상태판 | 상태 변경 명령 없음 |

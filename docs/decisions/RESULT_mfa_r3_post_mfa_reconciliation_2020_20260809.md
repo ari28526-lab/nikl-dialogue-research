@@ -92,3 +92,26 @@ alignment/승인 계약의 SHA와 DB path/size가 결속됐고, TextGrid 782,432
 
 Preflight 보고서:
 `outputs/reports/PREFLIGHT_mfa_r3_research_qc_2020_20260810_114748.json`
+
+## 독립 연도 내용·계약 QC 완료
+
+2026-08-10 12:28 KST에 782,432개 전수 audit가 1,510.689초로 성공했다. coverage
+100%, hard failure 25범주 모두 0이며, active LAB 782,715는 TextGrid 782,432와
+승인 alignment 제외 283으로 완전히 회계됐다. gzip 4표의 ID·key·행 수·SHA와 r3
+provenance도 모두 통과했다.
+
+직후 24세션 DB 재수출 검사에서 verifier가 r3 input contract의 nested identity를
+읽지 못하는 코드 호환 오류가 발생했다. 이는 표본 검사 진입 전 오류이며 원 DB·WAV·
+LAB·TextGrid·동반표를 수정하지 않았다. 구 `lab_input_contract_id`와 r3
+`identity.year_input_contract_id`를 모두 명시 지원하고 상충·누락은 거부하도록
+수정·회귀 고정했다. 재개 preflight는 `audit=True, sample=False`였고, 통과한 전수
+audit SHA를 재사용해 표본만 55.524초 실행했다. 최종 semantic·byte 결과는 24/24,
+`QC_STATE.json`은 `passed`다. MFA와 전수 export는 반복하지 않았다.
+
+최종 QC 상태:
+`outputs/reports/mfa_r3_research_qc_common_pron_mfa_r3_20260809/2020/QC_STATE.json`
+
+오류·수정·재개 증거:
+`outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`
+
+다음 Gate는 2020을 동결하고 2021 한 연도만 동일 r3 계약으로 준비하는 것이다.

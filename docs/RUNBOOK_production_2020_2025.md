@@ -176,7 +176,7 @@ phone 0이었다. full mode는 2026-08-10 09:19–10:43 KST에 완료됐다. 2,2
 6-tier 782,432개와 연도별 gzip 동반표 4개를 만들었고 coverage 100%, 실패·누락·
 partial 0이다. 동반표 행은 발화 782,432, word 4,315,723, phone 16,458,699,
 제외 283이며 manifest SHA와 4/4 일치한다. 전체 MFA는 재실행하지 않았다.
-다음 단계는 독립 연도 semantic audit이며, 이것이 끝나기 전 2021을 시작하지 않는다.
+다음 단계였던 독립 연도 내용·계약 audit도 아래와 같이 완료했다.
 
 ### 3.1.2 2020 r3 독립 연도 semantic QC
 
@@ -197,9 +197,20 @@ MFA, 전수 TextGrid export, 원 DB·WAV·LAB·검색표는 다시 만들거나 
   -Year 2020 -Workers 4 -SampleSize 24
 ```
 
-정상 완료 기준은 `QC_STATE.json`의 `status=passed`, 전수 audit coverage 100%·hard
-failure 0, 표본 semantic/byte 24/24다. 이 상태를 확인하기 전에는 2021 runner를
-열지 않는다.
+2026-08-10 첫 본 실행의 전수 audit는 1,510.689초에 성공했다. TextGrid
+782,432/782,432, coverage 100%, hard failure 25범주 전부 0이고, gzip 표는 발화
+782,432·word 4,315,723·phone 16,458,699·제외 283행으로 일치했다.
+
+뒤이은 표본 검사에서 verifier가 구 r2 `lab_input_contract_id`만 읽고 r3의
+`identity.year_input_contract_id`를 읽지 않는 호환 오류가 발생했다. 원 DB·TextGrid·
+동반표에는 영향이 없었다. 두 schema를 명시 지원하고 상충·누락 identity를 거부하는
+회귀검사를 추가한 뒤 preflight에서 `audit=True, sample=False`를 확인했다. 같은
+명령은 성공한 전수 audit를 다시 수행하지 않고 표본만 재개해 semantic·byte 24/24를
+55.524초에 통과했다. 최종 `QC_STATE.json`은 `status=passed`다.
+
+따라서 위 명령은 현재 2020에 다시 실행하지 않는다. 다음 Gate는 2020 완료 state를
+동결한 뒤 2021 한 연도만 준비하는 것이다. 오류·수정·재개 증거는
+`outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에 있다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 
