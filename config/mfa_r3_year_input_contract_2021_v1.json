@@ -1,0 +1,54 @@
+{
+  "schema_version": "mfa_r3_year_input_contract_policy.v1",
+  "status": "approved_contract_building_release_adopted",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "scope": {
+    "years_enabled": ["2021"],
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "stage_01_21_mutation_allowed": false,
+    "r2_artifact_mutation_allowed": false,
+    "raw_corpus_mutation_allowed": false
+  },
+  "reason_policy": {
+    "pre_mfa_technical_exclusions": [
+      "audio_pairing_unresolved",
+      "empty_reference_unresolved_symbol",
+      "text_duration_impossible",
+      "audio_unusable"
+    ],
+    "r2_post_mfa_failures_must_not_be_pre_exclusions": [
+      "mfa_alignment_missing",
+      "mfa_feature_generation_failed"
+    ]
+  },
+  "years": {
+    "2021": {
+      "expected_source_utterances": 1373920,
+      "expected_pronunciation_safe": 1208236,
+      "expected_pronunciation_followup": 165684,
+      "expected_unknown": 0,
+      "corpus_contract_schema": "mfa_wav_source_snapshot.v1",
+      "expected_corpus_wav_files": 1416216,
+      "expected_approved_pre_mfa_reason_counts": {
+        "audio_pairing_unresolved": 1039,
+        "empty_reference_unresolved_symbol": 399,
+        "text_duration_impossible": 64
+      },
+      "expected_r2_post_mfa_reason_counts": {
+        "mfa_alignment_missing": 511,
+        "mfa_feature_generation_failed": 24
+      },
+      "corpus_contract_id": "199bfc658175d9d7939ff43324d1acb09181a590790b04b02e2f9437dd644c74"
+    }
+  },
+  "identity_rules": {
+    "source_equals_safe_union_followup": true,
+    "safe_followup_intersection_empty": true,
+    "unknown_ids_forbidden": true,
+    "expected_mfa_input_equals_pron_safe_minus_pre_mfa_exclusions": true,
+    "every_expected_mfa_input_has_a_unique_wav": true,
+    "source_tree_extra_wavs_are_never_selected_implicitly": true,
+    "post_mfa_failures_reenter_when_pron_safe_and_technically_eligible": true
+  }
+}

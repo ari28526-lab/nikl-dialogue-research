@@ -383,6 +383,40 @@ class YearInputContractTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "fingerprint mismatch"):
                 self.run_build(paths)
 
+    def test_source_snapshot_allows_non_search_wavs_but_not_missing_mfa_input(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.fixture(Path(temp))
+            corpus = json.loads(paths["corpus"].read_text(encoding="utf-8"))
+            wav_root = Path(corpus["output_year"])
+            (wav_root / "S1" / "outside-search.wav").write_bytes(b"RIFFextra")
+            corpus.update(
+                {
+                    "schema_version": "mfa_wav_source_snapshot.v1",
+                    "corpus_contract_id": "source-snapshot-test",
+                    "wav_files": 5,
+                }
+            )
+            corpus.pop("omitted_for_review", None)
+            write_json(paths["corpus"], corpus)
+            policy = json.loads(paths["policy"].read_text(encoding="utf-8"))
+            year_policy = policy["years"]["2020"]
+            year_policy.update(
+                {
+                    "corpus_contract_schema": "mfa_wav_source_snapshot.v1",
+                    "corpus_contract_id": "source-snapshot-test",
+                    "expected_corpus_wav_files": 5,
+                }
+            )
+            write_json(paths["policy"], policy)
+            manifest = self.run_build(paths)
+            self.assertEqual(manifest["accounting"]["source_wav_missing"], 1)
+            self.assertEqual(manifest["accounting"]["corpus_extra_wav_ids"], 1)
+            report = audit(
+                paths["output"] / "YEAR_INPUT_CONTRACT_2020.json",
+                Path(temp) / "source_snapshot_audit.json",
+            )
+            self.assertTrue(report["verdict"]["wav_source_snapshot_binding_passed"])
+
 
 if __name__ == "__main__":
     unittest.main()

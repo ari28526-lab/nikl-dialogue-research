@@ -126,7 +126,21 @@ def audit(contract_path: Path, output_path: Path) -> dict:
     year_audit = load_json(Path(clean(inputs["year_input_independent_audit"]["path"])))
     model_pin_path = Path(clean(inputs["frozen_model_pin"]["path"])).resolve()
     model_pin = load_json(model_pin_path)
-    gate = load_json(Path(clean(inputs["release_gate_closed_at_build"]["path"])))
+    gate_record = inputs.get("release_gate_at_build") or inputs.get(
+        "release_gate_closed_at_build"
+    )
+    if not isinstance(gate_record, dict):
+        raise RuntimeError("release Gate fingerprint missing from alignment contract")
+    gate = load_json(Path(clean(gate_record["path"])))
+    release_id = clean(identity["pronunciation_release_id"])
+    gate_closed = bool(
+        clean(gate.get("status")).startswith("blocked_")
+        and gate.get("allowed_release_ids") == []
+    )
+    gate_adopted = bool(
+        gate.get("status") == "adopted"
+        and gate.get("allowed_release_ids") == [release_id]
+    )
 
     dictionary = contract["models"]["dictionary"]
     acoustic = contract["models"]["acoustic"]
@@ -168,8 +182,7 @@ def audit(contract_path: Path, output_path: Path) -> dict:
         year_audit.get("verdict", {}).get("release_gate_remains_closed") is True,
         clean(year_audit.get("year_input_contract_id"))
         == clean(year_contract["year_input_contract_id"]),
-        clean(gate.get("status")).startswith("blocked_"),
-        gate.get("allowed_release_ids") == [],
+        gate_closed or gate_adopted,
     )
     if not all(cross_checks):
         raise RuntimeError("r3 alignment cross-contract identity differs")
@@ -188,7 +201,9 @@ def audit(contract_path: Path, output_path: Path) -> dict:
             "model_and_dictionary_fingerprints_passed": True,
             "production_mfa_allowed": False,
             "textgrid_materialization_allowed": False,
-            "release_gate_remains_closed": True,
+            "release_gate_remains_closed": gate_closed,
+            "release_gate_adopted_for_release": gate_adopted,
+            "release_gate_closed_at_build": gate_closed,
         },
         "checks": {
             "required_identity_fields": 17,

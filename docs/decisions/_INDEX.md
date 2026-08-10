@@ -1,6 +1,6 @@
 # 현행 결정 문서 색인
 
-최종 갱신: 2026-08-09 KST
+최종 갱신: 2026-08-10 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -22,6 +22,7 @@
 | `DECISION_r3_pronunciation_research_database_contract_20260809.md` | r3 선택 발음 type catalog–발화 scope–참조 어절 occurrence–post-MFA interval을 정규화 키와 SHA Gate로 연결 |
 | `RESULT_mfa_r3_research_database_2020_20260809.md` | 2020 870,437발화·3,056,807 occurrence 전수 구축, 23-shard 재개, 독립 감사와 runner preflight 19/19 GO 결과 |
 | `RESULT_mfa_r3_alignment_database_2020_20260809.md` | 2020 r3 782,715발화 신규 정렬, 보존 DB SHA·SQLite·interval 독립 감사, 782,432 성공·283 exact-ID 후속 회계와 2021 정지점 |
+| `RESULT_mfa_r3_2021_preflight_20260810.md` | 2020 최종 QC SHA 동결, 2021 exact-ID 1,207,299·발음 연구 DB 6,648,515 occurrence·alignment 독립 감사·PowerShell 5.1·실제 GO preflight와 장시간 실행 직전 정지점 |
 
 ## 공통 발음사전과 6개년 동일성
 
@@ -95,6 +96,7 @@
 | `DECISION_bareun_engine_provenance_20260801.md` | Bareun 엔진·버전 provenance |
 | `NOTE_wav2vec2_phone_candidate_layer_20260727.md` | wav2vec2를 MFA 비대체 보조층으로 사용 |
 | `PLAN_KOINA_intonation_IP_AP.md` | 선별 자료 운율분석 계획 |
+| `../reviews/REVIEW_hyunjung_joo_KOINA_prosody_literature_20260810.md` | 조현정 AP 자료·Dual-Glob·fuzzy/R 코드와 KOINA·자연대화 AP/IP 문헌의 역할·한계·프로젝트 적용 판단 |
 | `사회변수_코드북.md` | 화자·사회 변수 정의 |
 
 ## 구조

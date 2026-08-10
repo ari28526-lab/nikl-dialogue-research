@@ -37,6 +37,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 POLICY_SCHEMA = "mfa_r3_year_input_contract_policy.v1"
 SCHEMA_VERSION = "mfa_r3_year_input_contract.v1"
 STATUS = "materialized_pending_independent_year_input_audit_gate_closed"
+POLICY_STATUSES = {
+    "approved_contract_building_only_gate_closed",
+    "approved_contract_building_release_adopted",
+}
 RELEASE_SCHEMA = "common_pron_mfa_r3_staged_release.v1"
 RELEASE_STATUS = "materialized_pending_independent_adoption_audit_and_release_gate"
 RELEASE_AUDIT_STATUS = "passed_independent_staged_adoption_audit_pending_release_gate"
@@ -277,7 +281,7 @@ def build(
     policy = load_json(policy_path)
     if (
         policy.get("schema_version") != POLICY_SCHEMA
-        or policy.get("status") != "approved_contract_building_only_gate_closed"
+        or policy.get("status") not in POLICY_STATUSES
         or year not in policy.get("scope", {}).get("years_enabled", [])
         or policy.get("scope", {}).get("production_mfa_allowed") is not False
         or policy.get("scope", {}).get("textgrid_materialization_allowed") is not False
@@ -400,19 +404,37 @@ def build(
 
     corpus = load_json(corpus_contract_path)
     recovered_root = Path(clean(corpus.get("output_year"))).resolve()
+    corpus_schema = clean(corpus.get("schema_version"))
+    expected_corpus_schema = clean(
+        year_policy.get("corpus_contract_schema", "wav_recovery_corpus.v1")
+    )
+    expected_corpus_files = int(
+        year_policy.get(
+            "expected_corpus_wav_files",
+            year_policy.get("expected_recovered_wav_files", -1),
+        )
+    )
+    expected_corpus_contract_id = clean(
+        year_policy.get(
+            "corpus_contract_id",
+            year_policy.get("recovered_corpus_contract_id"),
+        )
+    )
     if (
-        corpus.get("schema_version") != "wav_recovery_corpus.v1"
+        corpus_schema != expected_corpus_schema
         or corpus.get("status") != "passed"
         or clean(corpus.get("year")) != year
         or clean(corpus.get("corpus_contract_id"))
-        != clean(year_policy["recovered_corpus_contract_id"])
+        != expected_corpus_contract_id
         or corpus.get("source_wav_tree_untouched") is not True
         or int(corpus.get("wav_files", -1))
-        != int(year_policy["expected_recovered_wav_files"])
-        or int(corpus.get("omitted_for_review", -1))
-        != int(year_policy["expected_recovered_omitted"])
+        != expected_corpus_files
     ):
-        raise RuntimeError("recovered WAV corpus contract differs")
+        raise RuntimeError("WAV corpus contract differs")
+    if corpus_schema == "wav_recovery_corpus.v1" and int(
+        corpus.get("omitted_for_review", -1)
+    ) != int(year_policy["expected_recovered_omitted"]):
+        raise RuntimeError("recovered WAV omitted count differs")
     wav_ids = scan_wav_ids(recovered_root)
     if len(wav_ids) != int(corpus["wav_files"]):
         raise RuntimeError("recovered WAV exact-ID count differs")
@@ -544,8 +566,16 @@ def build(
     audio_pairing_ids = {
         utt_id for utt_id, reasons in pre_ids.items() if "audio_pairing_unresolved" in reasons
     }
-    if source_ids - wav_ids != audio_pairing_ids or wav_ids - source_ids:
+    source_missing_wav = source_ids - wav_ids
+    corpus_extra_wav = wav_ids - source_ids
+    if source_missing_wav - audio_pairing_ids:
+        raise RuntimeError("non-approved source utterance lacks WAV")
+    if corpus_schema == "wav_recovery_corpus.v1" and (
+        source_missing_wav != audio_pairing_ids or corpus_extra_wav
+    ):
         raise RuntimeError("recovered WAV IDs != source IDs minus audio pairing unresolved")
+    if expected_ids - wav_ids:
+        raise RuntimeError("expected MFA input lacks WAV")
     if any(post_reasons & reasons for reasons in (pre_ids[utt_id] for utt_id in applied_pre_ids)):
         raise RuntimeError("r2 post-MFA failure leaked into pre-MFA exclusions")
     expected_eligible_reentry = set(post_ids) & expected_ids
@@ -598,7 +628,9 @@ def build(
         "r2_post_mfa_outside_pron_safe_or_technically_ineligible": len(post_ids)
         - len(eligible_reentry_ids),
         "recovered_wav_ids": len(wav_ids),
-        "recovered_corpus_omitted": int(corpus["omitted_for_review"]),
+        "source_wav_missing": len(source_missing_wav),
+        "corpus_extra_wav_ids": len(corpus_extra_wav),
+        "recovered_corpus_omitted": int(corpus.get("omitted_for_review", 0)),
         "approved_pre_mfa_reason_counts": dict(sorted(combined_pre_counts.items())),
         "r2_post_mfa_reason_counts": dict(sorted(post_counts.items())),
     }
@@ -638,12 +670,17 @@ def build(
             "source_equals_pron_safe_union_followup": True,
             "pron_safe_intersect_followup_empty": True,
             "expected_mfa_input_equals_pron_safe_minus_pre_mfa_exclusions": True,
-            "recovered_wav_ids_equal_source_minus_audio_pairing_unresolved": True,
+            "recovered_wav_ids_equal_source_minus_audio_pairing_unresolved": (
+                corpus_schema == "wav_recovery_corpus.v1"
+            ),
+            "expected_mfa_input_ids_have_wav": True,
+            "source_snapshot_extra_wavs_never_selected_implicitly": True,
             "r2_post_mfa_failures_are_not_pre_mfa_exclusions": True,
         },
         "inputs": inputs,
         "corpus_binding": {
             "corpus_contract_id": corpus["corpus_contract_id"],
+            "corpus_contract_schema": corpus_schema,
             "recovered_wav_root": str(recovered_root),
             "source_wav_tree_untouched": True,
         },

@@ -1,0 +1,36 @@
+{
+  "schema_version": "mfa_r3_year_transition_gate.v1",
+  "status": "passed_ready_for_researcher_start",
+  "recorded_at": "2026-08-10T14:07:26+09:00",
+  "from_year": "2020",
+  "to_year": "2021",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "from_year_frozen": {
+    "qc_status": "passed",
+    "qc_state_sha256": "fb92b2d22a1f238acebbe226cf3fc347c301c72052cecb4803c1121b30d10146",
+    "align_done_sha256": "8cececf38fd9488a95d4512009378be972a4467dc9db6a1afc67058c97c63d3e",
+    "textgrids": 782432,
+    "approved_followup": 283,
+    "source_mutation_performed": false,
+    "mfa_recomputed": false,
+    "full_export_repeated": false
+  },
+  "to_year_contract": {
+    "source_utterances": 1373920,
+    "pronunciation_safe": 1208236,
+    "pronunciation_followup": 165684,
+    "pre_mfa_exclusions": 937,
+    "expected_mfa_input": 1207299,
+    "year_input_contract_id": "1b6e767631bc047735aba192d3964470fcee93f61c49d28fad7618362aa9cd91",
+    "alignment_contract_id": "e072d4a74ce1ade7d175e4988b6113977711852d491b8b72438744400bea3f95",
+    "research_database_audit_sha256": "7ee6b03bf2f749ee3fa5eaac4bc21f6d87ac56c14db6b352ccce8ca1c12feb01",
+    "preflight_sha256": "7b3c4c5aad249aaed4feb75ee51dd3e3f192c5c3133bee4f249c205d892524d3",
+    "preflight_status": "go",
+    "failed_checks": []
+  },
+  "authorization": {
+    "mfa_started": false,
+    "textgrid_started": false,
+    "researcher_must_start_single_long_running_runner": true
+  }
+}

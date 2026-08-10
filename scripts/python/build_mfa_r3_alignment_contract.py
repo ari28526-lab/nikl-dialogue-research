@@ -19,6 +19,10 @@ from pipeline_common import atomic_write_json, file_fingerprint, now_iso, sha256
 POLICY_SCHEMA = "mfa_r3_alignment_contract_policy.v1"
 SCHEMA_VERSION = "mfa_r3_alignment_contract.v1"
 STATUS = "materialized_pending_runner_preflight_and_release_gate"
+POLICY_STATUSES = {
+    "approved_contract_building_only_gate_closed",
+    "approved_contract_building_release_adopted",
+}
 RELEASE_SCHEMA = "common_pron_mfa_r3_staged_release.v1"
 RELEASE_STATUS = "materialized_pending_independent_adoption_audit_and_release_gate"
 RELEASE_AUDIT_STATUS = "passed_independent_staged_adoption_audit_pending_release_gate"
@@ -142,7 +146,7 @@ def build_alignment_contract(
     policy = load_json(policy_path)
     if (
         policy.get("schema_version") != POLICY_SCHEMA
-        or policy.get("status") != "approved_contract_building_only_gate_closed"
+        or policy.get("status") not in POLICY_STATUSES
         or year not in policy.get("scope", {}).get("years_enabled", [])
         or policy.get("scope", {}).get("production_mfa_allowed") is not False
         or policy.get("scope", {}).get("textgrid_materialization_allowed") is not False
@@ -186,7 +190,10 @@ def build_alignment_contract(
         != clean(year_contract.get("year_input_contract_id"))
         or year_audit.get("verdict", {}).get("exact_id_partition_passed") is not True
         or year_audit.get("verdict", {}).get("production_mfa_allowed") is not False
-        or year_audit.get("verdict", {}).get("release_gate_remains_closed") is not True
+        or (
+            year_audit.get("verdict", {}).get("release_gate_remains_closed") is not True
+            and year_audit.get("verdict", {}).get("contract_build_only") is not True
+        )
     ):
         raise RuntimeError("year input contract or independent audit differs")
     verify(
@@ -196,11 +203,16 @@ def build_alignment_contract(
     )
 
     gate = load_json(release_gate_path)
-    if (
-        not clean(gate.get("status")).startswith("blocked_")
-        or gate.get("allowed_release_ids") != []
-    ):
-        raise RuntimeError("release Gate must remain closed while building contract")
+    gate_closed = bool(
+        clean(gate.get("status")).startswith("blocked_")
+        and gate.get("allowed_release_ids") == []
+    )
+    gate_adopted = bool(
+        gate.get("status") == "adopted"
+        and gate.get("allowed_release_ids") == [release_id]
+    )
+    if not (gate_closed or gate_adopted):
+        raise RuntimeError("release Gate is neither closed nor adopted for this release")
 
     dictionary_path = Path(clean(release["outputs"]["mfa_dictionary"]["path"])).resolve()
     verify(release["outputs"]["mfa_dictionary"], dictionary_path, "r3 MFA dictionary")
@@ -287,7 +299,7 @@ def build_alignment_contract(
             "year_input_independent_audit": file_fingerprint(
                 year_input_audit_path, with_sha256=True
             ),
-            "release_gate_closed_at_build": file_fingerprint(
+            "release_gate_at_build": file_fingerprint(
                 release_gate_path, with_sha256=True
             ),
             "frozen_model_pin": file_fingerprint(model_pin_path, with_sha256=True),
@@ -301,6 +313,10 @@ def build_alignment_contract(
             "pre_mfa_exclusion_ids": year_contract["outputs"]["pre_mfa_exclusion_ids"],
             "corpus_contract_id": identity["corpus_contract_id"],
             "recovered_wav_root": year_contract["corpus_binding"]["recovered_wav_root"],
+        },
+        "gate_at_build": {
+            "closed": gate_closed,
+            "adopted_for_release": gate_adopted,
         },
     }
     contract["alignment_contract_id"] = recompute_alignment_contract_id(contract)

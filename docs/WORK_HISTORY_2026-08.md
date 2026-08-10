@@ -2981,3 +2981,39 @@ shard 2–23을 재개하는 것이다.
 - 구조화 incident는
   `outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에
   남겼다. 다음 단계는 2020 state를 동결하고 2021 한 연도만 준비하는 것이다.
+
+### 2026-08-10 — 2020 동결·2021 exact-ID 계약과 장시간 MFA 직전 GO
+
+- 2020 최종 `QC_STATE.json`과 `ALIGN_DONE_2020.json`의 SHA를 transition gate에
+  결속했다. 이번 단계에서 2020 MFA·전수 export·원자료 변경은 반복하지 않았다.
+- 2021 recovered WAV 1,416,216개를 읽기 전용 snapshot으로 고정했다. 최초
+  per-file stat 구현은 약 184초 제한 시간에 도달해 결과를 승격하지 않았고,
+  상대경로 inventory 방식으로 바꿔 약 90.8초에 완료했다.
+- 2021 원천 1,373,920발화를 pronunciation-safe 1,208,236, follow-up 165,684로
+  전수 분할했다. pre-MFA 기술 제외 937을 적용한 exact-ID 입력은 1,207,299이며
+  source WAV 누락은 0이다. source 밖 WAV 42,296개는 입력에 포함하지 않았다.
+- 2021 발음 연구 DB는 발화 1,373,920개와 occurrence 6,648,515개를 생성했고
+  독립 감사가 `passed`다. alignment contract ID
+  `e072d4a74ce1ade7d175e4988b6113977711852d491b8b72438744400bea3f95`와
+  모델·사전 fingerprint 독립 감사도 통과했다.
+- 표적 Python 11개, 전체 Python 555개, PowerShell safety 68개 파일,
+  Windows PowerShell 5.1 runtime 68개 스크립트가 통과했다. 실제 2021
+  `-PreflightOnly`는 `go`, 실패 검사 0, 필요 74.733 GiB 대비 D: 167.081 GiB다.
+- 2021 corpus·MFA·TextGrid는 아직 시작하지 않았다. 다음 단계는 연구자가
+  `run_mfa_r3_year_safe_body.ps1 -Year 2021 -NumJobs 4`를 한 번 실행하는 것이다.
+- 관련 결과는
+  `docs/decisions/RESULT_mfa_r3_2021_preflight_20260810.md`와
+  `outputs/reports/GATE_mfa_r3_2020_TO_2021_20260810.json`에 기록했다.
+
+### 2026-08-10 — 조현정 공개 연구·KOINA·한국어 운율 문헌 재검토
+
+- 조현정의 서울말 AP 저장소는 10,093 AP의 수동 benchmark를 안내하지만 실행
+  코드는 없으며, Dual-Glob의 공개 논문은 accuracy 77.75%, macro F1 51.54%를
+  보고한다. 공개 추론 코드·weight는 찾지 못했다.
+- 공식 공개 코드는 박사논문이 연결한 `fuzzy-logic` notebook과 남경상도 지각
+  연구의 R/Rmd 분석이다. 둘 다 현재 MFA나 자동 AP 경계기를 대체하지 않는다.
+- KOINA는 Momel F0 목표점·TCoG·pitch 오류 보정·거시 윤곽에 유용하지만 자체 MFA
+  정렬과 자동 운율값은 프로젝트 r3 정본을 덮어쓰지 않는 보조층으로 유지한다.
+- 자연 대화 문헌은 AP/IP 자동 후보에 음향 특징뿐 아니라 문법·형태소 정보와
+  segment/dephrasing 영향을 함께 고려할 것을 지지한다. 상세 검토는
+  `docs/reviews/REVIEW_hyunjung_joo_KOINA_prosody_literature_20260810.md`에 남겼다.

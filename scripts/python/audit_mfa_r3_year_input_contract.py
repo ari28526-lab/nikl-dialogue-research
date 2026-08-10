@@ -28,6 +28,10 @@ CONTRACT_STATUS = "materialized_pending_independent_year_input_audit_gate_closed
 POLICY_SCHEMA = "mfa_r3_year_input_contract_policy.v1"
 SCHEMA_VERSION = "mfa_r3_year_input_contract_audit.v1"
 STATUS = "passed_independent_exact_id_audit_pending_alignment_contract_gate_closed"
+POLICY_STATUSES = {
+    "approved_contract_building_only_gate_closed",
+    "approved_contract_building_release_adopted",
+}
 ID_FIELDS = ("year", "utt_id", "session_id", "source_csv")
 FOLLOWUP_FIELDS = ID_FIELDS + (
     "routing_class",
@@ -207,7 +211,7 @@ def audit(contract_path: Path, output_path: Path) -> dict:
     policy = load_json(Path(clean(inputs["year_input_policy"]["path"])))
     if (
         policy.get("schema_version") != POLICY_SCHEMA
-        or policy.get("status") != "approved_contract_building_only_gate_closed"
+        or policy.get("status") not in POLICY_STATUSES
         or policy.get("scope", {}).get("production_mfa_allowed") is not False
         or year not in policy.get("scope", {}).get("years_enabled", [])
     ):
@@ -267,14 +271,32 @@ def audit(contract_path: Path, output_path: Path) -> dict:
 
     corpus = load_json(Path(clean(inputs["recovered_wav_corpus_contract"]["path"])))
     recovered_root = Path(clean(corpus["output_year"])).resolve()
+    corpus_schema = clean(corpus.get("schema_version"))
+    expected_corpus_schema = clean(
+        year_policy.get("corpus_contract_schema", "wav_recovery_corpus.v1")
+    )
+    expected_corpus_contract_id = clean(
+        year_policy.get(
+            "corpus_contract_id",
+            year_policy.get("recovered_corpus_contract_id"),
+        )
+    )
+    expected_corpus_files = int(
+        year_policy.get(
+            "expected_corpus_wav_files",
+            year_policy.get("expected_recovered_wav_files", -1),
+        )
+    )
     if (
         corpus.get("status") != "passed"
+        or corpus_schema != expected_corpus_schema
         or clean(corpus.get("year")) != year
         or clean(corpus.get("corpus_contract_id"))
-        != clean(year_policy["recovered_corpus_contract_id"])
+        != expected_corpus_contract_id
         or corpus.get("source_wav_tree_untouched") is not True
+        or int(corpus.get("wav_files", -1)) != expected_corpus_files
     ):
-        raise RuntimeError("independent recovered WAV contract differs")
+        raise RuntimeError("independent WAV corpus contract differs")
     wav_ids: set[str] = set()
     for path in recovered_root.rglob("*.wav"):
         if path.stem in wav_ids:
@@ -367,7 +389,13 @@ def audit(contract_path: Path, output_path: Path) -> dict:
     audio_pairing = {
         utt_id for utt_id, reasons in pre_ids.items() if "audio_pairing_unresolved" in reasons
     }
-    if source_ids - wav_ids != audio_pairing or wav_ids - source_ids:
+    source_missing_wav = source_ids - wav_ids
+    corpus_extra_wav = wav_ids - source_ids
+    if source_missing_wav - audio_pairing or expected_mfa - wav_ids:
+        raise RuntimeError("independent WAV eligibility equation differs")
+    if corpus_schema == "wav_recovery_corpus.v1" and (
+        source_missing_wav != audio_pairing or corpus_extra_wav
+    ):
         raise RuntimeError("independent recovered WAV exact-ID equation differs")
 
     expected_sets = {
@@ -402,6 +430,10 @@ def audit(contract_path: Path, output_path: Path) -> dict:
         "r2_post_mfa_reentered": len(expected_reentry),
         "recovered_wav_ids": len(wav_ids),
     }
+    if "source_wav_missing" in accounting:
+        expected_accounting["source_wav_missing"] = len(source_missing_wav)
+    if "corpus_extra_wav_ids" in accounting:
+        expected_accounting["corpus_extra_wav_ids"] = len(corpus_extra_wav)
     for key, value in expected_accounting.items():
         if int(accounting.get(key, -1)) != value:
             raise RuntimeError(f"independent accounting differs: {key}")
@@ -430,10 +462,12 @@ def audit(contract_path: Path, output_path: Path) -> dict:
         "verdict": {
             "exact_id_partition_passed": True,
             "recovered_wav_binding_passed": True,
+            "wav_source_snapshot_binding_passed": True,
             "r2_post_mfa_failures_reentered_when_eligible": True,
             "production_mfa_allowed": False,
             "textgrid_materialization_allowed": False,
             "release_gate_remains_closed": True,
+            "contract_build_only": True,
         },
         "checks": {
             "source_equals_safe_union_followup": True,
@@ -442,6 +476,7 @@ def audit(contract_path: Path, output_path: Path) -> dict:
             "year_summary_exact": True,
             "expected_mfa_input_equation_exact": True,
             "recovered_wav_equation_exact": True,
+            "expected_mfa_input_has_wav": True,
             "output_row_content_and_order_exact": True,
             "output_fingerprints_exact": True,
         },

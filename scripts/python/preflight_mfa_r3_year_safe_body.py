@@ -139,6 +139,13 @@ def preflight(
         and contract.get("scope", {}).get("legacy_db_reuse_allowed") is False
     )
     check("alignment_contract_identity", contract_ok, contract.get("alignment_contract_id"))
+    audit_gate_ok = bool(
+        alignment_audit.get("verdict", {}).get("release_gate_remains_closed") is True
+        or alignment_audit.get("verdict", {}).get(
+            "release_gate_adopted_for_release"
+        )
+        is True
+    )
     audit_ok = bool(
         alignment_audit.get("schema_version") == "mfa_r3_alignment_contract_audit.v1"
         and alignment_audit.get("status")
@@ -146,7 +153,7 @@ def preflight(
         and clean(alignment_audit.get("alignment_contract_id"))
         == clean(contract.get("alignment_contract_id"))
         and alignment_audit.get("verdict", {}).get("identity_recomputed_exact") is True
-        and alignment_audit.get("verdict", {}).get("release_gate_remains_closed") is True
+        and audit_gate_ok
         and verify(
             alignment_audit["inputs"]["alignment_contract"], alignment_contract_path
         )

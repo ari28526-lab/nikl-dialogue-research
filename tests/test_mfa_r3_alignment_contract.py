@@ -234,6 +234,25 @@ class R3AlignmentContractTests(unittest.TestCase):
         self.assertNotIn("common_pron_mfa_r2_", source)
         self.assertNotIn("g2p_jamo_ls_rewrite_words", source)
 
+    def test_adopted_release_gate_builds_next_year_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.fixture(Path(temp))
+            policy = json.loads(paths["policy"].read_text(encoding="utf-8"))
+            policy["status"] = "approved_contract_building_release_adopted"
+            write_json(paths["policy"], policy)
+            write_json(
+                paths["gate"],
+                {
+                    "status": "adopted",
+                    "allowed_release_ids": ["common_pron_mfa_r3_20260809"],
+                },
+            )
+            contract = self.build(paths)
+            write_if_new(paths["output"], contract)
+            report = audit(paths["output"], Path(temp) / "adopted_audit.json")
+            self.assertTrue(report["verdict"]["release_gate_adopted_for_release"])
+            self.assertFalse(report["verdict"]["release_gate_remains_closed"])
+
 
 if __name__ == "__main__":
     unittest.main()

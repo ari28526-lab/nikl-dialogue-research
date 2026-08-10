@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-09 KST
+최종 갱신: 2026-08-10 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -21,8 +21,10 @@
 > occurrence 연결 정본이 빠진 것을 실제 MFA 전에 발견했다. 이 연결표와 독립
 > 감사가 통과해야만 장시간 runner가 열리도록 Gate를 보강했다. 원 CSV와 사전은
 > 덮어쓰지 않는다.
-> 2020 r3 corpus와 보존 정렬 DB는 2026-08-09에 완료됐다. 6-tier TextGrid와
-> post-MFA 동반표는 아직 생성하지 않았고 2021은 시작하지 않았다.
+> 2020 r3는 6-tier 782,432개·동반표 4개·독립 전수 QC·DB 재수출 표본 24/24까지
+> 완료되어 SHA 동결했다. 2021은 exact-ID 입력 1,207,299, 발음 연구 DB,
+> alignment contract·독립 감사와 실제 `-PreflightOnly` GO까지 완료했다. 2021
+> corpus·MFA·TextGrid는 아직 시작하지 않았다.
 
 ## 1. 완료 산출물
 
@@ -86,7 +88,8 @@
   → 2020 발음 연구 DB 870,437발화·3,056,807 occurrence 감사 passed
   → 2020 exact-ID 782,715발화 보강 preflight 19/19 GO
   → 2020 r3 정렬 DB 완료: 782,432 정렬·283 post-MFA 미정렬
-  → 2020 exact-ID 회계·6-tier export·독립 QC  ← 현재
+  → 2020 exact-ID 회계·6-tier export·독립 QC·SHA 동결
+  → 2021 exact-ID 1,207,299·발음 연구 DB·alignment 감사·preflight GO  ← 현재
   → 2021부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
@@ -211,6 +214,41 @@ MFA, 전수 TextGrid export, 원 DB·WAV·LAB·검색표는 다시 만들거나 
 따라서 위 명령은 현재 2020에 다시 실행하지 않는다. 다음 Gate는 2020 완료 state를
 동결한 뒤 2021 한 연도만 준비하는 것이다. 오류·수정·재개 증거는
 `outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에 있다.
+
+### 3.1.3 2021 장시간 MFA 직전 GO
+
+2020 완료 state를 다시 계산하지 않고 SHA로 결속했다. 2021 원천 1,373,920발화는
+pronunciation-safe 1,208,236과 follow-up 165,684로 정확히 분할됐고, 승인된
+pre-MFA 기술 제외 937건을 빼 실제 입력 1,207,299건을 고정했다. recovered WAV
+snapshot 1,416,216개 중 source WAV 누락은 0이며, source 밖 42,296개는 입력으로
+암묵 선택하지 않는다.
+
+발음 연구 DB는 1,373,920발화·6,648,515 occurrence를 회계했고 독립 감사가
+`passed`다. alignment contract ID는
+`e072d4a74ce1ade7d175e4988b6113977711852d491b8b72438744400bea3f95`다.
+PowerShell 안전·5.1 runtime 68/68, Python 전체 555테스트, 실제 preflight의
+20개 검사가 모두 통과했다. 필요 74.733 GiB, D: 여유 167.081 GiB다.
+
+다음 장시간 명령만 한 번 실행한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_year_safe_body.ps1" `
+  -Year 2021 -NumJobs 4
+```
+
+상태판은 별도 창에서 다음과 같이 본다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\show_mfa_r3_year_status.ps1" `
+  -Year 2021
+```
+
+동시에 두 runner를 실행하지 않는다. 실패·중단 시 corpus·temp·DB를 지우지 않고
+같은 release-scoped checkpoint를 진단·재개한다. 2020은 재실행하지 않는다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 
