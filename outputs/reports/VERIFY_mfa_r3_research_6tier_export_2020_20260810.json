@@ -1,0 +1,57 @@
+{
+  "schema_version": "mfa_r3_research_6tier_export_completion_verification.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-10T11:09:12+09:00",
+  "year": "2020",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "scope": "completed export artifact accounting and companion-table SHA verification; independent annual semantic QC remains a separate next gate",
+  "source_export_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\EXPORT_mfa_r3_research_6tier_2020_20260810_091910.json",
+    "bytes": 30882,
+    "sha256": "624ccd483ab59e0dc5b58aa58c082b9391dcdfb4d6c42b73e16ee06a5f046716",
+    "status": "success",
+    "analysis_ready_status": "ready_with_approved_exclusions"
+  },
+  "source_table_manifest": {
+    "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2020\\_tables\\TABLES_MANIFEST.json",
+    "bytes": 3834,
+    "sha256": "63332b9e8f4834d8a7664eed6e14272b90de21ba7203364212d02570c8d4b44a",
+    "status": "success"
+  },
+  "counts": {
+    "session_directories": 2231,
+    "textgrids": 782432,
+    "expected_aligned_textgrids": 782432,
+    "approved_excluded_utterances": 283,
+    "accounted_input_utterances": 782715,
+    "utterance_table_rows": 782432,
+    "word_table_rows": 4315723,
+    "phone_table_rows": 16458699,
+    "excluded_table_rows": 283,
+    "partial_files": 0,
+    "failed": 0,
+    "alignment_missing_after_approval": 0,
+    "search_row_missing": 0,
+    "word_span_fallback": 0,
+    "spn_intervals": 0,
+    "unaligned_without_approval": 0
+  },
+  "coverage_pct": 100.0,
+  "exact_id_reconciliation_status": "passed",
+  "companion_table_sha256": {
+    "utterances": "f067b44adf1383c390df945ce47b74afbc64702e664446d2e8ad50439db4058a",
+    "words": "bbf4e37a8c5ddf62704ee3aad7cc662994e95ed63e269a675bc1386f608ac0ec",
+    "phones": "5d1ea052abcc921b1d2824a66396c61aa33e1a641b769ba23b4f9df60f2464f8",
+    "excluded": "21e15fa1c43685f67210f17b3049de6a87b606b53c333aa86bcd442acc592b89"
+  },
+  "all_companion_table_sha256_match_manifest": true,
+  "runtime_end_state": {
+    "export_lock_present": false,
+    "wrapper_process_alive": false,
+    "python_process_alive": false,
+    "drive_d_free_gib": 167.31
+  },
+  "source_data_modified": false,
+  "mfa_database_recomputed": false,
+  "next_gate": "run the independent full-year research 6-tier semantic audit before opening 2021"
+}

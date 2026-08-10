@@ -2924,3 +2924,21 @@ shard 2–23을 재개하는 것이다.
   `spn` 0, acoustic inventory 밖 phone 0, source DB SHA와 ALIGN_DONE marker 일치다.
 - `materialization_started=false`, output year 폴더 없음, 종료 뒤 export lock 없음으로
   확인했다. 다음 단계는 같은 wrapper의 full mode이며 MFA 재정렬은 하지 않는다.
+
+## 2026-08-10 2020 r3 6-tier·동반표 수출 완료
+
+- 09:19 KST에 보존 r3 DB direct export를 시작했다. 10:25 점검에서 TextGrid
+  782,432개가 모두 생성됐고, 이후 gzip 동반표 4개를 작성해 10:43에 wrapper가
+  exit 0으로 종료됐다. MFA 정렬 계산은 다시 하지 않았다.
+- 종료 보고서는 `success / ready_with_approved_exclusions`, exact-ID reconciliation
+  `passed`, coverage 100%다. 성공 782,432와 승인 후속 283이 입력 782,715를
+  완전히 회계한다.
+- TextGrid는 2,231세션·782,432개다. 동반표는 발화 782,432, word 4,315,723,
+  phone 16,458,699, 제외 283행이다. 실패, alignment/search 누락, word fallback,
+  `spn`, 미승인 누락은 모두 0이다.
+- 완료 뒤 782,432개를 파일시스템에서 다시 전수 계수했고 `.partial` 0을 확인했다.
+  gzip 4개를 다시 SHA-256 계산해 manifest와 전부 일치함을 확인했다. lock과 실행
+  프로세스는 없고 D: 여유는 167.31GiB다.
+- 완료 증거는
+  `outputs/reports/VERIFY_mfa_r3_research_6tier_export_2020_20260810.json`에 기록했다.
+  다음 단계는 독립 연도 semantic QC이며 이것이 통과하기 전 2021은 시작하지 않는다.

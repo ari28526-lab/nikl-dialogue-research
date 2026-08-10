@@ -172,11 +172,11 @@ follow-up·pre-MFA 제외를 누락으로 잘못 세지 않는다.
 ```
 
 실측은 159.109초였고 모든 exact-ID hard set 0, `spn` 0, acoustic inventory 밖
-phone 0이었다. `preflight_passed` 뒤 같은 명령에서 `-PreflightOnly`만 빼면
-782,432건의 6-tier와
-연도별 gzip 동반표 4개를 만든다. 실패하면 생성된 성공 파일과 `.partial`, DB를
-보존하고 전체 MFA를 재실행하지 않는다. 이 수출과 독립 연도 감사가 끝나기 전에는
-2021을 시작하지 않는다.
+phone 0이었다. full mode는 2026-08-10 09:19–10:43 KST에 완료됐다. 2,231세션의
+6-tier 782,432개와 연도별 gzip 동반표 4개를 만들었고 coverage 100%, 실패·누락·
+partial 0이다. 동반표 행은 발화 782,432, word 4,315,723, phone 16,458,699,
+제외 283이며 manifest SHA와 4/4 일치한다. 전체 MFA는 재실행하지 않았다.
+다음 단계는 독립 연도 semantic audit이며, 이것이 끝나기 전 2021을 시작하지 않는다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 

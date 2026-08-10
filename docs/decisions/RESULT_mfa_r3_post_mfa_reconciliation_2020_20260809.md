@@ -1,7 +1,7 @@
 # 2020 r3 post-MFA exact-ID 회계 결과
 
 기록일: 2026-08-09 KST
-상태: 연구자 범주 승인·실제 export preflight 통과, TextGrid 미생성
+상태: 연구자 범주 승인·export·완료 artifact 감사 통과
 
 ## 결론
 
@@ -54,12 +54,31 @@ expected_mfa_input_ids
 09:08 KST에 시작한 `run_mfa_r3_research_export.ps1 -PreflightOnly`는 159.109초
 뒤 `preflight_passed`를 기록했다. ALIGN_DONE·DB SHA·입력·LAB·search·승인 ID가
 일치했고 모든 hard inventory는 0, `spn` 0, acoustic inventory 밖 phone 0이다.
-`materialization_started=false`이며 TextGrid는 만들지 않았다. 다음 단계에서 같은
-wrapper로 782,432건의 6-tier와 gzip 동반표를 만든다. 독립 연도 감사가 끝나기
-전에는 2021로 넘어가지 않는다.
+`materialization_started=false`이며 이 preflight 자체는 TextGrid를 만들지 않았다.
+그 뒤 같은 wrapper의 full mode를 실행해 아래와 같이 수출을 완료했다.
 
 승인 기록:
 `outputs/reviews/mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2020/06_RESEARCHER_APPROVAL.json`
 
 preflight 보고서:
 `outputs/reports/PREFLIGHT_mfa_r3_research_6tier_2020_20260810_090806.json`
+
+## 수출 완료
+
+full export는 2026-08-10 09:19 KST에 시작해 10:43 KST에 성공했다. 보존 DB에서
+2,231세션·6-tier TextGrid 782,432개를 생성하고 승인 제외 283건은 별도 gzip
+표에 남겼다. 원 DB·WAV·LAB·검색표는 변경하지 않았다.
+
+- export report: `success / ready_with_approved_exclusions`
+- coverage: 100%
+- TextGrid: 782,432
+- 동반표: 발화 782,432, word 4,315,723, phone 16,458,699, 제외 283
+- 실패·정렬 누락·검색 누락·fallback·`spn`·미승인 누락: 모두 0
+- 잔여 `.partial`: 0
+- gzip 4개 SHA: manifest와 4/4 일치
+- 종료 상태: lock 없음, wrapper/Python 종료
+
+완료 증거는
+`outputs/reports/VERIFY_mfa_r3_research_6tier_export_2020_20260810.json`에 고정했다.
+이는 artifact 수출 완료 감사이며, 독립 연도 semantic QC는 다음 Gate로 별도
+실행한다. 그 QC 전에는 2021로 넘어가지 않는다.
