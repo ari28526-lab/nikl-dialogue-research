@@ -280,6 +280,42 @@ foreach ($path in $files) {
             }
         }
     }
+    if ((Split-Path $path -Leaf) -eq 'run_mfa_r3_research_qc.ps1') {
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        foreach ($required in @(
+            '[switch]$PreflightOnly',
+            'mfa_r3_runner_v1.json',
+            'audit_mfa_research_6tier_year.py',
+            'verify_mfa_db_research_6tier_sample.py',
+            'full_year_audit_reusable',
+            'db_sample_reusable',
+            'audit_passed_sample_pending',
+            'failed_outputs_preserved',
+            'reuse passed audit; never rerun MFA or full export',
+            '[IO.FileMode]::CreateNew',
+            'MfaR3ResearchQcSleepGuard',
+            'source_db_read_only = $true',
+            'mfa_recomputed = $false',
+            'full_export_repeated = $false'
+        )) {
+            if (-not $text.Contains($required)) {
+                $failures.Add("r3 research QC safety token missing: $required")
+            }
+        }
+        foreach ($forbidden in @(
+            'Remove-Item -LiteralPath $database',
+            'Remove-Item -LiteralPath $outputRoot',
+            'Remove-Item -LiteralPath $outputYear',
+            'run_mfa_r3_year_safe_body.ps1',
+            'run_mfa_r3_research_export.ps1'
+        )) {
+            if ($text.Contains($forbidden)) {
+                $failures.Add(
+                    "r3 research QC destructive/recompute token present: $forbidden"
+                )
+            }
+        }
+    }
     if ((Split-Path $path -Leaf) -eq 'show_mfa_r3_year_status.ps1') {
         $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
         foreach ($required in @(

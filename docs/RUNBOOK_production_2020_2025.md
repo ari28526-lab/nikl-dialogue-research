@@ -178,6 +178,29 @@ partial 0이다. 동반표 행은 발화 782,432, word 4,315,723, phone 16,458,6
 제외 283이며 manifest SHA와 4/4 일치한다. 전체 MFA는 재실행하지 않았다.
 다음 단계는 독립 연도 semantic audit이며, 이것이 끝나기 전 2021을 시작하지 않는다.
 
+### 3.1.2 2020 r3 독립 연도 semantic QC
+
+전수 export 완료와 내용 감사는 분리한다. 아래 QC는 782,432개 6-tier의 tier·경계·
+label·phone inventory와 gzip 동반표 전 행을 독립 대사하고, 보존 DB의 서로 다른
+24세션을 새 scratch로 다시 수출해 현재 TextGrid와 semantic·byte 동등성을 확인한다.
+MFA, 전수 TextGrid export, 원 DB·WAV·LAB·검색표는 다시 만들거나 수정하지 않는다.
+
+`run_mfa_r3_research_qc.ps1`은 전수 감사 성공과 표본 검사를 별도 SHA checkpoint로
+기록한다. 표본 단계에서 중단되면 같은 명령을 다시 실행하되 통과한 전수 감사는
+재사용한다. 2026-08-10 실제 `-PreflightOnly`는 TextGrid 782,432, 승인 제외 283,
+현재 audit/sample checkpoint 없음으로 통과했다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_research_qc.ps1" `
+  -Year 2020 -Workers 4 -SampleSize 24
+```
+
+정상 완료 기준은 `QC_STATE.json`의 `status=passed`, 전수 audit coverage 100%·hard
+failure 0, 표본 semantic/byte 24/24다. 이 상태를 확인하기 전에는 2021 runner를
+열지 않는다.
+
 ### 3.1 r3 후보 생성 완료 checkpoint
 
 2026-08-08 현재 canonical inventory 881,237형, exact-Roman donor 후보 346형,

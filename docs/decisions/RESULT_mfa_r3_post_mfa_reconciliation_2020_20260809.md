@@ -82,3 +82,13 @@ full export는 2026-08-10 09:19 KST에 시작해 10:43 KST에 성공했다. 보�
 `outputs/reports/VERIFY_mfa_r3_research_6tier_export_2020_20260810.json`에 고정했다.
 이는 artifact 수출 완료 감사이며, 독립 연도 semantic QC는 다음 Gate로 별도
 실행한다. 그 QC 전에는 2021로 넘어가지 않는다.
+
+2026-08-10 11:47 KST에 재개형 독립 QC wrapper의 실제 `-PreflightOnly`가
+`preflight_passed`를 기록했다. 현재 r3 export report·table manifest·ALIGN_DONE·
+alignment/승인 계약의 SHA와 DB path/size가 결속됐고, TextGrid 782,432개와 승인
+제외 283개를 확인했다. 이 preflight는 source를 수정하지 않았고 MFA·전수 export·
+감사·표본 물질화를 시작하지 않았다. 본 실행은 전수 감사와 24세션 DB 재수출만
+수행하며, 후반 표본 단계가 중단돼도 통과한 전수 감사 SHA checkpoint를 재사용한다.
+
+Preflight 보고서:
+`outputs/reports/PREFLIGHT_mfa_r3_research_qc_2020_20260810_114748.json`

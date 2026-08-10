@@ -382,6 +382,7 @@ def audit_year(
     tolerance: float = 0.001,
     alignment_contract: Path | None = None,
     source_db: Path | None = None,
+    progress_every: int = 0,
 ) -> dict[str, object]:
     started = time.monotonic()
     lab_year = lab_root.resolve() / year
@@ -486,14 +487,27 @@ def audit_year(
             tolerance=tolerance,
         )
 
+    total_textgrids = len(tg_paths)
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
-        for result in executor.map(inspect, sorted(tg_paths.items())):
+        for processed, result in enumerate(
+            executor.map(inspect, sorted(tg_paths.items())), start=1
+        ):
             spn += int(result["spn"])
             outside.update(result["phone_outside"])
             if not result["valid"]:
                 invalid_ids.append(str(result["utt_id"]))
                 for reason in result["reasons"]:
                     reason_counts[str(reason).split(":", 1)[0]] += 1
+            if progress_every > 0 and (
+                processed % progress_every == 0 or processed == total_textgrids
+            ):
+                elapsed = max(time.monotonic() - started, 0.001)
+                rate = processed / elapsed
+                print(
+                    f"[{year}] TextGrid audit {processed:,}/"
+                    f"{total_textgrids:,} ({rate:,.1f}/s)",
+                    flush=True,
+                )
 
     table_root = tg_year / "_tables"
     manifest_path = table_root / "TABLES_MANIFEST.json"
@@ -539,6 +553,8 @@ def audit_year(
         if set(manifest_tables) != expected_tables:
             raise RuntimeError("table manifest table set mismatch")
         for name, info in manifest_tables.items():
+            if progress_every > 0:
+                print(f"[{year}] companion table audit: {name}", flush=True)
             path = Path(str(info.get("path", "")))
             if not path.is_absolute():
                 path = table_root / path
@@ -689,6 +705,7 @@ def main() -> int:
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--missing-csv", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--progress-every", type=int, default=25_000)
     args = parser.parse_args()
     report = audit_year(
         year=args.year,
@@ -703,6 +720,7 @@ def main() -> int:
         workers=args.workers,
         alignment_contract=args.alignment_contract,
         source_db=args.source_db,
+        progress_every=max(0, args.progress_every),
     )
     console_summary = {
         "schema_version": report.get("schema_version"),

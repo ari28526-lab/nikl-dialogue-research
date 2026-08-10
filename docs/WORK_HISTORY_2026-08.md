@@ -2942,3 +2942,21 @@ shard 2–23을 재개하는 것이다.
 - 완료 증거는
   `outputs/reports/VERIFY_mfa_r3_research_6tier_export_2020_20260810.json`에 기록했다.
   다음 단계는 독립 연도 semantic QC이며 이것이 통과하기 전 2021은 시작하지 않는다.
+
+### 2026-08-10 — 2020 r3 독립 semantic QC 재개형 진입점 준비
+
+- `run_mfa_r3_research_qc.ps1`을 추가했다. 성공 export·ALIGN_DONE·alignment/승인
+  계약·동반표 manifest를 같은 r3 identity와 SHA로 결속한 뒤에만 독립 전수 감사와
+  보존 DB 24세션 재수출 검사를 실행한다.
+- 전수 감사와 표본 검사를 별도 checkpoint로 나눴다. 표본 단계 실패·중단 뒤 같은
+  명령을 실행하면 성공한 전수 감사 보고서와 inventory의 SHA를 다시 검증해 이를
+  재사용하며, MFA와 782,432개 전수 export는 반복하지 않는다. 실패 산출물과 원 DB는
+  보존한다.
+- 전수 감사기에 기본 25,000 TextGrid 단위 진행률과 동반표별 시작 표시를 추가했다.
+  장시간 무출력으로 정상 실행을 정지로 오해하지 않게 하기 위한 운영 변경이며 감사
+  판정 기준은 바꾸지 않았다.
+- Python r3 감사 회귀 30개, PowerShell 안전성 68개 파일, Windows PowerShell 5.1
+  호환성 68개 스크립트가 통과했다.
+- 실제 2020 `-PreflightOnly`는 TextGrid 782,432개, 승인 제외 283개,
+  `qc_input_checkpoint_id=67515159...9033a5d`로 `preflight_passed`다. lock·scratch·
+  audit output은 만들지 않았고 source mutation·MFA 재계산·전수 export 반복은 0이다.
