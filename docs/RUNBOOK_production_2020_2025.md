@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-10 KST
+최종 갱신: 2026-08-11 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -22,9 +22,9 @@
 > 감사가 통과해야만 장시간 runner가 열리도록 Gate를 보강했다. 원 CSV와 사전은
 > 덮어쓰지 않는다.
 > 2020 r3는 6-tier 782,432개·동반표 4개·독립 전수 QC·DB 재수출 표본 24/24까지
-> 완료되어 SHA 동결했다. 2021은 exact-ID 입력 1,207,299, 발음 연구 DB,
-> alignment contract·독립 감사와 실제 `-PreflightOnly` GO까지 완료했다. 2021
-> corpus·MFA·TextGrid는 아직 시작하지 않았다.
+> 완료되어 SHA 동결했다. 2021은 exact-ID 1,207,299건으로 새 r3 DB를 완료했다.
+> 성공 정렬은 1,206,862건이고 post-MFA exact-ID 후보는 437건이다. 현재는 후보
+> identity의 연구자 승인 뒤 보존 DB에서 6-tier·동반표를 수출하는 Gate다.
 
 ## 1. 완료 산출물
 
@@ -89,8 +89,10 @@
   → 2020 exact-ID 782,715발화 보강 preflight 19/19 GO
   → 2020 r3 정렬 DB 완료: 782,432 정렬·283 post-MFA 미정렬
   → 2020 exact-ID 회계·6-tier export·독립 QC·SHA 동결
-  → 2021 exact-ID 1,207,299·발음 연구 DB·alignment 감사·preflight GO  ← 현재
-  → 2021부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
+  → 2021 exact-ID 1,207,299·발음 연구 DB·alignment 감사·preflight GO
+  → 2021 r3 DB 완료: 1,206,862 정렬·437 post-MFA 후보  ← 현재
+  → 2021 명시 승인·6-tier export·독립 QC
+  → 2022부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
 
@@ -215,7 +217,7 @@ MFA, 전수 TextGrid export, 원 DB·WAV·LAB·검색표는 다시 만들거나 
 동결한 뒤 2021 한 연도만 준비하는 것이다. 오류·수정·재개 증거는
 `outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에 있다.
 
-### 3.1.3 2021 장시간 MFA 직전 GO
+### 3.1.3 2021 장시간 MFA 완료·post-MFA 승인 대기
 
 2020 완료 state를 다시 계산하지 않고 SHA로 결속했다. 2021 원천 1,373,920발화는
 pronunciation-safe 1,208,236과 follow-up 165,684로 정확히 분할됐고, 승인된
@@ -229,7 +231,8 @@ snapshot 1,416,216개 중 source WAV 누락은 0이며, source 밖 42,296개는 
 PowerShell 안전·5.1 runtime 68/68, Python 전체 555테스트, 실제 preflight의
 20개 검사가 모두 통과했다. 필요 74.733 GiB, D: 여유 167.081 GiB다.
 
-다음 장시간 명령만 한 번 실행한다.
+다음 장시간 명령은 2026-08-10 14:26 KST에 한 번 실행했고, 2026-08-11 00:19
+KST에 `ALIGN_DONE_2021.json`을 생성하며 정상 완료됐다. 다시 실행하지 않는다.
 
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
@@ -238,7 +241,7 @@ PowerShell 안전·5.1 runtime 68/68, Python 전체 555테스트, 실제 preflig
   -Year 2021 -NumJobs 4
 ```
 
-상태판은 별도 창에서 다음과 같이 본다.
+완료 상태판은 다음과 같이 확인할 수 있다.
 
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
@@ -247,8 +250,12 @@ PowerShell 안전·5.1 runtime 68/68, Python 전체 555테스트, 실제 preflig
   -Year 2021
 ```
 
-동시에 두 runner를 실행하지 않는다. 실패·중단 시 corpus·temp·DB를 지우지 않고
-같은 release-scoped checkpoint를 진단·재개한다. 2020은 재실행하지 않는다.
+입력·DB는 1,207,299건으로 일치한다. 성공 정렬은 1,206,862건이고, 437건은
+`mfa_alignment_missing` 413건과 `mfa_feature_generation_failed` 24건이다.
+candidate identity
+`5a4c3de672f824b2b8a00026b443efb838e76d23fe846650ad07ab4be6a7be35`를
+연구자가 승인한 뒤에만 6-tier 수출로 간다. 동시에 두 runner를 실행하지 않고,
+2020과 2021 MFA는 재실행하지 않는다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 

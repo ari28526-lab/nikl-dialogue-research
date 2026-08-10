@@ -1,16 +1,16 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-10 KST
+최종 갱신: 2026-08-11 KST
 
-> **2026-08-10 2021 장시간 MFA 직전 GO:** 2020 최종 QC state와 정렬 marker의
-> SHA를 동결했고 2020 MFA·전수 수출은 반복하지 않았다. 2021은 원천 1,373,920,
-> pronunciation-safe 1,208,236, follow-up 165,684, pre-MFA 기술 제외 937로
-> exact-ID 분할됐다. 실제 r3 MFA 입력은 1,207,299이며 source WAV 누락은 0이다.
-> 발음 연구 DB 1,373,920발화·6,648,515 occurrence, alignment contract와 독립
-> 감사, PowerShell 5.1 검사, Python 555테스트, 실제 `-PreflightOnly`가 모두
-> 통과했다. 필요 공간 74.733 GiB 대비 D: 167.081 GiB였다. 2021 corpus·MFA·
-> TextGrid는 아직 시작하지 않았으며, 다음 동작은 연구자가 장시간 runner를 한 번만
-> 실행하는 것이다.
+> **2026-08-11 2021 r3 정렬 DB 완료·승인 대기:** 2020 최종 QC state와 정렬
+> marker의 SHA를 동결한 채 2020 MFA·전수 수출을 반복하지 않았다. 2021 r3 입력
+> 1,207,299건은 4,139세션의 WAV/LAB로 materialize됐고, 같은 exact-ID 수의 보존
+> DB가 2026-08-11 00:19 KST에 완료됐다. DB SHA-256은
+> `faaef1c2f7c8dd013f7e90dc1694d6514e9b5bdf8fdbe0e60b07d179925a7731`이다.
+> word·phone 정렬 성공은 1,206,862건, post-MFA 후보는 437건
+> (`mfa_alignment_missing` 413, feature 생성 실패 24)이다. 후보 identity
+> `5a4c3de672f...be6a7be35`는 자동 승인하지 않았으며, 연구자 명시 승인 뒤 성공
+> DB에서 6-tier·동반표를 수출한다. 이 437건 때문에 전체 MFA를 다시 하지 않는다.
 
 > **2026-08-09 r3 2020 정렬 DB 완료·export 직전 상태:** 2020 exact-ID 입력은
 > 782,715발화이며 alignment contract ID는
@@ -77,7 +77,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 | 연도 | 검색표 | r2 계산·6-tier 보존 | 연구자 검토 | r3 최종 정렬 |
 |---:|---|---|---|---|
 | 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 DB·283 승인·6-tier 782,432·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
-| 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | exact-ID 1,207,299·연구 DB·alignment 감사·실제 preflight GO; MFA 미시작 |
+| 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | r3 DB 완료: 1,206,862 정렬·437 exact-ID 후속 후보; 연구자 승인·6-tier 수출 대기 |
 | 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | pron-safe 752,591; 교집합 산정 대기 |
 | 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |
 | 2024 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 595,743; 교집합 산정 대기 |
@@ -108,6 +108,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   `spn` 0이며 DB 재수출 표본은 semantic·byte 24/24 일치했다.
 - 19개 후행 무음 word 표지는 시간·phone을 유지하고 빈 word label로 국소
   정규화했다. MFA DB·WAV·LAB·원 CSV는 변경하지 않았다.
+
 - 연구자는 1–20번과 21–24번, 총 24개 표본의 WAV·LAB·TextGrid 연결,
   6-tier, 정렬, 검색 정보가 대체로 적절하다고 확인했다. 원 pending CSV를
   바이트 동일 보존한 뒤 명시 승인 문장을 24/24에 기록했다.
@@ -123,6 +124,17 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   독립 전수 검증을 통과했다.
 - r2 산출을 같은 조건으로 반복하지 않는다. r3 채택 뒤 정렬·6-tier·동반표는 새
   release root에 만들고, 기존 7-tier와 검토 결과는 회귀·비교 근거로 보존한다.
+
+## 2021 — r3 신규 정렬 DB 완료, post-MFA 승인 대기
+
+- r3 exact-ID 입력 1,207,299건과 DB 발화 1,207,299건이 일치한다.
+- 1,206,862건은 word·phone interval이 모두 있고, 437건은 기술적 후속 후보로
+  동결됐다. 후보는 정렬 없음 413건과 feature 생성 실패 24건이다.
+- `ALIGN_DONE_2021.json`은 `status=passed`이며 DB 경로·bytes·SHA를 고정한다.
+- 현재 허용되는 다음 작업은 candidate identity의 연구자 명시 승인과 보존 DB 기반
+  6-tier·동반표 수출이다. r3 MFA 전체 재실행과 2020 변경은 금지한다.
+- 상세 근거:
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2021_20260811.md`
 
 ## 2022 — r2 MFA·6-tier·기계 QC 완료, 발음 입력 문제 발견
 

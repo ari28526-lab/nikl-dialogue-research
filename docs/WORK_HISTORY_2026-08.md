@@ -3035,3 +3035,26 @@ shard 2–23을 재개하는 것이다.
 - 14:51 KST 관측에서 release 전용 코퍼스는 501세션까지 계속 증가했고 wrapper가
   살아 있으며 stderr·완료 marker는 아직 없다. 현 단계는 정상적인 코퍼스
   materialization이며, 완료 뒤에만 새 r3 DB MFA가 시작된다.
+
+### 2026-08-11 — 2021 r3 정렬 DB 완료·437건 exact-ID 회계
+
+- 4,139세션·1,207,299 WAV/LAB materialization 뒤 같은 exact-ID 입력으로 r3 MFA를
+  수행했다. MFA는 exit 0과 `Done`을 기록했고, 내부 계산 시간은 24,808.364초다.
+- `ALIGN_DONE_2021.json`은 00:19 KST에 `passed`로 생성됐다. 보존 DB는
+  10,753,568,768 bytes, SHA-256
+  `faaef1c2f7c8dd013f7e90dc1694d6514e9b5bdf8fdbe0e60b07d179925a7731`이다.
+  2020 완료본·원 WAV·LAB·CSV·r2 비교 자료는 변경하거나 재실행하지 않았다.
+- 상태 감시 중 `Get-PSDrive D`가 일시적으로 여유 공간 0을 반환했으나
+  `System.IO.DriveInfo` 교차확인은 128.877 GiB를 보고했다. 실제 저장공간 부족이나
+  MFA 실패가 아니므로 계산을 중단하지 않았다.
+- DB exact-ID 회계 결과 expected/DB 1,207,299, 정렬 성공 1,206,862, post-MFA 후보
+  437이다. 사유는 `mfa_alignment_missing` 413과 feature 생성 실패 24이며 300개
+  세션에 분포한다. 후보 identity는
+  `5a4c3de672f824b2b8a00026b443efb838e76d23fe846650ad07ab4be6a7be35`다.
+- 후보 437건은 모두 고유 exact-ID이며 자동 승인하지 않았다. 연구자 명시 승인 전
+  6-tier 수출을 열지 않고, 승인 뒤에는 성공 DB만 수출한다. 이 기술 후보 때문에
+  2021 전체 MFA를 다시 실행하지 않는다.
+- 상세 결과는
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2021_20260811.md`와
+  `outputs/reviews/mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2021/`에
+  고정했다.
