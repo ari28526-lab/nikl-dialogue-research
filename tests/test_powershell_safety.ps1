@@ -333,6 +333,11 @@ foreach ($path in $files) {
             'CORPUS_MATERIALIZATION_$Year.building.json',
             'TEMP_CONTRACT_$Year.json',
             'ALIGN_DONE_$Year.json',
+            'Read-LastJsonLineShared',
+            '[IO.FileShare]::Delete',
+            'heartbeat_stale_over_5_minutes',
+            'heartbeat_alignment_contract_id',
+            '[switch]$AsJson',
             'corpus_materialization_interrupted_resume_same_command',
             'mfa_checkpoint_present_not_running_resume_same_command',
             'active corpus file totals are not recursively counted'

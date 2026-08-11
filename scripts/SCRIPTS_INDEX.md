@@ -120,7 +120,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | audit_mfa_cross_year_contracts.py | 2020–2025 여섯 alignment contract의 acoustic·최종 공통사전·Jamo G2P·런타임·manifest·adoption SHA와 허용 phone inventory SHA가 동일함을 전수 감사해 논문 방법론의 동일 기준 증거 생성 |
 | show_common_pron_mfa_status.ps1 | 공통 MFA r2의 검증 shard·ㄽ 후보·모든 미검증 partial·no-path 승인/미등록 대기 shard·현재 출력·lock·D: 공간·final/adoption 상태를 읽기 전용으로 표시. 재개 ETA는 현재 lock 이후 새로 생성된 행만 사용 |
 | show_common_pron_mfa_r3_g2p_status.ps1 | r3 후보 G2P의 완료 shard, 검증 후보 수, no-path 수, 미검증 부분 출력, lock·D: 공간을 읽기 전용으로 표시 |
-| show_mfa_r3_year_status.ps1 | r3 연도 release의 Gate·preflight·corpus materialization·lock/PID·temp/DB·완료 marker를 FileShare.ReadWrite로 읽는 상태판 | 읽기 전용, 대규모 corpus 재귀 스캔 없음; 2021 장시간 runner 감시 가능 |
+| show_mfa_r3_year_status.ps1 | r3 연도 release의 Gate·preflight·corpus materialization·lock/PID·temp/DB·완료 marker와 최신 heartbeat를 FileShare.ReadWrite/Delete로 읽는 상태판; `-AsJson` 지원 | 읽기 전용, 대규모 corpus 재귀 스캔 없음; 실행 중 heartbeat와 완료 marker를 혼동하지 않고 연도별 runner 감시 가능 |
 | package_hf_korean_mfa_bundle.py | MFA 내장 downloader의 stale 성공을 우회해 공식 Hugging Face commit에서 acoustic v3.3.0·Jamo G2P v3.2.0·dictionary를 phone inventory·LF symbol·SHA256 gate로 동결 |
 | build_jamo_nfkd_g2p_model.py | 구 Jamo v3.0 archive의 누락된 NFKD metadata만 파생 수정하는 진단 도구. 최신 v3.2.0은 공식적으로 `unicode_decomposition=true`이므로 새 생산 기준에는 사용하지 않음 |
 | archive_pre_jamo_outputs_to_external.ps1 | **사용 중단·기본 실행 차단.** 수백만 작은 파일의 loose Robocopy 방식이므로 실행 시 압축 스크립트를 안내하고 즉시 중단 |

@@ -1,6 +1,7 @@
 ﻿param(
     [ValidateSet('2020','2021','2022','2023','2024','2025')]
-    [string]$Year = '2020'
+    [string]$Year = '2020',
+    [switch]$AsJson
 )
 
 $ErrorActionPreference = 'Stop'
@@ -56,6 +57,44 @@ function Read-JsonShared {
         if ($null -ne $reader) { $reader.Dispose() }
         if ($null -ne $stream) { $stream.Dispose() }
     }
+}
+
+function Read-LastJsonLineShared {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
+    $stream = $null
+    try {
+        $share = [IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete
+        $stream = [IO.File]::Open(
+            $Path, [IO.FileMode]::Open, [IO.FileAccess]::Read, $share
+        )
+        $take = [Math]::Min([int64](1024 * 1024), $stream.Length)
+        if ($take -le 0) { return $null }
+        [void]$stream.Seek(-$take, [IO.SeekOrigin]::End)
+        $buffer = New-Object byte[] ([int]$take)
+        $read = $stream.Read($buffer, 0, $buffer.Length)
+        $text = [Text.Encoding]::UTF8.GetString($buffer, 0, $read)
+        $lines = @($text -split "`r?`n")
+        for ($index = $lines.Count - 1; $index -ge 0; $index--) {
+            if ([string]::IsNullOrWhiteSpace($lines[$index])) { continue }
+            try {
+                return ($lines[$index] | ConvertFrom-Json)
+            } catch {
+                continue
+            }
+        }
+        return $null
+    } finally {
+        if ($null -ne $stream) { $stream.Dispose() }
+    }
+}
+
+function Get-JsonPropertyValue {
+    param($Object, [string]$Name)
+    if ($null -eq $Object) { return $null }
+    $property = $Object.PSObject.Properties[$Name]
+    if ($null -eq $property) { return $null }
+    return $property.Value
 }
 
 function Test-ProcessAlive {
@@ -133,6 +172,33 @@ $latestStderr = Get-LatestFile -Root $logRoot -Filter "mfa_${Year}_*_stderr.log"
 $latestHeartbeat = Get-LatestFile -Root $logRoot -Filter (
     "mfa_${Year}_*_heartbeat.jsonl"
 )
+$latestHeartbeatRecord = $null
+$heartbeatAgeSeconds = $null
+$heartbeatChildPid = $null
+$heartbeatChildAlive = $false
+if ($null -ne $latestHeartbeat) {
+    $latestHeartbeatRecord = Read-LastJsonLineShared -Path (
+        $latestHeartbeat.FullName
+    )
+    $heartbeatObservedAt = Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'observed_at'
+    if (-not [string]::IsNullOrWhiteSpace([string]$heartbeatObservedAt)) {
+        try {
+            $recordedAt = [DateTimeOffset]::Parse([string]$heartbeatObservedAt)
+            $heartbeatAgeSeconds = [math]::Round(
+                ([DateTimeOffset]::Now - $recordedAt).TotalSeconds, 1
+            )
+        } catch {
+            $heartbeatAgeSeconds = $null
+        }
+    }
+    $heartbeatChildValue = Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'child_pid'
+    if ($null -ne $heartbeatChildValue -and [int]$heartbeatChildValue -gt 0) {
+        $heartbeatChildPid = [Nullable[int]]([int]$heartbeatChildValue)
+        $heartbeatChildAlive = Test-ProcessAlive -Id $heartbeatChildPid
+    }
+}
 $driveFreeGiB = [math]::Round(
     ([IO.DriveInfo]::new('D:\')).AvailableFreeSpace / 1GB, 3
 )
@@ -143,8 +209,8 @@ $preflightFailed = if ($null -ne $preflight) {
     @($preflight.failed_checks) -join ','
 } else { '' }
 
-Write-Host 'MFA r3 annual status - read only' -ForegroundColor Cyan
-[pscustomobject]@{
+$result = [ordered]@{
+    schema_version = 'mfa_r3_year_status.v2'
     observed_at = [DateTimeOffset]::Now.ToString('o')
     phase = $phase
     year = $Year
@@ -190,9 +256,30 @@ Write-Host 'MFA r3 annual status - read only' -ForegroundColor Cyan
     latest_heartbeat_last_write = if ($null -ne $latestHeartbeat) {
         $latestHeartbeat.LastWriteTime.ToString('o')
     } else { '' }
-} | Format-List
+    heartbeat_observed_at = [string](Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'observed_at')
+    heartbeat_age_seconds = $heartbeatAgeSeconds
+    heartbeat_stale_over_5_minutes = (
+        $null -ne $heartbeatAgeSeconds -and $heartbeatAgeSeconds -gt 300
+    )
+    heartbeat_wrapper_pid = Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'wrapper_pid'
+    heartbeat_child_pid = $heartbeatChildPid
+    heartbeat_child_process_alive = $heartbeatChildAlive
+    heartbeat_release_id = [string](Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'release_id')
+    heartbeat_alignment_contract_id = [string](Get-JsonPropertyValue `
+        -Object $latestHeartbeatRecord -Name 'alignment_contract_id')
+}
 
-Write-Host (
-    'Note: active corpus file totals are not recursively counted; final manifest ' +
-    'counts appear after materialization completes.'
-) -ForegroundColor DarkGray
+if ($AsJson) {
+    [pscustomobject]$result | ConvertTo-Json -Depth 8
+} else {
+    Write-Host 'MFA r3 annual status - read only' -ForegroundColor Cyan
+    [pscustomobject]$result | Format-List
+
+    Write-Host (
+        'Note: active corpus file totals are not recursively counted; final ' +
+        'manifest counts appear after materialization completes.'
+    ) -ForegroundColor DarkGray
+}
