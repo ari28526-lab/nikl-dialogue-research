@@ -23,8 +23,11 @@
 > 덮어쓰지 않는다.
 > 2020 r3는 6-tier 782,432개·동반표 4개·독립 전수 QC·DB 재수출 표본 24/24까지
 > 완료되어 SHA 동결했다. 2021은 exact-ID 1,207,299건으로 새 r3 DB를 완료했다.
-> 성공 정렬은 1,206,862건이고 post-MFA exact-ID 후보는 437건이다. 현재는 후보
-> identity의 연구자 승인 뒤 보존 DB에서 6-tier·동반표를 수출하는 Gate다.
+> 성공 정렬은 1,206,862건이고 post-MFA exact-ID 후보는 437건이다. 연구자가
+> identity를 승인했고, feature 실패 24·DB 내 미정렬 413을 분리한 preflight 뒤
+> 6-tier 1,206,862개와 동반표 4개를 수출했다. 독립 전수 QC는 coverage 100%·
+> hard failure 0, 보존 DB 표본 semantic·byte 24/24로 완료됐다. 2020·2021은
+> 동결하며 다음 생산 대상은 2022 한 연도다.
 
 ## 1. 완료 산출물
 
@@ -90,9 +93,11 @@
   → 2020 r3 정렬 DB 완료: 782,432 정렬·283 post-MFA 미정렬
   → 2020 exact-ID 회계·6-tier export·독립 QC·SHA 동결
   → 2021 exact-ID 1,207,299·발음 연구 DB·alignment 감사·preflight GO
-  → 2021 r3 DB 완료: 1,206,862 정렬·437 post-MFA 후보  ← 현재
-  → 2021 명시 승인·6-tier export·독립 QC
-  → 2022부터 2025까지 pronunciation-safe∩정렬 가능 집합 연도별 신규 정렬
+  → 2021 r3 DB 완료: 1,206,862 정렬·437 post-MFA 후보
+  → 2021 명시 승인·6-tier 1,206,862·동반표 4개 수출
+  → 2021 독립 QC·DB 표본 24/24·SHA 동결
+  → 2022 pronunciation-safe∩정렬 가능 집합 신규 정렬  ← 다음
+  → 2023부터 2025까지 직전 연도 Gate 뒤 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
 
@@ -217,7 +222,7 @@ MFA, 전수 TextGrid export, 원 DB·WAV·LAB·검색표는 다시 만들거나 
 동결한 뒤 2021 한 연도만 준비하는 것이다. 오류·수정·재개 증거는
 `outputs/reports/INCIDENT_mfa_r3_research_qc_2020_input_identity_20260810.json`에 있다.
 
-### 3.1.3 2021 장시간 MFA 완료·post-MFA 승인 대기
+### 3.1.3 2021 장시간 MFA 완료·post-MFA 승인·수출
 
 2020 완료 state를 다시 계산하지 않고 SHA로 결속했다. 2021 원천 1,373,920발화는
 pronunciation-safe 1,208,236과 follow-up 165,684로 정확히 분할됐고, 승인된
@@ -253,9 +258,31 @@ KST에 `ALIGN_DONE_2021.json`을 생성하며 정상 완료됐다. 다시 실행
 입력·DB는 1,207,299건으로 일치한다. 성공 정렬은 1,206,862건이고, 437건은
 `mfa_alignment_missing` 413건과 `mfa_feature_generation_failed` 24건이다.
 candidate identity
-`5a4c3de672f824b2b8a00026b443efb838e76d23fe846650ad07ab4be6a7be35`를
-연구자가 승인한 뒤에만 6-tier 수출로 간다. 동시에 두 runner를 실행하지 않고,
-2020과 2021 MFA는 재실행하지 않는다.
+`5a4c3de672f824b2b8a00026b443efb838e76d23fe846650ad07ab4be6a7be35`는
+연구자가 승인했다. feature 실패 24건은 export 가능한 DB 밖의 승인 기술 제외,
+413건은 DB 내 승인 미정렬로 분리해 합계 437건을 회계한다. 실제 preflight의
+미승인·누락 inventory는 모두 0이다. 동시에 두 runner를 실행하지 않고, 2020과
+2021 MFA는 재실행하지 않는다.
+
+### 3.1.4 2021 6-tier 수출·독립 연도 QC 완료 checkpoint
+
+보존 DB 수출은 2026-08-11 08:30–11:00 KST에 완료됐다. 6-tier TextGrid는
+1,206,862개이고 동반표는 발화 1,206,862·word 8,926,793·phone 32,776,584·제외
+437행이다. `spn`·미승인 exact-ID·inventory 밖 phone은 모두 0이다. 완료 보고서는
+`outputs/reports/EXPORT_mfa_r3_research_6tier_2021_20260811_083053.json`이다.
+
+첫 QC preflight는 구식 `export.accounted = expected_mfa_input` 검사가 feature 실패
+24건을 반영하지 못해 materialization 전에 안전 중단됐다. 수출기와 같은 두 단계
+exact-ID 식으로 QC를 보강하고 PowerShell 5.1 안전·runtime 검사를 통과한 뒤,
+TextGrid 1,206,862·승인 제외 437로 preflight를 재통과했다. DB·TextGrid·승인
+계약은 변경하지 않았고 전수 수출도 반복하지 않았다.
+
+독립 QC는 11:05–11:58 KST에 완료됐다. 전수 coverage 100%·hard failure 0,
+동반표 전 행과 manifest identity/SHA가 일치하며, 보존 DB 24세션 재수출은
+semantic·byte 모두 24/24다. 최종 state는
+`outputs/reports/mfa_r3_research_qc_common_pron_mfa_r3_20260809/2021/QC_STATE.json`의
+`status=passed`다. 이 명령은 2021에 다시 실행하지 않는다. 다음 단계는 이 state와
+`ALIGN_DONE_2021.json`을 SHA로 결속해 2022 한 연도만 준비하는 것이다.
 
 ### 3.1 r3 후보 생성 완료 checkpoint
 

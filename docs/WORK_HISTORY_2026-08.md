@@ -3058,3 +3058,52 @@ shard 2–23을 재개하는 것이다.
   `docs/decisions/RESULT_mfa_r3_alignment_database_2021_20260811.md`와
   `outputs/reviews/mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2021/`에
   고정했다.
+
+### 2026-08-11 — 2021 437건 명시 승인·feature 실패 회계 Gate 보강
+
+- 연구자 `ari30`은 08:16 KST에 candidate
+  `5a4c3de672f824b2b8a00026b443efb838e76d23fe846650ad07ab4be6a7be35`의
+  437건을 `alignment_and_analysis` 후속 exact-ID로 이관하고, 성공한
+  1,206,862건을 보존 DB에서 수출하는 것을 명시 승인했다. 자동 승인은 없었다.
+- 첫 수출 preflight는 TextGrid materialization 전 안전 중단됐다. MFA가 feature
+  생성 실패 24건을 `ignored=1`로 보존했는데, 기존 r3 식은 동결 입력과
+  `ignored=0` DB가 같아야 한다고 요구해 이 승인 24건을 DB 결손·과잉 승인으로
+  중복 판정했다. DB·원자료·승인 계약은 변경하지 않았다.
+- r3 exact-ID 식을 `expected = exportable DB ⊎ 승인 DB-전 제외`와
+  `exportable DB = aligned ⊎ 승인 DB 내 미정렬`로 분리했다. 미승인 DB 결손과
+  승인했지만 어느 실패 집합에도 속하지 않는 ID는 계속 hard failure다.
+- feature 실패 1건 fixture를 추가해 승인 전 차단, 승인 후 preflight 통과,
+  materialization 없음과 24/413에 해당하는 두 계수의 분리를 검증했다. 관련
+  exporter·r3 provenance 30테스트가 통과했다.
+- 실제 재 preflight는 expected/LAB 1,207,299, exportable DB 1,207,275,
+  승인 feature 실패 24, 정렬 1,206,862, 승인 DB 내 미정렬 413으로 정확히
+  닫혔다. 미승인 차이·`spn`·inventory 밖 phone은 0이다.
+- 수정·승인·실패/통과 preflight는 커밋 `47ffac5`로 먼저 푸시했다. 08:30 KST에
+  2021 6-tier·동반표 전수 수출을 release-scoped lock으로 시작했다.
+
+### 2026-08-11 — 2021 6-tier·동반표 수출과 독립 전수 QC 완료
+
+- 보존 DB 수출은 08:30–11:00 KST에 9,001.299초로 완료됐다. 4,139세션에서
+  6-tier TextGrid 1,206,862개를 만들었고 `spn`·실패·미승인 exact-ID는 0이다.
+- gzip 동반표는 utterance 1,206,862행, word 8,926,793행, phone 32,776,584행,
+  승인 제외 437행이다. 제외 437은 DB 내 미정렬 413과 pre-DB feature 실패 24의
+  exact-ID 합집합이다. 출력 schema는 `research_textgrid.v2`이고 source DB SHA는
+  `faaef1c2f7c8dd013f7e90dc1694d6514e9b5bdf8fdbe0e60b07d179925a7731`로 유지됐다.
+- 첫 QC preflight는 구식 `export.accounted = expected_mfa_input` 식 때문에
+  materialization 전에 안전 중단됐다. 수출기와 같은 두 단계 exact-ID 식으로
+  QC wrapper를 보강하고 회귀 token을 추가했다. PowerShell safety 68파일과
+  Windows PowerShell 5.1 runtime 68스크립트가 통과했고 실제 QC preflight도
+  TextGrid 1,206,862·승인 제외 437로 통과했다. 수정은 커밋 `90ac3e7`로 먼저
+  푸시했다.
+- 독립 QC는 11:05–11:58 KST에 완료됐다. TextGrid 1,206,862/1,206,862,
+  coverage 100%, hard failure 합계 0이며 전수 감사 시간은 3,083.476초다.
+  보존 DB 24세션 재수출은 semantic 24/24·byte 24/24다.
+- 최종 `QC_STATE.json`은 `status=passed`, checkpoint
+  `b22e7e2b8a5cb93d801d72f0a6d50529b754e42427b46c4ac2789598df837648`다.
+  `source_mutation_performed=false`, `mfa_recomputed=false`,
+  `full_export_repeated=false`를 명시한다. 2020 완료본·2021 원자료·MFA DB는
+  변경하거나 재실행하지 않았다. 다음 단계는 2021 state를 동결하고 2022 한
+  연도만 준비하는 것이다.
+- 완료 뒤 12:01 KST의 읽기 전용 preflight는 `resume: audit=True, sample=True`를
+  기록했다. 같은 QC 명령을 다시 호출해도 1,206,862개 감사와 24세션 비교를
+  반복하지 않을 수 있음을 최종 확인했다.
