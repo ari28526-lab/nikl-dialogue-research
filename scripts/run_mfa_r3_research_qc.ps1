@@ -271,13 +271,50 @@ $selectedExport = @(
 )[0]
 $exportReportPath = [string]$selectedExport.file.FullName
 $export = $selectedExport.data
+$exactCounts = $export.exact_id_reconciliation.counts
+$expectedMfaInputIds = [int64]$exactCounts.expected_mfa_input_ids
+$activeLabIds = [int64]$exactCounts.active_lab_ids
+$databaseUtteranceIds = [int64]$exactCounts.database_utterance_ids
+$alignedDatabaseIds = [int64]$exactCounts.aligned_database_ids
+$approvedDatabaseExclusions = [int64](
+    $exactCounts.approved_database_exclusions
+)
+$approvedDatabaseUnalignedIds = [int64](
+    $exactCounts.approved_database_unaligned_ids
+)
+$approvedTechnicalFailureIds = [int64](
+    $exactCounts.approved_technical_failure_ids
+)
+$approvedAlignmentExclusions = [int64](
+    $exactCounts.approved_alignment_exclusions
+)
 if (
     [IO.Path]::GetFullPath([string]$export.db_path) -ne
         [IO.Path]::GetFullPath($database) -or
     [IO.Path]::GetFullPath([string]$export.output_root) -ne
         [IO.Path]::GetFullPath($outputRoot) -or
-    [int64]$export.accounted -ne [int64]$marker.expected_mfa_input -or
-    [int64]$export.exact_id_reconciliation.counts.unaligned_ids_without_approval -ne 0
+    $expectedMfaInputIds -ne [int64]$marker.expected_mfa_input -or
+    $activeLabIds -ne $expectedMfaInputIds -or
+    ($databaseUtteranceIds + $approvedDatabaseExclusions) -ne
+        $expectedMfaInputIds -or
+    ($alignedDatabaseIds + $approvedDatabaseUnalignedIds) -ne
+        $databaseUtteranceIds -or
+    ($approvedDatabaseExclusions + $approvedDatabaseUnalignedIds) -ne
+        $approvedTechnicalFailureIds -or
+    $approvedTechnicalFailureIds -ne $approvedAlignmentExclusions -or
+    [int64]$approval.approved_row_count -ne
+        $approvedAlignmentExclusions -or
+    [int64]$approval.contract_row_count -ne
+        $approvedAlignmentExclusions -or
+    [int64]$export.accounted -ne $databaseUtteranceIds -or
+    [int64]$export.counts.source_utterances -ne $databaseUtteranceIds -or
+    ([int64]$export.counts.created +
+        [int64]$export.counts.approved_excluded) -ne
+        $databaseUtteranceIds -or
+    [int64]$export.counts.approved_excluded -ne
+        $approvedDatabaseUnalignedIds -or
+    [int64]$exactCounts.unaligned_ids_without_approval -ne 0 -or
+    [int64]$exactCounts.expected_input_ids_missing_from_database_without_approval -ne 0
 ) {
     throw 'r3 export 보고서의 DB/output/exact-ID 회계 불일치'
 }
@@ -295,7 +332,7 @@ if (
     [int64]$tableManifest.counts.utterances -ne
         [int64]$export.counts.created -or
     [int64]$tableManifest.counts.excluded_utterances -ne
-        [int64]$export.counts.approved_excluded
+        $approvedAlignmentExclusions
 ) {
     throw 'r3 companion table manifest identity/count 불일치'
 }
