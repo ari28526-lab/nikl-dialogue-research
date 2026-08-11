@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-11 KST
+최종 갱신: 2026-08-12 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -26,12 +26,13 @@
 > 성공 정렬은 1,206,862건이고 post-MFA exact-ID 후보는 437건이다. 연구자가
 > identity를 승인했고, feature 실패 24·DB 내 미정렬 413을 분리한 preflight 뒤
 > 6-tier 1,206,862개와 동반표 4개를 수출했다. 독립 전수 QC는 coverage 100%·
-> hard failure 0, 보존 DB 표본 semantic·byte 24/24로 완료됐다. 2020·2021은
-> 동결했다. 2022는 source 866,359발화를 safe 752,591·follow-up 113,768로
-> 분할하고 pre-MFA 제외 870을 적용해 exact-ID 751,721을 확정했다. 발음 연구 DB
-> 866,359발화·4,504,375 occurrence, alignment contract, 독립 감사와 runner
-> preflight가 모두 통과했다. 2022 MFA는 아직 시작하지 않았고 다음 생산 동작은
-> 2022 단일 장시간 runner다.
+> hard failure 0, 보존 DB 표본 semantic·byte 24/24로 완료됐다. 2022도 source
+> 866,359발화를 safe 752,591·follow-up 113,768로 분할하고 pre-MFA 제외 870을
+> 적용한 exact-ID 751,721을 동일 r3로 새로 정렬했다. 성공 751,383·승인 기술
+> 미정렬 338을 완전 회계한 뒤 6-tier 751,383개·동반표 4개를 수출했다. 독립
+> 전수 QC는 coverage 100%·hard failure 0, 보존 DB 표본 semantic·byte 24/24다.
+> 2020–2022는 동결한다. 다음 생산 동작은 2022 완료 SHA를 입력으로 한
+> 2022→2023 전환 Gate와 2023 한 연도 준비다.
 
 ## 1. 완료 산출물
 
@@ -620,7 +621,7 @@ outputs/reviews/
 `direct_db_research_6tier_v1`과 동일 schema의 checkpoint-resume 실행 mode를
 함께 인정하고, 보존 DB 완료는 같은 계약의 `direct_db_ready` marker로 확인한다.
 
-## 5. 2022 post-MFA 완료 절차
+## 5. 2022 r2 역사와 r3 완료 상태
 
 2022 r2 MFA 계산은 완료됐고 `D:\mfa_tmp\2022\2022.db`를 보존했다. 활성 LAB
 865,128개 중 864,690개가 정렬됐으며 interval이 없는 438개는 exact-ID 검토
@@ -648,6 +649,23 @@ r3 표적 회귀 입력이며 r2 최종 승인 Gate로 더 진행하지 않는�
 export부터 시작하도록 만든 역사적 r2 복구 명령이다. r3 Gate 상태와 무관하게 새
 실행에 사용하지 않는다. 현재 열린 Gate는 r3 release
 하나만 허용하며 이 r2 복구 명령을 다시 허용하지 않는다.
+
+2022 r3는 2026-08-12에 다음 상태로 완료·동결했다.
+
+- exact-ID 입력 751,721 = 정렬 성공 751,383 + 승인 기술 미정렬 338
+- DB SHA-256
+  `610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2`
+- 후보 identity
+  `272bcc134776548df77b244d547b1e922ff287fa9d8f8505c31740e3b2357b7a`
+- 6-tier 751,383개, 동반표 utterance 751,383·word 5,882,284·phone
+  21,857,009·excluded 338행
+- 독립 QC coverage 100%, hard failure 0, DB 재수출 semantic·byte 24/24
+- 최종 `QC_STATE.json` checkpoint
+  `7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`
+
+2022 runner·수출·QC는 재호출하지 않는다. 다음 연도는 2022 marker와 QC state
+SHA를 전환 Gate에 묶은 뒤 2023 입력 계약부터 준비한다. 상세 근거는
+`docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.

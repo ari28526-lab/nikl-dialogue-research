@@ -3133,3 +3133,41 @@ shard 2–23을 재개하는 것이다.
   여유 114.028 GiB로 GO다. 2022 corpus·MFA·TextGrid는 아직 시작하지 않았다.
 - 근거는 `docs/decisions/RESULT_mfa_r3_2022_preflight_20260811.md`와
   `outputs/reports/GATE_mfa_r3_2021_TO_2022_20260811.json`에 남겼다.
+
+### 2026-08-11~12 — 2022 r3 정렬·338건 승인·6-tier·독립 QC 완료
+
+- 2026-08-11 15:05 KST에 2022 단일 r3 runner를 시작했다. 751,721개
+  WAV/LAB·2,651세션을 materialize한 뒤 17:02 KST부터 MFA를 계산했고,
+  자체 계산 16,654.460초 뒤 exit 0과 `Done`을 기록했다.
+- `ALIGN_DONE_2022.json`은 21:41 KST에 `passed`로 생성됐다. 보존 DB는
+  7,146,942,464 bytes, SHA-256
+  `610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2`다.
+  2020·2021 marker/QC state와 DB mtime은 기존 값으로 유지됐고, 원자료·r2
+  비교본을 수정하거나 재실행하지 않았다.
+- SQLite `quick_check`와 exact-ID 회계 결과 DB 751,721, 정렬 성공 751,383,
+  `mfa_alignment_missing` 338이다. 후보 identity는
+  `272bcc134776548df77b244d547b1e922ff287fa9d8f8505c31740e3b2357b7a`다.
+  r2 미정렬 438과 비교하면 공통 318, r3 회수 120, r3 신규 미정렬 20으로
+  순 100건을 회수했다. 이 기술 집합 때문에 연도 전체를 재정렬하지 않는다.
+- 연구자 `ari30`은 23:24 KST에 338건을 `alignment_and_analysis` 후속
+  exact-ID로 이관하고 성공 751,383건을 수출하는 것을 명시 승인했다. 자동 승인은
+  없었다. 수출 preflight는 exact-ID 미승인 차이·`spn`·inventory 밖 phone을
+  모두 0으로 확인했다.
+- 수출은 23:36–다음 날 01:12 KST에 5,773.853초 수행됐다. 6-tier TextGrid
+  751,383개와 gzip 동반표 4종—utterance 751,383, word 5,882,284, phone
+  21,857,009, excluded 338행—을 생성했다. coverage는 100%다.
+- WAV frame duration과 MFA DB float32 표현의 미세한 0/xmax 차이만 snap했다.
+  720,888발화·1,441,776경계, 최대 `4.5776367230132564e-07`초이며 내부 phone
+  시간이나 음향적 경계를 새로 추정한 것이 아니다.
+- 독립 QC는 01:40–02:10 KST에 완료됐다. TextGrid 751,383개 전수 감사에서
+  coverage 100%, hard failure 모든 범주 0이었고 네 동반표의 ID·복합키·순서·
+  계약 ID·manifest 수량도 일치했다. 보존 DB 24세션 재수출은 semantic·byte
+  24/24다. 최종 `QC_STATE.json`은 `passed`, checkpoint는
+  `7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`다.
+- 감시 중 구 heartbeat 상태판을 r3 실행에 잘못 사용하고 완료 marker의 수동
+  점검 경로를 한 차례 잘못 잡아 성공 종료를 잠시 미완료로 오인했다. 실제 runner와
+  DB에는 영향이 없었다. r3 상태판에 공유 읽기 heartbeat·`-AsJson`을 추가하고
+  PowerShell 5.1 safety/runtime를 통과시켜 커밋 `1b9ebf3`으로 먼저 푸시했다.
+- 상세 방법·SHA·재실행 금지 범위는
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`에 기록했다.
+  다음 단계는 2022 완료 SHA를 동결한 2022→2023 전환 Gate다.

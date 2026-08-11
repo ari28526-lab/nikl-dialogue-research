@@ -1,6 +1,19 @@
 # 프로젝트 현재 상태 정본
 
-최종 갱신: 2026-08-11 KST
+최종 갱신: 2026-08-12 KST
+
+> **2026-08-12 2022 r3 정렬·수출·독립 QC 완료:** 2020·2021 완료 SHA를
+> 변경하지 않고 2022 exact-ID 751,721건을 동일 r3 계약으로 새로 정렬했다.
+> `ALIGN_DONE_2022.json`은 2026-08-11 21:41 KST에 `passed`로 생성됐고,
+> DB 7,146,942,464 bytes의 SHA-256은
+> `610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2`다.
+> 정렬 성공 751,383건과 기술 미정렬 338건을 exact-ID로 완전 회계했으며,
+> 연구자 `ari30`이 candidate `272bcc134776...3b2357b7a`를 명시 승인했다.
+> 2026-08-11 23:36–2026-08-12 01:12 KST에 6-tier 751,383개와 gzip 동반표
+> 4종을 수출했다. 독립 QC는 TextGrid coverage 100%·hard failure 0,
+> 동반표 계약 오류 0, DB 재수출 semantic·byte 24/24로 완료됐다. 최종
+> `QC_STATE.json`은 `passed`다. 2022 r3 MFA·전수 수출·QC는 다시 실행하지
+> 않는다. 다음 단계는 2022 완료 SHA를 동결한 2022→2023 전환 Gate다.
 
 > **2026-08-11 2021 r3 정렬·수출·독립 QC 완료:** 2020 최종 QC state와 정렬
 > marker의 SHA를 동결한 채 2020 MFA·전수 수출을 반복하지 않았다. 2021 r3 입력
@@ -16,13 +29,8 @@
 > 32,776,584·제외 437행이며 `spn`은 0이다. 이어 11:05–11:58 KST에 독립 QC를
 > 완료했다. 전수 coverage 100%·hard failure 0, 보존 DB 재수출은 semantic·byte
 > 24/24이고 최종 `QC_STATE.json`은 `passed`다. 원자료 변경·MFA 재계산·전수
-> 수출 반복은 모두 없었다. 2021은 이 state를 동결하고 다음 단계에서 2022 한
-> 연도만 준비한다. 2026-08-11 13:43 KST에 2021 완료 SHA를 동결한 2022 r3
-> 준비 Gate가 통과했다. 2022 source 866,359발화를 pronunciation-safe 752,591,
-> follow-up 113,768로 분할하고 pre-MFA 기술 제외 870을 적용한 exact-ID 입력
-> 751,721건을 확정했다. 발음 연구 DB 866,359발화·4,504,375 occurrence와
-> alignment contract·독립 감사·실제 runner preflight가 모두 통과했다. 2022
-> corpus·MFA·TextGrid는 아직 시작하지 않았으며 다음 동작은 단일 장시간 runner다.
+> 수출 반복은 모두 없었다. 이 state의 SHA는 2021→2022 전환 Gate에 고정됐고,
+> 이후 2022 완료 결과는 바로 위 최신 state가 대체한다.
 
 > **2026-08-09 r3 2020 정렬 DB 완료·export 직전 상태:** 2020 exact-ID 입력은
 > 782,715발화이며 alignment contract ID는
@@ -90,7 +98,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 |---:|---|---|---|---|
 | 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 DB·283 승인·6-tier 782,432·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
 | 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | r3 DB·437 승인·6-tier 1,206,862·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
-| 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | r3 exact-ID 751,721·연구 DB·alignment 감사·runner preflight GO; 장시간 MFA 시작 대기 |
+| 2022 | 완료 | 읽기 전용 증거로 완료 | 기존 24개 검토를 회귀 근거로 보존 | r3 DB·338 승인·6-tier 751,383·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
 | 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |
 | 2024 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 595,743; 교집합 산정 대기 |
 | 2025 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 461,643; 교집합 산정 대기 |
@@ -152,7 +160,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 - 상세 근거:
   `docs/decisions/RESULT_mfa_r3_alignment_database_2021_20260811.md`
 
-## 2022 — r2 MFA·6-tier·기계 QC 완료, 발음 입력 문제 발견
+## 2022 — r3 신규 정렬·6-tier·독립 QC 완료, SHA 동결
 
 - r3 source snapshot·입력 계약·발음 연구 DB·alignment contract와 독립 감사를
   완료했다. source 866,359 = safe 752,591 + follow-up 113,768이며, safe 집합의
@@ -164,9 +172,26 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   nonempty LAB token은 0이다. alignment contract ID는
   `f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb`다.
 - 실제 runner `-PreflightOnly`는 실패 검사 0, 필요 공간 52.193 GiB 대비 D: 여유
-  114.028 GiB로 GO다. 2022 r3 MFA·corpus·TextGrid는 아직 시작하지 않았다.
+  114.028 GiB로 GO였고, 2026-08-11 15:05 KST에 시작해 21:41 KST에 보존 DB와
+  `ALIGN_DONE_2022.json`을 완료했다. DB SHA-256은
+  `610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2`다.
+- DB exact-ID는 입력 751,721 = 정렬 751,383 + 승인 기술 미정렬 338로 닫혔다.
+  후보 identity `272bcc134776...3b2357b7a`는 자동 승인하지 않았고 연구자가
+  명시 승인했다. r2 미정렬 438과 비교하면 공통 318, r3 회수 120, r3 신규
+  미정렬 20이다.
+- 6-tier 751,383개와 gzip 동반표 4종을 수출했다. 동반표는 utterance
+  751,383, word 5,882,284, phone 21,857,009, excluded 338행이다.
+- 독립 QC는 coverage 100%·hard failure 0, 동반표 오류 0, 보존 DB 재수출
+  semantic·byte 24/24로 `passed`다. MFA·전수 수출·QC를 다시 실행하지 않는다.
 - 상세 근거:
-  `docs/decisions/RESULT_mfa_r3_2022_preflight_20260811.md`
+  `docs/decisions/RESULT_mfa_r3_2022_preflight_20260811.md`,
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`
+
+### 2022 r2 역사적 비교 증거 — 현행 생산 입력 아님
+
+아래 항목은 r3 채택 이전의 r2 결과와 문제 발견 경위를 보존한 기록이다. 현재
+TextGrid·동반표·분석 범위에는 바로 위 r3 완료본만 사용하며, 아래 r2 DB·수출물은
+재실행하거나 r3와 섞지 않는다.
 
 - search master와 source/input/alignment 계약은 완료됐다.
 - 활성 LAB 865,128개 중 864,690개가 정렬됐고 438개는 최종 interval이 없는

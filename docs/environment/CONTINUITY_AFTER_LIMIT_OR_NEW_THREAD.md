@@ -1,6 +1,6 @@
 # Codex 리밋·새 대화 뒤 프로젝트 연속성
 
-최종 갱신: 2026-08-09 KST
+최종 갱신: 2026-08-12 KST
 
 이 절차는 새 계정을 만들기 위한 것이 아니다. 같은 계정에서 Codex 사용 한도가
 초기화되기를 기다리거나 새 대화를 열어도, 로컬 계산과 연구 계약을 잃지 않고
@@ -15,6 +15,14 @@
 4. 채팅 기억이 아니라 현재 파일·manifest·Git commit을 정본으로 사용한다.
 5. 2020–2022 r2 완성본과 원본 WAV/CSV는 변경하지 않는다. r3는 release 전용
    경로에서만 생성한다.
+
+## 현재 재개 checkpoint
+
+2020·2021·2022 r3는 정렬 DB, 6-tier·동반표, 독립 전수 QC와 DB 재수출
+24/24까지 완료해 동결했다. 2022 최종 `QC_STATE.json` checkpoint는
+`7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`다.
+이 세 연도의 runner·전수 수출·QC를 다시 실행하지 않는다. 새 대화의 다음 단계는
+2022 marker/QC SHA를 검증하는 2022→2023 전환 Gate와 2023 한 연도 준비다.
 
 ## 새 대화에서 가장 먼저 할 일
 
@@ -58,7 +66,7 @@ r2 역사·복구 단계에서는 `show_mfa_year_queue_status.ps1`를 쓴다. �
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
   -NoProfile -ExecutionPolicy Bypass `
   -File "C:\Users\ari30\research\2026_summer_research\scripts\show_mfa_r3_year_status.ps1" `
-  -Year 2020
+  -Year 2023
 ```
 
 `ready_not_started`면 RUNBOOK 3.0의 명령을 한 번 실행한다.
@@ -291,9 +299,10 @@ safe body는 4,384,992발화, follow-up은 718,364발화다. Stage 20 후보 사
 승인했다. 기술적 제외는 exact-ID로 별도 회계한다. r2 interval은 최종 r3에
 재사용하지 않으며 follow-up은 exact-ID 별도 shard로 보존한다. 외부 workflow
 리뷰, r3 전용 release/runner, 정책 감사 v2와 2020 preflight 18/18은 완료됐다.
-현재 상태는 `ready_not_started`이며 다음 행동은 RUNBOOK 3.0의 2020 장시간
-명령을 한 번 실행하는 것이다. DB 완료 전 TextGrid materialization과 r2 label
-제자리 치환은 하지 않는다.
+이 단락은 r3 채택 당시의 근거다. 이후 2020–2022 신규 r3 정렬·6-tier·독립
+QC가 완료됐다. Stage 13–21이나 2020–2022 runner를 다시 실행하지 않고, 현재
+checkpoint 절에 따라 2023 전환 Gate부터 진행한다. r2 label 제자리 치환은
+계속 금지한다.
 
 ## 새 대화에 붙일 최소 프롬프트
 
@@ -302,9 +311,10 @@ C:\Users\ari30\research\2026_summer_research의 작업을 이어가자.
 먼저 AGENTS.md와 docs/environment/PROJECT_START_HERE.md,
 PROJECT_CURRENT_STATE.md, docs/RUNBOOK_production_2020_2025.md,
 CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md를 읽어라.
-2020 완성본과 원본 WAV/CSV를 변경하지 말고, 현재 실행 프로세스·lock·manifest를
-읽기 전용으로 확인한 뒤 재시작 여부를 판단하라. 완료 checkpoint를 보존하고
-현재 Git commit과 실제 D: 상태를 대화 기억보다 우선하라.
+2020–2022 r3 완성본과 원본 WAV/CSV를 변경하지 말고, 현재 실행 프로세스·lock·
+manifest를 읽기 전용으로 확인한 뒤 재시작 여부를 판단하라. 2022 QC checkpoint를
+보존하고 2022→2023 전환 Gate부터 진행하라. 현재 Git commit과 실제 D: 상태를
+대화 기억보다 우선하라.
 ```
 
 ## 계정 한도에 관한 운영 원칙
