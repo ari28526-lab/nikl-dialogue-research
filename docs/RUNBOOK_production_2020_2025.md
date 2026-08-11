@@ -27,7 +27,11 @@
 > identity를 승인했고, feature 실패 24·DB 내 미정렬 413을 분리한 preflight 뒤
 > 6-tier 1,206,862개와 동반표 4개를 수출했다. 독립 전수 QC는 coverage 100%·
 > hard failure 0, 보존 DB 표본 semantic·byte 24/24로 완료됐다. 2020·2021은
-> 동결하며 다음 생산 대상은 2022 한 연도다.
+> 동결했다. 2022는 source 866,359발화를 safe 752,591·follow-up 113,768로
+> 분할하고 pre-MFA 제외 870을 적용해 exact-ID 751,721을 확정했다. 발음 연구 DB
+> 866,359발화·4,504,375 occurrence, alignment contract, 독립 감사와 runner
+> preflight가 모두 통과했다. 2022 MFA는 아직 시작하지 않았고 다음 생산 동작은
+> 2022 단일 장시간 runner다.
 
 ## 1. 완료 산출물
 
@@ -96,6 +100,7 @@
   → 2021 r3 DB 완료: 1,206,862 정렬·437 post-MFA 후보
   → 2021 명시 승인·6-tier 1,206,862·동반표 4개 수출
   → 2021 독립 QC·DB 표본 24/24·SHA 동결
+  → 2022 exact-ID 751,721·발음 연구 DB·alignment 감사·preflight GO
   → 2022 pronunciation-safe∩정렬 가능 집합 신규 정렬  ← 다음
   → 2023부터 2025까지 직전 연도 Gate 뒤 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수

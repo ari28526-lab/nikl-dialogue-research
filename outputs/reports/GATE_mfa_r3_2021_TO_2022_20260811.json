@@ -1,0 +1,58 @@
+{
+  "schema_version": "mfa_r3_year_transition_gate.v1",
+  "status": "passed_ready_for_researcher_start",
+  "recorded_at": "2026-08-11T13:43:43.8445923+09:00",
+  "from_year": "2021",
+  "to_year": "2022",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "from_year_frozen": {
+    "completion_report": "outputs/reports/FINAL_mfa_r3_2021_completion_20260811.json",
+    "completion_report_sha256": "280dc379577f1c8d368e646b78e9141bb762501a63802a9a6721408e17ffbc7a",
+    "qc_status": "passed",
+    "qc_state_sha256": "b4b8dac11c3f7794a6579a7199faf4347a31e684ea17c56ed66cdc2e54a5c12a",
+    "align_done_sha256": "71412e455ad1bbd1f58904cb348573ba1e845c8d386f712c9320b264734c1c1c",
+    "textgrids": 1206862,
+    "approved_followup": 437,
+    "qc_coverage_pct": 100.0,
+    "qc_hard_failures": 0,
+    "db_sample_semantic_equal": 24,
+    "db_sample_byte_equal": 24,
+    "source_mutation_performed": false,
+    "mfa_recomputed": false,
+    "full_export_repeated": false
+  },
+  "to_year_contract": {
+    "source_utterances": 866359,
+    "pronunciation_safe": 752591,
+    "pronunciation_followup": 113768,
+    "pre_mfa_exclusions": 870,
+    "expected_mfa_input": 751721,
+    "r2_post_mfa_reentered": 337,
+    "source_wav_missing": 0,
+    "corpus_extra_wav_ids_not_selected": 11798,
+    "year_input_contract_id": "9da932e4480b7e109b44b43f27c335b78c17e6f4466aad5a5d8acd0390facea2",
+    "year_input_contract_sha256": "12ed1ff679eef205284d0a884380333c37bba97e5b8f32e755d88b0d8035c4ed",
+    "alignment_contract_id": "f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb",
+    "alignment_contract_sha256": "f2cdf8fc52b96a96a697797312b1e3c115575e4397bb9c02e7defe04d70f9295",
+    "research_database_audit_sha256": "26353ebd47e0b8e6c0d792223d7a48e42353c0882fc7a27be075a2c0c0406c1e",
+    "preflight_sha256": "7b34c8c6ba181c89f001fdcdb4cbfb88e3607467429dedf8edb3bb70189cbb46",
+    "preflight_status": "go",
+    "failed_checks": [],
+    "required_gib": 52.193,
+    "observed_free_gib": 114.028
+  },
+  "invariants": {
+    "prior_year_recomputed": false,
+    "prior_year_outputs_modified": false,
+    "raw_corpus_modified": false,
+    "legacy_r2_db_or_intervals_reused": false,
+    "target_mfa_started": false,
+    "target_textgrid_started": false,
+    "automatic_approval_performed": false
+  },
+  "authorization": {
+    "researcher_must_start_single_long_running_runner": true,
+    "simultaneous_duplicate_runner_forbidden": true,
+    "on_failure_preserve_corpus_temp_and_database": true
+  }
+}

@@ -17,7 +17,12 @@
 > 완료했다. 전수 coverage 100%·hard failure 0, 보존 DB 재수출은 semantic·byte
 > 24/24이고 최종 `QC_STATE.json`은 `passed`다. 원자료 변경·MFA 재계산·전수
 > 수출 반복은 모두 없었다. 2021은 이 state를 동결하고 다음 단계에서 2022 한
-> 연도만 준비한다.
+> 연도만 준비한다. 2026-08-11 13:43 KST에 2021 완료 SHA를 동결한 2022 r3
+> 준비 Gate가 통과했다. 2022 source 866,359발화를 pronunciation-safe 752,591,
+> follow-up 113,768로 분할하고 pre-MFA 기술 제외 870을 적용한 exact-ID 입력
+> 751,721건을 확정했다. 발음 연구 DB 866,359발화·4,504,375 occurrence와
+> alignment contract·독립 감사·실제 runner preflight가 모두 통과했다. 2022
+> corpus·MFA·TextGrid는 아직 시작하지 않았으며 다음 동작은 단일 장시간 runner다.
 
 > **2026-08-09 r3 2020 정렬 DB 완료·export 직전 상태:** 2020 exact-ID 입력은
 > 782,715발화이며 alignment contract ID는
@@ -85,7 +90,7 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
 |---:|---|---|---|---|
 | 2020 | 완료 | 읽기 전용 증거로 완료 | Gate B 검토를 회귀 근거로 보존 | r3 DB·283 승인·6-tier 782,432·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
 | 2021 | 완료 | 읽기 전용 증거로 완료 | 24/24 검토를 회귀 근거로 보존 | r3 DB·437 승인·6-tier 1,206,862·동반표 4개·독립 전수 QC·DB 표본 24/24 완료; SHA 동결 |
-| 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | pron-safe 752,591; 교집합 산정 대기 |
+| 2022 | 완료 | 읽기 전용 증거로 완료 | 24개 검토·발음 문제 발견 | r3 exact-ID 751,721·연구 DB·alignment 감사·runner preflight GO; 장시간 MFA 시작 대기 |
 | 2023 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 582,389; 교집합 산정 대기 |
 | 2024 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 595,743; 교집합 산정 대기 |
 | 2025 | 완료 | r2 생산 없음 | 해당 없음 | pron-safe 461,643; 교집합 산정 대기 |
@@ -142,12 +147,26 @@ MFA/G2P phone은 강제정렬용 분절 보조값이다. 규칙 예상 발음, �
   preflight가 통과했다. 보존 DB에서 6-tier 1,206,862개와 동반표 4개를 수출했다.
   독립 전수 감사 coverage는 100%, hard failure는 0이고, DB 재수출은
   semantic·byte 24/24다. 최종 `QC_STATE.json`은 `passed`다.
-- 2021 r3 MFA·전수 수출·QC는 다시 실행하지 않는다. 2020 변경도 금지하며 다음
-  단계는 동결 state를 이용한 2021→2022 단일 연도 Gate다.
+- 2021 r3 MFA·전수 수출·QC는 다시 실행하지 않는다. 2020 변경도 금지한다.
+  2021 완료 SHA를 이용한 2021→2022 r3 전환 Gate는 통과했다.
 - 상세 근거:
   `docs/decisions/RESULT_mfa_r3_alignment_database_2021_20260811.md`
 
 ## 2022 — r2 MFA·6-tier·기계 QC 완료, 발음 입력 문제 발견
+
+- r3 source snapshot·입력 계약·발음 연구 DB·alignment contract와 독립 감사를
+  완료했다. source 866,359 = safe 752,591 + follow-up 113,768이며, safe 집합의
+  pre-MFA 기술 제외 870을 뺀 exact-ID 751,721건이 새 r3 정렬 대상이다.
+- source WAV 누락은 0이다. source 밖 WAV 11,798개는 snapshot에만 기록하고 입력으로
+  암묵 선택하지 않는다. 과거 r2 실패 438건 중 조건을 충족한 337건은 새 r3
+  정렬에 재진입한다.
+- 발음 연구 DB는 866,359발화·4,504,375 occurrence이며 미회계 발화·unknown
+  nonempty LAB token은 0이다. alignment contract ID는
+  `f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb`다.
+- 실제 runner `-PreflightOnly`는 실패 검사 0, 필요 공간 52.193 GiB 대비 D: 여유
+  114.028 GiB로 GO다. 2022 r3 MFA·corpus·TextGrid는 아직 시작하지 않았다.
+- 상세 근거:
+  `docs/decisions/RESULT_mfa_r3_2022_preflight_20260811.md`
 
 - search master와 source/input/alignment 계약은 완료됐다.
 - 활성 LAB 865,128개 중 864,690개가 정렬됐고 438개는 최종 interval이 없는
@@ -204,7 +223,8 @@ MFA를 시작하지 않았다. 2022에서 발견한 음원 품질 문제를 반�
 - 실행 중인 장시간 작업 없음
 - 2020 완료 자산 변경 없음
 - 2021 core 및 파생층 완료
-- 2021 공식 연구자 승인·`2021 → 2022` Gate 완료
+- 2021 완료 SHA 동결·`2021 → 2022` r3 Gate·2022 runner preflight GO
+- 2022 r3 exact-ID 751,721·발음 연구 DB·alignment contract 준비 완료
 - 2022 MFA·6-tier·동반표·독립 기계 QC 완료
 - 2022 post-MFA 438건과 결합 제외 1,669건의 승인·회계 완료
 - 2022 공식 연구자 인프라 표본 24개 검토 완료·발음 입력 불일치 발견

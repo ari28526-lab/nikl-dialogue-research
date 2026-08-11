@@ -3107,3 +3107,29 @@ shard 2–23을 재개하는 것이다.
 - 완료 뒤 12:01 KST의 읽기 전용 preflight는 `resume: audit=True, sample=True`를
   기록했다. 같은 QC 명령을 다시 호출해도 1,206,862개 감사와 24세션 비교를
   반복하지 않을 수 있음을 최종 확인했다.
+
+### 2026-08-11 — 2021 동결·2022 exact-ID 계약과 장시간 MFA 직전 GO
+
+- 2021 최종 완료 집계·`QC_STATE.json`·`ALIGN_DONE_2021.json` SHA를 전환 Gate에
+  결속했다. 2020·2021 MFA·전수 수출·QC와 원자료는 다시 실행하거나 수정하지
+  않았다.
+- 2022 WAV source를 내용 읽기나 per-file stat 없이 상대경로 inventory로 53.8초에
+  snapshot했다. WAV는 878,157개이며 원 tree 수정·복사·이름 변경은 0이다.
+- 2022 source 866,359를 safe 752,591·follow-up 113,768로 분할하고, 명시 승인된
+  pre-MFA 기술 제외 중 safe에 속하는 870건을 적용했다. exact-ID 입력은
+  751,721건, source WAV 누락은 0, source 밖 WAV 11,798개는 입력에서 제외됐다.
+- 과거 r2 post-MFA 실패 438건 중 새 r3 조건을 충족한 337건은 재정렬 입력으로
+  복귀했다. 기존 r2 DB·interval은 재사용하지 않는다.
+- 발음 연구 DB는 866,359발화·4,504,375 occurrence를 만들었고 독립 감사가
+  `passed`다. Codex 관찰 셸 10분 제한 뒤에도 wrapper·auditor가 살아 있음을 확인해
+  중복 실행하지 않았고, 원래 작업이 끝나 lock을 정상 해제할 때까지 기다렸다.
+- alignment contract ID는
+  `f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb`다.
+  최초 preflight는 감사 파일을 실행일 `_20260811`로 기록해 release 정본명
+  `_20260809`를 찾지 못하고 안전 중단됐다. MFA·corpus·DB 변경 없이 동일 통과
+  감사를 정본 경로에 기록하고 preflight만 재실행했다.
+- PowerShell safety 68파일, Windows PowerShell 5.1 runtime 68스크립트, Python
+  556시험이 통과했다. 최종 preflight는 실패 검사 0, 필요 52.193 GiB 대비 D:
+  여유 114.028 GiB로 GO다. 2022 corpus·MFA·TextGrid는 아직 시작하지 않았다.
+- 근거는 `docs/decisions/RESULT_mfa_r3_2022_preflight_20260811.md`와
+  `outputs/reports/GATE_mfa_r3_2021_TO_2022_20260811.json`에 남겼다.
