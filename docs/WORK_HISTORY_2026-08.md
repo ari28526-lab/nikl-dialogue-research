@@ -3207,3 +3207,33 @@ shard 2–23을 재개하는 것이다.
   `f5268010fa72cf4f09f7ff6a12ce4a1a2242731e8afef63c3f9056801e9132d8`다.
 - 2023 corpus·DB·MFA·TextGrid는 아직 미시작이다. 다음 단일 사용자 행동은
   `run_mfa_r3_year_safe_body.ps1 -Year 2023 -NumJobs 4`의 장시간 실행이다.
+
+### 2026-08-12~13 — 2023 r3 정렬 DB 완료·352건 exact-ID 승인 대기
+
+- 2026-08-12 20:25 KST에 2023 단일 r3 runner를 시작했다. 동결 계약의
+  494,580 WAV/LAB·1,656세션을 materialize한 뒤 21:35 KST부터 MFA를 계산했다.
+  정렬 job은 feature 유효 범위 494,579/494,579를 처리했고 MFA 자체 계산 시간은
+  10,692.122초다.
+- progress 100% 뒤에도 네 `get_phone_ctm` job과 SQLite interval 적재가 계속됐다.
+  CTM 네 작업의 `Finished extraction`, Python CPU, heartbeat, DB 크기 증가를 확인해
+  강제 종료하지 않았다. DB journal이 정리된 뒤 00:34 KST에 wrapper가 정상
+  종료하고 `ALIGN_DONE_2023.json status=passed`가 생성됐다.
+- 보존 DB는 4,829,962,240 bytes, SHA-256
+  `3c6695ac2033612d514e6ca57711d006d2505c6ddb25124b666865df8c315108`이며 corpus·
+  temp·DB를 삭제하지 않았다. 기존 2020–2022 완료본과 원 WAV·LAB·CSV·r2
+  비교본도 수정하거나 재실행하지 않았다.
+- 완료 DB fingerprint, SQLite `quick_check`, 입력–DB exact-ID 494,580/494,580을
+  전수 검증했다. complete word+phone interval은 494,228건, 기술 후보는 352건이다.
+  사유는 `mfa_alignment_missing` 351과 `mfa_feature_generation_failed` 1이며
+  66세션에 분포한다. 후보 identity는
+  `e6716a3694124c656f040491ebb7b9bb7b5bd66947926fc6bccf0543eb878b3b`다.
+- 후보 352행은 모두 고유 ID·pending·`alignment_and_analysis`이고 자동 승인하지
+  않았다. 성공한 494,228건과 보존 DB를 유지하므로 이 기술 후보 때문에 2023
+  전체를 재정렬하지 않는다. 연구자 승인 전 6-tier 수출은 열지 않는다.
+- 감시 중 선택 세션과 source 전체 세션을 잘못 비교한 수동 분모 혼동, 실행 중
+  buffered 로그 크기 표시, 읽기 전용 진단 명령 표기 오류가 있었으나 MFA·DB에는
+  영향이 없었다. 완료 기준을 progress 100%가 아니라 marker passed·프로세스 정상
+  종료·lock/journal 해제·DB fingerprint 일치로 유지했다.
+- 상세 방법과 승인 문장은
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2023_20260813.md`에 기록했다.
+  다음 단계는 연구자 명시 승인→수출 preflight→6-tier·동반표→독립 전수 QC다.
