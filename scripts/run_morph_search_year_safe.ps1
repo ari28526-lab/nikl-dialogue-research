@@ -20,7 +20,8 @@ param(
     [int]$MaxShards = 0,
     [ValidateRange(10, 500)]
     [int]$MinimumFreeGiB = 50,
-    [switch]$EmitOrthComponents
+    [switch]$EmitOrthComponents,
+    [switch]$PreflightOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -67,14 +68,37 @@ if ([string]$meta.status -ne 'success') {
 }
 
 $driveName = ([IO.Path]::GetPathRoot($outputBase)).TrimEnd('\')
-$drive = Get-PSDrive -Name $driveName.TrimEnd(':')
-$freeGiB = [math]::Round($drive.Free / 1GB, 3)
+$drive = [IO.DriveInfo]::new($driveName + '\')
+$freeGiB = [math]::Round($drive.AvailableFreeSpace / 1GB, 3)
 if ($freeGiB -lt $MinimumFreeGiB) {
     throw "저장공간 부족: $driveName free=$freeGiB GiB, 최소=$MinimumFreeGiB GiB"
 }
 
-New-Item -ItemType Directory -Force -Path $outputRoot | Out-Null
 $lockPath = Join-Path $outputRoot 'RUNNING.lock.json'
+if ($PreflightOnly) {
+    if (Test-Path -LiteralPath $lockPath -PathType Leaf) {
+        $prior = Get-Content -LiteralPath $lockPath -Raw -Encoding UTF8 |
+            ConvertFrom-Json
+        $priorProcess = Get-Process -Id ([int]$prior.pid) -ErrorAction SilentlyContinue
+        if ($null -ne $priorProcess) {
+            throw "동일 연도 작업이 실행 중임: pid=$($prior.pid), lock=$lockPath"
+        }
+        Write-Warning "stale lock 발견; 실제 실행 때 archive: $lockPath"
+    }
+    $inputFiles = @(
+        Get-ChildItem -LiteralPath $inputRoot -File -Filter '*.csv'
+    ).Count
+    if ($inputFiles -le 0) { throw "연도 입력 CSV 없음: $inputRoot" }
+    $totalShards = [math]::Ceiling($inputFiles / [double]$FilesPerShard)
+    Write-Host (
+        "[GO] 조합검색 preflight: year=$Year, input_files=$inputFiles, " +
+        "shards=$totalShards, D free=$freeGiB GiB"
+    ) -ForegroundColor Green
+    Write-Host '출력·lock·MFA·TextGrid·공통발음사전을 만들거나 변경하지 않음.'
+    exit 0
+}
+
+New-Item -ItemType Directory -Force -Path $outputRoot | Out-Null
 if (Test-Path -LiteralPath $lockPath -PathType Leaf) {
     $prior = Get-Content -LiteralPath $lockPath -Raw -Encoding UTF8 |
         ConvertFrom-Json

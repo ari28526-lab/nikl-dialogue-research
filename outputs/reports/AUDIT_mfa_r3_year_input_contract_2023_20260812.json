@@ -1,0 +1,97 @@
+{
+  "schema_version": "mfa_r3_year_input_contract_audit.v1",
+  "status": "passed_independent_exact_id_audit_pending_alignment_contract_gate_closed",
+  "recorded_at": "2026-08-12T16:53:49+09:00",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "year": "2023",
+  "year_input_contract_id": "04d82d422460341ea853fa06767237bbfb823896814381caacc2c7fb5134bfa0",
+  "verdict": {
+    "exact_id_partition_passed": true,
+    "recovered_wav_binding_passed": true,
+    "wav_source_snapshot_binding_passed": true,
+    "r2_post_mfa_failures_reentered_when_eligible": true,
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "release_gate_remains_closed": true,
+    "contract_build_only": true
+  },
+  "checks": {
+    "source_equals_safe_union_followup": true,
+    "safe_followup_intersection_empty": true,
+    "unknown_ids": 0,
+    "year_summary_exact": true,
+    "expected_mfa_input_equation_exact": true,
+    "recovered_wav_equation_exact": true,
+    "expected_mfa_input_has_wav": true,
+    "output_row_content_and_order_exact": true,
+    "output_fingerprints_exact": true
+  },
+  "counts": {
+    "source_utterances": 677262,
+    "pronunciation_safe": 582389,
+    "pronunciation_followup": 94873,
+    "pre_mfa_exclusions_applied_to_pron_safe": 87809,
+    "expected_mfa_input": 494580,
+    "r2_post_mfa_reentered": 0,
+    "recovered_wav_ids": 677397,
+    "source_wav_missing": 923,
+    "corpus_extra_wav_ids": 1058
+  },
+  "output_row_digests": {
+    "pronunciation_safe_ids": "6c3c40ac088096b31131b03a7aade7614b0751f10a5a21e5ed806e3240e750d5",
+    "pronunciation_followup_ids": "6bdb91be2147277532391b3c5c69c657ff57721a7ead7214b9d9b2e4f77d7c68",
+    "pre_mfa_exclusion_ids": "736907da71e5ad4e20877cfa7ba3f018b9ac120947e5eb8f84001ff978bacf71",
+    "expected_mfa_input_ids": "7ffabe9aea7d2a1f55741669a676910dc98a9adfc58ca524b3fc5dc0c5c04552",
+    "r2_post_mfa_reentry_ids": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "inputs": {
+    "year_input_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\YEAR_INPUT_CONTRACT_2023.json",
+      "bytes": 8854,
+      "mtime_ns": 1786521144805718500,
+      "sha256": "aee6d65b8ae8c21b5643d593a175b3e0bfdf0aa32c5d71e201b207703d42a814"
+    },
+    "pronunciation_safe_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\pronunciation_safe_ids_2023.csv.gz",
+      "bytes": 1717845,
+      "mtime_ns": 1786521143822266200,
+      "sha256": "4ffac67098a2a45f27a4515db72360995b4f92a4ef09c88393a91ab9cc9ffa69"
+    },
+    "pronunciation_followup_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\pronunciation_followup_ids_2023.csv.gz",
+      "bytes": 915472,
+      "mtime_ns": 1786521143821265900,
+      "sha256": "e37101a120fc5dc1602cdca17fd49752d614c3bd4f1164fe0b1d0f77e3696572"
+    },
+    "pre_mfa_exclusion_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\pre_mfa_exclusion_ids_2023.csv.gz",
+      "bytes": 271102,
+      "mtime_ns": 1786521143819258900,
+      "sha256": "957379c4ee95a5515c4e084a03e2ede27364009c044703ce50b8b71e3e82750f"
+    },
+    "expected_mfa_input_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\expected_mfa_input_ids_2023.csv.gz",
+      "bytes": 1457907,
+      "mtime_ns": 1786521143818758700,
+      "sha256": "f065ccfd36d446b2f847ef4be5741a5eb9172a077fb4bed57956780bc1d0b16d"
+    },
+    "r2_post_mfa_reentry_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\r2_post_mfa_reentry_ids_2023.csv.gz",
+      "bytes": 88,
+      "mtime_ns": 1786521143816726200,
+      "sha256": "c2b63f5b1c0532dcce26267a16e80c7d68fa4c54f076466cc089ea6fe3f57943"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-12T16:53:49+09:00",
+    "git_commit": "b0d5920f9312ebd04ce1b6d11bbb340f39a75a14",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 29400
+  }
+}

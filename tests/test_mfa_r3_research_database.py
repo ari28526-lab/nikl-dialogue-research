@@ -25,6 +25,32 @@ def write_gzip(path: Path, fields: list[str], rows: list[dict]) -> None:
 
 
 class MfaR3ResearchDatabaseTests(unittest.TestCase):
+    def test_preflight_rejects_missing_morphology_year(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            release = root / "release"
+            year_root = release / "03_year_input_contracts" / "2023"
+            write_json(
+                year_root / "YEAR_INPUT_CONTRACT_2023.json",
+                {
+                    "release_id": "r3-test",
+                    "pronunciation_contract_id": "pron-test",
+                    "year": "2023",
+                    "year_input_contract_id": "year-test",
+                },
+            )
+            policy = {
+                "release_id": "r3-test",
+                "pronunciation_contract_id": "pron-test",
+                "scope_years": ["2023"],
+            }
+            paths = {
+                "year_input_contract_root": release / "03_year_input_contracts",
+                "morph_search_root": root / "morph",
+            }
+            with self.assertRaisesRegex(RuntimeError, "frozen morphology year is incomplete"):
+                builder.validate_year_preflight_inputs("2023", policy, paths)
+
     def test_type_occurrence_and_audit_contract(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

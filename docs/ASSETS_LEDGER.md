@@ -16,7 +16,7 @@
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
 | `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 연구 검색 master | 보존, `_build_meta` SHA 계약; r3 MFA 입력 root로 사용 금지 |
 | `D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725` | 동결 pre-MFA 발음 입력 master | `pron_reference_form`과 실제 LAB tokenizer의 r3 발화 라우팅 정본 |
-| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020·2021 연도 manifest success; 나머지는 각 생산 연도 직전 checkpoint 생성 |
+| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020·2021·2023 연도 manifest success; 2023은 20/20 shard·발화 master 677,262행, 2024·2025는 각 생산 연도 직전 checkpoint 생성 |
 | `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음, occurrence와 규칙/사전/MFA 비교표 | registry 1,192,729행 채택; 2020·2021 occurrence 5,767,506/12,015,453행, 비교표 3,042,451/6,610,698행, index 870,437/1,373,920행 전수 검증 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |
@@ -27,7 +27,7 @@
 | `D:\mfa_common_pron\releases\common_pron_mfa_r2_20260728` | 구 공통 Jamo r2 사전·감사 증거 | 읽기 전용 보존, 신규 MFA 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807` | r3 canonical·donor·G2P 후보, 규칙 Gate, 발화 라우팅, safe-body 후보, 표적 회귀 | Stage 01–21 완료; safe 4,384,992·follow-up 718,364; 채택 release의 역사적 입력 근거, 직접 생산 입력으로 임의 변경 금지 |
 | `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809` | 채택된 r3 selected projection·796,061행 MFA 사전·독립 감사 | production Gate `adopted`; 2020–2025의 유일한 신규 MFA 발음 release, r2와 혼합 금지 |
-| `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809\05_research_database` | r3 발음 유형–발화 scope–참조 어절 occurrence 정규화 정본 | 2020–2022 연도별 구축·독립 감사 passed; 2022 발화 866,359·occurrence 4,504,375, post-MFA 결합 키와 SHA 고정 |
+| `D:\mfa_common_pron\releases\common_pron_mfa_r3_20260809\05_research_database` | r3 발음 유형–발화 scope–참조 어절 occurrence 정규화 정본 | 2020–2023 연도별 구축·독립 감사 passed; 2023 발화 677,262·occurrence 3,629,250·r3 input 494,580, post-MFA 결합 키와 SHA 고정 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\10_no_rule_hold_characterization` | no-rule 85,504형의 문자·사전·r2 출처·편집 유형 전수 특성화 | `success_characterized_not_candidate`; 모두 완성형 한글, 독립 감사 통과, 후보·selection·adoption 아님 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\11_rule_phone_coverage_audit` | no-rule 변이의 수의적 위치동화, frozen 기본사전 정확 일치, phone↔규칙키 비일대일성 전수 진단 | `success_audited_not_candidate`; 36,568형 all-optional, 811형 비중복 all-frozen, 48,043형 미해결, 독립 감사 통과 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\12_selection_readiness_v2` | stage 09 전체 readiness에 감사된 no-rule 정렬 후보 37,379형만 추가한 881,237형 계획표 | `success_planning_not_selected`; candidate 789,649형, zero-fallback hold 91,553형, 독립 감사 통과, adoption 아님 |
@@ -44,7 +44,7 @@
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 production namespace 분리 |
-| `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2022 `ALIGN_DONE`·독립 QC passed; 2022 입력 751,721·정렬 751,383·승인 미정렬 338, DB 7,146,942,464 bytes·SHA/SQLite 감사 통과; 2020–2022 재실행·수동 삭제·legacy 재사용 금지 |
+| `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2022 `ALIGN_DONE`·독립 QC passed; 2023 입력/정렬 계약·연구 DB·runner preflight와 2022→2023 Gate 통과, exact-ID 494,580 MFA는 미시작; 2020–2022 재실행·수동 삭제·legacy 재사용 금지 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809\research_6tier` | 최종 r3 6-tier TextGrid·연도별 gzip 동반표 | 2020 782,432·2021 1,206,862·2022 751,383 TextGrid; 세 연도 모두 coverage 100%·hard failure 0·DB 표본 semantic/byte 24/24, 연도별 `QC_STATE.json` passed |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
@@ -107,7 +107,8 @@ C:\Users\ari30\research\2026_summer_research
 18/18 `GO`였고, 발음 연구 DB Gate를 추가한 최신 runtime preflight
 `work/mfa_r3_preflight/PREFLIGHT_common_pron_mfa_r3_20260809_2020.json`은
 19/19 `GO`다. 이후 같은 계약으로 2020–2022 r3 정렬·6-tier·독립 QC를
-완료했으며 다음 실물 생산은 2022→2023 전환 Gate 뒤 2023 한 연도다.
+완료했다. 2022→2023 전환 Gate와 2023 preflight도 통과했으며 다음 실물 생산은
+2023 exact-ID 494,580건의 단일 장시간 runner다.
 
 ## 2020 현재 계약
 

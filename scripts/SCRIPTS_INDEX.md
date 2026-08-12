@@ -40,10 +40,10 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | 스크립트 | 역할 |
 |---|---|
 | `python/build_morph_search_year_sharded.py` | 동결 pre-MFA search master를 읽기 전용으로 받아 연도·session-file shard별 7개 형태/철자/기호 검색표를 만들고, 성공 shard SHA 재검증·결정적 gzip·연도 승격을 수행한다. 실패 partial은 보존한다. |
-| `run_morph_search_year_safe.ps1` | 한 연도만 허용하고 D: 공간·동결 입력 manifest·중복 lock을 검사한 뒤 위 builder를 실행한다. MFA·TextGrid·공통사전은 변경하지 않는다. |
+| `run_morph_search_year_safe.ps1` | 한 연도만 허용하고 D: 공간·동결 입력 manifest·중복 lock을 검사한 뒤 위 builder를 실행한다. `-PreflightOnly`는 당해 연도 입력 수·shard 계획·DriveInfo 여유를 쓰기 없이 확인한다. MFA·TextGrid·공통사전은 변경하지 않는다. |
 | `prepare_production_year_before_mfa.ps1` | 2021–2025 중 한 연도의 `morph_search.v3`를 생성/재개한 뒤 동결 search master SHA와 연도 manifest를 source contract로 결속한다. 원본·MFA·TextGrid는 바꾸지 않는다. |
 | `show_production_year_pre_mfa_status.ps1` | 연도별 shard 진행률·lock PID 생존·annual manifest·source contract·D: 여유를 표시하는 읽기 전용 상태판 | 실행·수정·자동 재개 없음 |
-| `show_morph_search_year_status.ps1` | 연도별 shard 진행률, schema, 연도 manifest와 table 행 수를 읽기 전용으로 표시한다. |
+| `show_morph_search_year_status.ps1` | 연도별 shard 진행률, schema, 연도 manifest와 table 행 수를 읽기 전용으로 표시한다. Windows PowerShell 5.1에서 D: 여유를 `DriveInfo`로 읽어 0 GiB 오인을 막는다. |
 | `python/collect_morph_search_regression_evidence.py` | 2020–2025 각 10발화의 두 독립 출력에서 42개 gzip SHA, 어절 좌표 mismatch, 기호 상태와 `2사람이→두` 근거를 감사한다. |
 
 
@@ -106,7 +106,8 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | audit_common_pron_mfa_r3_staged_release.py | Stage 20 후보, 새 selected projection, MFA 사전 796,061행을 전수 lockstep 대조하고 candidate→selected provenance, 사전 byte 동일성, 동결 phone inventory, Stage 19/20·승인 SHA, Gate 폐쇄를 독립 검증 |
 | audit_mfa_r3_full_realign_policy.py | workflow·v3.1 계약·Stage 19 실제 연도 routing summary·단계 승인·production Gate 승인·r3 release와 실행 경로를 전수 대조하고, r2 interval/legacy token 비재사용과 단일 release 허용을 독립 검사 | v2 Gate-adopted 감사 `failures=0`, `gaps=0`, `production_allowed=true` |
 | build_mfa_r3_wav_source_snapshot.py | recovered WAV 연도 tree를 읽기 전용 상대경로·ID inventory로 동결하고 중복 ID·비정상 확장자·파일 수·바이트·SHA를 원자 기록. 원 WAV 이동·수정 없음 | 2021 1,416,216개 snapshot 완료; source WAV 누락 0 검증 입력 |
-| build_mfa_r3_research_database.py / audit_mfa_r3_research_database.py | r3 선택 발음 1:N 유형표를 881,237형 정본 catalog로 연결하고, 연도별 발화 scope와 참조 어절 occurrence를 기존 형태소 shard checkpoint로 생성·독립 전수 대조. 원 CSV·사전·WAV·MFA·TextGrid 비변경, 좌표 수 불일치 추측 금지 | 2020 870,437·3,056,807, 2021 1,373,920·6,648,515; 두 연도 독립 감사 passed |
+| build_mfa_r3_research_database.py / audit_mfa_r3_research_database.py | r3 선택 발음 1:N 유형표를 881,237형 정본 catalog로 연결하고, 연도별 발화 scope와 참조 어절 occurrence를 기존 형태소 shard checkpoint로 생성·독립 전수 대조. preflight가 당해 연도 progress/annual/shard manifest success를 먼저 강제한다. 원 CSV·사전·WAV·MFA·TextGrid 비변경, 좌표 수 불일치 추측 금지 | 2020–2023 독립 감사 passed; 2023 677,262발화·3,629,250 occurrence |
+| build_mfa_r3_year_transition_gate.py | 직전 연도 ALIGN_DONE·보존 DB·독립 QC SHA와 다음 연도 입력/정렬/연구 DB 감사·runner preflight를 결속하고, 다음 marker/DB가 아직 없을 때만 단일 장시간 시작을 허용한다. 승인·MFA·TextGrid는 자동 수행하지 않는다. | 2022→2023 Gate 8/8 passed, 2023 exact-ID 494,580 runner 미시작 확인 |
 | run_mfa_r3_research_database.ps1 | D: label·공간·단일 lock·PS5.1 안전을 적용해 type catalog와 한 연도 occurrence DB를 생성하고 독립 감사까지 연속 실행. `-PreflightOnly` 지원, MFA·TextGrid 미실행 | 2020·2021 완료; 연도별 1회, 입력 SHA 불변이면 반복 금지 |
 | preflight_mfa_r3_year_safe_body.py | r3 runner 정책·D: label·잠금·alignment 계약/감사·r3 발음 occurrence DB 감사·모델과 exact-ID SHA·연도별 산식 용량·release-scoped 경로·legacy artifact·저장소 테스트 영수증·단일 release Gate를 검사하고 GO/NO-GO JSON을 원자 기록 | 2021 exact-ID 1,207,299·필요 74.733 GiB·실제 GO; occurrence 감사가 없거나 변조되면 NO-GO |
 | materialize_mfa_r3_safe_body_corpus.py | 연도 expected-input exact ID만 recovered WAV와 결합해 r3 release corpus에 WAV hardlink와 LAB를 물질화. contract-bound `.building` checkpoint로 재개하며 원 WAV·r2·Stage를 수정하지 않음 | 합성 corpus hardlink·멱등·불일치 차단 회귀 통과; 2020은 Gate·preflight GO 뒤 runner 시작 시 최초 생성 |

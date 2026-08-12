@@ -300,9 +300,10 @@ safe body는 4,384,992발화, follow-up은 718,364발화다. Stage 20 후보 사
 재사용하지 않으며 follow-up은 exact-ID 별도 shard로 보존한다. 외부 workflow
 리뷰, r3 전용 release/runner, 정책 감사 v2와 2020 preflight 18/18은 완료됐다.
 이 단락은 r3 채택 당시의 근거다. 이후 2020–2022 신규 r3 정렬·6-tier·독립
-QC가 완료됐다. Stage 13–21이나 2020–2022 runner를 다시 실행하지 않고, 현재
-checkpoint 절에 따라 2023 전환 Gate부터 진행한다. r2 label 제자리 치환은
-계속 금지한다.
+QC가 완료됐다. 2022→2023 전환 Gate와 2023 조합검색·연구 DB·runner preflight도
+통과했다. Stage 13–21이나 2020–2022 runner를 다시 실행하지 않고, 현재는 2023
+exact-ID 494,580건의 장시간 runner만 시작한다. r2 label 제자리 치환은 계속
+금지한다.
 
 ## 새 대화에 붙일 최소 프롬프트
 
@@ -312,9 +313,10 @@ C:\Users\ari30\research\2026_summer_research의 작업을 이어가자.
 PROJECT_CURRENT_STATE.md, docs/RUNBOOK_production_2020_2025.md,
 CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md를 읽어라.
 2020–2022 r3 완성본과 원본 WAV/CSV를 변경하지 말고, 현재 실행 프로세스·lock·
-manifest를 읽기 전용으로 확인한 뒤 재시작 여부를 판단하라. 2022 QC checkpoint를
-보존하고 2022→2023 전환 Gate부터 진행하라. 현재 Git commit과 실제 D: 상태를
-대화 기억보다 우선하라.
+manifest를 읽기 전용으로 확인한 뒤 재시작 여부를 판단하라. 2022 QC checkpoint와
+통과한 2022→2023 Gate를 보존하고, 2023 marker/DB가 없으면 이미 통과한 preflight의
+exact-ID 494,580건 runner부터 진행하라. 현재 Git commit과 실제 D: 상태를 대화
+기억보다 우선하라.
 ```
 
 ## 계정 한도에 관한 운영 원칙

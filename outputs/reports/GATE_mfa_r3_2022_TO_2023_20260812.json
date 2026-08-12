@@ -1,0 +1,183 @@
+{
+  "schema_version": "mfa_r3_year_transition_gate.v2",
+  "status": "passed_ready_for_researcher_start",
+  "recorded_at": "2026-08-12T18:08:10+09:00",
+  "from_year": "2022",
+  "to_year": "2023",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "checks": [
+    {
+      "name": "prior_alignment_frozen",
+      "passed": true,
+      "detail": {
+        "year": "2022",
+        "alignment_contract_id": "f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb"
+      }
+    },
+    {
+      "name": "prior_database_retained",
+      "passed": true,
+      "detail": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+        "bytes": 7146942464,
+        "sha256": "610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2"
+      }
+    },
+    {
+      "name": "prior_independent_qc_frozen",
+      "passed": true,
+      "detail": {
+        "checkpoint": "7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89",
+        "counts": {
+          "textgrids": 751383,
+          "approved_exclusions": 338,
+          "sample_sessions": 24,
+          "sample_semantic_equal": 24,
+          "sample_byte_equal": 24
+        }
+      }
+    },
+    {
+      "name": "next_year_input_audited",
+      "passed": true,
+      "detail": {
+        "year_input_contract_id": "04d82d422460341ea853fa06767237bbfb823896814381caacc2c7fb5134bfa0",
+        "counts": {
+          "source_utterances": 677262,
+          "pronunciation_safe": 582389,
+          "pronunciation_followup": 94873,
+          "pre_mfa_exclusions_applied_to_pron_safe": 87809,
+          "expected_mfa_input": 494580,
+          "r2_post_mfa_reentered": 0,
+          "recovered_wav_ids": 677397,
+          "source_wav_missing": 923,
+          "corpus_extra_wav_ids": 1058
+        }
+      }
+    },
+    {
+      "name": "next_alignment_audited",
+      "passed": true,
+      "detail": {
+        "alignment_contract_id": "2b16d0309aa11731b6d1e520850c359aa67783004fbd5dea80758b416a7d61eb",
+        "expected_mfa_input": 494580
+      }
+    },
+    {
+      "name": "next_research_database_audited",
+      "passed": true,
+      "detail": {
+        "join_key": [
+          "year",
+          "utt_id",
+          "reference_eojeol_idx"
+        ],
+        "counts": {
+          "utterances": 677262,
+          "scope_r3_safe_body_input": 494580,
+          "occurrences": 3629250,
+          "scope_pronunciation_followup": 94873,
+          "scope_pre_mfa_excluded": 87809
+        }
+      }
+    },
+    {
+      "name": "next_runner_preflight_go",
+      "passed": true,
+      "detail": {
+        "capacity": {
+          "expected_utterances": 494580,
+          "per_utterance_bytes": 42500,
+          "variable_gib": 19.576,
+          "fixed_overhead_gib": 12.0,
+          "safety_multiplier": 1.25,
+          "required_gib": 39.47
+        },
+        "failed_checks": []
+      }
+    },
+    {
+      "name": "next_year_not_started",
+      "passed": true,
+      "detail": {
+        "marker": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers\\ALIGN_DONE_2023.json",
+        "database": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023.db"
+      }
+    }
+  ],
+  "failed_checks": [],
+  "from_year_frozen": {
+    "alignment_marker": {
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers\\ALIGN_DONE_2022.json",
+      "bytes": 1201,
+      "mtime_ns": 1786452110589418100,
+      "sha256": "bfb797a024fc4ea6a03657688d67ca3b7e535e412e550fde7956a9a0f3861e3a"
+    },
+    "qc_state": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2022\\QC_STATE.json",
+      "bytes": 3719,
+      "mtime_ns": 1786468240999288800,
+      "sha256": "7f0fd1a706ccc6a33f8a07ce2df8664eb64f4ccbb32dcd3cbc109161fad10ba5"
+    },
+    "source_db_recorded": {
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+      "bytes": 7146942464,
+      "sha256": "610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2"
+    }
+  },
+  "to_year_contract": {
+    "year_input_contract_id": "04d82d422460341ea853fa06767237bbfb823896814381caacc2c7fb5134bfa0",
+    "alignment_contract_id": "2b16d0309aa11731b6d1e520850c359aa67783004fbd5dea80758b416a7d61eb",
+    "expected_mfa_input": 494580,
+    "year_input_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2023\\YEAR_INPUT_CONTRACT_2023.json",
+      "bytes": 8854,
+      "mtime_ns": 1786521144805718500,
+      "sha256": "aee6d65b8ae8c21b5643d593a175b3e0bfdf0aa32c5d71e201b207703d42a814"
+    },
+    "year_input_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_r3_year_input_contract_2023_20260812.json",
+      "bytes": 4479,
+      "mtime_ns": 1786521229319085200,
+      "sha256": "f1e29e87a5a5e128076e994c90b0a79ed8e7d0cc1aa83d46d4ffdb315b1fa9ae"
+    },
+    "alignment_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2023\\ALIGNMENT_CONTRACT_2023.json",
+      "bytes": 7647,
+      "mtime_ns": 1786521253454254100,
+      "sha256": "a7b19c2e62978d20b3b171cdcf254f046b621246aa8893c38b528700eb554100"
+    },
+    "alignment_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\AUDIT_mfa_r3_alignment_contract_2023_20260809.json",
+      "bytes": 3315,
+      "mtime_ns": 1786521253942639000,
+      "sha256": "7666daa9e6723307157900b7f03e32b57c2f0eb88ead9509ce12623771410d1b"
+    },
+    "research_database_audit": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\05_research_database\\2023\\AUDIT_RESEARCH_DATABASE_2023.json",
+      "bytes": 2908,
+      "mtime_ns": 1786525276818408600,
+      "sha256": "3242820e83ab6284bcc3ecaeaf9e3586cf98a9ff0afefbeeb27891fc7016fd32"
+    },
+    "runner_preflight": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\mfa_r3_preflight\\PREFLIGHT_common_pron_mfa_r3_20260809_2023.json",
+      "bytes": 6296,
+      "mtime_ns": 1786525623655682500,
+      "sha256": "8e12da362e2b6384f517a2525340799e707996f470cc52b4855f32b1a844f24c"
+    }
+  },
+  "invariants": {
+    "prior_year_recomputed": false,
+    "prior_year_outputs_modified": false,
+    "raw_corpus_modified": false,
+    "legacy_r2_db_or_intervals_reused": false,
+    "target_mfa_started": false,
+    "target_textgrid_started": false,
+    "automatic_approval_performed": false
+  },
+  "authorization": {
+    "researcher_must_start_single_long_running_runner": true,
+    "simultaneous_duplicate_runner_forbidden": true,
+    "on_failure_preserve_corpus_temp_and_database": true
+  }
+}

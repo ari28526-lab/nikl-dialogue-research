@@ -3171,3 +3171,39 @@ shard 2–23을 재개하는 것이다.
 - 상세 방법·SHA·재실행 금지 범위는
   `docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`에 기록했다.
   다음 단계는 2022 완료 SHA를 동결한 2022→2023 전환 Gate다.
+
+### 2026-08-12 — 2022→2023 Gate·2023 조합검색/연구 DB·runner preflight GO
+
+- 2022 `ALIGN_DONE`, 보존 DB와 독립 QC SHA를 먼저 고정하고 2020–2022 MFA·수출·
+  QC를 재실행하지 않았다. 2023 WAV source snapshot 677,397건도 원음 내용 읽기·
+  복사·이름 변경 없이 상대경로 inventory로 기록했다.
+- 2023 source 677,262를 pronunciation-safe 582,389와 follow-up 94,873으로
+  분할했다. 기존 연구자 승인 103,930건 중 safe와 교차하는 87,809만 본체에서
+  제외했고 16,121은 이미 follow-up이라 이중 제외하지 않았다. 최종 r3 입력은
+  494,580이며 입력 WAV 결손은 0이다. source WAV 미대응 923은 모두 본체 밖이고,
+  source 밖 WAV 1,058은 자동 포함하지 않았다.
+- 최초 발음 연구 DB 실행은 2023 `morph_search.v3` shard 부재를 실제 builder에서
+  발견하고 안전 중단됐다. MFA·corpus·DB·TextGrid·원자료 변경은 없었다. 기존
+  preflight가 연도별 형태소 shard 존재를 검사하지 않은 공백을 보강해 progress,
+  annual manifest, 모든 shard manifest success를 실행 전에 강제했다. 형태소
+  wrapper에는 `-PreflightOnly`를 추가하고 D: 여유는 PowerShell 5.1에서 안정적인
+  `DriveInfo`로 통일했다.
+- 2023 조합검색은 20/20 shard를 3,077.6초에 완료했다. 발화 master 677,262,
+  어절 token 3,586,726, 형태소 token 6,610,494, 형태소 unit 9,802,117, 경계
+  5,933,232, 철자 어절 3,592,988, 기호 읽기 262,115행이며 중복 0·기호 coverage·
+  결정적 gzip Gate를 통과했다.
+- 발음 연구 DB는 20/20 checkpoint 뒤 발화 677,262·참조 어절 occurrence
+  3,629,250행을 생성했다. scope는 input 494,580, follow-up 94,873, pre-MFA
+  excluded 87,809로 완전 회계됐고 미등록 nonempty LAB token은 0이다.
+- 정렬 계약 ID는
+  `2b16d0309aa11731b6d1e520850c359aa67783004fbd5dea80758b416a7d61eb`다.
+  실제 runner `-PreflightOnly`는 PowerShell safety 68, Windows PowerShell 5.1
+  runtime 68, Python 558시험과 모델·사전·입력·연구 DB·lock·legacy 검사를 모두
+  통과했다. 보수적 필요량 39.470 GiB, 관측 D: 여유 72.174 GiB로 GO다.
+- 재사용 가능한 `build_mfa_r3_year_transition_gate.py`를 추가했다. 첫 실제 Gate는
+  정렬 계약의 release ID 필드 위치를 잘못 가정해 fail-closed했으나 MFA를 시작하지
+  않았고, schema 회귀시험과 함께 수정했다. 최종 2022→2023 Gate는 8/8 passed,
+  보고서 SHA-256은
+  `f5268010fa72cf4f09f7ff6a12ce4a1a2242731e8afef63c3f9056801e9132d8`다.
+- 2023 corpus·DB·MFA·TextGrid는 아직 미시작이다. 다음 단일 사용자 행동은
+  `run_mfa_r3_year_safe_body.ps1 -Year 2023 -NumJobs 4`의 장시간 실행이다.

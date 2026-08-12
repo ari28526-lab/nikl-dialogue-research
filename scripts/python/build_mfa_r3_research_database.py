@@ -193,6 +193,59 @@ def validate_frozen_inputs(policy: Mapping[str, object]) -> dict[str, Path]:
     return paths
 
 
+def validate_year_preflight_inputs(
+    year: str, policy: Mapping[str, object], paths: Mapping[str, Path]
+) -> dict[str, int]:
+    """Fail before build when the annual morphology checkpoint is incomplete."""
+
+    if year not in tuple(str(value) for value in policy["scope_years"]):
+        raise RuntimeError(f"year outside r3 scope: {year}")
+    contract_path = (
+        paths["year_input_contract_root"] / year / f"YEAR_INPUT_CONTRACT_{year}.json"
+    )
+    if not contract_path.is_file():
+        raise RuntimeError(f"missing year input contract: {contract_path}")
+    contract = load_json(contract_path)
+    if (
+        clean(contract.get("release_id")) != clean(policy.get("release_id"))
+        or clean(contract.get("pronunciation_contract_id"))
+        != clean(policy.get("pronunciation_contract_id"))
+        or clean(contract.get("year")) != year
+        or not clean(contract.get("year_input_contract_id"))
+    ):
+        raise RuntimeError("year input contract identity differs")
+
+    source_year = paths["morph_search_root"] / year
+    progress_path = source_year / "YEAR_PROGRESS.json"
+    annual_path = source_year / "annual_tables" / "YEAR_MANIFEST.json"
+    if not progress_path.is_file() or not annual_path.is_file():
+        raise RuntimeError(f"frozen morphology year is incomplete: {source_year}")
+    progress = load_json(progress_path)
+    annual = load_json(annual_path)
+    shard_sources = sorted(
+        path for path in (source_year / "shards").glob("shard_*") if path.is_dir()
+    )
+    total_shards = int(progress.get("total_shards", -1))
+    completed_shards = int(progress.get("completed_shards", -1))
+    if (
+        progress.get("schema_version") != "morph_search_year_sharded.v1"
+        or progress.get("status") != "success"
+        or clean(progress.get("year")) != year
+        or annual.get("schema_version") != "morph_search_year_tables.v1"
+        or annual.get("status") != "success"
+        or clean(annual.get("year")) != year
+        or int(annual.get("shards", -1)) != total_shards
+        or completed_shards != total_shards
+        or len(shard_sources) != total_shards
+    ):
+        raise RuntimeError(f"frozen morphology year checkpoint differs: {source_year}")
+    for shard in shard_sources:
+        manifest_path = shard / "SHARD_MANIFEST.json"
+        if not manifest_path.is_file() or load_json(manifest_path).get("status") != "success":
+            raise RuntimeError(f"incomplete morphology shard: {shard}")
+    return {"morphology_shards": total_shards}
+
+
 def selection_class(row: Mapping[str, str]) -> str:
     status = clean(row.get("planning_status"))
     if status.startswith("candidate_"):
@@ -686,9 +739,13 @@ def main() -> int:
     policy = load_policy(args.config.resolve())
     paths = validate_frozen_inputs(policy)
     if args.preflight_only:
+        detail = {"morphology_shards": 0}
+        if args.year:
+            detail = validate_year_preflight_inputs(args.year, policy, paths)
         print(
             f"[GO] r3 research DB preflight: release={policy['release_id']} "
-            f"year={args.year or 'catalog-only'} output={paths['output_root']}"
+            f"year={args.year or 'catalog-only'} output={paths['output_root']} "
+            f"morphology_shards={detail['morphology_shards']}"
         )
         return 0
     catalog = build_catalog(policy=policy, paths=paths)

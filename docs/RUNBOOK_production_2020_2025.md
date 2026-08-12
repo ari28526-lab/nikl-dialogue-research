@@ -663,9 +663,20 @@ export부터 시작하도록 만든 역사적 r2 복구 명령이다. r3 Gate �
 - 최종 `QC_STATE.json` checkpoint
   `7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`
 
-2022 runner·수출·QC는 재호출하지 않는다. 다음 연도는 2022 marker와 QC state
-SHA를 전환 Gate에 묶은 뒤 2023 입력 계약부터 준비한다. 상세 근거는
-`docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`다.
+2022 runner·수출·QC는 재호출하지 않는다. 2022 marker와 QC state SHA를 묶은
+2022→2023 전환 Gate는 통과했다. 2023 조합검색·발음 연구 DB·입력/정렬 계약과
+runner preflight도 통과했으며, 다음 단일 작업은 아래 2023 장시간 runner다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_year_safe_body.ps1" `
+  -Year 2023 -NumJobs 4
+```
+
+입력은 exact-ID 494,580건이며 2020–2022를 재호출하지 않는다. 상세 근거는
+`docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`와
+`docs/decisions/RESULT_mfa_r3_2023_preflight_20260812.md`다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.
@@ -695,6 +706,10 @@ SHA를 전환 Gate에 묶은 뒤 2023 입력 계약부터 준비한다. 상세 �
 승인 집합에 전부 포함돼 있으므로 같은 후보 승인을 반복하지 않는다. 2024·2025는
 전수 `<=44B` WAV가 0건이다. 구조 겹침과 noise proxy는 자동 제외가 아니라
 동반표의 검토 열이다.
+
+2023에서는 승인 103,930건 중 pronunciation-safe와 교차하는 87,809건만 본체에서
+제외했다. 나머지 16,121건은 이미 pronunciation follow-up에 있으므로 이중 계산하지
+않는다. `677,262 = 494,580 + 94,873 + 87,809`가 전수 회계식이다.
 
 ## 7. 발음 참조 파생층
 

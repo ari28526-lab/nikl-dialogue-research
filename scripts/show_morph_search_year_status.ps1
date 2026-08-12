@@ -24,13 +24,13 @@ $progressPath = Join-Path $root 'YEAR_PROGRESS.json'
 $contractPath = Join-Path $root 'RUN_CONTRACT.json'
 $manifestPath = Join-Path $root 'annual_tables\YEAR_MANIFEST.json'
 $lockPath = Join-Path $root 'RUNNING.lock.json'
-$driveName = ([IO.Path]::GetPathRoot($base)).TrimEnd('\').TrimEnd(':')
-$drive = Get-PSDrive -Name $driveName
+$driveRoot = [IO.Path]::GetPathRoot($base)
+$drive = [IO.DriveInfo]::new($driveRoot)
 
 Write-Host 'Morph combination-search year dashboard (read-only)'
 Write-Host "Observed: $(Get-Date -Format o)"
 Write-Host "Root:     $root"
-Write-Host "D free:   $([math]::Round($drive.Free / 1GB, 3)) GiB"
+Write-Host "D free:   $([math]::Round($drive.AvailableFreeSpace / 1GB, 3)) GiB"
 Write-Host "Lock:     $(Test-Path -LiteralPath $lockPath -PathType Leaf)"
 Write-Host ''
 
