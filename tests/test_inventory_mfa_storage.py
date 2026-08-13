@@ -173,6 +173,111 @@ class MfaStorageInventoryTests(unittest.TestCase):
             )
             self.assertFalse(report["deletion_performed"])
 
+    def test_r3_qc_state_is_accepted_and_binds_retained_database(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            temp_year = root / "temp" / "2023"
+            temp_year.mkdir(parents=True)
+            db = temp_year / "2023.db"
+            db.write_bytes(b"r3 database fixture")
+            archive = temp_year / "alignment" / "ali.1.ark"
+            archive.parent.mkdir()
+            archive.write_bytes(b"ark")
+            audit = root / "01_year_audit.json"
+            sample_json = root / "02_db_sample.json"
+            sample_csv = root / "02_db_sample.csv"
+            missing_csv = root / "01_id_inventory.csv"
+            write_json(audit, {"status": "success"})
+            write_json(sample_json, {"status": "success"})
+            sample_csv.write_text("id\n", encoding="utf-8")
+            missing_csv.write_text("id\n", encoding="utf-8")
+
+            import hashlib
+
+            expected_sha = hashlib.sha256(db.read_bytes()).hexdigest()
+            gate = root / "QC_STATE.json"
+            write_json(
+                gate,
+                {
+                    "schema_version": "mfa_r3_research_qc_state.v1",
+                    "status": "passed",
+                    "year": "2023",
+                    "source_mutation_performed": False,
+                    "mfa_recomputed": False,
+                    "full_export_repeated": False,
+                    "counts": {
+                        "sample_sessions": 24,
+                        "sample_semantic_equal": 24,
+                        "sample_byte_equal": 24,
+                    },
+                    "qc_input": {
+                        "source_db_bytes": db.stat().st_size,
+                        "source_db_expected_sha256": expected_sha,
+                    },
+                    "audit_report": {"path": str(audit)},
+                    "missing_csv": {"path": str(missing_csv)},
+                    "sample_report": {"path": str(sample_json)},
+                    "sample_csv": {"path": str(sample_csv)},
+                },
+            )
+
+            report = build_inventory(
+                year="2023",
+                temp_year=temp_year,
+                qc_gate_report=gate,
+                hash_db=True,
+            )
+
+            self.assertEqual(report["status"], "ready_for_user_review")
+            self.assertEqual(
+                report["qc_gate_kind"], "mfa_r3_research_qc_state"
+            )
+            self.assertEqual(report["estimated_reclaim"]["files"], 1)
+            self.assertTrue(db.exists())
+            self.assertTrue(archive.exists())
+
+    def test_r3_qc_state_database_mismatch_blocks_review(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            temp_year = root / "temp" / "2023"
+            temp_year.mkdir(parents=True)
+            db = temp_year / "2023.db"
+            db.write_bytes(b"database")
+            gate = root / "QC_STATE.json"
+            write_json(
+                gate,
+                {
+                    "schema_version": "mfa_r3_research_qc_state.v1",
+                    "status": "passed",
+                    "year": "2023",
+                    "source_mutation_performed": False,
+                    "mfa_recomputed": False,
+                    "full_export_repeated": False,
+                    "counts": {
+                        "sample_sessions": 24,
+                        "sample_semantic_equal": 24,
+                        "sample_byte_equal": 24,
+                    },
+                    "qc_input": {
+                        "source_db_bytes": db.stat().st_size,
+                        "source_db_expected_sha256": "0" * 64,
+                    },
+                },
+            )
+
+            report = build_inventory(
+                year="2023",
+                temp_year=temp_year,
+                qc_gate_report=gate,
+                hash_db=True,
+            )
+
+            self.assertEqual(report["status"], "blocked")
+            self.assertIn(
+                "qc_gate_alignment_db_sha256_mismatch",
+                report["blockers"],
+            )
+
     def test_missing_or_failed_gate_blocks_inventory(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

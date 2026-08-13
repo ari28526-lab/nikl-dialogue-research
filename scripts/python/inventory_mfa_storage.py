@@ -160,6 +160,7 @@ def build_inventory(
     blockers: list[str] = []
 
     gate: dict[str, Any] | None = None
+    gate_kind: str | None = None
     if not qc_gate_report.is_file():
         blockers.append("qc_gate_report_missing")
     else:
@@ -169,12 +170,40 @@ def build_inventory(
             blockers.append("qc_gate_report_unreadable")
 
     if gate is not None:
-        if gate.get("status") != "passed":
-            blockers.append("qc_gate_not_passed")
-        if str(gate.get("prior_year") or "") != year:
-            blockers.append("qc_gate_year_mismatch")
-        if gate.get("failed_checks") not in ([], None):
-            blockers.append("qc_gate_has_failed_checks")
+        schema = str(gate.get("schema_version") or "")
+        if schema == "mfa_r3_research_qc_state.v1":
+            gate_kind = "mfa_r3_research_qc_state"
+            if gate.get("status") != "passed":
+                blockers.append("qc_gate_not_passed")
+            if str(gate.get("year") or "") != year:
+                blockers.append("qc_gate_year_mismatch")
+            if gate.get("source_mutation_performed") is not False:
+                blockers.append("qc_gate_source_mutation_not_false")
+            if gate.get("mfa_recomputed") is not False:
+                blockers.append("qc_gate_mfa_recomputed_not_false")
+            if gate.get("full_export_repeated") is not False:
+                blockers.append("qc_gate_full_export_repeated_not_false")
+            counts = gate.get("counts")
+            if not isinstance(counts, dict):
+                blockers.append("qc_gate_counts_missing")
+            else:
+                sessions = int(counts.get("sample_sessions", -1))
+                if (
+                    sessions < 5
+                    or int(counts.get("sample_semantic_equal", -1))
+                    != sessions
+                    or int(counts.get("sample_byte_equal", -1))
+                    != sessions
+                ):
+                    blockers.append("qc_gate_db_sample_not_equal")
+        else:
+            gate_kind = "legacy_next_year_qc_gate"
+            if gate.get("status") != "passed":
+                blockers.append("qc_gate_not_passed")
+            if str(gate.get("prior_year") or "") != year:
+                blockers.append("qc_gate_year_mismatch")
+            if gate.get("failed_checks") not in ([], None):
+                blockers.append("qc_gate_has_failed_checks")
 
     if not temp_year.is_dir():
         blockers.append("temp_year_missing")
@@ -229,7 +258,22 @@ def build_inventory(
             db_path, with_sha256=hash_db
         )
 
-    if gate is not None:
+    if gate is not None and gate_kind == "mfa_r3_research_qc_state":
+        qc_input = gate.get("qc_input")
+        if not isinstance(qc_input, dict):
+            blockers.append("qc_gate_input_missing")
+        elif db_fingerprint is not None:
+            if int(qc_input.get("source_db_bytes", -1)) != int(
+                db_fingerprint["bytes"]
+            ):
+                blockers.append("qc_gate_alignment_db_bytes_mismatch")
+            expected_sha = str(
+                qc_input.get("source_db_expected_sha256") or ""
+            ).lower()
+            observed_sha = str(db_fingerprint.get("sha256") or "").lower()
+            if hash_db and expected_sha != observed_sha:
+                blockers.append("qc_gate_alignment_db_sha256_mismatch")
+    elif gate is not None:
         recorded_db = (
             gate.get("inputs", {}).get("alignment_db")
             if isinstance(gate.get("inputs"), dict)
@@ -250,7 +294,20 @@ def build_inventory(
                 ),
             }
         )
-    if gate is not None and isinstance(gate.get("inputs"), dict):
+    if gate is not None and gate_kind == "mfa_r3_research_qc_state":
+        for role in ("audit_report", "missing_csv", "sample_report", "sample_csv"):
+            record = gate.get(role)
+            if not isinstance(record, dict) or not record.get("path"):
+                continue
+            path = Path(str(record["path"])).resolve(strict=False)
+            if path.is_file():
+                evidence.append(
+                    {
+                        "role": role,
+                        **file_fingerprint(path, with_sha256=True),
+                    }
+                )
+    elif gate is not None and isinstance(gate.get("inputs"), dict):
         for role, value in sorted(gate["inputs"].items()):
             if not value:
                 continue
@@ -286,6 +343,7 @@ def build_inventory(
         "authorization_required_for_any_cleanup": True,
         "temp_year": str(temp_year),
         "qc_gate_report": str(qc_gate_report),
+        "qc_gate_kind": gate_kind,
         "qc_gate_status": gate.get("status") if gate else None,
         "blockers": unique_blockers,
         "unsafe_links": unsafe_links,
