@@ -74,6 +74,7 @@ data/03_analysis_ready/
 /outputs/archive/pre_2021_local_20260803/**
 !/outputs/archive/pre_2021_local_20260803/README.md
 /outputs/reports/archive/**
+/outputs/reports/archive_failed/**
 /outputs/reviews/archive/**
 
 # 2021–2025 제외 후보의 전수 입력감사 payload는 수십 MB 로컬 근거로 보존한다.

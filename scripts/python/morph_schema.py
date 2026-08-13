@@ -27,6 +27,7 @@ MORPH_SEPARATOR = " + "
 UNIT_SEPARATOR = " _ "
 
 POS_RE = re.compile(r"^[A-Z][A-Z0-9_-]*$")
+POS_TERMINATOR_RE = re.compile(r"/(?P<pos>[A-Z][A-Z0-9_-]*)(?=\+|$)")
 
 # 단일 아라비아 숫자의 읽기 *후보*다. 실제 읽기 선택값이 아니며, 원 JSON의
 # 전사나 연구자 판정이 없을 때 후보를 실제 발음처럼 확정하지 않는다.
@@ -158,8 +159,10 @@ def _is_standalone_jamo(char: str) -> bool:
 def parse_tagged(tagged: str) -> list[list[Morph]]:
     """Bareun ``tagged``를 어절·형태소 구조로 엄격하게 해석한다.
 
-    ``/``는 마지막 것을 POS 경계로 삼는다. POS와 표면형이 비거나 예약 구분자
-    때문에 무손실 재조립할 수 없는 입력은 조용히 보정하지 않고 실패시킨다.
+    POS 종결점 뒤의 ``+``만 형태소 경계로 삼는다. 1차 Bareun serializer는
+    표면형 자체의 ``+``를 escape하지 않았으므로 ``.+/SW`` 같은 기호 표면형을
+    단순 ``split('+')``하면 손실된다. POS 종결점을 기준으로 읽되, 설명되지 않는
+    빈 형태소나 한글 형태소 안의 모호한 ``+``는 계속 실패시킨다.
     """
 
     value = nfc(tagged).strip()
@@ -168,15 +171,19 @@ def parse_tagged(tagged: str) -> list[list[Morph]]:
     eojeol_texts = value.split()
     parsed: list[list[Morph]] = []
     for eojeol_idx, eojeol_text in enumerate(eojeol_texts, 1):
-        units = eojeol_text.split("+")
-        if any(not unit for unit in units):
+        matches = list(POS_TERMINATOR_RE.finditer(eojeol_text))
+        if not matches:
             raise MorphSchemaError(
-                f"빈 형태소: eojeol_idx={eojeol_idx} value={eojeol_text!r}"
+                "POS 종결점 없는 형태소: "
+                f"eojeol_idx={eojeol_idx} value={eojeol_text!r}"
             )
         morphs: list[Morph] = []
-        for morph_idx, unit in enumerate(units, 1):
-            surface, separator, pos = unit.rpartition("/")
-            if not separator or not surface or not pos:
+        cursor = 0
+        for morph_idx, match in enumerate(matches, 1):
+            surface = eojeol_text[cursor : match.start()]
+            pos = match.group("pos")
+            unit = eojeol_text[cursor : match.end()]
+            if not surface:
                 raise MorphSchemaError(
                     "형태소는 비어 있지 않은 surface/POS여야 함: "
                     f"eojeol_idx={eojeol_idx} morph_idx={morph_idx} "
@@ -186,9 +193,17 @@ def parse_tagged(tagged: str) -> list[list[Morph]]:
                 raise MorphSchemaError(
                     f"동결 POS 문법 밖의 값: {unit!r}"
                 )
-            if "+" in surface or any(char.isspace() for char in surface):
+            if any(char.isspace() for char in surface):
                 raise MorphSchemaError(
-                    f"surface에 예약 형태소/어절 구분자 존재: {unit!r}"
+                    f"surface에 어절 구분자 존재: {unit!r}"
+                )
+            if "+" in surface and any(
+                "가" <= char <= "힣" or _is_standalone_jamo(char)
+                for char in surface
+            ):
+                raise MorphSchemaError(
+                    "한글 형태소 surface의 모호한 literal '+': "
+                    f"{unit!r}"
                 )
             morphs.append(
                 Morph(
@@ -197,6 +212,20 @@ def parse_tagged(tagged: str) -> list[list[Morph]]:
                     surface=surface,
                     pos=pos,
                 )
+            )
+            if match.end() < len(eojeol_text):
+                if eojeol_text[match.end()] != "+":
+                    raise MorphSchemaError(
+                        "형태소 사이 '+' 구분자 누락: "
+                        f"eojeol_idx={eojeol_idx} value={eojeol_text!r}"
+                    )
+                cursor = match.end() + 1
+            else:
+                cursor = match.end()
+        if cursor != len(eojeol_text):
+            raise MorphSchemaError(
+                "POS 뒤 해석되지 않은 tagged 잔여값: "
+                f"eojeol_idx={eojeol_idx} value={eojeol_text!r}"
             )
         parsed.append(morphs)
     if recompose_raw_tagged(parsed) != value:
@@ -1013,12 +1042,25 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
         )
 
     expected_n_morphs = str(row.get("n_morphs", "") or "").strip()
+    legacy_plus_count = sum(
+        eojeol.count("+") + 1 for eojeol in tagged.split() if eojeol
+    )
+    literal_plus_count = sum(
+        morph.surface.count("+") for morph in flat_morphs
+    )
     n_morphs_equal = (
         not expected_n_morphs
         or not expected_n_morphs.isdigit()
         or int(expected_n_morphs) == morph_count
     )
-    if not n_morphs_equal:
+    legacy_plus_overcount_explained = (
+        bool(expected_n_morphs)
+        and expected_n_morphs.isdigit()
+        and literal_plus_count > 0
+        and int(expected_n_morphs) == legacy_plus_count
+        and legacy_plus_count == morph_count + literal_plus_count
+    )
+    if not n_morphs_equal and not legacy_plus_overcount_explained:
         raise MorphSchemaError(
             f"{utt_id}: n_morphs 불일치 "
             f"csv={expected_n_morphs} parsed={morph_count}"
@@ -1034,7 +1076,11 @@ def build_utterance_tables(row: Mapping[str, object]) -> dict[str, object]:
             "serialization_version": SERIALIZATION_VERSION,
             "position_schema_version": POSITION_SCHEMA_VERSION,
             "morph_schema_version": MORPH_SCHEMA_VERSION,
-            "morph_parse_status": "ok",
+            "morph_parse_status": (
+                "ok_legacy_literal_plus_n_morphs_overcount"
+                if legacy_plus_overcount_explained
+                else "ok"
+            ),
             "morph_count_structured": morph_count,
             "morph_unit_count": total_units,
             "morph_boundary_count": boundary_count,

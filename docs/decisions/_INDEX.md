@@ -28,6 +28,7 @@
 | `RESULT_mfa_r3_2023_preflight_20260812.md` | 2022 완료 SHA를 보존한 2022→2023 Gate, 2023 조합검색 20/20·발음 연구 DB·exact-ID 494,580 입력과 장시간 runner preflight GO |
 | `RESULT_mfa_r3_alignment_database_2023_20260813.md` | 2023 r3 494,580발화 신규 정렬, 494,228 성공·352 명시 승인, 6-tier·동반표 4종·독립 전수 QC·DB 재수출 24/24 완료와 2024 전환 정지점 |
 | `INCIDENT_morph_search_2024_embedded_newline_20260813.md` | 2024 조합검색 shard 1의 인용 필드 내부 줄바꿈 안전 중단, 논리 CSV 레코드 처리 수정, 실패 증거 격리와 1-shard 실제 회귀 통과 |
+| `INCIDENT_bareun_literal_plus_delimiter_collision_20260813.md` | 2024 shard 32의 Bareun literal `+`/형태소 구분자 충돌, 원 JSON 대조, 6개년 전수 감사, 2025 선제 탐지와 무손실 회귀 |
 
 ## 공통 발음사전과 6개년 동일성
 

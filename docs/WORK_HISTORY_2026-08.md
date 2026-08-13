@@ -3302,3 +3302,31 @@ shard 2–23을 재개하는 것이다.
 - 이후 새 연도는 `PowerShell 검사 → preflight → 실제 1-shard 회귀 → 전체 재개`
   순서를 고정한다. 상세 원인과 방법론 기록은
   `docs/decisions/INCIDENT_morph_search_2024_embedded_newline_20260813.md`에 둔다.
+
+### 2026-08-13 — 2024 shard 32 Bareun literal plus 충돌 복구
+
+- 조합검색 재개는 shard 1–31을 성공 manifest로 보존한 채 shard 32에서 다시
+  fail-closed했다. 단 한 발화 `SDRW2400003024.1.1.216`의 끝
+  `같/VA+아요/EF+.+/SW`에서 Bareun surface 안 실제 `+`와 형태소 구분자 `+`가
+  충돌한 것이 원인이었다. 원 JSON·01 Bareun raw·02 sense·search master를
+  교차해 `.+/SW` 한 형태소임을 확인했다.
+- source `n_morphs=18`은 API 원계수가 아니라 문자열의 모든 plus를 센 legacy
+  파생값이라 실제 17보다 1 크게 저장됐다. 원 열은 provenance로 보존하고 정본
+  `morph_count_structured=17`, 상태
+  `ok_legacy_literal_plus_n_morphs_overcount`를 기록하도록 했다.
+- parser를 POS 종결점 기준 무손실 문법으로 고치고, 향후 Bareun 전수 코드의
+  `n_morphs`도 POS 종결점 수로 계산하게 했다. 빈 surface, 한글 surface 안 모호한
+  plus, 재조립 불일치는 계속 실패한다.
+- 2020–2025 pre-MFA CSV 5,103,356행을 전수 감사했다. 2020–2023 충돌은 0,
+  2024는 위 1건, 2025는 `SDRW2500001064.1.1.189`의 `+/SW` 1건이며 둘 다
+  무손실 설명, 미설명 0이다. 따라서 2020–2023 완성본은 재실행하지 않고 2025의
+  같은 미래 중단도 미리 막았다.
+- 실패 shard 32 raw 7표와 progress는 `archive_failed`에 보존했다. 첫 감사기의
+  어절 종결 정규식 범위 오류로 생긴 false-positive 보고서도 성공 보고서와 분리해
+  `outputs/reports/archive_failed`에 보존하고 감사기를 수정했다.
+- 수정 뒤 shard 32 하나만 실제 재실행했다. 27,812발화 manifest가 `success`,
+  문제 morph는 `.+/SW`, 무손실 재조립은 True이며 진행은 32/33에서 의도적으로
+  정지했다. MFA·TextGrid·공통발음사전과 2020–2023 완성본은 변경하지 않았다.
+- 상세 근거는
+  `docs/decisions/INCIDENT_bareun_literal_plus_delimiter_collision_20260813.md`에
+  기록한다. 다음은 shard 33·annual 7표·source contract 검증이다.

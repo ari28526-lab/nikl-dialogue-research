@@ -22,6 +22,7 @@ import csv
 import json
 import os
 import platform
+import re
 import sys
 import time
 from datetime import datetime
@@ -35,6 +36,7 @@ SECRET_DIR = Path.home() / "Documents" / "Codex" / "_secrets" / "bareun"
 SECRET_FILES = [SECRET_DIR / "bareun.env", SECRET_DIR / "bareun_api.txt"]
 SPEAKER_FIELDS = ["id", "age", "sex", "occupation", "birthplace",
                   "principal_residence", "current_residence", "education"]
+POS_TERMINATOR_RE = re.compile(r"/[A-Z][A-Z0-9_-]*(?=\+| |$)")
 
 
 def load_api_key() -> str:
@@ -88,9 +90,14 @@ def parse_sentences_tokenwise(res):
 
 
 def count_morphs(tagged: str) -> int:
+    """직렬화 구분자가 아니라 POS 종결점으로 형태소 수를 센다.
+
+    Bareun surface 자체에 ``+``가 포함될 수 있다(예: ``.+/SW``). 모든 plus를
+    경계로 세면 그 발화의 ``n_morphs``가 과대계상된다.
+    """
     if not tagged:
         return 0
-    return sum(tok.count("+") + 1 for tok in tagged.split(" ") if tok)
+    return len(POS_TERMINATOR_RE.findall(tagged))
 
 
 def tag_chunk(tagger, texts, max_retry=3):

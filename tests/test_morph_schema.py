@@ -12,6 +12,7 @@ from morph_schema import (  # noqa: E402
     build_utterance_tables,
     canonicalize_tagged,
     orth_roman_v2,
+    parse_tagged,
     tagged_roman_v2,
 )
 
@@ -214,6 +215,33 @@ class MorphSchemaTests(unittest.TestCase):
             tagged_roman_v2("어/IC+?/SF"),
             "EO/IC + ⟨?⟩/SF",
         )
+
+    def test_literal_plus_in_bareun_symbol_surface_is_lossless(self):
+        tagged = "같/VA+아요/EF+.+/SW"
+        parsed = parse_tagged(tagged)
+        self.assertEqual(
+            [(m.surface, m.pos) for m in parsed[0]],
+            [("같", "VA"), ("아요", "EF"), (".+", "SW")],
+        )
+        result = build_utterance_tables(
+            {
+                "utt_id": "U_PLUS",
+                "year": "2024",
+                "form": "같아요.+",
+                "tagged": tagged,
+                # The legacy source counter counted the literal plus as a
+                # delimiter.  Preserve that source value but explain it.
+                "n_morphs": "4",
+            }
+        )
+        self.assertEqual(result["master"]["morph_count_structured"], 3)
+        self.assertEqual(
+            result["master"]["morph_parse_status"],
+            "ok_legacy_literal_plus_n_morphs_overcount",
+        )
+        self.assertTrue(result["master"]["tagged_regeneration_equal"])
+        self.assertEqual(result["morph_tokens"][-1]["morph_surface"], ".+")
+        self.assertEqual(result["morph_tokens"][-1]["pos"], "SW")
 
     def test_invalid_reserved_separator_is_not_silently_repaired(self):
         with self.assertRaises(MorphSchemaError):

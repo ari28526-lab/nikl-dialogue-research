@@ -1,0 +1,46 @@
+{
+  "schema_version": "bareun_tagged_delimiter_collision_audit.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-13T16:25:16.633113+09:00",
+  "years": [
+    {
+      "year": "2025",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2025",
+      "file_count": 2927,
+      "row_count": 587121,
+      "delimiter_collision_candidates": 1,
+      "lossless_literal_plus_explained": 1,
+      "unexplained_count": 0,
+      "difference_counts": {
+        "1": 1
+      },
+      "literal_plus_surface_patterns": {
+        "+": 1
+      },
+      "examples": [
+        {
+          "file": "SDRW2500001064.csv",
+          "row": 190,
+          "utt_id": "SDRW2500001064.1.1.189",
+          "tagged": "그때/NNG 마침/MAG 세일/NNG+하고/JKB+제/XSN+가/JKS 필/NNG++/SW 요하/VV+ㄴ/ETM 거/NNB+랑/JKB 같이/MAG 맞아떨어지/VV+면/EC 그/MMD 제품/NNG+을/JKO 구매하/VV+는/ETM 거/NNB 같/VA+습니다/EF+./SF",
+          "source_n_morphs": "25",
+          "legacy_plus_count": 25,
+          "structured_count": 24,
+          "literal_plus_surfaces": [
+            "+"
+          ],
+          "lossless": true,
+          "explained": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "totals": {
+    "files": 2927,
+    "rows": 587121,
+    "delimiter_collision_candidates": 1,
+    "lossless_literal_plus_explained": 1,
+    "unexplained": 0
+  }
+}

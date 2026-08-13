@@ -1,0 +1,66 @@
+{
+  "schema_version": "bareun_tagged_delimiter_collision_audit.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-13T16:28:16.067532+09:00",
+  "years": [
+    {
+      "year": "2020",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2020",
+      "file_count": 2232,
+      "row_count": 870437,
+      "delimiter_collision_candidates": 0,
+      "lossless_literal_plus_explained": 0,
+      "unexplained_count": 0,
+      "difference_counts": {},
+      "literal_plus_surface_patterns": {},
+      "examples": [],
+      "errors": []
+    },
+    {
+      "year": "2021",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2021",
+      "file_count": 4143,
+      "row_count": 1373920,
+      "delimiter_collision_candidates": 0,
+      "lossless_literal_plus_explained": 0,
+      "unexplained_count": 0,
+      "difference_counts": {},
+      "literal_plus_surface_patterns": {},
+      "examples": [],
+      "errors": []
+    },
+    {
+      "year": "2022",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2022",
+      "file_count": 2654,
+      "row_count": 866359,
+      "delimiter_collision_candidates": 0,
+      "lossless_literal_plus_explained": 0,
+      "unexplained_count": 0,
+      "difference_counts": {},
+      "literal_plus_surface_patterns": {},
+      "examples": [],
+      "errors": []
+    },
+    {
+      "year": "2023",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2023",
+      "file_count": 1973,
+      "row_count": 677262,
+      "delimiter_collision_candidates": 0,
+      "lossless_literal_plus_explained": 0,
+      "unexplained_count": 0,
+      "difference_counts": {},
+      "literal_plus_surface_patterns": {},
+      "examples": [],
+      "errors": []
+    }
+  ],
+  "totals": {
+    "files": 11002,
+    "rows": 3787978,
+    "delimiter_collision_candidates": 0,
+    "lossless_literal_plus_explained": 0,
+    "unexplained": 0
+  }
+}

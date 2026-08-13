@@ -1,0 +1,46 @@
+{
+  "schema_version": "bareun_tagged_delimiter_collision_audit.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-13T16:24:31.110719+09:00",
+  "years": [
+    {
+      "year": "2024",
+      "input_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725\\2024",
+      "file_count": 3227,
+      "row_count": 728257,
+      "delimiter_collision_candidates": 1,
+      "lossless_literal_plus_explained": 1,
+      "unexplained_count": 0,
+      "difference_counts": {
+        "1": 1
+      },
+      "literal_plus_surface_patterns": {
+        ".+": 1
+      },
+      "examples": [
+        {
+          "file": "SDRW2400003024.csv",
+          "row": 217,
+          "utt_id": "SDRW2400003024.1.1.216",
+          "tagged": "어/IC 저/NP+도/JX 나중/NNG+에/JKB 한번/NNG 전주/NNP+를/JKO 가/VV+아/EC 보/VX+아야/EC 되/VV+ㄹ거/ETM 같/VA+아요/EF+.+/SW",
+          "source_n_morphs": "18",
+          "legacy_plus_count": 18,
+          "structured_count": 17,
+          "literal_plus_surfaces": [
+            ".+"
+          ],
+          "lossless": true,
+          "explained": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "totals": {
+    "files": 3227,
+    "rows": 728257,
+    "delimiter_collision_candidates": 1,
+    "lossless_literal_plus_explained": 1,
+    "unexplained": 0
+  }
+}

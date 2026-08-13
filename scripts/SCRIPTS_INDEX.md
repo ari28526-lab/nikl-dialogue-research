@@ -1,4 +1,4 @@
-# 스크립트 색인 — 최종 갱신 2026-08-10
+# 스크립트 색인 — 최종 갱신 2026-08-13
 
 > **현재 r3 생산 진입점:** 아래 2020–2022 생산 entrypoint는 r2 역사·복구 근거다.
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
@@ -45,6 +45,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `show_production_year_pre_mfa_status.ps1` | 연도별 shard 진행률·lock PID 생존·annual manifest·source contract·D: 여유를 표시하는 읽기 전용 상태판 | 실행·수정·자동 재개 없음 |
 | `show_morph_search_year_status.ps1` | 연도별 shard 진행률, schema, 연도 manifest와 table 행 수를 읽기 전용으로 표시한다. Windows PowerShell 5.1에서 D: 여유를 `DriveInfo`로 읽어 0 GiB 오인을 막는다. |
 | `python/collect_morph_search_regression_evidence.py` | 2020–2025 각 10발화의 두 독립 출력에서 42개 gzip SHA, 어절 좌표 mismatch, 기호 상태와 `2사람이→두` 근거를 감사한다. |
+| `python/audit_bareun_tagged_delimiter_collisions.py` | 1차 Bareun 직렬화에서 surface 내부 literal `+`가 형태소 구분자로 과대계상된 발화를 연도 전수 탐지하고, POS 종결점 parser의 무손실 복원·미설명 건수와 연도 checkpoint를 기록한다. 원 CSV 수정 없음. |
 
 
 파이프라인 순서대로. 모든 경로 상수는 새 D: 구조 기준 (config/paths.json 참조).
