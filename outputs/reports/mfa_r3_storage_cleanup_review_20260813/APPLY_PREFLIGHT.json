@@ -1,0 +1,3736 @@
+{
+  "schema_version": "mfa_r3_exact_temp_cleanup.v1",
+  "status": "dry_run_passed",
+  "checked_at": "2026-08-13T14:32:06+09:00",
+  "summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\SUMMARY.json",
+    "bytes": 5892,
+    "mtime_ns": 1786598700563443700,
+    "sha256": "a855aedb436b79dde2994f9271677e88e24bddfe8af816eea7ee1d346549c2a4"
+  },
+  "release_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809",
+  "years": [
+    "2020",
+    "2021",
+    "2022",
+    "2023"
+  ],
+  "expected": {
+    "files": 252,
+    "bytes": 73230387524
+  },
+  "observed": {
+    "files": 252,
+    "bytes": 73230387524
+  },
+  "blockers": [],
+  "inventory_reports": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2020.json",
+      "bytes": 43390,
+      "mtime_ns": 1786598629677691700,
+      "sha256": "7680e9fc0313bd972bb6ee0634906e1eb622755b6e67e994dbac6c2ac39bf1d9"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2021.json",
+      "bytes": 43405,
+      "mtime_ns": 1786598667022479900,
+      "sha256": "d895025e124477453d25a266757cfca3c026082f4bdc6e24a11b8bf4dba1a35c"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2022.json",
+      "bytes": 43390,
+      "mtime_ns": 1786598687346331000,
+      "sha256": "0605f28d7ba4276c077c4631070c72c25dc31baa973bb1c012588bfdb934bf42"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2023.json",
+      "bytes": 43385,
+      "mtime_ns": 1786598700330126600,
+      "sha256": "e583dd26ab0a4b85581f7518feb8b3c61d46ba57fa3237226653b792d535c093"
+    }
+  ],
+  "candidates": [
+    {
+      "year": "2020",
+      "relative_path": "2020/cmvn.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\cmvn.ark",
+      "bytes": 543257,
+      "mtime_ns": 1786267989214311900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/cmvn.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\cmvn.scp",
+      "bytes": 181374,
+      "mtime_ns": 1786267989215307800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/feats.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\feats.scp",
+      "bytes": 86239455,
+      "mtime_ns": 1786268364873405200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/spk2utt.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\spk2utt.scp",
+      "bytes": 8922988,
+      "mtime_ns": 1786267958994985200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.1.scp",
+      "bytes": 44835,
+      "mtime_ns": 1786267991036671500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.2.scp",
+      "bytes": 44820,
+      "mtime_ns": 1786267992504870600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.3.scp",
+      "bytes": 44791,
+      "mtime_ns": 1786267993898626000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.4.scp",
+      "bytes": 44697,
+      "mtime_ns": 1786267995259311400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 44835,
+      "mtime_ns": 1786268380477061600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 44820,
+      "mtime_ns": 1786268377112569500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 44791,
+      "mtime_ns": 1786268375963112000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 44697,
+      "mtime_ns": 1786268380354895400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.1.scp",
+      "bytes": 21575241,
+      "mtime_ns": 1786268284780214700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.2.scp",
+      "bytes": 21570095,
+      "mtime_ns": 1786268283107328800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.3.scp",
+      "bytes": 21556213,
+      "mtime_ns": 1786268284978710800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.4.scp",
+      "bytes": 21537906,
+      "mtime_ns": 1786268286266898300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 21379531,
+      "mtime_ns": 1786268381253476200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 21374391,
+      "mtime_ns": 1786268381142870000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 21360500,
+      "mtime_ns": 1786268381121170900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/feats.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\feats.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 21342318,
+      "mtime_ns": 1786268381217406800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/final_features.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\final_features.1.ark",
+      "bytes": 545167569,
+      "mtime_ns": 1786268284779211000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/final_features.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\final_features.2.ark",
+      "bytes": 542842552,
+      "mtime_ns": 1786268283102972500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/final_features.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\final_features.3.ark",
+      "bytes": 540732882,
+      "mtime_ns": 1786268284976120900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/final_features.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\final_features.4.ark",
+      "bytes": 541455177,
+      "mtime_ns": 1786268286264194600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 2243027,
+      "mtime_ns": 1786268380471061900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 2238423,
+      "mtime_ns": 1786268377058865300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 2223766,
+      "mtime_ns": 1786268375957106000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 2217772,
+      "mtime_ns": 1786268380187493700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 3135046,
+      "mtime_ns": 1786268380717099400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 3127083,
+      "mtime_ns": 1786268379218464200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 3102814,
+      "mtime_ns": 1786268378120463300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 3093037,
+      "mtime_ns": 1786268380585930800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/utt2spk.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\utt2spk.scp",
+      "bytes": 12457980,
+      "mtime_ns": 1786267958893836100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 202829271,
+      "mtime_ns": 1786272223810287400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 202062807,
+      "mtime_ns": 1786272221955630600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 201257322,
+      "mtime_ns": 1786272190814464400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 201532879,
+      "mtime_ns": 1786272190504065100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 202829271,
+      "mtime_ns": 1786272222972409100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 202062807,
+      "mtime_ns": 1786272221247411400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 201257322,
+      "mtime_ns": 1786272189540268000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 201532879,
+      "mtime_ns": 1786272189298573900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\fsts.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 1906134921,
+      "mtime_ns": 1786269351002440600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\fsts.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 1907532078,
+      "mtime_ns": 1786269316782615300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\fsts.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 1882429380,
+      "mtime_ns": 1786269410177274700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\fsts.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 1899412967,
+      "mtime_ns": 1786269383020415800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 163571539,
+      "mtime_ns": 1786272224486350500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 162958229,
+      "mtime_ns": 1786272222570869600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 162311013,
+      "mtime_ns": 1786272191795017700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 162529727,
+      "mtime_ns": 1786272191601446600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 163571539,
+      "mtime_ns": 1786272222973404200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 162958229,
+      "mtime_ns": 1786272221249420100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 162311013,
+      "mtime_ns": 1786272189543272600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 162529727,
+      "mtime_ns": 1786272189300574300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/phone_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\phone_intervals.csv",
+      "bytes": 1401350606,
+      "mtime_ns": 1786274919741923100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/word_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\word_intervals.csv",
+      "bytes": 257769957,
+      "mtime_ns": 1786274919733385500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 6915416,
+      "mtime_ns": 1786272223844742600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 6921112,
+      "mtime_ns": 1786272221988242200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 6859082,
+      "mtime_ns": 1786272190872345700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 6880524,
+      "mtime_ns": 1786272190612263000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 6915416,
+      "mtime_ns": 1786272222973404200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 6921112,
+      "mtime_ns": 1786272221248421500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 6859082,
+      "mtime_ns": 1786272189542266800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 6880524,
+      "mtime_ns": 1786272189299574000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/cmvn.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\cmvn.ark",
+      "bytes": 1008809,
+      "mtime_ns": 1786355677110904900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/cmvn.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\cmvn.scp",
+      "bytes": 337866,
+      "mtime_ns": 1786355677111635000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/feats.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\feats.scp",
+      "bytes": 133631734,
+      "mtime_ns": 1786356284804490400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/spk2utt.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\spk2utt.scp",
+      "bytes": 14282834,
+      "mtime_ns": 1786355621136486900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.1.scp",
+      "bytes": 83443,
+      "mtime_ns": 1786355680340596300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.2.scp",
+      "bytes": 83465,
+      "mtime_ns": 1786355683259333400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.3.scp",
+      "bytes": 83459,
+      "mtime_ns": 1786355685927123500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.4.scp",
+      "bytes": 83360,
+      "mtime_ns": 1786355688789126600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 83443,
+      "mtime_ns": 1786356330298850300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 83465,
+      "mtime_ns": 1786356327007214100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 83459,
+      "mtime_ns": 1786356327022746000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 83360,
+      "mtime_ns": 1786356327037786800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.1.scp",
+      "bytes": 33408585,
+      "mtime_ns": 1786356190085373400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.2.scp",
+      "bytes": 33411310,
+      "mtime_ns": 1786356191139581000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.3.scp",
+      "bytes": 33414706,
+      "mtime_ns": 1786356193663841500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.4.scp",
+      "bytes": 33397133,
+      "mtime_ns": 1786356193118382400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 33106759,
+      "mtime_ns": 1786356331419901000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 33109454,
+      "mtime_ns": 1786356331246901600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 33112854,
+      "mtime_ns": 1786356331312274400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/feats.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\feats.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 33095392,
+      "mtime_ns": 1786356331183239100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/final_features.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\final_features.1.ark",
+      "bytes": 939716651,
+      "mtime_ns": 1786356190082951400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/final_features.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\final_features.2.ark",
+      "bytes": 940572049,
+      "mtime_ns": 1786356191132662400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/final_features.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\final_features.3.ark",
+      "bytes": 941662916,
+      "mtime_ns": 1786356193647229500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/final_features.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\final_features.4.ark",
+      "bytes": 946799935,
+      "mtime_ns": 1786356193107932900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 3571821,
+      "mtime_ns": 1786356330291850100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 3569806,
+      "mtime_ns": 1786356326398884600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 3573633,
+      "mtime_ns": 1786356326422948100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 3567291,
+      "mtime_ns": 1786356326421952400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 4996223,
+      "mtime_ns": 1786356330509828300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 4992151,
+      "mtime_ns": 1786356330039400100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 4999290,
+      "mtime_ns": 1786356330021866300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 4991142,
+      "mtime_ns": 1786356329877866800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/utt2spk.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\utt2spk.scp",
+      "bytes": 19979204,
+      "mtime_ns": 1786355620945871900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 351129871,
+      "mtime_ns": 1786363315325592000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 351433735,
+      "mtime_ns": 1786363324428755900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 351892471,
+      "mtime_ns": 1786363351352161700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 353857112,
+      "mtime_ns": 1786363376557155700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 351129871,
+      "mtime_ns": 1786363313740745800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 351433735,
+      "mtime_ns": 1786363323036042800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 351892471,
+      "mtime_ns": 1786363350069467100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 353857112,
+      "mtime_ns": 1786363361913234900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\fsts.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 3806838201,
+      "mtime_ns": 1786358149090132300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\fsts.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 3816412806,
+      "mtime_ns": 1786358300809132900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\fsts.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 3804985908,
+      "mtime_ns": 1786358257359981400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\fsts.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 3823053686,
+      "mtime_ns": 1786358165529132200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 282944643,
+      "mtime_ns": 1786363316688310300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 283187185,
+      "mtime_ns": 1786363325679613100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 283555336,
+      "mtime_ns": 1786363352428252100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 285125179,
+      "mtime_ns": 1786363398930359100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 282944643,
+      "mtime_ns": 1786363313743744000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 283187185,
+      "mtime_ns": 1786363323037042800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 283555336,
+      "mtime_ns": 1786363350070466300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 285125179,
+      "mtime_ns": 1786363361915243800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/phone_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\phone_intervals.csv",
+      "bytes": 2811637432,
+      "mtime_ns": 1786368242008723700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/word_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\word_intervals.csv",
+      "bytes": 542171659,
+      "mtime_ns": 1786368242006721200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 12618081,
+      "mtime_ns": 1786363315403122000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 12632540,
+      "mtime_ns": 1786363324501196300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 12614416,
+      "mtime_ns": 1786363351413266500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 12645157,
+      "mtime_ns": 1786363377603202000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 12618081,
+      "mtime_ns": 1786363313742745100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 12632540,
+      "mtime_ns": 1786363323037042800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 12614416,
+      "mtime_ns": 1786363350070466300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 12645157,
+      "mtime_ns": 1786363361914246300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/cmvn.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\cmvn.ark",
+      "bytes": 645737,
+      "mtime_ns": 1786438659622318500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/cmvn.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\cmvn.scp",
+      "bytes": 215814,
+      "mtime_ns": 1786438659623321000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/feats.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\feats.scp",
+      "bytes": 82877249,
+      "mtime_ns": 1786439082402751500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/spk2utt.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\spk2utt.scp",
+      "bytes": 8616718,
+      "mtime_ns": 1786438625918915000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.1.scp",
+      "bytes": 53223,
+      "mtime_ns": 1786438661756990700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.2.scp",
+      "bytes": 53302,
+      "mtime_ns": 1786438663560176100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.3.scp",
+      "bytes": 53346,
+      "mtime_ns": 1786438665343041100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.4.scp",
+      "bytes": 53292,
+      "mtime_ns": 1786438667020428900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 53223,
+      "mtime_ns": 1786439099563524600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 53302,
+      "mtime_ns": 1786439104188146300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 53346,
+      "mtime_ns": 1786439101849872400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 53292,
+      "mtime_ns": 1786439099936195600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.1.scp",
+      "bytes": 20705392,
+      "mtime_ns": 1786438972493975900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.2.scp",
+      "bytes": 20717736,
+      "mtime_ns": 1786438970858693700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.3.scp",
+      "bytes": 20733577,
+      "mtime_ns": 1786438970166987100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.4.scp",
+      "bytes": 20720544,
+      "mtime_ns": 1786438972277421500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 20517565,
+      "mtime_ns": 1786439103333468900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 20529771,
+      "mtime_ns": 1786439106189662500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 20545614,
+      "mtime_ns": 1786439104288859200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/feats.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\feats.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 20532578,
+      "mtime_ns": 1786439103319951400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/final_features.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\final_features.1.ark",
+      "bytes": 581622540,
+      "mtime_ns": 1786438972487965200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/final_features.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\final_features.2.ark",
+      "bytes": 579362214,
+      "mtime_ns": 1786438970831142400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/final_features.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\final_features.3.ark",
+      "bytes": 587395829,
+      "mtime_ns": 1786438970164136900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/final_features.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\final_features.4.ark",
+      "bytes": 591507065,
+      "mtime_ns": 1786438972272387200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 2150283,
+      "mtime_ns": 1786439099185853300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 2149230,
+      "mtime_ns": 1786439103171805500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 2165821,
+      "mtime_ns": 1786439101155269100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 2151384,
+      "mtime_ns": 1786439099763743300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 3008372,
+      "mtime_ns": 1786439101141692000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 3005878,
+      "mtime_ns": 1786439104835940200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 3034015,
+      "mtime_ns": 1786439103170805600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 3009933,
+      "mtime_ns": 1786439101162278600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/utt2spk.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\utt2spk.scp",
+      "bytes": 12058198,
+      "mtime_ns": 1786438625801066000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 217226570,
+      "mtime_ns": 1786443985636600600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 216277768,
+      "mtime_ns": 1786443950579680900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 219438037,
+      "mtime_ns": 1786444053481525800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 220993889,
+      "mtime_ns": 1786444031453543300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 217226570,
+      "mtime_ns": 1786443984694556900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 216277768,
+      "mtime_ns": 1786443949462686700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 219438037,
+      "mtime_ns": 1786444052742648400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 220993889,
+      "mtime_ns": 1786444030602203900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\fsts.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 2539093742,
+      "mtime_ns": 1786440165317241400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\fsts.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 2525316803,
+      "mtime_ns": 1786440173984762100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\fsts.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 2558122344,
+      "mtime_ns": 1786440211906803400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\fsts.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 2587240531,
+      "mtime_ns": 1786440245248677400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 175036775,
+      "mtime_ns": 1786443986430136200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 174277651,
+      "mtime_ns": 1786443951457557800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 176809525,
+      "mtime_ns": 1786444054109798300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 178051268,
+      "mtime_ns": 1786444032136913900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 175036775,
+      "mtime_ns": 1786443984696554400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 174277651,
+      "mtime_ns": 1786443949464681900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 176809525,
+      "mtime_ns": 1786444052744690900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 178051268,
+      "mtime_ns": 1786444030604217600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/phone_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\phone_intervals.csv",
+      "bytes": 1867263101,
+      "mtime_ns": 1786447450116990700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/word_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\word_intervals.csv",
+      "bytes": 357024180,
+      "mtime_ns": 1786447450116460600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 8114495,
+      "mtime_ns": 1786443985680293400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 8092498,
+      "mtime_ns": 1786443950623321800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 8173232,
+      "mtime_ns": 1786444053518953800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 8222234,
+      "mtime_ns": 1786444031494209300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 8114495,
+      "mtime_ns": 1786443984695555500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 8092498,
+      "mtime_ns": 1786443949464681900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 8173232,
+      "mtime_ns": 1786444052743692200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 8222234,
+      "mtime_ns": 1786444030603216200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/cmvn.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\cmvn.ark",
+      "bytes": 402957,
+      "mtime_ns": 1786540552706409600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/cmvn.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\cmvn.scp",
+      "bytes": 134224,
+      "mtime_ns": 1786540552706409600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/feats.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\feats.scp",
+      "bytes": 54299905,
+      "mtime_ns": 1786540808539532400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/spk2utt.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\spk2utt.scp",
+      "bytes": 5484403,
+      "mtime_ns": 1786540529534634300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.1.scp",
+      "bytes": 33187,
+      "mtime_ns": 1786540554022190900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.2.scp",
+      "bytes": 33163,
+      "mtime_ns": 1786540555141558400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.3.scp",
+      "bytes": 33094,
+      "mtime_ns": 1786540556176438000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.4.scp",
+      "bytes": 33124,
+      "mtime_ns": 1786540557240887100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 33187,
+      "mtime_ns": 1786540813688603400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 33163,
+      "mtime_ns": 1786540813429043600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 33094,
+      "mtime_ns": 1786540815024971000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\cmvn.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 33124,
+      "mtime_ns": 1786540816400984100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.1.scp",
+      "bytes": 13588099,
+      "mtime_ns": 1786540755767329800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.2.scp",
+      "bytes": 13581403,
+      "mtime_ns": 1786540754785023100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.3.scp",
+      "bytes": 13558988,
+      "mtime_ns": 1786540753772662800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.4.scp",
+      "bytes": 13571415,
+      "mtime_ns": 1786540756021224400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 13464454,
+      "mtime_ns": 1786540815208100900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 13457759,
+      "mtime_ns": 1786540815168891200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 13435350,
+      "mtime_ns": 1786540816579263300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/feats.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\feats.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 13447763,
+      "mtime_ns": 1786540816635300700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/final_features.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\final_features.1.ark",
+      "bytes": 385632659,
+      "mtime_ns": 1786540755764341500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/final_features.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\final_features.2.ark",
+      "bytes": 388667365,
+      "mtime_ns": 1786540754780795300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/final_features.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\final_features.3.ark",
+      "bytes": 393005998,
+      "mtime_ns": 1786540753768407200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/final_features.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\final_features.4.ark",
+      "bytes": 388815518,
+      "mtime_ns": 1786540756014711300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\spk2utt.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 1384070,
+      "mtime_ns": 1786540813649483900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\spk2utt.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 1376608,
+      "mtime_ns": 1786540813310086600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\spk2utt.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 1356441,
+      "mtime_ns": 1786540815016863200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\spk2utt.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 1367274,
+      "mtime_ns": 1786540816397466100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\utt2spk.common_pron_mfa_r3_20260809.1.scp",
+      "bytes": 1919518,
+      "mtime_ns": 1786540813759236100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\utt2spk.common_pron_mfa_r3_20260809.2.scp",
+      "bytes": 1911113,
+      "mtime_ns": 1786540813647530000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\utt2spk.common_pron_mfa_r3_20260809.3.scp",
+      "bytes": 1877959,
+      "mtime_ns": 1786540815113287400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\utt2spk.common_pron_mfa_r3_20260809.4.scp",
+      "bytes": 1894901,
+      "mtime_ns": 1786540816491615500,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/utt2spk.scp",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\utt2spk.scp",
+      "bytes": 7603505,
+      "mtime_ns": 1786540529468193200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 144017180,
+      "mtime_ns": 1786544058460301700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 145138247,
+      "mtime_ns": 1786544090125222600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 146685537,
+      "mtime_ns": 1786544113609643100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 145100942,
+      "mtime_ns": 1786544164283062400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 144017180,
+      "mtime_ns": 1786544057655426700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 145138247,
+      "mtime_ns": 1786544086853983000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 146685537,
+      "mtime_ns": 1786544102394685400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\ali_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 145100942,
+      "mtime_ns": 1786544153558491600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\fsts.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 1700080531,
+      "mtime_ns": 1786541662149965100,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\fsts.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 1708302070,
+      "mtime_ns": 1786541610580021600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\fsts.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 1721076182,
+      "mtime_ns": 1786541649366063900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/fsts.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\fsts.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 1707777935,
+      "mtime_ns": 1786541626419439200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 116033951,
+      "mtime_ns": 1786544059137525200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 116929125,
+      "mtime_ns": 1786544099618625300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 118162516,
+      "mtime_ns": 1786544126726414700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 116897148,
+      "mtime_ns": 1786544173285518400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 116033951,
+      "mtime_ns": 1786544057657943900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 116929125,
+      "mtime_ns": 1786544086855984000,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 118162516,
+      "mtime_ns": 1786544102395677700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\likelihoods_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 116897148,
+      "mtime_ns": 1786544153560515200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/phone_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\phone_intervals.csv",
+      "bytes": 1257564776,
+      "mtime_ns": 1786546340009815800,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/word_intervals.csv",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\word_intervals.csv",
+      "bytes": 232482213,
+      "mtime_ns": 1786546340007804300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB 적재·독립 QC 뒤 재생성 가능한 interval 중간 CSV"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 5323070,
+      "mtime_ns": 1786544058509923600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 5325767,
+      "mtime_ns": 1786544090460990600,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 5317657,
+      "mtime_ns": 1786544113946334200,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 5314102,
+      "mtime_ns": 1786544164636754300,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.1.ark",
+      "bytes": 5323070,
+      "mtime_ns": 1786544057657943900,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.2.ark",
+      "bytes": 5325767,
+      "mtime_ns": 1786544086854986400,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.3.ark",
+      "bytes": 5317657,
+      "mtime_ns": 1786544102395677700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\words_first_pass.common_pron_mfa_r3_20260809.4.ark",
+      "bytes": 5314102,
+      "mtime_ns": 1786544153559558700,
+      "classification": "cleanup_candidate_after_qc",
+      "reason": "DB·최종 TextGrid 검증 뒤 재계산 가능한 Kaldi archive/index"
+    }
+  ],
+  "retained_assets": [
+    {
+      "year": "2020",
+      "relative_path": "2020.db",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020.db",
+      "bytes": 5534134272,
+      "mtime_ns": 1786277922348464400,
+      "classification": "retain_critical",
+      "reason": "direct 4-tier 재생성과 SQLite 무결성 재검증의 기준 DB"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020.log",
+      "bytes": 19405,
+      "mtime_ns": 1786277922936302700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020.yaml",
+      "bytes": 56,
+      "mtime_ns": 1786277923018460900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/cmvn.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\cmvn.log",
+      "bytes": 193477,
+      "mtime_ns": 1786267989200681900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/generate_final_features.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\generate_final_features.1.log",
+      "bytes": 18072110,
+      "mtime_ns": 1786268284832970400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/generate_final_features.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\generate_final_features.2.log",
+      "bytes": 18067241,
+      "mtime_ns": 1786268283163183500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/generate_final_features.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\generate_final_features.3.log",
+      "bytes": 18052560,
+      "mtime_ns": 1786268285027418000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/generate_final_features.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\generate_final_features.4.log",
+      "bytes": 18036865,
+      "mtime_ns": 1786268286309097300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/make_mfcc.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\make_mfcc.1.log",
+      "bytes": 15940926,
+      "mtime_ns": 1786267940292330500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/make_mfcc.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\make_mfcc.2.log",
+      "bytes": 15935907,
+      "mtime_ns": 1786267940290072600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/make_mfcc.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\make_mfcc.3.log",
+      "bytes": 15921901,
+      "mtime_ns": 1786267940285545600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/make_mfcc.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\make_mfcc.4.log",
+      "bytes": 15907172,
+      "mtime_ns": 1786267940286548300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "2020/split4/log/normalize_oov.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020\\split4\\log\\normalize_oov.log",
+      "bytes": 32,
+      "mtime_ns": 1786265668020209300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/final.alimdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\final.alimdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786268404484937800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/final.mdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\final.mdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786268404409411500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/lda.mat",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\lda.mat",
+      "bytes": 14575,
+      "mtime_ns": 1786268404494509100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/align.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\align.1.log",
+      "bytes": 16573681,
+      "mtime_ns": 1786272222971404300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/align.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\align.2.log",
+      "bytes": 16367045,
+      "mtime_ns": 1786272221247411400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/align.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\align.3.log",
+      "bytes": 16558049,
+      "mtime_ns": 1786272189540268000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/align.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\align.4.log",
+      "bytes": 16532553,
+      "mtime_ns": 1786272189298573900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/compile_train_graphs.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\compile_train_graphs.1.log",
+      "bytes": 20346135,
+      "mtime_ns": 1786269351014977800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/compile_train_graphs.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\compile_train_graphs.2.log",
+      "bytes": 20340326,
+      "mtime_ns": 1786269316807141000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/compile_train_graphs.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\compile_train_graphs.3.log",
+      "bytes": 20248821,
+      "mtime_ns": 1786269410188756900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/compile_train_graphs.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\compile_train_graphs.4.log",
+      "bytes": 20293030,
+      "mtime_ns": 1786269383055942900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/get_phone_ctm.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\get_phone_ctm.1.log",
+      "bytes": 15228424,
+      "mtime_ns": 1786274826700306500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/get_phone_ctm.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\get_phone_ctm.2.log",
+      "bytes": 15040855,
+      "mtime_ns": 1786274918579376900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/get_phone_ctm.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\get_phone_ctm.3.log",
+      "bytes": 15232861,
+      "mtime_ns": 1786274890776075800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/log/get_phone_ctm.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\log\\get_phone_ctm.4.log",
+      "bytes": 15221962,
+      "mtime_ns": 1786274862627739000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\phones.txt",
+      "bytes": 794,
+      "mtime_ns": 1786268404513105900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/rules.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\rules.yaml",
+      "bytes": 2955,
+      "mtime_ns": 1786268404510066300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "alignment/tree",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\alignment\\tree",
+      "bytes": 344276,
+      "mtime_ns": 1786268404504090300,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 Kaldi alignment model 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/L.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\1_common_pron_mfa_r3_20260809\\L.fst",
+      "bytes": 250714538,
+      "mtime_ns": 1786265994062486700,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/align_lexicon.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\1_common_pron_mfa_r3_20260809\\align_lexicon.fst",
+      "bytes": 295294178,
+      "mtime_ns": 1786265989346322800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/words.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\1_common_pron_mfa_r3_20260809\\words.txt",
+      "bytes": 16515887,
+      "mtime_ns": 1786265999696121600,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/phones/disambiguation_symbols.int",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\phones\\disambiguation_symbols.int",
+      "bytes": 40,
+      "mtime_ns": 1786265813402780500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/phones/disambiguation_symbols.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\phones\\disambiguation_symbols.txt",
+      "bytes": 30,
+      "mtime_ns": 1786265813404779100,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/phones/graphemes.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\phones\\graphemes.txt",
+      "bytes": 19459,
+      "mtime_ns": 1786265813369726700,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/phones/phone_disambig.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\phones\\phone_disambig.txt",
+      "bytes": 3,
+      "mtime_ns": 1786265813417337800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2020",
+      "relative_path": "dictionary/phones/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\dictionary\\phones\\phones.txt",
+      "bytes": 864,
+      "mtime_ns": 1786265813323042400,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021.db",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021.db",
+      "bytes": 10753568768,
+      "mtime_ns": 1786375044881699400,
+      "classification": "retain_critical",
+      "reason": "direct 4-tier 재생성과 SQLite 무결성 재검증의 기준 DB"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021.log",
+      "bytes": 19600,
+      "mtime_ns": 1786375045583559400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021.yaml",
+      "bytes": 56,
+      "mtime_ns": 1786375045673307600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/cmvn.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\cmvn.log",
+      "bytes": 359472,
+      "mtime_ns": 1786355677097906000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/generate_final_features.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\generate_final_features.1.log",
+      "bytes": 27978572,
+      "mtime_ns": 1786356190167399800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/generate_final_features.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\generate_final_features.2.log",
+      "bytes": 27979814,
+      "mtime_ns": 1786356191232219200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/generate_final_features.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\generate_final_features.3.log",
+      "bytes": 27681475,
+      "mtime_ns": 1786356193749279300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/generate_final_features.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\generate_final_features.4.log",
+      "bytes": 27968800,
+      "mtime_ns": 1786356193203988700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/make_mfcc.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\make_mfcc.1.log",
+      "bytes": 24393650,
+      "mtime_ns": 1786355575257832800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/make_mfcc.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\make_mfcc.2.log",
+      "bytes": 24393697,
+      "mtime_ns": 1786355575262352700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/make_mfcc.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\make_mfcc.3.log",
+      "bytes": 24699101,
+      "mtime_ns": 1786355575260349300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/make_mfcc.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\make_mfcc.4.log",
+      "bytes": 24684995,
+      "mtime_ns": 1786355575259337300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "2021/split4/log/normalize_oov.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021\\split4\\log\\normalize_oov.log",
+      "bytes": 32,
+      "mtime_ns": 1786351895762365500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/final.alimdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\final.alimdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786356353315392200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/final.mdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\final.mdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786356353234136200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/lda.mat",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\lda.mat",
+      "bytes": 14575,
+      "mtime_ns": 1786356353320926300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/align.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\align.1.log",
+      "bytes": 25587664,
+      "mtime_ns": 1786363313740745800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/align.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\align.2.log",
+      "bytes": 25586942,
+      "mtime_ns": 1786363323036042800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/align.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\align.3.log",
+      "bytes": 25278207,
+      "mtime_ns": 1786363350069467100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/align.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\align.4.log",
+      "bytes": 25581047,
+      "mtime_ns": 1786363361913234900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/compile_train_graphs.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\compile_train_graphs.1.log",
+      "bytes": 34085932,
+      "mtime_ns": 1786358149135982500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/compile_train_graphs.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\compile_train_graphs.2.log",
+      "bytes": 34116538,
+      "mtime_ns": 1786358300831256200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/compile_train_graphs.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\compile_train_graphs.3.log",
+      "bytes": 34080484,
+      "mtime_ns": 1786358257384967800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/compile_train_graphs.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\compile_train_graphs.4.log",
+      "bytes": 34118326,
+      "mtime_ns": 1786358165550171000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/get_phone_ctm.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\get_phone_ctm.1.log",
+      "bytes": 23559792,
+      "mtime_ns": 1786368212727678200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/get_phone_ctm.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\get_phone_ctm.2.log",
+      "bytes": 23558799,
+      "mtime_ns": 1786368122141132700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/get_phone_ctm.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\get_phone_ctm.3.log",
+      "bytes": 23261967,
+      "mtime_ns": 1786368182961221600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/log/get_phone_ctm.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\log\\get_phone_ctm.4.log",
+      "bytes": 23550016,
+      "mtime_ns": 1786368240831670500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\phones.txt",
+      "bytes": 794,
+      "mtime_ns": 1786356353335400600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/rules.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\rules.yaml",
+      "bytes": 2955,
+      "mtime_ns": 1786356353331401700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "alignment/tree",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\alignment\\tree",
+      "bytes": 344276,
+      "mtime_ns": 1786356353327394600,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 Kaldi alignment model 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/L.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\1_common_pron_mfa_r3_20260809\\L.fst",
+      "bytes": 250714538,
+      "mtime_ns": 1786352199285625400,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/align_lexicon.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\1_common_pron_mfa_r3_20260809\\align_lexicon.fst",
+      "bytes": 295294178,
+      "mtime_ns": 1786352194598951500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/words.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\1_common_pron_mfa_r3_20260809\\words.txt",
+      "bytes": 16515887,
+      "mtime_ns": 1786352203435745500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/phones/disambiguation_symbols.int",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\phones\\disambiguation_symbols.int",
+      "bytes": 40,
+      "mtime_ns": 1786352027320961200,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/phones/disambiguation_symbols.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\phones\\disambiguation_symbols.txt",
+      "bytes": 30,
+      "mtime_ns": 1786352027322982000,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/phones/graphemes.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\phones\\graphemes.txt",
+      "bytes": 19459,
+      "mtime_ns": 1786352027301142600,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/phones/phone_disambig.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\phones\\phone_disambig.txt",
+      "bytes": 3,
+      "mtime_ns": 1786352027328970800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2021",
+      "relative_path": "dictionary/phones/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\dictionary\\phones\\phones.txt",
+      "bytes": 864,
+      "mtime_ns": 1786352027274794900,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022.db",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+      "bytes": 7146942464,
+      "mtime_ns": 1786452021095381500,
+      "classification": "retain_critical",
+      "reason": "direct 4-tier 재생성과 SQLite 무결성 재검증의 기준 DB"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.log",
+      "bytes": 19406,
+      "mtime_ns": 1786452021636876300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.yaml",
+      "bytes": 56,
+      "mtime_ns": 1786452021720495000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/cmvn.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\cmvn.log",
+      "bytes": 230017,
+      "mtime_ns": 1786438659609313300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/generate_final_features.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\generate_final_features.1.log",
+      "bytes": 17332495,
+      "mtime_ns": 1786438972626181500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/generate_final_features.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\generate_final_features.2.log",
+      "bytes": 17154496,
+      "mtime_ns": 1786438970940741900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/generate_final_features.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\generate_final_features.3.log",
+      "bytes": 17359804,
+      "mtime_ns": 1786438970258929100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/generate_final_features.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\generate_final_features.4.log",
+      "bytes": 17346346,
+      "mtime_ns": 1786438972384223100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/make_mfcc.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\make_mfcc.1.log",
+      "bytes": 15295875,
+      "mtime_ns": 1786438606999548800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/make_mfcc.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\make_mfcc.2.log",
+      "bytes": 15116513,
+      "mtime_ns": 1786438606990933700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/make_mfcc.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\make_mfcc.3.log",
+      "bytes": 15320897,
+      "mtime_ns": 1786438606988929100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/make_mfcc.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\make_mfcc.4.log",
+      "bytes": 15306704,
+      "mtime_ns": 1786438606997541400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "2022/split4/log/normalize_oov.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022\\split4\\log\\normalize_oov.log",
+      "bytes": 32,
+      "mtime_ns": 1786436457238260000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/final.alimdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\final.alimdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786439134605152300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/final.mdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\final.mdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786439131888928900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/lda.mat",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\lda.mat",
+      "bytes": 14575,
+      "mtime_ns": 1786439134611728900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/align.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\align.1.log",
+      "bytes": 15804853,
+      "mtime_ns": 1786443984694556900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/align.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\align.2.log",
+      "bytes": 15831680,
+      "mtime_ns": 1786443949460682000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/align.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\align.3.log",
+      "bytes": 15675960,
+      "mtime_ns": 1786444052742648400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/align.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\align.4.log",
+      "bytes": 16033718,
+      "mtime_ns": 1786444030602203900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/compile_train_graphs.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\compile_train_graphs.1.log",
+      "bytes": 21485668,
+      "mtime_ns": 1786440165355315700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/compile_train_graphs.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\compile_train_graphs.2.log",
+      "bytes": 21633927,
+      "mtime_ns": 1786440174043603700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/compile_train_graphs.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\compile_train_graphs.3.log",
+      "bytes": 21760774,
+      "mtime_ns": 1786440215174136200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/compile_train_graphs.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\compile_train_graphs.4.log",
+      "bytes": 21827874,
+      "mtime_ns": 1786440245865986400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/get_phone_ctm.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\get_phone_ctm.1.log",
+      "bytes": 14430046,
+      "mtime_ns": 1786447390749820300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/get_phone_ctm.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\get_phone_ctm.2.log",
+      "bytes": 14622476,
+      "mtime_ns": 1786447348326210400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/get_phone_ctm.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\get_phone_ctm.3.log",
+      "bytes": 14631435,
+      "mtime_ns": 1786447419191342200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/log/get_phone_ctm.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\log\\get_phone_ctm.4.log",
+      "bytes": 14626071,
+      "mtime_ns": 1786447448961951600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\phones.txt",
+      "bytes": 794,
+      "mtime_ns": 1786439134638671200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/rules.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\rules.yaml",
+      "bytes": 2955,
+      "mtime_ns": 1786439134630282200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "alignment/tree",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\alignment\\tree",
+      "bytes": 344276,
+      "mtime_ns": 1786439134623728900,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 Kaldi alignment model 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/L.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\1_common_pron_mfa_r3_20260809\\L.fst",
+      "bytes": 250714538,
+      "mtime_ns": 1786436756991794300,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/align_lexicon.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\1_common_pron_mfa_r3_20260809\\align_lexicon.fst",
+      "bytes": 295294178,
+      "mtime_ns": 1786436752677006700,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/words.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\1_common_pron_mfa_r3_20260809\\words.txt",
+      "bytes": 16515887,
+      "mtime_ns": 1786436761396894800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/phones/disambiguation_symbols.int",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\phones\\disambiguation_symbols.int",
+      "bytes": 40,
+      "mtime_ns": 1786436583420873800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/phones/disambiguation_symbols.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\phones\\disambiguation_symbols.txt",
+      "bytes": 30,
+      "mtime_ns": 1786436583422873500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/phones/graphemes.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\phones\\graphemes.txt",
+      "bytes": 19459,
+      "mtime_ns": 1786436583393413500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/phones/phone_disambig.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\phones\\phone_disambig.txt",
+      "bytes": 3,
+      "mtime_ns": 1786436583432403800,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2022",
+      "relative_path": "dictionary/phones/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\dictionary\\phones\\phones.txt",
+      "bytes": 864,
+      "mtime_ns": 1786436583364866600,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023.db",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023.db",
+      "bytes": 4829962240,
+      "mtime_ns": 1786548810969966100,
+      "classification": "retain_critical",
+      "reason": "direct 4-tier 재생성과 SQLite 무결성 재검증의 기준 DB"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023.log",
+      "bytes": 19589,
+      "mtime_ns": 1786548812605987200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023.yaml",
+      "bytes": 56,
+      "mtime_ns": 1786548812767689300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/cmvn.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\cmvn.log",
+      "bytes": 143452,
+      "mtime_ns": 1786540552692357300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/generate_final_features.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\generate_final_features.1.log",
+      "bytes": 11378350,
+      "mtime_ns": 1786540755807228700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/generate_final_features.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\generate_final_features.2.log",
+      "bytes": 11371522,
+      "mtime_ns": 1786540754828594900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/generate_final_features.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\generate_final_features.3.log",
+      "bytes": 11350725,
+      "mtime_ns": 1786540753822328200,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/generate_final_features.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\generate_final_features.4.log",
+      "bytes": 11363287,
+      "mtime_ns": 1786540756069028500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/make_mfcc.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\make_mfcc.1.log",
+      "bytes": 10038136,
+      "mtime_ns": 1786540516621623900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/make_mfcc.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\make_mfcc.2.log",
+      "bytes": 10030611,
+      "mtime_ns": 1786540516623625900,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/make_mfcc.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\make_mfcc.3.log",
+      "bytes": 10010063,
+      "mtime_ns": 1786540516629164600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/make_mfcc.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\make_mfcc.4.log",
+      "bytes": 10021856,
+      "mtime_ns": 1786540516619627500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "2023/split4/log/normalize_oov.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023\\split4\\log\\normalize_oov.log",
+      "bytes": 32,
+      "mtime_ns": 1786538955454111800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/final.alimdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\final.alimdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786540840585101800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/final.mdl",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\final.mdl",
+      "bytes": 33868683,
+      "mtime_ns": 1786540837687411000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/lda.mat",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\lda.mat",
+      "bytes": 14575,
+      "mtime_ns": 1786540840591400500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/align.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\align.1.log",
+      "bytes": 10437394,
+      "mtime_ns": 1786544057655426700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/align.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\align.2.log",
+      "bytes": 10310541,
+      "mtime_ns": 1786544086852989800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/align.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\align.3.log",
+      "bytes": 10411477,
+      "mtime_ns": 1786544102394685400,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/align.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\align.4.log",
+      "bytes": 10468845,
+      "mtime_ns": 1786544153558491600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/compile_train_graphs.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\compile_train_graphs.1.log",
+      "bytes": 14240345,
+      "mtime_ns": 1786541662163157300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/compile_train_graphs.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\compile_train_graphs.2.log",
+      "bytes": 14383806,
+      "mtime_ns": 1786541610617628500,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/compile_train_graphs.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\compile_train_graphs.3.log",
+      "bytes": 14416370,
+      "mtime_ns": 1786541649382132800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/compile_train_graphs.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\compile_train_graphs.4.log",
+      "bytes": 14377450,
+      "mtime_ns": 1786541626438981700,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/get_phone_ctm.1.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\get_phone_ctm.1.log",
+      "bytes": 9620771,
+      "mtime_ns": 1786546264004583100,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/get_phone_ctm.2.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\get_phone_ctm.2.log",
+      "bytes": 9488509,
+      "mtime_ns": 1786546294673917800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/get_phone_ctm.3.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\get_phone_ctm.3.log",
+      "bytes": 9600113,
+      "mtime_ns": 1786546317151476600,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/log/get_phone_ctm.4.log",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\log\\get_phone_ctm.4.log",
+      "bytes": 9606733,
+      "mtime_ns": 1786546338853391300,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\phones.txt",
+      "bytes": 794,
+      "mtime_ns": 1786540840619770800,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/rules.yaml",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\rules.yaml",
+      "bytes": 2955,
+      "mtime_ns": 1786540840611964000,
+      "classification": "retain_reproducibility",
+      "reason": "실행 로그·모델·설정 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "alignment/tree",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\alignment\\tree",
+      "bytes": 344276,
+      "mtime_ns": 1786540840602961000,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 Kaldi alignment model 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/L.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\1_common_pron_mfa_r3_20260809\\L.fst",
+      "bytes": 250714538,
+      "mtime_ns": 1786539265264553300,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/align_lexicon.fst",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\1_common_pron_mfa_r3_20260809\\align_lexicon.fst",
+      "bytes": 295294178,
+      "mtime_ns": 1786539259480242400,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/1_common_pron_mfa_r3_20260809/words.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\1_common_pron_mfa_r3_20260809\\words.txt",
+      "bytes": 16515887,
+      "mtime_ns": 1786539271176262700,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/phones/disambiguation_symbols.int",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\phones\\disambiguation_symbols.int",
+      "bytes": 40,
+      "mtime_ns": 1786539082096347500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/phones/disambiguation_symbols.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\phones\\disambiguation_symbols.txt",
+      "bytes": 30,
+      "mtime_ns": 1786539082098357500,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/phones/graphemes.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\phones\\graphemes.txt",
+      "bytes": 19459,
+      "mtime_ns": 1786539082071414100,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/phones/phone_disambig.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\phones\\phone_disambig.txt",
+      "bytes": 3,
+      "mtime_ns": 1786539082108114000,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    },
+    {
+      "year": "2023",
+      "relative_path": "dictionary/phones/phones.txt",
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\dictionary\\phones\\phones.txt",
+      "bytes": 864,
+      "mtime_ns": 1786539082043665200,
+      "classification": "retain_reproducibility",
+      "reason": "해당 실행의 dictionary/FST 재현 근거"
+    }
+  ],
+  "safety": {
+    "source_corpus_modified": false,
+    "alignment_databases_deleted": false,
+    "final_6tier_deleted": false,
+    "reproducibility_files_deleted": false,
+    "only_exact_inventory_candidates_may_be_deleted": true
+  }
+}

@@ -1,0 +1,104 @@
+﻿{
+    "schema_version":  "mfa_r3_storage_cleanup_review.v1",
+    "status":  "ready_for_researcher_review",
+    "recorded_at":  "2026-08-13T14:25:00.4458704+09:00",
+    "release_id":  "common_pron_mfa_r3_20260809",
+    "drive":  {
+                  "name":  "D:",
+                  "volume_label":  "DATA_SSD",
+                  "free_gib_before_inventory":  48.604
+              },
+    "scope":  {
+                  "years":  [
+                                "2020",
+                                "2021",
+                                "2022",
+                                "2023"
+                            ],
+                  "temp_only":  true,
+                  "corpus_scanned":  false,
+                  "final_textgrids_scanned":  false,
+                  "legacy_r2_scanned":  false
+              },
+    "reports":  [
+                    {
+                        "year":  "2020",
+                        "status":  "ready_for_user_review",
+                        "total_files":  102,
+                        "total_bytes":  21208777065,
+                        "candidate_files":  63,
+                        "candidate_bytes":  14699866434,
+                        "candidate_gib":  13.69,
+                        "retained_db":  {
+                                            "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2020\\2020.db",
+                                            "bytes":  5534134272,
+                                            "mtime_ns":  1786277922348464400,
+                                            "sha256":  "e2fec7300f9a70a6553f0f9d81d9c7a3c5cdfbc514b77cc7b6de87f933d7f991"
+                                        },
+                        "report_path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2020.json"
+                    },
+                    {
+                        "year":  "2021",
+                        "status":  "ready_for_user_review",
+                        "total_files":  102,
+                        "total_bytes":  39958086857,
+                        "candidate_files":  63,
+                        "candidate_bytes":  28031348146,
+                        "candidate_gib":  26.106,
+                        "retained_db":  {
+                                            "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2021\\2021.db",
+                                            "bytes":  10753568768,
+                                            "mtime_ns":  1786375044881699400,
+                                            "sha256":  "faaef1c2f7c8dd013f7e90dc1694d6514e9b5bdf8fdbe0e60b07d179925a7731"
+                                        },
+                        "report_path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2021.json"
+                    },
+                    {
+                        "year":  "2022",
+                        "status":  "ready_for_user_review",
+                        "total_files":  102,
+                        "total_bytes":  26402328520,
+                        "candidate_files":  63,
+                        "candidate_bytes":  18285893968,
+                        "candidate_gib":  17.03,
+                        "retained_db":  {
+                                            "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+                                            "bytes":  7146942464,
+                                            "mtime_ns":  1786452021095381500,
+                                            "sha256":  "610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2"
+                                        },
+                        "report_path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2022.json"
+                    },
+                    {
+                        "year":  "2023",
+                        "status":  "ready_for_user_review",
+                        "total_files":  102,
+                        "total_bytes":  17896976214,
+                        "candidate_files":  63,
+                        "candidate_bytes":  12213278976,
+                        "candidate_gib":  11.375,
+                        "retained_db":  {
+                                            "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2023\\2023.db",
+                                            "bytes":  4829962240,
+                                            "mtime_ns":  1786548810969966100,
+                                            "sha256":  "3c6695ac2033612d514e6ca57711d006d2505c6ddb25124b666865df8c315108"
+                                        },
+                        "report_path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260813\\INVENTORY_r3_temp_2023.json"
+                    }
+                ],
+    "estimated_reclaim":  {
+                              "bytes":  73230387524,
+                              "gib":  68.201
+                          },
+    "safety":  {
+                   "deletion_performed":  false,
+                   "move_performed":  false,
+                   "archive_performed":  false,
+                   "apply_supported":  false,
+                   "authorization_required_for_cleanup":  true,
+                   "databases_retained":  true,
+                   "final_6tier_retained":  true,
+                   "source_corpus_modified":  false
+               },
+    "next_step":  "검토 뒤 exact allowlist archive/apply 스크립트를 별도로 만들고 연구자 승인을 받는다."
+}

@@ -10,9 +10,10 @@
 > `ari30`이 candidate `e6716a369412...eb878b3b`를 명시 승인했고, 6-tier
 > 494,228개와 gzip 동반표 4종을 수출했다. 독립 전수 QC는 coverage 100%·hard
 > failure 0, 보존 DB 재수출 semantic·byte 24/24로 `passed`다. 2020–2023은
-> 재실행하지 않는다. D: 여유가 48.604 GiB뿐이므로 다음 한 단계는 삭제 없는
-> **2020–2023 r3 temp 용량 inventory**다. 예상 회수량을 승인·정리해 2024
-> capacity Gate를 만족한 뒤, 완료 SHA를 입력으로 2023→2024 전환 Gate를 연다.
+> 재실행하지 않는다. 이어 독립 QC 뒤 재생성 가능한 temp 252파일만 exact
+> allowlist로 삭제해 68.201 GiB를 회수했고, D: 여유는 116.806 GiB가 됐다.
+> DB·최종 6-tier·로그·모델·계약은 보존했다. 다음 한 단계는 2024 exact-ID·
+> capacity preflight와 2023→2024 전환 Gate다.
 >
 > **2026-08-12 2022 r3 정렬·수출·독립 QC 완료:** 2020·2021 완료 SHA를
 > 변경하지 않고 2022 exact-ID 751,721건을 동일 r3 계약으로 새로 정렬했다.
@@ -280,9 +281,9 @@ MFA 직전 GO이며 아직 계산을 시작하지 않았다. 2022에서 발견�
 - 2020–2023 r3 MFA·6-tier·동반표·독립 QC 완료 SHA 동결
 - 2023 exact-ID 494,580 = 정렬 494,228 + 승인 기술 후속 352
 - 2023 독립 QC coverage 100%·hard failure 0·DB 재수출 24/24
-- D: 48.604 GiB·E: 1,834.453 GiB 확인; 실제 정리 전 temp inventory 대기
-- 다음 단일 작업은 삭제 없는 2020–2023 r3 temp inventory
-- inventory·승인·정리 뒤 2023→2024 전환 Gate
+- 2020–2023 r3 temp exact cleanup 완료: 252파일·68.201 GiB, blocker 0
+- D: 116.806 GiB; DB·최종 6-tier·로그·모델·계약 보존 확인
+- 다음 단일 작업은 2024 exact-ID·capacity preflight와 2023→2024 전환 Gate
 - 2022 post-MFA 438건과 결합 제외 1,669건의 승인·회계 완료
 - 2022 공식 연구자 인프라 표본 24개 검토 완료·발음 입력 불일치 발견
 - r2 프로젝트 발음 release Gate 차단 완료

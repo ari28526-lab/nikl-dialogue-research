@@ -44,7 +44,7 @@
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\08_global_projection_failed_field_order_20260808_1301` | 전역 projection 과도한 열 순서 검사 안전 중단 partial | 343B·192B 실패 증거; 생산 입력으로 사용 금지 |
 | `D:\mfa_common_pron\staging\common_pron_mfa_r3_20260807\archive_intermediate\05_g2p_mismatch_diagnostics_initial_20260808_1053` | 초기 mismatch 진단 중간본 | 활음 이차조음 분류 보강 전 결과와 manifest 보존; 생산 입력으로 사용 금지 |
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 production namespace 분리 |
-| `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2023 `ALIGN_DONE`·독립 QC passed; 2023 DB 4,829,962,240 bytes·SHA `3c6695ac...315108`, 입력 494,580 = 성공 494,228 + 승인 후속 352; 2020–2023 재실행·수동 삭제·legacy 재사용 금지 |
+| `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2023 `ALIGN_DONE`·독립 QC passed; 2023 DB 4,829,962,240 bytes·SHA `3c6695ac...315108`, 입력 494,580 = 성공 494,228 + 승인 후속 352. 2026-08-13 승인 exact inventory의 재생성 temp 252파일·68.201 GiB만 정리, DB·log·model·dictionary·tree·yaml 보존; D: 116.806 GiB. 2020–2023 재실행·수동 삭제·legacy 재사용 금지 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809\research_6tier` | 최종 r3 6-tier TextGrid·연도별 gzip 동반표 | 2020 782,432·2021 1,206,862·2022 751,383·2023 494,228 TextGrid; 네 연도 모두 coverage 100%·hard failure 0·DB 표본 semantic/byte 24/24, 연도별 `QC_STATE.json` passed |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |

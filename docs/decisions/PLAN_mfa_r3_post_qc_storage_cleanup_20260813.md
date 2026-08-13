@@ -1,7 +1,7 @@
 # 2023 완료 뒤 저장공간 정리와 2024 진입 계획
 
 최종 갱신: 2026-08-13 KST
-상태: 읽기 전용 inventory 실행 전; 실제 이동·삭제 미승인
+상태: 2020–2023 inventory·연구자 승인·exact allowlist 정리 완료
 
 ## 결론
 
@@ -9,7 +9,7 @@
 MFA가 아니다. 먼저 완료본을 동결하고 D:에서 재생성 가능한 중간물의 정확한
 회수량을 계산해야 한다.
 
-2026-08-13 관측값은 다음과 같다.
+2026-08-13 정리 전 관측값은 다음과 같다.
 
 | 드라이브 | 역할 | 여유 |
 |---|---|---:|
@@ -44,7 +44,7 @@ D: 48.604 GiB는 과거 r3 runner 보수적 요구량 53.726 GiB보다도 작다
 독립 QC 뒤 재생성 가능한 `.ark`, `.scp`, interval 중간 CSV만 후보로 분류한다.
 모델·dictionary·tree·log·yaml과 미분류 파일은 자동 정리하지 않는다.
 
-현재 단계는 삭제 기능이 없는 inventory만 수행한다. DB SHA가 각 연도
+첫 단계는 삭제 기능이 없는 inventory만 수행했다. DB SHA가 각 연도
 `QC_STATE.json`과 일치하고 SQLite transaction 파일이 없을 때만
 `ready_for_user_review`가 된다.
 
@@ -68,13 +68,17 @@ bytes·SHA manifest를 검증한 뒤 D: 사본 제거를 별도 승인한다. �
 A. 읽기 전용 temp inventory
   → B. 연도별 DB SHA·QC·transaction·미분류 0 확인
   → C. 예상 회수량과 2024 요구량 비교
-  → D. exact allowlist archive/apply 계획 작성
+  → D. exact allowlist apply 계획 작성
   → E. 연구자 명시 승인
-  → F. E: archive 생성·검사
-  → G. manifest의 정확한 후보만 D:에서 제거
+  → F. manifest의 정확한 후보만 D:에서 제거
   → H. D: 여유와 2020–2023 DB·6-tier·계약 재검증
   → I. 2023→2024 전환 Gate
 ```
+
+`.ark`, `.scp`, interval CSV는 보존 DB·최종 TextGrid에서 결정적으로 재생성할 수
+있는 계산 cache이므로 E: archive를 새로 만들지 않았다. 삭제 전 exact inventory와
+삭제 결과 JSON을 저장소에 보존하는 것으로 충분하며, 비교·시행착오 증거인 r2
+산출물을 E:로 옮기는 3순위 archive 정책과 구분한다.
 
 어느 단계에서도 드라이브 root, release root, 연도 상위 폴더를 통째로 재귀
 삭제하지 않는다. 실패하면 원본을 유지하며 자동 clean이나 다음 후보 확장을 하지
@@ -91,12 +95,31 @@ A. 읽기 전용 temp inventory
 이 명령은 2020–2023 DB SHA와 temp 파일 목록을 읽고 저장소에 JSON 보고서만
 만든다. D:/E: 삭제·이동·압축은 0건이며 실제 정리 기능도 없다.
 
+## 2026-08-13 실행 결과
+
+- 읽기 전용 inventory: 2020–2023 모두 `ready_for_user_review`, blocker 0
+- 연구자 승인: `ari30`
+- 승인 문장: “2020–2023 r3 QC 완료 후 재생성 가능한 temp 후보 252개
+  (68.201 GiB)를 exact allowlist에 따라 삭제하고, DB·최종 6-tier·로그·모델·
+  계약은 보존하는 것을 승인한다.”
+- 삭제: 252파일, 73,230,387,524 bytes(68.201 GiB), 누락·변경·분류 불일치 0
+- D: 여유: 48.604 GiB → 116.806 GiB
+- 보존 확인: 2020–2023 DB 4개와 최종 6-tier 4개 연도 모두 존재
+- 원 WAV·LAB·CSV·공통발음사전·r2 비교본 변경 0
+- 실행 보고서:
+  `outputs/reports/mfa_r3_storage_cleanup_review_20260813/APPLY_RESULT.json`
+
+실행기는 보고서에 기록된 경로·크기·mtime과 현재 파일을 다시 대조하고, 동일한
+분류 함수가 `cleanup_candidate_after_qc`로 재판정한 파일만 개별 `unlink`했다.
+DB·모델·dictionary·tree·log·yaml 또는 미분류 파일은 삭제 후보가 될 수 없도록
+fail-closed했다.
+
 ## 다음 결정
 
-inventory 결과의 연도별 후보 GiB와 blocker를 확인한 뒤 결정한다.
+1순위 temp 정리가 완료됐으므로 corpus/QC scratch와 r2 역사 산출물은 지금 더
+건드리지 않는다. 다음 단계는 2024 exact-ID 계약을 만든 뒤 실제 capacity
+formula를 다시 계산하고 2023→2024 전환 Gate를 여는 것이다.
 
-1. 1순위 temp 후보만으로 2024 MFA·수출·QC에 충분한가
-2. 부족하면 corpus/QC scratch 또는 r2 역사 산출물 중 무엇을 E:로 옮길 것인가
-3. 2024 진입 전 확보해야 할 여유는 2024 exact-ID 계약의 실제 capacity formula에
-   후속 6-tier 수출·QC 여유를 더해 확정한다.
-
+2024 진입 전 확보해야 할 여유는 2024 exact-ID 계약의 실제 capacity formula에
+후속 6-tier 수출·QC 여유를 더해 확정한다. 그 계산이 116.806 GiB를 넘을 때만
+2·3순위 storage inventory를 별도 수행한다.

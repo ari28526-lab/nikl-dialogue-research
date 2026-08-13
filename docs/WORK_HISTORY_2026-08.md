@@ -3261,3 +3261,21 @@ shard 2–23을 재개하는 것이다.
   `115b81f539d87eb30892df2ffb0052e5d569884569aa4ff9f30c0b39db91d958`다.
 - 2023 MFA·전수 수출·QC는 다시 실행하지 않는다. 다음 생산 단계는 2023 완료
   marker·DB·QC state SHA를 입력으로 한 2023→2024 전환 Gate다.
+
+### 2026-08-13 — 2020–2023 r3 post-QC temp exact 정리
+
+- 2024 진입 전 D: 여유가 48.604 GiB로 줄어, 원자료·완성본을 건드리지 않고 먼저
+  2020–2023 r3 temp를 읽기 전용 inventory했다. 네 DB SHA와 연도별 `QC_STATE`,
+  SQLite transaction, symlink, 미분류 파일을 확인했으며 blocker는 모두 0이었다.
+- 재생성 가능한 Kaldi `.ark`·`.scp`와 interval 중간 CSV만 252파일,
+  73,230,387,524 bytes(68.201 GiB)로 분류했다. DB·모델·dictionary·tree·log·
+  yaml과 최종 6-tier는 후보에서 제외했다.
+- 연구자 `ari30`은 위 exact allowlist의 삭제와 DB·최종 6-tier·로그·모델·계약
+  보존을 명시 승인했다. 실행기는 삭제 직전에 경로·상대경로·크기·mtime·동일
+  분류를 다시 대조하고 252파일만 개별 삭제했다. 실패·부분 누락·보호 suffix
+  혼입은 0이었다.
+- 정리 뒤 D: 여유는 116.806 GiB다. 2020–2023 DB 4개와 최종 6-tier 네 연도는
+  모두 그대로 존재한다. 원 WAV·LAB·CSV·공통발음사전·r2 비교본은 변경하지
+  않았다. 재생성 cache는 E:에 중복 archive하지 않고, exact inventory와
+  `APPLY_RESULT.json`을 방법론·감사 증거로 보존한다.
+- 다음 단일 단계는 2024 exact-ID·capacity preflight와 2023→2024 전환 Gate다.

@@ -6,9 +6,10 @@
 > `common_pron_mfa_r3_20260809` 계약으로 신규 정렬, post-MFA exact-ID 회계,
 > 6-tier·동반표 수출과 독립 전수 QC까지 완료해 SHA를 동결했다. 2023은 입력
 > 494,580 중 494,228 정렬, 승인 기술 미정렬 352이며 DB 재수출 표본은
-> semantic·byte 24/24다. D: 여유는 48.604 GiB이므로 **다음 한 단계는 삭제 없는
-> 2020–2023 r3 temp 용량 inventory**다. DB·최종 6-tier를 보존한 정리와 2024
-> capacity Gate가 끝난 뒤 2023→2024 전환 Gate를 연다. 2020–2023 MFA·전수
+> semantic·byte 24/24다. 독립 QC 뒤 재생성 가능한 temp 252파일만 exact
+> allowlist로 정리해 68.201 GiB를 회수했고 D: 여유는 116.806 GiB다. DB·최종
+> 6-tier·로그·모델·계약은 보존했다. **다음 한 단계는 2024 exact-ID·capacity
+> preflight와 2023→2024 전환 Gate**다. 2020–2023 MFA·전수
 > 수출·QC, Stage 01–21, D: 원자료, r2 완성본과 광범위 파일럿은 다시 실행하지
 > 않는다.
 
