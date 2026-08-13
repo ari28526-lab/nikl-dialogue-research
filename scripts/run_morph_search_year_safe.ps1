@@ -85,6 +85,30 @@ if ($PreflightOnly) {
         }
         Write-Warning "stale lock 발견; 실제 실행 때 archive: $lockPath"
     }
+    $preservedPartials = @()
+    if (Test-Path -LiteralPath $outputRoot -PathType Container) {
+        $preservedPartials = @(
+            Get-ChildItem -LiteralPath $outputRoot -Recurse -Force `
+                -ErrorAction Stop |
+                Where-Object {
+                    $_.Name.EndsWith('.partial') -and
+                    $_.FullName.IndexOf(
+                        '\archive_failed\',
+                        [StringComparison]::OrdinalIgnoreCase
+                    ) -lt 0
+                }
+        )
+    }
+    if ($preservedPartials.Count -gt 0) {
+        $examples = @(
+            $preservedPartials |
+                Select-Object -First 5 -ExpandProperty FullName
+        ) -join '; '
+        throw (
+            "미완료 partial이 남아 있어 실제 실행 전 조사·archive 필요: " +
+            $examples
+        )
+    }
     $inputFiles = @(
         Get-ChildItem -LiteralPath $inputRoot -File -Filter '*.csv'
     ).Count

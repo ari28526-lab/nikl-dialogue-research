@@ -22,6 +22,7 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
         "n_morphs",
         "form_roman",
         "tagged_roman",
+        "original_form",
         "pron_reference_form",
         "pron_reference_source",
         "pron_reference_status",
@@ -45,6 +46,7 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
                 "n_morphs": "1",
                 "form_roman": "G A",
                 "tagged_roman": "G A/IC",
+                "original_form": "합법적인\n인용 필드",
                 "pron_reference_form": "가",
                 "pron_reference_source": "form_rule_prediction",
                 "pron_reference_status": "resolved_form",
@@ -57,6 +59,7 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
                 "n_morphs": "2",
                 "form_roman": "∅",
                 "tagged_roman": "∅/SN + S A _ R A m/NNG",
+                "original_form": "",
                 "pron_reference_form": "두 사람",
                 "pron_reference_source": "original_form_placeholder_resolution",
                 "pron_reference_status": "resolved_original_form",
@@ -69,6 +72,7 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
                 "n_morphs": "2",
                 "form_roman": "N A",
                 "tagged_roman": "N A/IC + ?/SF",
+                "original_form": "",
                 "pron_reference_form": "나?",
                 "pron_reference_source": "form_rule_prediction",
                 "pron_reference_status": "resolved_form",
@@ -81,6 +85,7 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
                 "n_morphs": "1",
                 "form_roman": "YO _ J EU m",
                 "tagged_roman": "YO _ J EU m/NNG",
+                "original_form": "",
                 "pron_reference_form": "요즘",
                 "pron_reference_source": "form_rule_prediction",
                 "pron_reference_status": "resolved_form",
@@ -126,6 +131,14 @@ class BuildMorphSearchYearShardedTests(unittest.TestCase):
                 symbol_path, "rt", encoding="utf-8-sig", newline=""
             ) as stream:
                 symbols = list(csv.DictReader(stream))
+            with gzip.open(
+                output / "annual_tables" / "utterance_master_v2.csv.gz",
+                "rt",
+                encoding="utf-8-sig",
+                newline="",
+            ) as stream:
+                master = list(csv.DictReader(stream))
+            self.assertEqual(master[0]["original_form"], "합법적인\n인용 필드")
             digit = next(row for row in symbols if row["symbol_surface"] == "2")
             self.assertEqual(digit["reference_reading"], "두")
             first_sha = sha256_file(symbol_path)

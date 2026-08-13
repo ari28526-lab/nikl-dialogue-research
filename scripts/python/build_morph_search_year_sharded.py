@@ -170,29 +170,29 @@ def write_deterministic_gzip_csv(
     if partial.exists():
         raise RuntimeError(f"미완료 gzip이 남아 있음: {partial}")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    row_count = 0
+    # CSV fields may legally contain quoted newlines.  Counting or copying
+    # physical text lines therefore cannot establish the number of records.
+    # Validate logical CSV records first, then gzip the source bytes as-is.
     with open(source, encoding="utf-8-sig", newline="") as src:
-        header = src.readline()
-        if not header:
+        reader = csv.reader(src)
+        try:
+            next(reader)
+        except StopIteration:
             raise RuntimeError(f"빈 CSV: {source}")
+        row_count = sum(1 for _row in reader)
+    if row_count != expected_rows:
+        raise RuntimeError(
+            f"gzip source CSV 논리행 수 불일치: {source.name} "
+            f"expected={expected_rows} actual={row_count}"
+        )
+    with open(source, "rb") as src:
         with open(partial, "wb") as raw:
             with gzip.GzipFile(
                 filename="", mode="wb", fileobj=raw, mtime=0
             ) as zipped:
-                with io.TextIOWrapper(
-                    zipped, encoding="utf-8-sig", newline=""
-                ) as dst:
-                    dst.write(header)
-                    for line in src:
-                        dst.write(line)
-                        row_count += 1
+                shutil.copyfileobj(src, zipped)
             raw.flush()
             os.fsync(raw.fileno())
-    if row_count != expected_rows:
-        raise RuntimeError(
-            f"gzip source row 수 불일치: {source.name} "
-            f"expected={expected_rows} actual={row_count}"
-        )
     os.replace(partial, destination)
     return {**file_info(destination), "rows": row_count}
 
@@ -205,12 +205,13 @@ def validate_gzip_table(path: Path, *, expected: Mapping[str, object]) -> None:
         or sha256_file(path) != expected.get("sha256")
     ):
         raise RuntimeError(f"gzip table fingerprint 불일치: {path}")
-    rows = 0
     with gzip.open(path, "rt", encoding="utf-8-sig", newline="") as stream:
-        if not stream.readline():
+        reader = csv.reader(stream)
+        try:
+            next(reader)
+        except StopIteration:
             raise RuntimeError(f"gzip table header 없음: {path}")
-        for _line in stream:
-            rows += 1
+        rows = sum(1 for _row in reader)
     if rows != int(expected.get("rows", -1)):
         raise RuntimeError(f"gzip table row 수 불일치: {path}")
 
@@ -345,7 +346,7 @@ def merge_annual_tables(
                 for manifest in shard_manifests
             )
             written_rows = 0
-            expected_header = ""
+            expected_header: list[str] | None = None
             with open(destination, "wb") as raw:
                 with gzip.GzipFile(
                     filename="", mode="wb", fileobj=raw, mtime=0
@@ -353,6 +354,7 @@ def merge_annual_tables(
                     with io.TextIOWrapper(
                         zipped, encoding="utf-8-sig", newline=""
                     ) as dst:
+                        writer = csv.writer(dst, lineterminator="\n")
                         for shard_number, manifest in enumerate(
                             shard_manifests, 1
                         ):
@@ -369,22 +371,33 @@ def merge_annual_tables(
                                 encoding="utf-8-sig",
                                 newline="",
                             ) as src:
-                                header = src.readline()
-                                if not expected_header:
+                                reader = csv.reader(src)
+                                try:
+                                    header = next(reader)
+                                except StopIteration:
+                                    raise RuntimeError(
+                                        f"annual source header 없음: {source}"
+                                    )
+                                if expected_header is None:
                                     expected_header = header
-                                    dst.write(header)
+                                    writer.writerow(header)
                                 elif header != expected_header:
                                     raise RuntimeError(
                                         f"annual header 불일치: {source}"
                                     )
-                                for line in src:
+                                utt_id_index = (
+                                    header.index("utt_id")
+                                    if table_key == "master"
+                                    else -1
+                                )
+                                for row in reader:
                                     if table_key == "master":
-                                        utt_id = line.split(",", 1)[0]
+                                        utt_id = row[utt_id_index]
                                         if utt_id in seen_utt_ids:
                                             duplicate_utt_ids += 1
                                         else:
                                             seen_utt_ids.add(utt_id)
-                                    dst.write(line)
+                                    writer.writerow(row)
                                     written_rows += 1
                 raw.flush()
                 os.fsync(raw.fileno())

@@ -3279,3 +3279,26 @@ shard 2–23을 재개하는 것이다.
   않았다. 재생성 cache는 E:에 중복 archive하지 않고, exact inventory와
   `APPLY_RESULT.json`을 방법론·감사 증거로 보존한다.
 - 다음 단일 단계는 2024 exact-ID·capacity preflight와 2023→2024 전환 Gate다.
+
+### 2026-08-13 — 2024 조합검색 내부 줄바꿈 안전 중단과 실제 회귀 복구
+
+- 2024 `morph_search.v3` 첫 shard 패키징에서 master의 예상 18,870행과 물리
+  18,871줄이 달라 안전 중단됐다. `SARW2400000002.1.1.113`의
+  `original_form`에 CSV 규격상 합법적인 인용 필드 내부 LF가 있었고, 기존 코드가
+  논리 레코드 대신 물리 줄을 센 것이 원인이었다.
+- 실패 당시 성공 shard는 0, 활성 `.partial`은 격리 뒤 0이었다. 원 WAV·JSON·CSV,
+  공통발음사전, MFA DB, TextGrid와 2020–2023 완성본은 변경하지 않았다. 실패
+  패키지와 progress는 shard 1의 `archive_failed`에 보존했다.
+- gzip 생성·검증·연도 병합을 `csv.reader`/`csv.writer` 기반 논리 레코드 처리로
+  바꾸고, 인용 필드 내부 줄바꿈 회귀시험 및 실행 전 활성 `.partial` 차단을
+  추가했다. Python 단위시험과 PowerShell 5.1 safety/runtime가 통과했다.
+- 수정 뒤 실제 2024 shard 1만 제한 재실행해 18,870 논리 레코드와 내부 LF
+  보존, manifest `success`, 활성 `.partial=0`을 확인했다. 상태는 의도한
+  `paused_after_max_shards`, 진행은 1/33이다.
+- 2024 exact-ID 입력계약 독립감사도 통과했다. source 728,257 = safe 595,743 +
+  follow-up 132,514이며, 승인 제외 1,339를 적용한 MFA 안전 본체는 594,404,
+  WAV 누락은 0이다. release Gate는 아직 닫혀 있으므로 MFA·TextGrid는 시작하지
+  않는다.
+- 이후 새 연도는 `PowerShell 검사 → preflight → 실제 1-shard 회귀 → 전체 재개`
+  순서를 고정한다. 상세 원인과 방법론 기록은
+  `docs/decisions/INCIDENT_morph_search_2024_embedded_newline_20260813.md`에 둔다.
