@@ -1,0 +1,126 @@
+{
+  "schema_version": "mfa_research_6tier_export.v1",
+  "status": "preflight_passed",
+  "analysis_ready_status": "ready_for_materialization",
+  "year": "2022",
+  "db_path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier",
+  "tier_names": [
+    "words",
+    "phones_mfa",
+    "phoneme_r_auto",
+    "utterance",
+    "utterance_orth_r",
+    "morph_analysis_utt"
+  ],
+  "alignment_contract": {
+    "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2022\\ALIGNMENT_CONTRACT_2022.json",
+    "bytes": 7646,
+    "mtime_ns": 1786422880678146300,
+    "sha256": "f2cdf8fc52b96a96a697797312b1e3c115575e4397bb9c02e7defe04d70f9295"
+  },
+  "alignment_contract_id": "f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb",
+  "input_contract_id": "9da932e4480b7e109b44b43f27c335b78c17e6f4466aad5a5d8acd0390facea2",
+  "approved_exclusions_contract": {
+    "schema_version": "mfa_approved_exclusions.v1",
+    "status": "approved",
+    "year": "2022",
+    "input_contract_id": "9da932e4480b7e109b44b43f27c335b78c17e6f4466aad5a5d8acd0390facea2",
+    "approved_by": "ari30",
+    "approved_at": "2026-08-11T23:24:54.241111+09:00",
+    "created_at": "2026-08-11T23:24:54.272794+09:00",
+    "review_csv": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2022\\04_RESEARCHER_APPROVED.csv",
+      "bytes": 110193,
+      "mtime_ns": 1786458294259547600,
+      "sha256": "c231c364b796c0247b04b9a6e515a42923da18c16859bf3ce5df438215a134ea"
+    },
+    "row_count": 338,
+    "counts": {
+      "mfa_alignment_missing|alignment_and_analysis": 338
+    },
+    "policy": {
+      "automatic_approval_forbidden": true,
+      "unknown_missing_is_hard_failure": true,
+      "contract_bound_to_input_contract_id": true
+    }
+  },
+  "counts": {
+    "database_utterance_ids": 751721,
+    "aligned_database_ids": 751383,
+    "post_mfa_unaligned_ids": 338,
+    "approved_alignment_exclusions": 338,
+    "spn_intervals": 0
+  },
+  "phone_inventory": {
+    "used_non_silence": 98,
+    "outside_acoustic": []
+  },
+  "exact_id_reconciliation": {
+    "status": "passed",
+    "mode": "r3_expected_mfa_input_exact_id",
+    "full_year_gate": true,
+    "counts": {
+      "source_search_ids": 866359,
+      "expected_mfa_input_ids": 751721,
+      "active_lab_ids": 751721,
+      "database_utterance_ids": 751721,
+      "aligned_database_ids": 751383,
+      "database_excluded_ids": 0,
+      "post_mfa_unaligned_ids": 338,
+      "approved_database_exclusions": 0,
+      "approved_database_unaligned_ids": 338,
+      "approved_technical_failure_ids": 338,
+      "approved_alignment_exclusions": 338,
+      "approved_analysis_only_exclusions": 0,
+      "quarantine_ids": 0,
+      "expected_input_ids_missing_from_search": 0,
+      "database_ids_missing_from_expected_input": 0,
+      "expected_input_ids_missing_from_database_without_approval": 0,
+      "active_lab_ids_missing_from_expected_input": 0,
+      "expected_input_ids_missing_from_active_lab": 0,
+      "unaligned_ids_without_approval": 0,
+      "approved_alignment_exclusions_not_unaligned": 0,
+      "analysis_only_ids_without_alignment": 0,
+      "unapproved_quarantine_ids": 0
+    },
+    "inventories": {
+      "expected_input_ids_missing_from_search": [],
+      "database_ids_missing_from_expected_input": [],
+      "expected_input_ids_missing_from_database_without_approval": [],
+      "active_lab_ids_missing_from_expected_input": [],
+      "expected_input_ids_missing_from_active_lab": [],
+      "unaligned_ids_without_approval": [],
+      "approved_alignment_exclusions_not_unaligned": [],
+      "analysis_only_ids_without_alignment": [],
+      "unapproved_quarantine_ids": []
+    },
+    "equation": "expected_mfa_input_ids = active_lab_ids = database_utterance_ids disjoint-union approved database exclusions; database_utterance_ids = aligned_database_ids disjoint-union approved database unaligned IDs; approved alignment exclusions equal the union of both technical failure sets; full search master may additionally contain pronunciation follow-up and pre-MFA exclusions"
+  },
+  "materialization_started": false,
+  "elapsed_seconds": 182.136,
+  "pronunciation_release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "mfa_dictionary_sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a",
+  "textgrid_schema": "research_textgrid.v2",
+  "source_db_sha256": "610054531403f0ca13292194b13f6e63e509434435864aec9f7118d888bfe5b2",
+  "alignment_origin": "fresh_r3_full_realign",
+  "r3_full_realign": true,
+  "safe_body_routing_contract_id": "7e00bf5bf28dc7cb1c97a4b5d14584d78cfef0957e6e71c4c42a23c144ce7ddb",
+  "followup_inventory_sha256": "3cc3f6a295c8bd60a251e0f0a60d5d84854af843412313047a5c5a6e9e086d29",
+  "pronunciation_occurrence_scope_sha256": "7c310aa6f0fa704be1b60e111fc2d40ef1f23837416e1772ada5ed443b85fb54",
+  "pronunciation_occurrence_table_sha256": "6f23992a881ed5e22d5ce92259a7b80c5e4af3a40c575edc4a6939fbf040e338",
+  "pronunciation_occurrence_audit_sha256": "26353ebd47e0b8e6c0d792223d7a48e42353c0882fc7a27be075a2c0c0406c1e",
+  "pronunciation_occurrence_join_key": [
+    "year",
+    "utt_id",
+    "reference_eojeol_idx"
+  ],
+  "alignment_done_marker": {
+    "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers\\ALIGN_DONE_2022.json",
+    "bytes": 1201,
+    "mtime_ns": 1786452110589418100,
+    "sha256": "bfb797a024fc4ea6a03657688d67ca3b7e535e412e550fde7956a9a0f3861e3a"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "mfa_db_research_6tier_sample_equivalence.v1",
+  "status": "success",
+  "read_only_sources": true,
+  "generated_at": "2026-08-12T02:10:40+09:00",
+  "elapsed_seconds": 57.907,
+  "year": "2022",
+  "input_contract_id": "9da932e4480b7e109b44b43f27c335b78c17e6f4466aad5a5d8acd0390facea2",
+  "alignment_contract_id": "f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb",
+  "selection_counts": {
+    "eligible_utterances": 751383,
+    "eligible_sessions": 2651,
+    "selected_utterances": 24,
+    "selected_sessions": 24
+  },
+  "comparison_counts": {
+    "compared": 24,
+    "semantic_equal": 24,
+    "byte_equal": 24
+  },
+  "db": {
+    "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+    "bytes": 7146942464,
+    "mtime_ns": 1786452021095381500
+  },
+  "final_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier",
+  "scratch_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\qc_scratch\\2022",
+  "sample_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_research_qc_common_pron_mfa_r3_20260809\\2022\\02_db_sample.csv",
+    "bytes": 10194,
+    "mtime_ns": 1786468240861841300,
+    "sha256": "bcbbf66a457aec30b4634951ea15972236a0534b9db5b0812d7ad37d68baeb43"
+  }
+}

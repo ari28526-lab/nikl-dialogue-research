@@ -1,0 +1,150 @@
+{
+  "schema_version": "mfa_r3_post_mfa_reconciliation_review.v1",
+  "status": "pending_researcher_approval",
+  "recorded_at": "2026-08-11T22:28:24+09:00",
+  "year": "2022",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "alignment_contract_id": "f53b6c2be25fc4e694796ae123c005258ee9913a4b6bf4cf6625220dec4113cb",
+  "input_contract_id": "9da932e4480b7e109b44b43f27c335b78c17e6f4466aad5a5d8acd0390facea2",
+  "candidate_identity_sha256": "272bcc134776548df77b244d547b1e922ff287fa9d8f8505c31740e3b2357b7a",
+  "counts": {
+    "expected_mfa_input": 751721,
+    "database_utterances": 751721,
+    "aligned_utterances": 751383,
+    "post_mfa_candidates": 338,
+    "reason_counts": {
+      "mfa_alignment_missing": 338
+    },
+    "sessions_with_candidates": 183
+  },
+  "largest_candidate_sessions": [
+    {
+      "session_id": "SDRW2200002740",
+      "count": 28
+    },
+    {
+      "session_id": "SDRW2200002739",
+      "count": 21
+    },
+    {
+      "session_id": "SDRW2200002737",
+      "count": 19
+    },
+    {
+      "session_id": "SDRW2200002738",
+      "count": 17
+    },
+    {
+      "session_id": "SDRW2200002664",
+      "count": 9
+    },
+    {
+      "session_id": "SDRW2200002373",
+      "count": 7
+    },
+    {
+      "session_id": "SDRW2200002437",
+      "count": 7
+    },
+    {
+      "session_id": "SDRW2200002489",
+      "count": 7
+    },
+    {
+      "session_id": "SDRW2200002393",
+      "count": 6
+    },
+    {
+      "session_id": "SDRW2200002613",
+      "count": 6
+    },
+    {
+      "session_id": "SDRW2200001175",
+      "count": 5
+    },
+    {
+      "session_id": "SDRW2200000609",
+      "count": 3
+    },
+    {
+      "session_id": "SDRW2200001056",
+      "count": 3
+    },
+    {
+      "session_id": "SDRW2200002387",
+      "count": 3
+    },
+    {
+      "session_id": "SDRW2200002397",
+      "count": 3
+    },
+    {
+      "session_id": "SDRW2200002440",
+      "count": 3
+    },
+    {
+      "session_id": "SDRW2200000148",
+      "count": 2
+    },
+    {
+      "session_id": "SDRW2200000287",
+      "count": 2
+    },
+    {
+      "session_id": "SDRW2200000459",
+      "count": 2
+    },
+    {
+      "session_id": "SDRW2200000647",
+      "count": 2
+    }
+  ],
+  "inputs": {
+    "alignment_done": {
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers\\ALIGN_DONE_2022.json",
+      "bytes": 1201,
+      "mtime_ns": 1786452110589418100,
+      "sha256": "bfb797a024fc4ea6a03657688d67ca3b7e535e412e550fde7956a9a0f3861e3a"
+    },
+    "alignment_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2022\\ALIGNMENT_CONTRACT_2022.json",
+      "bytes": 7646,
+      "mtime_ns": 1786422880678146300,
+      "sha256": "f2cdf8fc52b96a96a697797312b1e3c115575e4397bb9c02e7defe04d70f9295"
+    },
+    "source_db": {
+      "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2022\\2022.db",
+      "bytes": 7146942464,
+      "mtime_ns": 1786452021095381500
+    },
+    "expected_mfa_input_ids": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2022\\expected_mfa_input_ids_2022.csv.gz",
+      "bytes": 2217316,
+      "mtime_ns": 1786421943330945000,
+      "sha256": "869ea51209da74e2d60ee8adf16dd7fc4d579a4bf2bd409eea8db41f7f5c60d6"
+    }
+  },
+  "outputs": {
+    "candidate_details": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2022\\01_CANDIDATE_DETAILS.csv",
+      "bytes": 89297,
+      "mtime_ns": 1786454904247703700,
+      "sha256": "586d4c076af79c6cd71424d255c765a0ed78ad4f59b5c7c3151caa84c5091896"
+    },
+    "researcher_decisions": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2022\\02_RESEARCHER_DECISIONS.csv",
+      "bytes": 109855,
+      "mtime_ns": 1786454904277972500,
+      "sha256": "cfbd7c85d286b79a23ed63f0d228077a4c062b00e3f85136233b83f22247c51b"
+    }
+  },
+  "policy": {
+    "automatic_approval_performed": false,
+    "source_or_mfa_database_modified": false,
+    "full_year_realign_requested": false,
+    "actual_phonological_realization_judged": false,
+    "listening_required_for_exact_id_accounting": false,
+    "successful_alignments_preserved": true
+  },
+  "approval_instruction": "Approve the frozen candidate identity as technical post-MFA alignment exclusions before materializing 6-tier outputs."
+}
