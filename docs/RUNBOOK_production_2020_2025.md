@@ -738,6 +738,28 @@ state SHA를 입력으로 한 2023→2024 전환 Gate다. Gate가 통과하기 �
 제외했다. 나머지 16,121건은 이미 pronunciation follow-up에 있으므로 이중 계산하지
 않는다. `677,262 = 494,580 + 94,873 + 87,809`가 전수 회계식이다.
 
+## 6.1 2024 r3 장시간 runner 시작 checkpoint
+
+2026-08-13에 조합검색 33/33 shard와 연간 7표, frozen source contract, 발음 연구
+DB, alignment contract 및 독립 감사를 완료했다. source 728,257개는
+pronunciation-safe 595,743개와 follow-up 132,514개로 분리되며, 승인 제외
+1,339개를 적용한 exact-ID MFA 입력은 594,404개다. source WAV 누락은 0이다.
+
+runner preflight는 필요 공간 44.409 GiB 대비 D: 약 106.9 GiB, PowerShell
+safety/runtime 각 69개와 Python 564 tests로 GO였다. 2023→2024 전환 Gate도
+8/8 통과했다. 따라서 사용자는 일반 PowerShell 한 창에서 다음 명령만 실행한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_year_safe_body.ps1" `
+  -Year 2024 -NumJobs 4
+```
+
+두 번째 창에서 같은 runner를 중복 실행하지 않는다. 실패하면 corpus·temp·DB를
+보존하고 해당 checkpoint만 복구하며 2020–2023 또는 완료된 2024 전처리를 처음부터
+반복하지 않는다.
+
 ## 7. 발음 참조 파생층
 
 각 연도 6-tier 뒤 다음을 같은 계약으로 생성한다.

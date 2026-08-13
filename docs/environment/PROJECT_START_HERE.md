@@ -2,6 +2,12 @@
 
 최종 갱신: 2026-08-13 KST
 
+> **현재 생산 진입점:** 2024 조합검색·source contract·연구 DB·alignment contract와
+> 2023→2024 전환 Gate가 모두 통과했다. 2024 MFA 예정 입력은 594,404개이고 실제
+> runner는 아직 시작하지 않았다. 다음 작업은
+> `run_mfa_r3_year_safe_body.ps1 -Year 2024 -NumJobs 4` 한 개뿐이다. 동시에 두
+> runner를 시작하지 말고, 2020–2023 완성본은 재실행하거나 수정하지 않는다.
+
 > **현재 생산 진입점:** 2020·2021·2022·2023은 동일
 > `common_pron_mfa_r3_20260809` 계약으로 신규 정렬, post-MFA exact-ID 회계,
 > 6-tier·동반표 수출과 독립 전수 QC까지 완료해 SHA를 동결했다. 2023은 입력

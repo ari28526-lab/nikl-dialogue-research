@@ -3330,3 +3330,13 @@ shard 2–23을 재개하는 것이다.
 - 상세 근거는
   `docs/decisions/INCIDENT_bareun_literal_plus_delimiter_collision_20260813.md`에
   기록한다. 다음은 shard 33·annual 7표·source contract 검증이다.
+
+### 2026-08-13 — 2024 조합검색·연구 DB·정렬 계약·전환 Gate 완료
+
+- 2024 `morph_search.v3`를 checkpoint에서 재개해 33/33 shard와 연간 7개 gzip 표를 완료했다. 기존 성공 shard를 재사용했으며 원 CSV·WAV와 2020–2023 완성본은 변경하지 않았다.
+- 동결 source contract가 `passed`했다. source 728,257개 중 pronunciation-safe 595,743, follow-up 132,514이며 승인 제외 1,339개를 safe 집합에서 빼 최종 MFA 예정 입력은 594,404개다. WAV 누락은 0이다.
+- 공통발음 연구 DB를 33개 checkpoint로 만들고 독립 감사했다. 발화 728,257개, occurrence 5,141,540개, 공통 유형 catalog 881,237개가 전수 연결됐다.
+- 2024 alignment contract `d86f490de924cdf92f2fcb16316046558be65f9446ffa0cf325fc661e4b20f9f`를 만들고 독립 identity·모델 SHA 감사를 통과했다.
+- runner `-PreflightOnly`가 GO였다. 필요 공간은 44.409 GiB, 관측 D: 여유는 약 106.9 GiB였고 PowerShell safety 69개, Windows PowerShell 5.1 runtime 69개, Python 564 tests가 통과했다.
+- 2023 보존 DB·marker·QC SHA와 2024 계약을 결속한 2023→2024 Gate가 8/8 `passed_ready_for_researcher_start`였다. 2024 MFA·DB·TextGrid는 아직 시작하지 않았다.
+- 다음은 연구자가 단일 PowerShell에서 `run_mfa_r3_year_safe_body.ps1 -Year 2024 -NumJobs 4`를 실행하는 것이다. 상세 근거는 `docs/decisions/RESULT_mfa_r3_2024_preflight_20260813.md`다.

@@ -1,5 +1,7 @@
 # 현행 결정 문서 색인
 
+- [RESULT_mfa_r3_2024_preflight_20260813.md](RESULT_mfa_r3_2024_preflight_20260813.md) — 2024 조합검색·연구 DB·정렬 계약·PowerShell 5.1 preflight·2023→2024 Gate 완료와 단일 장시간 runner 진입 근거
+
 최종 갱신: 2026-08-13 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
