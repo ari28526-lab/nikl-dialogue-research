@@ -26,6 +26,7 @@
 | `RESULT_mfa_r3_alignment_database_2021_20260811.md` | 2021 r3 1,207,299발화 신규 정렬, DB SHA 동결, 1,206,862 성공·437 post-MFA exact-ID 회계와 연구자 승인 정지점 |
 | `RESULT_mfa_r3_alignment_database_2022_20260812.md` | 2022 r3 751,721발화 신규 정렬, 751,383 성공·338 명시 승인, 6-tier·동반표 4종·독립 전수 QC·DB 재수출 24/24 완료와 2023 안전 정지점 |
 | `RESULT_mfa_r3_2023_preflight_20260812.md` | 2022 완료 SHA를 보존한 2022→2023 Gate, 2023 조합검색 20/20·발음 연구 DB·exact-ID 494,580 입력과 장시간 runner preflight GO |
+| `RESULT_mfa_r3_alignment_database_2023_20260813.md` | 2023 r3 494,580발화 신규 정렬, 494,228 성공·352 명시 승인, 6-tier·동반표 4종·독립 전수 QC·DB 재수출 24/24 완료와 2024 전환 정지점 |
 
 ## 공통 발음사전과 6개년 동일성
 

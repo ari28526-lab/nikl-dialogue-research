@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-12 KST
+최종 갱신: 2026-08-13 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -31,8 +31,10 @@
 > 적용한 exact-ID 751,721을 동일 r3로 새로 정렬했다. 성공 751,383·승인 기술
 > 미정렬 338을 완전 회계한 뒤 6-tier 751,383개·동반표 4개를 수출했다. 독립
 > 전수 QC는 coverage 100%·hard failure 0, 보존 DB 표본 semantic·byte 24/24다.
-> 2020–2022는 동결한다. 다음 생산 동작은 2022 완료 SHA를 입력으로 한
-> 2022→2023 전환 Gate와 2023 한 연도 준비다.
+> 2020–2022는 동결한다. 2023도 exact-ID 494,580건을 같은 r3로 새로 정렬해
+> 성공 494,228·승인 기술 미정렬 352로 회계했고, 6-tier 494,228개·동반표 4개·
+> 독립 전수 QC·DB 재수출 표본 24/24를 완료했다. 2020–2023은 재실행하지 않는다.
+> 다음 생산 동작은 2023 완료 SHA를 입력으로 한 2023→2024 전환 Gate다.
 
 ## 1. 완료 산출물
 
@@ -102,8 +104,11 @@
   → 2021 명시 승인·6-tier 1,206,862·동반표 4개 수출
   → 2021 독립 QC·DB 표본 24/24·SHA 동결
   → 2022 exact-ID 751,721·발음 연구 DB·alignment 감사·preflight GO
-  → 2022 pronunciation-safe∩정렬 가능 집합 신규 정렬  ← 다음
-  → 2023부터 2025까지 직전 연도 Gate 뒤 연도별 신규 정렬
+  → 2022 r3 정렬·승인·6-tier·독립 QC·SHA 동결
+  → 2023 exact-ID 494,580·발음 연구 DB·alignment 감사·preflight GO
+  → 2023 r3 정렬 494,228·승인 미정렬 352·6-tier·독립 QC·SHA 동결
+  → 2023→2024 전환 Gate  ← 다음
+  → 2024·2025도 직전 연도 Gate 뒤 연도별 신규 정렬
   → follow-up 718,364 exact-ID 후속 shard 보존·별도 회수
 ```
 
@@ -664,8 +669,9 @@ export부터 시작하도록 만든 역사적 r2 복구 명령이다. r3 Gate �
   `7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`
 
 2022 runner·수출·QC는 재호출하지 않는다. 2022 marker와 QC state SHA를 묶은
-2022→2023 전환 Gate는 통과했다. 2023 조합검색·발음 연구 DB·입력/정렬 계약과
-runner preflight도 통과했으며, 다음 단일 작업은 아래 2023 장시간 runner다.
+2022→2023 전환 Gate는 통과했고, 이어 2023 장시간 runner·post-MFA 회계·승인·
+6-tier 수출·독립 QC까지 완료했다. 아래 명령은 역사적 재현 기록이며 다시 실행하지
+않는다.
 
 ```powershell
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
@@ -674,9 +680,27 @@ runner preflight도 통과했으며, 다음 단일 작업은 아래 2023 장시�
   -Year 2023 -NumJobs 4
 ```
 
-입력은 exact-ID 494,580건이며 2020–2022를 재호출하지 않는다. 상세 근거는
+입력은 exact-ID 494,580건이며 2020–2022를 재호출하지 않았다. 상세 근거는
 `docs/decisions/RESULT_mfa_r3_alignment_database_2022_20260812.md`와
-`docs/decisions/RESULT_mfa_r3_2023_preflight_20260812.md`다.
+`docs/decisions/RESULT_mfa_r3_2023_preflight_20260812.md`,
+`docs/decisions/RESULT_mfa_r3_alignment_database_2023_20260813.md`다.
+
+### 5.1 2023 r3 완료 checkpoint
+
+- exact-ID 입력 494,580 = 정렬 성공 494,228 + 승인 기술 미정렬 352
+- DB SHA-256
+  `3c6695ac2033612d514e6ca57711d006d2505c6ddb25124b666865df8c315108`
+- 후보 identity
+  `e6716a3694124c656f040491ebb7b9bb7b5bd66947926fc6bccf0543eb878b3b`
+- 6-tier 494,228개, 동반표 utterance 494,228·word 3,832,921·phone
+  14,781,191·excluded 352행
+- 독립 QC coverage 100%, hard failure 0, DB 재수출 semantic·byte 24/24
+- 최종 `QC_STATE.json` SHA-256
+  `115b81f539d87eb30892df2ffb0052e5d569884569aa4ff9f30c0b39db91d958`
+
+2023 runner·수출·QC는 재호출하지 않는다. 다음 단일 작업은 완료 marker·DB·QC
+state SHA를 입력으로 한 2023→2024 전환 Gate다. Gate가 통과하기 전에는 2024
+장시간 runner를 시작하지 않는다.
 
 실행 queue ID와 장시간 명령은 위 검사 직후 현재 값으로 고정해 사용자에게 한 줄로
 제공한다. 문서에 날짜가 지난 queue ID를 미리 복사해 두지 않는다.

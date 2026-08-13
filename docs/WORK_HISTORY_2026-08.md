@@ -3237,3 +3237,27 @@ shard 2–23을 재개하는 것이다.
 - 상세 방법과 승인 문장은
   `docs/decisions/RESULT_mfa_r3_alignment_database_2023_20260813.md`에 기록했다.
   다음 단계는 연구자 명시 승인→수출 preflight→6-tier·동반표→독립 전수 QC다.
+
+### 2026-08-13 — 2023 기술 후보 승인·6-tier 수출·독립 QC 완료
+
+- 연구자 `ari30`은 candidate `e6716a369412...eb878b3b`의 post-MFA 미정렬
+  352건을 `alignment_and_analysis` 범위의 후속 exact-ID로 이관하고 성공한
+  494,228건을 보존 DB에서 수출하도록 명시 승인했다. 자동 승인은 없었고 승인
+  제외 계약 SHA-256은
+  `5ce44c26144751bd55689eed586e6b0f6fed52f5188bfe55136262d4bca72dac`다.
+- 수출 preflight는 입력 494,580 = DB 정렬 가능 494,228 + DB 미정렬 351 + feature
+  실패 1을 exact-ID로 확인했다. 미승인 차이·`spn`·acoustic inventory 밖 phone은
+  모두 0이었다.
+- 보존 DB에서 3,667.223초 동안 6-tier TextGrid 494,228개와 gzip 동반표 4종을
+  수출했다. 동반표는 utterance 494,228·word 3,832,921·phone 14,781,191·excluded
+  352행이며 coverage는 100%다. 원 DB·WAV·LAB·CSV와 2020–2022 완료본을 수정하거나
+  재실행하지 않았다.
+- WAV frame duration과 DB float32 표현의 0/xmax 차이는 487,542발화에서 최대
+  `4.65393066306774E-07`초만 정규화했다. 허용오차 `1e-6`초 이내이며 phone 경계를
+  재추정하지 않았다.
+- 별도 감사기가 TextGrid 494,228개와 동반표 전체를 검사했다. 25개 hard failure
+  범주는 모두 0, exact-ID와 contract 수량은 일치했고, 보존 DB 24세션 재수출도
+  semantic·byte 24/24였다. 최종 `QC_STATE.json`은 `passed`, SHA-256은
+  `115b81f539d87eb30892df2ffb0052e5d569884569aa4ff9f30c0b39db91d958`다.
+- 2023 MFA·전수 수출·QC는 다시 실행하지 않는다. 다음 생산 단계는 2023 완료
+  marker·DB·QC state SHA를 입력으로 한 2023→2024 전환 Gate다.

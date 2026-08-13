@@ -1,7 +1,7 @@
-# 2023 r3 정렬 DB 완료·post-MFA exact-ID 회계 결과
+# 2023 r3 정렬·6-tier 수출·독립 QC 완료 결과
 
 최종 갱신: 2026-08-13 KST
-현재 상태: MFA·보존 DB·exact-ID 회계 완료, 연구자 승인과 6-tier 수출 전
+현재 상태: MFA·보존 DB·exact-ID 회계·연구자 승인·6-tier 수출·독립 QC 완료
 
 ## 결론
 
@@ -12,8 +12,10 @@ interval이나 TextGrid는 재사용하지 않았고 2020–2022 r3 완료본, �
 
 동결 입력 494,580건과 MFA 보존 DB 발화 494,580건은 exact-ID로 일치한다. 이 중
 word·phone interval이 모두 있는 발화는 494,228건이며, 기술적으로 완전한 interval이
-없는 352건은 삭제하지 않고 승인 전 후속 exact-ID 후보로 고정했다. 현 단계는 실제
-음운 실현을 판정하거나 음성을 일일이 청취하는 단계가 아니다.
+없는 352건은 삭제하지 않고 연구자 명시 승인에 따라 후속 exact-ID로 고정했다.
+성공 발화 494,228건은 6-tier와 gzip 동반표 4종으로 수출했고 독립 전수 QC와 보존
+DB 24세션 재수출 동등성 검사를 통과했다. 이 결과는 실제 음운 실현을 판정하거나
+음성을 일일이 청취한 값이 아니라 연구 판정을 위한 정렬·검색 인프라다.
 
 ## 동결 입력과 방법론적 동일성
 
@@ -103,20 +105,73 @@ exact-ID 전수 대사, word·phone interval 존재 여부를 독립 회계했�
 review summary SHA-256은
 `0512a47f37cc30992955004a31834bcfb389c5597a30a458ca4b7c39532a5c88`다.
 
-## 승인 전 안전 정지점
+## 연구자 승인과 후속 exact-ID 보존
 
-현재 352건은 전체 연도를 다시 정렬하라는 뜻이 아니다. 성공한 494,228건과 보존
-DB를 그대로 유지하면서 기술적 미정렬 exact-ID만 후속 shard로 넘기기 위한
-승인 후보다. 수출기는 다음 연구자 문장이 후보 연도·건수·scope·digest·승인자를
-모두 포함할 때만 별도 승인 계약을 생성한다.
+352건은 전체 연도를 다시 정렬하라는 뜻이 아니다. 성공한 494,228건과 보존 DB를
+그대로 유지하면서 기술적 미정렬 exact-ID만 후속 shard로 넘기기 위한 범위다.
+수출기는 다음 연구자 문장이 후보 연도·건수·scope·digest·승인자를 모두 포함한
+뒤에만 별도 승인 계약을 생성했다.
 
 > 2023 r3 post-MFA 미정렬 352건(candidate e6716a369412)을
 > alignment_and_analysis 범위의 후속 exact-ID로 이관하고, 성공한 494,228건은
 > 보존 DB에서 6-tier로 수출하는 것을 승인한다. 승인자 ari30.
 
-승인 전에는 6-tier materialization을 시작하지 않는다. 승인 뒤에는 먼저 수출
-preflight로 `expected = aligned + approved technical candidates`, `spn=0`, acoustic
-inventory 밖 phone=0을 확인한 다음, 보존 DB에서 성공 494,228건만 수출한다.
+승인은 2026-08-13 12:04 KST에 기록됐다. 자동 승인은 없었고 원 DB·WAV·LAB·CSV는
+수정하지 않았다.
+
+- 승인 제외 계약 SHA-256:
+  `5ce44c26144751bd55689eed586e6b0f6fed52f5188bfe55136262d4bca72dac`
+- 연구자 승인 manifest SHA-256:
+  `e61589494e46be3c8948b48f642c82cc3e9917e96a3caedfcdcd5d7a3c7aad33`
+
+## 6-tier 수출
+
+수출 preflight는 `expected = aligned + approved technical candidates`, `spn=0`,
+acoustic inventory 밖 phone=0, 미승인 exact-ID 차이 0을 확인했다. 보존 DB에서
+성공한 494,228건만 다음 경로에 수출했다.
+
+```text
+D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809\research_6tier\2023
+```
+
+- 6-tier TextGrid: 494,228개, 1,656세션
+- 동반표 utterance: 494,228행
+- 동반표 word: 3,832,921행
+- 동반표 phone: 14,781,191행
+- 동반표 excluded: 352행
+- 수출 coverage: 100%
+- `spn`: 0
+- 수출 시간: 3,667.223초
+- 수출 보고서 SHA-256:
+  `a962fa633dd0dfb2811fbaf284282f8098386bb22d3f7df1c141f8856e83931f`
+
+WAV frame duration과 MFA DB float32 시간 표현의 차이 때문에 487,542발화의 0/xmax
+경계를 최대 `4.65393066306774E-07`초 조정했다. 이는 허용오차 `1e-6`초보다 작고
+phone 경계를 다시 추정한 것이 아니다.
+
+## 독립 전수 QC
+
+별도 감사기가 494,228개 TextGrid와 동반표 4종을 전수 검사했다. 25개 hard failure
+범주는 모두 0이며, 보존 DB에서 24세션을 다시 수출한 결과 semantic·byte 비교가
+24/24 일치했다.
+
+- active LAB: 494,580
+- expected/TextGrid/utterance rows: 494,228 / 494,228 / 494,228
+- word rows: 3,832,921
+- phone rows: 14,781,191
+- approved/excluded rows: 352 / 352
+- coverage: 100%
+- hard failure: 0
+- 전수 감사 보고서 SHA-256:
+  `8e33eb9d7b7d54d46ea43d40fdd147e3092cc98fa04bc8ae3b77fe8cc8d7d36c`
+- DB 재수출 표본 보고서 SHA-256:
+  `f4ef43093da2d91100cedcf51259f34859af7b8e48bb16fca3b5bc1789261710`
+- 최종 `QC_STATE.json` SHA-256:
+  `115b81f539d87eb30892df2ffb0052e5d569884569aa4ff9f30c0b39db91d958`
+- QC checkpoint:
+  `deb6111b080d3e1f8098fd31819f344ffacb62c91956d1303cc6aae08e49b348`
+
+감사 과정에서 원자료 변경, MFA 재계산, 전수 수출 반복은 없었다.
 
 ## 감시 중 시행착오와 재발 방지
 
@@ -136,11 +191,7 @@ inventory 밖 phone=0을 확인한 다음, 보존 DB에서 성공 494,228건만 
 
 ## 다음 단계
 
-연구자 명시 승인 뒤 다음 순서를 지킨다.
-
-1. 후보 identity에 결속된 승인 CSV·제외 계약 생성
-2. 6-tier·동반표 수출 preflight
-3. 보존 DB에서 494,228건 6-tier와 동반표 4종 수출
-4. 별도 감사기로 전수 TextGrid·동반표·exact-ID 검사
-5. 보존 DB 24세션 독립 재수출의 semantic·byte 동등성 검사
-6. 최종 `QC_STATE.json`을 통과시킨 뒤 문서·GitHub를 완료 상태로 갱신
+2023은 완료 SHA를 동결하고 MFA·전수 수출·QC를 재호출하지 않는다. 다음 생산
+단계는 이 marker·DB·QC state의 SHA를 입력으로 한 **2023→2024 전환 Gate**다.
+Gate가 통과하기 전에는 2024 장시간 MFA를 시작하지 않으며, 2020–2023 완료본과
+Stage 01–21은 다시 실행하지 않는다.

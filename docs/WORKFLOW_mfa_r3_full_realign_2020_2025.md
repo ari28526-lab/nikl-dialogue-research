@@ -1,7 +1,7 @@
 # 2020–2025 공통발음 r3 전수 재정렬 workflow
 
-최종 갱신: 2026-08-09 KST
-상태: 외부 검토·구현 전 설계 정본
+최종 갱신: 2026-08-13 KST
+상태: 구현·생산 정본; 2020–2023 완료, 다음은 2023→2024 전환 Gate
 
 ## 1. 목표와 범위
 
@@ -252,16 +252,23 @@ MFA 적응 단위를 새 DB에서 재정렬하고 최종 index를 갱신한다.
 재호출 시 manifest와 실물이 일치하면 `unchanged/resume`로 종료한다. 불일치하면
 기존 결과를 덮어쓰지 않고 새 partial 또는 새 point release로 격리한다.
 
-## 7. 현재 구현 상태와 외부 리뷰 범위
+## 7. 현재 구현·생산 상태
 
-정책과 Stage 19–21 증거는 준비됐지만 기존 production wrapper는 r2 schema,
-`common_pron_mfa_r2_*` release ID와 과거 marker를 하드코딩한다. 이를 억지로
-통과시키지 않는다. 외부 리뷰 후 다음을 별도 구현한다.
+외부 workflow 검토 뒤 staged r3 release/adoption builder, 독립 validator, 연도별
+exact-ID 계약 builder, r3 전용 preflight·runner·dashboard, direct-DB 6-tier
+exporter, 독립 전수 QC와 전환 Gate를 구현했다. r2 신규 실행은 fail-closed이며
+`common_pron_mfa_r3_20260809`만 production Gate에서 채택됐다.
 
-1. staged r3 release/adoption builder와 독립 validator
-2. 연도별 safe-body exact-ID input contract builder
-3. r3 전용 preflight·runner·dashboard
-4. r2 marker/DB/output 재사용 금지와 새 root
-5. Y05–Y10 checkpoint·국소 복구·연도 completion Gate
+2020–2023은 Y01–Y10을 다음 수량으로 완료했다.
 
-현재 `mfa_pronunciation_release_gate.json`은 의도적으로 닫혀 있다.
+| 연도 | r3 입력 | 정렬 성공 | 승인 후속 | 6-tier | 독립 QC |
+|---:|---:|---:|---:|---:|---|
+| 2020 | 782,715 | 782,432 | 283 | 782,432 | passed, DB 표본 24/24 |
+| 2021 | 1,207,299 | 1,206,862 | 437 | 1,206,862 | passed, DB 표본 24/24 |
+| 2022 | 751,721 | 751,383 | 338 | 751,383 | passed, DB 표본 24/24 |
+| 2023 | 494,580 | 494,228 | 352 | 494,228 | passed, DB 표본 24/24 |
+
+이 네 연도의 MFA·전수 수출·QC를 반복하지 않는다. 현재 다음 단계는 2023 marker·
+DB·QC state SHA를 검증하는 2023→2024 전환 Gate다. Gate가 통과한 뒤 2024 한
+연도만 같은 순서로 준비하며 2020–2023 완료본을 입력이나 임시 폴더로 재사용하지
+않는다.
