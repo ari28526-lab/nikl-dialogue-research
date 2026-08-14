@@ -2,6 +2,15 @@
 
 최종 갱신: 2026-08-14 KST
 
+> **2026-08-14 2025 조합검색·source contract 완료:** 2,927개 입력 CSV를
+> 30개 checkpoint shard로 처리해 연간 7표를 만들었다. 발화 master는 587,121행,
+> input inventory SHA-256은
+> `e794979883d16d1e80de0c1d233b31c219ba6fdad1b6e07292f2b2746abae4e1`이다.
+> `YEAR_MANIFEST.json status=success`, `SOURCE_CONTRACT.json status=frozen`이며,
+> 독립 검사 12/12와 연간표 SHA 7/7이 통과했다. 원자료·MFA·TextGrid와 2020–2024
+> 완성본은 변경하지 않았다. 2025 조합검색을 반복하지 않으며, 다음 단계는 2025
+> 발음 연구 DB preflight·생성·독립 감사 뒤 2024→2025 Gate를 만드는 것이다.
+
 > **2026-08-14 2024 r3 정렬·6-tier·동반표·독립 QC 완료:** 동결 입력
 > 594,404건을 새 r3 계약으로 정렬했고, 성공 593,530건과 연구자 승인 기술 미정렬
 > 874건을 exact-ID로 완전 회계했다. 최초 연구용 수출은 검색 원문의 내장 LF가

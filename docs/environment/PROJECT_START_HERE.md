@@ -2,6 +2,12 @@
 
 최종 갱신: 2026-08-14 KST
 
+> **현재 생산 진입점:** 2025 `morph_search.v3` 30/30 shard와 연간 7표가
+> `success`, frozen source contract가 `frozen`으로 완료됐다. 독립 source 검사
+> 12/12와 연간표 SHA 7/7이 통과했고 원 CSV·WAV·MFA·TextGrid 및 2020–2024
+> 완성본은 변경하지 않았다. **다음 한 단계는 2025 발음 연구 DB preflight·생성·
+> 독립 감사이며, 2024→2025 Gate 전에는 2025 MFA를 시작하지 않는다.**
+
 > **현재 생산 진입점:** 2024 r3는 동결 입력 594,404건을 전수 정렬해 성공
 > 593,530건과 연구자 승인 기술 미정렬 874건을 exact-ID로 완전 회계했다.
 > 6-tier TextGrid 593,530개와 동반표 4종을 수출했고 독립 전수 QC는 coverage

@@ -3387,3 +3387,23 @@ shard 2–23을 재개하는 것이다.
   EMU-SDMS는 계층 질의·검토가 병목일 때, openSMILE은 연구 질문에 넓은 음향
   feature가 필요할 때만 선택한다. kPhonetica `.lbl`은 있을 때만 별도 후보층으로
   import하며 MFA phone과 합치지 않는다.
+
+### 2026-08-14 — 2025 morph_search.v3·frozen source contract 완료
+
+- 2025 pre-MFA search master CSV 2,927개를 30개 checkpoint shard로 처리했다.
+  실행 중에는 정상 1시간 감시와 process·lock·파일 갱신·D: 용량 즉시 경보를
+  적용했고 오류 없이 30/30을 완료했다.
+- 연간 7표는 모두 `success`다. 발화 master 587,121행, 어절 token 4,816,887행,
+  철자 어절 token 4,839,305행, 형태소 token 8,965,124행, 형태소 unit
+  13,436,041행, 형태소 경계 8,378,003행, 기호 읽기 394,647행이다.
+- input inventory SHA-256은
+  `e794979883d16d1e80de0c1d233b31c219ba6fdad1b6e07292f2b2746abae4e1`,
+  연간 manifest SHA-256은
+  `798896ef2988c642978b77bf33ce1cd05a887c0d1d6e20c1b0e579e6777a846e`,
+  frozen source contract SHA-256은
+  `48f0a5e7d8e094988f384192f681f38236b2f4e645bbddd929ef522cc8e6959f`다.
+- 독립 source contract 검사 12/12와 연간 gzip SHA 7/7이 통과했다. 중복
+  `utt_id` 0, 철자 기호 coverage 일치, 원 source 수정 없음이며 완료 뒤 D: 여유는
+  60.66 GiB다. MFA·TextGrid·WAV·원 CSV·2020–2024 완성본은 변경하지 않았다.
+- 다음 단계는 2025 발음 연구 DB preflight·생성·독립 감사다. 2024→2025 Gate가
+  통과하기 전에는 2025 MFA를 시작하지 않는다.

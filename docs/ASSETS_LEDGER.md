@@ -16,7 +16,7 @@
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
 | `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 연구 검색 master | 보존, `_build_meta` SHA 계약; r3 MFA 입력 root로 사용 금지 |
 | `D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725` | 동결 pre-MFA 발음 입력 master | `pron_reference_form`과 실제 LAB tokenizer의 r3 발화 라우팅 정본 |
-| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020·2021·2023 연도 manifest success; 2023은 20/20 shard·발화 master 677,262행, 2024·2025는 각 생산 연도 직전 checkpoint 생성 |
+| `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020–2025 생산 연도 manifest success. 2025는 30/30 shard·발화 master 587,121행·frozen source contract·독립 검사 12/12·연간표 SHA 7/7 통과; 재생성 금지 |
 | `D:\10_LAYERS\10_pronunciation_reference\dictionary_pron_registry_v2_20260805` | 우리말샘 1:N·예외 발음, occurrence와 규칙/사전/MFA 비교표 | registry 1,192,729행 채택; 2020·2021 occurrence 5,767,506/12,015,453행, 비교표 3,042,451/6,610,698행, index 870,437/1,373,920행 전수 검증 |
 | `D:\20_AUDIO\03_wav` | 원 WAV·LAB 코퍼스 | 원자료, 수정 금지 |
 | `D:\20_AUDIO\04_wav_id_recovered_staging\individual\2020` | 2020 MFA 전용 파생 WAV | 868,603건, 계약 passed |

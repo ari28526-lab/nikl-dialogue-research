@@ -812,6 +812,31 @@ TextGrid 593,530개, 동반표 4종, 전수 coverage 100%, hard failure 0, 보�
 `2321d5cc3914404b6d067250265e0f0d4887ffbf5ab5c49245809f631f785549`다.
 2024는 완료로 동결하며 다음은 2024→2025 단일 연도 Gate만 준비한다.
 
+## 6.3 2025 조합검색·source contract 완료 checkpoint
+
+2026-08-14에 `prepare_production_year_before_mfa.ps1 -Year 2025`를 한 번 실행했다.
+입력 CSV 2,927개를 30개 shard로 처리했고, `utterance_master_v2` 587,121행을
+포함한 연간 7표와 frozen source contract를 완료했다. 완료 상태는 다음과 같다.
+
+```text
+YEAR_PROGRESS.status          success
+YEAR_MANIFEST.status          success
+SOURCE_CONTRACT.status        frozen
+completed shards              30/30
+duplicate utt_id              0
+source verification           12/12 passed
+annual table SHA               7/7 matched
+raw source modified           false
+```
+
+연간 manifest SHA-256은
+`798896ef2988c642978b77bf33ce1cd05a887c0d1d6e20c1b0e579e6777a846e`,
+source contract SHA-256은
+`48f0a5e7d8e094988f384192f681f38236b2f4e645bbddd929ef522cc8e6959f`다.
+2025 조합검색은 다시 실행하지 않는다. 다음은 2025 발음 연구 DB의 preflight,
+실제 생성, 독립 감사만 수행한다. 그 뒤 2024 QC state와 2025 입력 계약을 결속한
+전환 Gate를 통과하기 전에는 MFA runner를 시작하지 않는다.
+
 ## 7. 발음 참조 파생층
 
 각 연도 6-tier 뒤 다음을 같은 계약으로 생성한다.
