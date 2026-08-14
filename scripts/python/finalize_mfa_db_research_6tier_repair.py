@@ -108,12 +108,14 @@ def main() -> int:
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--acoustic-model", type=Path, required=True)
     parser.add_argument("--alignment-contract", type=Path, required=True)
+    parser.add_argument("--alignment-marker", type=Path)
     parser.add_argument(
         "--approved-exclusions-contract", type=Path, required=True
     )
     parser.add_argument("--lab-root", type=Path, required=True)
     parser.add_argument("--quarantine-log", type=Path)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--preflight-only", action="store_true")
     args = parser.parse_args()
     started = time.monotonic()
 
@@ -127,9 +129,16 @@ def main() -> int:
     contract_id, contract_data = exporter.load_alignment_contract(
         alignment_contract_path, year
     )
-    input_contract_id = str(
-        contract_data.get("lab_input_contract_id", "") or ""
-    ).strip()
+    if contract_data.get("schema_version") == exporter.R3_ALIGNMENT_SCHEMA_VERSION:
+        input_contract_id = str(
+            contract_data.get("identity", {}).get(
+                "year_input_contract_id", ""
+            )
+        ).strip()
+    else:
+        input_contract_id = str(
+            contract_data.get("lab_input_contract_id", "") or ""
+        ).strip()
     if not input_contract_id:
         raise RuntimeError("alignment contract has no lab_input_contract_id")
     exclusion_data, approved_exclusions = load_exclusion_contract(
@@ -199,15 +208,28 @@ def main() -> int:
 
     active_lab_ids = exporter.load_active_lab_ids(args.lab_root.resolve(), year)
     source_search_ids = exporter.load_search_master_ids(search_root, year)
-    reconciliation = build_reconciliation(
-        db_ids=db_ids,
-        aligned_ids=aligned_ids,
-        active_lab_ids=active_lab_ids,
-        source_search_ids=source_search_ids,
-        alignment_exclusion_ids=alignment_exclusion_ids,
-        analysis_only_ids=analysis_only_ids,
-        quarantine_ids=quarantine_ids,
-    )
+    if contract_data.get("schema_version") == exporter.R3_ALIGNMENT_SCHEMA_VERSION:
+        reconciliation = exporter.build_r3_exact_id_reconciliation(
+            contract_data=contract_data,
+            year=year,
+            db_ids=db_ids,
+            aligned_ids=aligned_ids,
+            active_lab_ids=active_lab_ids,
+            source_search_ids=source_search_ids,
+            alignment_exclusion_ids=alignment_exclusion_ids,
+            analysis_only_ids=analysis_only_ids,
+            quarantine_ids=quarantine_ids,
+        )
+    else:
+        reconciliation = build_reconciliation(
+            db_ids=db_ids,
+            aligned_ids=aligned_ids,
+            active_lab_ids=active_lab_ids,
+            source_search_ids=source_search_ids,
+            alignment_exclusion_ids=alignment_exclusion_ids,
+            analysis_only_ids=analysis_only_ids,
+            quarantine_ids=quarantine_ids,
+        )
     if reconciliation["status"] != "passed":
         raise RuntimeError("current exact ID reconciliation failed")
 
@@ -232,7 +254,9 @@ def main() -> int:
     )
     print(
         f"[{year}] targeted repair checkpoint accepted: "
-        f"repaired={totals['targeted_repaired_existing']:,}",
+        f"repaired={totals['targeted_repaired_existing'] + totals['targeted_repaired_new']:,} "
+        f"(existing={totals['targeted_repaired_existing']:,}, "
+        f"new={totals['targeted_repaired_new']:,})",
         flush=True,
     )
 
@@ -246,6 +270,49 @@ def main() -> int:
             "excluded": exporter.EXCLUDED_FIELDS,
         },
     )
+    r3_provenance = exporter.r3_materialization_provenance(
+        contract=contract_data,
+        db_path=db_path,
+        acoustic_model=acoustic_model,
+        year=year,
+    )
+    if r3_provenance:
+        if args.alignment_marker is None:
+            raise RuntimeError("r3 checkpoint finalization requires alignment marker")
+        r3_provenance["alignment_done_marker"] = (
+            exporter.verify_r3_alignment_marker(
+                marker_path=args.alignment_marker.resolve(),
+                contract=contract_data,
+                db_path=db_path,
+                source_db_sha256=str(r3_provenance["source_db_sha256"]),
+                year=year,
+            )
+        )
+
+    if args.preflight_only:
+        preflight = {
+            "schema_version": "mfa_research_6tier_repair_preflight.v1",
+            "status": "preflight_passed",
+            "analysis_ready_status": "ready_for_companion_table_finalization",
+            "year": year,
+            "db_path": str(db_path),
+            "search_master_root": str(search_root),
+            "output_root": str(output_root),
+            "alignment_contract_id": contract_id,
+            "input_contract_id": input_contract_id,
+            "counts": dict(sorted(totals.items())),
+            "resume_checkpoint": resume_checkpoint,
+            "exact_id_reconciliation": reconciliation,
+            "companion_tables_started": False,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        }
+        if r3_provenance:
+            preflight.update(r3_provenance)
+        atomic_write_json(args.report.resolve(), preflight)
+        print(args.report.resolve())
+        print("PREFLIGHT PASSED; companion tables not started", flush=True)
+        return 0
+
     tables_manifest = exporter.write_companion_tables(
         db_path=db_path,
         year=year,
@@ -263,6 +330,7 @@ def main() -> int:
         ),
         companion_schema_path=companion_schema_path,
         companion_schema=companion_schema,
+        materialization_provenance=r3_provenance,
     )
     if tables_manifest.get("status") != "success":
         raise RuntimeError("companion table manifest did not pass")
@@ -287,6 +355,9 @@ def main() -> int:
         raise RuntimeError("final repaired export coverage/accounting mismatch")
     previous = json.loads(
         args.failed_report.read_text(encoding="utf-8-sig")
+    )
+    repair_data = json.loads(
+        args.repair_manifest.read_text(encoding="utf-8-sig")
     )
     prior_float32 = previous.get("float32_boundary_normalization") or {}
     result = {
@@ -324,7 +395,14 @@ def main() -> int:
             "existing_files_rewritten_by_targeted_repair": totals[
                 "targeted_repaired_existing"
             ],
+            "new_files_created_by_targeted_repair": totals[
+                "targeted_repaired_new"
+            ],
         },
+        "textgrid_label_normalization": repair_data.get(
+            "textgrid_label_normalization",
+            previous.get("textgrid_label_normalization") or {},
+        ),
         "resume_checkpoint": resume_checkpoint,
         "companion_tables": tables_manifest,
         "approved_exclusions_contract": exclusion_data,
@@ -334,6 +412,8 @@ def main() -> int:
         "alignment_missing_inventory": [],
         "elapsed_seconds": round(time.monotonic() - started, 3),
     }
+    if r3_provenance:
+        result.update(r3_provenance)
     atomic_write_json(args.report.resolve(), result)
     print(args.report.resolve())
     print(

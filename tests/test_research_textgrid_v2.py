@@ -187,8 +187,24 @@ class ResearchTextGridV2Tests(unittest.TestCase):
             ]
             self.assertEqual(labels, ["⟨2⟩ _ S A _ R A m _ I"])
 
-    def test_control_character_in_label_is_rejected(self):
+    def test_line_separator_in_search_label_is_normalized_for_textgrid(self):
         row = self.row(form="혹시\n요즘")
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "normalized.TextGrid"
+            write_base_textgrid_from_intervals(
+                output,
+                duration=0.2,
+                words=[(0.05, 0.15, "혹시")],
+                phones=[(0.05, 0.15, "h")],
+                row=row,
+                phone_mapper=self.mapper,
+            )
+            _duration, tiers = parse_mfa_textgrid(output)
+            labels = [label for _b, _e, label in tiers["utterance"] if label]
+            self.assertEqual(labels, ["혹시 요즘"])
+
+    def test_non_line_control_character_in_label_is_rejected(self):
+        row = self.row(form="혹시\t요즘")
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(ValueError, "제어문자"):
                 write_base_textgrid_from_intervals(

@@ -19,6 +19,7 @@ from build_mfa_r3_alignment_contract import (  # noqa: E402
 )
 from export_mfa_db_research_6tier import (  # noqa: E402
     R3_REQUIRED_MANIFEST_FIELDS,
+    _alignment_contract_semantically_matches,
     export_database,
 )
 from mfa_exclusion_contract import REVIEW_FIELDS, build_contract  # noqa: E402
@@ -34,6 +35,42 @@ from tests.test_export_mfa_db_research_6tier import (  # noqa: E402
 class MfaR3ExportProvenanceTests(unittest.TestCase):
     year = "2021"
     input_contract_id = "YEAR_INPUT_R3_FIXTURE"
+
+    def test_r3_checkpoint_semantic_identity_ignores_recorded_at_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            db = root / "2021.db"
+            acoustic = root / "acoustic.zip"
+            db.write_bytes(b"db")
+            acoustic.write_bytes(b"acoustic")
+            contract = self.make_r3_contract(
+                root, db=db, acoustic=acoustic
+            )
+            data = json.loads(contract.read_text(encoding="utf-8"))
+            alignment_id = data["alignment_contract_id"]
+            expected = file_fingerprint(contract, with_sha256=True)
+            data["recorded_at"] = "2026-08-14T12:00:00+09:00"
+            contract.write_text(json.dumps(data), encoding="utf-8")
+            self.assertTrue(
+                _alignment_contract_semantically_matches(
+                    contract,
+                    expected,
+                    year=self.year,
+                    input_contract_id=self.input_contract_id,
+                    alignment_contract_id=alignment_id,
+                )
+            )
+            data["identity"]["corpus_contract_id"] = "f" * 64
+            contract.write_text(json.dumps(data), encoding="utf-8")
+            self.assertFalse(
+                _alignment_contract_semantically_matches(
+                    contract,
+                    expected,
+                    year=self.year,
+                    input_contract_id=self.input_contract_id,
+                    alignment_contract_id=alignment_id,
+                )
+            )
 
     def make_r3_contract(
         self, root: Path, *, db: Path, acoustic: Path

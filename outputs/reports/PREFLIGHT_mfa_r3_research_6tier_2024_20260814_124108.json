@@ -1,0 +1,131 @@
+{
+  "schema_version": "mfa_research_6tier_repair_preflight.v1",
+  "status": "preflight_passed",
+  "analysis_ready_status": "ready_for_companion_table_finalization",
+  "year": "2024",
+  "db_path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2024\\2024.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier",
+  "alignment_contract_id": "d86f490de924cdf92f2fcb16316046558be65f9446ffa0cf325fc661e4b20f9f",
+  "input_contract_id": "a91219e26b1a4d88c94a97e1cc8b123f08be97642ccb9554b2379430d04a3fa3",
+  "counts": {
+    "approved_excluded": 874,
+    "approved_excluded_inventory_rows": 874,
+    "created": 593530,
+    "failed": 0,
+    "float32_boundary_adjustments": 1176434,
+    "resume_checkpoint_files_reused": 593528,
+    "source_utterances": 594404,
+    "spn_intervals": 0,
+    "targeted_repaired_existing": 0,
+    "targeted_repaired_new": 2,
+    "utterances_float32_boundary_adjusted": 588217
+  },
+  "resume_checkpoint": {
+    "mode": "failed_full_pass_plus_exact_targeted_repair",
+    "source_failed_report": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\EXPORT_mfa_r3_research_6tier_2024_20260814_104221.json",
+      "bytes": 27441,
+      "mtime_ns": 1786676917459294200,
+      "sha256": "1077bcca738c6e63cd3daf9beeb9e60aa93335163c5260a6f267aa1975c84233"
+    },
+    "targeted_repair_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\REPAIR_label_controls_EXPORT_mfa_r3_research_6tier_2024_20260814_104221.json",
+      "bytes": 5962,
+      "mtime_ns": 1786678473168836500,
+      "sha256": "1096d39e6f2a0df17f9a63179dded377d719fc1e915e6c63db5c02c35e804fd4"
+    },
+    "prior_validated_existing": 0,
+    "prior_created": 593528,
+    "prior_failed": 2,
+    "repair_mode": "create_missing_textgrid_after_label_normalization",
+    "repaired_ids": [
+      "SDRW2400001393.1.1.156",
+      "SDRW2400002782.1.1.226"
+    ],
+    "alignment_contract_validation": {
+      "mode": "recomputed_builder_canonical_identity",
+      "prior_file_fingerprint": {
+        "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2024\\ALIGNMENT_CONTRACT_2024.json",
+        "bytes": 7646,
+        "mtime_ns": 1786611086229296700,
+        "sha256": "029cbba9e954e0c347f055f1238db342fbc6e5327ae57a888658c475ee8753b1"
+      },
+      "current_file_fingerprint": {
+        "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2024\\ALIGNMENT_CONTRACT_2024.json",
+        "bytes": 7646,
+        "mtime_ns": 1786611086229296700,
+        "sha256": "029cbba9e954e0c347f055f1238db342fbc6e5327ae57a888658c475ee8753b1"
+      },
+      "recomputed_contract_id": "d86f490de924cdf92f2fcb16316046558be65f9446ffa0cf325fc661e4b20f9f",
+      "volatile_recorded_at_ignored": true
+    },
+    "full_textgrid_revalidation_deferred_to_independent_year_audit": true
+  },
+  "exact_id_reconciliation": {
+    "status": "passed",
+    "mode": "r3_expected_mfa_input_exact_id",
+    "full_year_gate": true,
+    "counts": {
+      "source_search_ids": 728257,
+      "expected_mfa_input_ids": 594404,
+      "active_lab_ids": 594404,
+      "database_utterance_ids": 594404,
+      "aligned_database_ids": 593530,
+      "database_excluded_ids": 0,
+      "post_mfa_unaligned_ids": 874,
+      "approved_database_exclusions": 0,
+      "approved_database_unaligned_ids": 874,
+      "approved_technical_failure_ids": 874,
+      "approved_alignment_exclusions": 874,
+      "approved_analysis_only_exclusions": 0,
+      "quarantine_ids": 0,
+      "expected_input_ids_missing_from_search": 0,
+      "database_ids_missing_from_expected_input": 0,
+      "expected_input_ids_missing_from_database_without_approval": 0,
+      "active_lab_ids_missing_from_expected_input": 0,
+      "expected_input_ids_missing_from_active_lab": 0,
+      "unaligned_ids_without_approval": 0,
+      "approved_alignment_exclusions_not_unaligned": 0,
+      "analysis_only_ids_without_alignment": 0,
+      "unapproved_quarantine_ids": 0
+    },
+    "inventories": {
+      "expected_input_ids_missing_from_search": [],
+      "database_ids_missing_from_expected_input": [],
+      "expected_input_ids_missing_from_database_without_approval": [],
+      "active_lab_ids_missing_from_expected_input": [],
+      "expected_input_ids_missing_from_active_lab": [],
+      "unaligned_ids_without_approval": [],
+      "approved_alignment_exclusions_not_unaligned": [],
+      "analysis_only_ids_without_alignment": [],
+      "unapproved_quarantine_ids": []
+    },
+    "equation": "expected_mfa_input_ids = active_lab_ids = database_utterance_ids disjoint-union approved database exclusions; database_utterance_ids = aligned_database_ids disjoint-union approved database unaligned IDs; approved alignment exclusions equal the union of both technical failure sets; full search master may additionally contain pronunciation follow-up and pre-MFA exclusions"
+  },
+  "companion_tables_started": false,
+  "elapsed_seconds": 189.261,
+  "pronunciation_release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_contract_id": "58226aeded930a5b09985c7a1ad870effbfb39fbbfd7d89229f84578cd3402af",
+  "mfa_dictionary_sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a",
+  "textgrid_schema": "research_textgrid.v2",
+  "source_db_sha256": "b55d69ded19085d1e97abe13b0a62585a3f638c854cb08dcecf18ddc66cec110",
+  "alignment_origin": "fresh_r3_full_realign",
+  "r3_full_realign": true,
+  "safe_body_routing_contract_id": "7e00bf5bf28dc7cb1c97a4b5d14584d78cfef0957e6e71c4c42a23c144ce7ddb",
+  "followup_inventory_sha256": "99b0472f2392fbeab7d0b82344fc9a798d2e38181153c488ab96fa0076a8e6b9",
+  "pronunciation_occurrence_scope_sha256": "8b4ba57b2642b96e482bc67117c3ffd463ba448a8cd5834ae9e0b4db62734005",
+  "pronunciation_occurrence_table_sha256": "ce29e963b133224404327c5f2b251a5cdbd0fe2e0d1d61a0b91ee01e93d1d4a2",
+  "pronunciation_occurrence_audit_sha256": "6b5b19262c12b2550642b40ead1451ddd2390311267eda419a7371c94bd69caa",
+  "pronunciation_occurrence_join_key": [
+    "year",
+    "utt_id",
+    "reference_eojeol_idx"
+  ],
+  "alignment_done_marker": {
+    "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\markers\\ALIGN_DONE_2024.json",
+    "bytes": 1198,
+    "mtime_ns": 1786638270781032900,
+    "sha256": "6b49f1018d65588cec26c9d48c4922ac272ca6e9336d5ad6fdd8ba07f0d79a06"
+  }
+}

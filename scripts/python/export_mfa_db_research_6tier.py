@@ -70,6 +70,7 @@ from research_textgrid_v2 import (
     MIN_BOUNDARY_ROUNDOFF_TOLERANCE_SECONDS,
     SCHEMA_VERSION as TEXTGRID_SCHEMA_VERSION,
     SILENCE,
+    TEXTGRID_LABEL_LINE_SEPARATORS,
     boundary_roundoff_tolerance,
     normalize_interval_bounds,
     validate_base_textgrid_from_intervals,
@@ -732,6 +733,7 @@ def export_session_textgrids(
     missing_alignment: list[str] = []
     approved_excluded: list[str] = []
     roundoff_examples: list[dict[str, object]] = []
+    label_normalization_examples: list[dict[str, object]] = []
     max_boundary_roundoff_seconds = 0.0
     output_dir = output_root / year / session
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -753,6 +755,29 @@ def export_session_textgrids(
             continue
         destination = output_dir / f"{utt_id}.TextGrid"
         try:
+            normalized_fields: dict[str, list[str]] = {}
+            for field in ("form", "tagged"):
+                controls = sorted(
+                    {
+                        f"U+{ord(char):04X}"
+                        for char in str(row.get(field, ""))
+                        if char in TEXTGRID_LABEL_LINE_SEPARATORS
+                    }
+                )
+                if controls:
+                    normalized_fields[field] = controls
+            if normalized_fields:
+                counts["textgrid_label_normalized_utterances"] += 1
+                counts["textgrid_label_normalized_fields"] += len(
+                    normalized_fields
+                )
+                if len(label_normalization_examples) < 100:
+                    label_normalization_examples.append(
+                        {
+                            "utt_id": utt_id,
+                            "fields": normalized_fields,
+                        }
+                    )
             word_rows, word_adjustments, word_max = (
                 _normalize_db_interval_rows(word_rows, duration)
             )
@@ -831,6 +856,7 @@ def export_session_textgrids(
         "approved_excluded_inventory": approved_excluded,
         "roundoff_examples": roundoff_examples,
         "max_boundary_roundoff_seconds": max_boundary_roundoff_seconds,
+        "label_normalization_examples": label_normalization_examples,
     }
 
 
@@ -1514,6 +1540,21 @@ def _alignment_contract_semantically_matches(
         return False
     try:
         contract = json.loads(path.read_text(encoding="utf-8-sig"))
+        if contract.get("schema_version") == R3_ALIGNMENT_SCHEMA_VERSION:
+            return (
+                contract.get("status") == R3_ALIGNMENT_STATUS
+                and str(contract.get("year")) == year
+                and str(
+                    (contract.get("identity") or {}).get(
+                        "year_input_contract_id", ""
+                    )
+                )
+                == input_contract_id
+                and str(contract.get("alignment_contract_id", ""))
+                == alignment_contract_id
+                and recompute_r3_alignment_contract_id(contract)
+                == alignment_contract_id
+            )
         return (
             contract.get("schema_version") == "mfa_alignment_contract.v1"
             and contract.get("status") == "passed"
@@ -1579,6 +1620,14 @@ def load_targeted_repair_resume(
         raise RuntimeError("resume source report is not a failed checkpoint")
     if repair.get("status") != "success":
         raise RuntimeError("targeted repair manifest is not successful")
+    repair_mode = str(
+        repair.get("repair_mode") or "replace_existing_textgrid"
+    )
+    if repair_mode not in {
+        "replace_existing_textgrid",
+        "create_missing_textgrid_after_label_normalization",
+    }:
+        raise RuntimeError(f"unsupported targeted repair mode: {repair_mode}")
     subsequent_records_by_destination: dict[Path, Mapping[str, object]] = {}
     if subsequent_repair is not None:
         subsequent_checks = {
@@ -1777,17 +1826,28 @@ def load_targeted_repair_resume(
                     destination, subsequent.get("destination_after") or {}
                 )
             )
-        if (
+        common_invalid = (
             not utt_id
             or utt_id in observed_record_ids
-            or not bool(record.get("matches_pre_normalization_policy"))
             or not bool(record.get("replacement_validation_passed"))
             or not current_matches_chain
-            or not _fingerprint_matches(
-                Path(str(record.get("archive_path", ""))).resolve(),
-                record.get("archive_fingerprint") or {},
+        )
+        if repair_mode == "create_missing_textgrid_after_label_normalization":
+            evidence_invalid = (
+                not bool(record.get("destination_previously_absent"))
+                or not bool(record.get("source_control_validation_passed"))
+                or bool(record.get("archive_path"))
+                or bool(record.get("archive_fingerprint"))
             )
-        ):
+        else:
+            evidence_invalid = (
+                not bool(record.get("matches_pre_normalization_policy"))
+                or not _fingerprint_matches(
+                    Path(str(record.get("archive_path", ""))).resolve(),
+                    record.get("archive_fingerprint") or {},
+                )
+            )
+        if common_invalid or evidence_invalid:
             raise RuntimeError(f"invalid targeted repair evidence: {utt_id or destination}")
         observed_record_ids.add(utt_id)
     if observed_record_ids != set(failed_ids):
@@ -1802,9 +1862,15 @@ def load_targeted_repair_resume(
     )
     prior_validated = int(totals["validated_existing"])
     prior_created = int(totals["created"])
-    totals["validated_existing"] += failed_count
+    if repair_mode == "create_missing_textgrid_after_label_normalization":
+        totals["created"] += failed_count
+        totals["targeted_repaired_new"] = failed_count
+        totals["targeted_repaired_existing"] = 0
+    else:
+        totals["validated_existing"] += failed_count
+        totals["targeted_repaired_existing"] = failed_count
+        totals["targeted_repaired_new"] = 0
     totals["failed"] = 0
-    totals["targeted_repaired_existing"] = failed_count
     totals["resume_checkpoint_files_reused"] = prior_validated + prior_created
     float32 = previous.get("float32_boundary_normalization") or {}
     examples = list(float32.get("examples") or [])
@@ -1820,6 +1886,7 @@ def load_targeted_repair_resume(
         "prior_validated_existing": prior_validated,
         "prior_created": prior_created,
         "prior_failed": failed_count,
+        "repair_mode": repair_mode,
         "repaired_ids": sorted(failed_ids),
         "alignment_contract_validation": {
             "mode": "recomputed_builder_canonical_identity",
@@ -1841,6 +1908,100 @@ def load_targeted_repair_resume(
             for record in subsequent_repair.get("records") or []
         )
     return totals, examples, max_adjustment, resume
+
+
+def build_r3_exact_id_reconciliation(
+    *,
+    contract_data: Mapping[str, object],
+    year: str,
+    db_ids: set[str],
+    aligned_ids: set[str],
+    active_lab_ids: set[str],
+    source_search_ids: set[str],
+    alignment_exclusion_ids: set[str],
+    analysis_only_ids: set[str],
+    quarantine_ids: set[str],
+) -> dict[str, object]:
+    """Recompute the frozen r3 expected-input exact-ID accounting gate."""
+
+    expected_input_ids = load_r3_expected_mfa_input_ids(contract_data, year)
+    database_excluded_ids = expected_input_ids - db_ids
+    actual_missing_ids = db_ids - aligned_ids
+    approved_technical_failure_ids = (
+        database_excluded_ids | actual_missing_ids
+    ) & alignment_exclusion_ids
+    hard_sets = {
+        "expected_input_ids_missing_from_search": (
+            expected_input_ids - source_search_ids
+        ),
+        "database_ids_missing_from_expected_input": (
+            db_ids - expected_input_ids
+        ),
+        "expected_input_ids_missing_from_database_without_approval": (
+            database_excluded_ids - alignment_exclusion_ids
+        ),
+        "active_lab_ids_missing_from_expected_input": (
+            active_lab_ids - expected_input_ids
+        ),
+        "expected_input_ids_missing_from_active_lab": (
+            expected_input_ids - active_lab_ids
+        ),
+        "unaligned_ids_without_approval": (
+            actual_missing_ids - alignment_exclusion_ids
+        ),
+        "approved_alignment_exclusions_not_unaligned": (
+            alignment_exclusion_ids
+            - (database_excluded_ids | actual_missing_ids)
+        ),
+        "analysis_only_ids_without_alignment": (
+            analysis_only_ids - aligned_ids
+        ),
+        "unapproved_quarantine_ids": (
+            quarantine_ids - alignment_exclusion_ids
+        ),
+    }
+    return {
+        "status": (
+            "passed" if all(not values for values in hard_sets.values())
+            else "failed"
+        ),
+        "mode": "r3_expected_mfa_input_exact_id",
+        "full_year_gate": True,
+        "counts": {
+            "source_search_ids": len(source_search_ids),
+            "expected_mfa_input_ids": len(expected_input_ids),
+            "active_lab_ids": len(active_lab_ids),
+            "database_utterance_ids": len(db_ids),
+            "aligned_database_ids": len(aligned_ids),
+            "database_excluded_ids": len(database_excluded_ids),
+            "post_mfa_unaligned_ids": len(actual_missing_ids),
+            "approved_database_exclusions": len(
+                database_excluded_ids & alignment_exclusion_ids
+            ),
+            "approved_database_unaligned_ids": len(
+                actual_missing_ids & alignment_exclusion_ids
+            ),
+            "approved_technical_failure_ids": len(
+                approved_technical_failure_ids
+            ),
+            "approved_alignment_exclusions": len(alignment_exclusion_ids),
+            "approved_analysis_only_exclusions": len(analysis_only_ids),
+            "quarantine_ids": len(quarantine_ids),
+            **{name: len(values) for name, values in hard_sets.items()},
+        },
+        "inventories": {
+            name: sorted(values) for name, values in hard_sets.items()
+        },
+        "equation": (
+            "expected_mfa_input_ids = active_lab_ids = database_utterance_ids "
+            "disjoint-union approved database exclusions; "
+            "database_utterance_ids = aligned_database_ids disjoint-union "
+            "approved database unaligned IDs; approved alignment exclusions "
+            "equal the union of both technical failure sets; full search "
+            "master may additionally contain pronunciation follow-up and "
+            "pre-MFA exclusions"
+        ),
+    }
 
 
 def export_database(
@@ -2009,101 +2170,17 @@ def export_database(
         active_lab_ids = load_active_lab_ids(lab_root, year)
         source_search_ids = load_search_master_ids(search_master_root, year)
         if contract_data.get("schema_version") == R3_ALIGNMENT_SCHEMA_VERSION:
-            expected_input_ids = load_r3_expected_mfa_input_ids(
-                contract_data, year
+            reconciliation = build_r3_exact_id_reconciliation(
+                contract_data=contract_data,
+                year=year,
+                db_ids=db_ids,
+                aligned_ids=aligned_ids,
+                active_lab_ids=active_lab_ids,
+                source_search_ids=source_search_ids,
+                alignment_exclusion_ids=alignment_exclusion_ids,
+                analysis_only_ids=analysis_only_ids,
+                quarantine_ids=quarantine_ids,
             )
-            # MFA can retain an ignored utterance row after feature generation
-            # fails.  Such an ID belongs to the frozen input and active LAB
-            # sets, but is intentionally absent from the exportable
-            # ``ignored=0`` DB set.  Treat it as a valid technical exclusion
-            # only when the researcher-approved exact-ID contract contains it.
-            database_excluded_ids = expected_input_ids - db_ids
-            actual_missing_ids = db_ids - aligned_ids
-            approved_technical_failure_ids = (
-                database_excluded_ids | actual_missing_ids
-            ) & alignment_exclusion_ids
-            hard_sets = {
-                "expected_input_ids_missing_from_search": (
-                    expected_input_ids - source_search_ids
-                ),
-                "database_ids_missing_from_expected_input": (
-                    db_ids - expected_input_ids
-                ),
-                "expected_input_ids_missing_from_database_without_approval": (
-                    database_excluded_ids - alignment_exclusion_ids
-                ),
-                "active_lab_ids_missing_from_expected_input": (
-                    active_lab_ids - expected_input_ids
-                ),
-                "expected_input_ids_missing_from_active_lab": (
-                    expected_input_ids - active_lab_ids
-                ),
-                "unaligned_ids_without_approval": (
-                    actual_missing_ids - alignment_exclusion_ids
-                ),
-                "approved_alignment_exclusions_not_unaligned": (
-                    alignment_exclusion_ids
-                    - (database_excluded_ids | actual_missing_ids)
-                ),
-                "analysis_only_ids_without_alignment": (
-                    analysis_only_ids - aligned_ids
-                ),
-                "unapproved_quarantine_ids": (
-                    quarantine_ids - alignment_exclusion_ids
-                ),
-            }
-            reconciliation = {
-                "status": (
-                    "passed"
-                    if all(not values for values in hard_sets.values())
-                    else "failed"
-                ),
-                "mode": "r3_expected_mfa_input_exact_id",
-                "full_year_gate": True,
-                "counts": {
-                    "source_search_ids": len(source_search_ids),
-                    "expected_mfa_input_ids": len(expected_input_ids),
-                    "active_lab_ids": len(active_lab_ids),
-                    "database_utterance_ids": len(db_ids),
-                    "aligned_database_ids": len(aligned_ids),
-                    "database_excluded_ids": len(database_excluded_ids),
-                    "post_mfa_unaligned_ids": len(actual_missing_ids),
-                    "approved_database_exclusions": len(
-                        database_excluded_ids & alignment_exclusion_ids
-                    ),
-                    "approved_database_unaligned_ids": len(
-                        actual_missing_ids & alignment_exclusion_ids
-                    ),
-                    "approved_technical_failure_ids": len(
-                        approved_technical_failure_ids
-                    ),
-                    "approved_alignment_exclusions": len(
-                        alignment_exclusion_ids
-                    ),
-                    "approved_analysis_only_exclusions": len(
-                        analysis_only_ids
-                    ),
-                    "quarantine_ids": len(quarantine_ids),
-                    **{
-                        name: len(values)
-                        for name, values in hard_sets.items()
-                    },
-                },
-                "inventories": {
-                    name: sorted(values)
-                    for name, values in hard_sets.items()
-                },
-                "equation": (
-                    "expected_mfa_input_ids = active_lab_ids = "
-                    "database_utterance_ids disjoint-union approved "
-                    "database exclusions; database_utterance_ids = "
-                    "aligned_database_ids disjoint-union approved database "
-                    "unaligned IDs; approved alignment exclusions equal the "
-                    "union of both technical failure sets; full search "
-                    "master may additionally contain pronunciation follow-up "
-                    "and pre-MFA exclusions"
-                ),
-            }
         else:
             unapproved_quarantine = quarantine_ids - alignment_exclusion_ids
             unknown_active_missing = (
@@ -2244,6 +2321,7 @@ def export_database(
     missing_search: list[str] = []
     missing_alignment: list[str] = []
     roundoff_examples: list[dict[str, object]] = []
+    label_normalization_examples: list[dict[str, object]] = []
     max_boundary_roundoff_seconds = 0.0
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         futures = {
@@ -2274,6 +2352,11 @@ def export_database(
             missing_alignment.extend(result["alignment_missing_inventory"])
             roundoff_examples.extend(
                 result["roundoff_examples"][: max(0, 100 - len(roundoff_examples))]
+            )
+            label_normalization_examples.extend(
+                result["label_normalization_examples"][:
+                    max(0, 100 - len(label_normalization_examples))
+                ]
             )
             max_boundary_roundoff_seconds = max(
                 max_boundary_roundoff_seconds,
@@ -2407,6 +2490,19 @@ def export_database(
             "boundaries_adjusted": totals["float32_boundary_adjustments"],
             "max_adjustment_seconds": max_boundary_roundoff_seconds,
             "examples": roundoff_examples[:100],
+        },
+        "textgrid_label_normalization": {
+            "policy": (
+                "search-derived TextGrid display tiers only: Unicode line "
+                "and paragraph separators become one ASCII space; source "
+                "companion CSV values remain unchanged; other control "
+                "characters remain hard failures"
+            ),
+            "utterances_adjusted": totals[
+                "textgrid_label_normalized_utterances"
+            ],
+            "fields_adjusted": totals["textgrid_label_normalized_fields"],
+            "examples": label_normalization_examples[:100],
         },
         "companion_tables": tables_manifest,
         "approved_exclusions_contract": exclusion_contract_data,

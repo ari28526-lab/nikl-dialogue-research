@@ -37,6 +37,19 @@ STITCHED_TIERS = BASE_TIERS + ["source_utt_id", "speaker"]
 # 별도 gate에서 차단하며, 여기서 빈 label로 숨기지 않는다.
 SILENCE = {"", "<eps>", "sil", "sp", "<unk>"}
 
+# Source CSV fields can legally contain embedded line breaks.  Praat TextGrid
+# labels cannot: literal record separators make the quoted label ambiguous.
+# Normalize only Unicode line/paragraph separators for the derived display
+# tiers.  The companion CSV retains the source values byte-for-byte, and all
+# other control characters remain hard failures in ``_escape``.
+TEXTGRID_LABEL_LINE_SEPARATORS = {
+    "\n",
+    "\r",
+    "\x85",
+    "\u2028",
+    "\u2029",
+}
+
 # MFA interval endpoints are float32-compatible values, while ``sound_file``
 # duration is a double derived from the WAV frame count.  Only the discrepancy
 # explained by the nearest float32 representation of the same duration may be
@@ -91,6 +104,30 @@ def _escape(value: object) -> str:
             "TextGrid label에 제어문자가 있음: " + ", ".join(controls)
         )
     return text.replace('"', '""')
+
+
+def normalize_search_label_for_textgrid(value: object) -> str:
+    """Return a one-line TextGrid display label without altering source CSV.
+
+    Consecutive line/paragraph separators become one ASCII space.  Tabs and
+    other C0 controls are intentionally *not* accepted implicitly; ``_escape``
+    continues to reject them so a new source anomaly cannot silently change
+    research labels.
+    """
+
+    text = str(value)
+    normalized: list[str] = []
+    pending_space = False
+    for char in text:
+        if char in TEXTGRID_LABEL_LINE_SEPARATORS:
+            pending_space = True
+            continue
+        if pending_space:
+            if normalized and not normalized[-1].isspace() and not char.isspace():
+                normalized.append(" ")
+            pending_space = False
+        normalized.append(char)
+    return "".join(normalized).strip()
 
 
 def _same_intervals(
@@ -289,9 +326,9 @@ def build_base_tier_data(
         raise ValueError(
             f"source 4-tier 계약 불일치: {source_textgrid} tiers={list(source)}"
         )
-    form = str(row.get("form", "")).strip()
+    form = normalize_search_label_for_textgrid(row.get("form", ""))
     form_roman = orth_roman_v2(form)
-    tagged = str(row.get("tagged", "")).strip()
+    tagged = normalize_search_label_for_textgrid(row.get("tagged", ""))
     if not form or not form_roman or not tagged:
         raise ValueError("form/form_roman/tagged 필수값 누락")
     morph_label = canonicalize_tagged(tagged)
@@ -343,9 +380,9 @@ def build_base_tier_data_from_intervals(
         raise ValueError(f"duration은 양수여야 함: {duration}")
     if not words or not phones:
         raise ValueError("words와 phones interval이 모두 필요함")
-    form = str(row.get("form", "")).strip()
+    form = normalize_search_label_for_textgrid(row.get("form", ""))
     form_roman = orth_roman_v2(form)
-    tagged = str(row.get("tagged", "")).strip()
+    tagged = normalize_search_label_for_textgrid(row.get("tagged", ""))
     if not form or not form_roman or not tagged:
         raise ValueError("form/form_roman/tagged 필수값 누락")
 

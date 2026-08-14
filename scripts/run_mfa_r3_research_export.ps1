@@ -5,6 +5,7 @@ param(
     [string]$Year = '2020',
     [ValidateRange(1, 16)]
     [int]$Workers = 4,
+    [string]$ResumeFailedReport = '',
     [switch]$PreflightOnly
 )
 
@@ -35,7 +36,9 @@ $reviewRoot = Join-Path $projectRoot (
 $approvalManifest = Join-Path $reviewRoot '06_RESEARCHER_APPROVAL.json'
 $approvedContract = Join-Path $reviewRoot '05_APPROVED_EXCLUSIONS.json'
 $reportName = $(
-    if ($PreflightOnly) { 'PREFLIGHT' } else { 'EXPORT' }
+    if ($ResumeFailedReport -and -not $PreflightOnly) {
+        'EXPORT_RECOVERED'
+    } elseif ($PreflightOnly) { 'PREFLIGHT' } else { 'EXPORT' }
 )
 $report = Join-Path $projectRoot (
     'outputs\reports\{0}_mfa_r3_research_6tier_{1}_{2}.json' -f
@@ -159,6 +162,87 @@ $lockJson = $lockValue | ConvertTo-Json -Depth 8
 
 Enable-SleepGuard
 try {
+    if ($ResumeFailedReport) {
+        $failedReport = [IO.Path]::GetFullPath($ResumeFailedReport)
+        if (-not (Test-Path -LiteralPath $failedReport -PathType Leaf)) {
+            throw "resume failed report 없음: $failedReport"
+        }
+        $failed = Get-Content -LiteralPath $failedReport -Raw -Encoding UTF8 |
+            ConvertFrom-Json
+        if (
+            [string]$failed.status -ne 'failed' -or
+            [string]$failed.year -ne $Year -or
+            [string]$failed.db_path -ne $database -or
+            [string]$failed.output_root -ne $outputRoot
+        ) {
+            throw 'resume failed report identity/status 불일치'
+        }
+        $failedStem = [IO.Path]::GetFileNameWithoutExtension($failedReport)
+        $repairManifest = Join-Path $projectRoot (
+            'outputs\reports\REPAIR_label_controls_{0}.json' -f $failedStem
+        )
+        $repairArguments = @(
+            (Join-Path $PSScriptRoot (
+                'python\repair_mfa_textgrid_search_label_controls.py'
+            )),
+            '--failed-report', $failedReport,
+            '--manifest', $repairManifest
+        )
+        & $python @repairArguments
+        if ($LASTEXITCODE -ne 0) {
+            throw "r3 $Year label-control repair preflight 실패"
+        }
+        if (-not $PreflightOnly) {
+            $repairArguments += '--apply'
+            & $python @repairArguments
+            if ($LASTEXITCODE -ne 0) {
+                throw "r3 $Year label-control targeted repair 실패"
+            }
+        }
+        $finalizeArguments = @(
+            (Join-Path $PSScriptRoot (
+                'python\finalize_mfa_db_research_6tier_repair.py'
+            )),
+            '--failed-report', $failedReport,
+            '--repair-manifest', $repairManifest,
+            '--db', $database,
+            '--year', $Year,
+            '--search-master-root', $searchMasterRoot,
+            '--output-root', $outputRoot,
+            '--acoustic-model', [string]$alignment.models.acoustic.path,
+            '--alignment-contract', $alignmentContract,
+            '--alignment-marker', $alignmentMarker,
+            '--approved-exclusions-contract', $approvedContract,
+            '--lab-root', $labRoot,
+            '--report', $report
+        )
+        if ($PreflightOnly) {
+            $finalizeArguments += '--preflight-only'
+        }
+        & $python @finalizeArguments
+        if ($LASTEXITCODE -ne 0) {
+            throw "r3 $Year recovered export finalization 실패: $report"
+        }
+        $result = Get-Content -LiteralPath $report -Raw -Encoding UTF8 |
+            ConvertFrom-Json
+        $expectedRecoveredStatus = $(
+            if ($PreflightOnly) { 'preflight_passed' } else { 'success' }
+        )
+        if ([string]$result.status -ne $expectedRecoveredStatus) {
+            throw "r3 recovered export report status 불일치: $($result.status)"
+        }
+        if ($PreflightOnly) {
+            Write-Host (
+                "[GO] r3 $Year checkpoint recovery preflight: $report"
+            ) -ForegroundColor Green
+        } else {
+            Write-Host (
+                "[OK] r3 $Year checkpoint recovery export: $report"
+            ) -ForegroundColor Green
+        }
+        return
+    }
+
     $arguments = @(
         (Join-Path $PSScriptRoot 'python\export_mfa_db_research_6tier.py'),
         '--db', $database,

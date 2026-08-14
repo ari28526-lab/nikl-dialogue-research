@@ -1,6 +1,6 @@
 # 2020–2025 연구 인프라 전수 생산 RUNBOOK
 
-최종 갱신: 2026-08-13 KST
+최종 갱신: 2026-08-14 KST
 
 이 문서는 현재 생산 순서의 정본이다. 2021 완료 전의 상세 명령·시행착오는
 `docs/archive/pre_2022_refresh_20260806/RUNBOOK_production_2020_2025_pre_2022_20260806.md`에
@@ -759,6 +759,58 @@ safety/runtime 각 69개와 Python 564 tests로 GO였다. 2023→2024 전환 Gat
 두 번째 창에서 같은 runner를 중복 실행하지 않는다. 실패하면 corpus·temp·DB를
 보존하고 해당 checkpoint만 복구하며 2020–2023 또는 완료된 2024 전처리를 처음부터
 반복하지 않는다.
+
+## 6.2 2024 r3 정렬 완료와 분석 산출물 Gate
+
+2024 r3 MFA는 2026-08-14에 정상 종료됐다. 동결 입력과 DB는 594,404건으로
+exact-match하며, 보존 DB SHA-256은
+`b55d69ded19085d1e97abe13b0a62585a3f638c854cb08dcecf18ddc66cec110`이다.
+정렬 성공 593,530건과 post-MFA 기술 미정렬 874건으로 분리했고, 후보 identity
+`792b78220ca4a6377f0aea309fc6696e957f08f1ca3423bf62f2d03985e11f2a`를
+연구자 `ari30`이 `alignment_and_analysis` 후속 exact-ID로 명시 승인했다. 자동
+승인은 없었다.
+
+수출 preflight는 다음 식과 불변조건을 통과했다.
+
+```text
+expected MFA input 594,404
+  = aligned DB utterances 593,530
+  + approved post-MFA unaligned 874
+
+unapproved difference = 0
+spn intervals = 0
+phones outside frozen acoustic inventory = 0
+```
+
+실제 6-tier 수출은 2026-08-14 10:42 KST에 보존 DB에서 시작했다. 원문 내장
+줄바꿈 두 건에서 안전 중단됐으나, 실패 보고서와 exact-ID를 Gate로 삼아 기존
+593,528개 TextGrid와 보존 DB를 재사용하고 누락된 두 TextGrid만 생성했다.
+원 CSV·동반표의 raw 값은 보존하며, 파생 TextGrid 표시 label에서만 승인된
+줄·문단 구분자를 공백으로 정규화한다. 같은 종류의 실패는 다음처럼 실패
+보고서를 지정해 checkpoint에서 복구한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_research_export.ps1" `
+  -Year 2024 `
+  -ResumeFailedReport "C:\Users\ari30\research\2026_summer_research\outputs\reports\EXPORT_mfa_r3_research_6tier_2024_20260814_104221.json"
+```
+
+복구 완료 후 독립 QC는 다음 명령의 preflight와 실제 실행을 차례로 통과했다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_research_qc.ps1" `
+  -Year 2024 -Workers 4 -SampleSize 24 -PreflightOnly
+```
+
+preflight가 통과하면 같은 명령에서 `-PreflightOnly`만 제거한다. 실제 완료 결과는
+TextGrid 593,530개, 동반표 4종, 전수 coverage 100%, hard failure 0, 보존 DB
+재수출 semantic·byte 24/24, 최종 `QC_STATE.json=passed`다. state SHA-256은
+`2321d5cc3914404b6d067250265e0f0d4887ffbf5ab5c49245809f631f785549`다.
+2024는 완료로 동결하며 다음은 2024→2025 단일 연도 Gate만 준비한다.
 
 ## 7. 발음 참조 파생층
 

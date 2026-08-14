@@ -233,9 +233,14 @@ if (
 }
 
 $validExports = [Collections.Generic.List[object]]::new()
-$exportFiles = @(Get-ChildItem -LiteralPath $reportsRoot -File -Filter (
-    "EXPORT_mfa_r3_research_6tier_${Year}_*.json"
-) -ErrorAction SilentlyContinue)
+$exportFiles = @(
+    Get-ChildItem -LiteralPath $reportsRoot -File -Filter (
+        "EXPORT_mfa_r3_research_6tier_${Year}_*.json"
+    ) -ErrorAction SilentlyContinue
+    Get-ChildItem -LiteralPath $reportsRoot -File -Filter (
+        "EXPORT_RECOVERED_mfa_r3_research_6tier_${Year}_*.json"
+    ) -ErrorAction SilentlyContinue
+) | Sort-Object FullName -Unique
 foreach ($file in $exportFiles) {
     try {
         $candidate = Read-Json $file.FullName

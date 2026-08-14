@@ -2,7 +2,7 @@
 
 - [RESULT_mfa_r3_2024_preflight_20260813.md](RESULT_mfa_r3_2024_preflight_20260813.md) — 2024 조합검색·연구 DB·정렬 계약·PowerShell 5.1 preflight·2023→2024 Gate 완료와 단일 장시간 runner 진입 근거
 
-최종 갱신: 2026-08-13 KST
+최종 갱신: 2026-08-14 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고
@@ -29,6 +29,8 @@
 | `RESULT_mfa_r3_alignment_database_2022_20260812.md` | 2022 r3 751,721발화 신규 정렬, 751,383 성공·338 명시 승인, 6-tier·동반표 4종·독립 전수 QC·DB 재수출 24/24 완료와 2023 안전 정지점 |
 | `RESULT_mfa_r3_2023_preflight_20260812.md` | 2022 완료 SHA를 보존한 2022→2023 Gate, 2023 조합검색 20/20·발음 연구 DB·exact-ID 494,580 입력과 장시간 runner preflight GO |
 | `RESULT_mfa_r3_alignment_database_2023_20260813.md` | 2023 r3 494,580발화 신규 정렬, 494,228 성공·352 명시 승인, 6-tier·동반표 4종·독립 전수 QC·DB 재수출 24/24 완료와 2024 전환 정지점 |
+| `RESULT_mfa_r3_alignment_database_2024_20260814.md` | 2024 r3 594,404발화 신규 정렬, 593,530 성공·874 명시 승인, 표적 수출 복구와 6-tier·동반표 4종·독립 전수 QC 완료 |
+| `INCIDENT_mfa_r3_2024_textgrid_embedded_line_separator_20260814.md` | 원문 내장 줄바꿈 두 건의 TextGrid 표시 label 안전 중단, 원 CSV·DB·기존 출력 보존과 exact-ID 표적 복구 정책 |
 | `INCIDENT_morph_search_2024_embedded_newline_20260813.md` | 2024 조합검색 shard 1의 인용 필드 내부 줄바꿈 안전 중단, 논리 CSV 레코드 처리 수정, 실패 증거 격리와 1-shard 실제 회귀 통과 |
 | `INCIDENT_bareun_literal_plus_delimiter_collision_20260813.md` | 2024 shard 32의 Bareun literal `+`/형태소 구분자 충돌, 원 JSON 대조, 6개년 전수 감사, 2025 선제 탐지와 무손실 회귀 |
 
@@ -104,6 +106,7 @@
 | `DECISION_bareun_engine_provenance_20260801.md` | Bareun 엔진·버전 provenance |
 | `NOTE_wav2vec2_phone_candidate_layer_20260727.md` | wav2vec2를 MFA 비대체 보조층으로 사용 |
 | `PLAN_KOINA_intonation_IP_AP.md` | 선별 자료 운율분석 계획 |
+| `DECISION_post_search_acoustic_measurement_tooling_20260814.md` | kPhonetica는 참고로 제한하고 선택 발화 manifest·음향 측정 동반표·Praat/Parselmouth 중심 후처리를 채택한 결정 |
 | `../reviews/REVIEW_hyunjung_joo_KOINA_prosody_literature_20260810.md` | 조현정 AP 자료·Dual-Glob·fuzzy/R 코드와 KOINA·자연대화 AP/IP 문헌의 역할·한계·프로젝트 적용 판단 |
 | `사회변수_코드북.md` | 화자·사회 변수 정의 |
 

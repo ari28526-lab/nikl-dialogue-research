@@ -1,0 +1,41 @@
+{
+  "schema_version": "mfa_r3_post_mfa_explicit_approval.v1",
+  "status": "approved",
+  "recorded_at": "2026-08-14T10:33:33+09:00",
+  "year": "2024",
+  "input_contract_id": "a91219e26b1a4d88c94a97e1cc8b123f08be97642ccb9554b2379430d04a3fa3",
+  "candidate_identity_sha256": "792b78220ca4a6377f0aea309fc6696e957f08f1ca3423bf62f2d03985e11f2a",
+  "approved_row_count": 874,
+  "approved_by": "ari30",
+  "approved_at": "2026-08-14T10:33:33.130358+09:00",
+  "approval_statement": "2024 r3 post-MFA 미정렬 874건(candidate 792b78220ca4)을 alignment_and_analysis 범위의 후속 exact-ID로 이관하고, 성공한 593,530건은 보존 DB에서 6-tier로 수출하는 것을 승인한다. 승인자 ari30.",
+  "approval_statement_sha256": "7b03892433b046f177cdae6365a85cc1c7335f5e7dfd896d91b0534cf01f7eb3",
+  "source_review_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2024\\03_REVIEW_SUMMARY.json",
+    "bytes": 4453,
+    "mtime_ns": 1786670530890262200,
+    "sha256": "53711c9ee8f619aede0899825779a67cd0e8afbbd3f879684faf189c342d629c"
+  },
+  "source_pending_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2024\\02_RESEARCHER_DECISIONS.csv",
+    "bytes": 283793,
+    "mtime_ns": 1786670530832661700,
+    "sha256": "4ed1d3858b9b83797de6b61e79d540befbe41e4f857a6ef4bf769181103c9eeb"
+  },
+  "approved_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2024\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 284667,
+    "mtime_ns": 1786671213167814800,
+    "sha256": "c2c7455bc217dda06188acf5de44eaf0f10c9440a31d3587f1a6bd0357a5c316"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2024\\05_APPROVED_EXCLUSIONS.json",
+    "bytes": 903,
+    "mtime_ns": 1786671213196877300,
+    "sha256": "cd561dff8632027b925c5d26e71b1316beb448ed2ed74451d13a343c4bba347e"
+  },
+  "contract_row_count": 874,
+  "automatic_approval_performed": false,
+  "source_or_mfa_database_modified": false,
+  "successful_alignments_preserved": true
+}

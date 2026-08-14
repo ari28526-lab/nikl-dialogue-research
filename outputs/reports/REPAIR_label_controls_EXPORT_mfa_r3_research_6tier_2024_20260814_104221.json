@@ -1,0 +1,106 @@
+{
+  "schema_version": "mfa_textgrid_search_label_control_repair.v1",
+  "status": "success",
+  "repair_mode": "create_missing_textgrid_after_label_normalization",
+  "year": "2024",
+  "db_path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2024\\2024.db",
+  "search_master_root": "D:\\10_LAYERS\\05_search_master_pre_mfa_staging\\pre_mfa_v1_20260725",
+  "output_root": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier",
+  "alignment_contract_id": "d86f490de924cdf92f2fcb16316046558be65f9446ffa0cf325fc661e4b20f9f",
+  "input_contract_id": "a91219e26b1a4d88c94a97e1cc8b123f08be97642ccb9554b2379430d04a3fa3",
+  "source_failed_report": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\EXPORT_mfa_r3_research_6tier_2024_20260814_104221.json",
+    "bytes": 27441,
+    "mtime_ns": 1786676917459294200,
+    "sha256": "1077bcca738c6e63cd3daf9beeb9e60aa93335163c5260a6f267aa1975c84233"
+  },
+  "failed_count": 2,
+  "candidate_count": 2,
+  "candidates": [],
+  "records": [
+    {
+      "utt_id": "SDRW2400001393.1.1.156",
+      "session": "SDRW2400001393",
+      "destination": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2024\\SDRW2400001393\\SDRW2400001393.1.1.156.TextGrid",
+      "destination_previously_absent": true,
+      "source_control_validation_passed": true,
+      "source_label_controls": {
+        "form": {
+          "control_counts": {
+            "U+000A": 1
+          },
+          "raw_sha256": "99b46adb9ef493713a364cbf43c5f8251fb8f4f87b0b201a73de0de0cd118b28",
+          "normalized_sha256": "4b2ca915007fe34f0f8aab9fcfdb123a1d0f2058ccfabce36334cb0333f0ace0",
+          "changed": true
+        }
+      },
+      "archive_path": "",
+      "archive_fingerprint": {},
+      "destination_after": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2024\\SDRW2400001393\\SDRW2400001393.1.1.156.TextGrid",
+        "bytes": 22803,
+        "mtime_ns": 1786678473106166100,
+        "sha256": "2bb3cb6411c3868fa70ab030ab44b41fd8e6db8c4ef243ed178a6ab42b535afe"
+      },
+      "replacement_validation_passed": true
+    },
+    {
+      "utt_id": "SDRW2400002782.1.1.226",
+      "session": "SDRW2400002782",
+      "destination": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2024\\SDRW2400002782\\SDRW2400002782.1.1.226.TextGrid",
+      "destination_previously_absent": true,
+      "source_control_validation_passed": true,
+      "source_label_controls": {
+        "form": {
+          "control_counts": {
+            "U+000A": 1
+          },
+          "raw_sha256": "11d038c922f98cfc533b1c266d3bc6530614270741a37602794d8193c2a6f711",
+          "normalized_sha256": "52321948f6505d95c7db7cfec5cca77db6040a80011e37ceefa566330d6e3490",
+          "changed": true
+        }
+      },
+      "archive_path": "",
+      "archive_fingerprint": {},
+      "destination_after": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2024\\SDRW2400002782\\SDRW2400002782.1.1.226.TextGrid",
+        "bytes": 20430,
+        "mtime_ns": 1786678473141114000,
+        "sha256": "40e4b0528403d15bc642cc31ed3c1c26f84fc78f31c06aaf37044d6fb234d420"
+      },
+      "replacement_validation_passed": true
+    }
+  ],
+  "textgrid_label_normalization": {
+    "policy": "search-derived TextGrid display tiers only: Unicode line and paragraph separators become one ASCII space; frozen source CSV and companion-table source fields remain unchanged",
+    "utterances_adjusted": 2,
+    "fields_by_utterance": {
+      "SDRW2400001393.1.1.156": {
+        "form": {
+          "control_counts": {
+            "U+000A": 1
+          },
+          "raw_sha256": "99b46adb9ef493713a364cbf43c5f8251fb8f4f87b0b201a73de0de0cd118b28",
+          "normalized_sha256": "4b2ca915007fe34f0f8aab9fcfdb123a1d0f2058ccfabce36334cb0333f0ace0",
+          "changed": true
+        }
+      },
+      "SDRW2400002782.1.1.226": {
+        "form": {
+          "control_counts": {
+            "U+000A": 1
+          },
+          "raw_sha256": "11d038c922f98cfc533b1c266d3bc6530614270741a37602794d8193c2a6f711",
+          "normalized_sha256": "52321948f6505d95c7db7cfec5cca77db6040a80011e37ceefa566330d6e3490",
+          "changed": true
+        }
+      }
+    }
+  },
+  "mutation_scope": "create exact missing derived TextGrids only; existing TextGrids, DB, WAV, LAB, and source CSV unchanged",
+  "repaired_count": 2,
+  "repaired_ids": [
+    "SDRW2400001393.1.1.156",
+    "SDRW2400002782.1.1.226"
+  ]
+}

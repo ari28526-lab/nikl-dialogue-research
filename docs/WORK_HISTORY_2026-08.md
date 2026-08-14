@@ -3340,3 +3340,50 @@ shard 2–23을 재개하는 것이다.
 - runner `-PreflightOnly`가 GO였다. 필요 공간은 44.409 GiB, 관측 D: 여유는 약 106.9 GiB였고 PowerShell safety 69개, Windows PowerShell 5.1 runtime 69개, Python 564 tests가 통과했다.
 - 2023 보존 DB·marker·QC SHA와 2024 계약을 결속한 2023→2024 Gate가 8/8 `passed_ready_for_researcher_start`였다. 2024 MFA·DB·TextGrid는 아직 시작하지 않았다.
 - 다음은 연구자가 단일 PowerShell에서 `run_mfa_r3_year_safe_body.ps1 -Year 2024 -NumJobs 4`를 실행하는 것이다. 상세 근거는 `docs/decisions/RESULT_mfa_r3_2024_preflight_20260813.md`다.
+
+### 2026-08-13~14 — 2024 r3 정렬 완료·기술 미정렬 승인·6-tier 수출 진입
+
+- 동결 입력 594,404건으로 2024 r3 MFA를 새로 실행했다. 계산은
+  2026-08-14 01:24 KST에 정상 종료됐고 `ALIGN_DONE_2024.json`은
+  `status=passed`, `r3_full_realign=true`다. 보존 DB는 7,538,421,760 bytes,
+  SHA-256은
+  `b55d69ded19085d1e97abe13b0a62585a3f638c854cb08dcecf18ddc66cec110`이다.
+  완료 marker SHA-256은
+  `6b49f1018d65588cec26c9d48c4922ac272ca6e9336d5ad6fdd8ba07f0d79a06`이다.
+- post-MFA exact-ID 회계에서 DB 594,404건 전체가 동결 입력과 일치했다. 완전한
+  word+phone 정렬은 593,530건, 기술 미정렬은 874건이며 500세션에 분포한다.
+  874건은 모두 `mfa_alignment_missing`이고 후보 identity는
+  `792b78220ca4a6377f0aea309fc6696e957f08f1ca3423bf62f2d03985e11f2a`다.
+- 후보표는 874개 고유 ID 모두 `alignment_and_analysis` 범위의 pending으로
+  만들었으며 자동 승인·음운 실현 판정·청취 판정을 하지 않았다. 연구자 `ari30`은
+  2026-08-14 10:33 KST에 이 exact-ID 집합의 후속 이관과 성공 593,530건의 보존
+  DB 기반 6-tier 수출을 명시 승인했다. 승인 제외 계약 SHA-256은
+  `cd561dff8632027b925c5d26e71b1316beb448ed2ed74451d13a343c4bba347e`다.
+- 수출 preflight는 `594,404 = 593,530 + 874`를 재확인하고 `spn=0`, acoustic
+  inventory 밖 phone 0, 미승인 차이 0으로 통과했다. `materialization_started=false`,
+  2024 출력 폴더와 잔존 lock이 없음을 확인한 뒤 10:42 KST에 보존 DB 기반 수출을
+  한 번 시작했다.
+- 첫 수출은 검색 원문에 U+000A가 포함된 두 발화의 TextGrid 표시 label에서 안전
+  중단됐다. 원 CSV·보존 DB·기존 593,528개 TextGrid는 변경하지 않고, 실패
+  보고서와 exact-ID fingerprint를 Gate로 두 누락 TextGrid만 줄바꿈→공백 표시
+  정규화해 생성했다. 동반표는 checkpoint에서 이어 만들었다.
+- 최종 결과는 6-tier 593,530개, 승인 제외 874건, 동반표 4종이다. 독립 전수
+  QC는 coverage 100%, 25개 hard-failure 범주 전부 0, DB 재수출 semantic·byte
+  24/24로 `passed`다. QC state SHA-256은
+  `2321d5cc3914404b6d067250265e0f0d4887ffbf5ab5c49245809f631f785549`다.
+  MFA 재정렬·전수 수출 반복·2020–2023 완성본 변경은 없었다.
+- 상세 계약과 완료 상태는
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2024_20260814.md`에 기록한다.
+
+### 2026-08-14 — 검색 후 선택 음향 측정 도구 계층 정리
+
+- kPhonetica의 파형·스펙트로그램·F0·에너지·포먼트 검토와 `.lbl` 음소분절
+  예시는 참고하되, 오래된 GUI 자동 label을 생산 의존성이나 MFA 대체로 채택하지
+  않는다. `phones_mfa`는 덮어쓰지 않는다.
+- 실제 후처리는 선택 발화 manifest와 long-form 음향 측정 동반표를 중심으로
+  설계한다. 원 발화 좌표와 이어붙인 좌표, 도구·버전·매개변수, QC flag,
+  연구자 판정 이력을 보존한다.
+- 우선 도구는 Praat/Parselmouth와 praatIO이며, FastTrackPy는 모음·포먼트 subset,
+  EMU-SDMS는 계층 질의·검토가 병목일 때, openSMILE은 연구 질문에 넓은 음향
+  feature가 필요할 때만 선택한다. kPhonetica `.lbl`은 있을 때만 별도 후보층으로
+  import하며 MFA phone과 합치지 않는다.

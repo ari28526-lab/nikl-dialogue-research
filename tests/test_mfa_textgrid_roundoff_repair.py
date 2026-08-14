@@ -226,6 +226,7 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
             self.assertEqual(totals["validated_existing"], 2)
             self.assertEqual(totals["failed"], 0)
             self.assertEqual(totals["targeted_repaired_existing"], 1)
+            self.assertEqual(totals["targeted_repaired_new"], 0)
             self.assertEqual(examples, [{"utt_id": "U3"}])
             self.assertEqual(maximum, 0.000003)
             self.assertEqual(resume["repaired_ids"], ["U3"])
@@ -233,6 +234,55 @@ class MfaTextGridRoundoffRepairTests(unittest.TestCase):
                 resume["alignment_contract_validation"][
                     "volatile_recorded_at_ignored"
                 ]
+            )
+
+            creation_manifest = root / "creation_repair.json"
+            creation_payload = {
+                **repair_payload,
+                "repair_mode": (
+                    "create_missing_textgrid_after_label_normalization"
+                ),
+                "records": [
+                    {
+                        "utt_id": "U3",
+                        "destination": str(destination),
+                        "destination_after": file_fingerprint(
+                            destination, with_sha256=True
+                        ),
+                        "destination_previously_absent": True,
+                        "source_control_validation_passed": True,
+                        "archive_path": "",
+                        "archive_fingerprint": {},
+                        "replacement_validation_passed": True,
+                    }
+                ],
+            }
+            creation_manifest.write_text(
+                json.dumps(creation_payload), encoding="utf-8"
+            )
+            created_totals, _examples, _maximum, created_resume = (
+                load_targeted_repair_resume(
+                    failed_report_path=failed_report,
+                    repair_manifest_path=creation_manifest,
+                    db_path=db,
+                    year="2021",
+                    search_master_root=search,
+                    output_root=output,
+                    acoustic_model=acoustic,
+                    alignment_contract=contract,
+                    alignment_contract_id=alignment_id,
+                    input_contract_id="INPUT",
+                    reconciliation=reconciliation,
+                    source_utterance_count=3,
+                )
+            )
+            self.assertEqual(created_totals["created"], 2)
+            self.assertEqual(created_totals["validated_existing"], 1)
+            self.assertEqual(created_totals["targeted_repaired_new"], 1)
+            self.assertEqual(created_totals["targeted_repaired_existing"], 0)
+            self.assertEqual(
+                created_resume["repair_mode"],
+                "create_missing_textgrid_after_label_normalization",
             )
 
             contract_data["models"]["acoustic"]["requested_name"] = (
