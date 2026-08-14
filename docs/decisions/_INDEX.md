@@ -109,6 +109,7 @@
 | `PLAN_KOINA_intonation_IP_AP.md` | 선별 자료 운율분석 계획 |
 | `DECISION_post_search_acoustic_measurement_tooling_20260814.md` | kPhonetica는 참고로 제한하고 선택 발화 manifest·음향 측정 동반표·Praat/Parselmouth 중심 후처리를 채택한 결정 |
 | `PLAN_post_production_recovery_target_manual_session_json_20260814.md` | 6개년 완료 뒤 제외분 재처리, 의미번호 포함 표적 추출, 수동 TextGrid overlay, 세션 JSON, 재사용 HTML 매뉴얼과 공동연구·공개용 버전형 release의 순서·schema·Gate 계획 |
+| `RESULT_mfa_r3_2025_preflight_20260814.md` | 2025 exact-ID 458,413 입력·연구 DB·정렬 계약·runtime preflight·2024→2025 Gate 8/8 통과와 제한 셸 runtime 오탐 처리 기록 |
 | `../reviews/REVIEW_hyunjung_joo_KOINA_prosody_literature_20260810.md` | 조현정 AP 자료·Dual-Glob·fuzzy/R 코드와 KOINA·자연대화 AP/IP 문헌의 역할·한계·프로젝트 적용 판단 |
 | `사회변수_코드북.md` | 화자·사회 변수 정의 |
 

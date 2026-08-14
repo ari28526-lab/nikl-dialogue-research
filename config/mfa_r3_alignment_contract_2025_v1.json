@@ -1,0 +1,34 @@
+{
+  "schema_version": "mfa_r3_alignment_contract_policy.v1",
+  "status": "approved_contract_building_release_adopted",
+  "pronunciation_release_id": "common_pron_mfa_r3_20260809",
+  "pronunciation_mode": "common_pron_mfa_r3_staged_safe_body",
+  "alignment_origin": "fresh_r3_full_realign",
+  "r3_full_realign": true,
+  "scope": {
+    "years_enabled": ["2025"],
+    "production_mfa_allowed": false,
+    "textgrid_materialization_allowed": false,
+    "legacy_marker_reuse_allowed": false,
+    "legacy_db_reuse_allowed": false
+  },
+  "identity_fields": [
+    "pronunciation_release_id",
+    "pronunciation_contract_id",
+    "pronunciation_release_manifest_sha256",
+    "staged_adoption_contract_sha256",
+    "staged_adoption_audit_sha256",
+    "researcher_approval_sha256",
+    "safe_body_routing_contract_id",
+    "year_input_contract_id",
+    "year_input_contract_sha256",
+    "expected_mfa_input_sha256",
+    "followup_inventory_sha256",
+    "corpus_contract_id",
+    "frozen_model_pin_sha256",
+    "mfa_dictionary_sha256",
+    "acoustic_model_sha256",
+    "g2p_model_sha256",
+    "runtime"
+  ]
+}

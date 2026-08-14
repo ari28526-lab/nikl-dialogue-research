@@ -833,9 +833,41 @@ raw source modified           false
 `798896ef2988c642978b77bf33ce1cd05a887c0d1d6e20c1b0e579e6777a846e`,
 source contract SHA-256은
 `48f0a5e7d8e094988f384192f681f38236b2f4e645bbddd929ef522cc8e6959f`다.
-2025 조합검색은 다시 실행하지 않는다. 다음은 2025 발음 연구 DB의 preflight,
-실제 생성, 독립 감사만 수행한다. 그 뒤 2024 QC state와 2025 입력 계약을 결속한
-전환 Gate를 통과하기 전에는 MFA runner를 시작하지 않는다.
+2025 조합검색은 다시 실행하지 않는다. 2025 WAV source snapshot, 입력 계약,
+연구 DB, 정렬 계약, runner preflight와 2024→2025 Gate는 2026-08-14에 모두
+통과했다.
+
+```text
+source utterances                    587,121
+pronunciation-safe                   461,643
+pronunciation follow-up              125,478
+approved technical exclusions total    4,033
+technical exclusions in safe body       3,230
+expected r3 MFA input                458,413
+source WAV missing                         0
+corpus extra WAV                          53
+research DB occurrences            4,888,815
+required capacity                    37.681 GiB
+preflight observed free space        60.491 GiB
+```
+
+`GATE_mfa_r3_2024_TO_2025_20260814.json`은 8/8 통과했고 상태는
+`passed_ready_for_researcher_start`다. 2025 MFA는 아직 시작하지 않았다. 사용자는
+일반 PowerShell 한 창에서 다음 명령만 한 번 실행한다.
+
+```powershell
+& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+  -NoProfile -ExecutionPolicy Bypass `
+  -File "C:\Users\ari30\research\2026_summer_research\scripts\run_mfa_r3_year_safe_body.ps1" `
+  -Year 2025 -NumJobs 4
+```
+
+두 번째 runner를 동시에 시작하지 않는다. 실패 시 corpus·temp·DB를 보존하고
+해당 checkpoint만 복구한다. 2020–2024 MFA·수출·QC와 2025 조합검색·연구 DB·
+입력/정렬 계약을 처음부터 반복하지 않는다. 제한된 Codex 셸에서는 AppData의 MFA
+실행 파일 접근이 달라 runtime NO-GO 오탐이 날 수 있다. 실제 정상 Windows
+PowerShell에서 `fstcompile`과 MFA `check_third_party()`가 통과한 정본 preflight만
+Gate에 사용한다.
 
 ## 7. 발음 참조 파생층
 

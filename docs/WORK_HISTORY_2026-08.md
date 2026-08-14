@@ -3407,3 +3407,28 @@ shard 2–23을 재개하는 것이다.
   60.66 GiB다. MFA·TextGrid·WAV·원 CSV·2020–2024 완성본은 변경하지 않았다.
 - 다음 단계는 2025 발음 연구 DB preflight·생성·독립 감사다. 2024→2025 Gate가
   통과하기 전에는 2025 MFA를 시작하지 않는다.
+
+### 2026-08-14 — 2025 exact-ID 입력·연구 DB·정렬 계약·2024→2025 Gate 완료
+
+- 2025 WAV 원 tree를 열거나 복사·이름 변경하지 않고 상대경로 inventory로
+  snapshot했다. WAV 587,174개, corpus contract ID
+  `c1e3fad1634b488e496b3bcd6f276ca99e96a186db65e50538cfd470ceed3991`이다.
+- source 587,121을 pronunciation-safe 461,643과 follow-up 125,478로 동결했다.
+  승인 기술 제외 4,033건 중 safe와 교차하는 3,230건만 본체에서 빼 최종 입력은
+  458,413이다. 나머지 803건은 이미 follow-up이므로 이중 제외하지 않았다.
+- source WAV 누락은 0, source 밖 WAV는 53이며 자동 입력하지 않았다. year input
+  독립 감사의 ID partition·WAV binding·output SHA가 모두 통과했다.
+- 발음 연구 DB는 587,121발화·4,888,815 occurrence·공통 유형 881,237을 만들었고
+  독립 감사가 `passed`다. MFA·TextGrid는 아직 시작하지 않았다.
+- alignment contract ID
+  `1b739d22d56c9ce91ce17486b89355558e17acc8364f88bb68a27acd16ba5f35`를 만들고,
+  사전·acoustic·G2P·입력·runtime identity 독립 감사가 통과했다.
+- 제한 Codex 셸에서는 MFA runtime만 NO-GO로 보이는 오탐이 한 번 발생했다. 정상
+  Windows 권한 직접 검사에서 `fstcompile`과 MFA `check_third_party()` exit 0을
+  확인한 뒤 정본 preflight를 실행해 failed check 0, 필요 37.681 GiB, 관측 여유
+  60.491 GiB로 GO를 받았다.
+- 2024 완료 DB·QC SHA와 2025 계약을 묶은 2024→2025 Gate가 8/8 통과했다.
+  2020–2024 완성본과 2025 조합검색·계약·DB는 다시 실행하지 않는다. 다음은
+  사용자가 단일 PowerShell runner로 2025 MFA를 시작하는 단계다.
+- 상세 기록:
+  `docs/decisions/RESULT_mfa_r3_2025_preflight_20260814.md`.

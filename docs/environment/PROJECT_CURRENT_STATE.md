@@ -2,14 +2,15 @@
 
 최종 갱신: 2026-08-14 KST
 
-> **2026-08-14 2025 조합검색·source contract 완료:** 2,927개 입력 CSV를
-> 30개 checkpoint shard로 처리해 연간 7표를 만들었다. 발화 master는 587,121행,
-> input inventory SHA-256은
-> `e794979883d16d1e80de0c1d233b31c219ba6fdad1b6e07292f2b2746abae4e1`이다.
-> `YEAR_MANIFEST.json status=success`, `SOURCE_CONTRACT.json status=frozen`이며,
-> 독립 검사 12/12와 연간표 SHA 7/7이 통과했다. 원자료·MFA·TextGrid와 2020–2024
-> 완성본은 변경하지 않았다. 2025 조합검색을 반복하지 않으며, 다음 단계는 2025
-> 발음 연구 DB preflight·생성·독립 감사 뒤 2024→2025 Gate를 만드는 것이다.
+> **2026-08-14 2025 장시간 MFA 직전 GO:** 조합검색·frozen source contract,
+> WAV source snapshot, exact-ID 연도 입력 계약, 발음 연구 DB, 정렬 계약, runner
+> preflight, 2024→2025 Gate가 모두 통과했다. source 587,121, pronunciation-safe
+> 461,643, follow-up 125,478, safe에 적용된 승인 기술 제외 3,230, 최종 MFA 입력
+> 458,413이다. source WAV 누락은 0, source 밖 WAV는 53이다. 연구 DB는 발화
+> 587,121·occurrence 4,888,815이며 독립 감사 `passed`다. 필요 공간 37.681 GiB,
+> preflight 관측 여유 60.491 GiB였다. **2025 MFA는 아직 시작하지 않았다. 다음은
+> 사용자가 단일 runner를 한 번 시작하는 것이며, 2020–2024와 완료된 2025 전처리는
+> 반복하지 않는다.**
 
 > **2026-08-14 2024 r3 정렬·6-tier·동반표·독립 QC 완료:** 동결 입력
 > 594,404건을 새 r3 계약으로 정렬했고, 성공 593,530건과 연구자 승인 기술 미정렬
