@@ -3498,5 +3498,8 @@ shard 2–23을 재개하는 것이다.
   `outputs/review_bundles/MFA_R3_YEAR_SAMPLES_20260815`, ZIP은 같은 이름의
   `.zip`이며 21개 항목·471,208 bytes, SHA-256
   `8c5293e2ce51ef308581b825c5761b97e0bb1e6a58afb2e5822768c036f20f49`다.
-- WAV가 포함된 Dropbox 동기화는 연구 음성의 외부 동기화에 대한 명시 승인이
-  없는 상태에서 수행하지 않았다. 원 r3 WAV·TextGrid·동반표는 변경하지 않았다.
+- 연구자 `ari30`이 WAV·TextGrid·CSV 표본 6세트를
+  `C:\Users\ari30\Dropbox\MFA_R3_YEAR_SAMPLES_20260815`로 복사하는 것을 명시
+  승인했다. 총 21파일 중 표본 자산은 WAV 6·TextGrid 6·발화 CSV 6이며, 원본
+  묶음과 Dropbox 복사본의 파일명·파일 수·SHA-256을 전수 대조해 통과했다. 원 r3
+  WAV·TextGrid·동반표는 변경하지 않았다.
