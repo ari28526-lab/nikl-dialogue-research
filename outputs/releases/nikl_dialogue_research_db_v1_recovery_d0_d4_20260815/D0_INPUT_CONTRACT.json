@@ -1,0 +1,75 @@
+{
+  "schema_version": "research_db_v1_recovery_d0_contract.v1",
+  "status": "passed_read_only_contract",
+  "recorded_at": "2026-08-15T18:03:02+09:00",
+  "recovery_plan_id": "nikl_dialogue_research_db_v1_recovery_d0_d4_20260815",
+  "scope": {
+    "technical_followup": 98946,
+    "pronunciation_followup": 718364,
+    "total": 817310,
+    "aligned_r3_body_out_of_scope": 4286046
+  },
+  "inputs": {
+    "ac_output_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\OUTPUT_MANIFEST.json",
+      "bytes": 7431,
+      "mtime_ns": 1786778598183030900,
+      "sha256": "36dc9b2a800e3af59b7a2f77f51017fe04c39a62525976f73aed2b7daf41e13f"
+    },
+    "ac_base_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\BASE_RELEASE_MANIFEST_2020_2025.json",
+      "bytes": 48535,
+      "mtime_ns": 1786777738694463600,
+      "sha256": "1e7168e6c607a63cee93cb44e53a1317bf484b3bab8355aaa8299c64b5f8c779"
+    },
+    "ac_qa": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\QA_REPORT.json",
+      "bytes": 986,
+      "mtime_ns": 1786777738703986900,
+      "sha256": "3ad26a2c3d5187fb7319ef475060f8cf1d3841a119a933878e40bd452aa7a26b"
+    },
+    "type_catalog_manifest": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\05_research_database\\TYPE_CATALOG_MANIFEST.json",
+      "bytes": 2376,
+      "mtime_ns": 1786253264241899900,
+      "sha256": "bbfbe36bec31758cb829bd676fa2bb8c260cee5ec52f12aa7225f035c4bc7275"
+    },
+    "type_catalog": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\05_research_database\\pronunciation_type_catalog.csv.gz",
+      "bytes": 55638799,
+      "mtime_ns": 1786253263814413100,
+      "sha256": "6bda04993a1077517e4e66447a714427a3352da07da7e9839950425a5f5a9772"
+    },
+    "post_qc_cleanup_apply": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260815\\APPLY_RESULT.json",
+      "bytes": 113369,
+      "mtime_ns": 1786782585715310100,
+      "sha256": "6f9d3aa3a15bf651db898d57bfde3b032366b4f35b3e88e11c71e8971904daa0"
+    }
+  },
+  "storage": {
+    "D_role": "canonical active corpus/r3/recovery workspace",
+    "E_role": "future separately approved read-only archive only",
+    "D_volume_label": "DATA_SSD",
+    "D_free_bytes_at_contract": 68917026816,
+    "D_free_gib_at_contract": 64.184,
+    "planned_future_root_not_created": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809"
+  },
+  "frozen_invariants": {
+    "raw_audio_modified": false,
+    "r3_corpus_modified": false,
+    "r3_database_modified": false,
+    "r3_textgrid_modified": false,
+    "mfa_run_performed": false,
+    "recovery_files_materialized": false,
+    "whole_year_rerun_authorized": false,
+    "automatic_linguistic_realization_decision_allowed": false,
+    "dictionary_rule_g2p_are_reference_evidence_not_actual_realization": true,
+    "exact_id_append_only_recovery_required": true
+  },
+  "stage_label_resolution": {
+    "canonical_current_D0_D4": "reason-specific recovery planning and pre-execution gate",
+    "later_stage": "target extraction/query/manual overlay/session JSON after recovery accounting",
+    "note": "Older roadmap letters are superseded only in label, not in scientific scope."
+  }
+}

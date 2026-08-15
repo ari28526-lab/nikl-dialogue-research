@@ -1,0 +1,215 @@
+{
+  "schema_version": "research_db_v1_recovery_d0_d4_output_manifest.v1",
+  "status": "passed_stopped_before_materialization_and_mfa",
+  "recorded_at": "2026-08-15T18:17:54+09:00",
+  "recovery_plan_id": "nikl_dialogue_research_db_v1_recovery_d0_d4_20260815",
+  "files": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\BUILD_SUMMARY.json",
+      "bytes": 25171,
+      "mtime_ns": 1786785326497586700,
+      "sha256": "271356dbcbad2c3b051a45c8a26dbc540c92e55ba7ffc6ee267f056b2e6796e4"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2020_D1_D2_MANIFEST.json",
+      "bytes": 2866,
+      "mtime_ns": 1786784609020705200,
+      "sha256": "4c63bac947773deb10519c87dcc2fa3e1093d5868712b2891ac1c423b26bce64"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2021_D1_D2_MANIFEST.json",
+      "bytes": 3070,
+      "mtime_ns": 1786784644042225500,
+      "sha256": "e6f534fbf52d82cb977a6535c49ba32a39ede0897f8dc2b0714cd1af5014c8d1"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2022_D1_D2_MANIFEST.json",
+      "bytes": 2923,
+      "mtime_ns": 1786784669060524100,
+      "sha256": "9cbb3ff1423cf5ae85b90aa35bdd32069720bb28c8498fb70df7ceb7b5e6d629"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2023_D1_D2_MANIFEST.json",
+      "bytes": 3111,
+      "mtime_ns": 1786784862377772300,
+      "sha256": "ace7b7d2738c458f4b4cfa9add1be5e1494e34adc2a16172f80ac1f1f0027b41"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2024_D1_D2_MANIFEST.json",
+      "bytes": 2926,
+      "mtime_ns": 1786784904196362400,
+      "sha256": "98a7fe73eea66d36360a8d0d55da4dac870bbff21115927573a70fc1f8bdccfc"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\checkpoints\\2025_D1_D2_MANIFEST.json",
+      "bytes": 2927,
+      "mtime_ns": 1786784943598803700,
+      "sha256": "5b7cf6c4f604516ce217c3f7fda13617e9f7c72fd41431b623a664ac0b17a1c5"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D0_INPUT_CONTRACT.json",
+      "bytes": 3490,
+      "mtime_ns": 1786784582181232900,
+      "sha256": "dea3eeb8145f6919791d9dfaccd4fc596cfbba1a1bfaebfc44545c61e28bece3"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2020_recovery_routing.csv.gz",
+      "bytes": 520268,
+      "mtime_ns": 1786784602826042300,
+      "sha256": "10d587dc1add22d4081673b307b2a0a81debe10e6cedd1f49de0bbdc533ec36e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2021_recovery_routing.csv.gz",
+      "bytes": 989141,
+      "mtime_ns": 1786784635693374000,
+      "sha256": "815231055e3b8979d7d700f95dca7e994aa64d5bc8125d328bf1a29aab4ecc7e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2022_recovery_routing.csv.gz",
+      "bytes": 674058,
+      "mtime_ns": 1786784663169631800,
+      "sha256": "879bdbeb360df46320a4babd3fbd42a5d4a29f95e5294f6201dbae37a6c5394f"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2023_recovery_routing.csv.gz",
+      "bytes": 895689,
+      "mtime_ns": 1786784699847515700,
+      "sha256": "da3ca1dc9af336c043eae0a8c3596aa346c52c85f9a3d1c14dfcdfae3fb6c6e6"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2024_recovery_routing.csv.gz",
+      "bytes": 772408,
+      "mtime_ns": 1786784890024464800,
+      "sha256": "bc9796e1f97f1049c3521503a9f9355dc88b52230c5541000d72b1fac6a47a36"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2025_recovery_routing.csv.gz",
+      "bytes": 732907,
+      "mtime_ns": 1786784927558779500,
+      "sha256": "5f9ae20085791e2bdae0f06193af4b45b17a62153603770553a205281191b4fe"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\D1_SHARD_MANIFEST.json",
+      "bytes": 25602,
+      "mtime_ns": 1786785326475511900,
+      "sha256": "3424b432ff31a1c729c4791cc21873b6ec40702574e2ef429dccc8cdefd61064"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2020_technical_recoverability.csv.gz",
+      "bytes": 131466,
+      "mtime_ns": 1786784608964073900,
+      "sha256": "6e2816fe5c0bbc44085941dfb6208e36644bf83b02b9e644943062f34c59bdf8"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2021_technical_recoverability.csv.gz",
+      "bytes": 135115,
+      "mtime_ns": 1786784643983530400,
+      "sha256": "7e3839c9c5b8bb9434ad39e0b6780bc2362176983a252236b3ac8fce1f3559a9"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2022_technical_recoverability.csv.gz",
+      "bytes": 108260,
+      "mtime_ns": 1786784668986432600,
+      "sha256": "8c6d006118d43e7b8ffcb502fe3927c44dd9f06a6e3e1da552591fcfd4ed0762"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2023_technical_recoverability.csv.gz",
+      "bytes": 7609333,
+      "mtime_ns": 1786784862331239900,
+      "sha256": "9c3105b4c83db3a42f0895291b5fc4a7b0a4db458855156fcde0dbc270d3a3a4"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2024_technical_recoverability.csv.gz",
+      "bytes": 210649,
+      "mtime_ns": 1786784904150211000,
+      "sha256": "c214f79e15832226fedeaee9f49bc03e3b50d32af22ff294455b87ca9779ba4f"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2025_technical_recoverability.csv.gz",
+      "bytes": 411450,
+      "mtime_ns": 1786784943574256600,
+      "sha256": "07c4d16c5cef00fbc1b9affaf998bf02412b88d795e3e7e5c62227941efe8fe3"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\D2_SUMMARY.json",
+      "bytes": 3818,
+      "mtime_ns": 1786785326482047000,
+      "sha256": "15074017b50c3a80c056269f92e6110935751a9e2526c2c8fcaec6806c409e1a"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D3_pronunciation_types\\D3_MANIFEST.json",
+      "bytes": 2019,
+      "mtime_ns": 1786785009612520700,
+      "sha256": "f0ac25ffebcc401f98307701e10b3a086da43cda3c21bf57afe99bd0b0b02450"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D3_pronunciation_types\\PRIORITY_TOP_1000.csv.gz",
+      "bytes": 43768,
+      "mtime_ns": 1786785009333105400,
+      "sha256": "8974d74785ec6ef2b0ac5e9a0169b79d6ed0fd3370465ec0745db748f1aeda6d"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D3_pronunciation_types\\pronunciation_type_summary.csv.gz",
+      "bytes": 2348375,
+      "mtime_ns": 1786785009068079000,
+      "sha256": "0c0910fc7fa20121bf85cee05a2aa738c3724b96b7c29f6d58843da5744196fd"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D4_first_shard\\FIRST_SHARD.csv.gz",
+      "bytes": 3982,
+      "mtime_ns": 1786785009674237800,
+      "sha256": "9358e6a4835d682399c5ce175115fec92451d9495cd151deac243e18e25441da"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D4_first_shard\\PRE_MFA_GATE.json",
+      "bytes": 2583,
+      "mtime_ns": 1786785009681803700,
+      "sha256": "be334a96a6983caf6dbcc0b6cbe57b378f0c297d02a02fefa795718b1adc68db"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\INDEPENDENT_AUDIT.json",
+      "bytes": 2580,
+      "mtime_ns": 1786785473975504200,
+      "sha256": "6a5a303121d2851bf0dfef71831581d1bf7cc8c3ded4e9bec879fa4cd0fa7135"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\METHODS_D0_D4.md",
+      "bytes": 2045,
+      "mtime_ns": 1786785010808336500,
+      "sha256": "1bb0d3d81bd8f0e253a4e216e0d2f5a1c75095fe94f2d0c58b18a1ee83aff49b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\RUNBOOK_STOP_BEFORE_MFA.md",
+      "bytes": 597,
+      "mtime_ns": 1786785010825889800,
+      "sha256": "7af7bb79ba9c6270aa249a58bce8175b2ef568eb64f07150d2d6cc3a23e95500"
+    }
+  ],
+  "file_count": 30,
+  "implementation": {
+    "builder": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_db_v1_recovery_d0_d4.py",
+      "bytes": 42718,
+      "mtime_ns": 1786785278388276100,
+      "sha256": "10017211ee6beb6328c69bb08a8deb0da6e3c05c85510e6be48b313aa77f923b"
+    },
+    "auditor": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\audit_db_v1_recovery_d0_d4.py",
+      "bytes": 16031,
+      "mtime_ns": 1786785298017259500,
+      "sha256": "f1b28c965e0af075224dd5948e9fef8af132f0bbda4e4144516b07263a3451f8"
+    }
+  },
+  "runtime": {
+    "recorded_at": "2026-08-15T18:17:54+09:00",
+    "git_commit": "0098be57d3bae7231fcb115773d4643ced95431b",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 12508
+  },
+  "next_gate": "separate researcher approval before D4 exact-ID corpus materialization/MFA"
+}

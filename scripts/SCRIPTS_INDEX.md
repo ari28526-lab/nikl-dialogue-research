@@ -326,3 +326,11 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `python/audit_dialogue_audio_sample.py` | 세션 층화 WAV의 헤더·에너지·edge·noise proxy를 측정해 검토 우선순위를 생성. SNR/소음 확정·denoise·자동 제외 없음 |
 | `python/profile_dialogue_audio_focus.py` | exact `utt_id` 목록에 구조 근거·직접 WAV edge·세션 noise proxy를 결합해 pending 연구자 검토표 생성 |
 | `python/summarize_dialogue_audio_quality.py` | 6개 연도 manifest와 세션 감사표를 결합한 공통 요약 CSV/JSON 생성 |
+
+## 연구 DB v1 recovery D0–D4 (2026-08-15)
+
+| 스크립트 | 역할 | 현재 상태 |
+|---|---|---|
+| `python/build_db_v1_recovery_d0_d4.py` | A–C 정본을 읽어 817,310건 D1 reason routing 장부, 기술 98,946건 D2 회수 가능성 감사, 발음 D3 token-role 축약, 55건 D4 첫 진단 shard와 닫힌 Gate 생성. r3/원자료 수정·복사·MFA 없음 | 6개년 완료, 연도별 체크포인트와 43-shard manifest 생성 |
+| `python/audit_db_v1_recovery_d0_d4.py` | A–C와 D1 exact-ID 전수 재대조, D2 현재 path state, D3 token 빈도, D4 25+30 규칙을 독립 재계산하고 package manifest 봉인 | `passed_stopped_before_materialization_and_mfa` |
+| `python/preflight_db_v1_recovery_first_shard.py` / `run_db_v1_recovery_first_shard.ps1` | package SHA·55건 WAV/LAB·D: 최소 여유·선택적 scope-bound 승인 계약을 읽기 전용 검사. D0–D4에서는 materializer/MFA를 호출하지 않고 Gate에서 정지 | Windows PowerShell 5.1 `-PreflightOnly` 통과, `passed_gate_closed` |

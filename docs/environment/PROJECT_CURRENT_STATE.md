@@ -2,6 +2,18 @@
 
 최종 갱신: 2026-08-15 KST
 
+> **2026-08-15 recovery D0–D4 완료·pre-MFA 정지:** A–C 정본 밖 후속
+> 817,310건을 pre-MFA 기술 95,860, post-MFA 기술 3,086, 발음 후속
+> 718,364로 exact-ID 완전 회계하고 43개 reason routing unit을 만들었다. 기술
+> 98,946건은 frozen CSV와 WAV/LAB를 읽기 전용 감사했고, 발음 후속은 85,433
+> token-role 유형으로 축약해 사전·규칙·G2P 근거만 연결했다. 자동 실현 판정은
+> 0건이다. 첫 진단 shard는 feature 실패 25건 전수와 연도별 서로 다른 세션의
+> alignment 미정렬 5건씩, 합계 55건이다. 독립 감사와 Windows PowerShell 5.1
+> preflight가 통과했으며 상태는 `passed_gate_closed`다. **D: recovery root 생성,
+> WAV/LAB 복사, MFA, r3 DB·TextGrid 수정은 모두 0건이다. 다음은 55건 exact
+> shard에 대한 별도 scope-bound 연구자 승인 Gate이며, 전 연도 MFA를 반복하지
+> 않는다.**
+
 > **2026-08-15 2020–2025 r3 안전 본체 완료:** 여섯 연도를 동일
 > `common_pron_mfa_r3_20260809` 발음 release, Korean MFA v3.3.0 음향모델,
 > phone inventory와 6-tier schema로 신규 정렬했다. 2025 입력 458,413건은 정렬

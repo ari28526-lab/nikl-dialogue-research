@@ -1,0 +1,108 @@
+{
+  "schema_version": "research_db_v1_technical_recoverability_summary.v1",
+  "status": "passed_read_only_audit",
+  "recorded_at": "2026-08-15T18:15:26+09:00",
+  "technical_total": 98946,
+  "recoverability_classes": {
+    "requires_session_audio_remap": 2437,
+    "ready_for_alignment_diagnostic": 3061,
+    "preserve_audio_unusable_research_decision": 2,
+    "ready_for_feature_failure_diagnostic": 25,
+    "requires_timing_metadata_review": 60,
+    "requires_audio_identity_review": 93361
+  },
+  "years": {
+    "2020": {
+      "rows": 1958,
+      "recoverability_classes": {
+        "requires_session_audio_remap": 1673,
+        "ready_for_alignment_diagnostic": 283,
+        "preserve_audio_unusable_research_decision": 2
+      },
+      "reason_counts": {
+        "audio_pairing_unresolved": 1673,
+        "mfa_alignment_missing": 283,
+        "audio_unusable": 2
+      }
+    },
+    "2021": {
+      "rows": 1374,
+      "recoverability_classes": {
+        "ready_for_alignment_diagnostic": 413,
+        "ready_for_feature_failure_diagnostic": 24,
+        "requires_timing_metadata_review": 47,
+        "requires_audio_identity_review": 890
+      },
+      "reason_counts": {
+        "mfa_alignment_missing": 413,
+        "mfa_feature_generation_failed": 24,
+        "text_duration_impossible": 47,
+        "audio_pairing_unresolved": 890
+      }
+    },
+    "2022": {
+      "rows": 1208,
+      "recoverability_classes": {
+        "ready_for_alignment_diagnostic": 338,
+        "requires_timing_metadata_review": 4,
+        "requires_audio_identity_review": 866
+      },
+      "reason_counts": {
+        "mfa_alignment_missing": 338,
+        "text_duration_impossible": 4,
+        "audio_pairing_unresolved": 866
+      }
+    },
+    "2023": {
+      "rows": 88161,
+      "recoverability_classes": {
+        "ready_for_alignment_diagnostic": 351,
+        "requires_audio_identity_review": 87044,
+        "requires_session_audio_remap": 764,
+        "ready_for_feature_failure_diagnostic": 1,
+        "requires_timing_metadata_review": 1
+      },
+      "reason_counts": {
+        "mfa_alignment_missing": 351,
+        "audio_pairing_unresolved": 87808,
+        "mfa_feature_generation_failed": 1,
+        "text_duration_impossible": 1
+      }
+    },
+    "2024": {
+      "rows": 2213,
+      "recoverability_classes": {
+        "ready_for_alignment_diagnostic": 874,
+        "requires_timing_metadata_review": 5,
+        "requires_audio_identity_review": 1334
+      },
+      "reason_counts": {
+        "mfa_alignment_missing": 874,
+        "text_duration_impossible": 5,
+        "audio_pairing_unresolved": 1334
+      }
+    },
+    "2025": {
+      "rows": 4032,
+      "recoverability_classes": {
+        "ready_for_alignment_diagnostic": 802,
+        "requires_audio_identity_review": 3227,
+        "requires_timing_metadata_review": 3
+      },
+      "reason_counts": {
+        "mfa_alignment_missing": 802,
+        "audio_pairing_unresolved": 3227,
+        "text_duration_impossible": 3
+      }
+    }
+  },
+  "interpretation": {
+    "requires_audio_identity_review": "An exact-name WAV exists, but filename equality is not accepted as proof of utterance identity.",
+    "requires_session_audio_remap": "The expected exact-name WAV is absent; recovery requires session-bounded identity/topology evidence.",
+    "ready_for_alignment_diagnostic": "The frozen r3 WAV/LAB pair exists; bounded diagnostic is possible after a separate gate.",
+    "ready_for_feature_failure_diagnostic": "The frozen r3 WAV/LAB pair exists; feature-generation diagnostics are first priority.",
+    "requires_timing_metadata_review": "Audio exists, but CSV time metadata must be reconciled before alignment.",
+    "preserve_audio_unusable_research_decision": "Retain the explicit audio-integrity decision; do not auto-recover."
+  },
+  "mutations": 0
+}

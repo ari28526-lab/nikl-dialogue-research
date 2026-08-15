@@ -1,0 +1,5 @@
+# Preserve byte-level fingerprints used by the D0-D4 local release package.
+outputs/releases/nikl_dialogue_research_db_v1_recovery_d0_d4_20260815/** -text
+scripts/python/build_db_v1_recovery_d0_d4.py text eol=lf
+scripts/python/audit_db_v1_recovery_d0_d4.py text eol=lf
+scripts/run_db_v1_recovery_first_shard.ps1 text eol=crlf

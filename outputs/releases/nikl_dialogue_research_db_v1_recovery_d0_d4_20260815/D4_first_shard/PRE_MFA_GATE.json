@@ -1,0 +1,57 @@
+{
+  "schema_version": "research_db_v1_recovery_first_shard_gate.v1",
+  "status": "hold_before_materialization_and_mfa",
+  "recorded_at": "2026-08-15T18:10:09+09:00",
+  "shard_id": "D4_POST_MFA_DIAGNOSTIC_0001",
+  "selection": {
+    "all_feature_generation_failures": 25,
+    "alignment_missing_unique_session_sample_per_year": 5,
+    "generic_pilot_repeated": false,
+    "scientific_purpose": "Validate the recovery path and diagnose the most immediately materialized technical failures without reopening the frozen yearly body."
+  },
+  "counts": {
+    "rows": 55,
+    "by_reason": {
+      "mfa_feature_generation_failed": 25,
+      "mfa_alignment_missing": 30
+    },
+    "by_year": {
+      "2021": 29,
+      "2023": 6,
+      "2020": 5,
+      "2022": 5,
+      "2024": 5,
+      "2025": 5
+    }
+  },
+  "first_shard": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D4_first_shard\\FIRST_SHARD.csv.gz",
+    "bytes": 3982,
+    "mtime_ns": 1786785009674237800,
+    "sha256": "9358e6a4835d682399c5ce175115fec92451d9495cd151deac243e18e25441da",
+    "rows": 55,
+    "canonical_key_sha256": "3a0af562469e42d588f63b83916954d17e67a1d7eb1a8ad1ddc0647807360b5a"
+  },
+  "capacity": {
+    "source_wav_bytes": 2751130,
+    "source_lab_bytes": 2589,
+    "minimum_D_free_bytes_before_execution": 21474836480,
+    "D_free_bytes_observed_now": 68917026816,
+    "bounded_working_budget_bytes": 4294967296,
+    "capacity_precheck_passed": true,
+    "note": "The 4 GiB budget is a conservative shard workspace ceiling, not a prediction of exact MFA use."
+  },
+  "execution": {
+    "preflight_command": "& \"$env:SystemRoot\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\run_db_v1_recovery_first_shard.ps1\" -PreflightOnly",
+    "future_execution_command_after_separate_approval": "& \"$env:SystemRoot\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\run_db_v1_recovery_first_shard.ps1\" -ApprovalContract \"<APPROVED_CONTRACT.json>\"",
+    "approval_contract_present": false,
+    "files_materialized": false,
+    "mfa_run": false,
+    "runner_scope": "This D0-D4 runner validates and opens the gate only; corpus materialization and MFA remain the next separately approved action."
+  },
+  "base_invariants": {
+    "r3_body_mutated": false,
+    "whole_year_rerun": false,
+    "exact_id_only": true
+  }
+}

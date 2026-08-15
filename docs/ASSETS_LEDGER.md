@@ -155,3 +155,13 @@ r3 재정렬에서도 재사용하되 r2 MFA를 새로 시작하는 근거로 �
 2021 기존 `.lab`은 동결 CSV 기반의 재사용 입력이라 보존했다. r3 재정렬 시에도
 LAB 자체는 전수 재생성하지 않고 frozen source contract를 재검증해 불일치만
 재작성한다.
+
+## 2026-08-15 recovery D0–D4 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815` | 후속 817,310건 reason별 exact-ID 장부, 기술 회수 감사, 발음 유형 축약, 첫 진단 shard | 독립 감사 `passed`; gzip 대형 장부는 Git 제외, JSON·방법 문서 추적; r3 본체 변경·파일 생성·MFA 0 |
+| `outputs\reports\PREFLIGHT_db_v1_recovery_D4_20260815.json` | 55건 첫 진단 shard의 Windows PowerShell 5.1 읽기 전용 사전검사 | `passed_gate_closed`; 승인 없음·materialization 0·MFA 0 |
+
+D:의 향후 recovery root는 계획 경로일 뿐 아직 생성하지 않았다. E:로 archive
+복사하거나 D: 자산을 이동·삭제한 작업도 없다.

@@ -1,0 +1,27 @@
+{
+  "schema_version": "research_db_v1_recovery_first_shard_preflight.v1",
+  "status": "passed_gate_closed",
+  "recorded_at": "2026-08-15T18:26:10+09:00",
+  "shard_id": "D4_POST_MFA_DIAGNOSTIC_0001",
+  "rows": 55,
+  "D_free_bytes": 68917026816,
+  "minimum_D_free_bytes": 21474836480,
+  "output_manifest_sha256": "fcf147ac1d6798a566c8b9ad7ff6c98bd1ab25517e64bd9eaa2f32aff60f01a6",
+  "independent_audit_sha256": "6a5a303121d2851bf0dfef71831581d1bf7cc8c3ded4e9bec879fa4cd0fa7135",
+  "first_shard_sha256": "9358e6a4835d682399c5ce175115fec92451d9495cd151deac243e18e25441da",
+  "approval_verified": false,
+  "files_materialized": false,
+  "mfa_run": false,
+  "stop_point": "immediately before recovery corpus materialization and MFA",
+  "runtime": {
+    "recorded_at": "2026-08-15T18:26:10+09:00",
+    "git_commit": "0098be57d3bae7231fcb115773d4643ced95431b",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 7516
+  }
+}

@@ -48,6 +48,7 @@ $files = @(
     (Join-Path $root 'scripts\run_common_pron_difference_inventory.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_status.ps1'),
     (Join-Path $root 'scripts\show_common_pron_mfa_r3_g2p_status.ps1'),
+    (Join-Path $root 'scripts\run_db_v1_recovery_first_shard.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_to_external.ps1'),
     (Join-Path $root 'scripts\archive_pre_jamo_outputs_compressed.ps1'),
     (Join-Path $root 'scripts\archive_legacy_mfa_markers_for_r2.ps1'),

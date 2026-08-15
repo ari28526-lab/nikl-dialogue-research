@@ -1,0 +1,79 @@
+{
+  "schema_version": "research_db_v1_recovery_d0_d4_independent_audit.v1",
+  "status": "passed_stopped_before_materialization_and_mfa",
+  "recorded_at": "2026-08-15T18:17:53+09:00",
+  "recovery_plan_id": "nikl_dialogue_research_db_v1_recovery_d0_d4_20260815",
+  "counts": {
+    "d1_status": {
+      "pre_mfa_technical_exclusion": 95860,
+      "post_mfa_technical_exclusion": 3086,
+      "pronunciation_followup": 718364
+    },
+    "d1_reason": {
+      "audio_pairing_unresolved": 95798,
+      "text_duration_impossible": 60,
+      "audio_unusable": 2,
+      "mfa_alignment_missing": 3061,
+      "mfa_feature_generation_failed": 25
+    },
+    "d1_total": 817310,
+    "d2_total": 98946,
+    "d2_classes": {
+      "requires_session_audio_remap": 2437,
+      "reason:audio_pairing_unresolved": 95798,
+      "ready_for_alignment_diagnostic": 3061,
+      "reason:mfa_alignment_missing": 3061,
+      "preserve_audio_unusable_research_decision": 2,
+      "reason:audio_unusable": 2,
+      "ready_for_feature_failure_diagnostic": 25,
+      "reason:mfa_feature_generation_failed": 25,
+      "requires_timing_metadata_review": 60,
+      "reason:text_duration_impossible": 60,
+      "requires_audio_identity_review": 93361
+    },
+    "d3": {
+      "pronunciation_followup_utterances": 718364,
+      "distinct_role_token_rows": 85433,
+      "automatic_pronunciation_decisions": 0
+    },
+    "d4": {
+      "rows": 55,
+      "reasons": {
+        "mfa_feature_generation_failed": 25,
+        "mfa_alignment_missing": 30
+      },
+      "unique_alignment_sessions": {
+        "2020": 5,
+        "2021": 5,
+        "2022": 5,
+        "2023": 5,
+        "2024": 5,
+        "2025": 5
+      }
+    }
+  },
+  "hard_failures": {
+    "input_fingerprint_mismatch": 0,
+    "D1_missing_or_duplicate_or_aligned_ids": 0,
+    "D1_status_or_reason_drift": 0,
+    "D2_current_path_state_drift": 0,
+    "D2_missing_source_join": 0,
+    "D3_frequency_mismatch": 0,
+    "automatic_pronunciation_decisions": 0,
+    "D4_selection_mismatch": 0,
+    "base_r3_mutations": 0,
+    "materialization_or_mfa_started": 0
+  },
+  "gate": "HOLD before recovery file materialization and MFA",
+  "runtime": {
+    "recorded_at": "2026-08-15T18:17:53+09:00",
+    "git_commit": "0098be57d3bae7231fcb115773d4643ced95431b",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 12508
+  }
+}

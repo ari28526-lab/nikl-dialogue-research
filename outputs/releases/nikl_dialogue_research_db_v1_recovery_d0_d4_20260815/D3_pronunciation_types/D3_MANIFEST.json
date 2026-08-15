@@ -1,0 +1,48 @@
+{
+  "schema_version": "research_db_v1_recovery_pronunciation_types.v1",
+  "status": "passed_reference_evidence_only",
+  "recorded_at": "2026-08-15T18:10:09+09:00",
+  "pronunciation_followup_utterances": 718364,
+  "role_and_routing_counts": {
+    "year:2020": 86047,
+    "routing:hold": 717354,
+    "role_links:hold": 793462,
+    "routing:policy": 136,
+    "role_links:policy": 162,
+    "routing:empty_reference": 848,
+    "utterances_without_explicit_token": 848,
+    "year:2021": 165684,
+    "routing:hold+policy": 26,
+    "year:2022": 113768,
+    "year:2023": 94873,
+    "year:2024": 132514,
+    "year:2025": 125478
+  },
+  "distinct_role_token_rows": 85433,
+  "distinct_tokens": 85433,
+  "catalog_matches": 85433,
+  "catalog_missing": 0,
+  "evidence_review_classes": {
+    "zero_fallback_hold": 80912,
+    "dictionary_evidence_review": 4486,
+    "policy_decision_required": 35
+  },
+  "full_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D3_pronunciation_types\\pronunciation_type_summary.csv.gz",
+    "bytes": 2348375,
+    "mtime_ns": 1786785009068079000,
+    "sha256": "0c0910fc7fa20121bf85cee05a2aa738c3724b96b7c29f6d58843da5744196fd",
+    "rows": 85433,
+    "canonical_key_sha256": "dfdb9a76aa712b0e021be927dad1e7166abd1bb3215cbd2a02ebbdc05469a9f4"
+  },
+  "priority_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D3_pronunciation_types\\PRIORITY_TOP_1000.csv.gz",
+    "bytes": 43768,
+    "mtime_ns": 1786785009333105400,
+    "sha256": "8974d74785ec6ef2b0ac5e9a0169b79d6ed0fd3370465ec0745db748f1aeda6d",
+    "rows": 1000,
+    "canonical_key_sha256": "e47d6b77b7cb0825e4b1cbea11a0626f297c222d6912564a2f010b248d1144ad"
+  },
+  "automatic_pronunciation_decisions": 0,
+  "interpretation": "Dictionary/rule/G2P candidates are reference evidence; neither MFA phones nor these candidates establish actual realization."
+}

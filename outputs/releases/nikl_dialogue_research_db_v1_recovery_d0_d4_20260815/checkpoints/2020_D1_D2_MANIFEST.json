@@ -1,0 +1,64 @@
+{
+  "schema_version": "research_db_v1_recovery_year_checkpoint.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-15T18:03:28+09:00",
+  "year": "2020",
+  "inputs": {
+    "ac_ledger": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2020_utterance_status.csv.gz",
+      "bytes": 3013418,
+      "mtime_ns": 1786777171213187400,
+      "sha256": "dd68cae7a8b29784628d9f69b766f1d1f614d4b0b559ba1eeca6694ecca9cd43"
+    },
+    "year_input_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\YEAR_INPUT_CONTRACT_2020.json",
+      "bytes": 8551,
+      "mtime_ns": 1786242121165366600,
+      "sha256": "1dcccbd5bce7a5c51ea99d19c8352c3c41c1959e654fc06d39de5e0cce6fa49e"
+    },
+    "pronunciation_followup": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\03_year_input_contracts\\2020\\pronunciation_followup_ids_2020.csv.gz",
+      "bytes": 831965,
+      "mtime_ns": 1786242120099796000,
+      "sha256": "e75de9f3e467648e7ad4ad521329d1e957346cb001221417c46acce504927dd2"
+    }
+  },
+  "d1_counts": {
+    "pre_mfa_technical_exclusion": 1675,
+    "reason:audio_pairing_unresolved": 1673,
+    "post_mfa_technical_exclusion": 283,
+    "reason:mfa_alignment_missing": 283,
+    "reason:audio_unusable": 2,
+    "pronunciation_followup": 86047,
+    "reason:pronunciation_hold_token": 85978,
+    "reason:routing_class:hold": 85978,
+    "reason:pronunciation_policy_token": 16,
+    "reason:routing_class:policy": 16,
+    "reason:routing_class:empty_reference": 53
+  },
+  "d1_ledger": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D1_recovery_ledger\\2020_recovery_routing.csv.gz",
+    "bytes": 520268,
+    "mtime_ns": 1786784602826042300,
+    "sha256": "10d587dc1add22d4081673b307b2a0a81debe10e6cedd1f49de0bbdc533ec36e",
+    "rows": 88005,
+    "canonical_key_sha256": "476618c2291a421a54539bb525300002a58ac82c58ba59c178b3b91ff5f428d3"
+  },
+  "d2_counts": {
+    "requires_session_audio_remap": 1673,
+    "reason:audio_pairing_unresolved": 1673,
+    "ready_for_alignment_diagnostic": 283,
+    "reason:mfa_alignment_missing": 283,
+    "preserve_audio_unusable_research_decision": 2,
+    "reason:audio_unusable": 2
+  },
+  "d2_audit": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D2_technical_audit\\2020_technical_recoverability.csv.gz",
+    "bytes": 131466,
+    "mtime_ns": 1786784608964073900,
+    "sha256": "6e2816fe5c0bbc44085941dfb6208e36644bf83b02b9e644943062f34c59bdf8",
+    "rows": 1958,
+    "canonical_key_sha256": "31b738112416faa2d9402c3277940a6aae642030958d93a5950d608f2c59eddb"
+  },
+  "mutations": 0
+}

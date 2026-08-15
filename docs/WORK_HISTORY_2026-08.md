@@ -3553,3 +3553,26 @@ shard 2–23을 재개하는 것이다.
   `b55d69de...c110`, 2025 DB `5d7eab5a...c0e6`가 A–C 정본과 각각 일치했다.
 - D: 여유는 28.197 GiB에서 64.184 GiB가 됐다. 다음은 회수 파일 생성이나 MFA가
   아니라 D0 입력 계약과 817,310건 이유별 recovery routing 장부다.
+
+### 2026-08-15 — 연구 DB v1 recovery D0–D4와 pre-MFA Gate
+
+- A–C 정본의 후속 817,310건을 다시 세어 pre-MFA 기술 95,860, post-MFA 기술
+  3,086, 발음 후속 718,364로 exact-ID 완전 분할했다. 정렬 본체 4,286,046 ID가
+  D1 장부에 섞인 경우, 후속 누락·중복, 사유 변형은 모두 0이었다.
+- D1은 연도·세션·source CSV·사유·recovery family·priority·action·계약 ID를 가진
+  817,310행 gzip 장부와 43개 routing unit manifest를 만들었다.
+- D2는 기술 98,946행을 frozen search-master와 current WAV/LAB path에 연결했다.
+  exact-name WAV가 있지만 identity 확인이 필요한 93,361건, session remap 2,437건,
+  시간정보 검토 60건, audio unusable 보존 2건, alignment 진단 가능 3,061건,
+  feature 진단 가능 25건으로 나뉘었다. 복사·remap·교체는 하지 않았다.
+- D3는 발음 후속을 85,433 role-token 유형으로 축약했고 type catalog 연결은
+  85,433/85,433이었다. zero fallback 80,912, 사전 근거 검토 4,486, 정책 결정
+  35유형이며 자동 발음 선택과 실제 실현 판정은 0건이다.
+- D4 첫 shard는 feature 실패 25건 전수와 연도별 서로 다른 세션의 alignment
+  missing 5건씩 30건, 합계 55건이다. D: 최소 여유 20 GiB, 보수적 working
+  budget 4 GiB를 기록했다.
+- 별도 감사기가 D1–D4를 독립 재계산해 통과했고 PowerShell safety/runtime 70개와
+  실제 `-PreflightOnly`가 통과했다. 최종 상태는 `passed_gate_closed`이며 D:\
+  recovery root 생성, WAV/LAB 복사, MFA, r3 DB/TextGrid 변경은 0건이다.
+- 정본 기록은 `docs/decisions/RESULT_db_v1_recovery_D0_D4_20260815.md`, package는
+  `outputs/releases/nikl_dialogue_research_db_v1_recovery_d0_d4_20260815`다.
