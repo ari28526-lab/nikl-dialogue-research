@@ -1,5 +1,11 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-15 D5 실행 Gate:** D4 55건 중 0.1초 미만 feature-failure 25건은
+> 동일 입력 MFA에서 제외하고 원 음원 길이 회수 대상으로 보존했다. 나머지
+> alignment-missing 30건은 LAB UTF-8 정상·공통사전 OOV 0·연도별 5건임을
+> 확인해 격리 실행 shard로 고정했다. 현재 상태는 `passed_gate_closed`이며 D:\
+> recovery root, 복사본, MFA, r3/DB v1 병합은 모두 생성·수행되지 않았다.
+
 최종 갱신: 2026-08-15 KST
 
 > **2026-08-15 recovery D0–D4 완료·pre-MFA 정지:** A–C 정본 밖 후속

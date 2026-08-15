@@ -3576,3 +3576,21 @@ shard 2–23을 재개하는 것이다.
   recovery root 생성, WAV/LAB 복사, MFA, r3 DB/TextGrid 변경은 0건이다.
 - 정본 기록은 `docs/decisions/RESULT_db_v1_recovery_D0_D4_20260815.md`, package는
   `outputs/releases/nikl_dialogue_research_db_v1_recovery_d0_d4_20260815`다.
+
+### 2026-08-15 — recovery D5 실행 후보 축소와 승인 직전 정지
+
+- D4 55건을 실제 MFA에 그대로 넘기기 전 WAV 헤더·duration, LAB UTF-8
+  code point·SHA, 고정 r3 공통사전 coverage로 다시 감사했다. 셸 화면의 한글
+  깨짐은 파일 손상이 아니라 출력 표시 문제임을 바이트로 확인했다.
+- 과거 `mfa_feature_generation_failed` 25건은 WAV가 모두 0.01–0.099875초였다.
+  동일 입력 MFA를 반복하지 않고 `원 음원 길이 회수`로 재분류·보존했다. 이는
+  연구 제외나 발음 실현 판정이 아니다.
+- 과거 `mfa_alignment_missing` 30건은 0.7–6.853초, 정상 LAB, 공통사전 OOV 0이며
+  연도별 5건이다. `D5_ALIGNMENT_DIAGNOSTIC_0001` exact shard로 고정했다.
+- D5 실행기는 원 WAV/LAB hardlink가 아닌 검증된 복사본만 사용하고, 실패 temp·
+  DB·로그를 보존하며, 성공 결과도 r3 본체·DB v1에 자동 병합하지 않도록 했다.
+- PowerShell 검사 자체의 `$Error` 자동변수 충돌을 `$parseError`로 바로잡은 뒤
+  Windows PowerShell 5.1 safety/runtime 71개가 통과했고 관련 Python 7개 검사도
+  통과했다. 실자료 `-PreflightOnly`는 `passed_gate_closed`였다.
+- D5 출력 root와 partial root는 만들지 않았고 활성 MFA는 0이다. 정본 기록은
+  `docs/decisions/RESULT_db_v1_recovery_D5_gate_20260815.md`다.

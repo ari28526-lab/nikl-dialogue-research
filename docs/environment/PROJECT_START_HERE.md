@@ -2,6 +2,14 @@
 
 최종 갱신: 2026-08-15 KST
 
+> **현재 진입점 — D5 실행 Gate:** D4 후보 55건을 WAV duration·LAB UTF-8·고정
+> 공통사전으로 전수 재감사했다. feature-generation 실패 25건은 모두 0.1초
+> 미만이므로 같은 입력 MFA를 반복하지 않고 원 음원 길이 회수 장부로 보존한다.
+> alignment-missing 30건만 연도별 5건씩 `D5_ALIGNMENT_DIAGNOSTIC_0001`로
+> 고정했다. 읽기 전용 preflight는 `passed_gate_closed`이며 D: 파일 생성·MFA·
+> 자동 병합은 0이다. 다음 작업 전
+> `docs/decisions/RESULT_db_v1_recovery_D5_gate_20260815.md`를 먼저 읽는다.
+
 > **현재 진입점 — D0–D4 완료:** 817,310건 reason별 recovery 장부와 기술
 > 98,946건 회수 가능성 감사, 발음 85,433유형 축약, 55건 첫 진단 shard가
 > 독립 감사까지 끝났다. 현재 Gate는 `passed_gate_closed`이며 실제 recovery

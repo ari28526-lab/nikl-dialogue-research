@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_db_v1_recovery_D5_gate_20260815.md](RESULT_db_v1_recovery_D5_gate_20260815.md) — D4 55건 전수 재감사 후 25건은 0.1초 미만 원음원 길이 회수로 보존하고, 연도별 5건씩 30건만 D5 MFA 후보로 고정; `passed_gate_closed`, D: 생성·MFA·자동 병합 0
 - [RESULT_db_v1_recovery_D0_D4_20260815.md](RESULT_db_v1_recovery_D0_D4_20260815.md) — 817,310건 이유별 exact-ID 장부, 기술 98,946건 회수 가능성 감사, 발음 85,433유형 축약, 55건 첫 진단 shard와 `passed_gate_closed`; r3 본체 변경·파일 생성·MFA 0
 - [RESULT_mfa_r3_post_qc_storage_cleanup_2024_2025_20260815.md](RESULT_mfa_r3_post_qc_storage_cleanup_2024_2025_20260815.md) — D: 정본 유지 전제의 exact temp 126개·35.987 GiB 정리, DB SHA·6-tier·원자료 보존 사후 감사와 D단계 용량 Gate 완료
 - [RESULT_db_v1_release_prep_A_C_20260815.md](RESULT_db_v1_release_prep_A_C_20260815.md) — 6개년 같은 방법론 교차 감사, 읽기 전용 저장계획, 5,103,356발화 exact-ID 통합 장부와 독립 QA 완료; D recovery 직전 정지

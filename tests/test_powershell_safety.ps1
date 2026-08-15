@@ -81,8 +81,8 @@ foreach ($path in $files) {
     $ast = [Management.Automation.Language.Parser]::ParseFile(
         $path, [ref]$tokens, [ref]$errors
     )
-    foreach ($error in $errors) {
-        $failures.Add("구문 오류 ${path}: $($error.Message)")
+    foreach ($parseError in $errors) {
+        $failures.Add("구문 오류 ${path}: $($parseError.Message)")
     }
 
     if ((Split-Path $path -Leaf) -eq 'run_eojeol_realign.ps1') {

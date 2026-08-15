@@ -1,0 +1,35 @@
+{
+  "schema_version": "research_db_v1_recovery_d5_preflight.v1",
+  "status": "passed_gate_closed",
+  "recorded_at": "2026-08-15T19:03:33+09:00",
+  "shard_id": "D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "rows": 30,
+  "year_counts": {
+    "2020": 5,
+    "2021": 5,
+    "2022": 5,
+    "2023": 5,
+    "2024": 5,
+    "2025": 5
+  },
+  "approval_verified": false,
+  "D_free_bytes": 68917026816,
+  "minimum_D_free_bytes": 21474836480,
+  "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "output_root_present": false,
+  "files_materialized_by_this_preflight": false,
+  "mfa_run_by_this_preflight": false,
+  "execution_contract_sha256": "9528068145a4b8eba26706ab99a3a9b535aefeb855d6fc7f8fb9a885adaea5dd",
+  "run_shard_sha256": "087573a49cc10a74ef558503ded227af6b4039bd3b7f72af8d73d2ae9ca868da",
+  "runtime": {
+    "recorded_at": "2026-08-15T19:03:33+09:00",
+    "git_commit": "3ce1506770e51934f560771365731846fa5fd4d6",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 22812
+  }
+}

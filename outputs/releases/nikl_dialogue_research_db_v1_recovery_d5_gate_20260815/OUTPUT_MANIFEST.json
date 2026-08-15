@@ -1,0 +1,99 @@
+{
+  "schema_version": "research_db_v1_recovery_d5_gate_manifest.v1",
+  "status": "passed_gate_closed_before_D_write_and_mfa",
+  "recorded_at": "2026-08-15T19:03:29+09:00",
+  "shard_id": "D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "counts": {
+    "D4_audited": 55,
+    "run_mfa": 30,
+    "no_same_input_mfa_audio_duration_recovery": 25,
+    "run_unique_lab_tokens": 214
+  },
+  "files": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_EXECUTION_CONTRACT.json",
+      "bytes": 4710,
+      "mtime_ns": 1786788209888953200,
+      "sha256": "9528068145a4b8eba26706ab99a3a9b535aefeb855d6fc7f8fb9a885adaea5dd"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_INPUT_AUDIT.csv",
+      "bytes": 39998,
+      "mtime_ns": 1786788209844997800,
+      "sha256": "1a50a71394194ea422d08bac364c038bd1e47f4db09e17d27abaabe58749606b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_NO_RUN_AUDIO_DURATION_RECOVERY.csv",
+      "bytes": 17631,
+      "mtime_ns": 1786788209855409900,
+      "sha256": "1de4b16148e0effcaa207ce59eefd818144d05816f2a0c6cbd5f86196518203c"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_RUN_SHARD.csv.gz",
+      "bytes": 3854,
+      "mtime_ns": 1786788209860640200,
+      "sha256": "087573a49cc10a74ef558503ded227af6b4039bd3b7f72af8d73d2ae9ca868da"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\README.md",
+      "bytes": 728,
+      "mtime_ns": 1786788209904448900,
+      "sha256": "d7e1fcf7ac7b001962ca2677c1fda31e363be438dbc2a7b63bfdf671bc10eba6"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\RESEARCHER_APPROVAL_PENDING.json",
+      "bytes": 757,
+      "mtime_ns": 1786788209899506800,
+      "sha256": "6c3b1d481d7d43433bc604888d30c5f90ad430ffce1932fd7abf27a69204fc54"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\db_v1_recovery_d5_common.py",
+      "bytes": 3190,
+      "mtime_ns": 1786787232571725300,
+      "sha256": "dee9b9a8e8dbe12863a77e5437ab53228a588fed6ef4c3b2cedbd856b2eb0b9e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\prepare_db_v1_recovery_d5_execution.py",
+      "bytes": 14381,
+      "mtime_ns": 1786788178549505600,
+      "sha256": "07b2df2dfd34d24479ea050da50dbcd9177b85b12952b831b8c3e08e2fc97835"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\preflight_db_v1_recovery_d5_shard.py",
+      "bytes": 6013,
+      "mtime_ns": 1786787250167940800,
+      "sha256": "ac7988082fbdb9938ba1df0c2557243ea2fc46a39e527bfbd0af9d5c1332969c"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\materialize_db_v1_recovery_d5_shard.py",
+      "bytes": 8056,
+      "mtime_ns": 1786788184056154600,
+      "sha256": "a5528593ad97679f802e31192eaae70ad6942758fedfcb4d48a5717faedc6b48"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\audit_db_v1_recovery_d5_mfa.py",
+      "bytes": 3111,
+      "mtime_ns": 1786788189290003100,
+      "sha256": "c8451b048cec95c0502ff39b80cc9d12626b6f19d3b2c6012db5142750c3ae81"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\run_db_v1_recovery_d5_shard.ps1",
+      "bytes": 11984,
+      "mtime_ns": 1786787982797678200,
+      "sha256": "5d71bb607dde0d69ab1c9a60da02d2d68c4263ff9db2e3a7d4d9b590ea40b184"
+    }
+  ],
+  "runtime": {
+    "recorded_at": "2026-08-15T19:03:29+09:00",
+    "git_commit": "3ce1506770e51934f560771365731846fa5fd4d6",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 16688
+  }
+}

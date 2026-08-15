@@ -20,8 +20,8 @@ foreach ($script in $scripts) {
     [Management.Automation.Language.Parser]::ParseFile(
         $script.FullName, [ref]$tokens, [ref]$errors
     ) | Out-Null
-    foreach ($error in @($errors)) {
-        $failures.Add("PS5 구문 오류 $($script.Name): $($error.Message)")
+    foreach ($parseError in @($errors)) {
+        $failures.Add("PS5 구문 오류 $($script.Name): $($parseError.Message)")
     }
 }
 

@@ -1,0 +1,110 @@
+{
+  "schema_version": "research_db_v1_recovery_d5_execution_contract.v1",
+  "status": "hold_pending_scope_bound_researcher_approval",
+  "recorded_at": "2026-08-15T19:03:29+09:00",
+  "shard_id": "D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "counts": {
+    "D4_audited": 55,
+    "run_mfa": 30,
+    "no_same_input_mfa_audio_duration_recovery": 25,
+    "run_unique_lab_tokens": 214
+  },
+  "scientific_scope": {
+    "purpose": "fresh subset diagnostic for prior post-MFA alignment-missing records",
+    "realization_decisions_automatic": 0,
+    "no_run_25_interpretation": "technical recovery routing, not linguistic exclusion",
+    "result_merge_requires_separate_gate": true
+  },
+  "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "inputs": {
+    "D0_D4_output_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\OUTPUT_MANIFEST.json",
+      "bytes": 11597,
+      "mtime_ns": 1786785474207351500,
+      "sha256": "fcf147ac1d6798a566c8b9ad7ff6c98bd1ab25517e64bd9eaa2f32aff60f01a6"
+    },
+    "D0_D4_independent_audit": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\INDEPENDENT_AUDIT.json",
+      "bytes": 2580,
+      "mtime_ns": 1786785473975504200,
+      "sha256": "6a5a303121d2851bf0dfef71831581d1bf7cc8c3ded4e9bec879fa4cd0fa7135"
+    },
+    "D4_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D4_first_shard\\PRE_MFA_GATE.json",
+      "bytes": 2583,
+      "mtime_ns": 1786785009681803700,
+      "sha256": "be334a96a6983caf6dbcc0b6cbe57b378f0c297d02a02fefa795718b1adc68db"
+    },
+    "D4_first_shard": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d0_d4_20260815\\D4_first_shard\\FIRST_SHARD.csv.gz",
+      "bytes": 3982,
+      "mtime_ns": 1786785009674237800,
+      "sha256": "9358e6a4835d682399c5ce175115fec92451d9495cd151deac243e18e25441da"
+    },
+    "D5_run_shard": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_RUN_SHARD.csv.gz",
+      "bytes": 3854,
+      "mtime_ns": 1786788209860640200,
+      "sha256": "087573a49cc10a74ef558503ded227af6b4039bd3b7f72af8d73d2ae9ca868da"
+    },
+    "D5_no_run_inventory": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_NO_RUN_AUDIO_DURATION_RECOVERY.csv",
+      "bytes": 17631,
+      "mtime_ns": 1786788209855409900,
+      "sha256": "1de4b16148e0effcaa207ce59eefd818144d05816f2a0c6cbd5f86196518203c"
+    },
+    "alignment_contract": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\04_alignment_contracts\\2020\\ALIGNMENT_CONTRACT_2020.json",
+      "bytes": 7589,
+      "mtime_ns": 1786242875191940700,
+      "sha256": "be5d8ec3fcc34e50eb16579fb95ba8a558bb20f366df43eecc68eac45e80b220"
+    }
+  },
+  "models": {
+    "acoustic": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    },
+    "dictionary": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\common_pron_mfa_r3_20260809.dict",
+      "bytes": 33413724,
+      "mtime_ns": 1786240948582068300,
+      "sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a"
+    },
+    "g2p_provenance": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_jamo_g2p_v3.2.0.zip",
+      "bytes": 5456781,
+      "mtime_ns": 1785218534614983300,
+      "sha256": "4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff"
+    }
+  },
+  "mfa": {
+    "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Scripts\\mfa.exe",
+    "num_jobs": 4,
+    "arguments": [
+      "align",
+      "<corpus>",
+      "<dictionary>",
+      "<acoustic>",
+      "<output>",
+      "--num_jobs",
+      "4",
+      "--no_tokenization",
+      "--temporary_directory",
+      "<temp>",
+      "--output_format",
+      "long_textgrid",
+      "--clean"
+    ]
+  },
+  "safety": {
+    "source_and_r3_body_read_only": true,
+    "copy_not_hardlink": true,
+    "fresh_namespace": true,
+    "automatic_merge": false,
+    "failure_artifacts_preserved": true,
+    "whole_year_rerun": false
+  }
+}
