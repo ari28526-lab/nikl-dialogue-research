@@ -1,0 +1,107 @@
+{
+  "schema_version": "research_db_v1_prep_independent_audit.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-15T16:24:37+09:00",
+  "release_prep_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "source_utterances": 5103356,
+  "counts": {
+    "aligned_safe_body": 4286046,
+    "pre_mfa_technical_exclusion": 95860,
+    "post_mfa_technical_exclusion": 3086,
+    "pronunciation_followup": 718364
+  },
+  "years": {
+    "2020": {
+      "rows": 870437,
+      "counts": {
+        "aligned_safe_body": 782432,
+        "pre_mfa_technical_exclusion": 1675,
+        "post_mfa_technical_exclusion": 283,
+        "pronunciation_followup": 86047
+      }
+    },
+    "2021": {
+      "rows": 1373920,
+      "counts": {
+        "aligned_safe_body": 1206862,
+        "post_mfa_technical_exclusion": 437,
+        "pre_mfa_technical_exclusion": 937,
+        "pronunciation_followup": 165684
+      }
+    },
+    "2022": {
+      "rows": 866359,
+      "counts": {
+        "aligned_safe_body": 751383,
+        "post_mfa_technical_exclusion": 338,
+        "pre_mfa_technical_exclusion": 870,
+        "pronunciation_followup": 113768
+      }
+    },
+    "2023": {
+      "rows": 677262,
+      "counts": {
+        "aligned_safe_body": 494228,
+        "post_mfa_technical_exclusion": 352,
+        "pre_mfa_technical_exclusion": 87809,
+        "pronunciation_followup": 94873
+      }
+    },
+    "2024": {
+      "rows": 728257,
+      "counts": {
+        "aligned_safe_body": 593530,
+        "post_mfa_technical_exclusion": 874,
+        "pre_mfa_technical_exclusion": 1339,
+        "pronunciation_followup": 132514
+      }
+    },
+    "2025": {
+      "rows": 587121,
+      "counts": {
+        "aligned_safe_body": 457611,
+        "post_mfa_technical_exclusion": 802,
+        "pre_mfa_technical_exclusion": 3230,
+        "pronunciation_followup": 125478
+      }
+    }
+  },
+  "hard_failures": {
+    "output_fingerprint_mismatch": 0,
+    "unmanifested_output_files": 0,
+    "duplicate_utt_ids_within_year": 0,
+    "utt_id_year_binding_mismatch": 0,
+    "status_invariant_mismatch": 0,
+    "contract_binding_mismatch": 0,
+    "cross_year_method_mismatch": 0,
+    "frozen_database_sha_binding_mismatch": 0,
+    "companion_table_sha_binding_mismatch": 0,
+    "unclassified_or_missing_source_ids": 0
+  },
+  "implementation": {
+    "auditor": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\audit_db_v1_release_prep.py",
+      "bytes": 9981,
+      "mtime_ns": 1786778580019075900,
+      "sha256": "03e245057c17a0d2b0240acf32feb3f00fb4f8ccf91e97e849ff318dc2422b65"
+    },
+    "builder": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_db_v1_release_prep.py",
+      "bytes": 32021,
+      "mtime_ns": 1786778574196266600,
+      "sha256": "f906d637970ef47dff70dbe58c824be8bc526a474c33cbabd7024e787b3ea329"
+    }
+  },
+  "scope_note": "Individual TextGrid byte-Merkle inventory is deferred to release QA I; A-C uses passed annual export/QC counts and reverified database/companion-table SHA values.",
+  "runtime": {
+    "recorded_at": "2026-08-15T16:24:37+09:00",
+    "git_commit": "1a82a82761662a29d0fe9ad76a7ea63e957dd693",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 27632
+  }
+}

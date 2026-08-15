@@ -1,0 +1,52 @@
+{
+  "schema_version": "research_db_v1_storage_read_only_plan.v1",
+  "status": "planned_no_mutation",
+  "recorded_at": "2026-08-15T16:08:58+09:00",
+  "policy": {
+    "D_role": "canonical r3 source, databases, final 6-tier TextGrids, and active contracts",
+    "E_role": "preferred future read-only archive after a separately approved copy-verify-freeze operation",
+    "H_role": "selective secondary backup only; current free space is insufficient for an assumed full mirror",
+    "C_project_role": "versioned code/docs/small manifests plus ignored compressed A-C ledgers",
+    "deletion_or_move_performed": false,
+    "archive_copy_performed": false
+  },
+  "drives": {
+    "C": {
+      "path": "C:\\",
+      "total_bytes": 254004948992,
+      "used_bytes": 207205003264,
+      "free_bytes": 46799945728,
+      "free_gib": 43.586
+    },
+    "D": {
+      "path": "D:\\",
+      "total_bytes": 1024192409600,
+      "used_bytes": 993916370944,
+      "free_bytes": 30276038656,
+      "free_gib": 28.197
+    },
+    "E": {
+      "path": "E:\\",
+      "total_bytes": 2000396320768,
+      "used_bytes": 30667255808,
+      "free_bytes": 1969729064960,
+      "free_gib": 1834.453
+    },
+    "H": {
+      "path": "H:\\",
+      "total_bytes": 2000396320768,
+      "used_bytes": 1900499488768,
+      "free_bytes": 99896832000,
+      "free_gib": 93.036
+    }
+  },
+  "manifest_derived_retained_bytes": {
+    "mfa_databases": 42505306112,
+    "companion_tables": 4411999800
+  },
+  "limitations": [
+    "No recursive rescan of 4,286,046 TextGrid files was performed in A-C; per-year export and independent QC counts remain the frozen evidence.",
+    "A future archive action requires an exact allowlist, copy verification, archive manifest, and separate researcher approval before any source removal.",
+    "Do not begin recovery/MFA stage D while D free space is below the future stage-specific capacity gate."
+  ]
+}

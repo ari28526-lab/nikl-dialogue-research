@@ -86,6 +86,11 @@ archive는 원자료 정본이 아니라 과거 산출물의 재현·감사 근�
 
 ## 저장소와 GitHub
 
+| 자산 | 현재 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_0_0_rc0_20260815` | 6개년 same-contract 감사·저장공간 계획·5,103,356 exact-ID 상태 장부 | 내부 rc0 A–C 완료; gzip 장부는 Git 제외, JSON·방법 문서는 추적; r3 원본 변경 0 |
+| `outputs\reports\AUDIT_db_v1_release_prep_ac_20260815.json` | A–C 패키지 독립 510만 행 감사 | `passed`; 누락·중복·미분류·계약/상태/SHA 결속 오류 0 |
+
 ```text
 C:\Users\ari30\research\2026_summer_research
 ```

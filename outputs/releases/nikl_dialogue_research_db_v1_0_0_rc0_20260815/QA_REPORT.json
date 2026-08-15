@@ -1,0 +1,26 @@
+{
+  "schema_version": "research_db_v1_prep_qa.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-15T16:08:58+09:00",
+  "counts": {
+    "aligned_safe_body": 4286046,
+    "pre_mfa_technical_exclusion": 95860,
+    "post_mfa_technical_exclusion": 3086,
+    "pronunciation_followup": 718364,
+    "source_total": 5103356,
+    "methodological_exclusion": 0
+  },
+  "hard_failures": {
+    "missing_source_ids": 0,
+    "duplicate_source_ids_within_year": 0,
+    "safe_followup_overlap": 0,
+    "unclassified_source_ids": 0,
+    "expected_mfa_equation_mismatches": 0,
+    "post_mfa_ids_outside_expected_input": 0,
+    "cross_year_method_mismatches": 0,
+    "failed_completion_or_qc_gates": 0,
+    "frozen_large_asset_fingerprint_mismatches": 0
+  },
+  "large_asset_sha_reverified_now": true,
+  "methodological_exclusion_note": "No research-question-based exclusion has yet been applied. Current exclusions are technical or pronunciation-routing states and remain recoverable exact-ID records."
+}

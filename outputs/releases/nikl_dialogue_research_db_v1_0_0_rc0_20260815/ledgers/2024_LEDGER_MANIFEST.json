@@ -1,0 +1,54 @@
+{
+  "schema_version": "research_db_v1_year_status_ledger.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-15T16:06:05+09:00",
+  "year": "2024",
+  "release_prep_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "input_signature": {
+    "year_input_contract": "f995cc66cbd6c44de01ae266371aff51198229c7e8e80a7d4ebe19631cf32852",
+    "alignment_contract": "029cbba9e954e0c347f055f1238db342fbc6e5327ae57a888658c475ee8753b1",
+    "alignment_marker": "6b49f1018d65588cec26c9d48c4922ac272ca6e9336d5ad6fdd8ba07f0d79a06",
+    "qc_state": "2321d5cc3914404b6d067250265e0f0d4887ffbf5ab5c49245809f631f785549",
+    "qc_audit": "9f0339b966154c194787b51a579b6161ddf01f20a151b82e18b70e2a5f8cadbf",
+    "export_report": "8cd7f2c2c0af29ce5beee938b54f502c85f6fb576b5ca8b8ff699b8cd3987825",
+    "post_mfa_approval_contract": "cd561dff8632027b925c5d26e71b1316beb448ed2ed74451d13a343c4bba347e",
+    "post_mfa_approval_csv": "c2c7455bc217dda06188acf5de44eaf0f10c9440a31d3587f1a6bd0357a5c316",
+    "pronunciation_safe_ids": "e000327345a9859ee7d11a60304c4a340dfd9bc3da22418a39cdf78c038970b0",
+    "pronunciation_followup_ids": "99b0472f2392fbeab7d0b82344fc9a798d2e38181153c488ab96fa0076a8e6b9",
+    "pre_mfa_exclusion_ids": "edf345231e39aa37f6c96ee87ceec91860df876de9393c5417691ad62fa67978",
+    "expected_mfa_input_ids": "dc4fe9f0130d5144010cae4191c900c350c0c24e9f0e8c3eba6f4f4668dcde0a",
+    "table_manifest": "fda02d3936b7e1061e74e0bb66afc89f47d347375ece4c65bfb1dac7c97fc498"
+  },
+  "counts": {
+    "aligned_safe_body": 593530,
+    "post_mfa_technical_exclusion": 874,
+    "pre_mfa_technical_exclusion": 1339,
+    "pronunciation_followup": 132514,
+    "source_total": 728257,
+    "methodological_exclusion": 0
+  },
+  "ledger": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2024_utterance_status.csv.gz",
+    "bytes": 2661363,
+    "mtime_ns": 1786777565297150700,
+    "sha256": "5542ab56686fe9807f9c781fce6b581ff2649a08101341cf8c29cf553e4f566b",
+    "rows": 728257,
+    "canonical_year_utt_status_sha256": "b07e7874c2c5d35425a6f1f566fa3ef7e50e942850d89b240a194134a1e690ff"
+  },
+  "column_schema": [
+    "year",
+    "utt_id",
+    "session_id",
+    "source_csv",
+    "primary_status",
+    "status_family",
+    "reason_codes_json",
+    "mfa_expected",
+    "textgrid_available",
+    "followup_required",
+    "alignment_scope",
+    "evidence_key",
+    "year_input_contract_id",
+    "alignment_contract_id"
+  ]
+}

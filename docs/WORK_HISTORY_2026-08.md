@@ -3503,3 +3503,34 @@ shard 2–23을 재개하는 것이다.
   승인했다. 총 21파일 중 표본 자산은 WAV 6·TextGrid 6·발화 CSV 6이며, 원본
   묶음과 Dropbox 복사본의 파일명·파일 수·SHA-256을 전수 대조해 통과했다. 원 r3
   WAV·TextGrid·동반표는 변경하지 않았다.
+
+### 2026-08-15 — 연구 DB v1 준비 A–C와 510만 exact-ID 장부
+
+- 기존 2020–2025 r3 완성본을 읽기 전용으로 두고, 내부 release candidate
+  `nikl_dialogue_research_db_v1_0_0_rc0_20260815`의 A–C를 수행했다.
+- 여섯 연도의 alignment contract를 비교해 발음 release·contract, 사전,
+  acoustic model, G2P provenance, Python/MFA/Pynini runtime, safe-body routing,
+  fresh r3 origin과 6-tier schema가 같음을 확인했다. 연도별 입력 ID 계약이 다른
+  것은 자료 범위 차이로 유지했다.
+- 보존 MFA DB 6개와 동반표 24개의 실제 SHA를 다시 계산해 marker/manifest와
+  일치함을 확인했다. 개별 TextGrid 전수 byte-Merkle는 향후 release QA로 남기고,
+  현재는 통과한 연도별 전수 구조 QC·수량·동반표 exact-ID와 24/24 재수출을 근거로
+  동결했다.
+- 원천 5,103,356발화를 `aligned_safe_body` 4,286,046,
+  `pre_mfa_technical_exclusion` 95,860, `post_mfa_technical_exclusion` 3,086,
+  `pronunciation_followup` 718,364로 exact-ID 완전 분할했다. 연구 질문에 따른
+  `methodological_exclusion`은 인프라 단계에서 0으로 두고 후속 연구자 판정과
+  혼합하지 않았다.
+- 첫 실행은 2024의 과거 최초 실패 export 보고서를 최종 보고서로 고른 탓에
+  안전 중단됐다. 실패 증거와 최종 표적 회수 성공 보고서가 함께 보존된 것이
+  원인이었다. 독립 QC state의 `export_report_sha256`과 정확히 같은 보고서만
+  선택하도록 수정하고 회귀 테스트를 추가했다.
+- 2020–2023 연도별 장부는 입력 signature·출력 SHA 체크포인트로 이미 완료돼
+  2024 수정 뒤 재계산하지 않았다. 2024–2025만 이어 만들었다.
+- 별도 감사기 `audit_db_v1_release_prep.py`가 5,103,356행을 다시 읽어 중복,
+  연도 결속, 상태 불변식, 계약 ID, 압축 SHA, 출력 manifest, 공통 방법론과
+  DB·동반표 SHA 결속을 재검사해 `passed`를 냈다.
+- D:는 생산 정본, E:는 향후 승인형 read-only archive, H:는 선택 이중 백업으로
+  계획했다. 이 단계에서 삭제·이동·archive·MFA·TextGrid 재생성은 0건이다.
+- 다음은 D 이유별 recovery shard 직전 정지점이다. A–C 완료는 대량 recovery/MFA,
+  외부 공개 또는 파일 삭제·이동을 승인하지 않는다.

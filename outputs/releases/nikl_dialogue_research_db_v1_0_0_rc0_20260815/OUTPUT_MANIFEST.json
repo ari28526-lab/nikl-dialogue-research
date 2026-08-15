@@ -1,0 +1,149 @@
+{
+  "schema_version": "research_db_v1_prep_output_manifest.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-15T16:23:17+09:00",
+  "release_prep_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "implementation": {
+    "builder": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_db_v1_release_prep.py",
+      "bytes": 32021,
+      "mtime_ns": 1786778574196266600,
+      "sha256": "f906d637970ef47dff70dbe58c824be8bc526a474c33cbabd7024e787b3ea329"
+    },
+    "independent_auditor": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\audit_db_v1_release_prep.py",
+      "bytes": 9981,
+      "mtime_ns": 1786778580019075900,
+      "sha256": "03e245057c17a0d2b0240acf32feb3f00fb4f8ccf91e97e849ff318dc2422b65"
+    }
+  },
+  "files": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\BASE_RELEASE_MANIFEST_2020_2025.json",
+      "bytes": 48535,
+      "mtime_ns": 1786777738694463600,
+      "sha256": "1e7168e6c607a63cee93cb44e53a1317bf484b3bab8355aaa8299c64b5f8c779"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\CROSS_YEAR_CONTRACT_AUDIT.json",
+      "bytes": 48249,
+      "mtime_ns": 1786777738682714500,
+      "sha256": "8159336cc34680ea18777c3f59d164040914b9408c44ed6722f136b919110315"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\INPUT_CONTRACT.json",
+      "bytes": 27711,
+      "mtime_ns": 1786777738698473700,
+      "sha256": "69fa2b1fbec4c9905e64a70974842717ff038a93470427d4924e1046ca523b35"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2020_LEDGER_MANIFEST.json",
+      "bytes": 2485,
+      "mtime_ns": 1786777171308226700,
+      "sha256": "fe75574c7fa4208883d28dbb7bd7976329f88e7061261dfb74b02af10ce12582"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2020_utterance_status.csv.gz",
+      "bytes": 3013418,
+      "mtime_ns": 1786777171213187400,
+      "sha256": "dd68cae7a8b29784628d9f69b766f1d1f614d4b0b559ba1eeca6694ecca9cd43"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2021_LEDGER_MANIFEST.json",
+      "bytes": 2488,
+      "mtime_ns": 1786777276868813200,
+      "sha256": "6b778cdff6080e35011195d747366b1b8716a8e9702225cf50fd77352db6a49c"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2021_utterance_status.csv.gz",
+      "bytes": 4842552,
+      "mtime_ns": 1786777276852971500,
+      "sha256": "4fc44d49b83646486bc58e9956da845dc306ec357ee5800d00d0deda44ba071e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2022_LEDGER_MANIFEST.json",
+      "bytes": 2485,
+      "mtime_ns": 1786777352610606600,
+      "sha256": "8524470cf38977a4e2b60a84b2a4895755e80e363c3cd4d5f5411150fa52698e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2022_utterance_status.csv.gz",
+      "bytes": 3058398,
+      "mtime_ns": 1786777352373116700,
+      "sha256": "0ac4f8063f5e31ff28c87157df3734234540c2d4bc9c51cf06d79007e82dab2b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2023_LEDGER_MANIFEST.json",
+      "bytes": 2486,
+      "mtime_ns": 1786777410289869800,
+      "sha256": "b7d557ffa3501c1265ca5bd5def3d78bf8fa65903bb715740f186cafb464ea1e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2023_utterance_status.csv.gz",
+      "bytes": 2466925,
+      "mtime_ns": 1786777410257273900,
+      "sha256": "e4cadef09157e5d0fc4fc67b466a164de4d9d3a037eab13ff646e0cb39c7d427"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2024_LEDGER_MANIFEST.json",
+      "bytes": 2486,
+      "mtime_ns": 1786777565457778300,
+      "sha256": "b8bec36ceae46234f99f8a821b98fbc6bd92946d18c151620c9307d7d3d03ed1"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2024_utterance_status.csv.gz",
+      "bytes": 2661363,
+      "mtime_ns": 1786777565297150700,
+      "sha256": "5542ab56686fe9807f9c781fce6b581ff2649a08101341cf8c29cf553e4f566b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2025_LEDGER_MANIFEST.json",
+      "bytes": 2486,
+      "mtime_ns": 1786777611647269900,
+      "sha256": "77a06f26d53521cdb6e5e56268d4ce5045f744309b545bf59b0c02f55a436e4c"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2025_utterance_status.csv.gz",
+      "bytes": 2170366,
+      "mtime_ns": 1786777611634238500,
+      "sha256": "c40d983a0cb2d1868e7ff2c287f2c3ca2ae24d88defb52d0bc99cb272ad7947e"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\METHODS_A_C.md",
+      "bytes": 6817,
+      "mtime_ns": 1786778246547270000,
+      "sha256": "c01facd456d692ff7dfc048c724de620a276560745c202bcbd302aecfa116790"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\QA_REPORT.json",
+      "bytes": 986,
+      "mtime_ns": 1786777738703986900,
+      "sha256": "3ad26a2c3d5187fb7319ef475060f8cf1d3841a119a933878e40bd452aa7a26b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\README.md",
+      "bytes": 2060,
+      "mtime_ns": 1786778242961969000,
+      "sha256": "899921e18c8427c52aed9a514a23922cd7c98c277a4e84ae1afc73244c05da6b"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\STORAGE_READ_ONLY_PLAN.json",
+      "bytes": 1899,
+      "mtime_ns": 1786777738688883200,
+      "sha256": "724c37c1325a4025cb2817769aed4a83c7071a48021df8fb92f8979edd63cc01"
+    }
+  ],
+  "file_count": 19,
+  "runtime": {
+    "recorded_at": "2026-08-15T16:23:17+09:00",
+    "git_commit": "1a82a82761662a29d0fe9ad76a7ea63e957dd693",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 26460
+  },
+  "next_gate": "STOP before Stage D recovery/MFA"
+}
