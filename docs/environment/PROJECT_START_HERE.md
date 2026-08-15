@@ -6,8 +6,8 @@
 > 공통사전으로 전수 재감사했다. feature-generation 실패 25건은 모두 0.1초
 > 미만이므로 같은 입력 MFA를 반복하지 않고 원 음원 길이 회수 장부로 보존한다.
 > alignment-missing 30건만 연도별 5건씩 `D5_ALIGNMENT_DIAGNOSTIC_0001`로
-> 고정했다. 읽기 전용 preflight는 `passed_gate_closed`이며 D: 파일 생성·MFA·
-> 자동 병합은 0이다. 다음 작업 전
+> 고정했다. 연구자 승인 결합 preflight는 `passed_ready_to_execute`이며 D: 파일
+> 생성·MFA·자동 병합은 아직 0이다. 다음 작업 전
 > `docs/decisions/RESULT_db_v1_recovery_D5_gate_20260815.md`를 먼저 읽는다.
 
 > **현재 진입점 — D0–D4 완료:** 817,310건 reason별 recovery 장부와 기술

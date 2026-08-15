@@ -88,3 +88,20 @@ mfa_run_by_this_preflight = false
 > 병합은 승인하지 않는다. 승인자 ari30.
 
 이 승인이 기록된 뒤에만 approved contract를 만들고 장시간 명령을 제공한다.
+
+## 2026-08-15 연구자 승인 기록
+
+연구자 `ari30`이 위 문구 그대로 승인했다. 승인은 다음 파일에 기록했으며
+execution contract SHA, run shard SHA, 30건, 격리 출력 root, 원본·r3 본체 변경
+금지, 자동 병합 금지를 함께 고정한다.
+
+```text
+outputs/reviews/db_v1_recovery_d5_20260815/RESEARCHER_APPROVAL.json
+```
+
+이 승인은 D5 30건 진단 실행만 허용한다. 25건의 현재 짧은 음원을 같은 입력으로
+다시 MFA하거나, D5 결과를 r3 본체·DB v1에 자동 병합하는 권한은 포함하지 않는다.
+
+승인 결합 Windows PowerShell 5.1 preflight는 `passed_ready_to_execute`,
+`approval_verified=true`로 통과했다. 이 검사 뒤에도 D5 output/partial root는 없고
+활성 MFA는 0이므로, 실제 상태 변경은 연구자가 다음 실행 명령을 시작할 때 발생한다.

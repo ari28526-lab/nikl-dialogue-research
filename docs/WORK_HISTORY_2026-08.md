@@ -3594,3 +3594,16 @@ shard 2–23을 재개하는 것이다.
   통과했다. 실자료 `-PreflightOnly`는 `passed_gate_closed`였다.
 - D5 출력 root와 partial root는 만들지 않았고 활성 MFA는 0이다. 정본 기록은
   `docs/decisions/RESULT_db_v1_recovery_D5_gate_20260815.md`다.
+
+### 2026-08-15 — D5 30건 진단 실행 scope-bound 승인
+
+- 연구자 `ari30`이 `D5_ALIGNMENT_DIAGNOSTIC_0001`의 alignment-missing 30건을
+  격리 복사본으로 MFA 진단 실행하도록 명시 승인했다.
+- 같은 승인에서 0.1초 미만 feature-failure 25건은 동일 입력 MFA를 금지하고 원
+  음원 길이 회수 장부에 보존하며, r3 본체·DB v1 자동 병합은 승인하지 않았다.
+- 승인 파일은 execution contract SHA `95280681...a5dd`, run shard SHA
+  `087573a4...8da`, 출력 root와 30건을 묶는다. 승인 기록 시점에는 D: materialize와
+  MFA를 아직 시작하지 않았다.
+- 승인 결합 PowerShell 5.1 preflight는 `passed_ready_to_execute`와
+  `approval_verified=true`로 통과했다. 검사 종료 뒤에도 D5 output/partial root와
+  활성 MFA는 0이었다.

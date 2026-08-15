@@ -171,7 +171,7 @@ D:의 향후 recovery root는 계획 경로일 뿐 아직 생성하지 않았다
 | 자산 | 역할 | 상태 |
 |---|---|---|
 | `outputs\releases\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815` | D4 55건의 WAV/LAB/사전 감사, 25건 no-run 길이 회수 장부, 30건 exact 실행 shard와 scope-bound 승인 후보 | `passed_gate_closed_before_D_write_and_mfa`; 승인 후보는 승인 아님 |
-| `outputs\reports\PREFLIGHT_db_v1_recovery_D5_20260815.json` | 30건 source·모델·용량·출력 namespace 읽기 전용 검사 | `passed_gate_closed`; D5 output/partial root 없음, MFA 0 |
+| `outputs\reports\PREFLIGHT_db_v1_recovery_D5_20260815.json` | 30건 source·모델·용량·출력 namespace와 승인 계약 읽기 전용 검사 | `passed_ready_to_execute`; approval verified, D5 output/partial root 없음, MFA 0 |
 | `scripts\run_db_v1_recovery_d5_shard.ps1` | 승인 후 30건만 copy-materialize하고 진단 MFA·결과 감사를 수행하는 재개형 실행기 | 승인 SHA·copy SHA·lock·heartbeat·실패 보존·자동 병합 금지 |
 
 D5의 예정 D: root는 아직 존재하지 않는다. 25건은 삭제된 것이 아니라
