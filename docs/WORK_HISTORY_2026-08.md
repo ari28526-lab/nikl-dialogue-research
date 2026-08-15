@@ -3481,3 +3481,22 @@ shard 2–23을 재개하는 것이다.
 - 상세 기록은
   `docs/decisions/RESULT_mfa_r3_alignment_database_2025_20260815.md`다. 2020–2025
   r3 본체는 모두 완료로 동결하며 다시 실행하지 않는다.
+
+### 2026-08-15 — 2020–2025 연도별 최종 r3 표본 묶음
+
+- 각 연도의 독립 QC `02_db_sample.csv`에서 `SDRW`, `exact_match`,
+  `semantic_equal=true`, `byte_equal=true`를 모두 만족하는 첫 발화 한 건을
+  결정적으로 선택했다.
+- 각 표본에 최종 WAV 1개, 연구용 6-tier TextGrid 1개, 연간
+  `utterance_alignment.csv.gz`의 해당 발화 전체 1행 CSV 1개를 묶어 총 18개
+  검토 자산을 만들었다. CSV에는 원문·형태소·Roman·예측/참조 발음·MFA 발음·
+  화자·세션·정렬 수량과 계약 ID가 들어 있다.
+- `build_mfa_r3_year_sample_bundle.py`는 utt_id·연도, WAV/동반표/TextGrid 길이,
+  6개 tier 이름, utterance label, QC TextGrid SHA와 복사 전후 SHA를 fail-closed로
+  검사한다. 6개년 모두 통과했다.
+- 로컬 검토 폴더는
+  `outputs/review_bundles/MFA_R3_YEAR_SAMPLES_20260815`, ZIP은 같은 이름의
+  `.zip`이며 21개 항목·471,208 bytes, SHA-256
+  `8c5293e2ce51ef308581b825c5761b97e0bb1e6a58afb2e5822768c036f20f49`다.
+- WAV가 포함된 Dropbox 동기화는 연구 음성의 외부 동기화에 대한 명시 승인이
+  없는 상태에서 수행하지 않았다. 원 r3 WAV·TextGrid·동반표는 변경하지 않았다.
