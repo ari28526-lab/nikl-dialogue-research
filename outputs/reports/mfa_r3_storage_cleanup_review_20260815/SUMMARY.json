@@ -1,0 +1,71 @@
+{
+  "schema_version": "mfa_r3_storage_cleanup_review.v1",
+  "status": "ready_for_researcher_review",
+  "recorded_at": "2026-08-15T17:30:00+09:00",
+  "release_id": "common_pron_mfa_r3_20260809",
+  "drive": {
+    "name": "D:",
+    "volume_label": "DATA_SSD",
+    "free_gib_before_inventory": 28.197
+  },
+  "scope": {
+    "years": ["2024", "2025"],
+    "temp_only": true,
+    "corpus_scanned": false,
+    "final_textgrids_scanned": false,
+    "legacy_r2_scanned": false
+  },
+  "reports": [
+    {
+      "year": "2024",
+      "status": "ready_for_user_review",
+      "total_files": 102,
+      "total_bytes": 28980516765,
+      "candidate_files": 63,
+      "candidate_bytes": 20533860560,
+      "candidate_gib": 19.124,
+      "report_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260815\\INVENTORY_r3_temp_2024.json"
+    },
+    {
+      "year": "2025",
+      "status": "ready_for_user_review",
+      "total_files": 102,
+      "total_bytes": 25658544171,
+      "candidate_files": 63,
+      "candidate_bytes": 18106794855,
+      "candidate_gib": 16.863,
+      "report_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\mfa_r3_storage_cleanup_review_20260815\\INVENTORY_r3_temp_2025.json"
+    }
+  ],
+  "estimated_reclaim": {
+    "files": 126,
+    "bytes": 38640655415,
+    "gib": 35.987
+  },
+  "researcher_approval": {
+    "approved_by": "ari30",
+    "approved_on": "2026-08-15",
+    "approval_token": "R3_TEMP_CLEANUP_2024_2025_ARI30_20260815",
+    "approved_scope": "2024–2025 r3 QC 완료 MFA temp의 재생성 가능 exact allowlist 126개(35.987 GiB)",
+    "protected_assets": [
+      "alignment databases",
+      "final 6-tier TextGrids",
+      "source corpus",
+      "logs",
+      "models",
+      "contracts",
+      "reproducibility files"
+    ]
+  },
+  "safety": {
+    "deletion_performed": false,
+    "move_performed": false,
+    "archive_performed": false,
+    "apply_supported": false,
+    "authorization_required_for_cleanup": true,
+    "databases_retained": true,
+    "final_6tier_retained": true,
+    "source_corpus_modified": false
+  },
+  "next_step": "Run the exact allowlist dry-run, then apply only with the scope-bound researcher approval token."
+}

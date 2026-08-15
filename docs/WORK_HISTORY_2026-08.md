@@ -3534,3 +3534,22 @@ shard 2–23을 재개하는 것이다.
   계획했다. 이 단계에서 삭제·이동·archive·MFA·TextGrid 재생성은 0건이다.
 - 다음은 D 이유별 recovery shard 직전 정지점이다. A–C 완료는 대량 recovery/MFA,
   외부 공개 또는 파일 삭제·이동을 승인하지 않는다.
+
+### 2026-08-15 — D단계 전 2024–2025 r3 temp exact 정리
+
+- D:를 원자료·r3 DB·최종 6-tier·CSV·공통발음 계약의 정본 저장소로 유지한다는
+  원칙 아래, QC 완료 2024·2025 temp만 읽기 전용 inventory했다.
+- 연구자 `ari30`은 재생성 가능한 exact allowlist 126개·38,640,655,415 bytes
+  (35.987 GiB)의 삭제와 DB·최종 6-tier·원자료·로그·모델·계약·재현성 파일
+  보존을 명시 승인했다.
+- 실행기는 승인 token을 `years=[2024,2025]`, 126개, 정확한 bytes에 결속하고
+  경로·크기·mtime·분류·symlink·SQLite transaction·미분류를 삭제 직전에
+  fail-closed로 다시 검사했다. dry-run과 실제 실행은 모두 `passed`다.
+- 삭제 후보 잔존 0, temp 보호 파일 누락 0, 최종 6-tier 두 연도 root·원자료 root·
+  공통발음 release가 존재한다. alignment/input/table manifest SHA도 동결값과
+  일치했다.
+- 대용량 DB 두 개를 한 명령에서 재해시한 첫 사후 검사는 120초 제한으로
+  종료됐으며 데이터 변경은 없었다. 연도별로 분리해 다시 계산한 결과 2024 DB
+  `b55d69de...c110`, 2025 DB `5d7eab5a...c0e6`가 A–C 정본과 각각 일치했다.
+- D: 여유는 28.197 GiB에서 64.184 GiB가 됐다. 다음은 회수 파일 생성이나 MFA가
+  아니라 D0 입력 계약과 817,310건 이유별 recovery routing 장부다.

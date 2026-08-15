@@ -8,7 +8,11 @@ from pathlib import Path
 PYTHON_SCRIPTS = Path(__file__).resolve().parents[1] / "scripts" / "python"
 sys.path.insert(0, str(PYTHON_SCRIPTS))
 
-from apply_mfa_r3_temp_cleanup import apply_plan, build_plan  # noqa: E402
+from apply_mfa_r3_temp_cleanup import (  # noqa: E402
+    apply_plan,
+    build_plan,
+    validate_approval_scope,
+)
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -120,6 +124,21 @@ class ApplyMfaR3TempCleanupTests(unittest.TestCase):
             self.assertEqual(plan["status"], "blocked")
             self.assertTrue(
                 any("file_changed_or_missing" in blocker for blocker in plan["blockers"])
+            )
+
+    def test_approval_token_is_bound_to_exact_scope(self) -> None:
+        validate_approval_scope(
+            approval_token="R3_TEMP_CLEANUP_2024_2025_ARI30_20260815",
+            years=["2024", "2025"],
+            expected_files=126,
+            expected_bytes=38_640_655_415,
+        )
+        with self.assertRaises(RuntimeError):
+            validate_approval_scope(
+                approval_token="R3_TEMP_CLEANUP_2024_2025_ARI30_20260815",
+                years=["2024"],
+                expected_files=63,
+                expected_bytes=20_533_860_560,
             )
 
 

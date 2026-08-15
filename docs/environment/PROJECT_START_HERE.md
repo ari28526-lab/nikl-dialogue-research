@@ -11,6 +11,12 @@
 > 변경하지 않는 여섯 연도 교차 감사와, 본체와 분리된 pronunciation follow-up·
 > 기술 제외 후속 shard의 설계·처리다.**
 
+> **2026-08-15 D단계 용량 Gate 완료:** 연구자 승인 아래 2024–2025 QC 완료
+> MFA temp에서 재생성 가능한 exact allowlist 126개(35.987 GiB)만 삭제했다.
+> 2024·2025 DB SHA는 A–C 정본과 다시 일치했고 최종 6-tier·원자료·로그·모델·
+> 계약·재현성 파일은 보존됐다. D: 여유는 64.184 GiB다. 다음은 대량 MFA가 아니라
+> D0 입력 계약과 817,310건 이유별 recovery routing 장부다.
+
 이 저장소에서 새 작업을 시작할 때는 아래 문서만 순서대로 읽는다.
 
 1. [PROJECT_CURRENT_STATE.md](PROJECT_CURRENT_STATE.md) — 지금 완료된 것과 다음 한 단계

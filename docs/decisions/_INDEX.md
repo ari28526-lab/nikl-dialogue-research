@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_mfa_r3_post_qc_storage_cleanup_2024_2025_20260815.md](RESULT_mfa_r3_post_qc_storage_cleanup_2024_2025_20260815.md) — D: 정본 유지 전제의 exact temp 126개·35.987 GiB 정리, DB SHA·6-tier·원자료 보존 사후 감사와 D단계 용량 Gate 완료
 - [RESULT_db_v1_release_prep_A_C_20260815.md](RESULT_db_v1_release_prep_A_C_20260815.md) — 6개년 같은 방법론 교차 감사, 읽기 전용 저장계획, 5,103,356발화 exact-ID 통합 장부와 독립 QA 완료; D recovery 직전 정지
 - [RESULT_mfa_r3_alignment_database_2025_20260815.md](RESULT_mfa_r3_alignment_database_2025_20260815.md) — 2025 r3 신규 정렬·802건 명시 승인·457,611개 6-tier·동반표·독립 QC 완료와 2020–2025 본체 동결
 

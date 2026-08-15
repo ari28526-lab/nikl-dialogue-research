@@ -24,7 +24,18 @@ from pipeline_common import atomic_write_json, file_fingerprint, now_iso
 SUMMARY_SCHEMA = "mfa_r3_storage_cleanup_review.v1"
 INVENTORY_KIND = "mfa_storage_inventory_and_cleanup_dry_run"
 CANDIDATE_CLASS = "cleanup_candidate_after_qc"
-APPROVAL_TOKEN = "R3_TEMP_CLEANUP_2020_2023_ARI30_20260813"
+APPROVAL_SCOPES: dict[str, dict[str, Any]] = {
+    "R3_TEMP_CLEANUP_2020_2023_ARI30_20260813": {
+        "years": ["2020", "2021", "2022", "2023"],
+        "expected_files": 252,
+        "expected_bytes": 73_230_387_524,
+    },
+    "R3_TEMP_CLEANUP_2024_2025_ARI30_20260815": {
+        "years": ["2024", "2025"],
+        "expected_files": 126,
+        "expected_bytes": 38_640_655_415,
+    },
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -56,6 +67,30 @@ def stat_matches(path: Path, record: dict[str, Any]) -> bool:
         stat.st_size == int(record["bytes"])
         and stat.st_mtime_ns == int(record["mtime_ns"])
     )
+
+
+def validate_approval_scope(
+    *,
+    approval_token: str,
+    years: list[str],
+    expected_files: int,
+    expected_bytes: int,
+) -> None:
+    """Bind a destructive approval token to one immutable cleanup scope."""
+
+    scope = APPROVAL_SCOPES.get(approval_token)
+    if scope is None:
+        raise RuntimeError("연구자 승인 token 불일치")
+    observed = {
+        "years": years,
+        "expected_files": expected_files,
+        "expected_bytes": expected_bytes,
+    }
+    if observed != scope:
+        raise RuntimeError(
+            "연구자 승인 범위 불일치: "
+            f"approved={scope!r}, requested={observed!r}"
+        )
 
 
 def build_plan(
@@ -297,12 +332,18 @@ def main() -> int:
     parser.add_argument("--approval-token", default="")
     args = parser.parse_args()
 
-    if args.apply and args.approval_token != APPROVAL_TOKEN:
-        raise RuntimeError("연구자 승인 token 불일치")
+    years = [str(year) for year in args.years]
+    if args.apply:
+        validate_approval_scope(
+            approval_token=args.approval_token,
+            years=years,
+            expected_files=args.expected_files,
+            expected_bytes=args.expected_bytes,
+        )
     plan = build_plan(
         summary_path=args.summary,
         release_root=args.release_root,
-        years=[str(year) for year in args.years],
+        years=years,
         expected_files=args.expected_files,
         expected_bytes=args.expected_bytes,
     )
