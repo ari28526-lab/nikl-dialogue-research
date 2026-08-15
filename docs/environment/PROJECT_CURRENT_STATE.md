@@ -1,11 +1,12 @@
 # 프로젝트 현재 상태 정본
 
-> **2026-08-15 D5 실행 Gate:** D4 55건 중 0.1초 미만 feature-failure 25건은
-> 동일 입력 MFA에서 제외하고 원 음원 길이 회수 대상으로 보존했다. 나머지
-> alignment-missing 30건은 LAB UTF-8 정상·공통사전 OOV 0·연도별 5건임을
-> 확인해 격리 실행 shard로 고정했다. scope-bound 연구자 승인과 preflight가
-> `passed_ready_to_execute`까지 완료됐으며 D:\ recovery root, 복사본, MFA,
-> r3/DB v1 병합은 아직 모두 생성·수행되지 않았다.
+> **2026-08-15 D5 격리 진단 완료:** alignment-missing 30건만 byte-copy로
+> 격리해 공통발음 r3 기준 MFA를 실행했다. TextGrid 11건이 생성되고 19건은 계속
+> 미정렬이며, 두 집합은 겹침·누락 없이 frozen 30 ID를 완전 회계한다. 0.1초 미만
+> feature-failure 25건은 동일 입력으로 실행하지 않고 원 음원 길이 회수 장부에
+> 보존했다. 상태는 `completed_diagnostic_no_merge`다. r3 본체·연구용 6-tier·
+> DB v1 자동 병합은 0건이며, 다음은 11건 채택 및 19건 추가 회수의 별도
+> exact-ID Gate다.
 
 최종 갱신: 2026-08-15 KST
 

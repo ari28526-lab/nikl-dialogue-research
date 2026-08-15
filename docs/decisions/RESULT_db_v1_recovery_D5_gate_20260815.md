@@ -105,3 +105,44 @@ outputs/reviews/db_v1_recovery_d5_20260815/RESEARCHER_APPROVAL.json
 승인 결합 Windows PowerShell 5.1 preflight는 `passed_ready_to_execute`,
 `approval_verified=true`로 통과했다. 이 검사 뒤에도 D5 output/partial root는 없고
 활성 MFA는 0이므로, 실제 상태 변경은 연구자가 다음 실행 명령을 시작할 때 발생한다.
+
+## D5 진단 MFA 실행 결과
+
+연구자는 2026-08-15 21:13 KST에 승인 결합 실행기를 시작했다. 입력 30건은
+원 WAV/LAB의 hardlink가 아닌 byte-copy로 격리되었고 materialization 검사는
+`passed_exact_copy_materialization`이었다. MFA는 21:38:51 KST에
+`completed_diagnostic_no_merge`로 종료했다.
+
+| 연도 | 입력 | TextGrid 생성 | 계속 미정렬 |
+|---:|---:|---:|---:|
+| 2020 | 5 | 3 | 2 |
+| 2021 | 5 | 0 | 5 |
+| 2022 | 5 | 2 | 3 |
+| 2023 | 5 | 0 | 5 |
+| 2024 | 5 | 2 | 3 |
+| 2025 | 5 | 4 | 1 |
+| 합계 | 30 | 11 | 19 |
+
+성공 11 ID와 미정렬 19 ID는 서로 겹치지 않으며 합집합이 frozen 실행 shard의
+30 ID와 정확히 일치했다. 누락·예상 밖 출력은 각각 0건이다. 11개 TextGrid는
+모두 비어 있지 않고 `words`·`phones` tier를 가진 유효한 MFA 진단 산출물이다.
+이는 아직 연구용 6-tier도, r3 본체 채택본도 아니다.
+
+MFA 전체 시간은 1,403.059초였다. 이 가운데 alignment setup 900.860초,
+training graph compile 149.114초, alignment collection 322.076초였다. Windows에서
+alignment ark 링크를 만드는 과정에 `WinError 1314` DEBUG가 네 번 기록됐지만
+실행을 중단시키지 않았고, 최종적으로 11개 TextGrid와 19개 missing 장부가
+정상 수출됐다. 이후 Windows 실행기 개선 시 참고하되 이번 결과를 실패로
+재분류하지 않는다.
+
+0.1초 미만 feature-failure 25건은 실행하지 않았으며 기존
+`D5_NO_RUN_AUDIO_DURATION_RECOVERY.csv` 25행과 SHA를 그대로 보존했다. D5 결과는
+격리 root에만 남아 있고 r3 본체·연구용 6-tier·DB v1에는 자동 병합하지 않았다.
+성공 11건의 채택과 미정렬 19건의 추가 회수는 별도 exact-ID Gate에서 결정한다.
+
+정본 요약은 다음 파일이다.
+
+```text
+outputs/reports/RESULT_db_v1_recovery_D5_20260815.json
+outputs/reports/D5_ALIGNMENT_DIAGNOSTIC_0001_RESULTS.csv
+```

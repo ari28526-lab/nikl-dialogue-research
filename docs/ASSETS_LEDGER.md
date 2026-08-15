@@ -170,9 +170,12 @@ D:의 향후 recovery root는 계획 경로일 뿐 아직 생성하지 않았다
 
 | 자산 | 역할 | 상태 |
 |---|---|---|
-| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815` | D4 55건의 WAV/LAB/사전 감사, 25건 no-run 길이 회수 장부, 30건 exact 실행 shard와 scope-bound 승인 후보 | `passed_gate_closed_before_D_write_and_mfa`; 승인 후보는 승인 아님 |
-| `outputs\reports\PREFLIGHT_db_v1_recovery_D5_20260815.json` | 30건 source·모델·용량·출력 namespace와 승인 계약 읽기 전용 검사 | `passed_ready_to_execute`; approval verified, D5 output/partial root 없음, MFA 0 |
-| `scripts\run_db_v1_recovery_d5_shard.ps1` | 승인 후 30건만 copy-materialize하고 진단 MFA·결과 감사를 수행하는 재개형 실행기 | 승인 SHA·copy SHA·lock·heartbeat·실패 보존·자동 병합 금지 |
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815` | D4 55건의 WAV/LAB/사전 감사, 25건 no-run 길이 회수 장부, 30건 exact 실행 shard와 scope-bound 승인 계약 | 승인 범위대로 D5 실행 완료; 입력·no-run SHA 동결 유지 |
+| `outputs\reports\PREFLIGHT_db_v1_recovery_D5_20260815.json` | 30건 source·모델·용량·출력 namespace와 승인 계약 읽기 전용 검사 | `passed_ready_to_execute`; 실제 실행 직전 commit·시각으로 갱신 |
+| `outputs\reports\RESULT_db_v1_recovery_D5_20260815.json` | D5 30건 진단의 성공·미정렬 exact-ID 회계와 안전성 정본 요약 | `completed_diagnostic_no_merge`; TextGrid 11, missing 19, no-run 25 보존 |
+| `scripts\run_db_v1_recovery_d5_shard.ps1` | 승인 후 30건만 copy-materialize하고 진단 MFA·결과 감사를 수행하는 재개형 실행기 | 승인 SHA·copy SHA·lock·heartbeat·실패 보존·자동 병합 금지; 실행 완료 |
 
-D5의 예정 D: root는 아직 존재하지 않는다. 25건은 삭제된 것이 아니라
+D5의 격리 D: root에는 입력 WAV/LAB 각 30개, 진단 TextGrid 11개, 미정렬 19개
+장부와 temp·로그가 보존되어 있다. 25건은 삭제된 것이 아니라
 `D5_NO_RUN_AUDIO_DURATION_RECOVERY.csv`에 원 음원 길이 회수 대상으로 남아 있다.
+이 D5 산출물은 r3 본체·연구용 6-tier·DB v1에 자동 병합되지 않았다.

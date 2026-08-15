@@ -1,0 +1,67 @@
+{
+  "schema_version": "research_db_v1_recovery_d5_result.v1",
+  "status": "completed_diagnostic_no_merge",
+  "recorded_at": "2026-08-15T21:38:51+09:00",
+  "shard_id": "D5_ALIGNMENT_DIAGNOSTIC_0001",
+  "scope": {
+    "expected_alignment_missing": 30,
+    "same_input_no_run_feature_failure": 25,
+    "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001",
+    "purpose": "isolated diagnostic MFA only"
+  },
+  "result": {
+    "textgrid_present": 11,
+    "textgrid_missing": 19,
+    "exact_id_union": 30,
+    "success_missing_overlap": 0,
+    "unaccounted_expected_ids": 0,
+    "unexpected_output_ids": 0,
+    "valid_words_phones_textgrids": 11,
+    "invalid_textgrids": 0,
+    "by_year": {
+      "2020": {"expected": 5, "textgrid_present": 3, "textgrid_missing": 2},
+      "2021": {"expected": 5, "textgrid_present": 0, "textgrid_missing": 5},
+      "2022": {"expected": 5, "textgrid_present": 2, "textgrid_missing": 3},
+      "2023": {"expected": 5, "textgrid_present": 0, "textgrid_missing": 5},
+      "2024": {"expected": 5, "textgrid_present": 2, "textgrid_missing": 3},
+      "2025": {"expected": 5, "textgrid_present": 4, "textgrid_missing": 1}
+    }
+  },
+  "runtime": {
+    "git_commit": "3ae18d24f5a13186ca3adc0bf850224de97b9457",
+    "mfa_total_seconds": 1403.059,
+    "alignment_setup_seconds": 900.860,
+    "training_graph_compile_seconds": 149.114,
+    "first_pass_alignment_seconds": 2.953,
+    "alignment_collection_seconds": 322.076,
+    "windows_link_privilege_debug_count": 4,
+    "windows_link_privilege_debug_fatal": false
+  },
+  "safety": {
+    "materialization_status": "passed_exact_copy_materialization",
+    "materialized_wav": 30,
+    "materialized_lab": 30,
+    "source_or_r3_body_write_authorized": false,
+    "automatic_merge_to_r3_or_db_v1_performed": false,
+    "research_6tier_export_performed": false,
+    "same_input_mfa_run_for_sub_0_1_second_items": false,
+    "sub_0_1_second_inventory_rows_preserved": 25
+  },
+  "fingerprints": {
+    "execution_contract_sha256": "9528068145a4b8eba26706ab99a3a9b535aefeb855d6fc7f8fb9a885adaea5dd",
+    "run_shard_sha256": "087573a49cc10a74ef558503ded227af6b4039bd3b7f72af8d73d2ae9ca868da",
+    "no_run_audio_duration_inventory_sha256": "1de4b16148e0effcaa207ce59eefd818144d05816f2a0c6cbd5f86196518203c",
+    "missing_inventory_sha256": "e14d5dd4650d3e483687d130fcd720470563ea5c234ecbdef474dfaeafa2e2d0",
+    "textgrid_inventory_sha256": "0e30fd9c9b3239f0aeb3ec125863c84da591dcc462835bc09822e5fcf9e5819e",
+    "exact_id_result_manifest_sha256": "2bba4e987017c699507c91a0f2bf9d537f3c64b1b29db49e81c8d07519fd04f0"
+  },
+  "authoritative_artifacts": {
+    "approval": "outputs/reviews/db_v1_recovery_d5_20260815/RESEARCHER_APPROVAL.json",
+    "execution_contract": "outputs/releases/nikl_dialogue_research_db_v1_recovery_d5_gate_20260815/D5_EXECUTION_CONTRACT.json",
+    "exact_id_result_manifest": "outputs/reports/D5_ALIGNMENT_DIAGNOSTIC_0001_RESULTS.csv",
+    "mfa_done": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001\\state\\MFA_DONE.json",
+    "mfa_audit": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001\\state\\MFA_AUDIT.json",
+    "missing_inventory": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D5_ALIGNMENT_DIAGNOSTIC_0001\\state\\MFA_MISSING.csv"
+  },
+  "next_gate": "Review 11 diagnostic TextGrids and 19 missing exact IDs; decide any adoption or further recovery separately. No automatic merge is authorized."
+}

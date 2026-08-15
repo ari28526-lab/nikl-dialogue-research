@@ -3607,3 +3607,22 @@ shard 2–23을 재개하는 것이다.
 - 승인 결합 PowerShell 5.1 preflight는 `passed_ready_to_execute`와
   `approval_verified=true`로 통과했다. 검사 종료 뒤에도 D5 output/partial root와
   활성 MFA는 0이었다.
+
+### 2026-08-15 — D5 alignment-missing 30건 격리 진단 완료
+
+- 승인된 `D5_ALIGNMENT_DIAGNOSTIC_0001` 30건만 byte-copy로 격리해 MFA를
+  실행했다. 원 WAV/LAB와 r3 본체는 읽기 전용이며 자동 병합 단계는 호출하지 않았다.
+- MFA는 1,403.059초 후 정상 종료했다. TextGrid 생성 11건, 계속 미정렬 19건이며
+  두 집합은 겹침 없이 frozen 30 ID를 완전히 구성했다. 예상 밖·미회계 ID는 0건이다.
+- 연도별 성공/미정렬은 2020 3/2, 2021 0/5, 2022 2/3, 2023 0/5,
+  2024 2/3, 2025 4/1이다. 성공 11개는 모두 `words`·`phones` tier가 있는 유효한
+  MFA TextGrid지만 아직 연구용 6-tier 또는 r3 채택본은 아니다.
+- alignment ark 링크 과정의 Windows `WinError 1314` DEBUG 네 건은 비치명적이었다.
+  11개 TextGrid 수출과 missing 장부 생성 뒤 상태가
+  `completed_diagnostic_no_merge`로 기록됐다.
+- 0.1초 미만 feature-failure 25건은 승인대로 실행하지 않고 원 음원 길이 회수
+  장부에 보존했다. 이들은 연구 제외나 발음 실현 판정이 아니다.
+- 정본 결과는 `outputs/reports/RESULT_db_v1_recovery_D5_20260815.json`, 30건별
+  후속 경로는 `outputs/reports/D5_ALIGNMENT_DIAGNOSTIC_0001_RESULTS.csv`, 실행 측
+  감사 원본은 D5 `state/MFA_DONE.json`, `MFA_AUDIT.json`, `MFA_MISSING.csv`다.
+  성공 11건 채택과 미정렬 19건 추가 처리는 별도 exact-ID Gate를 요구한다.
