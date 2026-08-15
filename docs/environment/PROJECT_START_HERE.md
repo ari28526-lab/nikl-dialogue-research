@@ -2,6 +2,15 @@
 
 최종 갱신: 2026-08-15 KST
 
+> **현재 진입점 — D6 사후 분기 Gate 완료:** D5 성공 11건은 한 폴더의
+> WAV·LAB·2-tier TextGrid와 검토 CSV로 모았고, 미정렬 19건은 보존 DB에서
+> feature 존재·word/phone interval 0임을 확인해 새 통제 진단 대상으로 남겼다.
+> 0.1초 미만 25건은 24개 원 PCM 짧음·1개 PCM 없음 증거와 원 CSV 시간 경로를
+> 결속하고 같은 입력 MFA를 계속 금지했다. 독립 감사 상태는
+> `passed_gate_closed_pending_researcher_review_and_separate_approval`이다.
+> r3 본체·6-tier·DB v1 병합은 0건이다. 다음 작업 전
+> `docs/decisions/RESULT_db_v1_recovery_D6_gate_20260815.md`를 먼저 읽는다.
+
 > **현재 진입점 — D5 격리 진단 완료:** `D5_ALIGNMENT_DIAGNOSTIC_0001` 30건을
 > 승인 범위대로 격리 실행해 MFA TextGrid 11건을 회수했고 19건은 계속 미정렬이다.
 > 성공·미정렬 exact-ID 합계는 누락·중복 없이 30건이다. feature-generation 실패

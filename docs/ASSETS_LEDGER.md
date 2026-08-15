@@ -179,3 +179,14 @@ D5의 격리 D: root에는 입력 WAV/LAB 각 30개, 진단 TextGrid 11개, 미�
 장부와 temp·로그가 보존되어 있다. 25건은 삭제된 것이 아니라
 `D5_NO_RUN_AUDIO_DURATION_RECOVERY.csv`에 원 음원 길이 회수 대상으로 남아 있다.
 이 D5 산출물은 r3 본체·연구용 6-tier·DB v1에 자동 병합되지 않았다.
+
+## 2026-08-15 recovery D6 Gate 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d6_gate_20260815` | 성공 11·미정렬 19·짧은 음원 25건의 사후 분기 권위 장부와 Gate | 독립 감사 통과; 본체·6-tier·DB v1 병합 0 |
+| `outputs\reviews\db_v1_recovery_d6_20260815` | 11건 번호별 WAV·LAB·2-tier TextGrid와 입력 가능한 검토 CSV | flat 35개 입력/안내 파일+manifest; `decision=pending` |
+| `outputs\reports\RESULT_db_v1_recovery_D6_20260815.json` | D6 생성 결과와 기술 분류 요약 | `built_gate_closed_pending_researcher_review` |
+
+공식 XLSX는 현재 작업에 `load_workspace_dependencies`가 등록되지 않아 만들지
+않았다. CSV가 권위 정본이며 임의 의존성·`openpyxl` 우회는 하지 않았다.

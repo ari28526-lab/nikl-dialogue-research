@@ -1,0 +1,23 @@
+{
+  "schema_version": "research_db_v1_recovery_d6_gate.v1",
+  "status": "hold_pending_researcher_review_and_separate_approval",
+  "recorded_at": "2026-08-15T22:54:43+09:00",
+  "counts": {
+    "success_review": 11,
+    "technical_missing": 19,
+    "no_same_input_rerun": 25
+  },
+  "researcher_actions": [
+    "review the 11 WAV/LAB/TextGrid sets and complete the review table",
+    "approve or revise the technical routing for the 19 missing exact IDs",
+    "retain the 25 no-run records until original-duration audio is recovered"
+  ],
+  "safety": {
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "same_input_mfa_for_sub_0_1_second_items": false
+  },
+  "xlsx_status": "pending_official_workspace_dependency_loader"
+}

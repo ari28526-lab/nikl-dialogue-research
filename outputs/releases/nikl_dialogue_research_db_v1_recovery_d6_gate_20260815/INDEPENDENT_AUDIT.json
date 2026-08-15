@@ -1,0 +1,39 @@
+{
+  "schema_version": "research_db_v1_recovery_d6_independent_audit.v1",
+  "status": "passed_gate_closed_pending_researcher_review_and_separate_approval",
+  "recorded_at": "2026-08-15T22:54:50+09:00",
+  "counts": {
+    "success_review": 11,
+    "technical_missing": 19,
+    "no_same_input_rerun": 25
+  },
+  "technical_evidence": {
+    "aligned_features_without_word_or_phone_intervals": 19
+  },
+  "audio_recovery_evidence": {
+    "source_pcm_short": 24,
+    "source_pcm_missing": 1
+  },
+  "manifest_files_verified": {
+    "release": 5,
+    "review": 35
+  },
+  "safety": {
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "same_input_mfa_for_sub_0_1_second_items": false
+  },
+  "runtime": {
+    "recorded_at": "2026-08-15T22:54:50+09:00",
+    "git_commit": "d341e7f11aa83bde69358c26887d46f816c9fabe",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 11712
+  }
+}

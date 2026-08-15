@@ -3626,3 +3626,20 @@ shard 2–23을 재개하는 것이다.
   후속 경로는 `outputs/reports/D5_ALIGNMENT_DIAGNOSTIC_0001_RESULTS.csv`, 실행 측
   감사 원본은 D5 `state/MFA_DONE.json`, `MFA_AUDIT.json`, `MFA_MISSING.csv`다.
   성공 11건 채택과 미정렬 19건 추가 처리는 별도 exact-ID Gate를 요구한다.
+
+### 2026-08-15 — recovery D6 사후 분기 Gate와 검토 묶음
+
+- D5 30건을 성공 11건과 계속 미정렬 19건으로 exact-ID 분리하고 성공 11건은
+  번호가 같은 WAV·LAB·`words`/`phones` TextGrid로 한 폴더에 모았다. 검토 CSV에는
+  원 CSV 문장·형태소·시간, LAB, 파일 경로·SHA와 연구자 판정 입력란이 있다.
+- 보존 D5 DB를 읽기 전용 질의한 결과 19건 모두 ignored가 아니고 feature frame은
+  있으나 word·phone interval이 0개였다. 언어학적 오류로 자동 판정하지 않고
+  `alignment_not_emitted_after_fresh_subset` 기술 장부에 보존했다.
+- 0.1초 미만 25건은 원 PCM 점검표와 원 CSV 시간정보를 연결했다. 24건은 원 PCM
+  짧음, 1건은 PCM 없음이며 원 길이 음원을 회수·재구성하기 전 동일 입력 MFA를
+  금지한다.
+- 별도 감사기가 11+19=30 분할, 25 no-run, 복사본 해시, TextGrid tier·길이,
+  보존 DB interval, no-run 비물질화를 재검증해
+  `passed_gate_closed_pending_researcher_review_and_separate_approval`로 종료했다.
+- r3 본체·연구용 6-tier·DB v1 수정과 자동 병합은 0건이다. 공식 spreadsheet
+  loader가 현재 작업에 등록되지 않아 XLSX는 보류하고 권위 CSV만 만들었다.

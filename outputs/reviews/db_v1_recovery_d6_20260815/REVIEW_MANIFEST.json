@@ -1,0 +1,180 @@
+{
+  "schema_version": "research_db_v1_recovery_d6_review_manifest.v1",
+  "files": [
+    {
+      "relative_path": "00_READ_ME_FIRST.md",
+      "bytes": 342,
+      "sha256": "2f3d3f2648eb8f3d22c1e2ae601b4a426eb31d7c3d9485f06ecbb67d3ec65a8e"
+    },
+    {
+      "relative_path": "00_REVIEW_11.csv",
+      "bytes": 13008,
+      "sha256": "9882ee3ade7c234a173bbbebcf58e355bc2f41111908e510c23b04a576f082e7"
+    },
+    {
+      "relative_path": "01_2020_SDRW2000000057.1.1.70.lab",
+      "bytes": 15,
+      "sha256": "139410de80afa8533cd41ef31700c4f1d52a818c74c35843431458607d648a1f"
+    },
+    {
+      "relative_path": "01_2020_SDRW2000000057.1.1.70.TextGrid",
+      "bytes": 2159,
+      "sha256": "07449e1740aa6f89b2edc8ad08a4f162574f5b19404ccadcb219540beb128906"
+    },
+    {
+      "relative_path": "01_2020_SDRW2000000057.1.1.70.wav",
+      "bytes": 38636,
+      "sha256": "6aa878ca6e1244231a4fc117e526caac96cabe034598d7adf0adb7dc642419f1"
+    },
+    {
+      "relative_path": "02_2020_SDRW2000000109.1.1.149.lab",
+      "bytes": 17,
+      "sha256": "9f7a0b868846267d1f754bc9071f4c7d2a6bbbe336dc26881c96482f2e885370"
+    },
+    {
+      "relative_path": "02_2020_SDRW2000000109.1.1.149.TextGrid",
+      "bytes": 2152,
+      "sha256": "6f7d02fbb81f56aeb5c261ac3f7df3ad4d400938af4a2e90743872b8c3caf007"
+    },
+    {
+      "relative_path": "02_2020_SDRW2000000109.1.1.149.wav",
+      "bytes": 31084,
+      "sha256": "acfc7d6d481ecb70679bf06e68625a7758fb466d7b0edb9a3a7c30f51ee82ff3"
+    },
+    {
+      "relative_path": "03_2020_SDRW2000000120.1.1.296.lab",
+      "bytes": 23,
+      "sha256": "276d80475f5f3191fd08d7a8004b71483735f7a1af85d879aba69537d7e60775"
+    },
+    {
+      "relative_path": "03_2020_SDRW2000000120.1.1.296.TextGrid",
+      "bytes": 2373,
+      "sha256": "7fa1682d503bc85b39ce7e6ff9bcdad72b6e2f062d667a94dd4d364fc3ee9388"
+    },
+    {
+      "relative_path": "03_2020_SDRW2000000120.1.1.296.wav",
+      "bytes": 98572,
+      "sha256": "df1ce23bd3f76f444a406703940354c9a014914a757473b7a5218f5090df55f4"
+    },
+    {
+      "relative_path": "04_2022_SDRW2200000009.1.1.329.lab",
+      "bytes": 63,
+      "sha256": "8282f61ff4d1740b9fe22483bd26931745225b441ffe616ad8a43dba37c4faa6"
+    },
+    {
+      "relative_path": "04_2022_SDRW2200000009.1.1.329.TextGrid",
+      "bytes": 5627,
+      "sha256": "59474fec052db5fd5cca23720aff197fc14479a988afc71881dd52764b3fdf89"
+    },
+    {
+      "relative_path": "04_2022_SDRW2200000009.1.1.329.wav",
+      "bytes": 73964,
+      "sha256": "cbc566d83ba466647d0880dd4d38ace937eb3ed9c9479a2389ec6cab3a140a50"
+    },
+    {
+      "relative_path": "05_2022_SDRW2200000029.1.1.234.lab",
+      "bytes": 43,
+      "sha256": "dc2d53e5cf90ef5fb2c05203adb423325e3d672a1b068b8f432566179cf5ef62"
+    },
+    {
+      "relative_path": "05_2022_SDRW2200000029.1.1.234.TextGrid",
+      "bytes": 4354,
+      "sha256": "4169e354d100656c1ed24abdd00be3599f1cc00707d8c825a0cf69ee2bc0bf45"
+    },
+    {
+      "relative_path": "05_2022_SDRW2200000029.1.1.234.wav",
+      "bytes": 63724,
+      "sha256": "054d32e7eb6de71e2292968ad63eab84252223ea00fe3f2bda8085f30370610a"
+    },
+    {
+      "relative_path": "06_2024_SARW2400000064.1.1.1.lab",
+      "bytes": 70,
+      "sha256": "a613a5764910977c4e8d0670c2912fbda09ab9658c38997c110c1f91b28b290c"
+    },
+    {
+      "relative_path": "06_2024_SARW2400000064.1.1.1.TextGrid",
+      "bytes": 6256,
+      "sha256": "0bd0f8583b425708ccaf7f43d052d37ab5b2ba63cd343f66302020596169b379"
+    },
+    {
+      "relative_path": "06_2024_SARW2400000064.1.1.1.wav",
+      "bytes": 104684,
+      "sha256": "e3aeb1bb18940ddf45926a2c51ac4d24f3c177fdcea08b46200c06e05b1a7994"
+    },
+    {
+      "relative_path": "07_2024_SARW2400000065.1.1.165.lab",
+      "bytes": 54,
+      "sha256": "7d49952d89824c3a6a7b2203da2eeba3fd73fcdf7763daff1190d953b1d64708"
+    },
+    {
+      "relative_path": "07_2024_SARW2400000065.1.1.165.TextGrid",
+      "bytes": 5615,
+      "sha256": "9b2f530c7ab2963e18c0f4e4929f910cd9b903638f37b91c077c344d3deb780a"
+    },
+    {
+      "relative_path": "07_2024_SARW2400000065.1.1.165.wav",
+      "bytes": 83884,
+      "sha256": "408b5ddd9711c071f6e1e9a845f7d5eec398b025243aa0a2fb0a39e9629e8cee"
+    },
+    {
+      "relative_path": "08_2025_SARW2500000015.1.1.18.lab",
+      "bytes": 142,
+      "sha256": "50d0c1627f001bb5ac4a5e054c49eab4bf205fd10b816ed2e7c8a945b585d942"
+    },
+    {
+      "relative_path": "08_2025_SARW2500000015.1.1.18.TextGrid",
+      "bytes": 11920,
+      "sha256": "218856057dca59852fec634e2ac76a640ba8fdb9d04c99cb207adb03cdf4d80c"
+    },
+    {
+      "relative_path": "08_2025_SARW2500000015.1.1.18.wav",
+      "bytes": 219350,
+      "sha256": "4acbfef6a96c3813a298fe615ca268eadff8bc34602c6b68df3c6c227d24e4d2"
+    },
+    {
+      "relative_path": "09_2025_SARW2500000024.1.1.91.lab",
+      "bytes": 95,
+      "sha256": "c6106e262333a987d1d93878465791829fddcb1356d3a5fc8378fee03c57f72c"
+    },
+    {
+      "relative_path": "09_2025_SARW2500000024.1.1.91.TextGrid",
+      "bytes": 7940,
+      "sha256": "2729456ed88d91b586adc7e73f8ae7e2005ee2989ae5f47132c2bada7bf2e10c"
+    },
+    {
+      "relative_path": "09_2025_SARW2500000024.1.1.91.wav",
+      "bytes": 141848,
+      "sha256": "dd11a51989f6d143f3c8a76e091a8fb014bfd071421e67857d535106dadd0fc6"
+    },
+    {
+      "relative_path": "10_2025_SARW2500000058.1.1.55.lab",
+      "bytes": 74,
+      "sha256": "33f29cb79d549adc94befbfca18c279a7a9d86589c1e0eb887439c4a725c7d43"
+    },
+    {
+      "relative_path": "10_2025_SARW2500000058.1.1.55.TextGrid",
+      "bytes": 6944,
+      "sha256": "b6fe3f21316b11ba19047566cefab81f254106b2aece1b9a836204bfb6a2b264"
+    },
+    {
+      "relative_path": "10_2025_SARW2500000058.1.1.55.wav",
+      "bytes": 124522,
+      "sha256": "39960a410e341adbbde990231b36643195616fc9f9174e2a50f70bcfe11bb990"
+    },
+    {
+      "relative_path": "11_2025_SARW2500000083.1.1.79.lab",
+      "bytes": 94,
+      "sha256": "7ef74b63e0ad2fdb6d216edc31cd2d25c360090c84cc9ebd18284bd9c99a602f"
+    },
+    {
+      "relative_path": "11_2025_SARW2500000083.1.1.79.TextGrid",
+      "bytes": 7952,
+      "sha256": "7833eb7f305fd6cbd93cf43ce3f06ebbcb5c4c37743fbadf2deb97763caa0cf5"
+    },
+    {
+      "relative_path": "11_2025_SARW2500000083.1.1.79.wav",
+      "bytes": 132154,
+      "sha256": "f72f7818f4d042d62ea0c433ac6be15743e50d7ba9d31d2b0e875c6bb7c550ee"
+    }
+  ]
+}
