@@ -1,6 +1,6 @@
 # Codex 리밋·새 대화 뒤 프로젝트 연속성
 
-최종 갱신: 2026-08-12 KST
+최종 갱신: 2026-08-15 KST
 
 이 절차는 새 계정을 만들기 위한 것이 아니다. 같은 계정에서 Codex 사용 한도가
 초기화되기를 기다리거나 새 대화를 열어도, 로컬 계산과 연구 계약을 잃지 않고
@@ -18,11 +18,12 @@
 
 ## 현재 재개 checkpoint
 
-2020·2021·2022 r3는 정렬 DB, 6-tier·동반표, 독립 전수 QC와 DB 재수출
-24/24까지 완료해 동결했다. 2022 최종 `QC_STATE.json` checkpoint는
-`7cf3af24c5da8f58126837742902495724f4dc69140a00b6ea6d162a9eda7c89`다.
-이 세 연도의 runner·전수 수출·QC를 다시 실행하지 않는다. 새 대화의 다음 단계는
-2022 marker/QC SHA를 검증하는 2022→2023 전환 Gate와 2023 한 연도 준비다.
+2020–2025 r3는 정렬 DB, 6-tier·동반표, 독립 전수 QC와 DB 재수출 24/24까지
+완료해 동결했다. 2025 최종 `QC_STATE.json` checkpoint는
+`4f32d0b4993967ebef245a4672ea73e3738696f60981d58b0808484332cfb3b3`다.
+여섯 연도의 runner·전수 수출·QC를 다시 실행하지 않는다. 새 대화의 다음 단계는
+완료 state를 변경하지 않는 여섯 연도 교차 감사와 본체에서 분리된 pronunciation
+follow-up·기술 제외 후속 shard다.
 
 ## 새 대화에서 가장 먼저 할 일
 
@@ -66,10 +67,12 @@ r2 역사·복구 단계에서는 `show_mfa_year_queue_status.ps1`를 쓴다. �
 & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
   -NoProfile -ExecutionPolicy Bypass `
   -File "C:\Users\ari30\research\2026_summer_research\scripts\show_mfa_r3_year_status.ps1" `
-  -Year 2023
+  -Year 2025
 ```
 
-`ready_not_started`면 RUNBOOK 3.0의 명령을 한 번 실행한다.
+현재 정본에서는 2025도 완료 상태여야 하며, 상태판은 이를 읽기 전용으로 확인하는
+용도다. `ready_not_started`가 나오면 완료 문서와 충돌하므로 runner를 시작하지
+말고 marker·DB·QC SHA부터 조사한다.
 `corpus_materializing_or_mfa_starting` 또는 `mfa_running`이면 기존 PowerShell을
 그대로 둔다. 중단 상태면 corpus·temp·DB를 삭제하지 않고 같은 명령으로 한 번만
 재개한다.

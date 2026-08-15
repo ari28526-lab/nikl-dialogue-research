@@ -869,6 +869,42 @@ preflight observed free space        60.491 GiB
 PowerShell에서 `fstcompile`과 MFA `check_third_party()`가 통과한 정본 preflight만
 Gate에 사용한다.
 
+## 6.4 2025 r3 정렬 완료·post-MFA 승인 checkpoint
+
+2025 r3 MFA는 2026-08-14 23:32 KST에 정상 종료했다. 이 runner는 다시 실행하지
+않는다. 정렬 계약과 완료 DB의 핵심 값은 다음과 같다.
+
+```text
+expected MFA input                 458,413
+database utterances                458,413
+word+phone aligned                 457,611
+post-MFA technical unaligned           802
+coverage                            99.825%
+spn intervals                             0
+database bytes               6,702,276,608
+database SHA-256  5d7eab5a986dd39af2fc163d94bd0d8a378a891d242f984a2e536a24fcd5c0e6
+candidate SHA-256 8077db66896e02b0333a85f76fd4f36bcda8aad1391c340639562084ef2a5646
+```
+
+`prepare_mfa_r3_post_mfa_reconciliation.py`와 독립
+`inspect_mfa_db_checkpoint.py`가 모두 `458,413 = 457,611 + 802`를 확인했다.
+802건은 모두 `mfa_alignment_missing`이며 실제 실현 여부를 판정한 결과가 아니라
+보존 DB에서 word+phone 정렬을 만들지 못한 기술적 exact-ID 집합이다. 자동 승인,
+전수 재정렬, DB 수정은 하지 않는다.
+
+연구자 `ari30`은 2026-08-15에 이 exact-ID 집합을 명시 승인했다. 승인 계약
+SHA-256은
+`0322e68a640f92e14c3e052b19ea71bd28996bb990815e3145a74dfb00845292`다.
+동일 보존 DB에서 457,611개 6-tier와 동반표 4종을 수출했고, exact-ID coverage
+100%, 미승인 차이 0으로 완료했다. 독립 전수 QC는 25개 hard-failure 범주 전부
+0, DB 재수출 semantic·byte 24/24로 `passed`다. QC state SHA-256은
+`4f32d0b4993967ebef245a4672ea73e3738696f60981d58b0808484332cfb3b3`다.
+
+2025 MFA·전수 수출·QC는 다시 실행하지 않는다. 2020–2025 본체 완료 뒤에는 여섯
+연도의 완료 state를 읽기 전용으로 대조하는 교차 감사와 별도 follow-up shard만
+진행한다. 상세 근거는
+`docs/decisions/RESULT_mfa_r3_alignment_database_2025_20260815.md`에 있다.
+
 ## 7. 발음 참조 파생층
 
 각 연도 6-tier 뒤 다음을 같은 계약으로 생성한다.

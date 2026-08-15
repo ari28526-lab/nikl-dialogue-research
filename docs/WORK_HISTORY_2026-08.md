@@ -3432,3 +3432,52 @@ shard 2–23을 재개하는 것이다.
   사용자가 단일 PowerShell runner로 2025 MFA를 시작하는 단계다.
 - 상세 기록:
   `docs/decisions/RESULT_mfa_r3_2025_preflight_20260814.md`.
+
+### 2026-08-14 — 2025 r3 MFA 완료·post-MFA exact-ID 승인 대기
+
+- 연구자가 일반 PowerShell에서 2025 단일 runner를 시작했고, Codex는 한 시간
+  상세 점검과 그 사이 경량 process·lock·heartbeat·D: 용량 감시를 수행했다.
+  오류·heartbeat 정체·프로세스 종료·용량 임계 경보는 없었다.
+- 458,413개 WAV/LAB를 2,910개 세션으로 materialize한 뒤 공통
+  `common_pron_mfa_r3_20260809` 계약으로 전수 정렬했다. MFA 계산은
+  18,221.637초가 걸렸고 2026-08-14 23:32 KST에 정상 종료했다.
+- `ALIGN_DONE_2025.json`은 `status=passed`, `r3_full_realign=true`다. 보존 DB는
+  6,702,276,608 bytes, SHA-256
+  `5d7eab5a986dd39af2fc163d94bd0d8a378a891d242f984a2e536a24fcd5c0e6`이며
+  temp·DB를 삭제하지 않았다. built-in TextGrid export는 의도대로 건너뛰었다.
+- post-MFA exact-ID 대조 결과 expected/DB 458,413, word+phone 정렬 457,611,
+  기술 미정렬 802다. 802건은 모두 `mfa_alignment_missing`, 301개 세션에
+  분포하며 후보 identity는
+  `8077db66896e02b0333a85f76fd4f36bcda8aad1391c340639562084ef2a5646`다.
+- 별도 `inspect_mfa_db_checkpoint.py` 검사도 `quick_check=ok`, word 457,611,
+  phone 457,611, 교집합 457,611, 미정렬 합집합 802, `spn=0`, coverage
+  99.825%로 같은 방정식을 독립 확인했다. 보고서는
+  `outputs/reports/INSPECT_mfa_r3_db_checkpoint_2025_20260814.json`이다.
+- 자동 승인·청취 기반 실현 판정·DB/WAV/LAB/TextGrid 변경은 하지 않았다. 다음
+  단계는 연구자가 동결 후보 802건을 `alignment_and_analysis` 범위의 후속
+  exact-ID로 명시 승인하는 것이다. 승인 뒤 보존 DB에서 457,611개 6-tier를
+  수출하고 독립 전수 QC를 통과시킨다. 2025 MFA 전체를 다시 실행하지 않는다.
+
+### 2026-08-15 — 2025 post-MFA 승인·6-tier·독립 QC 완료
+
+- 연구자 `ari30`이 후보 identity
+  `8077db66896e02b0333a85f76fd4f36bcda8aad1391c340639562084ef2a5646`의
+  802건을 `alignment_and_analysis` 후속 exact-ID로 명시 승인했다. 자동 승인 0,
+  승인 CSV SHA-256 `d466a8f9...65e6d`, 승인 제외 계약 SHA-256
+  `0322e68a...5292`다.
+- PowerShell safety 69파일과 Windows PowerShell 5.1 runtime 69스크립트가
+  통과했다. 제한 shell에서 D: export lock 쓰기 권한이 한 번 거부됐지만 데이터
+  생성 전 환경 오탐이었고, 정상 Windows 권한 preflight는 exact-ID 회계·phone
+  inventory·DB/계약 SHA를 모두 통과했다.
+- 보존 DB에서 TextGrid 457,611개와 동반표 4종을 한 번 수출했다. 동반표는 발화
+  457,611행, 어절 5,287,036행, phone 21,390,946행, 제외 802행이며 coverage
+  100%, `spn=0`, 미승인 차이 0이다.
+- float32 WAV 길이로만 설명되는 0·xmax 끝점 차이는 가장 가까운 같은 길이로만
+  snap했다. 453,548발화·907,096끝점, 최대 약 0.916마이크로초이며 내부 phone
+  경계나 원자료는 수정하지 않았다.
+- 독립 전수 QC는 457,611/457,611, 25개 hard-failure 범주 전부 0, 동반표 전수
+  일치, DB 재수출 semantic·byte 24/24로 `passed`다. QC state SHA-256은
+  `4f32d0b4993967ebef245a4672ea73e3738696f60981d58b0808484332cfb3b3`다.
+- 상세 기록은
+  `docs/decisions/RESULT_mfa_r3_alignment_database_2025_20260815.md`다. 2020–2025
+  r3 본체는 모두 완료로 동결하며 다시 실행하지 않는다.

@@ -1,0 +1,58 @@
+{
+    "schema_version":  "mfa_r3_research_qc_preflight.v1",
+    "status":  "preflight_passed",
+    "recorded_at":  "2026-08-15T13:09:02.8824549+09:00",
+    "year":  "2025",
+    "release_id":  "common_pron_mfa_r3_20260809",
+    "qc_input_checkpoint_id":  "d27aebde98ded09dbcbfdd6e44ab3f443cc8b0a23cf65a1f7917dcf25a778c22",
+    "qc_input":  {
+                     "release_id":  "common_pron_mfa_r3_20260809",
+                     "year":  "2025",
+                     "input_contract_id":  "57e6ca0b42a6d2d5daa49505a63295e1a15016dde39d1ee7f99cbca28dada64a",
+                     "alignment_contract_id":  "1b739d22d56c9ce91ce17486b89355558e17acc8364f88bb68a27acd16ba5f35",
+                     "export_report_sha256":  "c5d951dbaa7ee384254d4c20f71c13f32ce6bb19f6e479937c77bcabf138cfcb",
+                     "table_manifest_sha256":  "6ce432041216b77aeb0d511444a5fe71ef5725294b11ba8f5f0d3b7494a080f9",
+                     "alignment_contract_sha256":  "e4cc21106c1713e74194e09f44275e874118b5f59f2470e0d7a4a59b50537ffc",
+                     "alignment_marker_sha256":  "9905578ec4bacb59450ca213574d69857e1a14d96b2fcde916a4081cee2a36ca",
+                     "approved_contract_sha256":  "0322e68a640f92e14c3e052b19ea71bd28996bb990815e3145a74dfb00845292",
+                     "source_db_expected_sha256":  "5d7eab5a986dd39af2fc163d94bd0d8a378a891d242f984a2e536a24fcd5c0e6",
+                     "source_db_bytes":  6702276608,
+                     "source_db_mtime_utc_ticks":  639223146271656070
+                 },
+    "source_export_report":  {
+                                 "path":  "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\EXPORT_mfa_r3_research_6tier_2025_20260815_114309.json",
+                                 "bytes":  31459,
+                                 "mtime_utc_ticks":  639223636884805394,
+                                 "sha256":  "c5d951dbaa7ee384254d4c20f71c13f32ce6bb19f6e479937c77bcabf138cfcb"
+                             },
+    "source_table_manifest":  {
+                                  "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\research_6tier\\2025\\_tables\\TABLES_MANIFEST.json",
+                                  "bytes":  3834,
+                                  "mtime_utc_ticks":  639223636876134910,
+                                  "sha256":  "6ce432041216b77aeb0d511444a5fe71ef5725294b11ba8f5f0d3b7494a080f9"
+                              },
+    "source_database":  {
+                            "path":  "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\temp\\2025\\2025.db",
+                            "bytes":  6702276608,
+                            "mtime_utc_ticks":  639223146271656070
+                        },
+    "source_database_expected_sha256":  "5d7eab5a986dd39af2fc163d94bd0d8a378a891d242f984a2e536a24fcd5c0e6",
+    "counts":  {
+                   "expected_input":  458413,
+                   "textgrids":  457611,
+                   "approved_exclusions":  802
+               },
+    "resume":  {
+                   "full_year_audit_reusable":  false,
+                   "db_sample_reusable":  false
+               },
+    "mutation_policy":  {
+                            "source_db_read_only":  true,
+                            "source_lab_wav_read_only":  true,
+                            "source_textgrid_read_only":  true,
+                            "source_companion_tables_read_only":  true,
+                            "mfa_recomputed":  false,
+                            "full_export_repeated":  false
+                        },
+    "materialization_started":  false
+}

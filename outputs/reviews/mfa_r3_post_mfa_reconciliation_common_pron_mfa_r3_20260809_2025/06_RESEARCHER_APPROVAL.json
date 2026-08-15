@@ -1,0 +1,41 @@
+{
+  "schema_version": "mfa_r3_post_mfa_explicit_approval.v1",
+  "status": "approved",
+  "recorded_at": "2026-08-15T11:38:54+09:00",
+  "year": "2025",
+  "input_contract_id": "57e6ca0b42a6d2d5daa49505a63295e1a15016dde39d1ee7f99cbca28dada64a",
+  "candidate_identity_sha256": "8077db66896e02b0333a85f76fd4f36bcda8aad1391c340639562084ef2a5646",
+  "approved_row_count": 802,
+  "approved_by": "ari30",
+  "approved_at": "2026-08-15T11:38:54.097180+09:00",
+  "approval_statement": "2025 r3 post-MFA 미정렬 802건(candidate 8077db66896e02b0333a85f76fd4f36bcda8aad1391c340639562084ef2a5646)을 alignment_and_analysis 범위의 후속 exact-ID로 이관하고, 성공한 457,611건은 보존 DB에서 6-tier로 수출하는 것을 승인한다. 승인자 ari30",
+  "approval_statement_sha256": "25ed1e7fe0d4d31df6d01ced6b54cb0d2156f4c0e54d4a8e458f07cb650b4ef7",
+  "source_review_summary": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2025\\03_REVIEW_SUMMARY.json",
+    "bytes": 4457,
+    "mtime_ns": 1786718643928996000,
+    "sha256": "f9f3679ca2489763a23fa1bea1083c9d6a9620833bd76481805d757d390ebd7c"
+  },
+  "source_pending_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2025\\02_RESEARCHER_DECISIONS.csv",
+    "bytes": 260382,
+    "mtime_ns": 1786718643881873600,
+    "sha256": "0b184ef3214629b9c371c95434a29a91349cc878b2aec7b9b68646ea07948128"
+  },
+  "approved_review_csv": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2025\\04_RESEARCHER_APPROVED.csv",
+    "bytes": 261184,
+    "mtime_ns": 1786761534138759200,
+    "sha256": "d466a8f9f0095d6e8484387908a69d3f3d35bf591c6ecd1dc547f116fc565e6d"
+  },
+  "approved_exclusions_contract": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\mfa_r3_post_mfa_reconciliation_common_pron_mfa_r3_20260809_2025\\05_APPROVED_EXCLUSIONS.json",
+    "bytes": 903,
+    "mtime_ns": 1786761534163697900,
+    "sha256": "0322e68a640f92e14c3e052b19ea71bd28996bb990815e3145a74dfb00845292"
+  },
+  "contract_row_count": 802,
+  "automatic_approval_performed": false,
+  "source_or_mfa_database_modified": false,
+  "successful_alignments_preserved": true
+}
