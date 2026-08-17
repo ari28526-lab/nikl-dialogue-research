@@ -50,8 +50,19 @@ outputs/reviews/db_v1_recovery_d9_review_19_20260817
 우회 생성하지 않았다. 이는 데이터 실패가 아니라 검토 UI 제약이며, JSON과
 manifest가 권위 기록이다.
 
-연구 음성의 Dropbox 복사는 아직 하지 않았다. 정확한 19건과 개인 검토 목적,
-대상 경로에 대한 별도 승인을 받은 뒤 복사 SHA를 검증한다.
+연구자 `ari30`은 D9의 19개 WAV와 대응 LAB·TextGrid·메타데이터를 개인 검토
+목적으로만 다음 로컬 Dropbox 동기화 폴더에 복사하도록 승인했다.
+
+```text
+C:\Users\ari30\Dropbox\DB_V1_RECOVERY_D9_REVIEW_19_20260817
+```
+
+61개 파일·1,780,531 bytes를 복사하고 파일명·크기·SHA-256을 전수 비교했다.
+원본·목적지 파일집합 SHA는 모두
+`ab250065a827b109afc1d6cf8cecb6f9d9a69c3a46ed428afe9abe80a59e4b60`로
+일치한다. 공유 링크 생성·외부 공유 설정 변경은 하지 않았다. 이 검사는 로컬
+Dropbox 폴더까지의 복사를 보증하며 다른 컴퓨터에서 보기 전 Dropbox 클라이언트의
+동기화 완료 표시는 별도로 확인한다.
 
 ## 다음 Gate
 

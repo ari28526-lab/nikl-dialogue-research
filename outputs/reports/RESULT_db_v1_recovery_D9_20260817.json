@@ -36,6 +36,16 @@
     "audit_status": "passed_flat_review_bundle_no_adoption",
     "spreadsheet_status": "not_created_official_artifact_dependency_loader_unavailable"
   },
+  "dropbox_copy": {
+    "status": "passed_local_dropbox_copy_sha256_verified",
+    "destination": "C:\\Users\\ari30\\Dropbox\\DB_V1_RECOVERY_D9_REVIEW_19_20260817",
+    "files": 61,
+    "bytes": 1780531,
+    "source_file_set_sha256": "ab250065a827b109afc1d6cf8cecb6f9d9a69c3a46ed428afe9abe80a59e4b60",
+    "destination_file_set_sha256": "ab250065a827b109afc1d6cf8cecb6f9d9a69c3a46ed428afe9abe80a59e4b60",
+    "cloud_sync_completion_verified": false,
+    "external_share_changed": false
+  },
   "safety": {
     "automatic_main_body_merge_performed": false,
     "research_6tier_modified": false,
@@ -43,7 +53,7 @@
     "source_data_modified": false,
     "full_year_mfa_run": false,
     "under_0_1_second_candidates_run": false,
-    "dropbox_copy_performed": false
+    "dropbox_copy_performed": true
   },
   "interpretation": "With the acoustic model, pronunciation dictionary, and LAB frozen, increasing only beam and retry_beam recovered all 19 alignments. This is evidence of search-width sensitivity, not automatic evidence of linguistic boundary validity or single-speaker acoustic suitability.",
   "next_gate": "Researcher review of the 19 recovered alignments; adoption, six-tier enrichment, and DB v1 integration remain separately closed."

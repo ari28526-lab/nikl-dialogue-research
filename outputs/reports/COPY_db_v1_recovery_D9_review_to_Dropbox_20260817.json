@@ -1,0 +1,37 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_dropbox_copy.v1",
+  "status": "passed_local_dropbox_copy_sha256_verified",
+  "recorded_at": "2026-08-17T22:43:03.3383806+09:00",
+  "approval": {
+    "approver": "ari30",
+    "purpose": "private researcher review",
+    "scope": "19 D9 WAV files and corresponding LAB, TextGrid, and review metadata",
+    "external_publication_or_sharing_approved": false
+  },
+  "source": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817",
+  "destination": "C:\\Users\\ari30\\Dropbox\\DB_V1_RECOVERY_D9_REVIEW_19_20260817",
+  "files": {
+    "total": 61,
+    "wav": 19,
+    "lab": 19,
+    "textgrid": 19,
+    "json": 3,
+    "markdown": 1,
+    "bytes": 1780531
+  },
+  "verification": {
+    "method": "relative filename, byte length, and SHA-256 for every file",
+    "source_file_set_sha256": "ab250065a827b109afc1d6cf8cecb6f9d9a69c3a46ed428afe9abe80a59e4b60",
+    "destination_file_set_sha256": "ab250065a827b109afc1d6cf8cecb6f9d9a69c3a46ed428afe9abe80a59e4b60",
+    "mismatch_count": 0
+  },
+  "safety": {
+    "source_modified": false,
+    "r3_main_body_modified": false,
+    "db_v1_modified": false,
+    "shared_link_created": false,
+    "external_share_settings_changed": false,
+    "cloud_sync_completion_verified": false
+  },
+  "note": "This report verifies the local Dropbox-synced folder copy. The Dropbox client must finish syncing before remote review on another computer."
+}

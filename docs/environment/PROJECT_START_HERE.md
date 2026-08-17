@@ -10,7 +10,9 @@
 > 4건을 표시했다. r3 본체·6-tier·DB v1·원자료 변경은 0건이다. 다음은
 > `docs/decisions/RESULT_db_v1_recovery_D9_completed_20260817.md`에 따라 19건만
 > 검토한 뒤 별도 채택 Gate를 여는 것이다. 전체연도와 0.1초 미만 25건은 다시
-> 실행하지 않는다.
+> 실행하지 않는다. 개인 검토용 19세트는 승인 범위대로
+> `C:\Users\ari30\Dropbox\DB_V1_RECOVERY_D9_REVIEW_19_20260817`에 복사했고
+> 61개 파일의 SHA-256 전수 검증이 통과했다. 외부 공유는 설정하지 않았다.
 
 > **현재 진입점 — 2026-08-17 D9 실행 승인·preflight 완료:** D8 identity 확인
 > 잔여 19건만 `beam=100`, `retry_beam=400`으로 한 차례 재시도하는 exact-ID

@@ -224,7 +224,9 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | 19건의 격리 beam 100/retry 400 실행·DB·2-tier TextGrid·로그·marker | `completed_controlled_retry_no_merge`; TextGrid 19/19, 누락 0, 본체 채택 0 |
 | `outputs\reviews\db_v1_recovery_d9_review_19_20260817` | 번호별 WAV·LAB·2-tier TextGrid와 JSON 검토표 | 독립 감사 `passed_flat_review_bundle_no_adoption`; 19세트, overlap 4건 표시 |
 | `outputs\reports\RESULT_db_v1_recovery_D9_20260817.json` | 실행 수량·계약 SHA·검토 묶음 SHA·안전 상태 정본 | `completed_controlled_retry_review_ready_no_adoption` |
+| `C:\Users\ari30\Dropbox\DB_V1_RECOVERY_D9_REVIEW_19_20260817` | D9 19세트의 개인 연구자 검토용 Dropbox 동기화 사본 | 로컬 복사 61개·1,780,531 bytes·SHA 전수 일치; 공유 링크/외부 공유 변경 0, 클라우드 동기화 완료는 사용자 확인 |
+| `outputs\reports\COPY_db_v1_recovery_D9_review_to_Dropbox_20260817.json` | 승인 범위·파일집합 SHA·복사 안전성 기록 | `passed_local_dropbox_copy_sha256_verified` |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
-manifest와 생성·감사 코드는 Git으로 추적한다. 연구 음성의 Dropbox 복사는 아직
-하지 않았다.
+manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며
+외부 공개·공유는 승인되지 않았다.
