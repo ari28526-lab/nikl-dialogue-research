@@ -1,0 +1,37 @@
+{
+  "schema_version": "research_db_v1_recovery_d8_result.v1",
+  "status": "read_only_feasibility_audit_complete_gate_closed",
+  "recorded_at": "2026-08-17T20:27:26+09:00",
+  "output_root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817",
+  "counts": {
+    "total": 44,
+    "alignment_missing": 19,
+    "sub_0_1_no_run": 25,
+    "d9_candidates": 19,
+    "not_d9_candidates": 25,
+    "by_disposition": {
+      "d9_controlled_parameter_retry_candidate": 19,
+      "final_technical_exclusion_source_fragment_too_short": 25
+    }
+  },
+  "safety": {
+    "mfa_run": false,
+    "recovery_audio_created": false,
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "source_files_deleted": false
+  },
+  "runtime": {
+    "recorded_at": "2026-08-17T20:27:26+09:00",
+    "git_commit": "d68ea404f5b3c5db5e96275ab5a0a6b9739087f9",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 8920
+  }
+}

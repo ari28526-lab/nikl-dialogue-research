@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_db_v1_recovery_D8_feasibility_20260817.md](RESULT_db_v1_recovery_D8_feasibility_20260817.md) — 미정렬 19건은 원 JSON·CSV·LAB·canonical/r3/H WAV identity를 확인해 한 차례 D9 후보로 고정하고, 0.1초 미만 25건은 H 백업 음원까지 같은 짧은 원자료 조각임을 확인; 읽기 전용 감사·Gate 통과
 - [RESULT_db_v1_recovery_D7_partial_alignment_preservation_20260817.md](RESULT_db_v1_recovery_D7_partial_alignment_preservation_20260817.md) — 검토 11건을 본체에서는 제외하되 D5 진단 자료를 보존하고, 6건을 부분 정렬 검색 가능 상태로 별도 JSON·SQLite에 기록; 무병합·무삭제 감사 통과
 - [PLAN_after_D7_recovery_to_DB_v1_RC1_20260817.md](PLAN_after_D7_recovery_to_DB_v1_RC1_20260817.md) — 19+25건 읽기 전용 회수 감사와 한 차례 exact-ID 통제 재정렬 뒤 recovery를 종료하고 DB v1 RC1·표적 추출·manual overlay·HTML/세션 JSON으로 이동하는 순서
 - [RESULT_db_v1_recovery_D6_gate_20260815.md](RESULT_db_v1_recovery_D6_gate_20260815.md) — D5 성공 11건 flat 검토 묶음, 계속 미정렬 19건 DB 근거 장부, 0.1초 미만 25건 원음원 회수 경로와 독립 감사; 본체·6-tier·DB v1 자동 병합 0, 연구자 Gate 정지

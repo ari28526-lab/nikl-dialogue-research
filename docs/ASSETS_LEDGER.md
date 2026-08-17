@@ -200,3 +200,15 @@ D5의 격리 D: root에는 입력 WAV/LAB 각 30개, 진단 TextGrid 11개, 미�
 
 D6의 11개 WAV·LAB·TextGrid는 기존 검토 root에 유지한다. D7 SQLite는 경로와
 SHA를 참조할 뿐 음성·TextGrid를 중복 복사하거나 본체 DB에 삽입하지 않는다.
+
+## 2026-08-17 recovery D8 회수 가능성 감사 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817` | 미정렬 19·0.1초 미만 25건의 JSON/CSV/LAB/canonical-r3-H 음원 identity와 D9 routing | 독립 감사 통과; D9 후보 19, 동일 exact-ID 기술 제외 25, MFA·파일 생성·본체 변경 0 |
+| `outputs\reports\RESULT_db_v1_recovery_D8_20260817.json` | D8 수량·안전 상태 요약 | `read_only_feasibility_audit_complete_gate_closed` |
+
+D8 SQLite는 로컬 조회용이며 Git에는 넣지 않는다. exact-ID 판정 JSON, Gate,
+manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대형 평면 PCM 폴더를
+반복 열거하지 않고, 기존 direct-stat 장부와 세션 구조 H WAV의 payload/길이를
+결합해 검사했다.

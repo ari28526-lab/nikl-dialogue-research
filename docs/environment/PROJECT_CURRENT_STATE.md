@@ -1,5 +1,15 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-17 D8 읽기 전용 회수 가능성 감사 완료:** 계속 미정렬 19건은 원
+> JSON·동결 CSV·LAB·canonical/r3/H WAV identity가 모두 확인되어 D9의 한 차례
+> 통제 parameter-retry 후보가 됐다. 0.1초 미만 25건은 H 백업 WAV도 r3와 같은
+> payload이며 최대 0.099875초라 동일 exact ID의 기술 제외로 확정할 근거를
+> 확보했다. 숫자 읽기 3건은 동결 normalized LAB와 일치해 오류가 아니다. 독립
+> 감사 상태는 `passed_read_only_feasibility_gate_closed`다. MFA·새 음원 생성·
+> 본체/6-tier/DB v1 수정·삭제는 0건이다. 다음은 19건만 새 namespace에서 한
+> 차례 실행하는 D9 scope-bound 승인·실행 계약이며 25건과 전체연도는 재실행하지
+> 않는다.
+
 > **2026-08-17 D7 연구자 검토 반영 완료:** D5 진단 TextGrid가 생성된 11건을
 > 본체 성공에서는 모두 제외하고 진단 자료를 그대로 보존했다. 사용자 메모에 따라
 > 부분 정렬 가능 6, 잡음 보존 3, 전사 누락 1, 전사 수정 후보 1로 exact-ID

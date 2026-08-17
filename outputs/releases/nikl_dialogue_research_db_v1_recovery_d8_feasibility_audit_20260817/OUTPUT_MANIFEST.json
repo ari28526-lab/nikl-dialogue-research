@@ -1,0 +1,34 @@
+{
+  "schema_version": "research_db_v1_recovery_d8_manifest.v1",
+  "recorded_at": "2026-08-17T20:27:26+09:00",
+  "inputs": {
+    "d6_missing_19_sha256": "5f6b43afd5247d39bb0c2a9fcdda14da608155d758ecdf5927185f8cc7c9c03f",
+    "d6_no_run_25_sha256": "c199e72c1fdb26424eff44771e02a4f37623c91a114dd328c09cd78339cde8cd",
+    "d6_manifest_sha256": "791369e7c21e924c685950c5bce8e716362272f479cc5061b99c091acf43227c"
+  },
+  "implementation": {
+    "builder_sha256": "f2eb00e9ace16bcf549603a8854a142947156e6bdcfa860142e33656910f0eae"
+  },
+  "files": [
+    {
+      "relative_path": "D8_EXACT_ID_FEASIBILITY.json",
+      "bytes": 232793,
+      "sha256": "527d3d5c8543ead581a728642cffdf2752fb5a5db265168d8eac147fd4e3a305"
+    },
+    {
+      "relative_path": "D8_GATE.json",
+      "bytes": 815,
+      "sha256": "03314673ed4e72e440d68ade86b7d00512317b9bb034d35fa569f4ce4cddc39c"
+    },
+    {
+      "relative_path": "D8_RECOVERY_FEASIBILITY.sqlite",
+      "bytes": 237568,
+      "sha256": "fe7ff9f0555b536f7e1b608e102931c8de900b24781a80abe0d2e01960a90432"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 404,
+      "sha256": "676403fb2cef15222d03f95d35f267364f56f4a1407b14ba3f541825855b69fa"
+    }
+  ]
+}

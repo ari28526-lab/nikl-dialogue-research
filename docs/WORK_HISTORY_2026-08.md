@@ -3658,3 +3658,25 @@ shard 2–23을 재개하는 것이다.
 - 다음 단계는 전체연도 또는 D5 반복 MFA가 아니라 19+25건의 원자료 회수 가능성
   읽기 전용 감사다. 회수 후보만 한 차례 통제 exact-ID MFA를 거친 뒤 recovery를
   종료하고 DB v1 RC1과 실제 표적 추출·manual overlay 인프라로 이동한다.
+
+### 2026-08-17 — D8 19+25건 원자료 회수 가능성 읽기 전용 감사
+
+- D6 미정렬 19건과 0.1초 미만 no-run 25건을 exact-ID 44건으로 고정하고 원 JSON,
+  동결 pre-MFA CSV, LAB, canonical WAV, r3 corpus WAV, H: 백업 WAV를 대조했다.
+- 19건은 모든 필수 identity가 확인됐고 연도별 2020 2, 2021 5, 2022 3,
+  2023 5, 2024 3, 2025 1건으로 D9 한 차례 통제 parameter-retry 후보가 됐다.
+  이 중 source overlap 4건은 정렬 인프라 후보로만 보존하고 단일 화자 음향분석
+  승인을 별도로 요구한다.
+- 초기 비교에서 `9월`, `1/4학년`, `90년대`의 철자 숫자와 한글 읽기 LAB가 다른
+  3건을 발견했다. 이는 identity 오류가 아니라 기존 기호·숫자 읽기 정규화이므로,
+  철자 원문 대신 D6 frozen normalized text와 비교해 모두 정상 후보로 유지했다.
+- 25건은 H: 백업 WAV의 payload가 25/25 현행 r3 WAV와 같고 최대 길이가
+  0.099875초였다. 과거 원 PCM direct-stat 24건 짧음·1건 없음과 합치하며,
+  동일 exact ID를 다시 추출하거나 MFA해도 새 음성 정보가 생기지 않아
+  `final_technical_exclusion_source_fragment_too_short`로 분류했다.
+- H: 2021 원 PCM은 수십만 파일이 한 평면 폴더에 있어 전수 디렉터리 열거가
+  비효율적임을 확인하고 중단했다. 원 PCM exact-ID direct-stat 장부와 H: 세션 구조
+  WAV의 독립 payload/길이 검증을 결합해 같은 근거를 반복 탐색하지 않도록 했다.
+- 별도 감사기는 JSON/SQLite 44행, 파일 SHA, 분기 19+25, D9 후보 19, 안전 Gate를
+  재검증해 `passed_read_only_feasibility_gate_closed`로 종료했다. MFA, 새 WAV,
+  본체·6-tier·DB v1 수정, 자동 병합, 삭제는 모두 0건이다.

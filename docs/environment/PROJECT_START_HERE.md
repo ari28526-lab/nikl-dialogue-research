@@ -2,6 +2,15 @@
 
 최종 갱신: 2026-08-17 KST
 
+> **현재 진입점 — 2026-08-17 D8 회수 가능성 감사 완료:** D6의 계속 미정렬
+> 19건은 원 JSON·동결 CSV·LAB·canonical/r3/H WAV identity를 확인해 D9의 한
+> 차례 통제 parameter-retry 후보로 고정했다. 0.1초 미만 25건은 H 백업 WAV도
+> r3 payload와 같고 최대 0.099875초라 같은 입력 회수 불가 기술 제외로 판정했다.
+> 숫자·기호 읽기 3건은 철자 원문이 아니라 동결 MFA normalized text와 비교해
+> 정상으로 보존했다. 다음은 19건만 별도 exact-ID D9 Gate로 실행하는 것이며,
+> 25건·전체연도·D5 전체는 다시 실행하지 않는다. 먼저
+> `docs/decisions/RESULT_db_v1_recovery_D8_feasibility_20260817.md`를 읽는다.
+
 > **현재 진입점 — 2026-08-17 D7 부분 정렬 보존 완료:** 연구자 검토 11건은
 > 모두 r3 본체 정렬 성공에서 제외했다. 진단 WAV·LAB·TextGrid는 삭제하지 않았고,
 > 6건은 `partial_alignment_available`, 3건은 잡음 보존, 2건은 전사 회수·수정
