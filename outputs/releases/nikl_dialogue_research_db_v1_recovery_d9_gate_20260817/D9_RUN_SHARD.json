@@ -1,0 +1,463 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_run_shard.v1",
+  "status": "frozen_pending_scope_bound_approval",
+  "shard_id": "D9_CONTROLLED_BEAM_RETRY_0001",
+  "rows": [
+    {
+      "run_order": 1,
+      "year": 2020,
+      "utt_id": "SDRW2000000115.1.1.149",
+      "session_id": "SDRW2000000115",
+      "speaker_id": "SD2000174",
+      "form": "영화 잘 영화 잘알이",
+      "lab_text": "영화 잘 영화 잘알이",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2020\\SDRW2000000115\\SDRW2000000115.1.1.149.wav",
+        "bytes": 42540,
+        "mtime_ns": 1768037885065825400,
+        "sha256": "f4590aa2b69cbe82a5023b5a9ec5b992ce33993c7879e216c1b5d4bfebce26c1"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2020\\SDRW2000000115\\SDRW2000000115.1.1.149.lab",
+        "bytes": 27,
+        "mtime_ns": 1786255678709910200,
+        "sha256": "45d84cb1b82229331b30f0bda2f5666268a163fdab17b54d74bb1655c6680312"
+      },
+      "target_relative_directory": "2020\\SDRW2000000115"
+    },
+    {
+      "run_order": 2,
+      "year": 2020,
+      "utt_id": "SDRW2000000180.1.1.67",
+      "session_id": "SDRW2000000180",
+      "speaker_id": "SD2000267",
+      "form": "학 상자를 날아야 되니까는 상자를 날아야 되니깐은",
+      "lab_text": "학 상자를 날아야 되니까는 상자를 날아야 되니깐은",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2020\\SDRW2000000180\\SDRW2000000180.1.1.67.wav",
+        "bytes": 97836,
+        "mtime_ns": 1768038418344456000,
+        "sha256": "14dab4391ad23394da0038c27a1edbd7c018ad139fd6141c03441f7707a21693"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2020\\SDRW2000000180\\SDRW2000000180.1.1.67.lab",
+        "bytes": 69,
+        "mtime_ns": 1786255883405713500,
+        "sha256": "740fc40ede941aec02ff065a324868c380f86d3b2f49727134ebf075bf121ae5"
+      },
+      "target_relative_directory": "2020\\SDRW2000000180"
+    },
+    {
+      "run_order": 3,
+      "year": 2021,
+      "utt_id": "SDRW2100000001.1.1.131",
+      "session_id": "SDRW2100000001",
+      "speaker_id": "SD2100001",
+      "form": "그 개화 그게 딱 있는 거야.",
+      "lab_text": "그 개화 그게 딱 있는 거야",
+      "source_overlap": true,
+      "research_scope_after_possible_recovery": "alignment_infrastructure_only_exclude_single_speaker_acoustic_analysis",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000001\\SDRW2100000001.1.1.131.wav",
+        "bytes": 22444,
+        "mtime_ns": 1768462466949880000,
+        "sha256": "1c2346188ec95c63d13b1e9afbf70e3d4d6ab1ea3a401546ba1f426214df7f01"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000001\\SDRW2100000001.1.1.131.lab",
+        "bytes": 35,
+        "mtime_ns": 1786339788582454300,
+        "sha256": "49386b54321217cf8d10040e7d191b40a346431821ab74bcc68d9a7537a4648b"
+      },
+      "target_relative_directory": "2021\\SDRW2100000001"
+    },
+    {
+      "run_order": 4,
+      "year": 2021,
+      "utt_id": "SDRW2100000023.1.1.432",
+      "session_id": "SDRW2100000023",
+      "speaker_id": "SD2100024",
+      "form": "아빠가 계속 나와서 연기를 막 한단 말이야.",
+      "lab_text": "아빠가 계속 나와서 연기를 막 한단 말이야",
+      "source_overlap": true,
+      "research_scope_after_possible_recovery": "alignment_infrastructure_only_exclude_single_speaker_acoustic_analysis",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000023\\SDRW2100000023.1.1.432.wav",
+        "bytes": 59884,
+        "mtime_ns": 1768462623458976300,
+        "sha256": "ccbd11589cef0b988ebc5f200e661c959d68da7dcfd180044ce8694d1dcba61f"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000023\\SDRW2100000023.1.1.432.lab",
+        "bytes": 57,
+        "mtime_ns": 1786339849102838500,
+        "sha256": "89b0d15de96f1127554b1c68054a5a3f474801b2e64151f25291f4e3d8c6b997"
+      },
+      "target_relative_directory": "2021\\SDRW2100000023"
+    },
+    {
+      "run_order": 5,
+      "year": 2021,
+      "utt_id": "SDRW2100000024.1.1.234",
+      "session_id": "SDRW2100000024",
+      "speaker_id": "SD2100024",
+      "form": "아니 우리 이번에 9월 말에 진짜 홍천 갈까 홍천?",
+      "lab_text": "아니 우리 이번에 구월 말에 진짜 홍천 갈까 홍천",
+      "source_overlap": true,
+      "research_scope_after_possible_recovery": "alignment_infrastructure_only_exclude_single_speaker_acoustic_analysis",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000024\\SDRW2100000024.1.1.234.wav",
+        "bytes": 32044,
+        "mtime_ns": 1768462628887490900,
+        "sha256": "12ba00262686d584c708e4757f0be2db3e6f3ff984e69dce6700fee7632389c7"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000024\\SDRW2100000024.1.1.234.lab",
+        "bytes": 65,
+        "mtime_ns": 1786339851531050800,
+        "sha256": "e20b3c4a29f4d12c9dbc1997693c651161c467f71e7ea59ecfbb30b88e34b643"
+      },
+      "target_relative_directory": "2021\\SDRW2100000024"
+    },
+    {
+      "run_order": 6,
+      "year": 2021,
+      "utt_id": "SDRW2100000040.1.1.21",
+      "session_id": "SDRW2100000040",
+      "speaker_id": "SD2100039",
+      "form": "공무원으로 다 몰려 가는데 공무원이 양성에 대해서는 어떻게 생각하세요",
+      "lab_text": "공무원으로 다 몰려 가는데 공무원이 양성에 대해서는 어떻게 생각하세요",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000040\\SDRW2100000040.1.1.21.wav",
+        "bytes": 112040,
+        "mtime_ns": 1768462716206787000,
+        "sha256": "ccc6525c89a1a2a5554edaea94e61d45a261c5761e92864e120228041bf78310"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000040\\SDRW2100000040.1.1.21.lab",
+        "bytes": 98,
+        "mtime_ns": 1786339887750460300,
+        "sha256": "2811c2b645e19ba35abc5afe897ca3646dc32418a526a978ff2851082db3a855"
+      },
+      "target_relative_directory": "2021\\SDRW2100000040"
+    },
+    {
+      "run_order": 7,
+      "year": 2021,
+      "utt_id": "SDRW2100000044.1.1.248",
+      "session_id": "SDRW2100000044",
+      "speaker_id": "SD2100044",
+      "form": "어 그거 예전에 우리 먹을 때 처음에는 뭐 다 못 먹을",
+      "lab_text": "어 그거 예전에 우리 먹을 때 처음에는 뭐 다 못 먹을",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000044\\SDRW2100000044.1.1.248.wav",
+        "bytes": 112360,
+        "mtime_ns": 1768462737972568400,
+        "sha256": "aab14546b1a23ae166f8b2bb3bb5f6b86fbc335c758fda535443293c8111cdd1"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2021\\SDRW2100000044\\SDRW2100000044.1.1.248.lab",
+        "bytes": 70,
+        "mtime_ns": 1786339897402017100,
+        "sha256": "8dda5c8c94655144ae10cfcdcbbf980f3c9790b20e5a15957fe09e33af25a614"
+      },
+      "target_relative_directory": "2021\\SDRW2100000044"
+    },
+    {
+      "run_order": 8,
+      "year": 2022,
+      "utt_id": "SDRW2200000019.1.1.279",
+      "session_id": "SDRW2200000019",
+      "speaker_id": "SD2200023",
+      "form": "근데 잠은 쪼끔 재워 줬으면 좋겠어.",
+      "lab_text": "근데 잠은 쪼끔 재워 줬으면 좋겠어",
+      "source_overlap": true,
+      "research_scope_after_possible_recovery": "alignment_infrastructure_only_exclude_single_speaker_acoustic_analysis",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000019\\SDRW2200000019.1.1.279.wav",
+        "bytes": 46124,
+        "mtime_ns": 1768101555229374500,
+        "sha256": "6873c4aa5cb37c04cccb36eb38d0c23d5a8c435d4d491c1c64156ad18af77589"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000019\\SDRW2200000019.1.1.279.lab",
+        "bytes": 47,
+        "mtime_ns": 1786428760188151900,
+        "sha256": "2f865c92085604f3c14225cc2b2d5fb63498647100fc997c90ec49d7fa1807cf"
+      },
+      "target_relative_directory": "2022\\SDRW2200000019"
+    },
+    {
+      "run_order": 9,
+      "year": 2022,
+      "utt_id": "SDRW2200000033.1.1.137",
+      "session_id": "SDRW2200000033",
+      "speaker_id": "SD2200690",
+      "form": "나는 지리산에 한번 간 적 있어. 그다음에 한라산도 등산을 간 적이 있고 그때 지리산은",
+      "lab_text": "나는 지리산에 한번 간 적 있어 그다음에 한라산도 등산을 간 적이 있고 그때 지리산은",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000033\\SDRW2200000033.1.1.137.wav",
+        "bytes": 113644,
+        "mtime_ns": 1768101748743936000,
+        "sha256": "4bd1c15d4d88b956ca7314b2a5fc2caeee521fb437e3be56ddd164feb88fe925"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000033\\SDRW2200000033.1.1.137.lab",
+        "bytes": 115,
+        "mtime_ns": 1786428786653941700,
+        "sha256": "abcbc9738fb7ec127a28a9e62bbeedf08188fc99faa31890adc139a2ca9b5bda"
+      },
+      "target_relative_directory": "2022\\SDRW2200000033"
+    },
+    {
+      "run_order": 10,
+      "year": 2022,
+      "utt_id": "SDRW2200000051.1.1.61",
+      "session_id": "SDRW2200000051",
+      "speaker_id": "SD2200051",
+      "form": "나는 함덕 함덕 해수욕장 가 봤어?",
+      "lab_text": "나는 함덕 함덕 해수욕장 가 봤어",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000051\\SDRW2200000051.1.1.61.wav",
+        "bytes": 39404,
+        "mtime_ns": 1768102069618646000,
+        "sha256": "c45116d202f47ce62f419a9ed69da0f16232c0565599eec1af7dd14251ebf070"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2022\\SDRW2200000051\\SDRW2200000051.1.1.61.lab",
+        "bytes": 44,
+        "mtime_ns": 1786428821667222200,
+        "sha256": "57101799711c6ea38ca60f9ea363dd0512029c9084d453e6497b8bc920d13e07"
+      },
+      "target_relative_directory": "2022\\SDRW2200000051"
+    },
+    {
+      "run_order": 11,
+      "year": 2023,
+      "utt_id": "SDRW2300000013.1.1.213",
+      "session_id": "SDRW2300000013",
+      "speaker_id": "SD2300085",
+      "form": "노래방에서 부를 때 아 이런 노래였구나를 나중에 알게 되는 를 나중에 알게 되는",
+      "lab_text": "노래방에서 부를 때 아 이런 노래였구나를 나중에 알게 되는 를 나중에 알게 되는",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000013\\SDRW2300000013.1.1.213.wav",
+        "bytes": 131948,
+        "mtime_ns": 1768141644779672500,
+        "sha256": "8f2878c325e6ae187bd970474632d883d6206ad07eea1035a99f53755adfb1f9"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000013\\SDRW2300000013.1.1.213.lab",
+        "bytes": 108,
+        "mtime_ns": 1786533931341846500,
+        "sha256": "ee8415bcbf1fb37a712d97e41ee19b97af23291f4cf58b0eb13fadc24ce25a89"
+      },
+      "target_relative_directory": "2023\\SDRW2300000013"
+    },
+    {
+      "run_order": 12,
+      "year": 2023,
+      "utt_id": "SDRW2300000085.1.1.299",
+      "session_id": "SDRW2300000085",
+      "speaker_id": "SD2300074",
+      "form": "이렇게 돈을 딱 주시더라고요.",
+      "lab_text": "이렇게 돈을 딱 주시더라고요",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000085\\SDRW2300000085.1.1.299.wav",
+        "bytes": 26540,
+        "mtime_ns": 1768143348420269900,
+        "sha256": "05bb0e08f95b15c0c641342c66908972338b15a94646992a11b6e9b53b6a5ac1"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000085\\SDRW2300000085.1.1.299.lab",
+        "bytes": 39,
+        "mtime_ns": 1786534056393734200,
+        "sha256": "d48537ad0bfa6d6d781b5c5580181e117d54af94accc547f4ed2e3350ab4188d"
+      },
+      "target_relative_directory": "2023\\SDRW2300000085"
+    },
+    {
+      "run_order": 13,
+      "year": 2023,
+      "utt_id": "SDRW2300000164.1.1.286",
+      "session_id": "SDRW2300000164",
+      "speaker_id": "SD2300161",
+      "form": "제가 가면 그게 1일이든 4일이든 그냥 다 해 줬어요.",
+      "lab_text": "제가 가면 그게 일이든 일이든 그냥 다 해 줬어요",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000164\\SDRW2300000164.1.1.286.wav",
+        "bytes": 62092,
+        "mtime_ns": 1768145025639115900,
+        "sha256": "f9ca48899cc52237fe83e4f0540b3165ddbbb6cf2e53b1fd001bf97d9ce10c11"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000164\\SDRW2300000164.1.1.286.lab",
+        "bytes": 65,
+        "mtime_ns": 1786534166010203500,
+        "sha256": "e8b3f92edd62860edede64b28262b4e0724167d62803a1e1bacfcc54df8158fc"
+      },
+      "target_relative_directory": "2023\\SDRW2300000164"
+    },
+    {
+      "run_order": 14,
+      "year": 2023,
+      "utt_id": "SDRW2300000169.1.1.115",
+      "session_id": "SDRW2300000169",
+      "speaker_id": "SD2300170",
+      "form": "여름이다 보니까 이제 보양식 같은 경우 문어 낙지 그런 거 이제",
+      "lab_text": "여름이다 보니까 이제 보양식 같은 경우 문어 낙지 그런 거 이제",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000169\\SDRW2300000169.1.1.115.wav",
+        "bytes": 117996,
+        "mtime_ns": 1768145100272481400,
+        "sha256": "35a21100fe2b74a016708eeb49848dd0e7fa1dab5f0ede2c817b1b9d40f441fd"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000169\\SDRW2300000169.1.1.115.lab",
+        "bytes": 85,
+        "mtime_ns": 1786534172919430300,
+        "sha256": "05c272d7508729ab023284ab0cae7abeffec95f2a4f15953737f717d84986ab9"
+      },
+      "target_relative_directory": "2023\\SDRW2300000169"
+    },
+    {
+      "run_order": 15,
+      "year": 2023,
+      "utt_id": "SDRW2300000219.1.1.194",
+      "session_id": "SDRW2300000219",
+      "speaker_id": "SD2300204",
+      "form": "뭐 다 뭐 재산 같은 거 있으면 자식들한테 나도 뭐 그게그게 참 저도",
+      "lab_text": "뭐 다 뭐 재산 같은 거 있으면 자식들한테 나도 뭐 그게그게 참 저도",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000219\\SDRW2300000219.1.1.194.wav",
+        "bytes": 100524,
+        "mtime_ns": 1768146800576402800,
+        "sha256": "e3d360ec15245644418e0b0149e92bf681b1e68cb7a97dc09dbd5f9f3b294054"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2023\\SDRW2300000219\\SDRW2300000219.1.1.194.lab",
+        "bytes": 90,
+        "mtime_ns": 1786534262299534100,
+        "sha256": "30ce63a864d19039062d226b212bd13576dc690bb83b7622227a2b8fcf57161a"
+      },
+      "target_relative_directory": "2023\\SDRW2300000219"
+    },
+    {
+      "run_order": 16,
+      "year": 2024,
+      "utt_id": "SARW2400000020.1.1.11",
+      "session_id": "SARW2400000020",
+      "speaker_id": "SD2401808",
+      "form": "90년대 시카고 불스가 황금기를 보내는 데 큰 역할을 한 인물들을 위한 행사였던 만큼",
+      "lab_text": "구십 년대 시카고 불쓰가 황금기를 보내는 데 큰 역할을 한 인물들을 위한 행사였던 만큼",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000020\\SARW2400000020.1.1.11.wav",
+        "bytes": 102442,
+        "mtime_ns": 1768187226927996400,
+        "sha256": "bf13821071f34a13f69d77e1e7fc93337e26ef731a6602c24cca34e78bb92abc"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000020\\SARW2400000020.1.1.11.lab",
+        "bytes": 118,
+        "mtime_ns": 1786614747618497500,
+        "sha256": "b4fa1422085f93de466fdd7290643e2cae043a98fe884f1e764fa3395f748e4f"
+      },
+      "target_relative_directory": "2024\\SARW2400000020"
+    },
+    {
+      "run_order": 17,
+      "year": 2024,
+      "utt_id": "SARW2400000033.1.1.16",
+      "session_id": "SARW2400000033",
+      "speaker_id": "SD2401812",
+      "form": "특히 분당은 그야말로 살기 좋은 신도시의 대표격이었는데 네이버 본사와 리니지의 엔씨소프트",
+      "lab_text": "특히 분당은 그야말로 살기 좋은 신도시의 대표격이었는데 네이버 본사와 리니지의 엔씨소프트",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000033\\SARW2400000033.1.1.16.wav",
+        "bytes": 112148,
+        "mtime_ns": 1768187813173488200,
+        "sha256": "93e94bbd6b83814d0dfc33196ae77e11cf5488cfa9e678bf825bf2b6fd38fe93"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000033\\SARW2400000033.1.1.16.lab",
+        "bytes": 127,
+        "mtime_ns": 1786614759067047100,
+        "sha256": "f5e6af95151233a9794dbc6013708ca7bc564484818798e23b2c5f464bf682a9"
+      },
+      "target_relative_directory": "2024\\SARW2400000033"
+    },
+    {
+      "run_order": 18,
+      "year": 2024,
+      "utt_id": "SARW2400000095.1.1.98",
+      "session_id": "SARW2400000095",
+      "speaker_id": "SD2401833",
+      "form": "아 아무튼 저는 중반까지만 해도 이 왕위보의 이 실력에 깜짝 놀랐는데 깜짝 놀랐는데",
+      "lab_text": "아 아무튼 저는 중반까지만 해도 이 왕위보의 이 실력에 깜짝 놀랐는데 깜짝 놀랐는데",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000095\\SARW2400000095.1.1.98.wav",
+        "bytes": 172996,
+        "mtime_ns": 1768189586307254700,
+        "sha256": "f1da0ef200721bc4d4a8462556c3ba55b37d4087c4384d1668f7a0d4151e111d"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2024\\SARW2400000095\\SARW2400000095.1.1.98.lab",
+        "bytes": 114,
+        "mtime_ns": 1786614827999896600,
+        "sha256": "49de785318f93f11e692aa8a777ba659f748704a3150f3e2d9b9f32db66b835d"
+      },
+      "target_relative_directory": "2024\\SARW2400000095"
+    },
+    {
+      "run_order": 19,
+      "year": 2025,
+      "utt_id": "SARW2500000012.1.1.97",
+      "session_id": "SARW2500000012",
+      "speaker_id": "SD2502003",
+      "form": "그러니까 쉽게 말해서 약간 임시 열쇠 같은 거 임시 카드 키 같은 걸 줘 가지고",
+      "lab_text": "그러니까 쉽게 말해서 약간 임시 열쇠 같은 거 임시 카드 키 같은 걸 줘 가지고",
+      "source_overlap": false,
+      "research_scope_after_possible_recovery": "pending_post_alignment_researcher_review",
+      "source_wav": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2025\\SARW2500000012\\SARW2500000012.1.1.97.wav",
+        "bytes": 102694,
+        "mtime_ns": 1783671404485428800,
+        "sha256": "db3810bd960ddc1f061ff628f52c590fb7f2cbe9b70017f493f43b23a2880542"
+      },
+      "source_lab": {
+        "path": "D:\\mfa_eojeol\\r3\\common_pron_mfa_r3_20260809\\corpus\\2025\\SARW2500000012\\SARW2500000012.1.1.97.lab",
+        "bytes": 104,
+        "mtime_ns": 1786695000554043000,
+        "sha256": "8d90760d070a34d127602d5e5263b286a5872df03e27fb9b4414c1d0834d08b9"
+      },
+      "target_relative_directory": "2025\\SARW2500000012"
+    }
+  ]
+}

@@ -3680,3 +3680,24 @@ shard 2–23을 재개하는 것이다.
 - 별도 감사기는 JSON/SQLite 44행, 파일 SHA, 분기 19+25, D9 후보 19, 안전 Gate를
   재검증해 `passed_read_only_feasibility_gate_closed`로 종료했다. MFA, 새 WAV,
   본체·6-tier·DB v1 수정, 자동 병합, 삭제는 모두 0건이다.
+
+### 2026-08-17 — D9 19건 통제 beam 재시도 Gate 준비
+
+- D8에서 identity가 확인된 계속 미정렬 19건만 새 run shard로 고정했다. 연도별
+  2020 2, 2021 5, 2022 3, 2023 5, 2024 3, 2025 1건이며 0.1초 미만 25건과
+  D5 성공 11건은 입력에 포함하지 않았다.
+- D5는 MFA 기본 beam 10/retry 40이었다. 같은 기본 실행을 반복하지 않고 MFA의
+  no-alignment 오류 안내에 맞춘 한 단계 10배 설정인 beam 100/retry 400만 단 한
+  번 허용하는 계약을 만들었다. 음향모델·공통발음 r3 사전·G2P provenance·LAB는
+  D5와 동일하게 유지했다.
+- runner는 exact-copy materialization, 별도 D: namespace, lock, 60초 heartbeat,
+  중단 temp 재개, 완성 output 선감사, 명시 실패 뒤 자동 2차 실행 금지, 결과
+  exact-ID/tier 감사를 구현했다. 성공해도 r3 본체·6-tier·DB v1에 자동 병합하지
+  않는다.
+- 동결 SHA는 run shard `73b65ca9...3157`, 설정 `a9b18484...2923`, execution
+  contract `fbfa8815...a830`이다. MFA 설치본이 설정을 실제 100/400으로 파싱함을
+  확인했다.
+- Windows PowerShell 5.1 safety/runtime 72개가 통과했고 실자료
+  `-PreflightOnly`도 19건·D: 63.4 GiB·입력/모델 해시를 확인해
+  `passed_gate_closed`로 끝났다. 현재 D: 복사, MFA, 자동 병합은 모두 0건이다.
+  다음 정지점은 이 범위에 대한 연구자 명시 승인이다.

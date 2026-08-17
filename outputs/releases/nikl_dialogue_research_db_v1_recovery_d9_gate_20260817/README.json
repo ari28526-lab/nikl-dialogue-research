@@ -1,0 +1,6 @@
+{
+  "status": "gate_closed",
+  "purpose": "one controlled wider-beam retry for D5 alignment-missing exact IDs verified by D8",
+  "next": "independent preflight, then explicit scope-bound researcher approval",
+  "automatic_merge": false
+}

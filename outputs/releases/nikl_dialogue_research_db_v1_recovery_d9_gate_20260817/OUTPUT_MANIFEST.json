@@ -1,0 +1,92 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_output_manifest.v1",
+  "status": "passed_gate_closed_before_D_write_and_mfa",
+  "recorded_at": "2026-08-17T20:53:05+09:00",
+  "files": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_RUN_SHARD.json",
+      "bytes": 22220,
+      "mtime_ns": 1786967585950107200,
+      "sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_MFA_CONFIG.json",
+      "bytes": 39,
+      "mtime_ns": 1786967585953096900,
+      "sha256": "a9b184843a8e3c1763f195c910f25c946313068887e46928babfd52d53502923"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_EXECUTION_CONTRACT.json",
+      "bytes": 4814,
+      "mtime_ns": 1786967585969636500,
+      "sha256": "fbfa88151de78b580a7987f159eceb7fdb689c199409cffd778021dfb840a830"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\RESEARCHER_APPROVAL_PENDING.json",
+      "bytes": 908,
+      "mtime_ns": 1786967585977649200,
+      "sha256": "dc7c07dd3c3c8f9dc85bbef59c0a7f6d7395db8ca0e1afbc50242f2e4c1f9320"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\README.json",
+      "bytes": 238,
+      "mtime_ns": 1786967585980992000,
+      "sha256": "460dcdaeb9a4948e1281cae9cf25e2b0928e4f12d9f9952ca6d5728aa39b0c88"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\prepare_db_v1_recovery_d9_execution.py",
+      "bytes": 10462,
+      "mtime_ns": 1786967562679791000,
+      "sha256": "f386e45b923e5f8f7e3d5cae1bf9c5388e494791f7650d8076c78a6999a9d7f8"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\db_v1_recovery_d9_common.py",
+      "bytes": 3277,
+      "mtime_ns": 1786967120061681700,
+      "sha256": "53a4dcab3b67a253e65b1fd6b06c3983ce76dd541d4eac0fbfcd0440643aa50d"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\preflight_db_v1_recovery_d9.py",
+      "bytes": 6372,
+      "mtime_ns": 1786967209981140100,
+      "sha256": "838c3b279d8542c5e9903a038a81166dd832179302831eeadd5d1fac202d8f9a"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\materialize_db_v1_recovery_d9_shard.py",
+      "bytes": 7083,
+      "mtime_ns": 1786967211754808100,
+      "sha256": "ad0b327872aad93a18d666809f4b76989765e5f333620669e8bd297910acf346"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\audit_db_v1_recovery_d9_mfa.py",
+      "bytes": 3587,
+      "mtime_ns": 1786967320947450700,
+      "sha256": "665f0b4257e3224d5471cade2c9a121df970cb4e889133797cc76d45218d27bf"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\python\\build_db_v1_recovery_d9_approval.py",
+      "bytes": 1786,
+      "mtime_ns": 1786967322716448500,
+      "sha256": "9b94e8a8699dbdfd2a7447ea56c3d2583c43e6335b5b8a98dea02af319daff67"
+    },
+    {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\scripts\\run_db_v1_recovery_d9_shard.ps1",
+      "bytes": 13829,
+      "mtime_ns": 1786967585215952900,
+      "sha256": "c8d1b0313dfa639a881ccca898b8816ad3e528d41fe988594f75482482bfc159"
+    }
+  ],
+  "runtime": {
+    "recorded_at": "2026-08-17T20:53:06+09:00",
+    "git_commit": "5a78471978b8ff8f4cb47beb9aed86d6c03d7518",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 22616
+  }
+}

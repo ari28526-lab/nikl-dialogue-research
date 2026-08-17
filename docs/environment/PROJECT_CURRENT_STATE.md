@@ -1,5 +1,13 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-17 D9 통제 재시도 Gate 준비 완료:** D8에서 원자료 identity가
+> 확인된 계속 미정렬 19건만 별도 namespace에서 `beam=100`,
+> `retry_beam=400`으로 한 차례 재시도하도록 run shard·설정·execution contract를
+> SHA-256으로 동결했다. 0.1초 미만 25건과 전체연도는 입력에서 제외했다.
+> PowerShell 5.1 safety/runtime와 실자료 `-PreflightOnly`가 통과했으며 현재 D:
+> materialize, MFA 실행, r3·6-tier·DB v1 수정은 0건이다. 다음은 scope-bound
+> 연구자 승인 한 번이며, 결과 채택은 별도 Gate다.
+
 > **2026-08-17 D8 읽기 전용 회수 가능성 감사 완료:** 계속 미정렬 19건은 원
 > JSON·동결 CSV·LAB·canonical/r3/H WAV identity가 모두 확인되어 D9의 한 차례
 > 통제 parameter-retry 후보가 됐다. 0.1초 미만 25건은 H 백업 WAV도 r3와 같은

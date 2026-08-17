@@ -1,0 +1,125 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_execution_contract.v1",
+  "status": "hold_pending_scope_bound_researcher_approval",
+  "recorded_at": "2026-08-17T20:53:05+09:00",
+  "shard_id": "D9_CONTROLLED_BEAM_RETRY_0001",
+  "counts": {
+    "run_mfa": 19,
+    "by_year": {
+      "2020": 2,
+      "2021": 5,
+      "2022": 3,
+      "2023": 5,
+      "2024": 3,
+      "2025": 1
+    },
+    "source_overlap_flagged": 4
+  },
+  "scientific_scope": {
+    "purpose": "one controlled wider-beam retry for D5 alignment-missing exact IDs verified by D8",
+    "parameter_change_from_D5": {
+      "beam": "10->100",
+      "retry_beam": "40->400"
+    },
+    "same_acoustic_model_dictionary_g2p_and_lab": true,
+    "realization_decisions_automatic": 0,
+    "source_overlap_flag_is_not_single_speaker_approval": true,
+    "result_merge_requires_separate_gate": true
+  },
+  "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001",
+  "inputs": {
+    "D8_output_manifest": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817\\OUTPUT_MANIFEST.json",
+      "bytes": 1238,
+      "mtime_ns": 1786966046814636600,
+      "sha256": "64e5a0f077be941189c2bbda43c14fd2e581456937dc7f2988191aef1087ec43"
+    },
+    "D8_gate": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817\\D8_GATE.json",
+      "bytes": 815,
+      "mtime_ns": 1786966046798046900,
+      "sha256": "03314673ed4e72e440d68ade86b7d00512317b9bb034d35fa569f4ce4cddc39c"
+    },
+    "D8_exact_id_feasibility": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817\\D8_EXACT_ID_FEASIBILITY.json",
+      "bytes": 232793,
+      "mtime_ns": 1786966046757987800,
+      "sha256": "527d3d5c8543ead581a728642cffdf2752fb5a5db265168d8eac147fd4e3a305"
+    },
+    "D5_execution_contract": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d5_gate_20260815\\D5_EXECUTION_CONTRACT.json",
+      "bytes": 4710,
+      "mtime_ns": 1786788209888953200,
+      "sha256": "9528068145a4b8eba26706ab99a3a9b535aefeb855d6fc7f8fb9a885adaea5dd"
+    },
+    "D9_run_shard": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_RUN_SHARD.json",
+      "bytes": 22220,
+      "mtime_ns": 1786967585950107200,
+      "sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157"
+    },
+    "D9_mfa_config": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_MFA_CONFIG.json",
+      "bytes": 39,
+      "mtime_ns": 1786967585953096900,
+      "sha256": "a9b184843a8e3c1763f195c910f25c946313068887e46928babfd52d53502923"
+    }
+  },
+  "models": {
+    "acoustic": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_acoustic_v3.3.0.zip",
+      "bytes": 61381974,
+      "mtime_ns": 1785218533319897400,
+      "sha256": "94bd6cc56d7b019294ba3966620be01ba24a73863bc2c7cc11301ba3cabb159c"
+    },
+    "dictionary": {
+      "path": "D:\\mfa_common_pron\\releases\\common_pron_mfa_r3_20260809\\common_pron_mfa_r3_20260809.dict",
+      "bytes": 33413724,
+      "mtime_ns": 1786240948582068300,
+      "sha256": "84a047ccd87d93033057f185c2ea7708bd712aa613fcb921635a92c8152a514a"
+    },
+    "g2p_provenance": {
+      "path": "D:\\mfa_common_pron\\models\\frozen_korean_mfa_acoustic_3.3.0_g2p_3.2.0_0091ffa1\\korean_mfa_jamo_g2p_v3.2.0.zip",
+      "bytes": 5456781,
+      "mtime_ns": 1785218534614983300,
+      "sha256": "4df7c5fa90da1f401e7a44af360be56158a581a54202e38baedeca53cfed38ff"
+    }
+  },
+  "mfa": {
+    "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\Scripts\\mfa.exe",
+    "num_jobs": 4,
+    "beam": 100,
+    "retry_beam": 400,
+    "arguments": [
+      "align",
+      "<corpus>",
+      "<dictionary>",
+      "<acoustic>",
+      "<output>",
+      "--config_path",
+      "<D9_MFA_CONFIG.json>",
+      "--beam",
+      "100",
+      "--retry_beam",
+      "400",
+      "--num_jobs",
+      "4",
+      "--no_tokenization",
+      "--temporary_directory",
+      "<temp>",
+      "--output_format",
+      "long_textgrid",
+      "--clean"
+    ]
+  },
+  "safety": {
+    "one_run_only": true,
+    "source_and_r3_body_read_only": true,
+    "copy_not_hardlink": true,
+    "fresh_namespace": true,
+    "automatic_merge": false,
+    "failure_artifacts_preserved": true,
+    "whole_year_rerun": false,
+    "sub_0_1_second_items_included": false
+  }
+}
