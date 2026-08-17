@@ -3701,3 +3701,15 @@ shard 2–23을 재개하는 것이다.
   `-PreflightOnly`도 19건·D: 63.4 GiB·입력/모델 해시를 확인해
   `passed_gate_closed`로 끝났다. 현재 D: 복사, MFA, 자동 병합은 모두 0건이다.
   다음 정지점은 이 범위에 대한 연구자 명시 승인이다.
+
+### 2026-08-17 — D9 scope-bound 연구자 승인과 실행 GO
+
+- 연구자 `ari30`이 run shard SHA `73b65ca9...3157`의 exact-ID 19건을 격리된
+  namespace에서 beam 100/retry 400으로 단 한 번 재정렬하도록 명시 승인했다.
+  같은 승인에서 0.1초 미만 25건·전체연도 실행과 r3 본체·6-tier·DB v1 자동
+  병합을 금지했다.
+- 승인 JSON은 run shard, MFA config, execution contract 세 SHA와 출력 root,
+  19건, 설정값, 1회 조건에 결속했다. 변조된 어느 한 파일로도 실행할 수 없다.
+- 승인 포함 Windows PowerShell 5.1 `-PreflightOnly`가
+  `passed_ready_to_execute`, `approval_verified=true`로 통과했다. 이 시점에도
+  D9 D: root 생성과 MFA 실행은 0건이며 다음은 사용자의 단일 장시간 runner다.

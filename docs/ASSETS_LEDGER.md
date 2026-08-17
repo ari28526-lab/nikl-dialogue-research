@@ -46,7 +46,7 @@
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 production namespace 분리 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2025 `ALIGN_DONE`·독립 QC passed. 2025 DB 6,702,276,608 bytes·SHA `5d7eab5a...c0e6`, 입력 458,413 = 성공 457,611 + 승인 후속 802. 여섯 연도 MFA·DB·완성 6-tier 재실행·수동 삭제·legacy 재사용 금지 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809\research_6tier` | 최종 r3 6-tier TextGrid·연도별 gzip 동반표 | 2020 782,432·2021 1,206,862·2022 751,383·2023 494,228·2024 593,530·2025 457,611 TextGrid; 여섯 연도 모두 coverage 100%·hard failure 0·DB 표본 semantic/byte 24/24, 연도별 `QC_STATE.json` passed |
-| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | D8 확인 미정렬 19건의 한 차례 beam 100/retry 400 격리 재시도 예정 root | 2026-08-17 승인 전 Gate; 현재 미생성, 25개 초단편·전체연도·자동 병합 범위 밖 |
+| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | D8 확인 미정렬 19건의 한 차례 beam 100/retry 400 격리 재시도 예정 root | 연구자 승인·preflight 완료, 현재 미생성; 25개 초단편·전체연도·자동 병합 범위 밖 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
 | `D:\mfa_tmp\2022\2022.db` | 2022 공통 Jamo r2 보존 정렬 DB | 864,690 정렬 산출; 발음 입력 문제 발견 근거로 읽기 전용 보존 |
@@ -92,7 +92,8 @@ archive는 원자료 정본이 아니라 과거 산출물의 재현·감사 근�
 | `outputs\releases\nikl_dialogue_research_db_v1_0_0_rc0_20260815` | 6개년 same-contract 감사·저장공간 계획·5,103,356 exact-ID 상태 장부 | 내부 rc0 A–C 완료; gzip 장부는 Git 제외, JSON·방법 문서는 추적; r3 원본 변경 0 |
 | `outputs\reports\AUDIT_db_v1_release_prep_ac_20260815.json` | A–C 패키지 독립 510만 행 감사 | `passed`; 누락·중복·미분류·계약/상태/SHA 결속 오류 0 |
 | `outputs\releases\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817` | D9 19건 run shard·100/400 설정·execution contract·승인 template | `passed_gate_closed_before_D_write_and_mfa`; 실행·자동 병합 0 |
-| `outputs\reports\PREFLIGHT_db_v1_recovery_D9_20260817.json` | D9 실자료 read-only preflight | `passed_gate_closed`; 19건·모델/사전/입력 SHA·D: 용량 확인 |
+| `outputs\reports\PREFLIGHT_db_v1_recovery_D9_20260817.json` | D9 실자료 read-only preflight | `passed_ready_to_execute`; 승인 결속·19건·모델/사전/입력 SHA·D: 용량 확인 |
+| `outputs\approvals\APPROVAL_db_v1_recovery_D9_CONTROLLED_BEAM_RETRY_0001.json` | D9 19건·100/400·1회·무병합 승인 | `ari30` 명시 승인; 세 계약 SHA 결속, 승인 포함 preflight 통과 |
 
 ```text
 C:\Users\ari30\research\2026_summer_research

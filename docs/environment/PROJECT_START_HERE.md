@@ -2,13 +2,14 @@
 
 최종 갱신: 2026-08-17 KST
 
-> **현재 진입점 — 2026-08-17 D9 실행 Gate 준비 완료:** D8 identity 확인
+> **현재 진입점 — 2026-08-17 D9 실행 승인·preflight 완료:** D8 identity 확인
 > 잔여 19건만 `beam=100`, `retry_beam=400`으로 한 차례 재시도하는 exact-ID
-> package·재개 runner·무병합 감사기를 고정했다. PowerShell 5.1 검사와 실제
-> `-PreflightOnly`가 통과했고 D: 출력은 아직 생성하지 않았다. 0.1초 미만 25건,
-> 전체연도, 기존 r3·6-tier·DB v1은 범위 밖이다. 다음은
-> `docs/decisions/RESULT_db_v1_recovery_D9_gate_20260817.md`를 읽고 해시 결속
-> 실행을 승인할지 결정하는 한 단계뿐이다.
+> package·재개 runner·무병합 감사기를 고정했고 연구자 `ari30`의 해시 결속
+> 승인을 기록했다. PowerShell 5.1 검사와 승인 포함 `-PreflightOnly`가
+> `passed_ready_to_execute`로 통과했으며 D: 출력은 아직 생성하지 않았다.
+> 0.1초 미만 25건, 전체연도, 기존 r3·6-tier·DB v1은 범위 밖이다. 다음은
+> `docs/decisions/RESULT_db_v1_recovery_D9_gate_20260817.md`의 단일 D9 runner를
+> 실행하는 것이다.
 
 > **현재 진입점 — 2026-08-17 D8 회수 가능성 감사 완료:** D6의 계속 미정렬
 > 19건은 원 JSON·동결 CSV·LAB·canonical/r3/H WAV identity를 확인해 D9의 한

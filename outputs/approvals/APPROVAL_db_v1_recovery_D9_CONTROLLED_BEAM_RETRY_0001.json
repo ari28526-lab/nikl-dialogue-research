@@ -1,0 +1,19 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_approval.v1",
+  "status": "approved",
+  "shard_id": "D9_CONTROLLED_BEAM_RETRY_0001",
+  "authorization": "materialize_19_and_run_one_controlled_beam_retry_no_merge",
+  "execution_contract_sha256": "fbfa88151de78b580a7987f159eceb7fdb689c199409cffd778021dfb840a830",
+  "run_shard_sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157",
+  "mfa_config_sha256": "a9b184843a8e3c1763f195c910f25c946313068887e46928babfd52d53502923",
+  "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001",
+  "approved_row_count": 19,
+  "beam": 100,
+  "retry_beam": 400,
+  "one_run_only": true,
+  "source_or_r3_body_mutation_allowed": false,
+  "automatic_merge_allowed": false,
+  "approved_by": "ari30",
+  "approved_at": "2026-08-17T21:36:36+09:00",
+  "note": "Explicit researcher authorization recorded after the frozen D9 package was reviewed."
+}

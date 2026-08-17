@@ -63,10 +63,18 @@ D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001
   D: 여유 63.4 GiB를 확인하고 `passed_gate_closed`로 끝났다.
 - preflight는 D: 파일 복사와 MFA 실행을 모두 0건으로 유지했다.
 
-현재는 연구자 승인 전이다. 승인은 run shard·설정·execution contract 세 해시,
-19건, 100/400, 단 한 번 실행, 무병합 조건에 결속한다. 승인 후에도 결과는
-`words`·`phones` tier와 exact-ID coverage를 감사한 뒤 별도 채택 Gate에서만
-6-tier/DB v1에 반영할 수 있다.
+연구자 `ari30`은 2026-08-17 21:36 KST에 run shard·설정·execution contract
+세 해시, 19건, 100/400, 단 한 번 실행, 무병합 조건을 명시 승인했다. 승인 파일은
+다음이다.
+
+```text
+outputs/approvals/APPROVAL_db_v1_recovery_D9_CONTROLLED_BEAM_RETRY_0001.json
+```
+
+승인 결속 preflight는 `approval_verified=true`와
+`passed_ready_to_execute`로 통과했다. 이 검사는 D: 파일을 만들거나 MFA를
+실행하지 않았다. 실행 결과는 `words`·`phones` tier와 exact-ID coverage를
+감사한 뒤 별도 채택 Gate에서만 6-tier/DB v1에 반영할 수 있다.
 
 ## 논문 방법론에 남길 요지
 

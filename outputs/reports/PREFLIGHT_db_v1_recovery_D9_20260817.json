@@ -1,7 +1,7 @@
 {
   "schema_version": "research_db_v1_recovery_d9_preflight.v1",
-  "status": "passed_gate_closed",
-  "recorded_at": "2026-08-17T20:56:43+09:00",
+  "status": "passed_ready_to_execute",
+  "recorded_at": "2026-08-17T21:36:59+09:00",
   "shard_id": "D9_CONTROLLED_BEAM_RETRY_0001",
   "rows": 19,
   "year_counts": {
@@ -14,7 +14,7 @@
   },
   "beam": 100,
   "retry_beam": 400,
-  "approval_verified": false,
+  "approval_verified": true,
   "D_free_bytes": 68096036864,
   "minimum_D_free_bytes": 10737418240,
   "output_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001",
@@ -25,14 +25,14 @@
   "run_shard_sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157",
   "mfa_config_sha256": "a9b184843a8e3c1763f195c910f25c946313068887e46928babfd52d53502923",
   "runtime": {
-    "recorded_at": "2026-08-17T20:56:43+09:00",
-    "git_commit": "5a78471978b8ff8f4cb47beb9aed86d6c03d7518",
+    "recorded_at": "2026-08-17T21:36:59+09:00",
+    "git_commit": "304918c0e543be46658f84ebe4fc5d651231eefa",
     "python": {
       "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
       "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
       "implementation": "CPython"
     },
     "platform": "Windows-11-10.0.26200-SP0",
-    "pid": 4604
+    "pid": 4972
   }
 }
