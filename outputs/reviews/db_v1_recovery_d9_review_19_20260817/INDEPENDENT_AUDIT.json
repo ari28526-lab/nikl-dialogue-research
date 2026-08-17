@@ -1,0 +1,24 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_review_audit.v1",
+  "status": "passed_flat_review_bundle_no_adoption",
+  "recorded_at": "2026-08-17T22:34:37+09:00",
+  "rows": 19,
+  "source_overlap_rows": 4,
+  "file_counts": {
+    "wav": 19,
+    "lab": 19,
+    "textgrid": 19
+  },
+  "automatic_adoption_performed": false,
+  "runtime": {
+    "recorded_at": "2026-08-17T22:34:37+09:00",
+    "git_commit": "5df4775b7190548252ef9d432f0d85db3a6322bf",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 3236
+  }
+}

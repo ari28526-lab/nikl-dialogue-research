@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_db_v1_recovery_D9_completed_20260817.md](RESULT_db_v1_recovery_D9_completed_20260817.md) — 동일 모델·사전·LAB과 beam 100/retry 400 한 차례 격리 실행으로 19/19 회수, flat 검토 묶음·독립 감사 완료; 본체·6-tier·DB v1 채택은 별도 Gate
 - [RESULT_db_v1_recovery_D9_gate_20260817.md](RESULT_db_v1_recovery_D9_gate_20260817.md) — D8 identity 확인 잔여 19건만 beam 100/retry 400으로 한 차례 격리 재시도하는 해시 결속 계약·재개 runner·무병합 감사와 승인 전 Gate
 
 - [RESULT_db_v1_recovery_D8_feasibility_20260817.md](RESULT_db_v1_recovery_D8_feasibility_20260817.md) — 미정렬 19건은 원 JSON·CSV·LAB·canonical/r3/H WAV identity를 확인해 한 차례 D9 후보로 고정하고, 0.1초 미만 25건은 H 백업 음원까지 같은 짧은 원자료 조각임을 확인; 읽기 전용 감사·Gate 통과

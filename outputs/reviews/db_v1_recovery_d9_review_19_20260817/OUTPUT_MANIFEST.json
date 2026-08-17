@@ -1,0 +1,344 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_review_manifest.v1",
+  "status": "passed_flat_review_bundle_no_adoption",
+  "recorded_at": "2026-08-17T22:27:25+09:00",
+  "counts": {
+    "rows": 19,
+    "wav": 19,
+    "lab": 19,
+    "textgrid": 19
+  },
+  "source_overlap_rows": 4,
+  "inputs": {
+    "D9_done": {
+      "path": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001\\state\\MFA_DONE.json",
+      "bytes": 827,
+      "sha256": "8ee6e78613c3619a532025df16548082cee49bdd43cec6466c8c5408798b454a"
+    },
+    "D9_audit": {
+      "path": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001\\state\\MFA_AUDIT.json",
+      "bytes": 13793,
+      "sha256": "56ca39bdcdd7894390244f5266e77e47dcd9dc87c1b4cc206bab91bf90ea5803"
+    },
+    "D9_run_shard": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d9_gate_20260817\\D9_RUN_SHARD.json",
+      "bytes": 22220,
+      "sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157"
+    },
+    "D8_feasibility": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d8_feasibility_audit_20260817\\D8_EXACT_ID_FEASIBILITY.json",
+      "bytes": 232793,
+      "sha256": "527d3d5c8543ead581a728642cffdf2752fb5a5db265168d8eac147fd4e3a305"
+    }
+  },
+  "files": [
+    {
+      "path": "01_2020_SDRW2000000115.1.1.149.wav",
+      "bytes": 42540,
+      "sha256": "f4590aa2b69cbe82a5023b5a9ec5b992ce33993c7879e216c1b5d4bfebce26c1"
+    },
+    {
+      "path": "01_2020_SDRW2000000115.1.1.149.lab",
+      "bytes": 27,
+      "sha256": "45d84cb1b82229331b30f0bda2f5666268a163fdab17b54d74bb1655c6680312"
+    },
+    {
+      "path": "01_2020_SDRW2000000115.1.1.149.TextGrid",
+      "bytes": 3060,
+      "sha256": "ae2edb2563be3fa036738d7a9fdc0683c22cbb349f2d1293ab9bc3a07ec9ac3b"
+    },
+    {
+      "path": "02_2020_SDRW2000000180.1.1.67.wav",
+      "bytes": 97836,
+      "sha256": "14dab4391ad23394da0038c27a1edbd7c018ad139fd6141c03441f7707a21693"
+    },
+    {
+      "path": "02_2020_SDRW2000000180.1.1.67.lab",
+      "bytes": 69,
+      "sha256": "740fc40ede941aec02ff065a324868c380f86d3b2f49727134ebf075bf121ae5"
+    },
+    {
+      "path": "02_2020_SDRW2000000180.1.1.67.TextGrid",
+      "bytes": 6539,
+      "sha256": "e1667d041c626964067c3800ba669a4b56eaaf1652a00ed08820bd1b4fdae47d"
+    },
+    {
+      "path": "03_2021_SDRW2100000001.1.1.131.wav",
+      "bytes": 22444,
+      "sha256": "1c2346188ec95c63d13b1e9afbf70e3d4d6ab1ea3a401546ba1f426214df7f01"
+    },
+    {
+      "path": "03_2021_SDRW2100000001.1.1.131.lab",
+      "bytes": 35,
+      "sha256": "49386b54321217cf8d10040e7d191b40a346431821ab74bcc68d9a7537a4648b"
+    },
+    {
+      "path": "03_2021_SDRW2100000001.1.1.131.TextGrid",
+      "bytes": 3442,
+      "sha256": "d77eeaa0c299705374a2712c287f4894431d088a96585842b58ce9152d182d32"
+    },
+    {
+      "path": "04_2021_SDRW2100000023.1.1.432.wav",
+      "bytes": 59884,
+      "sha256": "ccbd11589cef0b988ebc5f200e661c959d68da7dcfd180044ce8694d1dcba61f"
+    },
+    {
+      "path": "04_2021_SDRW2100000023.1.1.432.lab",
+      "bytes": 57,
+      "sha256": "89b0d15de96f1127554b1c68054a5a3f474801b2e64151f25291f4e3d8c6b997"
+    },
+    {
+      "path": "04_2021_SDRW2100000023.1.1.432.TextGrid",
+      "bytes": 5146,
+      "sha256": "b8df324ce3096f4035637afed582dd8cebc218045a8b83e8090931bda1e2acb2"
+    },
+    {
+      "path": "05_2021_SDRW2100000024.1.1.234.wav",
+      "bytes": 32044,
+      "sha256": "12ba00262686d584c708e4757f0be2db3e6f3ff984e69dce6700fee7632389c7"
+    },
+    {
+      "path": "05_2021_SDRW2100000024.1.1.234.lab",
+      "bytes": 65,
+      "sha256": "e20b3c4a29f4d12c9dbc1997693c651161c467f71e7ea59ecfbb30b88e34b643"
+    },
+    {
+      "path": "05_2021_SDRW2100000024.1.1.234.TextGrid",
+      "bytes": 5450,
+      "sha256": "e9f9b757f9753cabb2b473185e404f4d31d82fd318052eccb80567c3d81610ef"
+    },
+    {
+      "path": "06_2021_SDRW2100000040.1.1.21.wav",
+      "bytes": 112040,
+      "sha256": "ccc6525c89a1a2a5554edaea94e61d45a261c5761e92864e120228041bf78310"
+    },
+    {
+      "path": "06_2021_SDRW2100000040.1.1.21.lab",
+      "bytes": 98,
+      "sha256": "2811c2b645e19ba35abc5afe897ca3646dc32418a526a978ff2851082db3a855"
+    },
+    {
+      "path": "06_2021_SDRW2100000040.1.1.21.TextGrid",
+      "bytes": 8332,
+      "sha256": "d9cf294f35e0c634bba32a7704b64064934b71d7560a85d3a92f6354a03f1f59"
+    },
+    {
+      "path": "07_2021_SDRW2100000044.1.1.248.wav",
+      "bytes": 112360,
+      "sha256": "aab14546b1a23ae166f8b2bb3bb5f6b86fbc335c758fda535443293c8111cdd1"
+    },
+    {
+      "path": "07_2021_SDRW2100000044.1.1.248.lab",
+      "bytes": 70,
+      "sha256": "8dda5c8c94655144ae10cfcdcbbf980f3c9790b20e5a15957fe09e33af25a614"
+    },
+    {
+      "path": "07_2021_SDRW2100000044.1.1.248.TextGrid",
+      "bytes": 6438,
+      "sha256": "88f8fc1abfb15b51358369298e9d159c25001f1a4e4dae921f858e2d316d558c"
+    },
+    {
+      "path": "08_2022_SDRW2200000019.1.1.279.wav",
+      "bytes": 46124,
+      "sha256": "6873c4aa5cb37c04cccb36eb38d0c23d5a8c435d4d491c1c64156ad18af77589"
+    },
+    {
+      "path": "08_2022_SDRW2200000019.1.1.279.lab",
+      "bytes": 47,
+      "sha256": "2f865c92085604f3c14225cc2b2d5fb63498647100fc997c90ec49d7fa1807cf"
+    },
+    {
+      "path": "08_2022_SDRW2200000019.1.1.279.TextGrid",
+      "bytes": 4356,
+      "sha256": "f4379f5004049c08e2c40ef3454e8b2726ceefad5cb8b0fc63bd95c9248b089f"
+    },
+    {
+      "path": "09_2022_SDRW2200000033.1.1.137.wav",
+      "bytes": 113644,
+      "sha256": "4bd1c15d4d88b956ca7314b2a5fc2caeee521fb437e3be56ddd164feb88fe925"
+    },
+    {
+      "path": "09_2022_SDRW2200000033.1.1.137.lab",
+      "bytes": 115,
+      "sha256": "abcbc9738fb7ec127a28a9e62bbeedf08188fc99faa31890adc139a2ca9b5bda"
+    },
+    {
+      "path": "09_2022_SDRW2200000033.1.1.137.TextGrid",
+      "bytes": 9914,
+      "sha256": "2a93f63088e24ec2c208c7c55c647200659bedb6735771bfc8d86a494a448b04"
+    },
+    {
+      "path": "10_2022_SDRW2200000051.1.1.61.wav",
+      "bytes": 39404,
+      "sha256": "c45116d202f47ce62f419a9ed69da0f16232c0565599eec1af7dd14251ebf070"
+    },
+    {
+      "path": "10_2022_SDRW2200000051.1.1.61.lab",
+      "bytes": 44,
+      "sha256": "57101799711c6ea38ca60f9ea363dd0512029c9084d453e6497b8bc920d13e07"
+    },
+    {
+      "path": "10_2022_SDRW2200000051.1.1.61.TextGrid",
+      "bytes": 4636,
+      "sha256": "58c204309374cfedd7659253dcbeca65fb572e132e1992e248bd40aec5f13c82"
+    },
+    {
+      "path": "11_2023_SDRW2300000013.1.1.213.wav",
+      "bytes": 131948,
+      "sha256": "8f2878c325e6ae187bd970474632d883d6206ad07eea1035a99f53755adfb1f9"
+    },
+    {
+      "path": "11_2023_SDRW2300000013.1.1.213.lab",
+      "bytes": 108,
+      "sha256": "ee8415bcbf1fb37a712d97e41ee19b97af23291f4cf58b0eb13fadc24ce25a89"
+    },
+    {
+      "path": "11_2023_SDRW2300000013.1.1.213.TextGrid",
+      "bytes": 9499,
+      "sha256": "6a9643190ea941d54a7a0aa2c8248c88ebd75dc0e357981930aae30c53f7e647"
+    },
+    {
+      "path": "12_2023_SDRW2300000085.1.1.299.wav",
+      "bytes": 26540,
+      "sha256": "05bb0e08f95b15c0c641342c66908972338b15a94646992a11b6e9b53b6a5ac1"
+    },
+    {
+      "path": "12_2023_SDRW2300000085.1.1.299.lab",
+      "bytes": 39,
+      "sha256": "d48537ad0bfa6d6d781b5c5580181e117d54af94accc547f4ed2e3350ab4188d"
+    },
+    {
+      "path": "12_2023_SDRW2300000085.1.1.299.TextGrid",
+      "bytes": 3465,
+      "sha256": "ca63048ede38dcc839b8aaea51a62ac04b655e422c165be5710824e906d87234"
+    },
+    {
+      "path": "13_2023_SDRW2300000164.1.1.286.wav",
+      "bytes": 62092,
+      "sha256": "f9ca48899cc52237fe83e4f0540b3165ddbbb6cf2e53b1fd001bf97d9ce10c11"
+    },
+    {
+      "path": "13_2023_SDRW2300000164.1.1.286.lab",
+      "bytes": 65,
+      "sha256": "e8b3f92edd62860edede64b28262b4e0724167d62803a1e1bacfcc54df8158fc"
+    },
+    {
+      "path": "13_2023_SDRW2300000164.1.1.286.TextGrid",
+      "bytes": 5830,
+      "sha256": "9396950f93aa8fcd0b291486b51ddcdab4effc13d43d81cdeb59f172d24484b0"
+    },
+    {
+      "path": "14_2023_SDRW2300000169.1.1.115.wav",
+      "bytes": 117996,
+      "sha256": "35a21100fe2b74a016708eeb49848dd0e7fa1dab5f0ede2c817b1b9d40f441fd"
+    },
+    {
+      "path": "14_2023_SDRW2300000169.1.1.115.lab",
+      "bytes": 85,
+      "sha256": "05c272d7508729ab023284ab0cae7abeffec95f2a4f15953737f717d84986ab9"
+    },
+    {
+      "path": "14_2023_SDRW2300000169.1.1.115.TextGrid",
+      "bytes": 6935,
+      "sha256": "2fe05fa1903fb89259932a463ddaa355854b5e1845615b6a7d3c7fbd6b19e19e"
+    },
+    {
+      "path": "15_2023_SDRW2300000219.1.1.194.wav",
+      "bytes": 100524,
+      "sha256": "e3d360ec15245644418e0b0149e92bf681b1e68cb7a97dc09dbd5f9f3b294054"
+    },
+    {
+      "path": "15_2023_SDRW2300000219.1.1.194.lab",
+      "bytes": 90,
+      "sha256": "30ce63a864d19039062d226b212bd13576dc690bb83b7622227a2b8fcf57161a"
+    },
+    {
+      "path": "15_2023_SDRW2300000219.1.1.194.TextGrid",
+      "bytes": 8306,
+      "sha256": "35bc52535cf11d608d744cd860bbc3aba3fb5e91cefef3e67a821020d4a5fa52"
+    },
+    {
+      "path": "16_2024_SARW2400000020.1.1.11.wav",
+      "bytes": 102442,
+      "sha256": "bf13821071f34a13f69d77e1e7fc93337e26ef731a6602c24cca34e78bb92abc"
+    },
+    {
+      "path": "16_2024_SARW2400000020.1.1.11.lab",
+      "bytes": 118,
+      "sha256": "b4fa1422085f93de466fdd7290643e2cae043a98fe884f1e764fa3395f748e4f"
+    },
+    {
+      "path": "16_2024_SARW2400000020.1.1.11.TextGrid",
+      "bytes": 10925,
+      "sha256": "6f2c7aa1cb31f5c06a38f3f19645740272a4e20b7260a8871894e3dfa4565936"
+    },
+    {
+      "path": "17_2024_SARW2400000033.1.1.16.wav",
+      "bytes": 112148,
+      "sha256": "93e94bbd6b83814d0dfc33196ae77e11cf5488cfa9e678bf825bf2b6fd38fe93"
+    },
+    {
+      "path": "17_2024_SARW2400000033.1.1.16.lab",
+      "bytes": 127,
+      "sha256": "f5e6af95151233a9794dbc6013708ca7bc564484818798e23b2c5f464bf682a9"
+    },
+    {
+      "path": "17_2024_SARW2400000033.1.1.16.TextGrid",
+      "bytes": 10142,
+      "sha256": "3e51834cbc8a0c6c563c107ecee6a6c96c9cf79a4aa3548337ef57faa325b239"
+    },
+    {
+      "path": "18_2024_SARW2400000095.1.1.98.wav",
+      "bytes": 172996,
+      "sha256": "f1da0ef200721bc4d4a8462556c3ba55b37d4087c4384d1668f7a0d4151e111d"
+    },
+    {
+      "path": "18_2024_SARW2400000095.1.1.98.lab",
+      "bytes": 114,
+      "sha256": "49de785318f93f11e692aa8a777ba659f748704a3150f3e2d9b9f32db66b835d"
+    },
+    {
+      "path": "18_2024_SARW2400000095.1.1.98.TextGrid",
+      "bytes": 9837,
+      "sha256": "21244be2ba921462d3ee8cdd296ac08a2e5b9a11568c3edcc800cc331330e6a8"
+    },
+    {
+      "path": "19_2025_SARW2500000012.1.1.97.wav",
+      "bytes": 102694,
+      "sha256": "db3810bd960ddc1f061ff628f52c590fb7f2cbe9b70017f493f43b23a2880542"
+    },
+    {
+      "path": "19_2025_SARW2500000012.1.1.97.lab",
+      "bytes": 104,
+      "sha256": "8d90760d070a34d127602d5e5263b286a5872df03e27fb9b4414c1d0834d08b9"
+    },
+    {
+      "path": "19_2025_SARW2500000012.1.1.97.TextGrid",
+      "bytes": 9041,
+      "sha256": "3a4bb6c17d9e6601568998257309beb8d9a1f99967cbebbe7e8719bc478fea1d"
+    },
+    {
+      "path": "00_REVIEW_19.json",
+      "bytes": 26564,
+      "sha256": "6dc4285d134a3227fa2e080d478e89eed61a07fcbf030e4447993a09281c4ccc"
+    },
+    {
+      "path": "00_READ_ME_FIRST.md",
+      "bytes": 719,
+      "sha256": "7a8620eb3f949c616593c4d8c60bb476fb7b2f15484e09e723209bfe206146f8"
+    }
+  ],
+  "automatic_adoption_performed": false,
+  "spreadsheet_status": "not_created_official_artifact_dependency_loader_unavailable",
+  "runtime": {
+    "recorded_at": "2026-08-17T22:27:25+09:00",
+    "git_commit": "5df4775b7190548252ef9d432f0d85db3a6322bf",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 18220
+  }
+}

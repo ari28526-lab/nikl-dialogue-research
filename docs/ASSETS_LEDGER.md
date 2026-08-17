@@ -46,7 +46,7 @@
 | `D:\mfa_eojeol` | 입력·정렬 계약, marker, log, lock | 2020–2022 r2 marker·계약 보존; r2 신규 실행 Gate 차단, r3 production namespace 분리 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809` | r3 연도별 corpus·contract·temp/DB·log·marker·lock | 2020–2025 `ALIGN_DONE`·독립 QC passed. 2025 DB 6,702,276,608 bytes·SHA `5d7eab5a...c0e6`, 입력 458,413 = 성공 457,611 + 승인 후속 802. 여섯 연도 MFA·DB·완성 6-tier 재실행·수동 삭제·legacy 재사용 금지 |
 | `D:\mfa_eojeol\r3\common_pron_mfa_r3_20260809\research_6tier` | 최종 r3 6-tier TextGrid·연도별 gzip 동반표 | 2020 782,432·2021 1,206,862·2022 751,383·2023 494,228·2024 593,530·2025 457,611 TextGrid; 여섯 연도 모두 coverage 100%·hard failure 0·DB 표본 semantic/byte 24/24, 연도별 `QC_STATE.json` passed |
-| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | D8 확인 미정렬 19건의 한 차례 beam 100/retry 400 격리 재시도 예정 root | 연구자 승인·preflight 완료, 현재 미생성; 25개 초단편·전체연도·자동 병합 범위 밖 |
+| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | D8 확인 미정렬 19건의 한 차례 beam 100/retry 400 격리 재시도 root | 실행 완료: TextGrid 19/19·누락 0·707.031초; 25개 초단편·전체연도 미실행, 자동 병합 0 |
 | `D:\mfa_tmp\2020\2020.db` | 2020 공통 Jamo r2 보존 정렬 DB | 868,187 정렬 성공·363 승인 미정렬; Gate B 근거로 보존 |
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
 | `D:\mfa_tmp\2022\2022.db` | 2022 공통 Jamo r2 보존 정렬 DB | 864,690 정렬 산출; 발음 입력 문제 발견 근거로 읽기 전용 보존 |
@@ -216,3 +216,15 @@ D8 SQLite는 로컬 조회용이며 Git에는 넣지 않는다. exact-ID 판정 
 manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대형 평면 PCM 폴더를
 반복 열거하지 않고, 기존 direct-stat 장부와 세션 구조 H WAV의 payload/길이를
 결합해 검사했다.
+
+## 2026-08-17 recovery D9 실행·검토 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D9_CONTROLLED_BEAM_RETRY_0001` | 19건의 격리 beam 100/retry 400 실행·DB·2-tier TextGrid·로그·marker | `completed_controlled_retry_no_merge`; TextGrid 19/19, 누락 0, 본체 채택 0 |
+| `outputs\reviews\db_v1_recovery_d9_review_19_20260817` | 번호별 WAV·LAB·2-tier TextGrid와 JSON 검토표 | 독립 감사 `passed_flat_review_bundle_no_adoption`; 19세트, overlap 4건 표시 |
+| `outputs\reports\RESULT_db_v1_recovery_D9_20260817.json` | 실행 수량·계약 SHA·검토 묶음 SHA·안전 상태 정본 | `completed_controlled_retry_review_ready_no_adoption` |
+
+WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
+manifest와 생성·감사 코드는 Git으로 추적한다. 연구 음성의 Dropbox 복사는 아직
+하지 않았다.

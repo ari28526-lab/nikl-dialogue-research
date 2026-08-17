@@ -3713,3 +3713,21 @@ shard 2–23을 재개하는 것이다.
 - 승인 포함 Windows PowerShell 5.1 `-PreflightOnly`가
   `passed_ready_to_execute`, `approval_verified=true`로 통과했다. 이 시점에도
   D9 D: root 생성과 MFA 실행은 0건이며 다음은 사용자의 단일 장시간 runner다.
+
+### 2026-08-17 — D9 19건 통제 재정렬과 검토 묶음 완료
+
+- 승인된 exact-ID 19건만 별도 D: namespace에서 beam 100/retry 400으로 한 번
+  실행했다. MFA는 707.031초에 끝났고 `words`·`phones` TextGrid 19개가 모두
+  생성되어 누락은 0건이다.
+- 음향모델·공통발음 r3 사전·G2P provenance·LAB는 바꾸지 않았다. 기본 탐색에서
+  미정렬이던 19건이 확장 탐색에서 회수된 것은 탐색 폭 민감성의 증거로 기록하되,
+  경계 타당성이나 실제 발음 실현의 자동 판정으로 사용하지 않는다.
+- 19개의 WAV·LAB·TextGrid를 번호가 같은 flat 검토 묶음으로 만들었다. 복사 SHA,
+  WAV–TextGrid 길이, exact-ID와 `words`·`phones` tier 독립 감사가 통과했다.
+  source overlap 4건은 단일 화자 음향분석 자동 승인 대상이 아님을 표시했다.
+- r3 본체·연구용 6-tier·DB v1·원자료는 변경하지 않았다. 0.1초 미만 25건과
+  전체연도도 실행하지 않았다. 다음은 19건 연구자 검토 뒤 별도 채택 Gate이며,
+  같은 MFA를 다시 반복하지 않는다.
+- 공식 spreadsheet 의존성 loader가 이 작업에 제공되지 않아 XLSX는 우회 생성하지
+  않았고 `00_REVIEW_19.json`과 manifest를 권위 기록으로 남겼다. 민감한 연구 음성의
+  Dropbox 복사는 정확한 범위와 대상 경로의 별도 승인을 받을 때까지 보류했다.

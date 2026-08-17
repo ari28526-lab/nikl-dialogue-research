@@ -1,0 +1,50 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_result.v1",
+  "status": "completed_controlled_retry_review_ready_no_adoption",
+  "recorded_at": "2026-08-17T22:34:37+09:00",
+  "shard_id": "D9_CONTROLLED_BEAM_RETRY_0001",
+  "scope": {
+    "expected_exact_ids": 19,
+    "textgrid_present": 19,
+    "textgrid_missing": 0,
+    "source_overlap_flagged": 4,
+    "beam": 100,
+    "retry_beam": 400,
+    "mfa_runtime_seconds": 707.031
+  },
+  "frozen_contracts": {
+    "run_shard_sha256": "73b65ca9892133da3c84bb71f9d2a17521b2314c682006b6a66f367921563157",
+    "mfa_config_sha256": "a9b184843a8e3c1763f195c910f25c946313068887e46928babfd52d53502923",
+    "execution_contract_sha256": "fbfa88151de78b580a7987f159eceb7fdb689c199409cffd778021dfb840a830"
+  },
+  "d9_evidence": {
+    "root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D9_CONTROLLED_BEAM_RETRY_0001",
+    "done_sha256": "8ee6e78613c3619a532025df16548082cee49bdd43cec6466c8c5408798b454a",
+    "audit_sha256": "56ca39bdcdd7894390244f5266e77e47dcd9dc87c1b4cc206bab91bf90ea5803"
+  },
+  "review_bundle": {
+    "root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817",
+    "manifest_sha256": "c6e5873daef5f305eeaf27791c0d7435657aeac8af72b41d3d22731e6d10fd99",
+    "independent_audit_sha256": "72ff9681a0816a10d6c051714b1e340f21b31a9d9298cae98c4dbecdb7f4fe31",
+    "review_json_sha256": "6dc4285d134a3227fa2e080d478e89eed61a07fcbf030e4447993a09281c4ccc",
+    "readme_sha256": "7a8620eb3f949c616593c4d8c60bb476fb7b2f15484e09e723209bfe206146f8",
+    "file_counts": {
+      "wav": 19,
+      "lab": 19,
+      "textgrid": 19
+    },
+    "audit_status": "passed_flat_review_bundle_no_adoption",
+    "spreadsheet_status": "not_created_official_artifact_dependency_loader_unavailable"
+  },
+  "safety": {
+    "automatic_main_body_merge_performed": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "source_data_modified": false,
+    "full_year_mfa_run": false,
+    "under_0_1_second_candidates_run": false,
+    "dropbox_copy_performed": false
+  },
+  "interpretation": "With the acoustic model, pronunciation dictionary, and LAB frozen, increasing only beam and retry_beam recovered all 19 alignments. This is evidence of search-width sensitivity, not automatic evidence of linguistic boundary validity or single-speaker acoustic suitability.",
+  "next_gate": "Researcher review of the 19 recovered alignments; adoption, six-tier enrichment, and DB v1 integration remain separately closed."
+}
