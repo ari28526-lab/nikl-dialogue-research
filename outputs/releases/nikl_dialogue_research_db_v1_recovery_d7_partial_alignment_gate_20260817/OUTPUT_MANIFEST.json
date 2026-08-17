@@ -1,0 +1,39 @@
+{
+  "schema_version": "research_db_v1_recovery_d7_output_manifest.v1",
+  "recorded_at": "2026-08-17T18:06:40+09:00",
+  "inputs": {
+    "dropbox_review_csv_sha256": "add9a6081924e45ae15abaf7b2f0b9349dfbf67a03fe78b002ae17e5060adca8",
+    "d6_decision_table_sha256": "9882ee3ade7c234a173bbbebcf58e355bc2f41111908e510c23b04a576f082e7",
+    "d6_review_manifest_sha256": "08a79f2b0290cde0d1d4cf3d8003a2a7a32bd32766c98a9838f1b46624fa7650"
+  },
+  "files": [
+    {
+      "relative_path": "D7_EXACT_ID_DECISIONS.json",
+      "bytes": 20232,
+      "sha256": "a307534c9fda80673c8f35fcec647b547c56f68943db8feb6b81320931517586"
+    },
+    {
+      "relative_path": "D7_GATE.json",
+      "bytes": 723,
+      "sha256": "9d9f9ea5bcddf6ab781b626dcbeb1653ffd6eced1ee39b6eb8a4c0c6943afe88"
+    },
+    {
+      "relative_path": "D7_PARTIAL_ALIGNMENT_PRESERVATION.sqlite",
+      "bytes": 45056,
+      "sha256": "997237da96fa9caa394649178ed5666a5b26ff864eddef745e9dec8a5f92fba9"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 587,
+      "sha256": "6023799c9f6d35bac188a4e664af891d45012be2ad975afedd5d215c0c570083"
+    },
+    {
+      "relative_path": "RESEARCHER_REVIEW_SOURCE.csv",
+      "bytes": 13576,
+      "sha256": "add9a6081924e45ae15abaf7b2f0b9349dfbf67a03fe78b002ae17e5060adca8"
+    }
+  ],
+  "implementation": {
+    "builder_sha256": "b8cace4c545ab3015b4319a50821f80beb21425213b34f479f8acd5c0bcfe509"
+  }
+}

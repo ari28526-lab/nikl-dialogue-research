@@ -1,0 +1,21 @@
+{
+  "schema_version": "research_db_v1_recovery_d7_gate.v1",
+  "status": "closed_researcher_review_recorded_no_main_body_adoption",
+  "recorded_at": "2026-08-17T18:06:40+09:00",
+  "counts": {
+    "total": 11,
+    "excluded_from_main_body": 11,
+    "partial_alignment_available": 6,
+    "noise_hold": 3,
+    "transcript_segment_missing": 1,
+    "transcript_correction_candidate": 1
+  },
+  "safety": {
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "diagnostic_wav_lab_textgrid_deleted": false
+  },
+  "next_gate": "D8 exact-ID recovery feasibility for the 19 alignment-missing and 25 short/missing-PCM records"
+}

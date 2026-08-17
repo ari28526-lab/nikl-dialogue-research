@@ -3643,3 +3643,18 @@ shard 2–23을 재개하는 것이다.
   `passed_gate_closed_pending_researcher_review_and_separate_approval`로 종료했다.
 - r3 본체·연구용 6-tier·DB v1 수정과 자동 병합은 0건이다. 공식 spreadsheet
   loader가 현재 작업에 등록되지 않아 XLSX는 보류하고 권위 CSV만 만들었다.
+
+### 2026-08-17 — D7 연구자 검토 반영과 부분 정렬 별도 보존
+
+- Dropbox 검토표의 11개 메모를 바이트 동일 증거로 보존하고 exact-ID JSON과
+  별도 recovery SQLite로 구조화했다. 원 검토 CSV의 `decision=pending`을 덮어쓰지
+  않았으며 사용자 승인 해석을 새 계약에 기록했다.
+- 11건 모두 본체 정렬 성공과 alignment/analysis 범위에서는 제외했다. 동시에
+  D5/D6 WAV·LAB·2-tier TextGrid는 삭제하지 않았다.
+- 분류는 부분 정렬 가능 6, 잡음 보존 3, 전사 일부 누락 1, 전사 수정 후보 1이다.
+  부분 정렬 6건은 별도 DB에서 검색 가능하지만 본체 성공 수에는 포함하지 않는다.
+- 독립 감사가 JSON/SQLite 11행, 원 메모, 파일 SHA, 분류 수, 무병합·무삭제 Gate를
+  재검증해 `passed_excluded_from_main_body_partial_artifacts_preserved`로 끝났다.
+- 다음 단계는 전체연도 또는 D5 반복 MFA가 아니라 19+25건의 원자료 회수 가능성
+  읽기 전용 감사다. 회수 후보만 한 차례 통제 exact-ID MFA를 거친 뒤 recovery를
+  종료하고 DB v1 RC1과 실제 표적 추출·manual overlay 인프라로 이동한다.

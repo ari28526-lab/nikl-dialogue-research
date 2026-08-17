@@ -1,6 +1,15 @@
 # 프로젝트 시작 안내 — 현재 정본
 
-최종 갱신: 2026-08-15 KST
+최종 갱신: 2026-08-17 KST
+
+> **현재 진입점 — 2026-08-17 D7 부분 정렬 보존 완료:** 연구자 검토 11건은
+> 모두 r3 본체 정렬 성공에서 제외했다. 진단 WAV·LAB·TextGrid는 삭제하지 않았고,
+> 6건은 `partial_alignment_available`, 3건은 잡음 보존, 2건은 전사 회수·수정
+> 후보로 별도 JSON·SQLite에 기록했다. 독립 감사는
+> `passed_excluded_from_main_body_partial_artifacts_preserved`다. 다음 한 단계는
+> MFA가 아니라 19+25건 원자료 회수 가능성 읽기 전용 감사다. 먼저
+> `docs/decisions/RESULT_db_v1_recovery_D7_partial_alignment_preservation_20260817.md`와
+> `docs/decisions/PLAN_after_D7_recovery_to_DB_v1_RC1_20260817.md`를 읽는다.
 
 > **현재 진입점 — D6 사후 분기 Gate 완료:** D5 성공 11건은 한 폴더의
 > WAV·LAB·2-tier TextGrid와 검토 CSV로 모았고, 미정렬 19건은 보존 DB에서

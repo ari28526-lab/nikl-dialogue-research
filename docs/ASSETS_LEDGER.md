@@ -190,3 +190,13 @@ D5의 격리 D: root에는 입력 WAV/LAB 각 30개, 진단 TextGrid 11개, 미�
 
 공식 XLSX는 현재 작업에 `load_workspace_dependencies`가 등록되지 않아 만들지
 않았다. CSV가 권위 정본이며 임의 의존성·`openpyxl` 우회는 하지 않았다.
+
+## 2026-08-17 recovery D7 부분 정렬 보존 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d7_partial_alignment_gate_20260817` | Dropbox 검토 원본, 11건 exact-ID 결정 JSON, 별도 부분 정렬 SQLite와 Gate | 독립 감사 통과; 본체 제외 11, 부분 정렬 보존 6, 파일 삭제·자동 병합 0 |
+| `outputs\reports\RESULT_db_v1_recovery_D7_20260817.json` | D7 분류와 안전 상태 요약 | `closed_researcher_review_recorded_no_main_body_adoption` |
+
+D6의 11개 WAV·LAB·TextGrid는 기존 검토 root에 유지한다. D7 SQLite는 경로와
+SHA를 참조할 뿐 음성·TextGrid를 중복 복사하거나 본체 DB에 삽입하지 않는다.

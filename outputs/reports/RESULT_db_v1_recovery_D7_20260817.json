@@ -1,0 +1,32 @@
+{
+  "schema_version": "research_db_v1_recovery_d7_result.v1",
+  "status": "closed_researcher_review_recorded_no_main_body_adoption",
+  "recorded_at": "2026-08-17T18:06:40+09:00",
+  "output_root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_recovery_d7_partial_alignment_gate_20260817",
+  "counts": {
+    "total": 11,
+    "excluded_from_main_body": 11,
+    "partial_alignment_available": 6,
+    "noise_hold": 3,
+    "transcript_segment_missing": 1,
+    "transcript_correction_candidate": 1
+  },
+  "safety": {
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "diagnostic_wav_lab_textgrid_deleted": false
+  },
+  "runtime": {
+    "recorded_at": "2026-08-17T18:06:40+09:00",
+    "git_commit": "347ae4c57a8914cf1fa358b9638b181bcfec66b2",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 20232
+  }
+}

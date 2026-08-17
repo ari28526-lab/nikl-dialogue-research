@@ -69,6 +69,7 @@ data/03_analysis_ready/
 *.lab
 *.tmp
 *.db
+*.sqlite
 
 # 2021 진입 전 로컬 archive와 구 검토 payload (정본 보고서는 별도 추적)
 /outputs/archive/pre_2021_local_20260803/**

@@ -1,0 +1,32 @@
+{
+  "schema_version": "research_db_v1_recovery_d7_independent_audit.v1",
+  "status": "passed_excluded_from_main_body_partial_artifacts_preserved",
+  "recorded_at": "2026-08-17T18:12:08+09:00",
+  "counts": {
+    "total": 11,
+    "partial_alignment_available": 6,
+    "noise_hold": 3,
+    "transcript_segment_missing": 1,
+    "transcript_correction_candidate": 1
+  },
+  "sqlite_rows_verified": 11,
+  "manifest_files_verified": 5,
+  "safety": {
+    "r3_body_mutated": false,
+    "research_6tier_mutated": false,
+    "db_v1_mutated": false,
+    "automatic_merge_performed": false,
+    "diagnostic_wav_lab_textgrid_deleted": false
+  },
+  "runtime": {
+    "recorded_at": "2026-08-17T18:12:08+09:00",
+    "git_commit": "347ae4c57a8914cf1fa358b9638b181bcfec66b2",
+    "python": {
+      "executable": "C:\\Users\\ari30\\miniforge3\\envs\\mfa\\python.exe",
+      "version": "3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]",
+      "implementation": "CPython"
+    },
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pid": 18428
+  }
+}
