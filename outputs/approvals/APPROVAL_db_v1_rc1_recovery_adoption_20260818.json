@@ -1,0 +1,26 @@
+{
+  "schema_version": "research_db_v1_rc1_recovery_adoption_approval.v1",
+  "status": "explicitly_approved",
+  "approved_at": "2026-08-18T15:47:25+09:00",
+  "approved_by": "ari30",
+  "approval_source": "user_chat_exact_statement",
+  "approval_statement": "DB v1 RC1 recovery Gate의 exact-ID 55건 상태 overlay와 D10 수동 전사·word 경계 16건을 append-only curated snapshot으로 채택한다. 기존 RC0·r3·6-tier는 덮어쓰지 않고, D9 phone은 참고 전용으로 유지하며 형태소·phone 재구축은 별도 후속 Gate로 남긴다. 승인자 ari30.",
+  "scope": {
+    "status_overlay_rows": 55,
+    "manual_annotation_snapshots": 16,
+    "base_rc0_overwrite_allowed": false,
+    "r3_overwrite_allowed": false,
+    "research_6tier_overwrite_allowed": false,
+    "mfa_run_allowed": false,
+    "phone_adoption_allowed": false,
+    "morphology_rebuild_allowed": false
+  },
+  "candidate_hashes": {
+    "gate_manifest_sha256": "01e4a0eb2762cc80821d0afeeba56f56961ed32a1b0f91c9f130a96f6a0ae3db",
+    "status_overlay_sha256": "37fcc2769becd015eb1ec5d9fdb44878335240a644160578be29022089f22ceb",
+    "manual_snapshots_sha256": "4b075599f4da6dd74bfd6dd627e458df3ee66a7df0e055d0c5fcf5263035bffa",
+    "approval_template_sha256": "1da7d117bc2505c8ed11e605994c1c93faf6802c7be389c437aaf33bb17dddb0",
+    "independent_gate_audit_sha256": "b6ce17fa92a5aa0284a41bc52d4a265f527eb9a4a5d9d017cb0e7be1f7f6c773"
+  },
+  "automatic_approval_performed": false
+}
