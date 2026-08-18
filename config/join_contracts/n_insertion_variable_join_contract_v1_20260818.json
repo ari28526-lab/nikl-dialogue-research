@@ -1,0 +1,112 @@
+{
+  "schema_version": "nikl_dialogue_variable_join_contract.v1",
+  "contract_id": "n_insertion_variable_join_contract_v1_20260818",
+  "contract_version": 1,
+  "freeze_status": "frozen_stage2_g2_20260818",
+  "purpose": "Stage-2 G2: freeze how n-insertion candidate occurrences join sense (A2), etymology and frequency (A3) variables. Joins preserve uncertainty as status columns; nothing is dropped or auto-resolved. No execution is authorized by this contract (G3 onward requires separate GO).",
+  "bound_query_set": {
+    "path": "config/target_queries/n_insertion_production_v1_20260818.json",
+    "sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6"
+  },
+  "joins": {
+    "sense_a2": {
+      "source_root": "D:\\10_LAYERS\\02_sense_annotated",
+      "year_release_dirs": {
+        "2020": "NIKL_DIALOGUE_2020_v1.4",
+        "2021": "NIKL_DIALOGUE_2021_v1.1",
+        "2022": "NIKL_DIALOGUE_2022_v1.0_JSON",
+        "2023": "NIKL_DIALOGUE_2023_v1.1",
+        "2024": "NIKL_DIALOGUE_2024_v1.0",
+        "2025": "NIKL_DIALOGUE_2025_v1.0"
+      },
+      "file_layout": "one CSV per session file id (utt_id prefix before first dot), schema: utt_id, word_idx, morph_idx, morph, tag, sense_id, confidence, method, candidates",
+      "join_key": {
+        "candidate_side_fields": ["utt_id", "{side}_eojeol_idx", "{side}_morph_idx_in_eojeol"],
+        "a2_fields": ["utt_id", "word_idx", "morph_idx"],
+        "index_base": "1-based on both sides",
+        "verified": "26/26 left+right positions of 13 boundary rows (session SDRW2000000001, 2020) matched A2 rows including surface and tag; probe 2026-08-18"
+      },
+      "integrity_guard": "joined A2 row must equal candidate {side}_morph_surface and {side}_pos; on inequality record status, never substitute values",
+      "preserved_columns_per_side": ["sense_id", "sense_confidence", "sense_method", "sense_candidates"],
+      "join_status_values": [
+        "joined",
+        "joined_not_target",
+        "no_row_at_position",
+        "morph_tag_mismatch",
+        "session_file_missing"
+      ],
+      "trust_rules": {
+        "high_trust_methods": ["monosemous", "lex_mono"],
+        "mfs_caution_methods": ["ls_sxls", "ls_all", "lex_first"],
+        "rule": "MFS-based sense assignments are analysis references, never final per-token senses for polysemous targets; ambiguous/not_found are preserved as-is. Per METHODS_bareun_dialogue_reanalysis.md trust map.",
+        "note_not_target": "A2 assigns no sense to J*/E*/S* tags; candidate right morphemes already exclude J*/E* by the frozen query, left morphemes may legitimately be joined_not_target"
+      }
+    },
+    "etym_freq_a3": {
+      "source": "D:\\10_LAYERS\\03_freq_dictionaries\\morpheme_freq_dictionary.csv",
+      "source_rows": 165920,
+      "join_key": ["{side}_morph_surface -> morph", "{side}_pos -> tag"],
+      "preserved_columns_per_side": [
+        "etym_type",
+        "etym_origin",
+        "freq_total",
+        "freq_2020", "freq_2021", "freq_2022", "freq_2023", "freq_2024", "freq_2025",
+        "freq_LS_spoken",
+        "freq_ML2025_spoken",
+        "freq_KoFREN_all",
+        "KoFREN_log10"
+      ],
+      "join_status_values": ["joined", "not_in_dictionary"],
+      "etym_type_empty_handling": "empty etym_type is preserved and reported as etym_unknown in derived class, not imputed",
+      "trust_rules": {
+        "freq_columns": "corpus freq_* counts are top-trust primary variables; external norms (MP/LS/ML2025/KoFREN) are comparison references",
+        "etym_type": "generally reliable (dictionary-based)",
+        "etym_origin": "conditional trust, auto-reanalysis artifacts possible (candidate lists like 勵行|厲行|女行); reference-only, never a filter"
+      },
+      "derived_boundary_etym_class": {
+        "field": "boundary_etym_class",
+        "rule": "from left/right etym_type: sino_internal_candidate (intra_eojeol AND both 한자어), native_compound_candidate (both 고유어), mixed, loan_involved, etym_unknown (any side empty or not_in_dictionary)",
+        "resolves": "etym_check_needed from G1 (sino-Korean internal inclusion decision)",
+        "finality": "derived class is a routing aid; researcher confirms class membership for analysis, especially sino_internal_candidate"
+      }
+    },
+    "sense_freq_a3b": {
+      "source": "D:\\10_LAYERS\\03_freq_dictionaries\\sense_freq_dictionary.csv",
+      "join_key": ["morph", "tag", "sense_id"],
+      "usage": "optional analysis join after sense is settled per token",
+      "trust_rules": "corpus freq_YYYY for polysemous items inherits MFS bias; for sense-specific frequency prefer independent freq_LS_spoken/freq_LS_all columns per METHODS trust map"
+    },
+    "eojeol_freq_second_stage": {
+      "source": "D:\\10_LAYERS\\03_freq_dictionaries\\eojeol_freq_dictionary.csv",
+      "path_rule": "candidate (utt_id, {side}_eojeol_idx) -> orth/eojeol token table surface -> eojeol_freq_dictionary.eojeol",
+      "status": "documented for the analysis stage; not part of the G3/G4 candidate build",
+      "optional_extras": ["morph_freq_stratified.csv (per_million, speaker/register metadata joins)", "morph_dispersion.csv (n_docs)"]
+    }
+  },
+  "coverage_audit_g3_spec": {
+    "scope": "2020 single-year candidate output",
+    "required_reports": [
+      "sense join rate by join_status and by sense_method, separately for left and right sides",
+      "etym join rate and etym_type distribution incl. empty share",
+      "boundary_etym_class distribution incl. etym_unknown",
+      "zero-drop accounting: candidate rows in == candidate rows out, statuses only"
+    ],
+    "fail_conditions": [
+      "any candidate row dropped by a join",
+      "any morph_tag_mismatch silently treated as joined",
+      "audit counts not reproducible by independent re-scan"
+    ]
+  },
+  "validation_evidence": {
+    "headers_verified": "morpheme/eojeol/sense freq dictionary headers and A2 session file header measured on disk 2026-08-18",
+    "index_probe": "26/26 position+surface+tag matches (SDRW2000000001, 2020)",
+    "a3_probe": "16/16 boundary morphemes found in morpheme_freq_dictionary",
+    "reliability_source": "docs/decisions/METHODS_bareun_dialogue_reanalysis.md trust map (2026-07-16)"
+  },
+  "not_authorized": {
+    "six_year_or_single_year_candidate_execution": true,
+    "automatic_sense_disambiguation": true,
+    "automatic_etym_finalization": true,
+    "any_write_to_a2_a3_sources": true
+  }
+}
