@@ -256,3 +256,10 @@ manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 �
 RC1은 RC0 전체 ledger의 복사본이 아니라 그 위에 적용하는 작은 sidecar다. D10
 수동 word·전사만 curated로 활성화하며 D9 phone을 최종값으로 채택하지 않았다.
 형태소·phone/phoneme 보완 전까지 본체 정렬 성공 수는 바꾸지 않는다.
+
+## 2026-08-18 DB v1 active view 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_active_view_contract_v1_20260818` | RC0 기본+RC1 exact-ID 예외 precedence를 target 추출·세션 JSON이 공통 사용하도록 하는 55행 계약 | `materialized_exception_only_contract`; curated 16, base 보존 39, full base copy 0 |
+| `outputs\reports\AUDIT_db_v1_active_view_contract_20260818.json` | exact-ID 유일성, curated 필수값, base 오염 0, D9 phone 비채택 독립 감사 | `passed_exception_only_active_view_contract` |

@@ -3869,5 +3869,23 @@ shard 2–23을 재개하는 것이다.
 - RC0 5,103,356발화와 본체 정렬 성공 4,286,046은 불변이다. recovery 817,310건
   중 55건에 후속 상태가 생겼고 817,255건은 남았다. RC0·r3·6-tier·TextGrid
   수정과 MFA 실행은 0건이다.
-- 다음은 curated 16건 수정 전사의 형태소·철자 Roman 재구축과 phone/phoneme
-  enrichment 범위를 정하는 별도 Gate다. D7–D10 검토와 전수 MFA를 반복하지 않는다.
+- 당시 다음 후보는 curated 16건 enrichment였으나, 바로 뒤의 우선순위 재점검에서
+  실제 표적 포함 시 exact-ID로 지연하고 범용 active view를 먼저 만들기로 바꿨다.
+  D7–D10 검토와 전수 MFA는 반복하지 않는다.
+
+## 2026-08-18 — RC1 이후 우선순위 재점검과 active view 계약
+
+- 전체 5,103,356발화에 비해 curated 16건의 형태소·phone 보완을 즉시 별도
+  장기 단계로 만드는 것이 효율적인지 재점검했다.
+- 16건은 이미 RC1에 수동 word 경계·최종 전사·철자 Roman·TextGrid SHA가
+  보존돼 있으므로, 실제 표적에 포함될 때 exact-ID enrichment로 처리하기로 했다.
+- 지금 필요한 공통 기반은 RC0 기본값 위에 RC1 curated pointer만 우선하는
+  precedence다. 이를 55행 exception-only active view로 materialize했다.
+- 결과는 exception 55, curated 16, base 보존 39, 전체 base 복사 0이다.
+  diagnostic TextGrid는 증거일 뿐 active annotation이 아니며 D9 phone은 계속
+  참고 전용이다.
+- 독립 감사 `passed_exception_only_active_view_contract`가 exact-ID 중복 0과
+  pending morphology/phoneme 불변을 확인했다. RC0·RC1·r3·TextGrid 수정과 MFA는
+  0건이다.
+- 다음은 이 규칙을 직접 읽는 범용 target query/manifest v1의 작은 표본이며,
+  실제 음성 실현 여부를 자동 판정하지 않는다.

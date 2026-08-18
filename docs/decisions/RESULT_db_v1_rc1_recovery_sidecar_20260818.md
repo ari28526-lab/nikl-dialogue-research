@@ -55,7 +55,9 @@ materializer는 먼저 Git 커밋 `bf3e51731f13a2187362387a9169e31cf591d4e9`로
 
 ## 다음 단계
 
-다음은 전수 MFA나 D7–D10 검토 반복이 아니다. curated 16건의 수정 전사를
-입력으로 형태소·철자 Roman을 재구축하고, phone/phoneme은 수동 word 경계와
-불일치하지 않도록 별도 설계·검증하는 enrichment Gate다. 기존 D9 phone을
-기계적으로 복사해 최종 phone으로 만들지 않는다.
+다음은 전수 MFA나 D7–D10 검토 반복이 아니다. 2026-08-18 방향 재점검에 따라
+curated 16건의 형태소·phone/phoneme enrichment는 실제 표적 포함 시 exact-ID로
+지연 처리한다. 우선 RC0 기본값과 RC1 curated pointer의 precedence를 범용 target
+query·검토 bundle·세션 JSON이 공통으로 사용하게 한다. 기존 D9 phone을
+기계적으로 복사해 최종 phone으로 만들지 않는다. 상세 결정은
+`DECISION_post_RC1_priority_reset_20260818.md`에 기록했다.

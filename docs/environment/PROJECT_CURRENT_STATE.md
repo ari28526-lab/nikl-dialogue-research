@@ -1,13 +1,20 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 RC1 방향 재점검·active view 계약 완료:** 전체 510만 발화에 비해
+> curated 16건 enrichment를 즉시 완성하는 것은 우선순위가 낮다고 판단했다.
+> RC0 기본값 위에 RC1 exact-ID 예외만 적용하는
+> `nikl_dialogue_research_db_v1_active_view_contract_v1_20260818`을 생성했고 감사가
+> 통과했다. exception 55, curated pointer 16, base 보존 39, full base copy 0이다.
+> diagnostic evidence는 active가 아니며 D9 phone·형태소 pending은 유지한다.
+> 다음은 범용 target query/manifest v1의 소표본 검증이다.
+
 > **2026-08-18 DB v1 RC1 recovery sidecar 채택 완료:** 승인 exact-ID 55건의
 > recovery 후속 상태와 D10 수동 word·전사 16건의 curated snapshot·active
 > pointer를 `nikl_dialogue_research_db_v1_0_0_rc1_20260818`로 채택했다. RC0
 > ledger를 덮어쓰지 않는 sidecar이며 독립 감사가 통과했다. RC0 5,103,356발화,
 > 본체 정렬 성공 4,286,046, 잔여 recovery 817,255다. D9 phone은 참고 전용,
 > 수정 전사의 형태소·phoneme은 pending이다. RC0·r3·6-tier·TextGrid 변경과
-> MFA는 0건이다. 다음은 curated 16건만 대상으로 하는 형태소·phone/phoneme
-> enrichment Gate이며 D7–D10 검토와 전수 MFA를 반복하지 않는다.
+> MFA는 0건이다. 이 기록의 다음 단계는 위 방향 재점검으로 대체됐다.
 
 > **2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:** Dropbox 수동
 > TextGrid 16/16을 `D10_RESEARCHER_RETURN_0001`에 raw 16·normalized 16으로

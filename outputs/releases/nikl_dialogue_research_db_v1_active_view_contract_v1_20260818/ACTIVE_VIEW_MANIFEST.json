@@ -1,0 +1,41 @@
+{
+  "schema_version": "nikl_dialogue_research_db_v1_active_view_contract.v1",
+  "status": "materialized_exception_only_contract",
+  "recorded_at": "2026-08-18T16:06:11+09:00",
+  "base_resolution_rule": "RC0 default; RC1 curated pointer wins only on exact (year, utt_id)",
+  "rc1_release_id": "nikl_dialogue_research_db_v1_0_0_rc1_20260818",
+  "inputs": {
+    "rc1_manifest_sha256": "0b3288fb7c2f2b1b750072b6facc6c13faaed7018651fa2e11670b8a7c9be48e",
+    "rc1_audit_sha256": "9dfcc7c1cc91cb464a7a8993c5bc207bdb3f3503c2a90b8a22eebe3cdc0e0cb9",
+    "status_overlay_sha256": "ff5d09635b78496500d55cb11fdf9cac8a1dda32c3c161abfd209fcb8cec0ed4",
+    "pointer_overlay_sha256": "f4c2b6c7d66eeef099d6b4072f81434c07d40ffaa0aae247df47cee92d8da4e8",
+    "snapshot_overlay_sha256": "f14c867533253e5f1e684722d82298f7bf5e47dd40425e945be9f5a0d07624db"
+  },
+  "counts": {
+    "exception_rows": 55,
+    "curated_pointer_rows": 16,
+    "base_preserved_exception_rows": 39,
+    "full_base_rows_copied": 0
+  },
+  "safety": {
+    "rc0_modified": false,
+    "rc1_modified": false,
+    "r3_modified": false,
+    "textgrid_modified": false,
+    "mfa_run": false,
+    "phone_adopted": false,
+    "morphology_rebuilt": false
+  },
+  "files": [
+    {
+      "path": "ACTIVE_RECOVERY_EXCEPTIONS.csv",
+      "bytes": 35317,
+      "sha256": "48cae8e469586c47877350cf062c400775b3745daeab12718d2c8866d4301fd1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 416,
+      "sha256": "79c389ba95f27a9f7fbfc60727e3dc2fbe03e81f35a1ddaf1017513d0d6487be"
+    }
+  ]
+}

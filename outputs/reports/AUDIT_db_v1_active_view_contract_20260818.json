@@ -1,0 +1,20 @@
+{
+  "schema_version": "nikl_dialogue_research_db_v1_active_view_contract_audit.v1",
+  "status": "passed_exception_only_active_view_contract",
+  "recorded_at": "2026-08-18T16:06:11+09:00",
+  "manifest_sha256": "af50cca2a5f69180b5c68f5c7cd194639deead86ae175bde0d77a2b3221bbba5",
+  "counts": {
+    "exception_rows": 55,
+    "curated_pointer_rows": 16,
+    "base_preserved_exception_rows": 39,
+    "duplicate_exact_ids": 0
+  },
+  "invariants": {
+    "rc0_is_default": true,
+    "curated_wins_by_exact_id_only": true,
+    "diagnostic_evidence_never_active": true,
+    "d9_phone_reference_only": true,
+    "morphology_pending": true,
+    "full_base_materialization_required": false
+  }
+}

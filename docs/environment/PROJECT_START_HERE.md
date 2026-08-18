@@ -2,14 +2,20 @@
 
 최종 갱신: 2026-08-18 KST
 
+> **현재 진입점 — 2026-08-18 RC1 이후 우선순위 재설정·active view 완료:**
+> curated 16건의 형태소·phone enrichment를 지금 별도 장기 단계로 만들지 않는다.
+> RC0는 5,103,356발화의 기본값, RC1 curated exact-ID 16건만 우선하는 exception
+> 계약을 생성했고 독립 감사가 통과했다. 예외표는 55행뿐이며 전체 base 복사 0,
+> curated 16, base 보존 39다. 다음은 이 precedence를 사용하는 범용 target
+> query/manifest의 작은 검증이며 실제 음성 실현을 자동 판정하지 않는다.
+
 > **현재 진입점 — 2026-08-18 DB v1 RC1 recovery sidecar 채택 완료:**
 > 연구자 승인 SHA에 결속해 D7–D10 exact-ID 55건의 후속 상태와 D10 수동
 > word·전사 16건의 curated snapshot/active pointer를 RC0 불변 sidecar로
 > 채택했다. 독립 감사가 55/55·16/16, RC0 5,103,356행, 잔여 recovery
 > 817,255건 회계를 통과했다. D9 phone은 참고 전용이고 형태소·phoneme은 보완
-> 대기다. RC0·r3·최종 6-tier·TextGrid 변경과 MFA는 0건이다. 다음은 전수
-> 재실행이 아니라 `RESULT_db_v1_rc1_recovery_sidecar_20260818.md`에 따른 curated
-> 16건의 형태소·phone/phoneme enrichment Gate다.
+> 대기다. RC0·r3·최종 6-tier·TextGrid 변경과 MFA는 0건이다. 이 기록의 다음
+> 단계는 위 우선순위 재설정으로 대체됐다.
 
 > **현재 진입점 — 2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:**
 > Dropbox에서 수정한 TextGrid 16/16을 회수해 D:의 별도
