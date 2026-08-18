@@ -1,5 +1,19 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 현재 진입점 — 자료구축 1단계 공식 종료·2단계 설계 채택:**
+> 6개년 인프라 closeout과 외부 HTML 보고서
+> (`qmd/six_year_infrastructure_report_20260818.qmd` →
+> `outputs/reports/six_year_infrastructure_report_20260818.html`, 수량 20항목
+> 재검증 통과)를 본선에 반영하고, 자료구축 단계를
+> `docs/decisions/DECISION_stage1_data_infrastructure_closure_20260818.md`로
+> 공식 종료했다. 잔여 recovery 817,255건·RC1 enrichment·의미번호 join·대형
+> `work/` 정리·main 동기화는 소속 Gate를 확정해 라우팅했다. 다음 단계 전체
+> 구조는 `docs/decisions/PLAN_stage2_target_query_and_realization_design_20260818.md`
+> (G0–G8: query 동결 → 의미번호 join → 2020 생산 감사 → 6개년 후보 생성 →
+> 문맥 연결 → 검토 bundle → 연구자 실현 ledger → 표적 후속)가 정본이다.
+> production query 실행은 여전히 미승인이며, G1 착수·A3 `etym_type` 정본
+> 위치·검토 표본 전략 3건이 사용자 결정 대기다.
+
 > **2026-08-18 현재 진입점 — 6개년 인프라 closeout:** 2020–2025년 원천
 > 5,103,356발화의 형태소·표기 검색층과 exact-ID 상태 회계, 동일 r3 계약의
 > 4,286,046발화 6-tier, 기술·발음 후속 817,310건의 보존 장부, RC1 append-only

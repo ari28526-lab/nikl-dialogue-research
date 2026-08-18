@@ -159,3 +159,5 @@
 - [RESULT_db_v1_target_manifest_pilot_20260818.md](RESULT_db_v1_target_manifest_pilot_20260818.md) — RC0+RC1 active precedence와 ㄴ 삽입 유사 철자·형태소 환경 후보 22건을 검증하고, 실현 판정·시간 연결·MFA와 분리한 범용 표적 manifest 파일럿 결과
 - [RESULT_db_v1_target_interval_link_pilot_20260818.md](RESULT_db_v1_target_interval_link_pilot_20260818.md) — 형태소 어절 index를 기존 TextGrid words tier에 연결해 19개 검토 문맥 시간을 파생하고 좁은 음운 경계·실현 판정과 분리한 파일럿 결과
 - [PLAN_n_insertion_B1_to_production_query_20260818.md](PLAN_n_insertion_B1_to_production_query_20260818.md) — 구 MFA phone 실현 판정 문구를 폐기하고 ㄴ 삽입의 어절 내부/간 모집단·의미번호·active pointer·수동 판정 Gate를 생산 질의 순서로 고정한 계획
+- [DECISION_stage1_data_infrastructure_closure_20260818.md](DECISION_stage1_data_infrastructure_closure_20260818.md) — 자료구축 1단계 공식 종료: 완료 7범위와 machine-readable 근거 결속, 비승인 항목 명시, 잔여 recovery·enrichment·의미번호 join·cleanup·main 동기화의 소속 Gate 라우팅
+- [PLAN_stage2_target_query_and_realization_design_20260818.md](PLAN_stage2_target_query_and_realization_design_20260818.md) — 2단계 정본 설계: G0–G8 Gate 순서(query 동결→의미번호 join→2020 생산 감사→6개년 후보→문맥 연결→검토 bundle→연구자 실현 ledger→표적 후속), 산출물 schema 계약과 미실행 범위
