@@ -1,0 +1,64 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_researcher_review_result.v1",
+  "status": "researcher_review_complete_gate_closed_pending_adoption",
+  "recorded_date": "2026-08-18",
+  "reviewer": "ari30",
+  "review_input": "outputs/reviews/db_v1_recovery_d9_review_19_20260817/00_REVIEW_19.json",
+  "decision_record": "outputs/reviews/db_v1_recovery_d9_review_19_20260817/01_RESEARCHER_DECISIONS_WORKING.json",
+  "decision_record_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+  "counts": {
+    "total": 19,
+    "approve_recovery_alignment": 1,
+    "keep_separate_partial": 16,
+    "reject_technical": 2,
+    "pending": 0
+  },
+  "approved_exact_ids": [
+    "SARW2500000012.1.1.97"
+  ],
+  "technical_rejection_exact_ids": [
+    "SDRW2100000024.1.1.234",
+    "SDRW2300000164.1.1.286"
+  ],
+  "manual_overlay_exact_ids": [
+    "SDRW2000000115.1.1.149",
+    "SDRW2000000180.1.1.67",
+    "SDRW2100000001.1.1.131",
+    "SDRW2100000023.1.1.432",
+    "SDRW2100000040.1.1.21",
+    "SDRW2100000044.1.1.248",
+    "SDRW2200000019.1.1.279",
+    "SDRW2200000033.1.1.137",
+    "SDRW2200000051.1.1.61",
+    "SDRW2300000013.1.1.213",
+    "SDRW2300000085.1.1.299",
+    "SDRW2300000169.1.1.115",
+    "SDRW2300000219.1.1.194",
+    "SARW2400000020.1.1.11",
+    "SARW2400000033.1.1.16",
+    "SARW2400000095.1.1.98"
+  ],
+  "review_findings": {
+    "new_alignment_does_not_imply_research_usability": true,
+    "dominant_issue": "LAB contained extra, duplicated, substituted, or truncated material relative to the audible clip, causing forced boundary compression or drift.",
+    "automatic_overlap_flags_corrected_by_listening": [
+      "SDRW2100000001.1.1.131",
+      "SDRW2100000023.1.1.432",
+      "SDRW2200000019.1.1.279"
+    ],
+    "automatic_overlap_flag_confirmed": "SDRW2100000024.1.1.234",
+    "background_audio_but_manual_analysis_possible": [
+      "SARW2400000020.1.1.11",
+      "SARW2400000033.1.1.16"
+    ]
+  },
+  "safety": {
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "source_wav_or_lab_modified": false,
+    "automatic_adoption_performed": false,
+    "full_year_mfa_rerun_required": false
+  },
+  "next_gate": "Build an isolated D10 manual transcription and TextGrid overlay package for 16 exact IDs; preserve two technical exclusions; enrich and adopt the one approved D9 alignment only through the same separate overlay/adoption contract."
+}

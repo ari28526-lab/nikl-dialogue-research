@@ -226,6 +226,9 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `outputs\reports\RESULT_db_v1_recovery_D9_20260817.json` | 실행 수량·계약 SHA·검토 묶음 SHA·안전 상태 정본 | `completed_controlled_retry_review_ready_no_adoption` |
 | `C:\Users\ari30\Dropbox\DB_V1_RECOVERY_D9_REVIEW_19_20260817` | D9 19세트의 개인 연구자 검토용 Dropbox 동기화 사본 | 로컬 복사 61개·1,780,531 bytes·SHA 전수 일치; 공유 링크/외부 공유 변경 0, 클라우드 동기화 완료는 사용자 확인 |
 | `outputs\reports\COPY_db_v1_recovery_D9_review_to_Dropbox_20260817.json` | 승인 범위·파일집합 SHA·복사 안전성 기록 | `passed_local_dropbox_copy_sha256_verified` |
+| `outputs\reviews\db_v1_recovery_d9_review_19_20260817\01_RESEARCHER_DECISIONS_WORKING.json` | D9 19건 연구자 청취·경계 exact-ID 상세 판정 | 검토 완료: 승인 1, 수동 overlay 16, 기술 제외 2, pending 0; SHA `dfae3884...f1d8` |
+| `outputs\reports\RESULT_db_v1_recovery_D9_researcher_review_20260818.json` | D9 연구자 검토 수량·ID·다음 Gate 요약 | `researcher_review_complete_gate_closed_pending_adoption`; 자동 병합 0 |
+| `outputs\reports\AUDIT_db_v1_recovery_D9_researcher_review_20260818.json` | 원 검토표–19개 연구자 판정 exact-ID·수량·상태 독립 검사 | `passed_researcher_review_complete_no_adoption`; 누락·중복·pending 0 |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며

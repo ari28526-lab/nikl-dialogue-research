@@ -1,0 +1,35 @@
+{
+  "schema_version": "research_db_v1_recovery_d9_researcher_review_audit.v1",
+  "status": "passed_researcher_review_complete_no_adoption",
+  "recorded_date": "2026-08-18",
+  "checks": {
+    "source_review_rows": 19,
+    "decision_rows": 19,
+    "unique_exact_ids": 19,
+    "source_and_decision_exact_ids_equal": true,
+    "all_rows_reviewed": true,
+    "all_decisions_allowed": true,
+    "summary_counts_match_rows": true,
+    "pending_rows": 0,
+    "partial_rows_have_recovery_route": true,
+    "technical_rejections_preserve_evidence": true,
+    "automatic_adoption_performed": false
+  },
+  "counts": {
+    "approve_recovery_alignment": 1,
+    "keep_separate_partial": 16,
+    "reject_technical": 2
+  },
+  "inputs": {
+    "source_review_sha256": "6dc4285d134a3227fa2e080d478e89eed61a07fcbf030e4447993a09281c4ccc",
+    "researcher_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8"
+  },
+  "safety": {
+    "source_artifacts_modified": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "full_year_mfa_rerun": false
+  },
+  "next_gate": "D10 manual overlay package for 16 exact IDs and separate enrichment/adoption handling for the one approved D9 alignment."
+}
