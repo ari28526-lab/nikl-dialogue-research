@@ -383,9 +383,24 @@ def build(
     active_view_root: Path,
     r3_root: Path,
     output_root: Path,
+    years_filter: list[int] | None = None,
 ) -> dict[str, Any]:
     query_set = load_json(query_set_path)
     validate_query_set(query_set)
+    if years_filter:
+        # Runtime year restriction (e.g. single-year G3 audit): the frozen query
+        # config on disk is NOT modified, so the recorded query_set_sha256 stays
+        # the frozen SHA. The restriction itself is recorded in the manifest.
+        allowed = {int(y) for y in years_filter}
+        restricted = []
+        for query in query_set["queries"]:
+            kept = [y for y in query["years"] if int(y) in allowed]
+            if not kept:
+                raise RuntimeError(
+                    f"runtime year filter removed every year for {query['query_id']}"
+                )
+            restricted.append({**query, "years": kept})
+        query_set = {**query_set, "queries": restricted}
     active_manifest_path = active_view_root / "ACTIVE_VIEW_MANIFEST.json"
     active_manifest = load_json(active_manifest_path)
     if active_manifest["status"] != "materialized_exception_only_contract":
@@ -461,6 +476,7 @@ def build(
             "schema_version": "nikl_dialogue_target_manifest_build.v1",
             "status": "pilot_candidates_built_no_realization_judgement",
             "recorded_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+            "runtime_year_filter": sorted(int(y) for y in years_filter) if years_filter else None,
             "query_set_sha256": sha256_file(query_set_path),
             "active_view_manifest_sha256": sha256_file(active_manifest_path),
             "source_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
@@ -504,6 +520,13 @@ def main() -> int:
     parser.add_argument("--active-view-root", type=Path, default=DEFAULT_ACTIVE_VIEW_ROOT)
     parser.add_argument("--r3-root", type=Path, default=DEFAULT_R3_ROOT)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
+    parser.add_argument(
+        "--years",
+        type=int,
+        nargs="*",
+        default=None,
+        help="Runtime year restriction (frozen query config is not modified).",
+    )
     args = parser.parse_args()
     try:
         result = build(
@@ -513,6 +536,7 @@ def main() -> int:
             active_view_root=args.active_view_root.resolve(),
             r3_root=args.r3_root.resolve(),
             output_root=args.output_root.resolve(),
+            years_filter=args.years,
         )
     except Exception as exc:
         print(f"[FAIL] {type(exc).__name__}: {exc}")

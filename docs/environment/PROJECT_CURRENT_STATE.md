@@ -1,5 +1,18 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 현재 진입점 — 2단계 G1–G3 완료·G4 GO 대기:** ㄴ 삽입 생산
+> query v1을 동결(SHA `744bd8cb…`, 승인
+> `APPROVAL_n_insertion_query_v1_freeze_20260818.json`)하고, A2 의미번호·A3
+> 어원/빈도 join 계약을 동결(SHA `12d81163…`)했으며, 2020 단일 연도 생산
+> 감사를 통과했다: 후보 101,638행(어절 내부 42,604/어절 간 59,034),
+> 변수 join zero-drop·sense 위치 불일치 0, 독립 감사 13/13 passed
+> (`AUDIT_stage2_g3_n_insertion_2020_20260818.json`). 대용량 후보 CSV는
+> Git 밖 `outputs/candidates`가 정본이며 manifest·감사만 저장소에 있다.
+> 다음은 같은 동결 SHA의 G4(2021–2025 연도별 생성·join·감사, 연구자 GO
+> 필요) → G5 문맥 시간 연결 → G6 검토 bundle(표본 전략 미결) → G7 연구자
+> 실현 판정이다. 세부는
+> `docs/decisions/RESULT_stage2_G3_2020_production_audit_20260818.md`.
+
 > **2026-08-18 현재 진입점 — 자료구축 1단계 공식 종료·2단계 설계 채택:**
 > 6개년 인프라 closeout과 외부 HTML 보고서
 > (`qmd/six_year_infrastructure_report_20260818.qmd` →

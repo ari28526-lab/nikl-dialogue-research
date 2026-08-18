@@ -103,3 +103,4 @@ data/03_analysis_ready/
 # Git에는 방법 안내와 6개 연도 compact summary/manifest만 추적한다.
 /outputs/reviews/dialogue_audio_quality_2020_2025_20260807/20*/**
 !outputs/reviews/dialogue_audio_quality_2020_2025_20260807/SUMMARY_2020_2025.csv
+outputs/candidates/**/*.csv

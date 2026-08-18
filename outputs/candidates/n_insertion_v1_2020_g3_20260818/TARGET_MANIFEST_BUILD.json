@@ -1,0 +1,71 @@
+{
+  "schema_version": "nikl_dialogue_target_manifest_build.v1",
+  "status": "pilot_candidates_built_no_realization_judgement",
+  "recorded_at": "2026-08-18T19:24:02+09:00",
+  "runtime_year_filter": [
+    2020
+  ],
+  "query_set_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+  "active_view_manifest_sha256": "af50cca2a5f69180b5c68f5c7cd194639deead86ae175bde0d77a2b3221bbba5",
+  "source_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "active_sidecar_id": "nikl_dialogue_research_db_v1_0_0_rc1_20260818",
+  "counts": {
+    "queries": 2,
+    "candidate_rows": 101638,
+    "candidate_utterances": 93360,
+    "curated_rows": 1
+  },
+  "query_counts": {
+    "QN1_N_INSERTION_INTRA_EOJEOL_V1": 42604,
+    "QN2_N_INSERTION_INTER_EOJEOL_V1": 59034
+  },
+  "sources": [
+    {
+      "query_id": "QN1_N_INSERTION_INTRA_EOJEOL_V1",
+      "year": 2020,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 92216281,
+      "declared_sha256": "540c0fc86d2db02730585fcdd938c371bdf28b482c6362250f3e96f59869d6eb",
+      "annual_manifest_sha256": "6695c84a5d240e4b093a66f270c4d6c10ec70134183eca4fa5f3545cce533f21",
+      "pilot_hit_rows": 42604,
+      "scan_stopped_at_limit": false
+    },
+    {
+      "query_id": "QN2_N_INSERTION_INTER_EOJEOL_V1",
+      "year": 2020,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 92216281,
+      "declared_sha256": "540c0fc86d2db02730585fcdd938c371bdf28b482c6362250f3e96f59869d6eb",
+      "annual_manifest_sha256": "6695c84a5d240e4b093a66f270c4d6c10ec70134183eca4fa5f3545cce533f21",
+      "pilot_hit_rows": 59034,
+      "scan_stopped_at_limit": false
+    }
+  ],
+  "files": [
+    {
+      "path": "TARGET_CANDIDATES.csv",
+      "bytes": 262300565,
+      "sha256": "411c88516297214ccb1467cd2910ee44e3c726c57e959017a5c0280a564bea12"
+    },
+    {
+      "path": "QUERY_SET.json",
+      "bytes": 3940,
+      "sha256": "d3864e153b409ec8a444710ed77d5d3a3c254eaab31ad4d4152b18e3d442c0c0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 303,
+      "sha256": "0e5970ebae6082e7f3bfa6a76ef6f9e69b8e288a47c34c1af91be80b0cadc0bd"
+    }
+  ],
+  "safety": {
+    "realization_judgement_performed": false,
+    "target_times_claimed": false,
+    "source_assets_copied": false,
+    "source_assets_modified": false,
+    "mfa_run": false,
+    "base_or_sidecar_modified": false
+  }
+}
