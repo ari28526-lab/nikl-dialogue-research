@@ -3838,3 +3838,16 @@ shard 2–23을 재개하는 것이다.
   커밋 SHA와 builder SHA를 기록했다.
 - 다음 단계는 후보 SHA 범위에 대한 단일 연구자 승인 뒤 append-only RC1
   sidecar를 materialize하는 것이다. 새 청취·전수 재정렬은 필요하지 않다.
+
+## 2026-08-18 — Git 비추적 로컬 참고문헌 Dropbox 집약
+
+- 프로젝트에서 실제 참고했지만 GitHub에 PDF 실물을 올리지 않은 로컬 문헌을
+  조사했다. Downloads의 서울 코퍼스 자료 2편, Git ignore된 KoFREN 논문 1편,
+  D: reference의 발음사전·NIKL MP/LS/다층위 공식 문서 9편으로 범위를 정했다.
+- 같은 SHA-256의 중복본과 연구 문헌이 아닌 CSV 엑셀 사용 안내는 제외했다.
+- 원본은 이동·수정하지 않고
+  `C:\Users\ari30\Dropbox\000_02_2026_morpho_phonology`에 12파일
+  (12,269,793 bytes)을 주제별로 복사했다. 파일명·원경로·bytes·SHA-256·연구
+  활용을 별도 index에 기록하고 사본 12개를 다시 해시하여 불일치 0건을 확인했다.
+- PDF 실물은 재배포권을 고려해 GitHub에 추가하지 않는다. 프로젝트에는 목록과
+  복사·검증 결과만 기록한다.

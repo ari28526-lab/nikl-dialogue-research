@@ -1,0 +1,16 @@
+{
+  "schema_version": "local_literature_collection.v1",
+  "status": "passed_source_preserving_copy",
+  "recorded_date": "2026-08-18",
+  "target_root": "C:\\Users\\ari30\\Dropbox\\000_02_2026_morpho_phonology",
+  "pdf_files": 12,
+  "pdf_bytes": 12269793,
+  "support_files": 2,
+  "total_files": 14,
+  "hash_failures": 0,
+  "index_sha256": "66d5a8091d1b2ad5ed03bdcb7fda65da54d8eb3c39d3c8a49e6dfb6cbd753036",
+  "source_files_modified": false,
+  "source_files_moved": false,
+  "pdf_files_added_to_git": false,
+  "duplicate_sha_copies_included": false
+}
