@@ -1,0 +1,71 @@
+{
+  "schema_version": "nikl_dialogue_target_manifest_build.v1",
+  "status": "pilot_candidates_built_no_realization_judgement",
+  "recorded_at": "2026-08-18T23:07:47+09:00",
+  "runtime_year_filter": [
+    2023
+  ],
+  "query_set_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+  "active_view_manifest_sha256": "af50cca2a5f69180b5c68f5c7cd194639deead86ae175bde0d77a2b3221bbba5",
+  "source_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "active_sidecar_id": "nikl_dialogue_research_db_v1_0_0_rc1_20260818",
+  "counts": {
+    "queries": 2,
+    "candidate_rows": 123381,
+    "candidate_utterances": 108785,
+    "curated_rows": 1
+  },
+  "query_counts": {
+    "QN1_N_INSERTION_INTRA_EOJEOL_V1": 45570,
+    "QN2_N_INSERTION_INTER_EOJEOL_V1": 77811
+  },
+  "sources": [
+    {
+      "query_id": "QN1_N_INSERTION_INTRA_EOJEOL_V1",
+      "year": 2023,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2023\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 116086778,
+      "declared_sha256": "3e48ae04802567ba6019300399ec7b2409a93878d37e3403bc0931b7290c8299",
+      "annual_manifest_sha256": "8e69b662ded35fdfaa50f4a9ff132ea3cb3241f698320e974424ff942101a3a0",
+      "pilot_hit_rows": 45570,
+      "scan_stopped_at_limit": false
+    },
+    {
+      "query_id": "QN2_N_INSERTION_INTER_EOJEOL_V1",
+      "year": 2023,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2023\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 116086778,
+      "declared_sha256": "3e48ae04802567ba6019300399ec7b2409a93878d37e3403bc0931b7290c8299",
+      "annual_manifest_sha256": "8e69b662ded35fdfaa50f4a9ff132ea3cb3241f698320e974424ff942101a3a0",
+      "pilot_hit_rows": 77811,
+      "scan_stopped_at_limit": false
+    }
+  ],
+  "files": [
+    {
+      "path": "TARGET_CANDIDATES.csv",
+      "bytes": 327817216,
+      "sha256": "4b7364112e8058988b68602118f6717080bfbd999a7f877a0e82c5744e82c5f2"
+    },
+    {
+      "path": "QUERY_SET.json",
+      "bytes": 3940,
+      "sha256": "f22ea9a93fc6c0cb2b5d1e2e0980ac674e8544d48301098d9b40fe2ab10222d9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 303,
+      "sha256": "0e5970ebae6082e7f3bfa6a76ef6f9e69b8e288a47c34c1af91be80b0cadc0bd"
+    }
+  ],
+  "safety": {
+    "realization_judgement_performed": false,
+    "target_times_claimed": false,
+    "source_assets_copied": false,
+    "source_assets_modified": false,
+    "mfa_run": false,
+    "base_or_sidecar_modified": false
+  }
+}

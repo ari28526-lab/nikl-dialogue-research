@@ -165,3 +165,4 @@
 - [RESULT_stage2_G1_query_freeze_20260818.md](RESULT_stage2_G1_query_freeze_20260818.md) — ㄴ 삽입 생산 query v1(QN1 intra/QN2 inter) 동결: builder 무수정 선언형 조건, 실측 열 확인과 23케이스 검증, 연구자 승인 SHA 결속; 실행은 G3부터 별도 GO
 - [RESULT_stage2_G2_variable_join_contract_20260818.md](RESULT_stage2_G2_variable_join_contract_20260818.md) — A2 의미번호·A3 어원/빈도 join 계약 동결: index 대응 26/26·A3 probe 16/16 실측, MFS 주의·etym_origin 참고 전용 내장, zero-drop 커버리지 감사 사양; 실행은 G3 GO 후
 - [RESULT_stage2_G3_2020_production_audit_20260818.md](RESULT_stage2_G3_2020_production_audit_20260818.md) — 2020 후보 101,638행(intra 42,604/inter 59,034) 생성·변수 join zero-drop·sense 불일치 0·독립 감사 13/13 passed; 한자어 내부 후보 111, RC1 curated 1 포함; G4는 별도 GO
+- [RESULT_stage2_G4_full_six_year_candidates_20260818.md](RESULT_stage2_G4_full_six_year_candidates_20260818.md) — 6개년 후보 완결 941,903행(intra 353,626/inter 588,277, 고유 발화 821,604), 연도별 독립 감사 6/6 passed·join 이상 0, RC1 curated 6·sino 내부 1,210; CSV 5.29GB는 git 밖 로컬 정본

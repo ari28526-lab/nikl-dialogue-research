@@ -1,0 +1,29 @@
+{
+  "schema_version": "stage2_g3_n_insertion_audit.v1",
+  "status": "passed",
+  "recorded_at": "2026-08-18T23:09:36+09:00",
+  "frozen_query_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+  "counts": {
+    "candidate_rows": 123381,
+    "per_query": {
+      "QN1_N_INSERTION_INTRA_EOJEOL_V1": 45570,
+      "QN2_N_INSERTION_INTER_EOJEOL_V1": 77811
+    },
+    "joined_rows": 123381,
+    "sampled_rows": 247
+  },
+  "distributions": {
+    "class:etym_unknown": 90709,
+    "class:loan_involved": 981,
+    "class:mixed": 18087,
+    "class:native_compound_candidate": 13419,
+    "class:sino_internal_candidate": 185,
+    "left_etym:joined": 123381,
+    "left_sense:joined": 88524,
+    "left_sense:joined_not_target": 34857,
+    "right_etym:joined": 123381,
+    "right_sense:joined": 123380,
+    "right_sense:joined_not_target": 1
+  },
+  "failures": []
+}

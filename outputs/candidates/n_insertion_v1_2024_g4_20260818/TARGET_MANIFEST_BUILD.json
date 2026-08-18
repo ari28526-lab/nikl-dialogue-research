@@ -1,0 +1,71 @@
+{
+  "schema_version": "nikl_dialogue_target_manifest_build.v1",
+  "status": "pilot_candidates_built_no_realization_judgement",
+  "recorded_at": "2026-08-18T23:19:32+09:00",
+  "runtime_year_filter": [
+    2024
+  ],
+  "query_set_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+  "active_view_manifest_sha256": "af50cca2a5f69180b5c68f5c7cd194639deead86ae175bde0d77a2b3221bbba5",
+  "source_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "active_sidecar_id": "nikl_dialogue_research_db_v1_0_0_rc1_20260818",
+  "counts": {
+    "queries": 2,
+    "candidate_rows": 185401,
+    "candidate_utterances": 157565,
+    "curated_rows": 1
+  },
+  "query_counts": {
+    "QN1_N_INSERTION_INTRA_EOJEOL_V1": 65109,
+    "QN2_N_INSERTION_INTER_EOJEOL_V1": 120292
+  },
+  "sources": [
+    {
+      "query_id": "QN1_N_INSERTION_INTRA_EOJEOL_V1",
+      "year": 2024,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2024\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 170894588,
+      "declared_sha256": "47034f2e2a8d9ae458c78daf42ab5756e1cbc24631551458bf533426de6092c6",
+      "annual_manifest_sha256": "95802c0a98dc8cc960fc4b77f2e6e03279d15933c0eab89314d0364ea1553fce",
+      "pilot_hit_rows": 65109,
+      "scan_stopped_at_limit": false
+    },
+    {
+      "query_id": "QN2_N_INSERTION_INTER_EOJEOL_V1",
+      "year": 2024,
+      "table": "morph_boundaries",
+      "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2024\\annual_tables\\morph_boundaries.csv.gz",
+      "bytes": 170894588,
+      "declared_sha256": "47034f2e2a8d9ae458c78daf42ab5756e1cbc24631551458bf533426de6092c6",
+      "annual_manifest_sha256": "95802c0a98dc8cc960fc4b77f2e6e03279d15933c0eab89314d0364ea1553fce",
+      "pilot_hit_rows": 120292,
+      "scan_stopped_at_limit": false
+    }
+  ],
+  "files": [
+    {
+      "path": "TARGET_CANDIDATES.csv",
+      "bytes": 509168824,
+      "sha256": "2aa52b7fb7138849088928fc54c3dac0742385567493f55621b78b1e0efdc793"
+    },
+    {
+      "path": "QUERY_SET.json",
+      "bytes": 3940,
+      "sha256": "567137230af144252c2675202c2e6ade70023e5cfa5c105f010b5306c9d5477b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 303,
+      "sha256": "0e5970ebae6082e7f3bfa6a76ef6f9e69b8e288a47c34c1af91be80b0cadc0bd"
+    }
+  ],
+  "safety": {
+    "realization_judgement_performed": false,
+    "target_times_claimed": false,
+    "source_assets_copied": false,
+    "source_assets_modified": false,
+    "mfa_run": false,
+    "base_or_sidecar_modified": false
+  }
+}

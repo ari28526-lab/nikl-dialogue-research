@@ -1,5 +1,17 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 현재 진입점 — 2단계 G1–G4 완료·6개년 후보 완결:** 동결
+> query·join 계약(SHA `744bd8cb…`/`12d81163…`)으로 2020–2025 후보
+> **941,903행**(어절 내부 353,626/어절 간 588,277, 고유 발화 821,604)을
+> 생성했고 연도별 독립 감사 **6/6 passed**, 6개년 94만 행 전수에서 join
+> 이상 0이다. RC1 curated 발화 6건이 후보에 포함(G8 enrichment 대상 근거),
+> 한자어 내부 후보 1,210건. CSV 5.29GB는 git 밖
+> `outputs/candidates/n_insertion_v1_<연도>_g3|g4_*`가 로컬 정본이며
+> D:\30_RELEASES stage2 미러가 이중 사본이다. 다음은 G5 문맥 시간 연결 →
+> G6 검토 bundle(**표본 전략 결정 대기**: 94만 행 전수 청취 비현실,
+> 층화 우선 권장) → G7 연구자 실현 판정. 세부는
+> `docs/decisions/RESULT_stage2_G4_full_six_year_candidates_20260818.md`.
+
 > **2026-08-18 현재 진입점 — 2단계 G1–G3 완료·G4 GO 대기:** ㄴ 삽입 생산
 > query v1을 동결(SHA `744bd8cb…`, 승인
 > `APPROVAL_n_insertion_query_v1_freeze_20260818.json`)하고, A2 의미번호·A3

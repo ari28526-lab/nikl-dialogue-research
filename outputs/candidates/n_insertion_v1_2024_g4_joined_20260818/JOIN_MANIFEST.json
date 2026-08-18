@@ -1,0 +1,35 @@
+{
+  "schema_version": "n_insertion_variable_join.v1",
+  "status": "joined_zero_drop_no_realization_judgement",
+  "recorded_at": "2026-08-18T23:21:31+09:00",
+  "contract_sha256": "12d811632a9c440e33fd76f814620c65e47113bdfda4ea058581b5e476c44050",
+  "candidates_input_sha256": "2aa52b7fb7138849088928fc54c3dac0742385567493f55621b78b1e0efdc793",
+  "bound_query_set_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+  "rows_in": 185401,
+  "rows_out": 185401,
+  "session_files_missing": [],
+  "status_counts": {
+    "class:etym_unknown": 134767,
+    "class:loan_involved": 1765,
+    "class:mixed": 29451,
+    "class:native_compound_candidate": 19192,
+    "class:sino_internal_candidate": 226,
+    "left_etym:joined": 185401,
+    "left_sense:joined": 130355,
+    "left_sense:joined_not_target": 55046,
+    "right_etym:joined": 185401,
+    "right_sense:joined": 185400,
+    "right_sense:joined_not_target": 1
+  },
+  "output": {
+    "path": "CANDIDATES_WITH_VARIABLES.csv",
+    "bytes": 549889934,
+    "sha256": "65be77ced62ea988db839ea3c61267dd200e3a828bc823e50d06e3e17152c2c5"
+  },
+  "safety": {
+    "sources_modified": false,
+    "rows_dropped": 0,
+    "sense_auto_disambiguated": false,
+    "realization_judged": false
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": "nikl_dialogue_target_query_set.v1",
+  "study_id": "n_insertion_realization_study_v1",
+  "query_set_id": "n_insertion_production_v1_20260818",
+  "query_set_version": 1,
+  "freeze_status": "frozen_researcher_approved_20260818",
+  "purpose": "Production candidate extraction for Korean n-insertion environments (B1 revised 2026-08-18). Extracts broad orthographic/morphological environment candidates only; realization is judged manually by the researcher.",
+  "researcher_decisions_applied": {
+    "exclude_all_J_and_E_right_pos": true,
+    "coarse_boundary_classification_deferred_to_post_extraction": true,
+    "sino_korean_internal_included_with_etym_check_needed_downstream": true
+  },
+  "queries": [
+    {
+      "query_id": "QN1_N_INSERTION_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "production_candidate_environment",
+      "years": [
+        2021
+      ],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {
+          "field": "boundary_scope",
+          "op": "eq",
+          "value": "intra_eojeol"
+        },
+        {
+          "field": "left_unit_type",
+          "op": "eq",
+          "value": "hangul"
+        },
+        {
+          "field": "right_unit_type",
+          "op": "eq",
+          "value": "hangul"
+        },
+        {
+          "field": "left_coda_jamo",
+          "op": "nonempty"
+        },
+        {
+          "field": "right_onset_zero",
+          "op": "truthy"
+        },
+        {
+          "field": "right_nucleus_jamo",
+          "op": "in",
+          "values": [
+            "ㅣ",
+            "ㅑ",
+            "ㅕ",
+            "ㅛ",
+            "ㅠ",
+            "ㅖ",
+            "ㅒ"
+          ]
+        },
+        {
+          "field": "right_pos",
+          "op": "regex",
+          "pattern": "^(?!J|E)"
+        }
+      ],
+      "max_occurrences_per_year": 0,
+      "interpretation": "Broad intra-eojeol n-insertion environment candidate (left morpheme ends in consonant coda, right morpheme starts with zero onset + i/j-class nucleus, right POS not J*/E*, both units hangul). Boundary-type and etymology classification are derived downstream from left_pos/right_pos evidence; never an automatic judgement of realization."
+    },
+    {
+      "query_id": "QN2_N_INSERTION_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "production_candidate_environment",
+      "years": [
+        2021
+      ],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {
+          "field": "boundary_scope",
+          "op": "eq",
+          "value": "inter_eojeol"
+        },
+        {
+          "field": "left_unit_type",
+          "op": "eq",
+          "value": "hangul"
+        },
+        {
+          "field": "right_unit_type",
+          "op": "eq",
+          "value": "hangul"
+        },
+        {
+          "field": "left_coda_jamo",
+          "op": "nonempty"
+        },
+        {
+          "field": "right_onset_zero",
+          "op": "truthy"
+        },
+        {
+          "field": "right_nucleus_jamo",
+          "op": "in",
+          "values": [
+            "ㅣ",
+            "ㅑ",
+            "ㅕ",
+            "ㅛ",
+            "ㅠ",
+            "ㅖ",
+            "ㅒ"
+          ]
+        },
+        {
+          "field": "right_pos",
+          "op": "regex",
+          "pattern": "^(?!J|E)"
+        }
+      ],
+      "max_occurrences_per_year": 0,
+      "interpretation": "Broad inter-eojeol (phrase-boundary) n-insertion environment candidate; same segmental conditions as QN1 across adjacent eojeols. Syntactic/prosodic conditioning variables are joined downstream, not filtered here. Never an automatic judgement of realization."
+    }
+  ]
+}
