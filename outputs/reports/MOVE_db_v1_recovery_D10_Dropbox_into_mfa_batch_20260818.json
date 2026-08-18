@@ -1,0 +1,20 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_dropbox_relocation.v1",
+  "status": "passed_dropbox_relocation_verified",
+  "recorded_date": "2026-08-18",
+  "source": "C:\\Users\\ari30\\Dropbox\\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818",
+  "destination": "C:\\Users\\ari30\\Dropbox\\04_MFA_배치결과\\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818",
+  "counts": {
+    "files": 85,
+    "bytes": 1730225
+  },
+  "file_set_sha256_before_and_after": "6c95befc02ecfa2ca65dc77e82a61cff1d728f9dc6d2c402c608707538c2c167",
+  "safety": {
+    "old_dropbox_path_absent_after_move": true,
+    "d_source_preserved": true,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "sharing_permissions_modified": false
+  }
+}
