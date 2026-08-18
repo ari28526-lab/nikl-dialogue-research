@@ -1,13 +1,22 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 현재 진입점 — 후보→TextGrid 문맥 시간 연결 통과:** 파일럿
+> 22행 중 실제 환경 후보 20개를 대상으로, TextGrid가 있는 19개 occurrence를
+> 형태소 어절 index와 `words` tier로 연결했다. 단일 어절 12, 인접 두 어절 7,
+> 자산 부재 대기 1이며 인프라 검사 2건에는 시간을 붙이지 않았다. 이 시간은
+> 연구자 검토용 어절 문맥이지 실제 음운 분절 경계나 실현 판정이 아니다. 독립
+> 감사가 원행·TextGrid SHA·index·시간을 재계산해 통과했다. 다음은 파일럿을 더
+> 늘리는 것이 아니라 실제 연구의 형태소·의미번호·표기 환경 query set을
+> 확정하는 단계다.
+
 > **2026-08-18 현재 진입점 — overlay-aware 표적 manifest 파일럿 통과:**
 > RC0 기본값과 RC1 curated exact-ID 우선순위를 실제 후보 검색에 연결했다.
 > 인프라 확인 2건과 ㄴ 삽입 유사 철자·형태소 환경 20건, 총 22 occurrence를
 > 생성했고 독립 감사가 통과했다. 21건은 WAV·TextGrid 검토 가능, 1건은 자산
 > 부재를 숨기지 않은 metadata-only 후보다. 실제 음성 실현 판정, target 시간
-> 확정, MFA, 원자료·RC0·RC1·TextGrid 수정은 0건이다. 다음은 actual research
-> query를 동결한 뒤 occurrence→TextGrid word interval 연결을 별도 파생 단계로
-> 검증하는 것이다. RC1 16건 enrichment는 실제 표적에 포함될 때만 한다.
+> 확정, MFA, 원자료·RC0·RC1·TextGrid 수정은 0건이다. 이 단계의 다음 작업인
+> occurrence→TextGrid word interval 파일럿은 위와 같이 통과했다. RC1 16건
+> enrichment는 실제 표적에 포함될 때만 한다.
 
 > **2026-08-18 RC1 방향 재점검·active view 계약 완료:** 전체 510만 발화에 비해
 > curated 16건 enrichment를 즉시 완성하는 것은 우선순위가 낮다고 판단했다.

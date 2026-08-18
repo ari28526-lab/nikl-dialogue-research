@@ -1,0 +1,27 @@
+{
+  "schema_version": "nikl_dialogue_target_interval_link_build.v1",
+  "status": "pilot_context_spans_linked_no_realization_judgement",
+  "recorded_at": "2026-08-18T16:28:13+09:00",
+  "input_candidate_sha256": "10af6e125afd9b81fefecbbeebbe34fb20e3ae06d3817d75e4c0a94de5579176",
+  "counts": {
+    "rows": 22,
+    "timing_status": {
+      "linked_inter_eojeol_context_span": 7,
+      "linked_single_eojeol_context_span": 12,
+      "not_applicable_infrastructure_query": 2,
+      "pending_textgrid_asset_unavailable": 1
+    }
+  },
+  "output": {
+    "path": "TARGET_CANDIDATES_WITH_CONTEXT_TIMES.csv",
+    "bytes": 62446,
+    "sha256": "486adac8cd71a98ed3f05600ba0785f06366f445c3e90cc0ed9e840e293eba5a"
+  },
+  "safety": {
+    "context_span_only": true,
+    "narrow_phonological_boundary_claimed": false,
+    "realization_judgement_performed": false,
+    "textgrid_modified": false,
+    "mfa_run": false
+  }
+}

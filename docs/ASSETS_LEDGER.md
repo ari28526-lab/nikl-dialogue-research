@@ -275,3 +275,13 @@ RC1은 RC0 전체 ledger의 복사본이 아니라 그 위에 적용하는 작�
 파일럿은 WAV·TextGrid를 복사하거나 수정하지 않고 절대경로로 참조한다. 빈
 `target_xmin/target_xmax`는 오류 은폐가 아니라 별도 occurrence→word interval
 연결 단계 대기 상태다.
+
+## 2026-08-18 target interval-link 파일럿 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\pilots\db_v1_target_interval_link_pilot_20260818` | 후보 occurrence의 형태소 어절 index를 active TextGrid words interval에 연결한 검토 문맥 시간표 | 22행; 단일 어절 12, 인접 어절 7, 비적용 2, 자산 대기 1 |
+| `outputs\reports\AUDIT_db_v1_target_interval_link_pilot_20260818.json` | 원행 보존, 어절열·index·시간·TextGrid SHA 독립 재계산 | `passed_context_span_link_no_realization_judgement` |
+
+이 시간은 phone 또는 음운 현상의 좁은 경계가 아니며 실제 실현 판정은 포함하지
+않는다. 원 TextGrid는 수정하지 않았다.

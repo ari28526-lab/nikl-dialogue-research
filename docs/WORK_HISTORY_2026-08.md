@@ -3911,3 +3911,21 @@ shard 2–23을 재개하는 것이다.
   모두 0건이다.
 - 이 결과로 RC1 예외 enrichment 장기 작업은 중단하고 실제 연구 질의와
   occurrence→TextGrid 시간 연결을 우선하는 방향을 확정했다.
+
+## 2026-08-18 — target occurrence–TextGrid 문맥 시간 연결
+
+- target manifest의 형태소 경계 evidence에 있는 1-based 왼쪽·오른쪽 어절
+  index를 active TextGrid의 `words` tier에 연결하는 read-only linker와 독립
+  auditor를 구현했다.
+- active 발화 어절과 TextGrid label은 문장 끝 문장부호만 정규화해 대조했다.
+  서로 다른 어절열을 index만으로 억지 연결하지 않는다.
+- 언어학적 후보 20개 중 TextGrid가 있는 19개가 연결됐다. 단일 어절 내부
+  경계 12개와 인접 어절 사이 경계 7개다. TextGrid가 없는 1개는 삭제하지 않고
+  `pending_textgrid_asset_unavailable`로 남겼다.
+- 인프라 precedence 검사 두 행은 표적 occurrence가 아니므로 빈 시간과
+  `not_applicable_infrastructure_query`를 유지했다.
+- 파생 xmin/xmax는 연구자가 볼 word context span이다. phone 또는 현상의 좁은
+  경계, ㄴ 삽입 실현 여부를 뜻하지 않는다. TextGrid SHA를 각 행에 기록하고
+  감사기가 원행·어절열·index·시간·SHA를 독립 재계산했다.
+- 원 TextGrid·WAV·RC0·RC1·MFA DB 변경과 MFA 실행은 0건이다. 이 결과로
+  인프라 파일럿을 닫고 실제 연구 query set 정의로 넘어간다.

@@ -2,12 +2,20 @@
 
 최종 갱신: 2026-08-18 KST
 
+> **현재 진입점 — 2026-08-18 실제 연구 질의 정의 직전:** overlay-aware 후보
+> 22행 중 언어학적 후보 20개를 기존 TextGrid `words` tier에 연결했다. 자산이
+> 있는 19개는 단일 어절 문맥 12·인접 어절 문맥 7로 연결됐고, 자산 부재 1개는
+> 회수 대기로 남았다. 이 시간은 검토 문맥이지 좁은 음운 경계나 실현 판정이
+> 아니다. 이제 파일럿을 더 늘리지 말고 연구별 형태소·의미번호·표기 환경 query
+> set을 동결한다. 먼저
+> `docs/decisions/RESULT_db_v1_target_interval_link_pilot_20260818.md`를 읽는다.
+
 > **현재 진입점 — 2026-08-18 표적 manifest 파일럿 통과:** RC0 기본값과
 > RC1 curated exact-ID 우선순위를 쓰는 범용 후보 추출기를 검증했다. 2020년
 > 인프라 확인 2건과 ㄴ 삽입 유사 철자·형태소 환경 20건을 만들었으며, 21건은
 > WAV·TextGrid 검토 가능, 1건은 metadata-only로 명시했다. 이 표는 실현 판정이
-> 아니고 target 시간도 아직 주장하지 않는다. 다음은 실제 연구 질의를 동결하고
-> occurrence를 TextGrid word interval에 연결하는 파생 단계다. RC1 16건의
+> 아니고 target 시간도 아직 주장하지 않는다. occurrence를 TextGrid word
+> interval에 연결하는 파생 파일럿은 위와 같이 통과했다. RC1 16건의
 > 형태소·phone enrichment는 실제 표적 exact-ID에만 지연 적용한다. 먼저
 > `docs/decisions/RESULT_db_v1_target_manifest_pilot_20260818.md`를 읽는다.
 
