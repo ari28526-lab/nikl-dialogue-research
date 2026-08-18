@@ -1,0 +1,640 @@
+---
+title: "2020–2025 한국어 대화 말뭉치의 형태소 검색·공통발음·강제정렬 연구 인프라 구축"
+subtitle: "exact-ID 회계, 재현 가능한 6-tier TextGrid, append-only 수동 보정과 후속 회수 체계"
+author: "NIKL 대화 말뭉치 형태음운 연구 프로젝트 (내부 인프라 release candidate)"
+date: 2026-08-18
+lang: ko
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 3
+    toc-title: "목차"
+    number-sections: true
+    theme: none
+    minimal: false
+    include-in-header:
+      - text: |
+          <style>
+          :root{
+            --c-aligned:#2b7a4b;      /* 정렬 안전 본체 */
+            --c-pron:#c98a00;         /* 발음 후속 */
+            --c-tech:#b04a3c;         /* 기술 후속 */
+            --c-manual:#4f5fbf;      /* 수동 overlay */
+            --c-ink:#232323; --c-sub:#5c5c5c; --c-line:#dcd8d0;
+            --c-bg:#faf9f6; --c-card:#ffffff;
+          }
+          html{scroll-behavior:smooth;}
+          body{background:var(--c-bg);color:var(--c-ink);
+            font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+            line-height:1.75;}
+          h1,h2,h3,h4{font-weight:700;line-height:1.35;}
+          h1.title{font-size:1.55rem;}
+          .subtitle{color:var(--c-sub);}
+          main{max-width:960px;}
+          table{font-size:.92em;border-collapse:collapse;width:100%;}
+          th,td{border:1px solid var(--c-line);padding:.4em .6em;}
+          th{background:#f1efe9;}
+          tbody tr:nth-child(even){background:#fbfaf7;}
+          code{background:#f1efe9;padding:.08em .3em;border-radius:3px;font-size:.9em;}
+          pre code{display:block;overflow-x:auto;padding:.8em;}
+          /* 수치 카드 */
+          .statgrid{display:flex;flex-wrap:wrap;gap:12px;margin:1.2em 0;}
+          .stat{flex:1 1 160px;background:var(--c-card);border:1px solid var(--c-line);
+            border-top:4px solid var(--c-sub);border-radius:8px;padding:.7em .9em;}
+          .stat .n{font-size:1.35rem;font-weight:700;display:block;letter-spacing:-.02em;}
+          .stat .l{font-size:.82rem;color:var(--c-sub);}
+          .stat.aligned{border-top-color:var(--c-aligned);} .stat.aligned .n{color:var(--c-aligned);}
+          .stat.pron{border-top-color:var(--c-pron);} .stat.pron .n{color:var(--c-pron);}
+          .stat.tech{border-top-color:var(--c-tech);} .stat.tech .n{color:var(--c-tech);}
+          .stat.manual{border-top-color:var(--c-manual);} .stat.manual .n{color:var(--c-manual);}
+          /* 경고 상자 */
+          .warnbox{border:2px solid #b04a3c;background:#fdf3f1;border-radius:8px;
+            padding:.9em 1.1em;margin:1.3em 0;}
+          .warnbox .wtitle{font-weight:700;color:#8f3527;display:block;margin-bottom:.3em;}
+          /* 범례 */
+          .legend{display:flex;flex-wrap:wrap;gap:.9em;font-size:.85rem;margin:.6em 0;}
+          .legend span::before{content:"";display:inline-block;width:.85em;height:.85em;
+            border-radius:3px;margin-right:.35em;vertical-align:-.1em;}
+          .lg-aligned::before{background:var(--c-aligned);} .lg-pron::before{background:var(--c-pron);}
+          .lg-tech::before{background:var(--c-tech);} .lg-manual::before{background:var(--c-manual);}
+          /* 상태 구성 막대 */
+          .bar{display:flex;width:100%;height:2.1em;border-radius:6px;overflow:hidden;
+            border:1px solid var(--c-line);margin:.7em 0;}
+          .bar div{color:#fff;font-size:.72rem;display:flex;align-items:center;
+            justify-content:center;white-space:nowrap;overflow:hidden;}
+          .b-aligned{background:var(--c-aligned);} .b-pron{background:var(--c-pron);}
+          .b-tech{background:var(--c-tech);}
+          /* 흐름도 */
+          .flow{display:flex;flex-direction:column;gap:0;margin:1.1em 0;}
+          .flow .fbox{background:var(--c-card);border:1.5px solid var(--c-line);
+            border-left:5px solid var(--c-sub);border-radius:7px;padding:.55em .9em;
+            font-size:.93rem;}
+          .flow .farrow{text-align:center;color:var(--c-sub);font-size:1.05rem;
+            line-height:1.5;}
+          .fbox.hl-aligned{border-left-color:var(--c-aligned);}
+          .fbox.hl-pron{border-left-color:var(--c-pron);}
+          .fbox.hl-tech{border-left-color:var(--c-tech);}
+          .fbox.hl-manual{border-left-color:var(--c-manual);}
+          .fbox b{display:block;}
+          .fbox small{color:var(--c-sub);}
+          /* 갈림 흐름(가로) */
+          .flowrow{display:flex;flex-wrap:wrap;gap:10px;margin:.4em 0;}
+          .flowrow .fbox{flex:1 1 200px;}
+          /* 긴 경로 접기 */
+          details{border:1px solid var(--c-line);border-radius:6px;background:var(--c-card);
+            padding:.45em .8em;margin:.7em 0;}
+          details summary{cursor:pointer;font-weight:600;color:var(--c-sub);}
+          /* 시행착오 항목 */
+          .lesson{background:var(--c-card);border:1px solid var(--c-line);border-radius:8px;
+            padding:.75em 1em;margin:.9em 0;}
+          .lesson b.lt{display:block;margin-bottom:.25em;}
+          .lesson .lrow{font-size:.93rem;margin:.15em 0;}
+          .lesson .lk{font-weight:700;color:var(--c-sub);margin-right:.35em;}
+          @media (max-width:640px){
+            .statgrid{flex-direction:column;}
+            .bar div{font-size:.6rem;}
+          }
+          @media print{
+            body{background:#fff;}
+            details{border:none;} details[open] summary{display:none;}
+            .stat,.fbox,.lesson{break-inside:avoid;}
+            a::after{content:"";}
+          }
+          </style>
+---
+
+::: {.callout-note appearance="simple"}
+이 문서는 음운 현상의 분석 결과 논문이 아니라, 2020–2025년 6개년 국립국어원
+일상대화 말뭉치의 **자료 구축 인프라 release candidate**에 대한 methods and
+data note다. 논문 methods supplement 또는 공개 저장소 technical report로
+읽히는 것을 전제로 한다. 수치의 정본은
+`outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json`과 RC0
+`QA_REPORT.json`이며, 본문 모든 수치는 이 machine-readable 정본과 독립 감사
+(`AUDIT_six_year_infrastructure_closeout_20260818.json`, status `passed`)에서
+가져와 재계산·검증했다.
+:::
+
+# 한눈에 보는 결과 {#sec-glance}
+
+::: {.statgrid}
+<div class="stat"><span class="n">5,103,356</span><span class="l">원천 발화 (2020–2025) — 전체가 표기·형태소 검색 가능</span></div>
+<div class="stat aligned"><span class="n">4,286,046</span><span class="l">동일 r3 계약으로 정렬·6-tier 수출된 안전 본체 (84.0%)</span></div>
+<div class="stat pron"><span class="n">718,364</span><span class="l">발음 후속 (pronunciation follow-up)</span></div>
+<div class="stat tech"><span class="n">98,946</span><span class="l">기술 후속 = MFA 전 95,860 + MFA 후 3,086</span></div>
+<div class="stat manual"><span class="n">0</span><span class="l">누락·중복·미분류 exact-ID (RC0 QA hard failure 전부 0)</span></div>
+:::
+
+::: {.legend}
+<span class="lg-aligned">정렬 안전 본체 (aligned safe body)</span>
+<span class="lg-pron">발음 후속 (pronunciation follow-up)</span>
+<span class="lg-tech">기술 후속 (technical follow-up)</span>
+<span class="lg-manual">수동 보정 overlay (RC1 manual overlay)</span>
+:::
+
+원천 5,103,356발화의 상태 구성:
+
+<div class="bar">
+<div class="b-aligned" style="width:84.0%">aligned 4,286,046 (84.0%)</div>
+<div class="b-pron" style="width:14.1%">발음 후속 718,364</div>
+<div class="b-tech" style="width:1.9%">기술 98,946</div>
+</div>
+
+## 연도별 정본 수량
+
+| 연도 | 원천 발화 | 정렬·6-tier | MFA 전 기술 후속 | MFA 후 기술 후속 | 발음 후속 |
+|---:|---:|---:|---:|---:|---:|
+| 2020 | 870,437 | 782,432 | 1,675 | 283 | 86,047 |
+| 2021 | 1,373,920 | 1,206,862 | 937 | 437 | 165,684 |
+| 2022 | 866,359 | 751,383 | 870 | 338 | 113,768 |
+| 2023 | 677,262 | 494,228 | 87,809 | 352 | 94,873 |
+| 2024 | 728,257 | 593,530 | 1,339 | 874 | 132,514 |
+| 2025 | 587,121 | 457,611 | 3,230 | 802 | 125,478 |
+| **합계** | **5,103,356** | **4,286,046** | **95,860** | **3,086** | **718,364** |
+
+전체 회계식은 다음과 같고, 연도별·전체 합계 모두 이 보고서 작성 시점에
+프로그램으로 재계산해 정본 JSON과 일치함을 확인했다.
+
+```text
+5,103,356
+= 4,286,046 aligned_safe_body
++    95,860 pre_mfa_technical_exclusion
++     3,086 post_mfa_technical_exclusion
++   718,364 pronunciation_followup
++         0 methodological_exclusion
+```
+
+`methodological_exclusion = 0`은 모든 음원이 연구에 적합하다는 뜻이 아니다.
+소음·화자 겹침·실제 실현 여부·연구 질문에 따른 제외는 후보 추출 뒤 연구자가
+별도 decision ledger로 판단하며, 위 수치는 그 판단 이전의 인프라 회계다.
+
+::: {.warnbox}
+<span class="wtitle">⚠ 전체 검색 가능 ≠ 전체 정렬 완료</span>
+"6개년 전체 5,103,356발화를 표기·형태소로 검색할 수 있다"와 "6개년 전체가
+MFA 정렬됐다"는 다른 주장이다. 전자는 맞고, 후자는 안전 본체
+**4,286,046발화 범위에서만** 맞다. 나머지 817,310건도 검색층에 그대로
+남아 있으나 최종 6-tier TextGrid와 MFA phone이 없으므로, 검색 결과에는
+`primary_status`, `textgrid_available`, `asset_status`, `followup_required`,
+`reason_codes`, `alignment_scope`를 함께 표시해야 한다.
+:::
+
+::: {.warnbox}
+<span class="wtitle">⚠ MFA phone ≠ 실제 실현</span>
+MFA 강제정렬과 G2P는 텍스트와 음성을 시간적으로 연결하는 장치다. 사전 phone은
+정렬을 돕는 **입력 가설**이고 `phones_mfa`는 그 가설과 음향모델이 고른
+**정렬 출력**이다. 어느 것도 ㄴ 삽입 같은 음운 현상의 실제 실현 여부를
+판정하지 않는다. 실현 판정은 연구자가 음성과 TextGrid를 직접 검토해 수행하며,
+이 판정은 아직 수행되지 않았다.
+:::
+
+# 왜 이 인프라가 필요한가 {#sec-why}
+
+이 프로젝트의 최종 목적은 강제정렬 파일을 쌓는 것이 아니라, 한국어 일상대화
+말뭉치에서 형태음운 환경 후보를 찾아 연구자가 실제 실현을 판정할 수 있게 하는
+것이다. 연구 흐름은 다음과 같다.
+
+::: {.flow}
+<div class="fbox"><b>① CSV/검색층에서 후보 추출</b><small>형태소·표기 환경(예: 어절 경계, 받침, 후행 모음)을 선언형 query로 검색</small></div>
+<div class="farrow">↓</div>
+<div class="fbox hl-aligned"><b>② WAV·TextGrid 연결</b><small>후보 exact-ID로 음성 파일과 6-tier TextGrid의 어절 문맥 시간을 결합</small></div>
+<div class="farrow">↓</div>
+<div class="fbox"><b>③ 선택 자료의 운율 분석</b><small>선별된 소수 자료에 KOINA 등 적용 (전수 아님)</small></div>
+<div class="farrow">↓</div>
+<div class="fbox hl-manual"><b>④ 연구자의 실제 실현 판정</b><small>청취·음향·TextGrid 검토로 실현/비실현·소음·겹침·경계를 사람이 판단</small></div>
+:::
+
+이 흐름이 성립하려면 세 가지가 필요하다. 첫째, 510만 발화 전체를 놓치지 않는
+검색층. 둘째, 후보를 음성 시간으로 되돌릴 수 있는 동일 계약의 TextGrid. 셋째,
+정렬에 실패했거나 보류된 발화가 조용히 사라지지 않는 회계 체계다. 어느 하나가
+없으면 "검색 결과에 왜 이 발화가 없는가"를 설명할 수 없게 되고, 연구 표본의
+분모가 불투명해진다.
+
+# 입력자료와 식별 체계 {#sec-inputs}
+
+원자료는 국립국어원 일상대화 말뭉치의 연도별 JSON 전사, WAV 음성, 세션·화자
+메타데이터다. 원본(JSON/WAV/원 전사), 파생층(형태소 CSV, 검색표, MFA DB,
+TextGrid), 수동 보정(exact-ID overlay, decision ledger)을 처음부터 분리했다.
+수동 보정 때문에 원본이나 수백만 건의 기본 파생본을 덮어쓰지 않기 위해서다.
+
+발화 identity는 연도·`utt_id`·세션·화자·원 CSV를 기본 조인 키로 유지해, 어떤
+후보든 대화 세션 문맥으로 돌아갈 수 있게 했다. WAV 이름과 발화 ID가 어긋난
+경우 문자열 유사도로 추정해 덮어쓰지 않고, 원자료 identity와 duration을 대조한
+recovery 계획으로 처리했다.
+
+검색층(`morph_search.v3`)은 형태소/POS, 표기 로마자(어절 구분 보존), 숫자·기호의
+읽기 후보를 별도 열로 보존한다. 6개년 정본 수량은 다음과 같다.
+
+| 연도 | 발화 | 형태소 token | 형태소 경계 | 기호 읽기 occurrence |
+|---:|---:|---:|---:|---:|
+| 2020 | 870,437 | 5,767,506 | 4,897,069 | 290,525 |
+| 2021 | 1,373,920 | 12,015,453 | 10,641,533 | 537,167 |
+| 2022 | 866,359 | 8,192,006 | 7,325,647 | 465,477 |
+| 2023 | 677,262 | 6,610,494 | 5,933,232 | 262,115 |
+| 2024 | 728,257 | 9,405,308 | 8,677,051 | 436,550 |
+| 2025 | 587,121 | 8,965,124 | 8,378,003 | 394,647 |
+| **합계** | **5,103,356** | **50,955,891** | **45,852,535** | **2,386,481** |
+
+의미번호 층은 입력으로 존재하지만, 개별 연구 query와의 production join은 다음
+연구 단계의 Gate로 남아 있다.
+
+# 공통발음 release와 r3 재정렬 {#sec-pron}
+
+## 왜 연도별 inline G2P 대신 6개년 공통 release인가
+
+연도마다 G2P를 즉석 실행하면 모델·규칙·사전 상태와 실패 처리가 연도별로 달라질
+수 있고, "6개년에 같은 phone 기준을 적용했다"고 methods에 쓸 수 없게 된다.
+그래서 6개년 관측 어휘를 공통 범위로 모아 발음 기준을 한 번 동결한
+`common_pron_mfa_r3_20260809` release를 만들었다. RC0 교차 계약이 hash로 동결한
+항목은 다음과 같다: 공통발음 release와 pronunciation contract, 최종 MFA
+dictionary SHA-256, Korean MFA acoustic model SHA-256, Jamo G2P provenance
+SHA-256, runtime(Python 3.13.14 / MFA 3.4.0 / Pynini 2.1.7),
+`fresh_r3_full_realign=true`, `research_textgrid.v2` 6-tier schema. 모델 이름이
+같다는 것만으로 동일 방법으로 간주하지 않고, 실제 파일 SHA와 계약 ID를 연도별
+결과에 결속했다.
+
+우리말샘 등 사전의 예외 발음은 검색·참조층에 보존할 가치가 있지만, 사전 변이가
+해당 발화의 실제 발음이라는 보장은 없다(A/B 검토에서 사전 변이가 더 나쁜 사례도
+있었다). 따라서 사전 발음은 보조 참조열로 두고, 검토되지 않은 변이를 MFA 사전에
+무차별 추가하지 않았다.
+
+## 왜 6개년을 새로 정렬했는가
+
+초기 정렬본의 표본 검토에서 `있지`, `있는`, `없는`, `어쨌든` 같은 사례의 입력
+phone이 의도한 규칙형과 일치하지 않는 문제가 발견됐다. 이미 끝난 연도의
+TextGrid만 사후 문자 교체하면 phone 생성 근거와 시간 정렬 계약이 분리된다.
+과거 계산 시간을 아끼는 것보다 방법론적 일관성을 우선해, 2020–2025 전체를 같은
+r3 계약으로 새로 정렬(fresh full realign)하기로 결정했다.
+
+다만 같은 G2P 계산을 무의미하게 반복하지는 않았다. 발음 근거를 아직 확정하지
+못한 어절이 있는 발화는 억지로 사전에 넣지 않고 **발음 후속(hold)**으로
+분리해 안전 본체와 별도 트랙에 두었다. 이 보수적 분리가 §@sec-followup 의
+718,364건이다.
+
+# 안전 본체와 817,310건 후속의 의미 {#sec-followup}
+
+```text
+817,310 = 718,364 pronunciation follow-up
+        +  95,860 pre-MFA technical follow-up
+        +   3,086 post-MFA technical follow-up
+```
+
+<div class="bar">
+<div class="b-pron" style="width:87.9%">발음 후속 718,364 (87.9%)</div>
+<div class="b-tech" style="width:11.7%">MFA 전 기술 95,860</div>
+<div class="b-tech" style="width:0.4%;border-left:1px solid #fff"></div>
+</div>
+<p style="font-size:.85rem;color:#5c5c5c;margin-top:-.4em">막대 오른쪽 끝의 얇은 조각이 MFA 후 기술 후속 3,086건(0.4%)이다.</p>
+
+이 817,310건은 "실패"도 "버린 파일"도 아니다. 전부 검색층에 존재하며 표기·형태소
+환경으로 검색된다. 다만 최종 6-tier와 MFA phone이 없으므로, 검색 결과에서
+정렬 본체와 같은 자료처럼 보여서는 안 된다 — `primary_status`,
+`textgrid_available`, `asset_status`, `followup_required`, `reason_codes`,
+`alignment_scope`를 함께 표시해야 한다.
+
+각 발화는 다음 네 상태 중 정확히 하나만 가진다(상호배타, 누락·중복 0).
+
+| primary_status | 뜻 | MFA 입력 | 최종 6-tier | 후속 필요 |
+|---|---|:---:|:---:|:---:|
+| `aligned_safe_body` | r3 정렬·독립 QC를 통과한 본체 | 예 | 예 | 아니오 |
+| `pre_mfa_technical_exclusion` | WAV pairing·duration·기호 등 MFA 전 기술 문제 | 아니오 | 아니오 | 예 |
+| `post_mfa_technical_exclusion` | MFA 입력에는 있었으나 완전한 word+phone interval 부재 | 예 | 아니오 | 예 |
+| `pronunciation_followup` | 발음 입력 근거 확정 뒤 별도 정렬할 대상 | 아니오 | 아니오 | 예 |
+
+발음 후속이 큰 이유는 규칙이 보수적이기 때문이다. 발화 안에 발음을 확정하지
+못한(hold) 어절이 **하나라도** 있으면 발화 전체를 안전 본체에서 보류했다. 내부
+구성은 hold 717,354, policy 136, empty-reference 848, hold+policy 26이다.
+즉 대부분은 "불확실한 발음을 억지로 사전에 넣지 않은 발화"이지 "사용할 수 없는
+발화"가 아니다. 2023년의 MFA 전 기술 후속이 특히 큰 것(87,809)은 해당 연도의
+대규모 audio pairing 미해결 때문이며, 이 역시 exact-ID로 남아 있다.
+
+# 6-tier TextGrid {#sec-tiers}
+
+안전 본체 4,286,046발화 각각에 다음 6-tier TextGrid
+(`research_textgrid.v2`)가 있다.
+
+| tier | 내용 | 주의 |
+|---|---|---|
+| `words` | MFA가 정렬한 어절 interval | 실제 형태소 경계가 아님 |
+| `phones_mfa` | MFA phone interval (강제정렬 출력) | 실제 발음의 정답이 아님 |
+| `phoneme_r_auto` | MFA phone의 기계적 넓은 로마자 범주 | 기저형·수동 음운전사가 아님 |
+| `utterance` | 한글 발화 전사 | 원/정규화 provenance 확인 필요 |
+| `utterance_orth_r` | 어절 구분을 보존한 철자 로마자 검색 문자열 | 발음 로마자와 구별 |
+| `morph_analysis_utt` | 한글 형태소/POS 검색 문자열 | **시간 정렬된 형태소 tier가 아님** |
+
+`morph_analysis_utt`는 발화 범위에 걸린 검색 문자열이다. 형태소마다 시간 경계를
+강제로 나누면 그 경계가 음성학적 사실처럼 보이는 위험이 있어, 설계 단계에서
+시간 정렬 형태소 tier를 의도적으로 배제했다(§@sec-lessons). 앞뒤 빈 구간은 모든
+tier가 TextGrid 전체 길이를 덮도록 interval로 유지하되, 검색 정보 tier의 내용은
+발화가 있는 시간 문맥에만 둔다.
+
+원 음성과 개인 검토용 사본은 이 보고서에 포함하지 않는다. 실제 표본이 필요한
+독자는 저장소의 비식별/허용 예시(`outputs/examples` 계열)와 schema 문서를
+사용해야 하며, licensed corpus 원자료는 이용 권한에 따라 별도로 확보해야 한다.
+
+# 검증과 재개 설계 {#sec-verify}
+
+검증은 "같은 프로그램의 성공 메시지"를 믿지 않는 방식으로 설계했다.
+
+1. **input/method/output contract** — 어떤 exact-ID와 파일이 입력인지, 어떤
+   모델·사전·G2P·runtime·tier schema를 쓰는지, 성공 조건과 실패 장부가
+   무엇인지를 사람이 읽는 설명과 기계가 읽는 JSON, SHA-256으로 함께 고정한다.
+2. **SHA-256과 exact-ID** — 모델·사전·산출물을 이름이 아니라 hash로 결속하고,
+   발화는 항상 exact-ID로 추적한다. 파일명 유사도 pairing은 금지.
+3. **pilot/Gate와 `-PreflightOnly`** — 대량 실행 전 층화 파일럿(복수 연도·화자·
+   세션)과 읽기 전용 preflight를 통과해야 한다. 계약이 변하지 않으면 다음
+   연도에 같은 파일럿을 반복하지 않는다.
+4. **fail-closed** — 입력 10건 중 TextGrid 9건 생성은 "90% 성공"이 아니라
+   "1건의 상태가 설명되지 않은 부분 성공"이며, 성공으로 처리하지 않는다.
+5. **연도별 checkpoint** — 완료 marker와 DB를 보존하고, 재실행 시 입력
+   signature와 장부 SHA가 같으면 완료 연도를 재사용한다.
+6. **post-MFA 회계** — 완전 정렬 exact-ID + 미정렬 exact-ID = MFA 입력이
+   행 단위로 성립해야 연도가 끝난다.
+7. **독립 QC와 cross-year audit** — 생성기와 별도의 코드가 coverage, tier,
+   duration, 동반표, DB 표본 재수출을 재검사하고, 6개년의 발음·모델·runtime·
+   schema 동일성을 교차 감사한다.
+8. **researcher Gate** — 제외·승인은 자동화하지 않고 범위와 candidate hash에
+   결속된 연구자 명시 승인으로만 진행한다.
+
+RC0 `QA_REPORT.json`의 hard failure(누락 ID, 연도 내 중복, safe/후속 겹침,
+미분류, 회계식 불일치, 교차연도 방법 불일치 등 9종)는 모두 0이다.
+
+오류가 나도 연도 전체를 다시 시작하지 않는다. 실패 exact-ID만 분리해 별도
+shard로 보낸다.
+
+::: {.flow}
+<div class="fbox"><b>연도 실행 (materialize → MFA → export → QC)</b></div>
+<div class="farrow">↓ 오류 발생 시</div>
+<div class="fbox hl-tech"><b>실패 exact-ID 분리</b><small>실패 ID, 이유, 입력 계약, 시도한 설정을 장부에 기록</small></div>
+<div class="farrow">↓</div>
+:::
+::: {.flowrow}
+<div class="fbox hl-aligned"><b>성공 본체 보존</b><small>성공 DB·checkpoint는 재계산하지 않음</small></div>
+<div class="fbox hl-tech"><b>별도 recovery shard</b><small>격리 namespace에서 통제된 조건으로만 재시도 (같은 입력·같은 설정 무한 재시도 금지)</small></div>
+<div class="fbox hl-manual"><b>명시 Gate</b><small>결과 반영은 연구자 승인 후 append-only로</small></div>
+:::
+
+실제 사례로, 2024년 export에서 최초 실패 보고서와 2발화 표적 회수 뒤 성공
+보고서가 공존했을 때, 파일명이나 수정 시각으로 정본을 추측하지 않고 독립 QC
+state에 동결된 `export_report_sha256`과 일치하는 보고서만 채택했다. 실패 증거는
+삭제하지 않았다.
+
+# 시행착오와 개선 {#sec-lessons}
+
+아래 각 항목은 실제 발생한 문제를 "오류 → 왜 위험했는가 → 코드/계약에서
+어떻게 막았는가 → 재사용자가 확인할 것"의 순서로 기록한 것이다.
+
+::: {.lesson}
+<b class="lt">1. 한 화자 중심 파일럿</b>
+<div class="lrow"><span class="lk">오류</span>초기 파일럿 표본이 한 화자에 치우쳤다.</div>
+<div class="lrow"><span class="lk">위험</span>화자·세션 편향이 걸러지지 않아 파일럿 통과가 전체 대표성을 보장하지 못한다.</div>
+<div class="lrow"><span class="lk">대응</span>연도·복수 화자(약 5명)·복수 세션·짧고 긴 발화·기호·잡음·OOV를 포함한 층화 표본으로 교체.</div>
+<div class="lrow"><span class="lk">확인할 것</span>파일럿 manifest에 화자·세션 분포가 기록돼 있는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">2. TextGrid 9/10 부분 성공</b>
+<div class="lrow"><span class="lk">오류</span>2023 파일럿에서 입력 10건 중 TextGrid 9건만 생성됐는데 작업이 끝난 것처럼 보였다.</div>
+<div class="lrow"><span class="lk">위험</span>누락 1건이 조용히 사라지면 전수 완료로 오인되고 분모가 어긋난다.</div>
+<div class="lrow"><span class="lk">대응</span>입력 수 = 성공 수 + 이유 있는 후속 수가 정확히 성립해야 단계가 끝나는 fail-closed 규칙 도입.</div>
+<div class="lrow"><span class="lk">확인할 것</span>각 단계 보고서에 입력-출력 회계식이 있는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">3. tier 앞뒤 경계와 형태소 pseudo-alignment</b>
+<div class="lrow"><span class="lk">오류</span>일부 tier만 앞뒤 빈 구간 경계를 보유했고, 형태소 tier가 실제 시간 경계처럼 보였다.</div>
+<div class="lrow"><span class="lk">위험</span>이어붙이기·검색 좌표가 tier마다 어긋나고, 기계적 경계가 음성학적 사실로 오인된다.</div>
+<div class="lrow"><span class="lk">대응</span>모든 tier가 전체 시간축을 덮는 coverage 계약을 검사하고, 형태소는 시간 분할 대신 발화 범위 검색 문자열 tier(`morph_analysis_utt`)로 전환.</div>
+<div class="lrow"><span class="lk">확인할 것</span>tier 이름이 시간 정렬을 암시하지 않는지, coverage 검사가 QC에 있는지.</div>
+:::
+
+::: {.lesson}
+<b class="lt">4. 숫자·기호의 빈 발음</b>
+<div class="lrow"><span class="lk">오류</span>숫자·기호의 철자발음·예측발음이 빈칸으로 남았다.</div>
+<div class="lrow"><span class="lk">위험</span>검색이 안 되고 MFA 입력이 손실되는데도 겉으로 드러나지 않는다.</div>
+<div class="lrow"><span class="lk">대응</span>표기 자체와 읽기 후보를 별도 정보로 보존해 빈 발음을 허용하지 않는 검사 추가.</div>
+<div class="lrow"><span class="lk">확인할 것</span>기호 읽기 occurrence 수(6개년 2,386,481)가 회계에 잡히는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">5. grapheme/음절 inventory 문제와 Jamo 전환</b>
+<div class="lrow"><span class="lk">오류</span>음절/grapheme 기준 모델이 동결 음향모델 inventory와 어긋나 `spn`(불명 phone)과 생성 실패가 발생했다.</div>
+<div class="lrow"><span class="lk">위험</span>실패가 `spn`으로 가려지면 phone 검색과 정렬 품질이 조용히 붕괴한다.</div>
+<div class="lrow"><span class="lk">대응</span>최신 Jamo G2P 기준으로 전환하고, G2P no-path는 숨기지 않고 별도 queue로 보존.</div>
+<div class="lrow"><span class="lk">확인할 것</span>G2P 출력의 no-path queue와 phone inventory 대조 보고서가 있는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">6. PowerShell 5.1 scalar/UInt32/heartbeat 문제</b>
+<div class="lrow"><span class="lk">오류</span>Windows PowerShell 5.1에서 JSON 배열이 단일 객체로 풀려 `.Count`가 없고, UInt32 seed 범위 오류, heartbeat 파일 동시 읽기·쓰기 충돌이 발생했다.</div>
+<div class="lrow"><span class="lk">위험</span>수 시간짜리 대량 job이 계산은 정상인데 wrapper 수준에서 중단된다.</div>
+<div class="lrow"><span class="lk">대응</span>`@(...)` 정규화와 typed List, signed/unsigned 범위 명시, FileShare.ReadWrite와 heartbeat 비치명화, PS 5.1 회귀검사(`tests/test_powershell_runtime_compat.ps1`)를 표준화.</div>
+<div class="lrow"><span class="lk">확인할 것</span>장시간 스크립트가 대상 PowerShell 버전에서 회귀검사를 통과했는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">7. gzip newline row mismatch</b>
+<div class="lrow"><span class="lk">오류</span>gzip CSV 마지막 newline 때문에 예상/실제 행 수가 1 달라 shard 생성이 중단됐다.</div>
+<div class="lrow"><span class="lk">위험</span>off-by-one이 수량 회계 전체의 신뢰를 흔든다.</div>
+<div class="lrow"><span class="lk">대응</span>줄 수 세기가 아니라 CSV parser 기반 row count와 newline 회귀검사로 교체.</div>
+<div class="lrow"><span class="lk">확인할 것</span>row count가 parser 기준인지, 단순 line count인지.</div>
+:::
+
+::: {.lesson}
+<b class="lt">8. WAV ID·duration pairing</b>
+<div class="lrow"><span class="lk">오류</span>WAV 이름·길이와 CSV 발화 ID·시간이 일치하지 않는 사례가 있었다.</div>
+<div class="lrow"><span class="lk">위험</span>잘못된 음성에 전사가 연결되면 이후 모든 정렬·판정이 오염된다.</div>
+<div class="lrow"><span class="lk">대응</span>raw 불변 원칙 아래 recovery staging에서 원자료 identity·duration을 대조하고 source snapshot과 SHA를 남김. 유사도 기반 대량 pairing 금지.</div>
+<div class="lrow"><span class="lk">확인할 것</span>pairing 근거가 ID·duration 대조인지, 파일명 유사도인지.</div>
+:::
+
+::: {.lesson}
+<b class="lt">9. MFA 미정렬 exact-ID</b>
+<div class="lrow"><span class="lk">오류</span>MFA가 "완료"된 뒤에도 word/phone interval이 없는 발화가 있었다.</div>
+<div class="lrow"><span class="lk">위험</span>정렬 완료 선언이 거짓 전수 완료가 된다.</div>
+<div class="lrow"><span class="lk">대응</span>post-MFA exact-ID 제외 장부(6개년 3,086건)와 연구자 승인을 별도 단계로 두고, 회계식에 포함.</div>
+<div class="lrow"><span class="lk">확인할 것</span>post-MFA 미정렬 수가 0이 아니라 명시적 수치로 보고되는가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">10. 실패/성공 export 보고서 공존</b>
+<div class="lrow"><span class="lk">오류</span>2024 export에서 최초 실패 보고서와 회수 후 성공 보고서가 같은 폴더에 공존했다.</div>
+<div class="lrow"><span class="lk">위험</span>최신 파일·파일명으로 정본을 추측하면 과거 실패나 잘못된 보고서를 채택할 수 있다.</div>
+<div class="lrow"><span class="lk">대응</span>독립 QC state에 동결된 `export_report_sha256`과 일치하는 보고서만 정본으로 채택. 실패 증거는 삭제하지 않고 보존.</div>
+<div class="lrow"><span class="lk">확인할 것</span>정본 선택 기준이 SHA 결속인지, 수정 시각인지.</div>
+:::
+
+::: {.lesson}
+<b class="lt">11. 수동 전사와 기존 자동층의 층간 모순</b>
+<div class="lrow"><span class="lk">오류</span>recovery에서 전사·word를 수동 수정한 뒤에도 기존 자동 형태소·phone이 그대로 남아 있었다.</div>
+<div class="lrow"><span class="lk">위험</span>수정 전사와 옛 자동층이 서로 모순되는 자료가 최종값처럼 유통된다.</div>
+<div class="lrow"><span class="lk">대응</span>RC1은 수동 스냅샷 pointer(16건)만 채택하고, 수정 전사에 맞는 형태소·phone/phoneme 재구축은 별도 enrichment Gate로 분리. D9 phone은 참고 전용.</div>
+<div class="lrow"><span class="lk">확인할 것</span>수동 수정 항목의 pending 필드가 자동층으로 채워져 있지 않은가.</div>
+:::
+
+::: {.lesson}
+<b class="lt">12. 검수만 반복하고 반영이 지연되는 문제</b>
+<div class="lrow"><span class="lk">오류</span>검토 폴더가 지나치게 세분되고, 검수 결과가 release에 반영되지 않은 채 검수만 반복됐다.</div>
+<div class="lrow"><span class="lk">위험</span>연구자 검토 비용이 커지고 진도가 정체되며, 검수와 정본 사이의 간극이 벌어진다.</div>
+<div class="lrow"><span class="lk">대응</span>검토 묶음을 번호순 flat bundle(WAV/LAB/TextGrid/CSV 동봉)로 바꾸고, 검수 결과를 계약·코드·release에 반영한 뒤에만 다음 Gate로 진행.</div>
+<div class="lrow"><span class="lk">확인할 것</span>각 검수 라운드가 어느 release·계약 변경으로 이어졌는지 추적되는가.</div>
+:::
+
+# RC0, RC1, active view {#sec-rc}
+
+수동 보정은 기본 release를 덮어쓰지 않는다. 구조는 세 층이다.
+
+::: {.flow}
+<div class="fbox"><b>RC0 — 불변 base (2026-08-15)</b><small>원천 5,103,356발화 exact-ID 상태 장부 + 안전 본체 4,286,046 + recovery inventory 817,310행. 이후 수정하지 않는다.</small></div>
+<div class="farrow">↓ append-only</div>
+<div class="fbox hl-manual"><b>RC1 — recovery sidecar (2026-08-18)</b><small>첫 shard 55행 상태(curated 16 · partial 6 · 재정렬 성공 1 · 기술 제외 30 · 전사 회수 2) + curated pointer 16행만 추가. 본체 정렬 수 변화 0, 잔여 recovery 817,255행.</small></div>
+<div class="farrow">↓ 조인 (year, utt_id)</div>
+<div class="fbox hl-aligned"><b>active view — exact-ID 우선순위 계약</b><small>모든 발화의 기본값은 RC0. 예외 표의 curated exact-ID만 수동 전사·로마자·TextGrid pointer를 우선 적용. 진단 증거는 절대 active로 승격하지 않는다.</small></div>
+:::
+
+명시할 사실 두 가지. 첫째, **D9 phone은 참고 전용**이다. 수동 전사에 맞는
+형태소·phone 재구축은 별도 Gate 전까지 pending이며, RC1은 수동 16건을 정렬
+본체에 소급 합산하지 않았다(본체 정렬 수 delta 0). 둘째, RC1은 RC0의 510만
+행을 수정한 것이 아니라 55행 + 16행을 **덧붙인** 것이다. 이 구조 덕분에 모든
+수동 수정의 이유와 이전 상태를 언제든 설명할 수 있다.
+
+# 앞으로의 실제 연구 단계 {#sec-next}
+
+이 인프라 위에서 진행할 다음 단계는 연구 그 자체이며, 이 closeout에 포함되지
+않았다.
+
+1. 선언형 query로 형태소·표기 환경 후보를 전수 추출한다.
+2. 의미번호 join과 음운형태적 환경 정의를 production 수준으로 확정한다.
+3. 후보 occurrence를 WAV·TextGrid의 어절 문맥 시간과 연결한다.
+4. 연구자가 실제 실현·소음·겹침·수동 경계를 판정한다.
+5. 선별 자료에 KOINA 등 운율 분석을 적용한다.
+6. wav2vec2/HuBERT 등 보조 음성모델 출력은 원 MFA 열을 덮지 않는
+   보조열/sidecar로만 추가한다.
+7. 수동 수정은 provenance와 함께 active view에 반영한다.
+
+파일럿 수준의 연결 검증은 이미 통과했다. 형태소·표기 환경 query 22
+occurrence 가운데 실제 환경 후보 20건을 확인했고, TextGrid가 있는 19건을
+형태소 어절 index와 `words` interval 문맥에 연결했다(독립 감사
+`AUDIT_db_v1_target_manifest_pilot_20260818.json` ·
+`AUDIT_db_v1_target_interval_link_pilot_20260818.json`, 모두 passed). 이 시간은
+연구자가 청취할 어절 문맥일 뿐, 실제 음운 현상의 시작·끝이나 실현 판정이
+아니다. ㄴ 삽입 B1 개정안은 어절 내부/어절 간 환경을 분리하고 J\*/E\* 및
+숫자·기호 인접을 제외하며 실현 판정을 연구자에게 두는 **query 규칙 승인**이지,
+6개년 production query 실행 승인이나 ㄴ 삽입 연구 결과가 아니다.
+
+# 재사용 튜토리얼 {#sec-reuse}
+
+이 절은 코드를 잘 모르는 연구자를 기준으로 쓴다. 특정 명령 한 줄을 복사하는
+것보다 **계약과 순서**를 재사용하는 것이 목적이다.
+
+## 경로 1 — 같은 NIKL 말뭉치를 별도 권한으로 확보해 재현하는 경우
+
+원자료는 GitHub에 없다. 국립국어원 이용 권한에 따라 별도로 확보한 뒤 다음
+순서를 따른다.
+
+1. `docs/environment/PROJECT_START_HERE.md`와 `config/paths.json`을 읽고 자기
+   환경의 경로를 설정한다.
+2. 현행 실행 정본은 `docs/RUNBOOK_production_2020_2025.md`뿐이다.
+   `docs/archive`의 명령은 역사 기록이므로 실행하지 않는다.
+3. Windows PowerShell 5.1 환경이라면 `tests/test_powershell_safety.ps1`과
+   `tests/test_powershell_runtime_compat.ps1`을 먼저 통과시킨다.
+4. 장시간 스크립트는 반드시 preflight부터 실행한다. RUNBOOK의 wrapper들
+   (`run_mfa_r3_year_safe_body.ps1`, `run_mfa_r3_research_export.ps1`,
+   `run_mfa_r3_research_qc.ps1` 등)은 `-PreflightOnly` 스위치를 지원하며,
+   preflight가 통과한 뒤 같은 명령에서 해당 스위치만 제거하는 방식이 문서화된
+   표준이다. 정확한 인자는 RUNBOOK의 해당 연도 절을 그대로 따른다.
+5. release manifest의 수량·hash가 자기 실행과 다르면 자동으로 계속하지 않는다.
+
+명령을 실행하기 전, 항상 다음 다섯 가지에 답할 수 있어야 한다.
+
+| 질문 | 예: 연도 safe-body 정렬 단계라면 |
+|---|---|
+| 무엇을 읽는가 | 해당 연도의 입력 계약에 고정된 WAV·발음·전사 자산 |
+| 무엇을 만드는가 | 연도별 MFA DB와 checkpoint, 이후 6-tier export의 입력 |
+| 원본을 바꾸는가 | 아니오 — 원자료와 이전 release는 읽기 전용 |
+| 성공하면 무엇이 보이는가 | 완료 marker, 입력=성공+후속 회계가 성립하는 보고서 |
+| 실패하면 어디서 재개하는가 | 보존된 checkpoint에서 재개, 실패 exact-ID만 후속 shard로 |
+
+이 다섯 질문 중 하나라도 답할 수 없으면 다음 대량 단계로 넘어가지 않는다.
+
+## 경로 2 — 다른 한국어 말뭉치에 이식하는 경우
+
+그대로 재사용할 것은 **패턴**이다: checkpoint와 재개, exact-ID 회계,
+fail-closed, append-only overlay, 생성기와 독립된 감사. 그대로 복사하면 안
+되는 것은 **자료 의존 부분**이다: ID parser, JSON schema, 세션·화자 필드,
+형태소 tagset, 기호 읽기 규칙, 음성 포맷과 licensing. 새 말뭉치에는 먼저
+corpus adapter와 새 input contract를 만들고, 다음 최소 입력을 준비한다.
+
+1. 발화별 고유 ID (불안정하면 MFA 전에 멈춘다)
+2. WAV 또는 변환 가능한 원 음성
+3. 발화 전사
+4. 세션·화자 연결 정보
+5. 형태소/POS 또는 이를 생성할 명시적 도구·버전
+6. 원자료로 돌아갈 수 있는 source pointer
+
+권장 실행 순서는 A(읽기 전용 감사) → B(검색층) → C(공통발음·모델 동결) →
+D(층화 pilot/Gate) → E(연도별 안전 본체) → F(교차연도 release) → G(실제
+연구)다. 각 단계의 세부는 저장소의
+`docs/releases/20260818_six_year_infrastructure_closeout/LESSONS_AND_REUSE_GUIDE.md`를
+따른다.
+
+# AI 보조와 연구자 책임 {#sec-ai}
+
+이 자료 구축 과정에서 Claude Code와 OpenAI Codex를 코드 작성·검토, 오류 진단,
+재현성 문서와 검증 절차의 초안 작성에 보조적으로 사용하였다. 연구 질문,
+언어학적 분류, 청취·TextGrid 판정, 단계별 채택 결정은 연구자가 수행하였다.
+AI가 제안한 산출물은 곧바로 정답으로 채택하지 않았으며, 고정 입력 contract,
+수량·SHA-256 회계, 독립 감사 및 연구자 검토를 통과한 경우에만 채택하였다.
+
+AI가 연구를 자율적으로 수행한 것이 아니며, 사용된 도구의 세부 모델 버전은
+확인된 범위에서만 기록한다(확인되지 않은 버전은 추측하지 않는다).
+
+# 한계·라이선스·공개 범위 {#sec-limits}
+
+1. **정렬은 실제 발음 판정이 아니다.** 강제정렬 경계는 수동 음성학 분절의
+   대체물이 아니며, 연구자 판정 문맥으로만 쓴다.
+2. **후속 recovery는 미완료다.** 잔여 recovery inventory 817,255행이 남아
+   있으며, RC1은 전체 회수 완료본이 아니다.
+3. **자동층에는 오류 가능성이 있다.** 자동 형태소 분석·로마자·기호 읽기·사전
+   발음 참조는 보조 정보이며 정답이 아니다.
+4. **licensed raw corpus는 GitHub에 없다.** 원 음성·전사·개별 TextGrid의
+   재배포는 말뭉치 이용조건과 개인정보·저작권을 별도로 확인해야 한다.
+   저장소에는 코드, 작은 manifest, 비식별/허용 예시와 설명만 둔다.
+5. **비공개 항목.** 개인 Dropbox 검토 사본, API key, 내부 절대경로는 공개하지
+   않는다. 본문의 로컬 경로 표기는 내부 재현성 근거이며 설치 예시가 아니다 —
+   외부 재현 시에는 `config/paths.json` 방식의 상대적 설정으로 대체한다.
+6. **코드만으로 자료가 나오지 않는다.** 코드와 작은 manifest를 받아도 원자료가
+   자동 제공되는 것은 아니다. 이용 권한 확보가 선행 조건이다.
+7. **분모 주의.** 6개년 수치는 인프라 범위의 분모다. 개별 연구의 분석 분모는
+   연구 질문에 따른 제외를 반영해 별도 decision ledger로 만들어야 한다.
+
+## 근거 파일 {#sec-sources .unnumbered}
+
+본문 수치·주장의 정본은 다음과 같다 (모두 저장소 상대경로).
+
+<details><summary>정본·감사 파일 목록 펼치기</summary>
+
+```text
+outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json
+outputs/reports/AUDIT_six_year_infrastructure_closeout_20260818.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/README.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/QA_REPORT.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/BASE_RELEASE_MANIFEST_2020_2025.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/CROSS_YEAR_CONTRACT_AUDIT.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/METHODS_A_C.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc1_20260818/README.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc1_20260818/ACCOUNTING.json
+outputs/releases/nikl_dialogue_research_db_v1_active_view_contract_v1_20260818/README.md
+outputs/reports/AUDIT_db_v1_rc1_recovery_sidecar_20260818.json
+outputs/reports/AUDIT_db_v1_active_view_contract_20260818.json
+outputs/reports/AUDIT_db_v1_target_manifest_pilot_20260818.json
+outputs/reports/AUDIT_db_v1_target_interval_link_pilot_20260818.json
+outputs/reports/AUDIT_db_v1_release_prep_ac_20260815.json
+docs/releases/20260818_six_year_infrastructure_closeout/  (해설 문서 6종)
+docs/RUNBOOK_production_2020_2025.md
+```
+
+</details>
+
+이 보고서의 Quarto 원본은 `qmd/six_year_infrastructure_report_20260818.qmd`이며,
+수치를 갱신할 때는 위 machine-readable 정본을 먼저 갱신한 뒤 본문을 다시
+render한다.

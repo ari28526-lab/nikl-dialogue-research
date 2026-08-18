@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="NIKL 대화 말뭉치 형태음운 연구 프로젝트 (내부 인프라 release candidate)">
+<meta name="dcterms.date" content="2026-08-18">
+
+<title>2020–2025 한국어 대화 말뭉치의 형태소 검색·공통발음·강제정렬 연구 인프라 구축</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script>/*!
+ * clipboard.js v2.0.11
+ * https://clipboardjs.com/
+ *
+ * Licensed MIT © Zeno Rocha
+ */
+!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.ClipboardJS=e():t.ClipboardJS=e()}(this,function(){return n={686:function(t,e,n){"use strict";n.d(e,{default:function(){return b}});var e=n(279),i=n.n(e),e=n(370),u=n.n(e),e=n(817),r=n.n(e);function c(t){try{return document.execCommand(t)}catch(t){return}}var a=function(t){t=r()(t);return c("cut"),t};function o(t,e){var n,o,t=(n=t,o="rtl"===document.documentElement.getAttribute("dir"),(t=document.createElement("textarea")).style.fontSize="12pt",t.style.border="0",t.style.padding="0",t.style.margin="0",t.style.position="absolute",t.style[o?"right":"left"]="-9999px",o=window.pageYOffset||document.documentElement.scrollTop,t.style.top="".concat(o,"px"),t.setAttribute("readonly",""),t.value=n,t);return e.container.appendChild(t),e=r()(t),c("copy"),t.remove(),e}var f=function(t){var e=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{container:document.body},n="";return"string"==typeof t?n=o(t,e):t instanceof HTMLInputElement&&!["text","search","url","tel","password"].includes(null==t?void 0:t.type)?n=o(t.value,e):(n=r()(t),c("copy")),n};function l(t){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}var s=function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{},e=t.action,n=void 0===e?"copy":e,o=t.container,e=t.target,t=t.text;if("copy"!==n&&"cut"!==n)throw new Error('Invalid "action" value, use either "copy" or "cut"');if(void 0!==e){if(!e||"object"!==l(e)||1!==e.nodeType)throw new Error('Invalid "target" value, use a valid Element');if("copy"===n&&e.hasAttribute("disabled"))throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');if("cut"===n&&(e.hasAttribute("readonly")||e.hasAttribute("disabled")))throw new Error('Invalid "target" attribute. You can\'t cut text from elements with "readonly" or "disabled" attributes')}return t?f(t,{container:o}):e?"cut"===n?a(e):f(e,{container:o}):void 0};function p(t){return(p="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}function d(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}function y(t,e){return(y=Object.setPrototypeOf||function(t,e){return t.__proto__=e,t})(t,e)}function h(n){var o=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(t){return!1}}();return function(){var t,e=v(n);return t=o?(t=v(this).constructor,Reflect.construct(e,arguments,t)):e.apply(this,arguments),e=this,!(t=t)||"object"!==p(t)&&"function"!=typeof t?function(t){if(void 0!==t)return t;throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}(e):t}}function v(t){return(v=Object.setPrototypeOf?Object.getPrototypeOf:function(t){return t.__proto__||Object.getPrototypeOf(t)})(t)}function m(t,e){t="data-clipboard-".concat(t);if(e.hasAttribute(t))return e.getAttribute(t)}var b=function(){!function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function");t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,writable:!0,configurable:!0}}),e&&y(t,e)}(r,i());var t,e,n,o=h(r);function r(t,e){var n;return function(t){if(!(t instanceof r))throw new TypeError("Cannot call a class as a function")}(this),(n=o.call(this)).resolveOptions(e),n.listenClick(t),n}return t=r,n=[{key:"copy",value:function(t){var e=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{container:document.body};return f(t,e)}},{key:"cut",value:function(t){return a(t)}},{key:"isSupported",value:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:["copy","cut"],t="string"==typeof t?[t]:t,e=!!document.queryCommandSupported;return t.forEach(function(t){e=e&&!!document.queryCommandSupported(t)}),e}}],(e=[{key:"resolveOptions",value:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};this.action="function"==typeof t.action?t.action:this.defaultAction,this.target="function"==typeof t.target?t.target:this.defaultTarget,this.text="function"==typeof t.text?t.text:this.defaultText,this.container="object"===p(t.container)?t.container:document.body}},{key:"listenClick",value:function(t){var e=this;this.listener=u()(t,"click",function(t){return e.onClick(t)})}},{key:"onClick",value:function(t){var e=t.delegateTarget||t.currentTarget,n=this.action(e)||"copy",t=s({action:n,container:this.container,target:this.target(e),text:this.text(e)});this.emit(t?"success":"error",{action:n,text:t,trigger:e,clearSelection:function(){e&&e.focus(),window.getSelection().removeAllRanges()}})}},{key:"defaultAction",value:function(t){return m("action",t)}},{key:"defaultTarget",value:function(t){t=m("target",t);if(t)return document.querySelector(t)}},{key:"defaultText",value:function(t){return m("text",t)}},{key:"destroy",value:function(){this.listener.destroy()}}])&&d(t.prototype,e),n&&d(t,n),r}()},828:function(t){var e;"undefined"==typeof Element||Element.prototype.matches||((e=Element.prototype).matches=e.matchesSelector||e.mozMatchesSelector||e.msMatchesSelector||e.oMatchesSelector||e.webkitMatchesSelector),t.exports=function(t,e){for(;t&&9!==t.nodeType;){if("function"==typeof t.matches&&t.matches(e))return t;t=t.parentNode}}},438:function(t,e,n){var u=n(828);function i(t,e,n,o,r){var i=function(e,n,t,o){return function(t){t.delegateTarget=u(t.target,n),t.delegateTarget&&o.call(e,t)}}.apply(this,arguments);return t.addEventListener(n,i,r),{destroy:function(){t.removeEventListener(n,i,r)}}}t.exports=function(t,e,n,o,r){return"function"==typeof t.addEventListener?i.apply(null,arguments):"function"==typeof n?i.bind(null,document).apply(null,arguments):("string"==typeof t&&(t=document.querySelectorAll(t)),Array.prototype.map.call(t,function(t){return i(t,e,n,o,r)}))}},879:function(t,n){n.node=function(t){return void 0!==t&&t instanceof HTMLElement&&1===t.nodeType},n.nodeList=function(t){var e=Object.prototype.toString.call(t);return void 0!==t&&("[object NodeList]"===e||"[object HTMLCollection]"===e)&&"length"in t&&(0===t.length||n.node(t[0]))},n.string=function(t){return"string"==typeof t||t instanceof String},n.fn=function(t){return"[object Function]"===Object.prototype.toString.call(t)}},370:function(t,e,n){var f=n(879),l=n(438);t.exports=function(t,e,n){if(!t&&!e&&!n)throw new Error("Missing required arguments");if(!f.string(e))throw new TypeError("Second argument must be a String");if(!f.fn(n))throw new TypeError("Third argument must be a Function");if(f.node(t))return c=e,a=n,(u=t).addEventListener(c,a),{destroy:function(){u.removeEventListener(c,a)}};if(f.nodeList(t))return o=t,r=e,i=n,Array.prototype.forEach.call(o,function(t){t.addEventListener(r,i)}),{destroy:function(){Array.prototype.forEach.call(o,function(t){t.removeEventListener(r,i)})}};if(f.string(t))return t=t,e=e,n=n,l(document.body,t,e,n);throw new TypeError("First argument must be a String, HTMLElement, HTMLCollection, or NodeList");var o,r,i,u,c,a}},817:function(t){t.exports=function(t){var e,n="SELECT"===t.nodeName?(t.focus(),t.value):"INPUT"===t.nodeName||"TEXTAREA"===t.nodeName?((e=t.hasAttribute("readonly"))||t.setAttribute("readonly",""),t.select(),t.setSelectionRange(0,t.value.length),e||t.removeAttribute("readonly"),t.value):(t.hasAttribute("contenteditable")&&t.focus(),n=window.getSelection(),(e=document.createRange()).selectNodeContents(t),n.removeAllRanges(),n.addRange(e),n.toString());return n}},279:function(t){function e(){}e.prototype={on:function(t,e,n){var o=this.e||(this.e={});return(o[t]||(o[t]=[])).push({fn:e,ctx:n}),this},once:function(t,e,n){var o=this;function r(){o.off(t,r),e.apply(n,arguments)}return r._=e,this.on(t,r,n)},emit:function(t){for(var e=[].slice.call(arguments,1),n=((this.e||(this.e={}))[t]||[]).slice(),o=0,r=n.length;o<r;o++)n[o].fn.apply(n[o].ctx,e);return this},off:function(t,e){var n=this.e||(this.e={}),o=n[t],r=[];if(o&&e)for(var i=0,u=o.length;i<u;i++)o[i].fn!==e&&o[i].fn._!==e&&r.push(o[i]);return r.length?n[t]=r:delete n[t],this}},t.exports=e,t.exports.TinyEmitter=e}},r={},o.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return o.d(e,{a:e}),e},o.d=function(t,e){for(var n in e)o.o(e,n)&&!o.o(t,n)&&Object.defineProperty(t,n,{enumerable:!0,get:e[n]})},o.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},o(686).default;function o(t){if(r[t])return r[t].exports;var e=r[t]={exports:{}};return n[t](e,e.exports,o),e.exports}var n,r});</script>
+<script>(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define([], function () {
+      return factory(root);
+    });
+  } else if (typeof exports === "object") {
+    module.exports = factory(root);
+  } else {
+    root.Tabby = factory(root);
+  }
+})(
+  typeof global !== "undefined"
+    ? global
+    : typeof window !== "undefined"
+    ? window
+    : this,
+  function (window) {
+    "use strict";
+
+    //
+    // Variables
+    //
+
+    var defaults = {
+      idPrefix: "tabby-toggle_",
+      default: "[data-tabby-default]",
+    };
+
+    //
+    // Methods
+    //
+
+    /**
+     * Merge two or more objects together.
+     * @param   {Object}   objects  The objects to merge together
+     * @returns {Object}            Merged values of defaults and options
+     */
+    var extend = function () {
+      var merged = {};
+      Array.prototype.forEach.call(arguments, function (obj) {
+        for (var key in obj) {
+          if (!obj.hasOwnProperty(key)) return;
+          merged[key] = obj[key];
+        }
+      });
+      return merged;
+    };
+
+    /**
+     * Emit a custom event
+     * @param  {String} type    The event type
+     * @param  {Node}   tab     The tab to attach the event to
+     * @param  {Node}   details Details about the event
+     */
+    var emitEvent = function (tab, details) {
+      // Create a new event
+      var event;
+      if (typeof window.CustomEvent === "function") {
+        event = new CustomEvent("tabby", {
+          bubbles: true,
+          cancelable: true,
+          detail: details,
+        });
+      } else {
+        event = document.createEvent("CustomEvent");
+        event.initCustomEvent("tabby", true, true, details);
+      }
+
+      // Dispatch the event
+      tab.dispatchEvent(event);
+    };
+
+    var focusHandler = function (event) {
+      toggle(event.target);
+    };
+
+    var getKeyboardFocusableElements = function (element) {
+      return [
+        ...element.querySelectorAll(
+          'a[href], button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])'
+        ),
+      ].filter(
+        (el) => !el.hasAttribute("disabled") && !el.getAttribute("aria-hidden")
+      );
+    };
+
+    /**
+     * Remove roles and attributes from a tab and its content
+     * @param  {Node}   tab      The tab
+     * @param  {Node}   content  The tab content
+     * @param  {Object} settings User settings and options
+     */
+    var destroyTab = function (tab, content, settings) {
+      // Remove the generated ID
+      if (tab.id.slice(0, settings.idPrefix.length) === settings.idPrefix) {
+        tab.id = "";
+      }
+
+      // remove event listener
+      tab.removeEventListener("focus", focusHandler, true);
+
+      // Remove roles
+      tab.removeAttribute("role");
+      tab.removeAttribute("aria-controls");
+      tab.removeAttribute("aria-selected");
+      tab.removeAttribute("tabindex");
+      tab.closest("li").removeAttribute("role");
+      content.removeAttribute("role");
+      content.removeAttribute("aria-labelledby");
+      content.removeAttribute("hidden");
+    };
+
+    /**
+     * Add the required roles and attributes to a tab and its content
+     * @param  {Node}   tab      The tab
+     * @param  {Node}   content  The tab content
+     * @param  {Object} settings User settings and options
+     */
+    var setupTab = function (tab, content, settings) {
+      // Give tab an ID if it doesn't already have one
+      if (!tab.id) {
+        tab.id = settings.idPrefix + content.id;
+      }
+
+      // Add roles
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", content.id);
+      tab.closest("li").setAttribute("role", "presentation");
+      content.setAttribute("role", "tabpanel");
+      content.setAttribute("aria-labelledby", tab.id);
+
+      // Add selected state
+      if (tab.matches(settings.default)) {
+        tab.setAttribute("aria-selected", "true");
+      } else {
+        tab.setAttribute("aria-selected", "false");
+        content.setAttribute("hidden", "hidden");
+      }
+
+      // add focus event listender
+      tab.addEventListener("focus", focusHandler);
+    };
+
+    /**
+     * Hide a tab and its content
+     * @param  {Node} newTab The new tab that's replacing it
+     */
+    var hide = function (newTab) {
+      // Variables
+      var tabGroup = newTab.closest('[role="tablist"]');
+      if (!tabGroup) return {};
+      var tab = tabGroup.querySelector('[role="tab"][aria-selected="true"]');
+      if (!tab) return {};
+      var content = document.querySelector(tab.hash);
+
+      // Hide the tab
+      tab.setAttribute("aria-selected", "false");
+
+      // Hide the content
+      if (!content) return { previousTab: tab };
+      content.setAttribute("hidden", "hidden");
+
+      // Return the hidden tab and content
+      return {
+        previousTab: tab,
+        previousContent: content,
+      };
+    };
+
+    /**
+     * Show a tab and its content
+     * @param  {Node} tab      The tab
+     * @param  {Node} content  The tab content
+     */
+    var show = function (tab, content) {
+      tab.setAttribute("aria-selected", "true");
+      content.removeAttribute("hidden");
+      tab.focus();
+    };
+
+    /**
+     * Toggle a new tab
+     * @param  {Node} tab The tab to show
+     */
+    var toggle = function (tab) {
+      // Make sure there's a tab to toggle and it's not already active
+      if (!tab || tab.getAttribute("aria-selected") == "true") return;
+
+      // Variables
+      var content = document.querySelector(tab.hash);
+      if (!content) return;
+
+      // Hide active tab and content
+      var details = hide(tab);
+
+      // Show new tab and content
+      show(tab, content);
+
+      // Add event details
+      details.tab = tab;
+      details.content = content;
+
+      // Emit a custom event
+      emitEvent(tab, details);
+    };
+
+    /**
+     * Get all of the tabs in a tablist
+     * @param  {Node}   tab  A tab from the list
+     * @return {Object}      The tabs and the index of the currently active one
+     */
+    var getTabsMap = function (tab) {
+      var tabGroup = tab.closest('[role="tablist"]');
+      var tabs = tabGroup ? tabGroup.querySelectorAll('[role="tab"]') : null;
+      if (!tabs) return;
+      return {
+        tabs: tabs,
+        index: Array.prototype.indexOf.call(tabs, tab),
+      };
+    };
+
+    /**
+     * Switch the active tab based on keyboard activity
+     * @param  {Node} tab The currently active tab
+     * @param  {Key}  key The key that was pressed
+     */
+    var switchTabs = function (tab, key) {
+      // Get a map of tabs
+      var map = getTabsMap(tab);
+      if (!map) return;
+      var length = map.tabs.length - 1;
+      var index;
+
+      // Go to previous tab
+      if (["ArrowUp", "ArrowLeft", "Up", "Left"].indexOf(key) > -1) {
+        index = map.index < 1 ? length : map.index - 1;
+      }
+
+      // Go to next tab
+      else if (["ArrowDown", "ArrowRight", "Down", "Right"].indexOf(key) > -1) {
+        index = map.index === length ? 0 : map.index + 1;
+      }
+
+      // Go to home
+      else if (key === "Home") {
+        index = 0;
+      }
+
+      // Go to end
+      else if (key === "End") {
+        index = length;
+      }
+
+      // Toggle the tab
+      toggle(map.tabs[index]);
+    };
+
+    /**
+     * Create the Constructor object
+     */
+    var Constructor = function (selector, options) {
+      //
+      // Variables
+      //
+
+      var publicAPIs = {};
+      var settings, tabWrapper;
+
+      //
+      // Methods
+      //
+
+      publicAPIs.destroy = function () {
+        // Get all tabs
+        var tabs = tabWrapper.querySelectorAll("a");
+
+        // Add roles to tabs
+        Array.prototype.forEach.call(tabs, function (tab) {
+          // Get the tab content
+          var content = document.querySelector(tab.hash);
+          if (!content) return;
+
+          // Setup the tab
+          destroyTab(tab, content, settings);
+        });
+
+        // Remove role from wrapper
+        tabWrapper.removeAttribute("role");
+
+        // Remove event listeners
+        document.documentElement.removeEventListener(
+          "click",
+          clickHandler,
+          true
+        );
+        tabWrapper.removeEventListener("keydown", keyHandler, true);
+
+        // Reset variables
+        settings = null;
+        tabWrapper = null;
+      };
+
+      /**
+       * Setup the DOM with the proper attributes
+       */
+      publicAPIs.setup = function () {
+        // Variables
+        tabWrapper = document.querySelector(selector);
+        if (!tabWrapper) return;
+        var tabs = tabWrapper.querySelectorAll("a");
+
+        // Add role to wrapper
+        tabWrapper.setAttribute("role", "tablist");
+
+        // Add roles to tabs. provide dynanmic tab indexes if we are within reveal
+        var contentTabindexes =
+          window.document.body.classList.contains("reveal-viewport");
+        var nextTabindex = 1;
+        Array.prototype.forEach.call(tabs, function (tab) {
+          if (contentTabindexes) {
+            tab.setAttribute("tabindex", "" + nextTabindex++);
+          } else {
+            tab.setAttribute("tabindex", "0");
+          }
+
+          // Get the tab content
+          var content = document.querySelector(tab.hash);
+          if (!content) return;
+
+          // set tab indexes for content
+          if (contentTabindexes) {
+            getKeyboardFocusableElements(content).forEach(function (el) {
+              el.setAttribute("tabindex", "" + nextTabindex++);
+            });
+          }
+
+          // Setup the tab
+          setupTab(tab, content, settings);
+        });
+      };
+
+      /**
+       * Toggle a tab based on an ID
+       * @param  {String|Node} id The tab to toggle
+       */
+      publicAPIs.toggle = function (id) {
+        // Get the tab
+        var tab = id;
+        if (typeof id === "string") {
+          tab = document.querySelector(
+            selector + ' [role="tab"][href*="' + id + '"]'
+          );
+        }
+
+        // Toggle the tab
+        toggle(tab);
+      };
+
+      /**
+       * Handle click events
+       */
+      var clickHandler = function (event) {
+        // Only run on toggles
+        var tab = event.target.closest(selector + ' [role="tab"]');
+        if (!tab) return;
+
+        // Prevent link behavior
+        event.preventDefault();
+
+        // Toggle the tab
+        toggle(tab);
+      };
+
+      /**
+       * Handle keydown events
+       */
+      var keyHandler = function (event) {
+        // Only run if a tab is in focus
+        var tab = document.activeElement;
+        if (!tab.matches(selector + ' [role="tab"]')) return;
+
+        // Only run for specific keys
+        if (["Home", "End"].indexOf(event.key) < 0) return;
+
+        // Switch tabs
+        switchTabs(tab, event.key);
+      };
+
+      /**
+       * Initialize the instance
+       */
+      var init = function () {
+        // Merge user options with defaults
+        settings = extend(defaults, options || {});
+
+        // Setup the DOM
+        publicAPIs.setup();
+
+        // Add event listeners
+        document.documentElement.addEventListener("click", clickHandler, true);
+        tabWrapper.addEventListener("keydown", keyHandler, true);
+      };
+
+      //
+      // Initialize and return the Public APIs
+      //
+
+      init();
+      return publicAPIs;
+    };
+
+    //
+    // Return the Constructor
+    //
+
+    return Constructor;
+  }
+);
+</script>
+<script>/**
+ * @popperjs/core v2.11.7 - MIT License
+ */
+
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).Popper={})}(this,(function(e){"use strict";function t(e){if(null==e)return window;if("[object Window]"!==e.toString()){var t=e.ownerDocument;return t&&t.defaultView||window}return e}function n(e){return e instanceof t(e).Element||e instanceof Element}function r(e){return e instanceof t(e).HTMLElement||e instanceof HTMLElement}function o(e){return"undefined"!=typeof ShadowRoot&&(e instanceof t(e).ShadowRoot||e instanceof ShadowRoot)}var i=Math.max,a=Math.min,s=Math.round;function f(){var e=navigator.userAgentData;return null!=e&&e.brands&&Array.isArray(e.brands)?e.brands.map((function(e){return e.brand+"/"+e.version})).join(" "):navigator.userAgent}function c(){return!/^((?!chrome|android).)*safari/i.test(f())}function p(e,o,i){void 0===o&&(o=!1),void 0===i&&(i=!1);var a=e.getBoundingClientRect(),f=1,p=1;o&&r(e)&&(f=e.offsetWidth>0&&s(a.width)/e.offsetWidth||1,p=e.offsetHeight>0&&s(a.height)/e.offsetHeight||1);var u=(n(e)?t(e):window).visualViewport,l=!c()&&i,d=(a.left+(l&&u?u.offsetLeft:0))/f,h=(a.top+(l&&u?u.offsetTop:0))/p,m=a.width/f,v=a.height/p;return{width:m,height:v,top:h,right:d+m,bottom:h+v,left:d,x:d,y:h}}function u(e){var n=t(e);return{scrollLeft:n.pageXOffset,scrollTop:n.pageYOffset}}function l(e){return e?(e.nodeName||"").toLowerCase():null}function d(e){return((n(e)?e.ownerDocument:e.document)||window.document).documentElement}function h(e){return p(d(e)).left+u(e).scrollLeft}function m(e){return t(e).getComputedStyle(e)}function v(e){var t=m(e),n=t.overflow,r=t.overflowX,o=t.overflowY;return/auto|scroll|overlay|hidden/.test(n+o+r)}function y(e,n,o){void 0===o&&(o=!1);var i,a,f=r(n),c=r(n)&&function(e){var t=e.getBoundingClientRect(),n=s(t.width)/e.offsetWidth||1,r=s(t.height)/e.offsetHeight||1;return 1!==n||1!==r}(n),m=d(n),y=p(e,c,o),g={scrollLeft:0,scrollTop:0},b={x:0,y:0};return(f||!f&&!o)&&(("body"!==l(n)||v(m))&&(g=(i=n)!==t(i)&&r(i)?{scrollLeft:(a=i).scrollLeft,scrollTop:a.scrollTop}:u(i)),r(n)?((b=p(n,!0)).x+=n.clientLeft,b.y+=n.clientTop):m&&(b.x=h(m))),{x:y.left+g.scrollLeft-b.x,y:y.top+g.scrollTop-b.y,width:y.width,height:y.height}}function g(e){var t=p(e),n=e.offsetWidth,r=e.offsetHeight;return Math.abs(t.width-n)<=1&&(n=t.width),Math.abs(t.height-r)<=1&&(r=t.height),{x:e.offsetLeft,y:e.offsetTop,width:n,height:r}}function b(e){return"html"===l(e)?e:e.assignedSlot||e.parentNode||(o(e)?e.host:null)||d(e)}function x(e){return["html","body","#document"].indexOf(l(e))>=0?e.ownerDocument.body:r(e)&&v(e)?e:x(b(e))}function w(e,n){var r;void 0===n&&(n=[]);var o=x(e),i=o===(null==(r=e.ownerDocument)?void 0:r.body),a=t(o),s=i?[a].concat(a.visualViewport||[],v(o)?o:[]):o,f=n.concat(s);return i?f:f.concat(w(b(s)))}function O(e){return["table","td","th"].indexOf(l(e))>=0}function j(e){return r(e)&&"fixed"!==m(e).position?e.offsetParent:null}function E(e){for(var n=t(e),i=j(e);i&&O(i)&&"static"===m(i).position;)i=j(i);return i&&("html"===l(i)||"body"===l(i)&&"static"===m(i).position)?n:i||function(e){var t=/firefox/i.test(f());if(/Trident/i.test(f())&&r(e)&&"fixed"===m(e).position)return null;var n=b(e);for(o(n)&&(n=n.host);r(n)&&["html","body"].indexOf(l(n))<0;){var i=m(n);if("none"!==i.transform||"none"!==i.perspective||"paint"===i.contain||-1!==["transform","perspective"].indexOf(i.willChange)||t&&"filter"===i.willChange||t&&i.filter&&"none"!==i.filter)return n;n=n.parentNode}return null}(e)||n}var D="top",A="bottom",L="right",P="left",M="auto",k=[D,A,L,P],W="start",B="end",H="viewport",T="popper",R=k.reduce((function(e,t){return e.concat([t+"-"+W,t+"-"+B])}),[]),S=[].concat(k,[M]).reduce((function(e,t){return e.concat([t,t+"-"+W,t+"-"+B])}),[]),V=["beforeRead","read","afterRead","beforeMain","main","afterMain","beforeWrite","write","afterWrite"];function q(e){var t=new Map,n=new Set,r=[];function o(e){n.add(e.name),[].concat(e.requires||[],e.requiresIfExists||[]).forEach((function(e){if(!n.has(e)){var r=t.get(e);r&&o(r)}})),r.push(e)}return e.forEach((function(e){t.set(e.name,e)})),e.forEach((function(e){n.has(e.name)||o(e)})),r}function C(e){return e.split("-")[0]}function N(e,t){var n=t.getRootNode&&t.getRootNode();if(e.contains(t))return!0;if(n&&o(n)){var r=t;do{if(r&&e.isSameNode(r))return!0;r=r.parentNode||r.host}while(r)}return!1}function I(e){return Object.assign({},e,{left:e.x,top:e.y,right:e.x+e.width,bottom:e.y+e.height})}function _(e,r,o){return r===H?I(function(e,n){var r=t(e),o=d(e),i=r.visualViewport,a=o.clientWidth,s=o.clientHeight,f=0,p=0;if(i){a=i.width,s=i.height;var u=c();(u||!u&&"fixed"===n)&&(f=i.offsetLeft,p=i.offsetTop)}return{width:a,height:s,x:f+h(e),y:p}}(e,o)):n(r)?function(e,t){var n=p(e,!1,"fixed"===t);return n.top=n.top+e.clientTop,n.left=n.left+e.clientLeft,n.bottom=n.top+e.clientHeight,n.right=n.left+e.clientWidth,n.width=e.clientWidth,n.height=e.clientHeight,n.x=n.left,n.y=n.top,n}(r,o):I(function(e){var t,n=d(e),r=u(e),o=null==(t=e.ownerDocument)?void 0:t.body,a=i(n.scrollWidth,n.clientWidth,o?o.scrollWidth:0,o?o.clientWidth:0),s=i(n.scrollHeight,n.clientHeight,o?o.scrollHeight:0,o?o.clientHeight:0),f=-r.scrollLeft+h(e),c=-r.scrollTop;return"rtl"===m(o||n).direction&&(f+=i(n.clientWidth,o?o.clientWidth:0)-a),{width:a,height:s,x:f,y:c}}(d(e)))}function F(e,t,o,s){var f="clippingParents"===t?function(e){var t=w(b(e)),o=["absolute","fixed"].indexOf(m(e).position)>=0&&r(e)?E(e):e;return n(o)?t.filter((function(e){return n(e)&&N(e,o)&&"body"!==l(e)})):[]}(e):[].concat(t),c=[].concat(f,[o]),p=c[0],u=c.reduce((function(t,n){var r=_(e,n,s);return t.top=i(r.top,t.top),t.right=a(r.right,t.right),t.bottom=a(r.bottom,t.bottom),t.left=i(r.left,t.left),t}),_(e,p,s));return u.width=u.right-u.left,u.height=u.bottom-u.top,u.x=u.left,u.y=u.top,u}function U(e){return e.split("-")[1]}function z(e){return["top","bottom"].indexOf(e)>=0?"x":"y"}function X(e){var t,n=e.reference,r=e.element,o=e.placement,i=o?C(o):null,a=o?U(o):null,s=n.x+n.width/2-r.width/2,f=n.y+n.height/2-r.height/2;switch(i){case D:t={x:s,y:n.y-r.height};break;case A:t={x:s,y:n.y+n.height};break;case L:t={x:n.x+n.width,y:f};break;case P:t={x:n.x-r.width,y:f};break;default:t={x:n.x,y:n.y}}var c=i?z(i):null;if(null!=c){var p="y"===c?"height":"width";switch(a){case W:t[c]=t[c]-(n[p]/2-r[p]/2);break;case B:t[c]=t[c]+(n[p]/2-r[p]/2)}}return t}function Y(e){return Object.assign({},{top:0,right:0,bottom:0,left:0},e)}function G(e,t){return t.reduce((function(t,n){return t[n]=e,t}),{})}function J(e,t){void 0===t&&(t={});var r=t,o=r.placement,i=void 0===o?e.placement:o,a=r.strategy,s=void 0===a?e.strategy:a,f=r.boundary,c=void 0===f?"clippingParents":f,u=r.rootBoundary,l=void 0===u?H:u,h=r.elementContext,m=void 0===h?T:h,v=r.altBoundary,y=void 0!==v&&v,g=r.padding,b=void 0===g?0:g,x=Y("number"!=typeof b?b:G(b,k)),w=m===T?"reference":T,O=e.rects.popper,j=e.elements[y?w:m],E=F(n(j)?j:j.contextElement||d(e.elements.popper),c,l,s),P=p(e.elements.reference),M=X({reference:P,element:O,strategy:"absolute",placement:i}),W=I(Object.assign({},O,M)),B=m===T?W:P,R={top:E.top-B.top+x.top,bottom:B.bottom-E.bottom+x.bottom,left:E.left-B.left+x.left,right:B.right-E.right+x.right},S=e.modifiersData.offset;if(m===T&&S){var V=S[i];Object.keys(R).forEach((function(e){var t=[L,A].indexOf(e)>=0?1:-1,n=[D,A].indexOf(e)>=0?"y":"x";R[e]+=V[n]*t}))}return R}var K={placement:"bottom",modifiers:[],strategy:"absolute"};function Q(){for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];return!t.some((function(e){return!(e&&"function"==typeof e.getBoundingClientRect)}))}function Z(e){void 0===e&&(e={});var t=e,r=t.defaultModifiers,o=void 0===r?[]:r,i=t.defaultOptions,a=void 0===i?K:i;return function(e,t,r){void 0===r&&(r=a);var i,s,f={placement:"bottom",orderedModifiers:[],options:Object.assign({},K,a),modifiersData:{},elements:{reference:e,popper:t},attributes:{},styles:{}},c=[],p=!1,u={state:f,setOptions:function(r){var i="function"==typeof r?r(f.options):r;l(),f.options=Object.assign({},a,f.options,i),f.scrollParents={reference:n(e)?w(e):e.contextElement?w(e.contextElement):[],popper:w(t)};var s,p,d=function(e){var t=q(e);return V.reduce((function(e,n){return e.concat(t.filter((function(e){return e.phase===n})))}),[])}((s=[].concat(o,f.options.modifiers),p=s.reduce((function(e,t){var n=e[t.name];return e[t.name]=n?Object.assign({},n,t,{options:Object.assign({},n.options,t.options),data:Object.assign({},n.data,t.data)}):t,e}),{}),Object.keys(p).map((function(e){return p[e]}))));return f.orderedModifiers=d.filter((function(e){return e.enabled})),f.orderedModifiers.forEach((function(e){var t=e.name,n=e.options,r=void 0===n?{}:n,o=e.effect;if("function"==typeof o){var i=o({state:f,name:t,instance:u,options:r}),a=function(){};c.push(i||a)}})),u.update()},forceUpdate:function(){if(!p){var e=f.elements,t=e.reference,n=e.popper;if(Q(t,n)){f.rects={reference:y(t,E(n),"fixed"===f.options.strategy),popper:g(n)},f.reset=!1,f.placement=f.options.placement,f.orderedModifiers.forEach((function(e){return f.modifiersData[e.name]=Object.assign({},e.data)}));for(var r=0;r<f.orderedModifiers.length;r++)if(!0!==f.reset){var o=f.orderedModifiers[r],i=o.fn,a=o.options,s=void 0===a?{}:a,c=o.name;"function"==typeof i&&(f=i({state:f,options:s,name:c,instance:u})||f)}else f.reset=!1,r=-1}}},update:(i=function(){return new Promise((function(e){u.forceUpdate(),e(f)}))},function(){return s||(s=new Promise((function(e){Promise.resolve().then((function(){s=void 0,e(i())}))}))),s}),destroy:function(){l(),p=!0}};if(!Q(e,t))return u;function l(){c.forEach((function(e){return e()})),c=[]}return u.setOptions(r).then((function(e){!p&&r.onFirstUpdate&&r.onFirstUpdate(e)})),u}}var $={passive:!0};var ee={name:"eventListeners",enabled:!0,phase:"write",fn:function(){},effect:function(e){var n=e.state,r=e.instance,o=e.options,i=o.scroll,a=void 0===i||i,s=o.resize,f=void 0===s||s,c=t(n.elements.popper),p=[].concat(n.scrollParents.reference,n.scrollParents.popper);return a&&p.forEach((function(e){e.addEventListener("scroll",r.update,$)})),f&&c.addEventListener("resize",r.update,$),function(){a&&p.forEach((function(e){e.removeEventListener("scroll",r.update,$)})),f&&c.removeEventListener("resize",r.update,$)}},data:{}};var te={name:"popperOffsets",enabled:!0,phase:"read",fn:function(e){var t=e.state,n=e.name;t.modifiersData[n]=X({reference:t.rects.reference,element:t.rects.popper,strategy:"absolute",placement:t.placement})},data:{}},ne={top:"auto",right:"auto",bottom:"auto",left:"auto"};function re(e){var n,r=e.popper,o=e.popperRect,i=e.placement,a=e.variation,f=e.offsets,c=e.position,p=e.gpuAcceleration,u=e.adaptive,l=e.roundOffsets,h=e.isFixed,v=f.x,y=void 0===v?0:v,g=f.y,b=void 0===g?0:g,x="function"==typeof l?l({x:y,y:b}):{x:y,y:b};y=x.x,b=x.y;var w=f.hasOwnProperty("x"),O=f.hasOwnProperty("y"),j=P,M=D,k=window;if(u){var W=E(r),H="clientHeight",T="clientWidth";if(W===t(r)&&"static"!==m(W=d(r)).position&&"absolute"===c&&(H="scrollHeight",T="scrollWidth"),W=W,i===D||(i===P||i===L)&&a===B)M=A,b-=(h&&W===k&&k.visualViewport?k.visualViewport.height:W[H])-o.height,b*=p?1:-1;if(i===P||(i===D||i===A)&&a===B)j=L,y-=(h&&W===k&&k.visualViewport?k.visualViewport.width:W[T])-o.width,y*=p?1:-1}var R,S=Object.assign({position:c},u&&ne),V=!0===l?function(e,t){var n=e.x,r=e.y,o=t.devicePixelRatio||1;return{x:s(n*o)/o||0,y:s(r*o)/o||0}}({x:y,y:b},t(r)):{x:y,y:b};return y=V.x,b=V.y,p?Object.assign({},S,((R={})[M]=O?"0":"",R[j]=w?"0":"",R.transform=(k.devicePixelRatio||1)<=1?"translate("+y+"px, "+b+"px)":"translate3d("+y+"px, "+b+"px, 0)",R)):Object.assign({},S,((n={})[M]=O?b+"px":"",n[j]=w?y+"px":"",n.transform="",n))}var oe={name:"computeStyles",enabled:!0,phase:"beforeWrite",fn:function(e){var t=e.state,n=e.options,r=n.gpuAcceleration,o=void 0===r||r,i=n.adaptive,a=void 0===i||i,s=n.roundOffsets,f=void 0===s||s,c={placement:C(t.placement),variation:U(t.placement),popper:t.elements.popper,popperRect:t.rects.popper,gpuAcceleration:o,isFixed:"fixed"===t.options.strategy};null!=t.modifiersData.popperOffsets&&(t.styles.popper=Object.assign({},t.styles.popper,re(Object.assign({},c,{offsets:t.modifiersData.popperOffsets,position:t.options.strategy,adaptive:a,roundOffsets:f})))),null!=t.modifiersData.arrow&&(t.styles.arrow=Object.assign({},t.styles.arrow,re(Object.assign({},c,{offsets:t.modifiersData.arrow,position:"absolute",adaptive:!1,roundOffsets:f})))),t.attributes.popper=Object.assign({},t.attributes.popper,{"data-popper-placement":t.placement})},data:{}};var ie={name:"applyStyles",enabled:!0,phase:"write",fn:function(e){var t=e.state;Object.keys(t.elements).forEach((function(e){var n=t.styles[e]||{},o=t.attributes[e]||{},i=t.elements[e];r(i)&&l(i)&&(Object.assign(i.style,n),Object.keys(o).forEach((function(e){var t=o[e];!1===t?i.removeAttribute(e):i.setAttribute(e,!0===t?"":t)})))}))},effect:function(e){var t=e.state,n={popper:{position:t.options.strategy,left:"0",top:"0",margin:"0"},arrow:{position:"absolute"},reference:{}};return Object.assign(t.elements.popper.style,n.popper),t.styles=n,t.elements.arrow&&Object.assign(t.elements.arrow.style,n.arrow),function(){Object.keys(t.elements).forEach((function(e){var o=t.elements[e],i=t.attributes[e]||{},a=Object.keys(t.styles.hasOwnProperty(e)?t.styles[e]:n[e]).reduce((function(e,t){return e[t]="",e}),{});r(o)&&l(o)&&(Object.assign(o.style,a),Object.keys(i).forEach((function(e){o.removeAttribute(e)})))}))}},requires:["computeStyles"]};var ae={name:"offset",enabled:!0,phase:"main",requires:["popperOffsets"],fn:function(e){var t=e.state,n=e.options,r=e.name,o=n.offset,i=void 0===o?[0,0]:o,a=S.reduce((function(e,n){return e[n]=function(e,t,n){var r=C(e),o=[P,D].indexOf(r)>=0?-1:1,i="function"==typeof n?n(Object.assign({},t,{placement:e})):n,a=i[0],s=i[1];return a=a||0,s=(s||0)*o,[P,L].indexOf(r)>=0?{x:s,y:a}:{x:a,y:s}}(n,t.rects,i),e}),{}),s=a[t.placement],f=s.x,c=s.y;null!=t.modifiersData.popperOffsets&&(t.modifiersData.popperOffsets.x+=f,t.modifiersData.popperOffsets.y+=c),t.modifiersData[r]=a}},se={left:"right",right:"left",bottom:"top",top:"bottom"};function fe(e){return e.replace(/left|right|bottom|top/g,(function(e){return se[e]}))}var ce={start:"end",end:"start"};function pe(e){return e.replace(/start|end/g,(function(e){return ce[e]}))}function ue(e,t){void 0===t&&(t={});var n=t,r=n.placement,o=n.boundary,i=n.rootBoundary,a=n.padding,s=n.flipVariations,f=n.allowedAutoPlacements,c=void 0===f?S:f,p=U(r),u=p?s?R:R.filter((function(e){return U(e)===p})):k,l=u.filter((function(e){return c.indexOf(e)>=0}));0===l.length&&(l=u);var d=l.reduce((function(t,n){return t[n]=J(e,{placement:n,boundary:o,rootBoundary:i,padding:a})[C(n)],t}),{});return Object.keys(d).sort((function(e,t){return d[e]-d[t]}))}var le={name:"flip",enabled:!0,phase:"main",fn:function(e){var t=e.state,n=e.options,r=e.name;if(!t.modifiersData[r]._skip){for(var o=n.mainAxis,i=void 0===o||o,a=n.altAxis,s=void 0===a||a,f=n.fallbackPlacements,c=n.padding,p=n.boundary,u=n.rootBoundary,l=n.altBoundary,d=n.flipVariations,h=void 0===d||d,m=n.allowedAutoPlacements,v=t.options.placement,y=C(v),g=f||(y===v||!h?[fe(v)]:function(e){if(C(e)===M)return[];var t=fe(e);return[pe(e),t,pe(t)]}(v)),b=[v].concat(g).reduce((function(e,n){return e.concat(C(n)===M?ue(t,{placement:n,boundary:p,rootBoundary:u,padding:c,flipVariations:h,allowedAutoPlacements:m}):n)}),[]),x=t.rects.reference,w=t.rects.popper,O=new Map,j=!0,E=b[0],k=0;k<b.length;k++){var B=b[k],H=C(B),T=U(B)===W,R=[D,A].indexOf(H)>=0,S=R?"width":"height",V=J(t,{placement:B,boundary:p,rootBoundary:u,altBoundary:l,padding:c}),q=R?T?L:P:T?A:D;x[S]>w[S]&&(q=fe(q));var N=fe(q),I=[];if(i&&I.push(V[H]<=0),s&&I.push(V[q]<=0,V[N]<=0),I.every((function(e){return e}))){E=B,j=!1;break}O.set(B,I)}if(j)for(var _=function(e){var t=b.find((function(t){var n=O.get(t);if(n)return n.slice(0,e).every((function(e){return e}))}));if(t)return E=t,"break"},F=h?3:1;F>0;F--){if("break"===_(F))break}t.placement!==E&&(t.modifiersData[r]._skip=!0,t.placement=E,t.reset=!0)}},requiresIfExists:["offset"],data:{_skip:!1}};function de(e,t,n){return i(e,a(t,n))}var he={name:"preventOverflow",enabled:!0,phase:"main",fn:function(e){var t=e.state,n=e.options,r=e.name,o=n.mainAxis,s=void 0===o||o,f=n.altAxis,c=void 0!==f&&f,p=n.boundary,u=n.rootBoundary,l=n.altBoundary,d=n.padding,h=n.tether,m=void 0===h||h,v=n.tetherOffset,y=void 0===v?0:v,b=J(t,{boundary:p,rootBoundary:u,padding:d,altBoundary:l}),x=C(t.placement),w=U(t.placement),O=!w,j=z(x),M="x"===j?"y":"x",k=t.modifiersData.popperOffsets,B=t.rects.reference,H=t.rects.popper,T="function"==typeof y?y(Object.assign({},t.rects,{placement:t.placement})):y,R="number"==typeof T?{mainAxis:T,altAxis:T}:Object.assign({mainAxis:0,altAxis:0},T),S=t.modifiersData.offset?t.modifiersData.offset[t.placement]:null,V={x:0,y:0};if(k){if(s){var q,N="y"===j?D:P,I="y"===j?A:L,_="y"===j?"height":"width",F=k[j],X=F+b[N],Y=F-b[I],G=m?-H[_]/2:0,K=w===W?B[_]:H[_],Q=w===W?-H[_]:-B[_],Z=t.elements.arrow,$=m&&Z?g(Z):{width:0,height:0},ee=t.modifiersData["arrow#persistent"]?t.modifiersData["arrow#persistent"].padding:{top:0,right:0,bottom:0,left:0},te=ee[N],ne=ee[I],re=de(0,B[_],$[_]),oe=O?B[_]/2-G-re-te-R.mainAxis:K-re-te-R.mainAxis,ie=O?-B[_]/2+G+re+ne+R.mainAxis:Q+re+ne+R.mainAxis,ae=t.elements.arrow&&E(t.elements.arrow),se=ae?"y"===j?ae.clientTop||0:ae.clientLeft||0:0,fe=null!=(q=null==S?void 0:S[j])?q:0,ce=F+ie-fe,pe=de(m?a(X,F+oe-fe-se):X,F,m?i(Y,ce):Y);k[j]=pe,V[j]=pe-F}if(c){var ue,le="x"===j?D:P,he="x"===j?A:L,me=k[M],ve="y"===M?"height":"width",ye=me+b[le],ge=me-b[he],be=-1!==[D,P].indexOf(x),xe=null!=(ue=null==S?void 0:S[M])?ue:0,we=be?ye:me-B[ve]-H[ve]-xe+R.altAxis,Oe=be?me+B[ve]+H[ve]-xe-R.altAxis:ge,je=m&&be?function(e,t,n){var r=de(e,t,n);return r>n?n:r}(we,me,Oe):de(m?we:ye,me,m?Oe:ge);k[M]=je,V[M]=je-me}t.modifiersData[r]=V}},requiresIfExists:["offset"]};var me={name:"arrow",enabled:!0,phase:"main",fn:function(e){var t,n=e.state,r=e.name,o=e.options,i=n.elements.arrow,a=n.modifiersData.popperOffsets,s=C(n.placement),f=z(s),c=[P,L].indexOf(s)>=0?"height":"width";if(i&&a){var p=function(e,t){return Y("number"!=typeof(e="function"==typeof e?e(Object.assign({},t.rects,{placement:t.placement})):e)?e:G(e,k))}(o.padding,n),u=g(i),l="y"===f?D:P,d="y"===f?A:L,h=n.rects.reference[c]+n.rects.reference[f]-a[f]-n.rects.popper[c],m=a[f]-n.rects.reference[f],v=E(i),y=v?"y"===f?v.clientHeight||0:v.clientWidth||0:0,b=h/2-m/2,x=p[l],w=y-u[c]-p[d],O=y/2-u[c]/2+b,j=de(x,O,w),M=f;n.modifiersData[r]=((t={})[M]=j,t.centerOffset=j-O,t)}},effect:function(e){var t=e.state,n=e.options.element,r=void 0===n?"[data-popper-arrow]":n;null!=r&&("string"!=typeof r||(r=t.elements.popper.querySelector(r)))&&N(t.elements.popper,r)&&(t.elements.arrow=r)},requires:["popperOffsets"],requiresIfExists:["preventOverflow"]};function ve(e,t,n){return void 0===n&&(n={x:0,y:0}),{top:e.top-t.height-n.y,right:e.right-t.width+n.x,bottom:e.bottom-t.height+n.y,left:e.left-t.width-n.x}}function ye(e){return[D,L,A,P].some((function(t){return e[t]>=0}))}var ge={name:"hide",enabled:!0,phase:"main",requiresIfExists:["preventOverflow"],fn:function(e){var t=e.state,n=e.name,r=t.rects.reference,o=t.rects.popper,i=t.modifiersData.preventOverflow,a=J(t,{elementContext:"reference"}),s=J(t,{altBoundary:!0}),f=ve(a,r),c=ve(s,o,i),p=ye(f),u=ye(c);t.modifiersData[n]={referenceClippingOffsets:f,popperEscapeOffsets:c,isReferenceHidden:p,hasPopperEscaped:u},t.attributes.popper=Object.assign({},t.attributes.popper,{"data-popper-reference-hidden":p,"data-popper-escaped":u})}},be=Z({defaultModifiers:[ee,te,oe,ie]}),xe=[ee,te,oe,ie,ae,le,he,me,ge],we=Z({defaultModifiers:xe});e.applyStyles=ie,e.arrow=me,e.computeStyles=oe,e.createPopper=we,e.createPopperLite=be,e.defaultModifiers=xe,e.detectOverflow=J,e.eventListeners=ee,e.flip=le,e.hide=ge,e.offset=ae,e.popperGenerator=Z,e.popperOffsets=te,e.preventOverflow=he,Object.defineProperty(e,"__esModule",{value:!0})}));
+
+</script>
+<script>!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t(require("@popperjs/core")):"function"==typeof define&&define.amd?define(["@popperjs/core"],t):(e=e||self).tippy=t(e.Popper)}(this,(function(e){"use strict";var t={passive:!0,capture:!0},n=function(){return document.body};function r(e,t,n){if(Array.isArray(e)){var r=e[t];return null==r?Array.isArray(n)?n[t]:n:r}return e}function o(e,t){var n={}.toString.call(e);return 0===n.indexOf("[object")&&n.indexOf(t+"]")>-1}function i(e,t){return"function"==typeof e?e.apply(void 0,t):e}function a(e,t){return 0===t?e:function(r){clearTimeout(n),n=setTimeout((function(){e(r)}),t)};var n}function s(e,t){var n=Object.assign({},e);return t.forEach((function(e){delete n[e]})),n}function u(e){return[].concat(e)}function c(e,t){-1===e.indexOf(t)&&e.push(t)}function p(e){return e.split("-")[0]}function f(e){return[].slice.call(e)}function l(e){return Object.keys(e).reduce((function(t,n){return void 0!==e[n]&&(t[n]=e[n]),t}),{})}function d(){return document.createElement("div")}function v(e){return["Element","Fragment"].some((function(t){return o(e,t)}))}function m(e){return o(e,"MouseEvent")}function g(e){return!(!e||!e._tippy||e._tippy.reference!==e)}function h(e){return v(e)?[e]:function(e){return o(e,"NodeList")}(e)?f(e):Array.isArray(e)?e:f(document.querySelectorAll(e))}function b(e,t){e.forEach((function(e){e&&(e.style.transitionDuration=t+"ms")}))}function y(e,t){e.forEach((function(e){e&&e.setAttribute("data-state",t)}))}function w(e){var t,n=u(e)[0];return null!=n&&null!=(t=n.ownerDocument)&&t.body?n.ownerDocument:document}function E(e,t,n){var r=t+"EventListener";["transitionend","webkitTransitionEnd"].forEach((function(t){e[r](t,n)}))}function O(e,t){for(var n=t;n;){var r;if(e.contains(n))return!0;n=null==n.getRootNode||null==(r=n.getRootNode())?void 0:r.host}return!1}var x={isTouch:!1},C=0;function T(){x.isTouch||(x.isTouch=!0,window.performance&&document.addEventListener("mousemove",A))}function A(){var e=performance.now();e-C<20&&(x.isTouch=!1,document.removeEventListener("mousemove",A)),C=e}function L(){var e=document.activeElement;if(g(e)){var t=e._tippy;e.blur&&!t.state.isVisible&&e.blur()}}var D=!!("undefined"!=typeof window&&"undefined"!=typeof document)&&!!window.msCrypto,R=Object.assign({appendTo:n,aria:{content:"auto",expanded:"auto"},delay:0,duration:[300,250],getReferenceClientRect:null,hideOnClick:!0,ignoreAttributes:!1,interactive:!1,interactiveBorder:2,interactiveDebounce:0,moveTransition:"",offset:[0,10],onAfterUpdate:function(){},onBeforeUpdate:function(){},onCreate:function(){},onDestroy:function(){},onHidden:function(){},onHide:function(){},onMount:function(){},onShow:function(){},onShown:function(){},onTrigger:function(){},onUntrigger:function(){},onClickOutside:function(){},placement:"top",plugins:[],popperOptions:{},render:null,showOnCreate:!1,touch:!0,trigger:"mouseenter focus",triggerTarget:null},{animateFill:!1,followCursor:!1,inlinePositioning:!1,sticky:!1},{allowHTML:!1,animation:"fade",arrow:!0,content:"",inertia:!1,maxWidth:350,role:"tooltip",theme:"",zIndex:9999}),k=Object.keys(R);function P(e){var t=(e.plugins||[]).reduce((function(t,n){var r,o=n.name,i=n.defaultValue;o&&(t[o]=void 0!==e[o]?e[o]:null!=(r=R[o])?r:i);return t}),{});return Object.assign({},e,t)}function j(e,t){var n=Object.assign({},t,{content:i(t.content,[e])},t.ignoreAttributes?{}:function(e,t){return(t?Object.keys(P(Object.assign({},R,{plugins:t}))):k).reduce((function(t,n){var r=(e.getAttribute("data-tippy-"+n)||"").trim();if(!r)return t;if("content"===n)t[n]=r;else try{t[n]=JSON.parse(r)}catch(e){t[n]=r}return t}),{})}(e,t.plugins));return n.aria=Object.assign({},R.aria,n.aria),n.aria={expanded:"auto"===n.aria.expanded?t.interactive:n.aria.expanded,content:"auto"===n.aria.content?t.interactive?null:"describedby":n.aria.content},n}function M(e,t){e.innerHTML=t}function V(e){var t=d();return!0===e?t.className="tippy-arrow":(t.className="tippy-svg-arrow",v(e)?t.appendChild(e):M(t,e)),t}function I(e,t){v(t.content)?(M(e,""),e.appendChild(t.content)):"function"!=typeof t.content&&(t.allowHTML?M(e,t.content):e.textContent=t.content)}function S(e){var t=e.firstElementChild,n=f(t.children);return{box:t,content:n.find((function(e){return e.classList.contains("tippy-content")})),arrow:n.find((function(e){return e.classList.contains("tippy-arrow")||e.classList.contains("tippy-svg-arrow")})),backdrop:n.find((function(e){return e.classList.contains("tippy-backdrop")}))}}function N(e){var t=d(),n=d();n.className="tippy-box",n.setAttribute("data-state","hidden"),n.setAttribute("tabindex","-1");var r=d();function o(n,r){var o=S(t),i=o.box,a=o.content,s=o.arrow;r.theme?i.setAttribute("data-theme",r.theme):i.removeAttribute("data-theme"),"string"==typeof r.animation?i.setAttribute("data-animation",r.animation):i.removeAttribute("data-animation"),r.inertia?i.setAttribute("data-inertia",""):i.removeAttribute("data-inertia"),i.style.maxWidth="number"==typeof r.maxWidth?r.maxWidth+"px":r.maxWidth,r.role?i.setAttribute("role",r.role):i.removeAttribute("role"),n.content===r.content&&n.allowHTML===r.allowHTML||I(a,e.props),r.arrow?s?n.arrow!==r.arrow&&(i.removeChild(s),i.appendChild(V(r.arrow))):i.appendChild(V(r.arrow)):s&&i.removeChild(s)}return r.className="tippy-content",r.setAttribute("data-state","hidden"),I(r,e.props),t.appendChild(n),n.appendChild(r),o(e.props,e.props),{popper:t,onUpdate:o}}N.$$tippy=!0;var B=1,H=[],U=[];function _(o,s){var v,g,h,C,T,A,L,k,M=j(o,Object.assign({},R,P(l(s)))),V=!1,I=!1,N=!1,_=!1,F=[],W=a(we,M.interactiveDebounce),X=B++,Y=(k=M.plugins).filter((function(e,t){return k.indexOf(e)===t})),$={id:X,reference:o,popper:d(),popperInstance:null,props:M,state:{isEnabled:!0,isVisible:!1,isDestroyed:!1,isMounted:!1,isShown:!1},plugins:Y,clearDelayTimeouts:function(){clearTimeout(v),clearTimeout(g),cancelAnimationFrame(h)},setProps:function(e){if($.state.isDestroyed)return;ae("onBeforeUpdate",[$,e]),be();var t=$.props,n=j(o,Object.assign({},t,l(e),{ignoreAttributes:!0}));$.props=n,he(),t.interactiveDebounce!==n.interactiveDebounce&&(ce(),W=a(we,n.interactiveDebounce));t.triggerTarget&&!n.triggerTarget?u(t.triggerTarget).forEach((function(e){e.removeAttribute("aria-expanded")})):n.triggerTarget&&o.removeAttribute("aria-expanded");ue(),ie(),J&&J(t,n);$.popperInstance&&(Ce(),Ae().forEach((function(e){requestAnimationFrame(e._tippy.popperInstance.forceUpdate)})));ae("onAfterUpdate",[$,e])},setContent:function(e){$.setProps({content:e})},show:function(){var e=$.state.isVisible,t=$.state.isDestroyed,o=!$.state.isEnabled,a=x.isTouch&&!$.props.touch,s=r($.props.duration,0,R.duration);if(e||t||o||a)return;if(te().hasAttribute("disabled"))return;if(ae("onShow",[$],!1),!1===$.props.onShow($))return;$.state.isVisible=!0,ee()&&(z.style.visibility="visible");ie(),de(),$.state.isMounted||(z.style.transition="none");if(ee()){var u=re(),p=u.box,f=u.content;b([p,f],0)}A=function(){var e;if($.state.isVisible&&!_){if(_=!0,z.offsetHeight,z.style.transition=$.props.moveTransition,ee()&&$.props.animation){var t=re(),n=t.box,r=t.content;b([n,r],s),y([n,r],"visible")}se(),ue(),c(U,$),null==(e=$.popperInstance)||e.forceUpdate(),ae("onMount",[$]),$.props.animation&&ee()&&function(e,t){me(e,t)}(s,(function(){$.state.isShown=!0,ae("onShown",[$])}))}},function(){var e,t=$.props.appendTo,r=te();e=$.props.interactive&&t===n||"parent"===t?r.parentNode:i(t,[r]);e.contains(z)||e.appendChild(z);$.state.isMounted=!0,Ce()}()},hide:function(){var e=!$.state.isVisible,t=$.state.isDestroyed,n=!$.state.isEnabled,o=r($.props.duration,1,R.duration);if(e||t||n)return;if(ae("onHide",[$],!1),!1===$.props.onHide($))return;$.state.isVisible=!1,$.state.isShown=!1,_=!1,V=!1,ee()&&(z.style.visibility="hidden");if(ce(),ve(),ie(!0),ee()){var i=re(),a=i.box,s=i.content;$.props.animation&&(b([a,s],o),y([a,s],"hidden"))}se(),ue(),$.props.animation?ee()&&function(e,t){me(e,(function(){!$.state.isVisible&&z.parentNode&&z.parentNode.contains(z)&&t()}))}(o,$.unmount):$.unmount()},hideWithInteractivity:function(e){ne().addEventListener("mousemove",W),c(H,W),W(e)},enable:function(){$.state.isEnabled=!0},disable:function(){$.hide(),$.state.isEnabled=!1},unmount:function(){$.state.isVisible&&$.hide();if(!$.state.isMounted)return;Te(),Ae().forEach((function(e){e._tippy.unmount()})),z.parentNode&&z.parentNode.removeChild(z);U=U.filter((function(e){return e!==$})),$.state.isMounted=!1,ae("onHidden",[$])},destroy:function(){if($.state.isDestroyed)return;$.clearDelayTimeouts(),$.unmount(),be(),delete o._tippy,$.state.isDestroyed=!0,ae("onDestroy",[$])}};if(!M.render)return $;var q=M.render($),z=q.popper,J=q.onUpdate;z.setAttribute("data-tippy-root",""),z.id="tippy-"+$.id,$.popper=z,o._tippy=$,z._tippy=$;var G=Y.map((function(e){return e.fn($)})),K=o.hasAttribute("aria-expanded");return he(),ue(),ie(),ae("onCreate",[$]),M.showOnCreate&&Le(),z.addEventListener("mouseenter",(function(){$.props.interactive&&$.state.isVisible&&$.clearDelayTimeouts()})),z.addEventListener("mouseleave",(function(){$.props.interactive&&$.props.trigger.indexOf("mouseenter")>=0&&ne().addEventListener("mousemove",W)})),$;function Q(){var e=$.props.touch;return Array.isArray(e)?e:[e,0]}function Z(){return"hold"===Q()[0]}function ee(){var e;return!(null==(e=$.props.render)||!e.$$tippy)}function te(){return L||o}function ne(){var e=te().parentNode;return e?w(e):document}function re(){return S(z)}function oe(e){return $.state.isMounted&&!$.state.isVisible||x.isTouch||C&&"focus"===C.type?0:r($.props.delay,e?0:1,R.delay)}function ie(e){void 0===e&&(e=!1),z.style.pointerEvents=$.props.interactive&&!e?"":"none",z.style.zIndex=""+$.props.zIndex}function ae(e,t,n){var r;(void 0===n&&(n=!0),G.forEach((function(n){n[e]&&n[e].apply(n,t)})),n)&&(r=$.props)[e].apply(r,t)}function se(){var e=$.props.aria;if(e.content){var t="aria-"+e.content,n=z.id;u($.props.triggerTarget||o).forEach((function(e){var r=e.getAttribute(t);if($.state.isVisible)e.setAttribute(t,r?r+" "+n:n);else{var o=r&&r.replace(n,"").trim();o?e.setAttribute(t,o):e.removeAttribute(t)}}))}}function ue(){!K&&$.props.aria.expanded&&u($.props.triggerTarget||o).forEach((function(e){$.props.interactive?e.setAttribute("aria-expanded",$.state.isVisible&&e===te()?"true":"false"):e.removeAttribute("aria-expanded")}))}function ce(){ne().removeEventListener("mousemove",W),H=H.filter((function(e){return e!==W}))}function pe(e){if(!x.isTouch||!N&&"mousedown"!==e.type){var t=e.composedPath&&e.composedPath()[0]||e.target;if(!$.props.interactive||!O(z,t)){if(u($.props.triggerTarget||o).some((function(e){return O(e,t)}))){if(x.isTouch)return;if($.state.isVisible&&$.props.trigger.indexOf("click")>=0)return}else ae("onClickOutside",[$,e]);!0===$.props.hideOnClick&&($.clearDelayTimeouts(),$.hide(),I=!0,setTimeout((function(){I=!1})),$.state.isMounted||ve())}}}function fe(){N=!0}function le(){N=!1}function de(){var e=ne();e.addEventListener("mousedown",pe,!0),e.addEventListener("touchend",pe,t),e.addEventListener("touchstart",le,t),e.addEventListener("touchmove",fe,t)}function ve(){var e=ne();e.removeEventListener("mousedown",pe,!0),e.removeEventListener("touchend",pe,t),e.removeEventListener("touchstart",le,t),e.removeEventListener("touchmove",fe,t)}function me(e,t){var n=re().box;function r(e){e.target===n&&(E(n,"remove",r),t())}if(0===e)return t();E(n,"remove",T),E(n,"add",r),T=r}function ge(e,t,n){void 0===n&&(n=!1),u($.props.triggerTarget||o).forEach((function(r){r.addEventListener(e,t,n),F.push({node:r,eventType:e,handler:t,options:n})}))}function he(){var e;Z()&&(ge("touchstart",ye,{passive:!0}),ge("touchend",Ee,{passive:!0})),(e=$.props.trigger,e.split(/\s+/).filter(Boolean)).forEach((function(e){if("manual"!==e)switch(ge(e,ye),e){case"mouseenter":ge("mouseleave",Ee);break;case"focus":ge(D?"focusout":"blur",Oe);break;case"focusin":ge("focusout",Oe)}}))}function be(){F.forEach((function(e){var t=e.node,n=e.eventType,r=e.handler,o=e.options;t.removeEventListener(n,r,o)})),F=[]}function ye(e){var t,n=!1;if($.state.isEnabled&&!xe(e)&&!I){var r="focus"===(null==(t=C)?void 0:t.type);C=e,L=e.currentTarget,ue(),!$.state.isVisible&&m(e)&&H.forEach((function(t){return t(e)})),"click"===e.type&&($.props.trigger.indexOf("mouseenter")<0||V)&&!1!==$.props.hideOnClick&&$.state.isVisible?n=!0:Le(e),"click"===e.type&&(V=!n),n&&!r&&De(e)}}function we(e){var t=e.target,n=te().contains(t)||z.contains(t);"mousemove"===e.type&&n||function(e,t){var n=t.clientX,r=t.clientY;return e.every((function(e){var t=e.popperRect,o=e.popperState,i=e.props.interactiveBorder,a=p(o.placement),s=o.modifiersData.offset;if(!s)return!0;var u="bottom"===a?s.top.y:0,c="top"===a?s.bottom.y:0,f="right"===a?s.left.x:0,l="left"===a?s.right.x:0,d=t.top-r+u>i,v=r-t.bottom-c>i,m=t.left-n+f>i,g=n-t.right-l>i;return d||v||m||g}))}(Ae().concat(z).map((function(e){var t,n=null==(t=e._tippy.popperInstance)?void 0:t.state;return n?{popperRect:e.getBoundingClientRect(),popperState:n,props:M}:null})).filter(Boolean),e)&&(ce(),De(e))}function Ee(e){xe(e)||$.props.trigger.indexOf("click")>=0&&V||($.props.interactive?$.hideWithInteractivity(e):De(e))}function Oe(e){$.props.trigger.indexOf("focusin")<0&&e.target!==te()||$.props.interactive&&e.relatedTarget&&z.contains(e.relatedTarget)||De(e)}function xe(e){return!!x.isTouch&&Z()!==e.type.indexOf("touch")>=0}function Ce(){Te();var t=$.props,n=t.popperOptions,r=t.placement,i=t.offset,a=t.getReferenceClientRect,s=t.moveTransition,u=ee()?S(z).arrow:null,c=a?{getBoundingClientRect:a,contextElement:a.contextElement||te()}:o,p=[{name:"offset",options:{offset:i}},{name:"preventOverflow",options:{padding:{top:2,bottom:2,left:5,right:5}}},{name:"flip",options:{padding:5}},{name:"computeStyles",options:{adaptive:!s}},{name:"$$tippy",enabled:!0,phase:"beforeWrite",requires:["computeStyles"],fn:function(e){var t=e.state;if(ee()){var n=re().box;["placement","reference-hidden","escaped"].forEach((function(e){"placement"===e?n.setAttribute("data-placement",t.placement):t.attributes.popper["data-popper-"+e]?n.setAttribute("data-"+e,""):n.removeAttribute("data-"+e)})),t.attributes.popper={}}}}];ee()&&u&&p.push({name:"arrow",options:{element:u,padding:3}}),p.push.apply(p,(null==n?void 0:n.modifiers)||[]),$.popperInstance=e.createPopper(c,z,Object.assign({},n,{placement:r,onFirstUpdate:A,modifiers:p}))}function Te(){$.popperInstance&&($.popperInstance.destroy(),$.popperInstance=null)}function Ae(){return f(z.querySelectorAll("[data-tippy-root]"))}function Le(e){$.clearDelayTimeouts(),e&&ae("onTrigger",[$,e]),de();var t=oe(!0),n=Q(),r=n[0],o=n[1];x.isTouch&&"hold"===r&&o&&(t=o),t?v=setTimeout((function(){$.show()}),t):$.show()}function De(e){if($.clearDelayTimeouts(),ae("onUntrigger",[$,e]),$.state.isVisible){if(!($.props.trigger.indexOf("mouseenter")>=0&&$.props.trigger.indexOf("click")>=0&&["mouseleave","mousemove"].indexOf(e.type)>=0&&V)){var t=oe(!1);t?g=setTimeout((function(){$.state.isVisible&&$.hide()}),t):h=requestAnimationFrame((function(){$.hide()}))}}else ve()}}function F(e,n){void 0===n&&(n={});var r=R.plugins.concat(n.plugins||[]);document.addEventListener("touchstart",T,t),window.addEventListener("blur",L);var o=Object.assign({},n,{plugins:r}),i=h(e).reduce((function(e,t){var n=t&&_(t,o);return n&&e.push(n),e}),[]);return v(e)?i[0]:i}F.defaultProps=R,F.setDefaultProps=function(e){Object.keys(e).forEach((function(t){R[t]=e[t]}))},F.currentInput=x;var W=Object.assign({},e.applyStyles,{effect:function(e){var t=e.state,n={popper:{position:t.options.strategy,left:"0",top:"0",margin:"0"},arrow:{position:"absolute"},reference:{}};Object.assign(t.elements.popper.style,n.popper),t.styles=n,t.elements.arrow&&Object.assign(t.elements.arrow.style,n.arrow)}}),X={mouseover:"mouseenter",focusin:"focus",click:"click"};var Y={name:"animateFill",defaultValue:!1,fn:function(e){var t;if(null==(t=e.props.render)||!t.$$tippy)return{};var n=S(e.popper),r=n.box,o=n.content,i=e.props.animateFill?function(){var e=d();return e.className="tippy-backdrop",y([e],"hidden"),e}():null;return{onCreate:function(){i&&(r.insertBefore(i,r.firstElementChild),r.setAttribute("data-animatefill",""),r.style.overflow="hidden",e.setProps({arrow:!1,animation:"shift-away"}))},onMount:function(){if(i){var e=r.style.transitionDuration,t=Number(e.replace("ms",""));o.style.transitionDelay=Math.round(t/10)+"ms",i.style.transitionDuration=e,y([i],"visible")}},onShow:function(){i&&(i.style.transitionDuration="0ms")},onHide:function(){i&&y([i],"hidden")}}}};var $={clientX:0,clientY:0},q=[];function z(e){var t=e.clientX,n=e.clientY;$={clientX:t,clientY:n}}var J={name:"followCursor",defaultValue:!1,fn:function(e){var t=e.reference,n=w(e.props.triggerTarget||t),r=!1,o=!1,i=!0,a=e.props;function s(){return"initial"===e.props.followCursor&&e.state.isVisible}function u(){n.addEventListener("mousemove",f)}function c(){n.removeEventListener("mousemove",f)}function p(){r=!0,e.setProps({getReferenceClientRect:null}),r=!1}function f(n){var r=!n.target||t.contains(n.target),o=e.props.followCursor,i=n.clientX,a=n.clientY,s=t.getBoundingClientRect(),u=i-s.left,c=a-s.top;!r&&e.props.interactive||e.setProps({getReferenceClientRect:function(){var e=t.getBoundingClientRect(),n=i,r=a;"initial"===o&&(n=e.left+u,r=e.top+c);var s="horizontal"===o?e.top:r,p="vertical"===o?e.right:n,f="horizontal"===o?e.bottom:r,l="vertical"===o?e.left:n;return{width:p-l,height:f-s,top:s,right:p,bottom:f,left:l}}})}function l(){e.props.followCursor&&(q.push({instance:e,doc:n}),function(e){e.addEventListener("mousemove",z)}(n))}function d(){0===(q=q.filter((function(t){return t.instance!==e}))).filter((function(e){return e.doc===n})).length&&function(e){e.removeEventListener("mousemove",z)}(n)}return{onCreate:l,onDestroy:d,onBeforeUpdate:function(){a=e.props},onAfterUpdate:function(t,n){var i=n.followCursor;r||void 0!==i&&a.followCursor!==i&&(d(),i?(l(),!e.state.isMounted||o||s()||u()):(c(),p()))},onMount:function(){e.props.followCursor&&!o&&(i&&(f($),i=!1),s()||u())},onTrigger:function(e,t){m(t)&&($={clientX:t.clientX,clientY:t.clientY}),o="focus"===t.type},onHidden:function(){e.props.followCursor&&(p(),c(),i=!0)}}}};var G={name:"inlinePositioning",defaultValue:!1,fn:function(e){var t,n=e.reference;var r=-1,o=!1,i=[],a={name:"tippyInlinePositioning",enabled:!0,phase:"afterWrite",fn:function(o){var a=o.state;e.props.inlinePositioning&&(-1!==i.indexOf(a.placement)&&(i=[]),t!==a.placement&&-1===i.indexOf(a.placement)&&(i.push(a.placement),e.setProps({getReferenceClientRect:function(){return function(e){return function(e,t,n,r){if(n.length<2||null===e)return t;if(2===n.length&&r>=0&&n[0].left>n[1].right)return n[r]||t;switch(e){case"top":case"bottom":var o=n[0],i=n[n.length-1],a="top"===e,s=o.top,u=i.bottom,c=a?o.left:i.left,p=a?o.right:i.right;return{top:s,bottom:u,left:c,right:p,width:p-c,height:u-s};case"left":case"right":var f=Math.min.apply(Math,n.map((function(e){return e.left}))),l=Math.max.apply(Math,n.map((function(e){return e.right}))),d=n.filter((function(t){return"left"===e?t.left===f:t.right===l})),v=d[0].top,m=d[d.length-1].bottom;return{top:v,bottom:m,left:f,right:l,width:l-f,height:m-v};default:return t}}(p(e),n.getBoundingClientRect(),f(n.getClientRects()),r)}(a.placement)}})),t=a.placement)}};function s(){var t;o||(t=function(e,t){var n;return{popperOptions:Object.assign({},e.popperOptions,{modifiers:[].concat(((null==(n=e.popperOptions)?void 0:n.modifiers)||[]).filter((function(e){return e.name!==t.name})),[t])})}}(e.props,a),o=!0,e.setProps(t),o=!1)}return{onCreate:s,onAfterUpdate:s,onTrigger:function(t,n){if(m(n)){var o=f(e.reference.getClientRects()),i=o.find((function(e){return e.left-2<=n.clientX&&e.right+2>=n.clientX&&e.top-2<=n.clientY&&e.bottom+2>=n.clientY})),a=o.indexOf(i);r=a>-1?a:r}},onHidden:function(){r=-1}}}};var K={name:"sticky",defaultValue:!1,fn:function(e){var t=e.reference,n=e.popper;function r(t){return!0===e.props.sticky||e.props.sticky===t}var o=null,i=null;function a(){var s=r("reference")?(e.popperInstance?e.popperInstance.state.elements.reference:t).getBoundingClientRect():null,u=r("popper")?n.getBoundingClientRect():null;(s&&Q(o,s)||u&&Q(i,u))&&e.popperInstance&&e.popperInstance.update(),o=s,i=u,e.state.isMounted&&requestAnimationFrame(a)}return{onMount:function(){e.props.sticky&&a()}}}};function Q(e,t){return!e||!t||(e.top!==t.top||e.right!==t.right||e.bottom!==t.bottom||e.left!==t.left)}return F.setDefaultProps({plugins:[Y,J,G,K],render:N}),F.createSingleton=function(e,t){var n;void 0===t&&(t={});var r,o=e,i=[],a=[],c=t.overrides,p=[],f=!1;function l(){a=o.map((function(e){return u(e.props.triggerTarget||e.reference)})).reduce((function(e,t){return e.concat(t)}),[])}function v(){i=o.map((function(e){return e.reference}))}function m(e){o.forEach((function(t){e?t.enable():t.disable()}))}function g(e){return o.map((function(t){var n=t.setProps;return t.setProps=function(o){n(o),t.reference===r&&e.setProps(o)},function(){t.setProps=n}}))}function h(e,t){var n=a.indexOf(t);if(t!==r){r=t;var s=(c||[]).concat("content").reduce((function(e,t){return e[t]=o[n].props[t],e}),{});e.setProps(Object.assign({},s,{getReferenceClientRect:"function"==typeof s.getReferenceClientRect?s.getReferenceClientRect:function(){var e;return null==(e=i[n])?void 0:e.getBoundingClientRect()}}))}}m(!1),v(),l();var b={fn:function(){return{onDestroy:function(){m(!0)},onHidden:function(){r=null},onClickOutside:function(e){e.props.showOnCreate&&!f&&(f=!0,r=null)},onShow:function(e){e.props.showOnCreate&&!f&&(f=!0,h(e,i[0]))},onTrigger:function(e,t){h(e,t.currentTarget)}}}},y=F(d(),Object.assign({},s(t,["overrides"]),{plugins:[b].concat(t.plugins||[]),triggerTarget:a,popperOptions:Object.assign({},t.popperOptions,{modifiers:[].concat((null==(n=t.popperOptions)?void 0:n.modifiers)||[],[W])})})),w=y.show;y.show=function(e){if(w(),!r&&null==e)return h(y,i[0]);if(!r||null!=e){if("number"==typeof e)return i[e]&&h(y,i[e]);if(o.indexOf(e)>=0){var t=e.reference;return h(y,t)}return i.indexOf(e)>=0?h(y,e):void 0}},y.showNext=function(){var e=i[0];if(!r)return y.show(0);var t=i.indexOf(r);y.show(i[t+1]||e)},y.showPrevious=function(){var e=i[i.length-1];if(!r)return y.show(e);var t=i.indexOf(r),n=i[t-1]||e;y.show(n)};var E=y.setProps;return y.setProps=function(e){c=e.overrides||c,E(e)},y.setInstances=function(e){m(!0),p.forEach((function(e){return e()})),o=e,m(!1),v(),l(),p=g(y),y.setProps({triggerTarget:a})},p=g(y),y},F.delegate=function(e,n){var r=[],o=[],i=!1,a=n.target,c=s(n,["target"]),p=Object.assign({},c,{trigger:"manual",touch:!1}),f=Object.assign({touch:R.touch},c,{showOnCreate:!0}),l=F(e,p);function d(e){if(e.target&&!i){var t=e.target.closest(a);if(t){var r=t.getAttribute("data-tippy-trigger")||n.trigger||R.trigger;if(!t._tippy&&!("touchstart"===e.type&&"boolean"==typeof f.touch||"touchstart"!==e.type&&r.indexOf(X[e.type])<0)){var s=F(t,f);s&&(o=o.concat(s))}}}}function v(e,t,n,o){void 0===o&&(o=!1),e.addEventListener(t,n,o),r.push({node:e,eventType:t,handler:n,options:o})}return u(l).forEach((function(e){var n=e.destroy,a=e.enable,s=e.disable;e.destroy=function(e){void 0===e&&(e=!0),e&&o.forEach((function(e){e.destroy()})),o=[],r.forEach((function(e){var t=e.node,n=e.eventType,r=e.handler,o=e.options;t.removeEventListener(n,r,o)})),r=[],n()},e.enable=function(){a(),o.forEach((function(e){return e.enable()})),i=!1},e.disable=function(){s(),o.forEach((function(e){return e.disable()})),i=!0},function(e){var n=e.reference;v(n,"touchstart",d,t),v(n,"mouseover",d),v(n,"focusin",d),v(n,"click",d)}(e)})),l},F.hideAll=function(e){var t=void 0===e?{}:e,n=t.exclude,r=t.duration;U.forEach((function(e){var t=!1;if(n&&(t=g(n)?e.reference===n:e.popper===n.popper),!t){var o=e.props.duration;e.setProps({duration:r}),e.hide(),e.state.isDestroyed||e.setProps({duration:o})}}))},F.roundArrow='<svg width="16" height="6" xmlns="http://www.w3.org/2000/svg"><path d="M0 6s1.796-.013 4.67-3.615C5.851.9 6.93.006 8 0c1.07-.006 2.148.887 3.343 2.385C14.233 6.005 16 6 16 6H0z"></svg>',F}));
+
+</script>
+<script>// @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat
+//
+// AnchorJS - v5.0.0 - 2023-01-18
+// https://www.bryanbraun.com/anchorjs/
+// Copyright (c) 2023 Bryan Braun; Licensed MIT
+//
+// @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat
+!function(A,e){"use strict";"function"==typeof define&&define.amd?define([],e):"object"==typeof module&&module.exports?module.exports=e():(A.AnchorJS=e(),A.anchors=new A.AnchorJS)}(globalThis,function(){"use strict";return function(A){function u(A){A.icon=Object.prototype.hasOwnProperty.call(A,"icon")?A.icon:"",A.visible=Object.prototype.hasOwnProperty.call(A,"visible")?A.visible:"hover",A.placement=Object.prototype.hasOwnProperty.call(A,"placement")?A.placement:"right",A.ariaLabel=Object.prototype.hasOwnProperty.call(A,"ariaLabel")?A.ariaLabel:"Anchor",A.class=Object.prototype.hasOwnProperty.call(A,"class")?A.class:"",A.base=Object.prototype.hasOwnProperty.call(A,"base")?A.base:"",A.truncate=Object.prototype.hasOwnProperty.call(A,"truncate")?Math.floor(A.truncate):64,A.titleText=Object.prototype.hasOwnProperty.call(A,"titleText")?A.titleText:""}function d(A){var e;if("string"==typeof A||A instanceof String)e=[].slice.call(document.querySelectorAll(A));else{if(!(Array.isArray(A)||A instanceof NodeList))throw new TypeError("The selector provided to AnchorJS was invalid.");e=[].slice.call(A)}return e}this.options=A||{},this.elements=[],u(this.options),this.add=function(A){var e,t,o,i,n,s,a,r,l,c,h,p=[];if(u(this.options),0!==(e=d(A=A||"h2, h3, h4, h5, h6")).length){for(null===document.head.querySelector("style.anchorjs")&&((A=document.createElement("style")).className="anchorjs",A.appendChild(document.createTextNode("")),void 0===(h=document.head.querySelector('[rel="stylesheet"],style'))?document.head.appendChild(A):document.head.insertBefore(A,h),A.sheet.insertRule(".anchorjs-link{opacity:0;text-decoration:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}",A.sheet.cssRules.length),A.sheet.insertRule(":hover>.anchorjs-link,.anchorjs-link:focus{opacity:1}",A.sheet.cssRules.length),A.sheet.insertRule("[data-anchorjs-icon]::after{content:attr(data-anchorjs-icon)}",A.sheet.cssRules.length),A.sheet.insertRule('@font-face{font-family:anchorjs-icons;src:url(data:n/a;base64,AAEAAAALAIAAAwAwT1MvMg8yG2cAAAE4AAAAYGNtYXDp3gC3AAABpAAAAExnYXNwAAAAEAAAA9wAAAAIZ2x5ZlQCcfwAAAH4AAABCGhlYWQHFvHyAAAAvAAAADZoaGVhBnACFwAAAPQAAAAkaG10eASAADEAAAGYAAAADGxvY2EACACEAAAB8AAAAAhtYXhwAAYAVwAAARgAAAAgbmFtZQGOH9cAAAMAAAAAunBvc3QAAwAAAAADvAAAACAAAQAAAAEAAHzE2p9fDzz1AAkEAAAAAADRecUWAAAAANQA6R8AAAAAAoACwAAAAAgAAgAAAAAAAAABAAADwP/AAAACgAAA/9MCrQABAAAAAAAAAAAAAAAAAAAAAwABAAAAAwBVAAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAMCQAGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAg//0DwP/AAEADwABAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAAIAAAACgAAxAAAAAwAAAAMAAAAcAAEAAwAAABwAAwABAAAAHAAEADAAAAAIAAgAAgAAACDpy//9//8AAAAg6cv//f///+EWNwADAAEAAAAAAAAAAAAAAAAACACEAAEAAAAAAAAAAAAAAAAxAAACAAQARAKAAsAAKwBUAAABIiYnJjQ3NzY2MzIWFxYUBwcGIicmNDc3NjQnJiYjIgYHBwYUFxYUBwYGIwciJicmNDc3NjIXFhQHBwYUFxYWMzI2Nzc2NCcmNDc2MhcWFAcHBgYjARQGDAUtLXoWOR8fORYtLTgKGwoKCjgaGg0gEhIgDXoaGgkJBQwHdR85Fi0tOAobCgoKOBoaDSASEiANehoaCQkKGwotLXoWOR8BMwUFLYEuehYXFxYugC44CQkKGwo4GkoaDQ0NDXoaShoKGwoFBe8XFi6ALjgJCQobCjgaShoNDQ0NehpKGgobCgoKLYEuehYXAAAADACWAAEAAAAAAAEACAAAAAEAAAAAAAIAAwAIAAEAAAAAAAMACAAAAAEAAAAAAAQACAAAAAEAAAAAAAUAAQALAAEAAAAAAAYACAAAAAMAAQQJAAEAEAAMAAMAAQQJAAIABgAcAAMAAQQJAAMAEAAMAAMAAQQJAAQAEAAMAAMAAQQJAAUAAgAiAAMAAQQJAAYAEAAMYW5jaG9yanM0MDBAAGEAbgBjAGgAbwByAGoAcwA0ADAAMABAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAH//wAP) format("truetype")}',A.sheet.cssRules.length)),h=document.querySelectorAll("[id]"),t=[].map.call(h,function(A){return A.id}),i=0;i<e.length;i++)if(this.hasAnchorJSLink(e[i]))p.push(i);else{if(e[i].hasAttribute("id"))o=e[i].getAttribute("id");else if(e[i].hasAttribute("data-anchor-id"))o=e[i].getAttribute("data-anchor-id");else{for(r=a=this.urlify(e[i].textContent),s=0;n=t.indexOf(r=void 0!==n?a+"-"+s:r),s+=1,-1!==n;);n=void 0,t.push(r),e[i].setAttribute("id",r),o=r}(l=document.createElement("a")).className="anchorjs-link "+this.options.class,l.setAttribute("aria-label",this.options.ariaLabel),l.setAttribute("data-anchorjs-icon",this.options.icon),this.options.titleText&&(l.title=this.options.titleText),c=document.querySelector("base")?window.location.pathname+window.location.search:"",c=this.options.base||c,l.href=c+"#"+o,"always"===this.options.visible&&(l.style.opacity="1"),""===this.options.icon&&(l.style.font="1em/1 anchorjs-icons","left"===this.options.placement)&&(l.style.lineHeight="inherit"),"left"===this.options.placement?(l.style.position="absolute",l.style.marginLeft="-1.25em",l.style.paddingRight=".25em",l.style.paddingLeft=".25em",e[i].insertBefore(l,e[i].firstChild)):(l.style.marginLeft=".1875em",l.style.paddingRight=".1875em",l.style.paddingLeft=".1875em",e[i].appendChild(l))}for(i=0;i<p.length;i++)e.splice(p[i]-i,1);this.elements=this.elements.concat(e)}return this},this.remove=function(A){for(var e,t,o=d(A),i=0;i<o.length;i++)(t=o[i].querySelector(".anchorjs-link"))&&(-1!==(e=this.elements.indexOf(o[i]))&&this.elements.splice(e,1),o[i].removeChild(t));return this},this.removeAll=function(){this.remove(this.elements)},this.urlify=function(A){var e=document.createElement("textarea");return e.innerHTML=A,A=e.value,this.options.truncate||u(this.options),A.trim().replace(/'/gi,"").replace(/[& +$,:;=?@"#{}|^~[`%!'<>\]./()*\\\n\t\b\v\u00A0]/g,"-").replace(/-{2,}/g,"-").substring(0,this.options.truncate).replace(/^-+|-+$/gm,"").toLowerCase()},this.hasAnchorJSLink=function(A){var e=A.firstChild&&-1<(" "+A.firstChild.className+" ").indexOf(" anchorjs-link "),A=A.lastChild&&-1<(" "+A.lastChild.className+" ").indexOf(" anchorjs-link ");return e||A||!1}}});
+// @license-end</script>
+<style type="text/css">.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}</style>
+<style type="text/css">.tippy-box[data-theme~=light-border]{background-color:#fff;background-clip:padding-box;border:1px solid rgba(0,8,16,.15);color:#333;box-shadow:0 4px 14px -2px rgba(0,8,16,.08)}.tippy-box[data-theme~=light-border]>.tippy-backdrop{background-color:#fff}.tippy-box[data-theme~=light-border]>.tippy-arrow:after,.tippy-box[data-theme~=light-border]>.tippy-svg-arrow:after{content:"";position:absolute;z-index:-1}.tippy-box[data-theme~=light-border]>.tippy-arrow:after{border-color:transparent;border-style:solid}.tippy-box[data-theme~=light-border][data-placement^=top]>.tippy-arrow:before{border-top-color:#fff}.tippy-box[data-theme~=light-border][data-placement^=top]>.tippy-arrow:after{border-top-color:rgba(0,8,16,.2);border-width:7px 7px 0;top:17px;left:1px}.tippy-box[data-theme~=light-border][data-placement^=top]>.tippy-svg-arrow>svg{top:16px}.tippy-box[data-theme~=light-border][data-placement^=top]>.tippy-svg-arrow:after{top:17px}.tippy-box[data-theme~=light-border][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#fff;bottom:16px}.tippy-box[data-theme~=light-border][data-placement^=bottom]>.tippy-arrow:after{border-bottom-color:rgba(0,8,16,.2);border-width:0 7px 7px;bottom:17px;left:1px}.tippy-box[data-theme~=light-border][data-placement^=bottom]>.tippy-svg-arrow>svg{bottom:16px}.tippy-box[data-theme~=light-border][data-placement^=bottom]>.tippy-svg-arrow:after{bottom:17px}.tippy-box[data-theme~=light-border][data-placement^=left]>.tippy-arrow:before{border-left-color:#fff}.tippy-box[data-theme~=light-border][data-placement^=left]>.tippy-arrow:after{border-left-color:rgba(0,8,16,.2);border-width:7px 0 7px 7px;left:17px;top:1px}.tippy-box[data-theme~=light-border][data-placement^=left]>.tippy-svg-arrow>svg{left:11px}.tippy-box[data-theme~=light-border][data-placement^=left]>.tippy-svg-arrow:after{left:12px}.tippy-box[data-theme~=light-border][data-placement^=right]>.tippy-arrow:before{border-right-color:#fff;right:16px}.tippy-box[data-theme~=light-border][data-placement^=right]>.tippy-arrow:after{border-width:7px 7px 7px 0;right:17px;top:1px;border-right-color:rgba(0,8,16,.2)}.tippy-box[data-theme~=light-border][data-placement^=right]>.tippy-svg-arrow>svg{right:11px}.tippy-box[data-theme~=light-border][data-placement^=right]>.tippy-svg-arrow:after{right:12px}.tippy-box[data-theme~=light-border]>.tippy-svg-arrow{fill:#fff}.tippy-box[data-theme~=light-border]>.tippy-svg-arrow:after{background-image:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCA2czEuNzk2LS4wMTMgNC42Ny0zLjYxNUM1Ljg1MS45IDYuOTMuMDA2IDggMGMxLjA3LS4wMDYgMi4xNDguODg3IDMuMzQzIDIuMzg1QzE0LjIzMyA2LjAwNSAxNiA2IDE2IDZIMHoiIGZpbGw9InJnYmEoMCwgOCwgMTYsIDAuMikiLz48L3N2Zz4=);background-size:16px 6px;width:16px;height:6px}</style>
+<link href="data:text/css,%2Etop%2Dright%7Bposition%3Aabsolute%3Btop%3A1em%3Bright%3A1em%7D%2Evisually%2Dhidden%7Bborder%3A0%3Bclip%3Arect%280%200%200%200%29%3Bheight%3Aauto%3Bmargin%3A0%3Boverflow%3Ahidden%3Bpadding%3A0%3Bposition%3Aabsolute%3Bwidth%3A1px%3Bwhite%2Dspace%3Anowrap%7D%2Ehidden%7Bdisplay%3Anone%20%21important%7D%2Ezindex%2Dbottom%7Bz%2Dindex%3A%2D1%20%21important%7Dfigure%2Efigure%7Bdisplay%3Ablock%7D%2Equarto%2Dlayout%2Dpanel%7Bmargin%2Dbottom%3A1em%7D%2Equarto%2Dlayout%2Dpanel%3Efigure%7Bwidth%3A100%25%7D%2Equarto%2Dlayout%2Dpanel%3Efigure%3Efigcaption%2C%2Equarto%2Dlayout%2Dpanel%3E%2Epanel%2Dcaption%7Bmargin%2Dtop%3A10pt%7D%2Equarto%2Dlayout%2Dpanel%3E%2Etable%2Dcaption%7Bmargin%2Dtop%3A0px%7D%2Etable%2Dcaption%20p%7Bmargin%2Dbottom%3A%2E5em%7D%2Equarto%2Dlayout%2Drow%7Bdisplay%3Aflex%3Bflex%2Ddirection%3Arow%3Balign%2Ditems%3Aflex%2Dstart%7D%2Equarto%2Dlayout%2Dvalign%2Dtop%7Balign%2Ditems%3Aflex%2Dstart%7D%2Equarto%2Dlayout%2Dvalign%2Dbottom%7Balign%2Ditems%3Aflex%2Dend%7D%2Equarto%2Dlayout%2Dvalign%2Dcenter%7Balign%2Ditems%3Acenter%7D%2Equarto%2Dlayout%2Dcell%7Bposition%3Arelative%3Bmargin%2Dright%3A20px%7D%2Equarto%2Dlayout%2Dcell%3Alast%2Dchild%7Bmargin%2Dright%3A0%7D%2Equarto%2Dlayout%2Dcell%20figure%2C%2Equarto%2Dlayout%2Dcell%3Ep%7Bmargin%3A%2E2em%7D%2Equarto%2Dlayout%2Dcell%20img%7Bmax%2Dwidth%3A100%25%7D%2Equarto%2Dlayout%2Dcell%20%2Ehtml%2Dwidget%7Bwidth%3A100%25%20%21important%7D%2Equarto%2Dlayout%2Dcell%20div%20figure%20p%7Bmargin%3A0%7D%2Equarto%2Dlayout%2Dcell%20figure%7Bdisplay%3Ablock%3Bmargin%2Dinline%2Dstart%3A0%3Bmargin%2Dinline%2Dend%3A0%7D%2Equarto%2Dlayout%2Dcell%20table%7Bdisplay%3Ainline%2Dtable%7D%2Equarto%2Dlayout%2Dcell%2Dsubref%20figcaption%2Cfigure%20%2Equarto%2Dlayout%2Drow%20figure%20figcaption%7Btext%2Dalign%3Acenter%3Bfont%2Dstyle%3Aitalic%7D%2Equarto%2Dfigure%7Bposition%3Arelative%3Bmargin%2Dbottom%3A1em%7D%2Equarto%2Dfigure%3Efigure%7Bwidth%3A100%25%3Bmargin%2Dbottom%3A0%7D%2Equarto%2Dfigure%2Dleft%3Efigure%3Ep%2C%2Equarto%2Dfigure%2Dleft%3Efigure%3Ediv%7Btext%2Dalign%3Aleft%7D%2Equarto%2Dfigure%2Dcenter%3Efigure%3Ep%2C%2Equarto%2Dfigure%2Dcenter%3Efigure%3Ediv%7Btext%2Dalign%3Acenter%7D%2Equarto%2Dfigure%2Dright%3Efigure%3Ep%2C%2Equarto%2Dfigure%2Dright%3Efigure%3Ediv%7Btext%2Dalign%3Aright%7D%2Equarto%2Dfigure%3Efigure%3Ediv%2Ecell%2Dannotation%2C%2Equarto%2Dfigure%3Efigure%3Ediv%20code%7Btext%2Dalign%3Aleft%7Dfigure%3Ep%3Aempty%7Bdisplay%3Anone%7Dfigure%3Ep%3Afirst%2Dchild%7Bmargin%2Dtop%3A0%3Bmargin%2Dbottom%3A0%7Dfigure%3Efigcaption%2Equarto%2Dfloat%2Dcaption%2Dbottom%7Bmargin%2Dbottom%3A%2E5em%7Dfigure%3Efigcaption%2Equarto%2Dfloat%2Dcaption%2Dtop%7Bmargin%2Dtop%3A%2E5em%7Ddiv%5Bid%5E%3Dtbl%2D%5D%7Bposition%3Arelative%7D%2Equarto%2Dfigure%3E%2Eanchorjs%2Dlink%7Bposition%3Aabsolute%3Btop%3A%2E6em%3Bright%3A%2E5em%7Ddiv%5Bid%5E%3Dtbl%2D%5D%3E%2Eanchorjs%2Dlink%7Bposition%3Aabsolute%3Btop%3A%2E7em%3Bright%3A%2E3em%7D%2Equarto%2Dfigure%3Ahover%3E%2Eanchorjs%2Dlink%2Cdiv%5Bid%5E%3Dtbl%2D%5D%3Ahover%3E%2Eanchorjs%2Dlink%2Ch2%3Ahover%3E%2Eanchorjs%2Dlink%2Ch3%3Ahover%3E%2Eanchorjs%2Dlink%2Ch4%3Ahover%3E%2Eanchorjs%2Dlink%2Ch5%3Ahover%3E%2Eanchorjs%2Dlink%2Ch6%3Ahover%3E%2Eanchorjs%2Dlink%2C%2Ereveal%2Danchorjs%2Dlink%3E%2Eanchorjs%2Dlink%7Bopacity%3A1%7D%23title%2Dblock%2Dheader%7Bmargin%2Dblock%2Dend%3A1rem%3Bposition%3Arelative%3Bmargin%2Dtop%3A%2D1px%7D%23title%2Dblock%2Dheader%20%2Eabstract%7Bmargin%2Dblock%2Dstart%3A1rem%7D%23title%2Dblock%2Dheader%20%2Eabstract%20%2Eabstract%2Dtitle%7Bfont%2Dweight%3A600%7D%23title%2Dblock%2Dheader%20a%7Btext%2Ddecoration%3Anone%7D%23title%2Dblock%2Dheader%20%2Eauthor%2C%23title%2Dblock%2Dheader%20%2Edate%2C%23title%2Dblock%2Dheader%20%2Edoi%7Bmargin%2Dblock%2Dend%3A%2E2rem%7D%23title%2Dblock%2Dheader%20%2Equarto%2Dtitle%2Dblock%3Ediv%7Bdisplay%3Aflex%7D%23title%2Dblock%2Dheader%20%2Equarto%2Dtitle%2Dblock%3Ediv%3Eh1%7Bflex%2Dgrow%3A1%7D%23title%2Dblock%2Dheader%20%2Equarto%2Dtitle%2Dblock%3Ediv%3Ebutton%7Bflex%2Dshrink%3A0%3Bheight%3A2%2E25rem%3Bmargin%2Dtop%3A0%7Dtr%2Eheader%3Eth%3Ep%3Alast%2Dof%2Dtype%7Bmargin%2Dbottom%3A0px%7Dtable%2Ctable%2Etable%7Bmargin%2Dtop%3A%2E5rem%3Bmargin%2Dbottom%3A%2E5rem%7Dcaption%2C%2Etable%2Dcaption%7Bpadding%2Dtop%3A%2E5rem%3Bpadding%2Dbottom%3A%2E5rem%3Btext%2Dalign%3Acenter%7Dfigure%2Equarto%2Dfloat%2Dtbl%20figcaption%2Equarto%2Dfloat%2Dcaption%2Dtop%7Bmargin%2Dtop%3A%2E5rem%3Bmargin%2Dbottom%3A%2E25rem%3Btext%2Dalign%3Acenter%7Dfigure%2Equarto%2Dfloat%2Dtbl%20figcaption%2Equarto%2Dfloat%2Dcaption%2Dbottom%7Bpadding%2Dtop%3A%2E25rem%3Bmargin%2Dbottom%3A%2E5rem%3Btext%2Dalign%3Acenter%7D%2Eutterances%7Bmax%2Dwidth%3Anone%3Bmargin%2Dleft%3A%2D8px%7Diframe%7Bmargin%2Dbottom%3A1em%7Ddetails%7Bmargin%2Dbottom%3A1em%7Ddetails%5Bshow%5D%7Bmargin%2Dbottom%3A0%7Ddetails%3Esummary%7Bcolor%3Argb%28110%2E5%2C110%2E5%2C110%2E5%29%7Ddetails%3Esummary%3Ep%3Aonly%2Dchild%7Bdisplay%3Ainline%7Dpre%2EsourceCode%2Ccode%2EsourceCode%7Bposition%3Arelative%7Ddd%20code%3Anot%28%2EsourceCode%29%2Cp%20code%3Anot%28%2EsourceCode%29%7Bwhite%2Dspace%3Apre%2Dwrap%7Dcode%7Bwhite%2Dspace%3Apre%7D%40media%20print%7Bcode%7Bwhite%2Dspace%3Apre%2Dwrap%7D%7Dpre%3Ecode%7Bdisplay%3Ablock%7Dpre%3Ecode%2EsourceCode%7Bwhite%2Dspace%3Apre%7Dpre%3Ecode%2EsourceCode%3Espan%3Ea%3Afirst%2Dchild%3A%3Abefore%7Btext%2Ddecoration%3Anone%7Dpre%2Ecode%2Doverflow%2Dwrap%3Ecode%2EsourceCode%7Bwhite%2Dspace%3Apre%2Dwrap%7Dpre%2Ecode%2Doverflow%2Dscroll%3Ecode%2EsourceCode%7Bwhite%2Dspace%3Apre%7Dcode%20a%3Aany%2Dlink%7Bcolor%3Ainherit%3Btext%2Ddecoration%3Anone%7Dcode%20a%3Ahover%7Bcolor%3Ainherit%3Btext%2Ddecoration%3Aunderline%7Dul%2Etask%2Dlist%7Bpadding%2Dleft%3A1em%7D%5Bdata%2Dtippy%2Droot%5D%7Bdisplay%3Ainline%2Dblock%7D%2Etippy%2Dcontent%20%2Efootnote%2Dback%7Bdisplay%3Anone%7D%2Efootnote%2Dback%7Bmargin%2Dleft%3A%2E2em%7D%2Etippy%2Dcontent%7Boverflow%2Dx%3Aauto%7D%2Equarto%2Dembedded%2Dsource%2Dcode%7Bdisplay%3Anone%7D%2Equarto%2Dunresolved%2Dref%7Bfont%2Dweight%3A600%7D%2Equarto%2Dcover%2Dimage%7Bmax%2Dwidth%3A35%25%3Bfloat%3Aright%3Bmargin%2Dleft%3A30px%7D%2Ecell%2Doutput%2Ddisplay%20%2Ewidget%2Dsubarea%7Bmargin%2Dbottom%3A1em%7D%2Ecell%2Doutput%2Ddisplay%3Anot%28%2Eno%2Doverflow%2Dx%29%2C%2Eknitsql%2Dtable%3Anot%28%2Eno%2Doverflow%2Dx%29%7Boverflow%2Dx%3Aauto%7D%2Epanel%2Dinput%7Bmargin%2Dbottom%3A1em%7D%2Epanel%2Dinput%3Ediv%2C%2Epanel%2Dinput%3Ediv%3Ediv%7Bdisplay%3Ainline%2Dblock%3Bvertical%2Dalign%3Atop%3Bpadding%2Dright%3A12px%7D%2Epanel%2Dinput%3Ep%3Alast%2Dchild%7Bmargin%2Dbottom%3A0%7D%2Elayout%2Dsidebar%7Bmargin%2Dbottom%3A1em%7D%2Elayout%2Dsidebar%20%2Etab%2Dcontent%7Bborder%3Anone%7D%2Etab%2Dcontent%3E%2Epage%2Dcolumns%2Eactive%7Bdisplay%3Agrid%7Ddiv%2EsourceCode%3Eiframe%7Bwidth%3A100%25%3Bheight%3A300px%3Bmargin%2Dbottom%3A%2D0%2E5em%7Da%7Btext%2Dunderline%2Doffset%3A3px%7D%2Ecallout%20pre%2EsourceCode%7Bpadding%2Dleft%3A0%7Ddiv%2Eansi%2Descaped%2Doutput%7Bfont%2Dfamily%3Amonospace%3Bdisplay%3Ablock%7D%2Eansi%2Dblack%2Dfg%7Bcolor%3A%233e424d%7D%2Eansi%2Dblack%2Dbg%7Bbackground%2Dcolor%3A%233e424d%7D%2Eansi%2Dblack%2Dintense%2Dblack%2C%2Eansi%2Dbright%2Dblack%2Dfg%7Bcolor%3A%23282c36%7D%2Eansi%2Dblack%2Dintense%2Dblack%2C%2Eansi%2Dbright%2Dblack%2Dbg%7Bbackground%2Dcolor%3A%23282c36%7D%2Eansi%2Dred%2Dfg%7Bcolor%3A%23e75c58%7D%2Eansi%2Dred%2Dbg%7Bbackground%2Dcolor%3A%23e75c58%7D%2Eansi%2Dred%2Dintense%2Dred%2C%2Eansi%2Dbright%2Dred%2Dfg%7Bcolor%3A%23b22b31%7D%2Eansi%2Dred%2Dintense%2Dred%2C%2Eansi%2Dbright%2Dred%2Dbg%7Bbackground%2Dcolor%3A%23b22b31%7D%2Eansi%2Dgreen%2Dfg%7Bcolor%3A%2300a250%7D%2Eansi%2Dgreen%2Dbg%7Bbackground%2Dcolor%3A%2300a250%7D%2Eansi%2Dgreen%2Dintense%2Dgreen%2C%2Eansi%2Dbright%2Dgreen%2Dfg%7Bcolor%3A%23007427%7D%2Eansi%2Dgreen%2Dintense%2Dgreen%2C%2Eansi%2Dbright%2Dgreen%2Dbg%7Bbackground%2Dcolor%3A%23007427%7D%2Eansi%2Dyellow%2Dfg%7Bcolor%3A%23ddb62b%7D%2Eansi%2Dyellow%2Dbg%7Bbackground%2Dcolor%3A%23ddb62b%7D%2Eansi%2Dyellow%2Dintense%2Dyellow%2C%2Eansi%2Dbright%2Dyellow%2Dfg%7Bcolor%3A%23b27d12%7D%2Eansi%2Dyellow%2Dintense%2Dyellow%2C%2Eansi%2Dbright%2Dyellow%2Dbg%7Bbackground%2Dcolor%3A%23b27d12%7D%2Eansi%2Dblue%2Dfg%7Bcolor%3A%23208ffb%7D%2Eansi%2Dblue%2Dbg%7Bbackground%2Dcolor%3A%23208ffb%7D%2Eansi%2Dblue%2Dintense%2Dblue%2C%2Eansi%2Dbright%2Dblue%2Dfg%7Bcolor%3A%230065ca%7D%2Eansi%2Dblue%2Dintense%2Dblue%2C%2Eansi%2Dbright%2Dblue%2Dbg%7Bbackground%2Dcolor%3A%230065ca%7D%2Eansi%2Dmagenta%2Dfg%7Bcolor%3A%23d160c4%7D%2Eansi%2Dmagenta%2Dbg%7Bbackground%2Dcolor%3A%23d160c4%7D%2Eansi%2Dmagenta%2Dintense%2Dmagenta%2C%2Eansi%2Dbright%2Dmagenta%2Dfg%7Bcolor%3A%23a03196%7D%2Eansi%2Dmagenta%2Dintense%2Dmagenta%2C%2Eansi%2Dbright%2Dmagenta%2Dbg%7Bbackground%2Dcolor%3A%23a03196%7D%2Eansi%2Dcyan%2Dfg%7Bcolor%3A%2360c6c8%7D%2Eansi%2Dcyan%2Dbg%7Bbackground%2Dcolor%3A%2360c6c8%7D%2Eansi%2Dcyan%2Dintense%2Dcyan%2C%2Eansi%2Dbright%2Dcyan%2Dfg%7Bcolor%3A%23258f8f%7D%2Eansi%2Dcyan%2Dintense%2Dcyan%2C%2Eansi%2Dbright%2Dcyan%2Dbg%7Bbackground%2Dcolor%3A%23258f8f%7D%2Eansi%2Dwhite%2Dfg%7Bcolor%3A%23c5c1b4%7D%2Eansi%2Dwhite%2Dbg%7Bbackground%2Dcolor%3A%23c5c1b4%7D%2Eansi%2Dwhite%2Dintense%2Dwhite%2C%2Eansi%2Dbright%2Dwhite%2Dfg%7Bcolor%3A%23a1a6b2%7D%2Eansi%2Dwhite%2Dintense%2Dwhite%2C%2Eansi%2Dbright%2Dwhite%2Dbg%7Bbackground%2Dcolor%3A%23a1a6b2%7D%2Eansi%2Ddefault%2Dinverse%2Dfg%7Bcolor%3A%23fff%7D%2Eansi%2Ddefault%2Dinverse%2Dbg%7Bbackground%2Dcolor%3A%23000%7D%2Eansi%2Dbold%7Bfont%2Dweight%3Abold%7D%2Eansi%2Dunderline%7Btext%2Ddecoration%3Aunderline%7D%3Aroot%7B%2D%2Dquarto%2Dbody%2Dbg%3A%20%23fff%3B%2D%2Dquarto%2Dbody%2Dcolor%3A%20%23222%3B%2D%2Dquarto%2Dtext%2Dmuted%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dborder%2Dcolor%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dborder%2Dwidth%3A%201px%3B%2D%2Dquarto%2Dborder%2Dradius%3A%204px%7Dtable%2Egt%5Ftable%7Bcolor%3Avar%28%2D%2Dquarto%2Dbody%2Dcolor%29%3Bfont%2Dsize%3A1em%3Bwidth%3A100%25%3Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%3Bborder%2Dtop%2Dwidth%3Ainherit%3Bborder%2Dbottom%2Dwidth%3Ainherit%3Bborder%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%7Dtable%2Egt%5Ftable%20th%2Egt%5Fcolumn%5Fspanner%5Fouter%7Bcolor%3Avar%28%2D%2Dquarto%2Dbody%2Dcolor%29%3Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%3Bborder%2Dtop%2Dwidth%3Ainherit%3Bborder%2Dbottom%2Dwidth%3Ainherit%3Bborder%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%7Dtable%2Egt%5Ftable%20th%2Egt%5Fcol%5Fheading%7Bcolor%3Avar%28%2D%2Dquarto%2Dbody%2Dcolor%29%3Bfont%2Dweight%3Abold%3Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%7Dtable%2Egt%5Ftable%20thead%2Egt%5Fcol%5Fheadings%7Bborder%2Dbottom%3A1px%20solid%20currentColor%3Bborder%2Dtop%2Dwidth%3Ainherit%3Bborder%2Dtop%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%7Dtable%2Egt%5Ftable%20thead%2Egt%5Fcol%5Fheadings%3Anot%28%3Afirst%2Dchild%29%7Bborder%2Dtop%2Dwidth%3A1px%3Bborder%2Dtop%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%7Dtable%2Egt%5Ftable%20td%2Egt%5Frow%7Bborder%2Dbottom%2Dwidth%3A1px%3Bborder%2Dbottom%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%3Bborder%2Dtop%2Dwidth%3A0px%7Dtable%2Egt%5Ftable%20tbody%2Egt%5Ftable%5Fbody%7Bborder%2Dtop%2Dwidth%3A1px%3Bborder%2Dbottom%2Dwidth%3A1px%3Bborder%2Dbottom%2Dcolor%3Avar%28%2D%2Dquarto%2Dborder%2Dcolor%29%3Bborder%2Dtop%2Dcolor%3AcurrentColor%7Ddiv%2Ecolumns%7Bdisplay%3Ainitial%3Bgap%3Ainitial%7Ddiv%2Ecolumn%7Bdisplay%3Ainline%2Dblock%3Boverflow%2Dx%3Ainitial%3Bvertical%2Dalign%3Atop%3Bwidth%3A50%25%7D%2Ecode%2Dannotation%2Dtip%2Dcontent%7Bword%2Dwrap%3Abreak%2Dword%7D%2Ecode%2Dannotation%2Dcontainer%2Dhidden%7Bdisplay%3Anone%20%21important%7Ddl%2Ecode%2Dannotation%2Dcontainer%2Dgrid%7Bdisplay%3Agrid%3Bgrid%2Dtemplate%2Dcolumns%3Amin%2Dcontent%20auto%7Ddl%2Ecode%2Dannotation%2Dcontainer%2Dgrid%20dt%7Bgrid%2Dcolumn%3A1%7Ddl%2Ecode%2Dannotation%2Dcontainer%2Dgrid%20dd%7Bgrid%2Dcolumn%3A2%7Dpre%2EsourceCode%2Ecode%2Dannotation%2Dcode%7Bpadding%2Dright%3A0%7Dcode%2EsourceCode%20%2Ecode%2Dannotation%2Danchor%7Bz%2Dindex%3A100%3Bposition%3Arelative%3Bfloat%3Aright%3Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%7Dinput%5Btype%3Dcheckbox%5D%7Bmargin%2Dright%3A%2E5ch%7D%3Aroot%7B%2D%2Dmermaid%2Dbg%2Dcolor%3A%20%23fff%3B%2D%2Dmermaid%2Dedge%2Dcolor%3A%20%23999%3B%2D%2Dmermaid%2Dnode%2Dfg%2Dcolor%3A%20%23222%3B%2D%2Dmermaid%2Dfg%2Dcolor%3A%20%23222%3B%2D%2Dmermaid%2Dfg%2Dcolor%2D%2Dlighter%3A%20rgb%2859%2E5%2C%2059%2E5%2C%2059%2E5%29%3B%2D%2Dmermaid%2Dfg%2Dcolor%2D%2Dlightest%3A%20%23555555%3B%2D%2Dmermaid%2Dfont%2Dfamily%3A%20sans%2Dserif%3B%2D%2Dmermaid%2Dlabel%2Dbg%2Dcolor%3A%20%23fff%3B%2D%2Dmermaid%2Dlabel%2Dfg%2Dcolor%3A%20%23468%3B%2D%2Dmermaid%2Dnode%2Dbg%2Dcolor%3A%20rgba%2868%2C%20102%2C%20136%2C%200%2E1%29%3B%2D%2Dmermaid%2Dnode%2Dfg%2Dcolor%3A%20%23222%7D%40media%20print%7B%3Aroot%7Bfont%2Dsize%3A11pt%7D%23quarto%2Dsidebar%2C%23TOC%2C%2Enav%2Dpage%7Bdisplay%3Anone%7D%2Epage%2Dcolumns%20%2Econtent%7Bgrid%2Dcolumn%2Dstart%3Apage%2Dstart%7D%2Efixed%2Dtop%7Bposition%3Arelative%7D%2Epanel%2Dcaption%2C%2Efigure%2Dcaption%2Cfigcaption%7Bcolor%3A%23666%7D%7D%2Ecode%2Dcopy%2Dbutton%7Bposition%3Aabsolute%3Btop%3A0%3Bright%3A0%3Bborder%3A0%3Bmargin%2Dtop%3A5px%3Bmargin%2Dright%3A5px%3Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%3Bz%2Dindex%3A3%7D%2Ecode%2Dcopy%2Dbutton%2Dtooltip%7Bfont%2Dsize%3A%2E75em%7Dpre%2EsourceCode%3Ahover%3E%2Ecode%2Dcopy%2Dbutton%3E%2Ebi%3A%3Abefore%7Bdisplay%3Ainline%2Dblock%3Bheight%3A1rem%3Bwidth%3A1rem%3Bcontent%3A%22%22%3Bvertical%2Dalign%3A%2D0%2E125em%3Bbackground%2Dimage%3Aurl%28%27data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww%2Ew3%2Eorg%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22rgb%28111%2C%20111%2C%20111%29%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4%201%2E5H3a2%202%200%200%200%2D2%202V14a2%202%200%200%200%202%202h10a2%202%200%200%200%202%2D2V3%2E5a2%202%200%200%200%2D2%2D2h%2D1v1h1a1%201%200%200%201%201%201V14a1%201%200%200%201%2D1%201H3a1%201%200%200%201%2D1%2D1V3%2E5a1%201%200%200%201%201%2D1h1v%2D1z%22%2F%3E%3Cpath%20d%3D%22M9%2E5%201a%2E5%2E5%200%200%201%20%2E5%2E5v1a%2E5%2E5%200%200%201%2D%2E5%2E5h%2D3a%2E5%2E5%200%200%201%2D%2E5%2D%2E5v%2D1a%2E5%2E5%200%200%201%20%2E5%2D%2E5h3zm%2D3%2D1A1%2E5%201%2E5%200%200%200%205%201%2E5v1A1%2E5%201%2E5%200%200%200%206%2E5%204h3A1%2E5%201%2E5%200%200%200%2011%202%2E5v%2D1A1%2E5%201%2E5%200%200%200%209%2E5%200h%2D3z%22%2F%3E%3C%2Fsvg%3E%27%29%3Bbackground%2Drepeat%3Ano%2Drepeat%3Bbackground%2Dsize%3A1rem%201rem%7Dpre%2EsourceCode%3Ahover%3E%2Ecode%2Dcopy%2Dbutton%2Dchecked%3E%2Ebi%3A%3Abefore%7Bbackground%2Dimage%3Aurl%28%27data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww%2Ew3%2Eorg%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22rgb%28111%2C%20111%2C%20111%29%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13%2E854%203%2E646a%2E5%2E5%200%200%201%200%20%2E708l%2D7%207a%2E5%2E5%200%200%201%2D%2E708%200l%2D3%2E5%2D3%2E5a%2E5%2E5%200%201%201%20%2E708%2D%2E708L6%2E5%2010%2E293l6%2E646%2D6%2E647a%2E5%2E5%200%200%201%20%2E708%200z%22%2F%3E%3C%2Fsvg%3E%27%29%7Dpre%2EsourceCode%3Ahover%3E%2Ecode%2Dcopy%2Dbutton%3Ahover%3E%2Ebi%3A%3Abefore%7Bbackground%2Dimage%3Aurl%28%27data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww%2Ew3%2Eorg%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22rgb%2813%2C%20110%2C%20253%29%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4%201%2E5H3a2%202%200%200%200%2D2%202V14a2%202%200%200%200%202%202h10a2%202%200%200%200%202%2D2V3%2E5a2%202%200%200%200%2D2%2D2h%2D1v1h1a1%201%200%200%201%201%201V14a1%201%200%200%201%2D1%201H3a1%201%200%200%201%2D1%2D1V3%2E5a1%201%200%200%201%201%2D1h1v%2D1z%22%2F%3E%3Cpath%20d%3D%22M9%2E5%201a%2E5%2E5%200%200%201%20%2E5%2E5v1a%2E5%2E5%200%200%201%2D%2E5%2E5h%2D3a%2E5%2E5%200%200%201%2D%2E5%2D%2E5v%2D1a%2E5%2E5%200%200%201%20%2E5%2D%2E5h3zm%2D3%2D1A1%2E5%201%2E5%200%200%200%205%201%2E5v1A1%2E5%201%2E5%200%200%200%206%2E5%204h3A1%2E5%201%2E5%200%200%200%2011%202%2E5v%2D1A1%2E5%201%2E5%200%200%200%209%2E5%200h%2D3z%22%2F%3E%3C%2Fsvg%3E%27%29%7Dpre%2EsourceCode%3Ahover%3E%2Ecode%2Dcopy%2Dbutton%2Dchecked%3Ahover%3E%2Ebi%3A%3Abefore%7Bbackground%2Dimage%3Aurl%28%27data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww%2Ew3%2Eorg%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22rgb%2813%2C%20110%2C%20253%29%22%20%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13%2E854%203%2E646a%2E5%2E5%200%200%201%200%20%2E708l%2D7%207a%2E5%2E5%200%200%201%2D%2E708%200l%2D3%2E5%2D3%2E5a%2E5%2E5%200%201%201%20%2E708%2D%2E708L6%2E5%2010%2E293l6%2E646%2D6%2E647a%2E5%2E5%200%200%201%20%2E708%200z%22%2F%3E%3C%2Fsvg%3E%27%29%7D%2Epanel%2Dtabset%20%5Brole%3Dtablist%5D%7Bborder%2Dbottom%3A1px%20solid%20%23dee2e6%3Blist%2Dstyle%3Anone%3Bmargin%3A0%3Bpadding%3A0%3Bwidth%3A100%25%7D%2Epanel%2Dtabset%20%5Brole%3Dtablist%5D%20%2A%7B%2Dwebkit%2Dbox%2Dsizing%3Aborder%2Dbox%3Bbox%2Dsizing%3Aborder%2Dbox%7D%40media%28min%2Dwidth%3A%2030em%29%7B%2Epanel%2Dtabset%20%5Brole%3Dtablist%5D%20li%7Bdisplay%3Ainline%2Dblock%7D%7D%2Epanel%2Dtabset%20%5Brole%3Dtab%5D%7Bborder%3A1px%20solid%20rgba%280%2C0%2C0%2C0%29%3Bborder%2Dtop%2Dcolor%3A%23dee2e6%3Bdisplay%3Ablock%3Bpadding%3A%2E5em%201em%3Btext%2Ddecoration%3Anone%7D%40media%28min%2Dwidth%3A%2030em%29%7B%2Epanel%2Dtabset%20%5Brole%3Dtab%5D%7Bborder%2Dtop%2Dcolor%3Argba%280%2C0%2C0%2C0%29%3Bdisplay%3Ainline%2Dblock%3Bmargin%2Dbottom%3A%2D1px%7D%7D%2Epanel%2Dtabset%20%5Brole%3Dtab%5D%5Baria%2Dselected%3Dtrue%5D%7Bbackground%2Dcolor%3A%23dee2e6%7D%40media%28min%2Dwidth%3A%2030em%29%7B%2Epanel%2Dtabset%20%5Brole%3Dtab%5D%5Baria%2Dselected%3Dtrue%5D%7Bbackground%2Dcolor%3Argba%280%2C0%2C0%2C0%29%3Bborder%3A1px%20solid%20%23dee2e6%3Bborder%2Dbottom%2Dcolor%3A%23fff%7D%7D%40media%28min%2Dwidth%3A%2030em%29%7B%2Epanel%2Dtabset%20%5Brole%3Dtab%5D%3Ahover%3Anot%28%5Baria%2Dselected%3Dtrue%5D%29%7Bborder%3A1px%20solid%20%23dee2e6%7D%7D%2Eimg%2Dfluid%7Bmax%2Dwidth%3A100%25%3Bheight%3Aauto%7D%3Aroot%7B%2D%2Dquarto%2Dscss%2Dexport%2Dbody%2Dbg%3A%20%23fff%3B%2D%2Dquarto%2Dscss%2Dexport%2Dbody%2Dcolor%3A%20%23222%3B%2D%2Dquarto%2Dscss%2Dexport%2Dtext%2Dmuted%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dborder%2Dcolor%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dtable%2Dborder%2Dcolor%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dbtn%2Dcode%2Dcopy%2Dcolor%3A%20rgb%28110%2E5%2C%20110%2E5%2C%20110%2E5%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dbtn%2Dcode%2Dcopy%2Dcolor%2Dactive%3A%20%230d6efd%3B%2D%2Dquarto%2Dscss%2Dexport%2Dprimary%3A%20%23468%3B%2D%2Dquarto%2Dscss%2Dexport%2Dsecondary%3A%20%23999%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dbg%2Dcolor%3A%20%23fff%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dedge%2Dcolor%3A%20%23999%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dnode%2Dfg%2Dcolor%3A%20%23222%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dfg%2Dcolor%3A%20%23222%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dfg%2Dcolor%2D%2Dlighter%3A%20rgb%2859%2E5%2C%2059%2E5%2C%2059%2E5%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dfg%2Dcolor%2D%2Dlightest%3A%20%23555555%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dlabel%2Dbg%2Dcolor%3A%20%23fff%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dlabel%2Dfg%2Dcolor%3A%20%23468%3B%2D%2Dquarto%2Dscss%2Dexport%2Dmermaid%2Dnode%2Dbg%2Dcolor%3A%20rgba%2868%2C%20102%2C%20136%2C%200%2E1%29%3B%2D%2Dquarto%2Dscss%2Dexport%2Dtabset%2Dborder%2Dcolor%3A%20rgb%28222%2C%20226%2C%20230%29%7D" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="data:text/css,%0A%3Aroot%20%7B%0A%2D%2Dquarto%2Dhl%2Dot%2Dcolor%3A%20%23003B4F%3B%0A%2D%2Dquarto%2Dhl%2Dat%2Dcolor%3A%20%23657422%3B%0A%2D%2Dquarto%2Dhl%2Dss%2Dcolor%3A%20%2320794D%3B%0A%2D%2Dquarto%2Dhl%2Dan%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Dfu%2Dcolor%3A%20%234758AB%3B%0A%2D%2Dquarto%2Dhl%2Dst%2Dcolor%3A%20%2320794D%3B%0A%2D%2Dquarto%2Dhl%2Dcf%2Dcolor%3A%20%23003B4F%3B%0A%2D%2Dquarto%2Dhl%2Dop%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Der%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dbn%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dal%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dva%2Dcolor%3A%20%23111111%3B%0A%2D%2Dquarto%2Dhl%2Dbu%2Dcolor%3A%20inherit%3B%0A%2D%2Dquarto%2Dhl%2Dex%2Dcolor%3A%20inherit%3B%0A%2D%2Dquarto%2Dhl%2Dpp%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Din%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Dvs%2Dcolor%3A%20%2320794D%3B%0A%2D%2Dquarto%2Dhl%2Dwa%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Ddo%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Dim%2Dcolor%3A%20%2300769E%3B%0A%2D%2Dquarto%2Dhl%2Dch%2Dcolor%3A%20%2320794D%3B%0A%2D%2Dquarto%2Dhl%2Ddt%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dfl%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dco%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Dcv%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Dcn%2Dcolor%3A%20%238f5902%3B%0A%2D%2Dquarto%2Dhl%2Dsc%2Dcolor%3A%20%235E5E5E%3B%0A%2D%2Dquarto%2Dhl%2Ddv%2Dcolor%3A%20%23AD0000%3B%0A%2D%2Dquarto%2Dhl%2Dkw%2Dcolor%3A%20%23003B4F%3B%0A%7D%0A%0A%3Aroot%20%7B%0A%2D%2Dquarto%2Dfont%2Dmonospace%3A%20SFMono%2DRegular%2C%20Menlo%2C%20Monaco%2C%20Consolas%2C%20%22Liberation%20Mono%22%2C%20%22Courier%20New%22%2C%20monospace%3B%0A%7D%0A%0Apre%20%3E%20code%2EsourceCode%20%3E%20span%20%7B%0Acolor%3A%20%23003B4F%3B%0A%7D%0Acode%2EsourceCode%20%3E%20span%20%7B%0Acolor%3A%20%23003B4F%3B%0A%7D%0Adiv%2EsourceCode%2C%0Adiv%2EsourceCode%20pre%2EsourceCode%20%7B%0Acolor%3A%20%23003B4F%3B%0A%7D%0A%0Acode%20span%20%7B%0Acolor%3A%20%23003B4F%3B%0A%7D%0A%0Acode%20span%2Eal%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ean%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eat%20%7B%0Acolor%3A%20%23657422%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ebn%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ebu%20%7B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ecf%20%7B%0Acolor%3A%20%23003B4F%3B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ech%20%7B%0Acolor%3A%20%2320794D%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ecn%20%7B%0Acolor%3A%20%238f5902%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eco%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ecv%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0A%0Acode%20span%2Edo%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0A%0Acode%20span%2Edt%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Edv%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eer%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eex%20%7B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Efl%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Efu%20%7B%0Acolor%3A%20%234758AB%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eim%20%7B%0Acolor%3A%20%2300769E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ein%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ekw%20%7B%0Acolor%3A%20%23003B4F%3B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eop%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eot%20%7B%0Acolor%3A%20%23003B4F%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Epp%20%7B%0Acolor%3A%20%23AD0000%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Esc%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ess%20%7B%0Acolor%3A%20%2320794D%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Est%20%7B%0Acolor%3A%20%2320794D%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Eva%20%7B%0Acolor%3A%20%23111111%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Evs%20%7B%0Acolor%3A%20%2320794D%3B%0Afont%2Dstyle%3A%20inherit%3B%0A%7D%0A%0Acode%20span%2Ewa%20%7B%0Acolor%3A%20%235E5E5E%3B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0A%2Eprevent%2Dinlining%20%7B%0Acontent%3A%20%22%3C%2F%22%3B%0A%7D%0A%0A" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>
+:root{
+--c-aligned:#2b7a4b; 
+--c-pron:#c98a00; 
+--c-tech:#b04a3c; 
+--c-manual:#4f5fbf; 
+--c-ink:#232323; --c-sub:#5c5c5c; --c-line:#dcd8d0;
+--c-bg:#faf9f6; --c-card:#ffffff;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--c-bg);color:var(--c-ink);
+font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+line-height:1.75;}
+h1,h2,h3,h4{font-weight:700;line-height:1.35;}
+h1.title{font-size:1.55rem;}
+.subtitle{color:var(--c-sub);}
+main{max-width:960px;}
+table{font-size:.92em;border-collapse:collapse;width:100%;}
+th,td{border:1px solid var(--c-line);padding:.4em .6em;}
+th{background:#f1efe9;}
+tbody tr:nth-child(even){background:#fbfaf7;}
+code{background:#f1efe9;padding:.08em .3em;border-radius:3px;font-size:.9em;}
+pre code{display:block;overflow-x:auto;padding:.8em;}
+
+.statgrid{display:flex;flex-wrap:wrap;gap:12px;margin:1.2em 0;}
+.stat{flex:1 1 160px;background:var(--c-card);border:1px solid var(--c-line);
+border-top:4px solid var(--c-sub);border-radius:8px;padding:.7em .9em;}
+.stat .n{font-size:1.35rem;font-weight:700;display:block;letter-spacing:-.02em;}
+.stat .l{font-size:.82rem;color:var(--c-sub);}
+.stat.aligned{border-top-color:var(--c-aligned);} .stat.aligned .n{color:var(--c-aligned);}
+.stat.pron{border-top-color:var(--c-pron);} .stat.pron .n{color:var(--c-pron);}
+.stat.tech{border-top-color:var(--c-tech);} .stat.tech .n{color:var(--c-tech);}
+.stat.manual{border-top-color:var(--c-manual);} .stat.manual .n{color:var(--c-manual);}
+
+.warnbox{border:2px solid #b04a3c;background:#fdf3f1;border-radius:8px;
+padding:.9em 1.1em;margin:1.3em 0;}
+.warnbox .wtitle{font-weight:700;color:#8f3527;display:block;margin-bottom:.3em;}
+
+.legend{display:flex;flex-wrap:wrap;gap:.9em;font-size:.85rem;margin:.6em 0;}
+.legend span::before{content:"";display:inline-block;width:.85em;height:.85em;
+border-radius:3px;margin-right:.35em;vertical-align:-.1em;}
+.lg-aligned::before{background:var(--c-aligned);} .lg-pron::before{background:var(--c-pron);}
+.lg-tech::before{background:var(--c-tech);} .lg-manual::before{background:var(--c-manual);}
+
+.bar{display:flex;width:100%;height:2.1em;border-radius:6px;overflow:hidden;
+border:1px solid var(--c-line);margin:.7em 0;}
+.bar div{color:#fff;font-size:.72rem;display:flex;align-items:center;
+justify-content:center;white-space:nowrap;overflow:hidden;}
+.b-aligned{background:var(--c-aligned);} .b-pron{background:var(--c-pron);}
+.b-tech{background:var(--c-tech);}
+
+.flow{display:flex;flex-direction:column;gap:0;margin:1.1em 0;}
+.flow .fbox{background:var(--c-card);border:1.5px solid var(--c-line);
+border-left:5px solid var(--c-sub);border-radius:7px;padding:.55em .9em;
+font-size:.93rem;}
+.flow .farrow{text-align:center;color:var(--c-sub);font-size:1.05rem;
+line-height:1.5;}
+.fbox.hl-aligned{border-left-color:var(--c-aligned);}
+.fbox.hl-pron{border-left-color:var(--c-pron);}
+.fbox.hl-tech{border-left-color:var(--c-tech);}
+.fbox.hl-manual{border-left-color:var(--c-manual);}
+.fbox b{display:block;}
+.fbox small{color:var(--c-sub);}
+
+.flowrow{display:flex;flex-wrap:wrap;gap:10px;margin:.4em 0;}
+.flowrow .fbox{flex:1 1 200px;}
+
+details{border:1px solid var(--c-line);border-radius:6px;background:var(--c-card);
+padding:.45em .8em;margin:.7em 0;}
+details summary{cursor:pointer;font-weight:600;color:var(--c-sub);}
+
+.lesson{background:var(--c-card);border:1px solid var(--c-line);border-radius:8px;
+padding:.75em 1em;margin:.9em 0;}
+.lesson b.lt{display:block;margin-bottom:.25em;}
+.lesson .lrow{font-size:.93rem;margin:.15em 0;}
+.lesson .lk{font-weight:700;color:var(--c-sub);margin-right:.35em;}
+@media (max-width:640px){
+.statgrid{flex-direction:column;}
+.bar div{font-size:.6rem;}
+}
+@media print{
+body{background:#fff;}
+details{border:none;} details[open] summary{display:none;}
+.stat,.fbox,.lesson{break-inside:avoid;}
+a::after{content:"";}
+}
+</style>
+
+
+</head>
+
+<body>
+
+
+<header id="title-block-header">
+<h1 class="title">2020–2025 한국어 대화 말뭉치의 형태소 검색·공통발음·강제정렬 연구 인프라 구축</h1>
+<p class="subtitle">exact-ID 회계, 재현 가능한 6-tier TextGrid, append-only 수동 보정과 후속 회수 체계</p>
+<p class="author">NIKL 대화 말뭉치 형태음운 연구 프로젝트 (내부 인프라 release candidate)</p>
+
+<p class="date">2026-08-18</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#sec-glance" id="toc-sec-glance"><span class="header-section-number">1</span> 한눈에 보는 결과</a>
+  <ul>
+  <li><a href="#연도별-정본-수량" id="toc-연도별-정본-수량"><span class="header-section-number">1.1</span> 연도별 정본 수량</a></li>
+  </ul></li>
+  <li><a href="#sec-why" id="toc-sec-why"><span class="header-section-number">2</span> 왜 이 인프라가 필요한가</a></li>
+  <li><a href="#sec-inputs" id="toc-sec-inputs"><span class="header-section-number">3</span> 입력자료와 식별 체계</a></li>
+  <li><a href="#sec-pron" id="toc-sec-pron"><span class="header-section-number">4</span> 공통발음 release와 r3 재정렬</a>
+  <ul>
+  <li><a href="#왜-연도별-inline-g2p-대신-6개년-공통-release인가" id="toc-왜-연도별-inline-g2p-대신-6개년-공통-release인가"><span class="header-section-number">4.1</span> 왜 연도별 inline G2P 대신 6개년 공통 release인가</a></li>
+  <li><a href="#왜-6개년을-새로-정렬했는가" id="toc-왜-6개년을-새로-정렬했는가"><span class="header-section-number">4.2</span> 왜 6개년을 새로 정렬했는가</a></li>
+  </ul></li>
+  <li><a href="#sec-followup" id="toc-sec-followup"><span class="header-section-number">5</span> 안전 본체와 817,310건 후속의 의미</a></li>
+  <li><a href="#sec-tiers" id="toc-sec-tiers"><span class="header-section-number">6</span> 6-tier TextGrid</a></li>
+  <li><a href="#sec-verify" id="toc-sec-verify"><span class="header-section-number">7</span> 검증과 재개 설계</a></li>
+  <li><a href="#sec-lessons" id="toc-sec-lessons"><span class="header-section-number">8</span> 시행착오와 개선</a></li>
+  <li><a href="#sec-rc" id="toc-sec-rc"><span class="header-section-number">9</span> RC0, RC1, active view</a></li>
+  <li><a href="#sec-next" id="toc-sec-next"><span class="header-section-number">10</span> 앞으로의 실제 연구 단계</a></li>
+  <li><a href="#sec-reuse" id="toc-sec-reuse"><span class="header-section-number">11</span> 재사용 튜토리얼</a>
+  <ul>
+  <li><a href="#경로-1-같은-nikl-말뭉치를-별도-권한으로-확보해-재현하는-경우" id="toc-경로-1-같은-nikl-말뭉치를-별도-권한으로-확보해-재현하는-경우"><span class="header-section-number">11.1</span> 경로 1 — 같은 NIKL 말뭉치를 별도 권한으로 확보해 재현하는 경우</a></li>
+  <li><a href="#경로-2-다른-한국어-말뭉치에-이식하는-경우" id="toc-경로-2-다른-한국어-말뭉치에-이식하는-경우"><span class="header-section-number">11.2</span> 경로 2 — 다른 한국어 말뭉치에 이식하는 경우</a></li>
+  </ul></li>
+  <li><a href="#sec-ai" id="toc-sec-ai"><span class="header-section-number">12</span> AI 보조와 연구자 책임</a></li>
+  <li><a href="#sec-limits" id="toc-sec-limits"><span class="header-section-number">13</span> 한계·라이선스·공개 범위</a>
+  <ul>
+  <li><a href="#sec-sources" id="toc-sec-sources">근거 파일</a></li>
+  </ul></li>
+  </ul>
+</nav>
+<div>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>이 문서는 음운 현상의 분석 결과 논문이 아니라, 2020–2025년 6개년 국립국어원 일상대화 말뭉치의 <strong>자료 구축 인프라 release candidate</strong>에 대한 methods and data note다. 논문 methods supplement 또는 공개 저장소 technical report로 읽히는 것을 전제로 한다. 수치의 정본은 <code>outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json</code>과 RC0 <code>QA_REPORT.json</code>이며, 본문 모든 수치는 이 machine-readable 정본과 독립 감사 (<code>AUDIT_six_year_infrastructure_closeout_20260818.json</code>, status <code>passed</code>)에서 가져와 재계산·검증했다.</p>
+</blockquote>
+</div>
+<h1 data-number="1" id="sec-glance"><span class="header-section-number">1</span> 한눈에 보는 결과</h1>
+<div class="statgrid">
+<div class="stat">
+<span class="n">5,103,356</span><span class="l">원천 발화 (2020–2025) — 전체가 표기·형태소 검색 가능</span>
+</div>
+<div class="stat aligned">
+<span class="n">4,286,046</span><span class="l">동일 r3 계약으로 정렬·6-tier 수출된 안전 본체 (84.0%)</span>
+</div>
+<div class="stat pron">
+<span class="n">718,364</span><span class="l">발음 후속 (pronunciation follow-up)</span>
+</div>
+<div class="stat tech">
+<span class="n">98,946</span><span class="l">기술 후속 = MFA 전 95,860 + MFA 후 3,086</span>
+</div>
+<div class="stat manual">
+<span class="n">0</span><span class="l">누락·중복·미분류 exact-ID (RC0 QA hard failure 전부 0)</span>
+</div>
+</div>
+<div class="legend">
+<p><span class="lg-aligned">정렬 안전 본체 (aligned safe body)</span> <span class="lg-pron">발음 후속 (pronunciation follow-up)</span> <span class="lg-tech">기술 후속 (technical follow-up)</span> <span class="lg-manual">수동 보정 overlay (RC1 manual overlay)</span></p>
+</div>
+<p>원천 5,103,356발화의 상태 구성:</p>
+<div class="bar">
+<div class="b-aligned" style="width:84.0%">
+aligned 4,286,046 (84.0%)
+</div>
+<div class="b-pron" style="width:14.1%">
+발음 후속 718,364
+</div>
+<div class="b-tech" style="width:1.9%">
+기술 98,946
+</div>
+</div>
+<h2 data-number="1.1" id="연도별-정본-수량" class="anchored"><span class="header-section-number">1.1</span> 연도별 정본 수량</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">연도</th>
+<th style="text-align: right;">원천 발화</th>
+<th style="text-align: right;">정렬·6-tier</th>
+<th style="text-align: right;">MFA 전 기술 후속</th>
+<th style="text-align: right;">MFA 후 기술 후속</th>
+<th style="text-align: right;">발음 후속</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">870,437</td>
+<td style="text-align: right;">782,432</td>
+<td style="text-align: right;">1,675</td>
+<td style="text-align: right;">283</td>
+<td style="text-align: right;">86,047</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">1,373,920</td>
+<td style="text-align: right;">1,206,862</td>
+<td style="text-align: right;">937</td>
+<td style="text-align: right;">437</td>
+<td style="text-align: right;">165,684</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">866,359</td>
+<td style="text-align: right;">751,383</td>
+<td style="text-align: right;">870</td>
+<td style="text-align: right;">338</td>
+<td style="text-align: right;">113,768</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">677,262</td>
+<td style="text-align: right;">494,228</td>
+<td style="text-align: right;">87,809</td>
+<td style="text-align: right;">352</td>
+<td style="text-align: right;">94,873</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">728,257</td>
+<td style="text-align: right;">593,530</td>
+<td style="text-align: right;">1,339</td>
+<td style="text-align: right;">874</td>
+<td style="text-align: right;">132,514</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">587,121</td>
+<td style="text-align: right;">457,611</td>
+<td style="text-align: right;">3,230</td>
+<td style="text-align: right;">802</td>
+<td style="text-align: right;">125,478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>합계</strong></td>
+<td style="text-align: right;"><strong>5,103,356</strong></td>
+<td style="text-align: right;"><strong>4,286,046</strong></td>
+<td style="text-align: right;"><strong>95,860</strong></td>
+<td style="text-align: right;"><strong>3,086</strong></td>
+<td style="text-align: right;"><strong>718,364</strong></td>
+</tr>
+</tbody>
+</table>
+<p>전체 회계식은 다음과 같고, 연도별·전체 합계 모두 이 보고서 작성 시점에 프로그램으로 재계산해 정본 JSON과 일치함을 확인했다.</p>
+<pre class="text"><code>5,103,356
+= 4,286,046 aligned_safe_body
++    95,860 pre_mfa_technical_exclusion
++     3,086 post_mfa_technical_exclusion
++   718,364 pronunciation_followup
++         0 methodological_exclusion</code></pre>
+<p><code>methodological_exclusion = 0</code>은 모든 음원이 연구에 적합하다는 뜻이 아니다. 소음·화자 겹침·실제 실현 여부·연구 질문에 따른 제외는 후보 추출 뒤 연구자가 별도 decision ledger로 판단하며, 위 수치는 그 판단 이전의 인프라 회계다.</p>
+<div class="warnbox">
+<p><span class="wtitle">⚠ 전체 검색 가능 ≠ 전체 정렬 완료</span> “6개년 전체 5,103,356발화를 표기·형태소로 검색할 수 있다”와 “6개년 전체가 MFA 정렬됐다”는 다른 주장이다. 전자는 맞고, 후자는 안전 본체 <strong>4,286,046발화 범위에서만</strong> 맞다. 나머지 817,310건도 검색층에 그대로 남아 있으나 최종 6-tier TextGrid와 MFA phone이 없으므로, 검색 결과에는 <code>primary_status</code>, <code>textgrid_available</code>, <code>asset_status</code>, <code>followup_required</code>, <code>reason_codes</code>, <code>alignment_scope</code>를 함께 표시해야 한다.</p>
+</div>
+<div class="warnbox">
+<p><span class="wtitle">⚠ MFA phone ≠ 실제 실현</span> MFA 강제정렬과 G2P는 텍스트와 음성을 시간적으로 연결하는 장치다. 사전 phone은 정렬을 돕는 <strong>입력 가설</strong>이고 <code>phones_mfa</code>는 그 가설과 음향모델이 고른 <strong>정렬 출력</strong>이다. 어느 것도 ㄴ 삽입 같은 음운 현상의 실제 실현 여부를 판정하지 않는다. 실현 판정은 연구자가 음성과 TextGrid를 직접 검토해 수행하며, 이 판정은 아직 수행되지 않았다.</p>
+</div>
+<h1 data-number="2" id="sec-why"><span class="header-section-number">2</span> 왜 이 인프라가 필요한가</h1>
+<p>이 프로젝트의 최종 목적은 강제정렬 파일을 쌓는 것이 아니라, 한국어 일상대화 말뭉치에서 형태음운 환경 후보를 찾아 연구자가 실제 실현을 판정할 수 있게 하는 것이다. 연구 흐름은 다음과 같다.</p>
+<div class="flow">
+<div class="fbox">
+<b>① CSV/검색층에서 후보 추출</b><small>형태소·표기 환경(예: 어절 경계, 받침, 후행 모음)을 선언형 query로 검색</small>
+</div>
+<div class="farrow">
+↓
+</div>
+<div class="fbox hl-aligned">
+<b>② WAV·TextGrid 연결</b><small>후보 exact-ID로 음성 파일과 6-tier TextGrid의 어절 문맥 시간을 결합</small>
+</div>
+<div class="farrow">
+↓
+</div>
+<div class="fbox">
+<b>③ 선택 자료의 운율 분석</b><small>선별된 소수 자료에 KOINA 등 적용 (전수 아님)</small>
+</div>
+<div class="farrow">
+↓
+</div>
+<div class="fbox hl-manual">
+<b>④ 연구자의 실제 실현 판정</b><small>청취·음향·TextGrid 검토로 실현/비실현·소음·겹침·경계를 사람이 판단</small>
+</div>
+</div>
+<p>이 흐름이 성립하려면 세 가지가 필요하다. 첫째, 510만 발화 전체를 놓치지 않는 검색층. 둘째, 후보를 음성 시간으로 되돌릴 수 있는 동일 계약의 TextGrid. 셋째, 정렬에 실패했거나 보류된 발화가 조용히 사라지지 않는 회계 체계다. 어느 하나가 없으면 “검색 결과에 왜 이 발화가 없는가”를 설명할 수 없게 되고, 연구 표본의 분모가 불투명해진다.</p>
+<h1 data-number="3" id="sec-inputs"><span class="header-section-number">3</span> 입력자료와 식별 체계</h1>
+<p>원자료는 국립국어원 일상대화 말뭉치의 연도별 JSON 전사, WAV 음성, 세션·화자 메타데이터다. 원본(JSON/WAV/원 전사), 파생층(형태소 CSV, 검색표, MFA DB, TextGrid), 수동 보정(exact-ID overlay, decision ledger)을 처음부터 분리했다. 수동 보정 때문에 원본이나 수백만 건의 기본 파생본을 덮어쓰지 않기 위해서다.</p>
+<p>발화 identity는 연도·<code>utt_id</code>·세션·화자·원 CSV를 기본 조인 키로 유지해, 어떤 후보든 대화 세션 문맥으로 돌아갈 수 있게 했다. WAV 이름과 발화 ID가 어긋난 경우 문자열 유사도로 추정해 덮어쓰지 않고, 원자료 identity와 duration을 대조한 recovery 계획으로 처리했다.</p>
+<p>검색층(<code>morph_search.v3</code>)은 형태소/POS, 표기 로마자(어절 구분 보존), 숫자·기호의 읽기 후보를 별도 열로 보존한다. 6개년 정본 수량은 다음과 같다.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">연도</th>
+<th style="text-align: right;">발화</th>
+<th style="text-align: right;">형태소 token</th>
+<th style="text-align: right;">형태소 경계</th>
+<th style="text-align: right;">기호 읽기 occurrence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">870,437</td>
+<td style="text-align: right;">5,767,506</td>
+<td style="text-align: right;">4,897,069</td>
+<td style="text-align: right;">290,525</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">1,373,920</td>
+<td style="text-align: right;">12,015,453</td>
+<td style="text-align: right;">10,641,533</td>
+<td style="text-align: right;">537,167</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">866,359</td>
+<td style="text-align: right;">8,192,006</td>
+<td style="text-align: right;">7,325,647</td>
+<td style="text-align: right;">465,477</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">677,262</td>
+<td style="text-align: right;">6,610,494</td>
+<td style="text-align: right;">5,933,232</td>
+<td style="text-align: right;">262,115</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">728,257</td>
+<td style="text-align: right;">9,405,308</td>
+<td style="text-align: right;">8,677,051</td>
+<td style="text-align: right;">436,550</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">587,121</td>
+<td style="text-align: right;">8,965,124</td>
+<td style="text-align: right;">8,378,003</td>
+<td style="text-align: right;">394,647</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>합계</strong></td>
+<td style="text-align: right;"><strong>5,103,356</strong></td>
+<td style="text-align: right;"><strong>50,955,891</strong></td>
+<td style="text-align: right;"><strong>45,852,535</strong></td>
+<td style="text-align: right;"><strong>2,386,481</strong></td>
+</tr>
+</tbody>
+</table>
+<p>의미번호 층은 입력으로 존재하지만, 개별 연구 query와의 production join은 다음 연구 단계의 Gate로 남아 있다.</p>
+<h1 data-number="4" id="sec-pron"><span class="header-section-number">4</span> 공통발음 release와 r3 재정렬</h1>
+<h2 data-number="4.1" id="왜-연도별-inline-g2p-대신-6개년-공통-release인가" class="anchored"><span class="header-section-number">4.1</span> 왜 연도별 inline G2P 대신 6개년 공통 release인가</h2>
+<p>연도마다 G2P를 즉석 실행하면 모델·규칙·사전 상태와 실패 처리가 연도별로 달라질 수 있고, “6개년에 같은 phone 기준을 적용했다”고 methods에 쓸 수 없게 된다. 그래서 6개년 관측 어휘를 공통 범위로 모아 발음 기준을 한 번 동결한 <code>common_pron_mfa_r3_20260809</code> release를 만들었다. RC0 교차 계약이 hash로 동결한 항목은 다음과 같다: 공통발음 release와 pronunciation contract, 최종 MFA dictionary SHA-256, Korean MFA acoustic model SHA-256, Jamo G2P provenance SHA-256, runtime(Python 3.13.14 / MFA 3.4.0 / Pynini 2.1.7), <code>fresh_r3_full_realign=true</code>, <code>research_textgrid.v2</code> 6-tier schema. 모델 이름이 같다는 것만으로 동일 방법으로 간주하지 않고, 실제 파일 SHA와 계약 ID를 연도별 결과에 결속했다.</p>
+<p>우리말샘 등 사전의 예외 발음은 검색·참조층에 보존할 가치가 있지만, 사전 변이가 해당 발화의 실제 발음이라는 보장은 없다(A/B 검토에서 사전 변이가 더 나쁜 사례도 있었다). 따라서 사전 발음은 보조 참조열로 두고, 검토되지 않은 변이를 MFA 사전에 무차별 추가하지 않았다.</p>
+<h2 data-number="4.2" id="왜-6개년을-새로-정렬했는가" class="anchored"><span class="header-section-number">4.2</span> 왜 6개년을 새로 정렬했는가</h2>
+<p>초기 정렬본의 표본 검토에서 <code>있지</code>, <code>있는</code>, <code>없는</code>, <code>어쨌든</code> 같은 사례의 입력 phone이 의도한 규칙형과 일치하지 않는 문제가 발견됐다. 이미 끝난 연도의 TextGrid만 사후 문자 교체하면 phone 생성 근거와 시간 정렬 계약이 분리된다. 과거 계산 시간을 아끼는 것보다 방법론적 일관성을 우선해, 2020–2025 전체를 같은 r3 계약으로 새로 정렬(fresh full realign)하기로 결정했다.</p>
+<p>다만 같은 G2P 계산을 무의미하게 반복하지는 않았다. 발음 근거를 아직 확정하지 못한 어절이 있는 발화는 억지로 사전에 넣지 않고 <strong>발음 후속(hold)</strong>으로 분리해 안전 본체와 별도 트랙에 두었다. 이 보수적 분리가 §<a href="#sec-followup" class="quarto-xref">섹션 5</a> 의 718,364건이다.</p>
+<h1 data-number="5" id="sec-followup"><span class="header-section-number">5</span> 안전 본체와 817,310건 후속의 의미</h1>
+<pre class="text"><code>817,310 = 718,364 pronunciation follow-up
+        +  95,860 pre-MFA technical follow-up
+        +   3,086 post-MFA technical follow-up</code></pre>
+<div class="bar">
+<div class="b-pron" style="width:87.9%">
+발음 후속 718,364 (87.9%)
+</div>
+<div class="b-tech" style="width:11.7%">
+MFA 전 기술 95,860
+</div>
+<div class="b-tech" style="width:0.4%;border-left:1px solid #fff">
+
+</div>
+</div>
+<p style="font-size:.85rem;color:#5c5c5c;margin-top:-.4em">
+막대 오른쪽 끝의 얇은 조각이 MFA 후 기술 후속 3,086건(0.4%)이다.
+</p>
+<p>이 817,310건은 “실패”도 “버린 파일”도 아니다. 전부 검색층에 존재하며 표기·형태소 환경으로 검색된다. 다만 최종 6-tier와 MFA phone이 없으므로, 검색 결과에서 정렬 본체와 같은 자료처럼 보여서는 안 된다 — <code>primary_status</code>, <code>textgrid_available</code>, <code>asset_status</code>, <code>followup_required</code>, <code>reason_codes</code>, <code>alignment_scope</code>를 함께 표시해야 한다.</p>
+<p>각 발화는 다음 네 상태 중 정확히 하나만 가진다(상호배타, 누락·중복 0).</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>primary_status</th>
+<th>뜻</th>
+<th style="text-align: center;">MFA 입력</th>
+<th style="text-align: center;">최종 6-tier</th>
+<th style="text-align: center;">후속 필요</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>aligned_safe_body</code></td>
+<td>r3 정렬·독립 QC를 통과한 본체</td>
+<td style="text-align: center;">예</td>
+<td style="text-align: center;">예</td>
+<td style="text-align: center;">아니오</td>
+</tr>
+<tr class="even">
+<td><code>pre_mfa_technical_exclusion</code></td>
+<td>WAV pairing·duration·기호 등 MFA 전 기술 문제</td>
+<td style="text-align: center;">아니오</td>
+<td style="text-align: center;">아니오</td>
+<td style="text-align: center;">예</td>
+</tr>
+<tr class="odd">
+<td><code>post_mfa_technical_exclusion</code></td>
+<td>MFA 입력에는 있었으나 완전한 word+phone interval 부재</td>
+<td style="text-align: center;">예</td>
+<td style="text-align: center;">아니오</td>
+<td style="text-align: center;">예</td>
+</tr>
+<tr class="even">
+<td><code>pronunciation_followup</code></td>
+<td>발음 입력 근거 확정 뒤 별도 정렬할 대상</td>
+<td style="text-align: center;">아니오</td>
+<td style="text-align: center;">아니오</td>
+<td style="text-align: center;">예</td>
+</tr>
+</tbody>
+</table>
+<p>발음 후속이 큰 이유는 규칙이 보수적이기 때문이다. 발화 안에 발음을 확정하지 못한(hold) 어절이 <strong>하나라도</strong> 있으면 발화 전체를 안전 본체에서 보류했다. 내부 구성은 hold 717,354, policy 136, empty-reference 848, hold+policy 26이다. 즉 대부분은 “불확실한 발음을 억지로 사전에 넣지 않은 발화”이지 “사용할 수 없는 발화”가 아니다. 2023년의 MFA 전 기술 후속이 특히 큰 것(87,809)은 해당 연도의 대규모 audio pairing 미해결 때문이며, 이 역시 exact-ID로 남아 있다.</p>
+<h1 data-number="6" id="sec-tiers"><span class="header-section-number">6</span> 6-tier TextGrid</h1>
+<p>안전 본체 4,286,046발화 각각에 다음 6-tier TextGrid (<code>research_textgrid.v2</code>)가 있다.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>tier</th>
+<th>내용</th>
+<th>주의</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>words</code></td>
+<td>MFA가 정렬한 어절 interval</td>
+<td>실제 형태소 경계가 아님</td>
+</tr>
+<tr class="even">
+<td><code>phones_mfa</code></td>
+<td>MFA phone interval (강제정렬 출력)</td>
+<td>실제 발음의 정답이 아님</td>
+</tr>
+<tr class="odd">
+<td><code>phoneme_r_auto</code></td>
+<td>MFA phone의 기계적 넓은 로마자 범주</td>
+<td>기저형·수동 음운전사가 아님</td>
+</tr>
+<tr class="even">
+<td><code>utterance</code></td>
+<td>한글 발화 전사</td>
+<td>원/정규화 provenance 확인 필요</td>
+</tr>
+<tr class="odd">
+<td><code>utterance_orth_r</code></td>
+<td>어절 구분을 보존한 철자 로마자 검색 문자열</td>
+<td>발음 로마자와 구별</td>
+</tr>
+<tr class="even">
+<td><code>morph_analysis_utt</code></td>
+<td>한글 형태소/POS 검색 문자열</td>
+<td><strong>시간 정렬된 형태소 tier가 아님</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>morph_analysis_utt</code>는 발화 범위에 걸린 검색 문자열이다. 형태소마다 시간 경계를 강제로 나누면 그 경계가 음성학적 사실처럼 보이는 위험이 있어, 설계 단계에서 시간 정렬 형태소 tier를 의도적으로 배제했다(§<a href="#sec-lessons" class="quarto-xref">섹션 8</a>). 앞뒤 빈 구간은 모든 tier가 TextGrid 전체 길이를 덮도록 interval로 유지하되, 검색 정보 tier의 내용은 발화가 있는 시간 문맥에만 둔다.</p>
+<p>원 음성과 개인 검토용 사본은 이 보고서에 포함하지 않는다. 실제 표본이 필요한 독자는 저장소의 비식별/허용 예시(<code>outputs/examples</code> 계열)와 schema 문서를 사용해야 하며, licensed corpus 원자료는 이용 권한에 따라 별도로 확보해야 한다.</p>
+<h1 data-number="7" id="sec-verify"><span class="header-section-number">7</span> 검증과 재개 설계</h1>
+<p>검증은 “같은 프로그램의 성공 메시지”를 믿지 않는 방식으로 설계했다.</p>
+<ol type="1">
+<li><strong>input/method/output contract</strong> — 어떤 exact-ID와 파일이 입력인지, 어떤 모델·사전·G2P·runtime·tier schema를 쓰는지, 성공 조건과 실패 장부가 무엇인지를 사람이 읽는 설명과 기계가 읽는 JSON, SHA-256으로 함께 고정한다.</li>
+<li><strong>SHA-256과 exact-ID</strong> — 모델·사전·산출물을 이름이 아니라 hash로 결속하고, 발화는 항상 exact-ID로 추적한다. 파일명 유사도 pairing은 금지.</li>
+<li><strong>pilot/Gate와 <code>-PreflightOnly</code></strong> — 대량 실행 전 층화 파일럿(복수 연도·화자· 세션)과 읽기 전용 preflight를 통과해야 한다. 계약이 변하지 않으면 다음 연도에 같은 파일럿을 반복하지 않는다.</li>
+<li><strong>fail-closed</strong> — 입력 10건 중 TextGrid 9건 생성은 “90% 성공”이 아니라 “1건의 상태가 설명되지 않은 부분 성공”이며, 성공으로 처리하지 않는다.</li>
+<li><strong>연도별 checkpoint</strong> — 완료 marker와 DB를 보존하고, 재실행 시 입력 signature와 장부 SHA가 같으면 완료 연도를 재사용한다.</li>
+<li><strong>post-MFA 회계</strong> — 완전 정렬 exact-ID + 미정렬 exact-ID = MFA 입력이 행 단위로 성립해야 연도가 끝난다.</li>
+<li><strong>독립 QC와 cross-year audit</strong> — 생성기와 별도의 코드가 coverage, tier, duration, 동반표, DB 표본 재수출을 재검사하고, 6개년의 발음·모델·runtime· schema 동일성을 교차 감사한다.</li>
+<li><strong>researcher Gate</strong> — 제외·승인은 자동화하지 않고 범위와 candidate hash에 결속된 연구자 명시 승인으로만 진행한다.</li>
+</ol>
+<p>RC0 <code>QA_REPORT.json</code>의 hard failure(누락 ID, 연도 내 중복, safe/후속 겹침, 미분류, 회계식 불일치, 교차연도 방법 불일치 등 9종)는 모두 0이다.</p>
+<p>오류가 나도 연도 전체를 다시 시작하지 않는다. 실패 exact-ID만 분리해 별도 shard로 보낸다.</p>
+<div class="flow">
+<div class="fbox">
+<b>연도 실행 (materialize → MFA → export → QC)</b>
+</div>
+<div class="farrow">
+↓ 오류 발생 시
+</div>
+<div class="fbox hl-tech">
+<b>실패 exact-ID 분리</b><small>실패 ID, 이유, 입력 계약, 시도한 설정을 장부에 기록</small>
+</div>
+<div class="farrow">
+↓
+</div>
+</div>
+<div class="flowrow">
+<div class="fbox hl-aligned">
+<b>성공 본체 보존</b><small>성공 DB·checkpoint는 재계산하지 않음</small>
+</div>
+<div class="fbox hl-tech">
+<b>별도 recovery shard</b><small>격리 namespace에서 통제된 조건으로만 재시도 (같은 입력·같은 설정 무한 재시도 금지)</small>
+</div>
+<div class="fbox hl-manual">
+<b>명시 Gate</b><small>결과 반영은 연구자 승인 후 append-only로</small>
+</div>
+</div>
+<p>실제 사례로, 2024년 export에서 최초 실패 보고서와 2발화 표적 회수 뒤 성공 보고서가 공존했을 때, 파일명이나 수정 시각으로 정본을 추측하지 않고 독립 QC state에 동결된 <code>export_report_sha256</code>과 일치하는 보고서만 채택했다. 실패 증거는 삭제하지 않았다.</p>
+<h1 data-number="8" id="sec-lessons"><span class="header-section-number">8</span> 시행착오와 개선</h1>
+<p>아래 각 항목은 실제 발생한 문제를 “오류 → 왜 위험했는가 → 코드/계약에서 어떻게 막았는가 → 재사용자가 확인할 것”의 순서로 기록한 것이다.</p>
+<div class="lesson">
+<b class="lt">1. 한 화자 중심 파일럿</b>
+<div class="lrow">
+<span class="lk">오류</span>초기 파일럿 표본이 한 화자에 치우쳤다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>화자·세션 편향이 걸러지지 않아 파일럿 통과가 전체 대표성을 보장하지 못한다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>연도·복수 화자(약 5명)·복수 세션·짧고 긴 발화·기호·잡음·OOV를 포함한 층화 표본으로 교체.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>파일럿 manifest에 화자·세션 분포가 기록돼 있는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">2. TextGrid 9/10 부분 성공</b>
+<div class="lrow">
+<span class="lk">오류</span>2023 파일럿에서 입력 10건 중 TextGrid 9건만 생성됐는데 작업이 끝난 것처럼 보였다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>누락 1건이 조용히 사라지면 전수 완료로 오인되고 분모가 어긋난다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>입력 수 = 성공 수 + 이유 있는 후속 수가 정확히 성립해야 단계가 끝나는 fail-closed 규칙 도입.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>각 단계 보고서에 입력-출력 회계식이 있는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">3. tier 앞뒤 경계와 형태소 pseudo-alignment</b>
+<div class="lrow">
+<span class="lk">오류</span>일부 tier만 앞뒤 빈 구간 경계를 보유했고, 형태소 tier가 실제 시간 경계처럼 보였다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>이어붙이기·검색 좌표가 tier마다 어긋나고, 기계적 경계가 음성학적 사실로 오인된다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>모든 tier가 전체 시간축을 덮는 coverage 계약을 검사하고, 형태소는 시간 분할 대신 발화 범위 검색 문자열 tier(<code>morph_analysis_utt</code>)로 전환.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>tier 이름이 시간 정렬을 암시하지 않는지, coverage 검사가 QC에 있는지.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">4. 숫자·기호의 빈 발음</b>
+<div class="lrow">
+<span class="lk">오류</span>숫자·기호의 철자발음·예측발음이 빈칸으로 남았다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>검색이 안 되고 MFA 입력이 손실되는데도 겉으로 드러나지 않는다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>표기 자체와 읽기 후보를 별도 정보로 보존해 빈 발음을 허용하지 않는 검사 추가.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>기호 읽기 occurrence 수(6개년 2,386,481)가 회계에 잡히는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">5. grapheme/음절 inventory 문제와 Jamo 전환</b>
+<div class="lrow">
+<span class="lk">오류</span>음절/grapheme 기준 모델이 동결 음향모델 inventory와 어긋나 <code>spn</code>(불명 phone)과 생성 실패가 발생했다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>실패가 <code>spn</code>으로 가려지면 phone 검색과 정렬 품질이 조용히 붕괴한다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>최신 Jamo G2P 기준으로 전환하고, G2P no-path는 숨기지 않고 별도 queue로 보존.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>G2P 출력의 no-path queue와 phone inventory 대조 보고서가 있는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">6. PowerShell 5.1 scalar/UInt32/heartbeat 문제</b>
+<div class="lrow">
+<span class="lk">오류</span>Windows PowerShell 5.1에서 JSON 배열이 단일 객체로 풀려 <code>.Count</code>가 없고, UInt32 seed 범위 오류, heartbeat 파일 동시 읽기·쓰기 충돌이 발생했다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>수 시간짜리 대량 job이 계산은 정상인데 wrapper 수준에서 중단된다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span><code>@(...)</code> 정규화와 typed List, signed/unsigned 범위 명시, FileShare.ReadWrite와 heartbeat 비치명화, PS 5.1 회귀검사(<code>tests/test_powershell_runtime_compat.ps1</code>)를 표준화.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>장시간 스크립트가 대상 PowerShell 버전에서 회귀검사를 통과했는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">7. gzip newline row mismatch</b>
+<div class="lrow">
+<span class="lk">오류</span>gzip CSV 마지막 newline 때문에 예상/실제 행 수가 1 달라 shard 생성이 중단됐다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>off-by-one이 수량 회계 전체의 신뢰를 흔든다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>줄 수 세기가 아니라 CSV parser 기반 row count와 newline 회귀검사로 교체.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>row count가 parser 기준인지, 단순 line count인지.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">8. WAV ID·duration pairing</b>
+<div class="lrow">
+<span class="lk">오류</span>WAV 이름·길이와 CSV 발화 ID·시간이 일치하지 않는 사례가 있었다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>잘못된 음성에 전사가 연결되면 이후 모든 정렬·판정이 오염된다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>raw 불변 원칙 아래 recovery staging에서 원자료 identity·duration을 대조하고 source snapshot과 SHA를 남김. 유사도 기반 대량 pairing 금지.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>pairing 근거가 ID·duration 대조인지, 파일명 유사도인지.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">9. MFA 미정렬 exact-ID</b>
+<div class="lrow">
+<span class="lk">오류</span>MFA가 “완료”된 뒤에도 word/phone interval이 없는 발화가 있었다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>정렬 완료 선언이 거짓 전수 완료가 된다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>post-MFA exact-ID 제외 장부(6개년 3,086건)와 연구자 승인을 별도 단계로 두고, 회계식에 포함.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>post-MFA 미정렬 수가 0이 아니라 명시적 수치로 보고되는가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">10. 실패/성공 export 보고서 공존</b>
+<div class="lrow">
+<span class="lk">오류</span>2024 export에서 최초 실패 보고서와 회수 후 성공 보고서가 같은 폴더에 공존했다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>최신 파일·파일명으로 정본을 추측하면 과거 실패나 잘못된 보고서를 채택할 수 있다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>독립 QC state에 동결된 <code>export_report_sha256</code>과 일치하는 보고서만 정본으로 채택. 실패 증거는 삭제하지 않고 보존.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>정본 선택 기준이 SHA 결속인지, 수정 시각인지.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">11. 수동 전사와 기존 자동층의 층간 모순</b>
+<div class="lrow">
+<span class="lk">오류</span>recovery에서 전사·word를 수동 수정한 뒤에도 기존 자동 형태소·phone이 그대로 남아 있었다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>수정 전사와 옛 자동층이 서로 모순되는 자료가 최종값처럼 유통된다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>RC1은 수동 스냅샷 pointer(16건)만 채택하고, 수정 전사에 맞는 형태소·phone/phoneme 재구축은 별도 enrichment Gate로 분리. D9 phone은 참고 전용.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>수동 수정 항목의 pending 필드가 자동층으로 채워져 있지 않은가.
+</div>
+</div>
+<div class="lesson">
+<b class="lt">12. 검수만 반복하고 반영이 지연되는 문제</b>
+<div class="lrow">
+<span class="lk">오류</span>검토 폴더가 지나치게 세분되고, 검수 결과가 release에 반영되지 않은 채 검수만 반복됐다.
+</div>
+<div class="lrow">
+<span class="lk">위험</span>연구자 검토 비용이 커지고 진도가 정체되며, 검수와 정본 사이의 간극이 벌어진다.
+</div>
+<div class="lrow">
+<span class="lk">대응</span>검토 묶음을 번호순 flat bundle(WAV/LAB/TextGrid/CSV 동봉)로 바꾸고, 검수 결과를 계약·코드·release에 반영한 뒤에만 다음 Gate로 진행.
+</div>
+<div class="lrow">
+<span class="lk">확인할 것</span>각 검수 라운드가 어느 release·계약 변경으로 이어졌는지 추적되는가.
+</div>
+</div>
+<h1 data-number="9" id="sec-rc"><span class="header-section-number">9</span> RC0, RC1, active view</h1>
+<p>수동 보정은 기본 release를 덮어쓰지 않는다. 구조는 세 층이다.</p>
+<div class="flow">
+<div class="fbox">
+<b>RC0 — 불변 base (2026-08-15)</b><small>원천 5,103,356발화 exact-ID 상태 장부 + 안전 본체 4,286,046 + recovery inventory 817,310행. 이후 수정하지 않는다.</small>
+</div>
+<div class="farrow">
+↓ append-only
+</div>
+<div class="fbox hl-manual">
+<b>RC1 — recovery sidecar (2026-08-18)</b><small>첫 shard 55행 상태(curated 16 · partial 6 · 재정렬 성공 1 · 기술 제외 30 · 전사 회수 2) + curated pointer 16행만 추가. 본체 정렬 수 변화 0, 잔여 recovery 817,255행.</small>
+</div>
+<div class="farrow">
+↓ 조인 (year, utt_id)
+</div>
+<div class="fbox hl-aligned">
+<b>active view — exact-ID 우선순위 계약</b><small>모든 발화의 기본값은 RC0. 예외 표의 curated exact-ID만 수동 전사·로마자·TextGrid pointer를 우선 적용. 진단 증거는 절대 active로 승격하지 않는다.</small>
+</div>
+</div>
+<p>명시할 사실 두 가지. 첫째, <strong>D9 phone은 참고 전용</strong>이다. 수동 전사에 맞는 형태소·phone 재구축은 별도 Gate 전까지 pending이며, RC1은 수동 16건을 정렬 본체에 소급 합산하지 않았다(본체 정렬 수 delta 0). 둘째, RC1은 RC0의 510만 행을 수정한 것이 아니라 55행 + 16행을 <strong>덧붙인</strong> 것이다. 이 구조 덕분에 모든 수동 수정의 이유와 이전 상태를 언제든 설명할 수 있다.</p>
+<h1 data-number="10" id="sec-next"><span class="header-section-number">10</span> 앞으로의 실제 연구 단계</h1>
+<p>이 인프라 위에서 진행할 다음 단계는 연구 그 자체이며, 이 closeout에 포함되지 않았다.</p>
+<ol type="1">
+<li>선언형 query로 형태소·표기 환경 후보를 전수 추출한다.</li>
+<li>의미번호 join과 음운형태적 환경 정의를 production 수준으로 확정한다.</li>
+<li>후보 occurrence를 WAV·TextGrid의 어절 문맥 시간과 연결한다.</li>
+<li>연구자가 실제 실현·소음·겹침·수동 경계를 판정한다.</li>
+<li>선별 자료에 KOINA 등 운율 분석을 적용한다.</li>
+<li>wav2vec2/HuBERT 등 보조 음성모델 출력은 원 MFA 열을 덮지 않는 보조열/sidecar로만 추가한다.</li>
+<li>수동 수정은 provenance와 함께 active view에 반영한다.</li>
+</ol>
+<p>파일럿 수준의 연결 검증은 이미 통과했다. 형태소·표기 환경 query 22 occurrence 가운데 실제 환경 후보 20건을 확인했고, TextGrid가 있는 19건을 형태소 어절 index와 <code>words</code> interval 문맥에 연결했다(독립 감사 <code>AUDIT_db_v1_target_manifest_pilot_20260818.json</code> · <code>AUDIT_db_v1_target_interval_link_pilot_20260818.json</code>, 모두 passed). 이 시간은 연구자가 청취할 어절 문맥일 뿐, 실제 음운 현상의 시작·끝이나 실현 판정이 아니다. ㄴ 삽입 B1 개정안은 어절 내부/어절 간 환경을 분리하고 J*/E* 및 숫자·기호 인접을 제외하며 실현 판정을 연구자에게 두는 <strong>query 규칙 승인</strong>이지, 6개년 production query 실행 승인이나 ㄴ 삽입 연구 결과가 아니다.</p>
+<h1 data-number="11" id="sec-reuse"><span class="header-section-number">11</span> 재사용 튜토리얼</h1>
+<p>이 절은 코드를 잘 모르는 연구자를 기준으로 쓴다. 특정 명령 한 줄을 복사하는 것보다 <strong>계약과 순서</strong>를 재사용하는 것이 목적이다.</p>
+<h2 data-number="11.1" id="경로-1-같은-nikl-말뭉치를-별도-권한으로-확보해-재현하는-경우" class="anchored"><span class="header-section-number">11.1</span> 경로 1 — 같은 NIKL 말뭉치를 별도 권한으로 확보해 재현하는 경우</h2>
+<p>원자료는 GitHub에 없다. 국립국어원 이용 권한에 따라 별도로 확보한 뒤 다음 순서를 따른다.</p>
+<ol type="1">
+<li><code>docs/environment/PROJECT_START_HERE.md</code>와 <code>config/paths.json</code>을 읽고 자기 환경의 경로를 설정한다.</li>
+<li>현행 실행 정본은 <code>docs/RUNBOOK_production_2020_2025.md</code>뿐이다. <code>docs/archive</code>의 명령은 역사 기록이므로 실행하지 않는다.</li>
+<li>Windows PowerShell 5.1 환경이라면 <code>tests/test_powershell_safety.ps1</code>과 <code>tests/test_powershell_runtime_compat.ps1</code>을 먼저 통과시킨다.</li>
+<li>장시간 스크립트는 반드시 preflight부터 실행한다. RUNBOOK의 wrapper들 (<code>run_mfa_r3_year_safe_body.ps1</code>, <code>run_mfa_r3_research_export.ps1</code>, <code>run_mfa_r3_research_qc.ps1</code> 등)은 <code>-PreflightOnly</code> 스위치를 지원하며, preflight가 통과한 뒤 같은 명령에서 해당 스위치만 제거하는 방식이 문서화된 표준이다. 정확한 인자는 RUNBOOK의 해당 연도 절을 그대로 따른다.</li>
+<li>release manifest의 수량·hash가 자기 실행과 다르면 자동으로 계속하지 않는다.</li>
+</ol>
+<p>명령을 실행하기 전, 항상 다음 다섯 가지에 답할 수 있어야 한다.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>질문</th>
+<th>예: 연도 safe-body 정렬 단계라면</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>무엇을 읽는가</td>
+<td>해당 연도의 입력 계약에 고정된 WAV·발음·전사 자산</td>
+</tr>
+<tr class="even">
+<td>무엇을 만드는가</td>
+<td>연도별 MFA DB와 checkpoint, 이후 6-tier export의 입력</td>
+</tr>
+<tr class="odd">
+<td>원본을 바꾸는가</td>
+<td>아니오 — 원자료와 이전 release는 읽기 전용</td>
+</tr>
+<tr class="even">
+<td>성공하면 무엇이 보이는가</td>
+<td>완료 marker, 입력=성공+후속 회계가 성립하는 보고서</td>
+</tr>
+<tr class="odd">
+<td>실패하면 어디서 재개하는가</td>
+<td>보존된 checkpoint에서 재개, 실패 exact-ID만 후속 shard로</td>
+</tr>
+</tbody>
+</table>
+<p>이 다섯 질문 중 하나라도 답할 수 없으면 다음 대량 단계로 넘어가지 않는다.</p>
+<h2 data-number="11.2" id="경로-2-다른-한국어-말뭉치에-이식하는-경우" class="anchored"><span class="header-section-number">11.2</span> 경로 2 — 다른 한국어 말뭉치에 이식하는 경우</h2>
+<p>그대로 재사용할 것은 <strong>패턴</strong>이다: checkpoint와 재개, exact-ID 회계, fail-closed, append-only overlay, 생성기와 독립된 감사. 그대로 복사하면 안 되는 것은 <strong>자료 의존 부분</strong>이다: ID parser, JSON schema, 세션·화자 필드, 형태소 tagset, 기호 읽기 규칙, 음성 포맷과 licensing. 새 말뭉치에는 먼저 corpus adapter와 새 input contract를 만들고, 다음 최소 입력을 준비한다.</p>
+<ol type="1">
+<li>발화별 고유 ID (불안정하면 MFA 전에 멈춘다)</li>
+<li>WAV 또는 변환 가능한 원 음성</li>
+<li>발화 전사</li>
+<li>세션·화자 연결 정보</li>
+<li>형태소/POS 또는 이를 생성할 명시적 도구·버전</li>
+<li>원자료로 돌아갈 수 있는 source pointer</li>
+</ol>
+<p>권장 실행 순서는 A(읽기 전용 감사) → B(검색층) → C(공통발음·모델 동결) → D(층화 pilot/Gate) → E(연도별 안전 본체) → F(교차연도 release) → G(실제 연구)다. 각 단계의 세부는 저장소의 <code>docs/releases/20260818_six_year_infrastructure_closeout/LESSONS_AND_REUSE_GUIDE.md</code>를 따른다.</p>
+<h1 data-number="12" id="sec-ai"><span class="header-section-number">12</span> AI 보조와 연구자 책임</h1>
+<p>이 자료 구축 과정에서 Claude Code와 OpenAI Codex를 코드 작성·검토, 오류 진단, 재현성 문서와 검증 절차의 초안 작성에 보조적으로 사용하였다. 연구 질문, 언어학적 분류, 청취·TextGrid 판정, 단계별 채택 결정은 연구자가 수행하였다. AI가 제안한 산출물은 곧바로 정답으로 채택하지 않았으며, 고정 입력 contract, 수량·SHA-256 회계, 독립 감사 및 연구자 검토를 통과한 경우에만 채택하였다.</p>
+<p>AI가 연구를 자율적으로 수행한 것이 아니며, 사용된 도구의 세부 모델 버전은 확인된 범위에서만 기록한다(확인되지 않은 버전은 추측하지 않는다).</p>
+<h1 data-number="13" id="sec-limits"><span class="header-section-number">13</span> 한계·라이선스·공개 범위</h1>
+<ol type="1">
+<li><strong>정렬은 실제 발음 판정이 아니다.</strong> 강제정렬 경계는 수동 음성학 분절의 대체물이 아니며, 연구자 판정 문맥으로만 쓴다.</li>
+<li><strong>후속 recovery는 미완료다.</strong> 잔여 recovery inventory 817,255행이 남아 있으며, RC1은 전체 회수 완료본이 아니다.</li>
+<li><strong>자동층에는 오류 가능성이 있다.</strong> 자동 형태소 분석·로마자·기호 읽기·사전 발음 참조는 보조 정보이며 정답이 아니다.</li>
+<li><strong>licensed raw corpus는 GitHub에 없다.</strong> 원 음성·전사·개별 TextGrid의 재배포는 말뭉치 이용조건과 개인정보·저작권을 별도로 확인해야 한다. 저장소에는 코드, 작은 manifest, 비식별/허용 예시와 설명만 둔다.</li>
+<li><strong>비공개 항목.</strong> 개인 Dropbox 검토 사본, API key, 내부 절대경로는 공개하지 않는다. 본문의 로컬 경로 표기는 내부 재현성 근거이며 설치 예시가 아니다 — 외부 재현 시에는 <code>config/paths.json</code> 방식의 상대적 설정으로 대체한다.</li>
+<li><strong>코드만으로 자료가 나오지 않는다.</strong> 코드와 작은 manifest를 받아도 원자료가 자동 제공되는 것은 아니다. 이용 권한 확보가 선행 조건이다.</li>
+<li><strong>분모 주의.</strong> 6개년 수치는 인프라 범위의 분모다. 개별 연구의 분석 분모는 연구 질문에 따른 제외를 반영해 별도 decision ledger로 만들어야 한다.</li>
+</ol>
+<h2 class="unnumbered anchored" id="sec-sources">근거 파일</h2>
+<p>본문 수치·주장의 정본은 다음과 같다 (모두 저장소 상대경로).</p>
+<details>
+<summary>
+정본·감사 파일 목록 펼치기
+</summary>
+<pre class="text"><code>outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json
+outputs/reports/AUDIT_six_year_infrastructure_closeout_20260818.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/README.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/QA_REPORT.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/BASE_RELEASE_MANIFEST_2020_2025.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/CROSS_YEAR_CONTRACT_AUDIT.json
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/METHODS_A_C.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc1_20260818/README.md
+outputs/releases/nikl_dialogue_research_db_v1_0_0_rc1_20260818/ACCOUNTING.json
+outputs/releases/nikl_dialogue_research_db_v1_active_view_contract_v1_20260818/README.md
+outputs/reports/AUDIT_db_v1_rc1_recovery_sidecar_20260818.json
+outputs/reports/AUDIT_db_v1_active_view_contract_20260818.json
+outputs/reports/AUDIT_db_v1_target_manifest_pilot_20260818.json
+outputs/reports/AUDIT_db_v1_target_interval_link_pilot_20260818.json
+outputs/reports/AUDIT_db_v1_release_prep_ac_20260815.json
+docs/releases/20260818_six_year_infrastructure_closeout/  (해설 문서 6종)
+docs/RUNBOOK_production_2020_2025.md</code></pre>
+</details>
+<p>이 보고서의 Quarto 원본은 <code>qmd/six_year_infrastructure_report_20260818.qmd</code>이며, 수치를 갱신할 때는 위 machine-readable 정본을 먼저 갱신한 뒤 본문을 다시 render한다.</p>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+</body></html>
