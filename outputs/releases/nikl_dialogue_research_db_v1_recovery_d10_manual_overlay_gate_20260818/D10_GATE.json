@@ -1,0 +1,21 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_gate.v1",
+  "status": "passed_gate_closed_before_overlay_materialization",
+  "recorded_date": "2026-08-18",
+  "source_researcher_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+  "manual_overlay_candidates": 16,
+  "technical_exclusions": 2,
+  "approved_d9_alignment_separate_route": 1,
+  "pending": 0,
+  "safety": {
+    "wav_copied": false,
+    "lab_modified": false,
+    "textgrid_modified": false,
+    "overlay_materialized": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "mfa_run": false
+  },
+  "next_gate": "Validate proposed transcriptions against researcher decisions and source identities, then materialize isolated copies for manual overlay work only."
+}

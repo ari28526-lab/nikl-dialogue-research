@@ -1,0 +1,27 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_non_overlay_routing.v1",
+  "status": "frozen_no_action_without_separate_gate",
+  "technical_exclusions": [
+    {
+      "review_order": 5,
+      "utt_id": "SDRW2100000024.1.1.234",
+      "reason": "poor audio and confirmed two-speaker overlap; audible fragments do not match LAB",
+      "preserve_evidence": true
+    },
+    {
+      "review_order": 13,
+      "utt_id": "SDRW2300000164.1.1.286",
+      "reason": "microphone pop/distortion makes speech unclear; LAB repeats '일이든' but audio has one occurrence",
+      "preserve_evidence": true
+    }
+  ],
+  "approved_d9_alignment": [
+    {
+      "review_order": 19,
+      "utt_id": "SARW2500000012.1.1.97",
+      "orthographic_policy": "keep '그러니까' despite fast reduction",
+      "next_route": "separate six-tier enrichment and DB overlay adoption gate"
+    }
+  ],
+  "automatic_action_performed": false
+}

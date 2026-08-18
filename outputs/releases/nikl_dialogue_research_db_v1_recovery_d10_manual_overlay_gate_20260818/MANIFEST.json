@@ -1,0 +1,37 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_manifest.v1",
+  "status": "passed_gate_closed_before_overlay_materialization",
+  "recorded_date": "2026-08-18",
+  "source_researcher_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 731,
+      "sha256": "3ab7ffd5b755797eac87f24611d9472f556eba4da22731b32f044004b8a7b7d7"
+    },
+    {
+      "path": "D10_MANUAL_OVERLAY_QUEUE.json",
+      "bytes": 6653,
+      "sha256": "4b6ebf199b1d462008fa816a3225757de91406ff428c18c5e04180e6cbbbd047"
+    },
+    {
+      "path": "D10_NON_OVERLAY_ROUTING.json",
+      "bytes": 915,
+      "sha256": "4478b1f6fc2977f9e6d0d44736e43143c612e7ae7c166a3ad791fc810023581f"
+    },
+    {
+      "path": "D10_GATE.json",
+      "bytes": 821,
+      "sha256": "b3ca1c4de431b72a0653f14323f0e76a8225db709742d5948e7ba0e2c08caad3"
+    }
+  ],
+  "counts": {
+    "manual_overlay_candidates": 16,
+    "localized_manual_edit": 9,
+    "full_manual_realignment": 6,
+    "single_word_manual_recovery": 1,
+    "technical_exclusions": 2,
+    "approved_d9_alignment_separate_route": 1
+  },
+  "automatic_action_performed": false
+}

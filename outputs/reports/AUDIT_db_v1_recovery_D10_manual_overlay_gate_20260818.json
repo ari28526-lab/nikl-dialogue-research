@@ -1,0 +1,26 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_gate_audit.v1",
+  "status": "passed_gate_closed_before_overlay_materialization",
+  "recorded_date": "2026-08-18",
+  "checks": {
+    "manual_queue_exact_ids_equal_d9_partial_decisions": true,
+    "technical_exclusion_exact_ids_equal_d9_rejections": true,
+    "approved_route_exact_ids_equal_d9_approvals": true,
+    "all_proposed_transcriptions_nonempty": true,
+    "repair_class_counts_match": true,
+    "pending_rows": 0,
+    "source_artifacts_modified": false,
+    "overlay_materialized": false,
+    "automatic_adoption_performed": false
+  },
+  "counts": {
+    "manual_overlay_candidates": 16,
+    "localized_manual_edit": 9,
+    "full_manual_realignment": 6,
+    "single_word_manual_recovery": 1,
+    "technical_exclusions": 2,
+    "approved_d9_alignment": 1
+  },
+  "manifest": "outputs/releases/nikl_dialogue_research_db_v1_recovery_d10_manual_overlay_gate_20260818/MANIFEST.json",
+  "next_gate": "Materialize isolated working copies for 16 manual overlays only after validating source identities and the frozen proposed transcriptions."
+}

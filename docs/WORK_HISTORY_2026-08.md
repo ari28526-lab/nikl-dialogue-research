@@ -3752,3 +3752,16 @@ shard 2–23을 재개하는 것이다.
 - 원 WAV·LAB·D9 TextGrid, r3 본체, 연구용 6-tier, DB v1은 변경하지 않았다.
   다음은 전체연도 재정렬이나 D9 반복이 아니라 16 exact ID만 위한 D10 수동 전사·
   TextGrid overlay 묶음이다.
+
+### 2026-08-18 — D10 수동 overlay Gate 준비
+
+- D9의 `keep_separate_partial` 16건을 실제 연구자 청취 문장으로 구조화하고 작업
+  난이도를 국소 수정 9, 전체 word/phone 재정렬 6, 단일어 복구 1로 나눴다.
+- 한숨성 비언어음, 불완전 /ㅁ/, TV 배경소리·배경음악은 word label에 억지로
+  넣지 않고 별도 메타데이터로 보존하도록 했다. `신도시의`의 [에] 가능성과 빠른
+  `그러니까`는 철자 전사를 바꾸지 않고 추후 실제 실현 판정으로 넘겼다.
+- 기술 제외 2건과 D9 직접 승인 1건은 16건 작업 queue에 섞지 않고 별도 routing에
+  고정했다. 자동 검사가 D9 결정 exact ID·수량·허용 판정과 완전 일치함을 확인했다.
+- 현재 Gate는 `passed_gate_closed_before_overlay_materialization`이다. WAV 복사,
+  LAB/TextGrid 수정, MFA, r3·6-tier·DB v1 변경은 모두 0건이다. 다음은 16건만
+  격리 작업 사본으로 만드는 단계다.

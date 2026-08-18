@@ -1,0 +1,147 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_manual_overlay_queue.v1",
+  "status": "frozen_candidate_queue_no_materialization",
+  "source_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+  "counts": {
+    "total": 16,
+    "localized_manual_edit": 9,
+    "full_manual_realignment": 6,
+    "single_word_manual_recovery": 1
+  },
+  "rows": [
+    {
+      "review_order": 1,
+      "year": 2020,
+      "utt_id": "SDRW2000000115.1.1.149",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "영화 잘",
+      "manual_notes": "LAB의 뒤쪽 '영화 잘알이' 제거; 두 어절 word·phone 경계 새로 작성"
+    },
+    {
+      "review_order": 2,
+      "year": 2020,
+      "utt_id": "SDRW2000000180.1.1.67",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "학 상자를 날라야 되니까는",
+      "non_speech_annotation": "한숨성 비언어음이 '학' 뒤와 '상자를' 앞에 존재; words tier에서는 빈 구간으로 두고 메타데이터에 보존",
+      "manual_notes": "중복 뒤 문장 제거; 실제 '날라야' 보존; 전체 word·phone 경계 새로 작성"
+    },
+    {
+      "review_order": 3,
+      "year": 2021,
+      "utt_id": "SDRW2100000001.1.1.131",
+      "repair_class": "single_word_manual_recovery",
+      "proposed_transcription": "그",
+      "manual_notes": "자동 overlap 표지는 청취 결과 거짓; 단일어 경계만 작성"
+    },
+    {
+      "review_order": 4,
+      "year": 2021,
+      "utt_id": "SDRW2100000023.1.1.432",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "아빠가 계속 나와서 연기를",
+      "truncated_fragment": "뒤따르는 '막'의 첫소리 /ㅁ/ 정도만 들림; 완전한 word로 자동 채택하지 않음",
+      "background_annotation": "초반 일반 배경소음; 다른 화자 겹침 아님",
+      "manual_notes": "완전한 다섯 어절 경계를 새로 작성하고 /ㅁ/ 잔여는 메타데이터로 보존"
+    },
+    {
+      "review_order": 6,
+      "year": 2021,
+      "utt_id": "SDRW2100000040.1.1.21",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "공무원으로 다 몰려 가는데 공무원이 양성에 대해서는 어떻게",
+      "manual_notes": "실제로 없는 '생각하세요' 제거; '어떻게' 끝 경계를 조금 연장; 나머지 경계 보존"
+    },
+    {
+      "review_order": 7,
+      "year": 2021,
+      "utt_id": "SDRW2100000044.1.1.248",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "어 그거 예전에 우리 먹을 때 처음에는",
+      "manual_notes": "실제로 없는 '뭐 다 못 먹을' 제거; 들리는 경계 보존"
+    },
+    {
+      "review_order": 8,
+      "year": 2022,
+      "utt_id": "SDRW2200000019.1.1.279",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "잠은 쪼끔 재워 줬으면",
+      "manual_notes": "실제로 없는 처음 '근데'와 끝 '좋겠어' 제거; 자동 overlap 표지는 청취 결과 거짓"
+    },
+    {
+      "review_order": 9,
+      "year": 2022,
+      "utt_id": "SDRW2200000033.1.1.137",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "나는 지리산에 한번 간 적이 있어",
+      "manual_notes": "기존 붉은 약 1.04초가 사실상 '나는'인데 여러 label이 압축됨; 전체 word·phone 경계 새로 작성"
+    },
+    {
+      "review_order": 10,
+      "year": 2022,
+      "utt_id": "SDRW2200000051.1.1.61",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "나는 함덕",
+      "manual_notes": "두 어절만 실제로 들림; word·phone 경계 새로 작성"
+    },
+    {
+      "review_order": 11,
+      "year": 2023,
+      "utt_id": "SDRW2300000013.1.1.213",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "노래방에서 부를 때 아 이런 노래였구나를 나중에 알게 되는",
+      "manual_notes": "중복된 두 번째 '를 나중에 알게 되는' 제거; 실제 한 문장 경계 보존"
+    },
+    {
+      "review_order": 12,
+      "year": 2023,
+      "utt_id": "SDRW2300000085.1.1.299",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "이렇게 돈을 딱 주시더",
+      "truncated_fragment": "마지막 어절은 '주시더라구요' 전체가 아니라 거의 '주시더'까지만 들림",
+      "manual_notes": "마지막 word·phone 끝 경계만 실제 음성에 맞게 조정"
+    },
+    {
+      "review_order": 14,
+      "year": 2023,
+      "utt_id": "SDRW2300000169.1.1.115",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "그 여름이다 보니까 이제 보양식 같은 경우 문어 낙지 그런",
+      "manual_notes": "첫 '그' 경계 추가; 실제로 없는 끝 '거 이제' 제거; 중간 경계 보존"
+    },
+    {
+      "review_order": 15,
+      "year": 2023,
+      "utt_id": "SDRW2300000219.1.1.194",
+      "repair_class": "full_manual_realignment",
+      "proposed_transcription": "뭐 다 뭐 재산 같은 것은 자식들한테 놔두고 뭐 그게",
+      "manual_notes": "여러 어휘 치환과 과잉 tail이 있어 word label·경계를 처음부터 수동 작성; D9 phone은 참고만 함"
+    },
+    {
+      "review_order": 16,
+      "year": 2024,
+      "utt_id": "SARW2400000020.1.1.11",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "구십 년대 시카고 불쓰가 황금기를 보내는데",
+      "background_annotation": "TV 배경소리 있으나 수동 분석 가능",
+      "manual_notes": "실제로 없는 뒤 문구 제거; 숫자 읽기 '구십 년대'와 '불쓰' 보존"
+    },
+    {
+      "review_order": 17,
+      "year": 2024,
+      "utt_id": "SARW2400000033.1.1.16",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "특히 분당은 그야말로 살기 좋은 신도시의 대표격이었는데",
+      "background_annotation": "배경음악 있으나 수동 분석 가능",
+      "manual_notes": "뒤 회사명 문구 제거; 철자 '신도시의' 유지하고 [에] 가능성은 추후 실현 판정에서 다룸"
+    },
+    {
+      "review_order": 18,
+      "year": 2024,
+      "utt_id": "SARW2400000095.1.1.98",
+      "repair_class": "localized_manual_edit",
+      "proposed_transcription": "아 아무튼 저는 중반까지만 해도 이 왕위보의 이 실력에 깜짝 놀랐는데",
+      "manual_notes": "중복된 두 번째 '깜짝 놀랐는데' 제거; 나머지 경계 보존"
+    }
+  ]
+}

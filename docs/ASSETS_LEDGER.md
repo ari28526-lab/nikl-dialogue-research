@@ -229,6 +229,8 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `outputs\reviews\db_v1_recovery_d9_review_19_20260817\01_RESEARCHER_DECISIONS_WORKING.json` | D9 19건 연구자 청취·경계 exact-ID 상세 판정 | 검토 완료: 승인 1, 수동 overlay 16, 기술 제외 2, pending 0; SHA `dfae3884...f1d8` |
 | `outputs\reports\RESULT_db_v1_recovery_D9_researcher_review_20260818.json` | D9 연구자 검토 수량·ID·다음 Gate 요약 | `researcher_review_complete_gate_closed_pending_adoption`; 자동 병합 0 |
 | `outputs\reports\AUDIT_db_v1_recovery_D9_researcher_review_20260818.json` | 원 검토표–19개 연구자 판정 exact-ID·수량·상태 독립 검사 | `passed_researcher_review_complete_no_adoption`; 누락·중복·pending 0 |
+| `outputs\releases\nikl_dialogue_research_db_v1_recovery_d10_manual_overlay_gate_20260818` | 16건 수정 전사·수동 overlay queue, 기술 제외 2·승인 1 별도 routing, 해시 manifest | `passed_gate_closed_before_overlay_materialization`; WAV 복사·TextGrid/DB 변경·MFA 0 |
+| `outputs\reports\AUDIT_db_v1_recovery_D10_manual_overlay_gate_20260818.json` | D10 queue와 D9 판정 exact-ID·분류·제안 전사 독립 검사 | 통과: 국소 9·전체 6·단일어 1, 제외 2, 승인 1, pending 0 |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며
