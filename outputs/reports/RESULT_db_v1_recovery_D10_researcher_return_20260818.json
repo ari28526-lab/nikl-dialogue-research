@@ -1,0 +1,67 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_researcher_return_result.v1",
+  "status": "frozen_researcher_return_pending_adoption_gate",
+  "recorded_at": "2026-08-18T14:50:27+09:00",
+  "target_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001",
+  "counts": {
+    "rows": 16,
+    "raw_return_textgrids": 16,
+    "normalized_textgrids": 16,
+    "tier_remap_from_proposed": 4,
+    "exact_word_sequence": 6,
+    "same_characters_different_word_segmentation": 1,
+    "researcher_manual_transcription_override": 5,
+    "total_files": 37,
+    "total_bytes": 328579
+  },
+  "researcher_manual_overrides": [
+    {
+      "review_order": 6,
+      "utt_id": "SDRW2100000040.1.1.21",
+      "change": "공무원이→공무원"
+    },
+    {
+      "review_order": 8,
+      "utt_id": "SDRW2200000019.1.1.279",
+      "change": "문두 근데 추가"
+    },
+    {
+      "review_order": 9,
+      "utt_id": "SDRW2200000033.1.1.137",
+      "change": "적이→적"
+    },
+    {
+      "review_order": 14,
+      "utt_id": "SDRW2300000169.1.1.115",
+      "change": "이제→인제"
+    },
+    {
+      "review_order": 15,
+      "utt_id": "SDRW2300000219.1.1.194",
+      "change": "불필요한 뭐 한 항목 삭제"
+    }
+  ],
+  "segmentation_only_override": {
+    "review_order": 11,
+    "utt_id": "SDRW2300000013.1.1.213",
+    "change": "노래였구나를→노래였구나|를"
+  },
+  "hashes": {
+    "source_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+    "queue_sha256": "f36eb874dc77fb944341b8fff68462a97dcf2b01f1a715af9133dc64832b212f",
+    "final_audit_sha256": "08b41eda5dbb88082d54d1c481eb1be5994d64ba12710196bd674e5d36a6cfde",
+    "frozen_done_sha256": "19050c0f805bc660119dde1c6e518c232821a7d5dfface3909d1fe491512c8a1",
+    "processor_script_sha256": "45724e76b84cf919fed0a9a07c1fad7138ce5e861fb87677d2a5589ca98d7e23"
+  },
+  "runtime_git_commit": "db6c9d2982cc1c84f9b76a8fa45f358553921314",
+  "safety": {
+    "dropbox_return_modified": false,
+    "initial_d10_modified": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "mfa_executed": false,
+    "automatic_adoption_performed": false
+  },
+  "next_gate": "design_exact_id_manual_word_overlay_adoption_with_provenance"
+}

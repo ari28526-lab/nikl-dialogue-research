@@ -2,6 +2,15 @@
 
 최종 갱신: 2026-08-18 KST
 
+> **현재 진입점 — 2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:**
+> Dropbox에서 수정한 TextGrid 16/16을 회수해 D:의 별도
+> `D10_RESEARCHER_RETURN_0001`에 raw 사본 16개와 정규화본 16개로 동결했다.
+> 1–4번은 잘못 선택된 작업 tier 위치만 기계 교정했고, 나머지 수동 label·경계와
+> 연구자 수정 전사 5건, 분절 차이 1건은 그대로 보존했다. 길이·전구간 경계·D9
+> 참고 tier 불변성 감사가 통과했다. 원본·r3·6-tier·DB v1 변경과 MFA는 0건이다.
+> 다음은 `docs/decisions/RESULT_db_v1_recovery_D10_researcher_return_20260818.md`를
+> 따라 exact-ID 수동 word overlay의 별도 adoption Gate를 설계하는 것이다.
+
 > **현재 진입점 — 2026-08-18 D10 격리 수동 작업본 생성 완료:** D9에서
 > 수정 전사·수동 overlay 대상으로 판정한 16 exact ID만 D:의 별도
 > `D10_MANUAL_OVERLAY_0001`에 번호순으로 materialize했다. 국소 수정 9건은

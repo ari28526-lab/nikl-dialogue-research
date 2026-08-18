@@ -238,6 +238,8 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `outputs\reports\MOVE_db_v1_recovery_D10_Dropbox_into_mfa_batch_20260818.json` | Dropbox root의 D10 사본을 `04_MFA_배치결과` 아래로 이동한 경로·SHA 증거 | `passed_dropbox_relocation_verified`; 이동 전후 파일집합 SHA 동일, D: 보존 |
 | `C:\Users\ari30\Dropbox\04_MFA_배치결과\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818.zip` | 다중 파일 동기화를 기다리지 않고 원격 컴퓨터에서 받기 위한 D10 단일 ZIP | 1,143,822 bytes, 7-Zip test와 내부 85파일 source SHA 전수 일치, SHA `78283ae2...47f2` |
 | `outputs\reports\ARCHIVE_db_v1_recovery_D10_remote_review_zip_20260818.json` | 원격 검토 ZIP의 범위·압축 검사·entry SHA 증거 | `passed_zip_test_and_entry_sha256`; D:와 Dropbox 폴더 사본 모두 보존 |
+| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D10_RESEARCHER_RETURN_0001` | 연구자 반환 16개의 byte-exact raw와 1–4번 tier 위치만 교정한 정규화 TextGrid, 발화별 proposed/manual provenance | `frozen_researcher_return_pending_adoption_gate`; raw 16·normalized 16·전체 37파일, D9 reference 불변, 자동 채택 0 |
+| `outputs\reports\RESULT_db_v1_recovery_D10_researcher_return_20260818.json` | 반환 분류 4/6/1/5, 연구자 수정 전사, D: 상태·감사 SHA와 안전 정지점 | 독립 `--audit-only` 통과; r3·6-tier·DB v1 변경·MFA 0 |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며

@@ -1,5 +1,14 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:** Dropbox 수동
+> TextGrid 16/16을 `D10_RESEARCHER_RETURN_0001`에 raw 16·normalized 16으로
+> 분리 보존했다. 1–4번은 연구자가 만든 interval의 tier 위치만 옮겼고 다른 수동
+> 경계는 바꾸지 않았다. 제안 전사와 다른 연구자 판정 5건 및 문자 동일·분절 차이
+> 1건을 provenance에 함께 기록했다. 길이·전구간 연속성·D9 reference 불변 감사가
+> 통과했으며 상태는 `frozen_researcher_return_pending_adoption_gate`다. 원본·r3·
+> 6-tier·DB v1 변경과 MFA 실행은 0건이다. 다음은 전체연도 재실행이 아니라 이
+> exact ID들의 수동 word overlay를 DB 파생층에 연결하는 별도 adoption Gate다.
+
 > **2026-08-18 D10 격리 수동 작업본 생성 완료·채택 전:** D9 부분 보존 16건을
 > D:의 `D10_MANUAL_OVERLAY_0001`에 16세트×5파일로 materialize했고 전수 SHA·
 > 길이·tier 감사를 통과했다. 수동 TextGrid는 D9 word/phone 참고, 제안 전사,

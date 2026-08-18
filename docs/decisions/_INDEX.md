@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_db_v1_recovery_D10_researcher_return_20260818.md](RESULT_db_v1_recovery_D10_researcher_return_20260818.md) — 연구자 반환 16/16 raw 보존·정규화 완료: 1–4번 tier 위치만 교정, 수정 전사 5·분절 차이 1 보존, 독립 감사 통과·DB 채택 전 정지
 - [PLAN_db_v1_recovery_D10_researcher_return_normalization_20260818.md](PLAN_db_v1_recovery_D10_researcher_return_normalization_20260818.md) — Dropbox 연구자 반환 16개의 raw 보존, 1–4번 작업 tier 위치만 기계 정규화, 수정 전사 5건·분절 차이 1건 보존과 비채택 Gate
 - [PLAN_db_v1_recovery_D10_manual_overlay_20260818.md](PLAN_db_v1_recovery_D10_manual_overlay_20260818.md) — D9 부분 보존 16건을 국소 수정 9·전체 재정렬 6·단일어 1로 나눈 수정 전사·수동 TextGrid overlay 계획; 원본·본체 무수정 Gate
 - [RESULT_db_v1_recovery_D9_researcher_review_20260818.md](RESULT_db_v1_recovery_D9_researcher_review_20260818.md) — D9 새 정렬 19건 연구자 청취·경계 검토 완료: 직접 승인 1, 수동 overlay 16, 기술 제외 2; TextGrid 생성과 연구 사용 승인을 분리하고 D10 수동 복구로 전환

@@ -3799,3 +3799,26 @@ shard 2–23을 재개하는 것이다.
   SHA-256을 D: source와 전수 비교해 mismatch 0을 확인했다. ZIP은 1,143,822
   bytes, SHA `78283ae2...47f2`이며 기존 D: 정본과 Dropbox 폴더 사본은 모두
   보존했다.
+
+### 2026-08-18 — D10 연구자 반환 16건 동결·정규화
+
+- 연구자가 ZIP을 다시 만들지 않고 Dropbox `work_flat`에 직접 저장한
+  `*_manual_working.TextGrid` 16개를 반환 입력으로 사용했다. 마지막 14번까지
+  수신한 뒤 발화 길이, 네 tier의 전구간 연속성, D9 word/phone 참고 tier 불변성을
+  전수 검사했다.
+- 1–4번은 실제 수동 interval이 `words_manual_working`이 아니라
+  `transcript_proposed`에 저장된 것을 확인했다. 재작업을 요구하지 않고 interval을
+  작업 tier로 옮기고 제안 문장 tier를 복구했다. 그 밖의 수동 label·경계는
+  변경하지 않았다.
+- 반환 분류는 tier 위치 교정 4, 제안 단어열 일치 6, 문자 동일·분절 차이 1,
+  연구자 수정 전사 5다. 수정 전사 5건은 `공무원이→공무원`, 문두 `근데` 추가,
+  `적이→적`, `이제→인제`, 불필요한 `뭐` 한 항목 삭제이며 proposed와 최종
+  manual을 모두 provenance 장부에 남겼다. 11번 `노래였구나 | 를`의 분절도
+  연구자 경계로 보존했다.
+- workspace smoke 생성·재감사 후 임시본을 제거하고, 먼저 코드·계획을 커밋
+  `db6c9d2`로 푸시했다. 같은 코드로 D:의 `D10_RESEARCHER_RETURN_0001`에
+  raw 16개와 normalized 16개를 원자 생성했다. 전체 37파일·328,579 bytes이며
+  최종 감사 SHA는 `08b41eda...cfde`다.
+- Dropbox 반환, D10 초기 작업본, 원 WAV·LAB, r3 본체, 최종 6-tier, DB v1은
+  바꾸지 않았고 MFA도 실행하지 않았다. 다음은 이 exact ID들의 수동 word
+  overlay와 provenance를 연결하는 별도 adoption Gate다.
