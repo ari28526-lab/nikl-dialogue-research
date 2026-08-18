@@ -1,0 +1,24 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_dropbox_copy.v1",
+  "status": "passed_local_dropbox_copy_sha256_verified",
+  "recorded_date": "2026-08-18",
+  "purpose": "personal_researcher_manual_overlay_review",
+  "source": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_MANUAL_OVERLAY_0001",
+  "destination": "C:\\Users\\ari30\\Dropbox\\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818",
+  "counts": {
+    "files": 85,
+    "bytes": 1730225,
+    "mismatches": 0
+  },
+  "file_set_sha256": "6c95befc02ecfa2ca65dc77e82a61cff1d728f9dc6d2c402c608707538c2c167",
+  "safety": {
+    "source_preserved": true,
+    "destination_completed": true,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "external_share_link_created": false,
+    "sharing_permissions_modified": false
+  },
+  "note": "Local Dropbox folder copy was verified. Cloud synchronization completion remains a Dropbox client state checked by the researcher."
+}
