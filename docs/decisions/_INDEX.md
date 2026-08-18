@@ -161,3 +161,4 @@
 - [PLAN_n_insertion_B1_to_production_query_20260818.md](PLAN_n_insertion_B1_to_production_query_20260818.md) — 구 MFA phone 실현 판정 문구를 폐기하고 ㄴ 삽입의 어절 내부/간 모집단·의미번호·active pointer·수동 판정 Gate를 생산 질의 순서로 고정한 계획
 - [DECISION_stage1_data_infrastructure_closure_20260818.md](DECISION_stage1_data_infrastructure_closure_20260818.md) — 자료구축 1단계 공식 종료: 완료 7범위와 machine-readable 근거 결속, 비승인 항목 명시, 잔여 recovery·enrichment·의미번호 join·cleanup·main 동기화의 소속 Gate 라우팅
 - [PLAN_stage2_target_query_and_realization_design_20260818.md](PLAN_stage2_target_query_and_realization_design_20260818.md) — 2단계 정본 설계: G0–G8 Gate 순서(query 동결→의미번호 join→2020 생산 감사→6개년 후보→문맥 연결→검토 bundle→연구자 실현 ledger→표적 후속), 산출물 schema 계약과 미실행 범위
+- [RESULT_stage1_closeout_D_share_package_20260818.md](RESULT_stage1_closeout_D_share_package_20260818.md) — D:\30_RELEASES에 closeout 문서·RC0/RC1/active view·HTML 보고서·repo snapshot을 미러 배치한 공유 패키지, 48파일 SHA 전수 대조 mismatch 0과 PACKAGE_MANIFEST 기록
