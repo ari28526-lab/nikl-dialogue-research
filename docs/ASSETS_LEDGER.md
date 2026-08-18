@@ -236,6 +236,8 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `C:\Users\ari30\Dropbox\04_MFA_배치결과\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818` | D10 16세트의 개인 연구자 수동 경계 작업용 Dropbox 사본 | 로컬 복사·배치결과 하위 이동 뒤 85파일·1,730,225 bytes·동일 SHA 전수 확인; D: 원본 보존, 공유 링크/권한 변경 0 |
 | `outputs\reports\COPY_db_v1_recovery_D10_manual_overlay_to_Dropbox_20260818.json` | D10 Dropbox 복사 범위·파일집합 SHA·원본 보존 증거 | `passed_local_dropbox_copy_sha256_verified`; mismatch 0 |
 | `outputs\reports\MOVE_db_v1_recovery_D10_Dropbox_into_mfa_batch_20260818.json` | Dropbox root의 D10 사본을 `04_MFA_배치결과` 아래로 이동한 경로·SHA 증거 | `passed_dropbox_relocation_verified`; 이동 전후 파일집합 SHA 동일, D: 보존 |
+| `C:\Users\ari30\Dropbox\04_MFA_배치결과\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818.zip` | 다중 파일 동기화를 기다리지 않고 원격 컴퓨터에서 받기 위한 D10 단일 ZIP | 1,143,822 bytes, 7-Zip test와 내부 85파일 source SHA 전수 일치, SHA `78283ae2...47f2` |
+| `outputs\reports\ARCHIVE_db_v1_recovery_D10_remote_review_zip_20260818.json` | 원격 검토 ZIP의 범위·압축 검사·entry SHA 증거 | `passed_zip_test_and_entry_sha256`; D:와 Dropbox 폴더 사본 모두 보존 |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며

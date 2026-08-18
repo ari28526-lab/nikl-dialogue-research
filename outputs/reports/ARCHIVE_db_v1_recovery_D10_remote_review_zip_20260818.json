@@ -1,0 +1,29 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_remote_review_zip.v1",
+  "status": "passed_zip_test_and_entry_sha256",
+  "recorded_date": "2026-08-18",
+  "purpose": "single_file_sync_for_remote_researcher_review",
+  "source": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_MANUAL_OVERLAY_0001",
+  "zip": "C:\\Users\\ari30\\Dropbox\\04_MFA_배치결과\\DB_V1_RECOVERY_D10_MANUAL_OVERLAY_16_20260818.zip",
+  "counts": {
+    "source_files": 85,
+    "source_bytes": 1730225,
+    "zip_bytes": 1143822,
+    "content_mismatches": 0
+  },
+  "zip_sha256": "78283ae212f215682e7bc013fc58231451cfa67bc49a5af0bbf05b3fecb547f2",
+  "verification": {
+    "seven_zip_archive_test": "passed",
+    "entry_relative_paths": "passed",
+    "entry_lengths": "passed",
+    "entry_sha256_against_source": "passed"
+  },
+  "safety": {
+    "d_source_preserved": true,
+    "dropbox_folder_copy_preserved": true,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "sharing_permissions_modified": false
+  }
+}

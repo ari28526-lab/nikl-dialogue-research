@@ -3794,3 +3794,8 @@ shard 2–23을 재개하는 것이다.
   D10 사본 전체를 그 아래로 이동했다. 이동 뒤 85파일·1,730,225 bytes와 파일집합
   SHA `6c95befc...2c167`이 이동 전과 같고, Dropbox root의 구 위치는 없어졌으며
   D: 정본은 그대로임을 확인했다.
+- 원격 컴퓨터에서 폴더 단위 Dropbox 동기화가 지연되어, 동일 85파일을 단일 표준
+  ZIP으로 추가 생성했다. 7-Zip archive test와 ZIP 내부 상대경로·길이·entry
+  SHA-256을 D: source와 전수 비교해 mismatch 0을 확인했다. ZIP은 1,143,822
+  bytes, SHA `78283ae2...47f2`이며 기존 D: 정본과 Dropbox 폴더 사본은 모두
+  보존했다.
