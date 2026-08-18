@@ -3929,3 +3929,20 @@ shard 2–23을 재개하는 것이다.
   감사기가 원행·어절열·index·시간·SHA를 독립 재계산했다.
 - 원 TextGrid·WAV·RC0·RC1·MFA DB 변경과 MFA 실행은 0건이다. 이 결과로
   인프라 파일럿을 닫고 실제 연구 query set 정의로 넘어간다.
+
+## 2026-08-18 — ㄴ 삽입 B1 역사 초안 교정과 생산 Gate 준비
+
+- `phenomena/34_n_insertion/definition.md`를 확인해 2026-07-15 초안이 MFA
+  phones를 실제 실현의 핵심 증거처럼 기술한 것을 발견했다. 이는 이후 사용자와
+  확정한 “MFA phone은 정렬된 예측 분절, 최종 실현은 수동 판정” 원칙과
+  충돌했다.
+- 구 문서는 `phenomena/34_n_insertion/archive/definition_20260715.md`에 역사
+  기록으로 보존하고 현행 파일을 B1 개정 제안으로 고쳤다. G2P·사전 발음·MFA
+  phone·수동 실현·KOINA 운율의 역할을 서로 분리했다.
+- 생산 후보는 어절 내부와 어절 간을 별도 query로 두고, 오른쪽 초성 ㅇ+
+  i/j계 중성, 왼쪽 종성 존재를 기본으로 하되 J*/E* 시작과 숫자·기호 인접을
+  제외하는 개정안을 마련했다.
+- 의미번호는 미확정 후보를 삭제하거나 최소 번호로 임의 확정하는 필터가 아니라
+  `sense_id/source/status/candidates/confidence`의 후속 결합 변수로 규정했다.
+- 인프라 파일럿은 충분하므로 다음 Gate는 B1 범위 연구자 확정과 의미번호 join
+  완비다. 확정 전 6개년 전수 후보 추출·파일 복사·KOINA·MFA는 실행하지 않는다.

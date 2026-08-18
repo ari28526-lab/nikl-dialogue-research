@@ -158,3 +158,4 @@
 - [DECISION_post_RC1_priority_reset_20260818.md](DECISION_post_RC1_priority_reset_20260818.md) — 16건 enrichment를 실제 표적 포함 시 exact-ID로 지연하고 RC0 기본+RC1 curated pointer precedence와 범용 target 조회 인프라를 우선하는 방향 재설정
 - [RESULT_db_v1_target_manifest_pilot_20260818.md](RESULT_db_v1_target_manifest_pilot_20260818.md) — RC0+RC1 active precedence와 ㄴ 삽입 유사 철자·형태소 환경 후보 22건을 검증하고, 실현 판정·시간 연결·MFA와 분리한 범용 표적 manifest 파일럿 결과
 - [RESULT_db_v1_target_interval_link_pilot_20260818.md](RESULT_db_v1_target_interval_link_pilot_20260818.md) — 형태소 어절 index를 기존 TextGrid words tier에 연결해 19개 검토 문맥 시간을 파생하고 좁은 음운 경계·실현 판정과 분리한 파일럿 결과
+- [PLAN_n_insertion_B1_to_production_query_20260818.md](PLAN_n_insertion_B1_to_production_query_20260818.md) — 구 MFA phone 실현 판정 문구를 폐기하고 ㄴ 삽입의 어절 내부/간 모집단·의미번호·active pointer·수동 판정 Gate를 생산 질의 순서로 고정한 계획
