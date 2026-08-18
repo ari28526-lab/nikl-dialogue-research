@@ -2,12 +2,20 @@
 
 최종 갱신: 2026-08-18 KST
 
-> **현재 진입점 — 2026-08-18 RC1 이후 우선순위 재설정·active view 완료:**
-> curated 16건의 형태소·phone enrichment를 지금 별도 장기 단계로 만들지 않는다.
-> RC0는 5,103,356발화의 기본값, RC1 curated exact-ID 16건만 우선하는 exception
+> **현재 진입점 — 2026-08-18 표적 manifest 파일럿 통과:** RC0 기본값과
+> RC1 curated exact-ID 우선순위를 쓰는 범용 후보 추출기를 검증했다. 2020년
+> 인프라 확인 2건과 ㄴ 삽입 유사 철자·형태소 환경 20건을 만들었으며, 21건은
+> WAV·TextGrid 검토 가능, 1건은 metadata-only로 명시했다. 이 표는 실현 판정이
+> 아니고 target 시간도 아직 주장하지 않는다. 다음은 실제 연구 질의를 동결하고
+> occurrence를 TextGrid word interval에 연결하는 파생 단계다. RC1 16건의
+> 형태소·phone enrichment는 실제 표적 exact-ID에만 지연 적용한다. 먼저
+> `docs/decisions/RESULT_db_v1_target_manifest_pilot_20260818.md`를 읽는다.
+
+> **2026-08-18 RC1 이후 우선순위 재설정·active view 완료:** curated 16건의
+> 형태소·phone enrichment를 지금 별도 장기 단계로 만들지 않는다. RC0는
+> 5,103,356발화의 기본값, RC1 curated exact-ID 16건만 우선하는 exception
 > 계약을 생성했고 독립 감사가 통과했다. 예외표는 55행뿐이며 전체 base 복사 0,
-> curated 16, base 보존 39다. 다음은 이 precedence를 사용하는 범용 target
-> query/manifest의 작은 검증이며 실제 음성 실현을 자동 판정하지 않는다.
+> curated 16, base 보존 39다. 이 precedence의 파일럿은 위와 같이 통과했다.
 
 > **현재 진입점 — 2026-08-18 DB v1 RC1 recovery sidecar 채택 완료:**
 > 연구자 승인 SHA에 결속해 D7–D10 exact-ID 55건의 후속 상태와 D10 수동

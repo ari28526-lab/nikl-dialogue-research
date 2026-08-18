@@ -156,3 +156,4 @@
 - [DECISION_db_v1_rc1_recovery_sidecar_adoption_20260818.md](DECISION_db_v1_rc1_recovery_sidecar_adoption_20260818.md) — 연구자 승인 exact-ID 55건과 수동 word·전사 16건을 RC0 불변 append-only RC1 sidecar로 채택하되 D9 phone·형태소 보완은 후속 Gate로 분리
 - [RESULT_db_v1_rc1_recovery_sidecar_20260818.md](RESULT_db_v1_rc1_recovery_sidecar_20260818.md) — 승인 exact-ID 55건·curated snapshot/pointer 16건의 RC0 불변 RC1 sidecar 채택과 독립 감사 완료, 본체 회계 delta 0
 - [DECISION_post_RC1_priority_reset_20260818.md](DECISION_post_RC1_priority_reset_20260818.md) — 16건 enrichment를 실제 표적 포함 시 exact-ID로 지연하고 RC0 기본+RC1 curated pointer precedence와 범용 target 조회 인프라를 우선하는 방향 재설정
+- [RESULT_db_v1_target_manifest_pilot_20260818.md](RESULT_db_v1_target_manifest_pilot_20260818.md) — RC0+RC1 active precedence와 ㄴ 삽입 유사 철자·형태소 환경 후보 22건을 검증하고, 실현 판정·시간 연결·MFA와 분리한 범용 표적 manifest 파일럿 결과

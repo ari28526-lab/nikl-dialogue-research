@@ -1,6 +1,6 @@
 # 자산 대장 — 현재 생산 기준
 
-최종 갱신: 2026-08-17 KST
+최종 갱신: 2026-08-18 KST
 
 이 문서는 현재 필요한 자산의 위치만 기록한다. 2026-07-24 전체 인벤토리는
 [archive/ASSETS_LEDGER_20260724_full.md](archive/ASSETS_LEDGER_20260724_full.md)에
@@ -263,3 +263,15 @@ RC1은 RC0 전체 ledger의 복사본이 아니라 그 위에 적용하는 작�
 |---|---|---|
 | `outputs\releases\nikl_dialogue_research_db_v1_active_view_contract_v1_20260818` | RC0 기본+RC1 exact-ID 예외 precedence를 target 추출·세션 JSON이 공통 사용하도록 하는 55행 계약 | `materialized_exception_only_contract`; curated 16, base 보존 39, full base copy 0 |
 | `outputs\reports\AUDIT_db_v1_active_view_contract_20260818.json` | exact-ID 유일성, curated 필수값, base 오염 0, D9 phone 비채택 독립 감사 | `passed_exception_only_active_view_contract` |
+
+## 2026-08-18 overlay-aware target manifest 파일럿 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `config\target_queries\db_v1_target_manifest_pilot_20260818.json` | 인프라 exact-ID 2건과 ㄴ 삽입 유사 철자·형태소 환경의 선언형 파일럿 질의 | query set v1; 실제 실현 판정 아님 |
+| `outputs\pilots\db_v1_target_manifest_pilot_20260818` | active precedence가 적용된 후보 occurrence와 provenance·자산 pointer | 22행·20발화; curated 2, 검토 가능 21, metadata-only 1 |
+| `outputs\reports\AUDIT_db_v1_target_manifest_pilot_20260818.json` | 질의 재일치, RC1 precedence, 자산 상태, 시간·실현 미판정 독립 감사 | `passed_pilot_query_and_active_precedence` |
+
+파일럿은 WAV·TextGrid를 복사하거나 수정하지 않고 절대경로로 참조한다. 빈
+`target_xmin/target_xmax`는 오류 은폐가 아니라 별도 occurrence→word interval
+연결 단계 대기 상태다.

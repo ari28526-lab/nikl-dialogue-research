@@ -1,0 +1,64 @@
+{
+  "schema_version": "nikl_dialogue_target_query_set.v1",
+  "study_id": "db_v1_target_manifest_infrastructure_pilot",
+  "query_set_id": "target_manifest_pilot_20260818",
+  "query_set_version": 1,
+  "purpose": "Validate RC0+RC1 active precedence and a morphophonological environment query without judging realization",
+  "queries": [
+    {
+      "query_id": "Q0_ACTIVE_OVERLAY_SMOKE_2020",
+      "query_version": 1,
+      "query_role": "infrastructure_validation",
+      "years": [
+        2020
+      ],
+      "source_table": "utterance_master_v2",
+      "occurrence_index_field": "utt_seq",
+      "conditions": [
+        {
+          "field": "utt_id",
+          "op": "in",
+          "values": [
+            "SDRW2000000115.1.1.149",
+            "SDRW2000000180.1.1.67"
+          ]
+        }
+      ],
+      "max_occurrences_per_year": 0,
+      "interpretation": "RC1 curated pointer precedence test only; not a linguistic target"
+    },
+    {
+      "query_id": "Q1_N_INSERTION_LIKE_ORTH_ENV_2020",
+      "query_version": 1,
+      "query_role": "candidate_environment_pilot",
+      "years": [
+        2020
+      ],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {
+          "field": "left_coda_jamo",
+          "op": "nonempty"
+        },
+        {
+          "field": "right_onset_zero",
+          "op": "truthy"
+        },
+        {
+          "field": "right_nucleus_jamo",
+          "op": "in",
+          "values": [
+            "ㅣ",
+            "ㅑ",
+            "ㅕ",
+            "ㅛ",
+            "ㅠ"
+          ]
+        }
+      ],
+      "max_occurrences_per_year": 20,
+      "interpretation": "Broad orthographic/morphological environment candidate; never an automatic judgement of n-insertion realization"
+    }
+  ]
+}

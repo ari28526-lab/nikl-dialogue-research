@@ -1,0 +1,24 @@
+{
+  "schema_version": "nikl_dialogue_target_manifest_audit.v1",
+  "status": "passed_pilot_query_and_active_precedence",
+  "recorded_at": "2026-08-18T16:23:02+09:00",
+  "manifest_sha256": "0f1ce0fdae7c249f31ec1117e2f2d7cf2e536156a88c3a530bf3ebc7b4de53ea",
+  "counts": {
+    "candidate_rows": 22,
+    "unique_occurrences": 22,
+    "curated_rows": 2,
+    "query_rows": {
+      "Q0_ACTIVE_OVERLAY_SMOKE_2020": 2,
+      "Q1_N_INSERTION_LIKE_ORTH_ENV_2020": 20
+    }
+  },
+  "invariants": {
+    "all_evidence_re_matches_query": true,
+    "active_precedence_verified": true,
+    "ready_candidate_assets_exist": true,
+    "missing_assets_explicitly_flagged": true,
+    "target_timing_not_claimed": true,
+    "realization_not_judged": true,
+    "source_assets_not_modified": true
+  }
+}

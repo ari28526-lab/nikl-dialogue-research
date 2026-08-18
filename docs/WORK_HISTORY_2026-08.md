@@ -3889,3 +3889,25 @@ shard 2–23을 재개하는 것이다.
   0건이다.
 - 다음은 이 규칙을 직접 읽는 범용 target query/manifest v1의 작은 표본이며,
   실제 음성 실현 여부를 자동 판정하지 않는다.
+
+## 2026-08-18 — overlay-aware target manifest 파일럿
+
+- 동결 morph search 연간표를 스트리밍하고 RC0 ledger와 RC1 active exception을
+  `(year, utt_id)`로 결합하는 선언형 target manifest builder와 독립 auditor를
+  만들었다.
+- 인프라 질의 두 exact ID에서 RC1 연구자 전사와 curated TextGrid가 구 RC0
+  값보다 우선하는지 확인했다. `영화 잘`, `학 상자를 날라야 되니까는` 두 값이
+  active manifest에 들어갔다.
+- ㄴ 삽입 유사 환경은 왼쪽 말음 존재, 오른쪽 초성 ㅇ, 오른쪽 중성
+  `ㅣ·ㅑ·ㅕ·ㅛ·ㅠ` 조건으로 20 occurrence만 뽑았다. 이는 환경 후보이며 실제
+  실현 판정이 아니다.
+- 최초 감사는 morph 표에는 있으나 r3 safe-body 자산이 없는 한 후보를 발견해
+  안전 중단했다. 후보 삭제나 가짜 성공 대신 builder/auditor에
+  `candidate_metadata_only_pending_alignment_or_recovery`를 명시하는 계약을
+  추가했다. 실패 출력은 `work/archive`로 이동해 증거를 보존했다.
+- 재실행 결과 22 occurrence, 20발화, curated 2행이며 수동 검토 가능 21,
+  metadata-only 1이다. target 시간은 비워 두고 별도 word-interval linker로
+  처리한다. 원자료·RC0·RC1·TextGrid 변경, 자산 복사, MFA, 자동 실현 판정은
+  모두 0건이다.
+- 이 결과로 RC1 예외 enrichment 장기 작업은 중단하고 실제 연구 질의와
+  occurrence→TextGrid 시간 연결을 우선하는 방향을 확정했다.
