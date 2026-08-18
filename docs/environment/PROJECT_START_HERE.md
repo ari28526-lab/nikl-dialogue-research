@@ -2,6 +2,15 @@
 
 최종 갱신: 2026-08-18 KST
 
+> **현재 진입점 — 2026-08-18 DB v1 RC1 recovery sidecar 채택 완료:**
+> 연구자 승인 SHA에 결속해 D7–D10 exact-ID 55건의 후속 상태와 D10 수동
+> word·전사 16건의 curated snapshot/active pointer를 RC0 불변 sidecar로
+> 채택했다. 독립 감사가 55/55·16/16, RC0 5,103,356행, 잔여 recovery
+> 817,255건 회계를 통과했다. D9 phone은 참고 전용이고 형태소·phoneme은 보완
+> 대기다. RC0·r3·최종 6-tier·TextGrid 변경과 MFA는 0건이다. 다음은 전수
+> 재실행이 아니라 `RESULT_db_v1_rc1_recovery_sidecar_20260818.md`에 따른 curated
+> 16건의 형태소·phone/phoneme enrichment Gate다.
+
 > **현재 진입점 — 2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:**
 > Dropbox에서 수정한 TextGrid 16/16을 회수해 D:의 별도
 > `D10_RESEARCHER_RETURN_0001`에 raw 사본 16개와 정규화본 16개로 동결했다.

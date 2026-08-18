@@ -244,3 +244,15 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며
 외부 공개·공유는 승인되지 않았다.
+
+## 2026-08-18 연구 DB v1 RC1 recovery sidecar 자산
+
+| 자산 | 역할 | 상태 |
+|---|---|---|
+| `outputs\releases\nikl_dialogue_research_db_v1_0_0_rc1_20260818` | RC0 불변 recovery 상태 55건, curated snapshot·active pointer 16건, 승인·회계 manifest | `internal_rc1_recovery_sidecar_adopted`; 독립 감사 통과, 본체 회계 delta 0 |
+| `outputs\approvals\APPROVAL_db_v1_rc1_recovery_adoption_20260818.json` | 연구자 승인 원문과 candidate SHA 결속 | `explicitly_approved`; 자동 승인 0 |
+| `outputs\reports\AUDIT_db_v1_rc1_recovery_sidecar_20260818.json` | 후보→채택 변환, RC0 exact-ID, 16 TextGrid·전사/Roman·pointer, 회계 독립 감사 | `passed_internal_rc1_append_only_sidecar` |
+
+RC1은 RC0 전체 ledger의 복사본이 아니라 그 위에 적용하는 작은 sidecar다. D10
+수동 word·전사만 curated로 활성화하며 D9 phone을 최종값으로 채택하지 않았다.
+형태소·phone/phoneme 보완 전까지 본체 정렬 성공 수는 바꾸지 않는다.

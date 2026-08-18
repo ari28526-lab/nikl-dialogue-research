@@ -154,3 +154,4 @@
 - [PLAN_db_v1_rc1_recovery_adoption_gate_20260818.md](PLAN_db_v1_rc1_recovery_adoption_gate_20260818.md) — D7–D10 exact-ID 55건을 RC0 불변 append-only 상태 overlay와 D10 수동 snapshot 후보로 묶고 단일 연구자 승인 전 정지하는 계획
 - [RESULT_db_v1_rc1_recovery_adoption_gate_20260818.md](RESULT_db_v1_rc1_recovery_adoption_gate_20260818.md) — D7–D10 exact-ID 55건과 수동 word·전사 16건을 RC0 불변 overlay 후보로 통합하고 독립 감사 통과, 실제 채택 전 단일 승인 Gate에서 정지
 - [DECISION_db_v1_rc1_recovery_sidecar_adoption_20260818.md](DECISION_db_v1_rc1_recovery_sidecar_adoption_20260818.md) — 연구자 승인 exact-ID 55건과 수동 word·전사 16건을 RC0 불변 append-only RC1 sidecar로 채택하되 D9 phone·형태소 보완은 후속 Gate로 분리
+- [RESULT_db_v1_rc1_recovery_sidecar_20260818.md](RESULT_db_v1_rc1_recovery_sidecar_20260818.md) — 승인 exact-ID 55건·curated snapshot/pointer 16건의 RC0 불변 RC1 sidecar 채택과 독립 감사 완료, 본체 회계 delta 0·다음은 형태소/phone enrichment Gate

@@ -3851,3 +3851,23 @@ shard 2–23을 재개하는 것이다.
   활용을 별도 index에 기록하고 사본 12개를 다시 해시하여 불일치 0건을 확인했다.
 - PDF 실물은 재배포권을 고려해 GitHub에 추가하지 않는다. 프로젝트에는 목록과
   복사·검증 결과만 기록한다.
+
+## 2026-08-18 — DB v1 RC1 recovery sidecar 명시 채택
+
+- 연구자 `ari30`이 후보 Gate의 exact-ID 상태 55건과 D10 수동 word·전사
+  16건을 append-only curated snapshot으로 채택하는 정확한 문장을 승인했다.
+  승인에는 RC0·r3·6-tier 덮어쓰기 금지, D9 phone 참고 전용, 형태소·phone
+  재구축의 후속 Gate 분리가 포함된다.
+- 승인 원문을 Gate manifest·상태 후보·snapshot·독립 감사 SHA에 결속했다.
+  materializer·감사기를 먼저 커밋 `bf3e517`로 푸시한 뒤 RC1을 생성했다.
+- RC1은 상태 55건, curated snapshot 16건, active pointer 16건과 회계표를 가진
+  sidecar다. 기술 제외 30, 전사 회수 2, 부분 보존 6, curated 16, D9 정렬 보완
+  대기 1로 집계했다.
+- 독립 감사는 후보와 채택본이 승인 필드 외에 달라지지 않았는지, RC0의 55 ID가
+  모두 기존 `post_mfa_technical_exclusion`인지, 16 TextGrid·최종 전사·철자
+  Roman·active pointer가 일치하는지 재계산해 통과했다.
+- RC0 5,103,356발화와 본체 정렬 성공 4,286,046은 불변이다. recovery 817,310건
+  중 55건에 후속 상태가 생겼고 817,255건은 남았다. RC0·r3·6-tier·TextGrid
+  수정과 MFA 실행은 0건이다.
+- 다음은 curated 16건 수정 전사의 형태소·철자 Roman 재구축과 phone/phoneme
+  enrichment 범위를 정하는 별도 Gate다. D7–D10 검토와 전수 MFA를 반복하지 않는다.

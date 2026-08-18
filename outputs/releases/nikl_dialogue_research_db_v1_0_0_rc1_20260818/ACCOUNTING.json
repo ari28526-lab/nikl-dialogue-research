@@ -1,0 +1,35 @@
+{
+  "schema_version": "research_db_v1_rc1_recovery_accounting.v1",
+  "status": "passed_append_only_no_base_category_delta",
+  "recorded_at": "2026-08-18T15:51:58+09:00",
+  "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "base_scope": {
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "source_utterances": 5103356,
+    "aligned_6tier_utterances": 4286046,
+    "technical_followup_utterances": 98946,
+    "pronunciation_followup_utterances": 718364,
+    "methodological_exclusions": 0
+  },
+  "base_accounting_equation": "5,103,356 = 4,286,046 aligned + 95,860 pre-MFA technical + 3,086 post-MFA technical + 718,364 pronunciation follow-up + 0 methodological exclusions",
+  "recovery_inventory_rows": 817310,
+  "first_shard_adopted_status_rows": 55,
+  "remaining_recovery_inventory_rows": 817255,
+  "first_shard_family_counts": {
+    "curated_recovery": 16,
+    "partial_preserved": 6,
+    "recovered_alignment": 1,
+    "technical_exclusion": 30,
+    "transcript_recovery": 2
+  },
+  "main_body_alignment_delta": 0,
+  "base_category_delta": 0,
+  "reason": "D9 alignment 1 and D10 curated 16 remain outside aligned 6-tier main body until separate phone/morphology enrichment gates pass"
+}

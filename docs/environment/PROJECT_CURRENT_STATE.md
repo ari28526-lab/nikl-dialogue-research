@@ -1,5 +1,14 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 DB v1 RC1 recovery sidecar 채택 완료:** 승인 exact-ID 55건의
+> recovery 후속 상태와 D10 수동 word·전사 16건의 curated snapshot·active
+> pointer를 `nikl_dialogue_research_db_v1_0_0_rc1_20260818`로 채택했다. RC0
+> ledger를 덮어쓰지 않는 sidecar이며 독립 감사가 통과했다. RC0 5,103,356발화,
+> 본체 정렬 성공 4,286,046, 잔여 recovery 817,255다. D9 phone은 참고 전용,
+> 수정 전사의 형태소·phoneme은 pending이다. RC0·r3·6-tier·TextGrid 변경과
+> MFA는 0건이다. 다음은 curated 16건만 대상으로 하는 형태소·phone/phoneme
+> enrichment Gate이며 D7–D10 검토와 전수 MFA를 반복하지 않는다.
+
 > **2026-08-18 D10 연구자 반환 16건 동결 완료·채택 전:** Dropbox 수동
 > TextGrid 16/16을 `D10_RESEARCHER_RETURN_0001`에 raw 16·normalized 16으로
 > 분리 보존했다. 1–4번은 연구자가 만든 interval의 tier 위치만 옮겼고 다른 수동

@@ -1,0 +1,31 @@
+{
+  "schema_version": "nikl_dialogue_research_db_v1_rc1_recovery_sidecar_audit.v1",
+  "status": "passed_internal_rc1_append_only_sidecar",
+  "recorded_at": "2026-08-18T15:52:59+09:00",
+  "counts": {
+    "status_rows": 55,
+    "manual_snapshots": 16,
+    "active_pointers": 16
+  },
+  "family_counts": {
+    "curated_recovery": 16,
+    "partial_preserved": 6,
+    "recovered_alignment": 1,
+    "technical_exclusion": 30,
+    "transcript_recovery": 2
+  },
+  "base_source_utterances": 5103356,
+  "main_body_alignment_delta": 0,
+  "remaining_recovery_inventory_rows": 817255,
+  "manifest_sha256": "0b3288fb7c2f2b1b750072b6facc6c13faaed7018651fa2e11670b8a7c9be48e",
+  "approval_sha256": "1de47c47acf7eb733ff1083997775a799e0de4dfc8a3ce0273d89f9530a49b1e",
+  "safety": {
+    "base_rc0_modified": false,
+    "r3_modified": false,
+    "research_6tier_modified": false,
+    "textgrid_modified": false,
+    "mfa_run": false,
+    "phone_adopted": false,
+    "morphology_rebuilt": false
+  }
+}

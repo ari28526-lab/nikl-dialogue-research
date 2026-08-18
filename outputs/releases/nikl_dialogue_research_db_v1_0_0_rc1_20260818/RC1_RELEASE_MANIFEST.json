@@ -1,0 +1,64 @@
+{
+  "schema_version": "nikl_dialogue_research_db_v1_rc1_release_manifest.v1",
+  "status": "internal_rc1_recovery_sidecar_adopted",
+  "recorded_at": "2026-08-18T15:51:58+09:00",
+  "release_id": "nikl_dialogue_research_db_v1_0_0_rc1_20260818",
+  "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+  "scope": {
+    "recovery_status_rows": 55,
+    "manual_annotation_snapshots": 16,
+    "active_pointers": 16
+  },
+  "inputs": {
+    "base_manifest_sha256": "1e7168e6c607a63cee93cb44e53a1317bf484b3bab8355aaa8299c64b5f8c779",
+    "d0_d4_manifest_sha256": "fcf147ac1d6798a566c8b9ad7ff6c98bd1ab25517e64bd9eaa2f32aff60f01a6",
+    "candidate_gate_manifest_sha256": "01e4a0eb2762cc80821d0afeeba56f56961ed32a1b0f91c9f130a96f6a0ae3db",
+    "candidate_gate_audit_sha256": "b6ce17fa92a5aa0284a41bc52d4a265f527eb9a4a5d9d017cb0e7be1f7f6c773",
+    "researcher_approval_sha256": "1de47c47acf7eb733ff1083997775a799e0de4dfc8a3ce0273d89f9530a49b1e"
+  },
+  "implementation": {
+    "materializer_sha256": "b6d55d32d2d17b6a60556338c2ec38a59a5bbc48414d735a5eed9d7c0f438bcd",
+    "git_commit": "bf3e51731f13a2187362387a9169e31cf591d4e9"
+  },
+  "files": [
+    {
+      "path": "approval/RESEARCHER_APPROVAL.json",
+      "bytes": 1464,
+      "sha256": "1de47c47acf7eb733ff1083997775a799e0de4dfc8a3ce0273d89f9530a49b1e"
+    },
+    {
+      "path": "overlays/RECOVERY_STATUS_OVERLAY.json",
+      "bytes": 69343,
+      "sha256": "ff5d09635b78496500d55cb11fdf9cac8a1dda32c3c161abfd209fcb8cec0ed4"
+    },
+    {
+      "path": "overlays/MANUAL_ANNOTATION_SNAPSHOTS.json",
+      "bytes": 69545,
+      "sha256": "f14c867533253e5f1e684722d82298f7bf5e47dd40425e945be9f5a0d07624db"
+    },
+    {
+      "path": "overlays/ACTIVE_ANNOTATION_POINTERS.json",
+      "bytes": 11313,
+      "sha256": "f4c2b6c7d66eeef099d6b4072f81434c07d40ffaa0aae247df47cee92d8da4e8"
+    },
+    {
+      "path": "ACCOUNTING.json",
+      "bytes": 1267,
+      "sha256": "9e101e9c7339165960326b0d8d2ce927c974fe1984f800ddbaf1361ad89577d5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 502,
+      "sha256": "d793a060375ae92338cbdaf84eb26750040eb5053512f1a05e2ef59d6139d3f4"
+    }
+  ],
+  "safety": {
+    "base_rc0_modified": false,
+    "r3_modified": false,
+    "research_6tier_modified": false,
+    "textgrid_modified": false,
+    "mfa_run": false,
+    "phone_adopted": false,
+    "morphology_rebuilt": false
+  }
+}
