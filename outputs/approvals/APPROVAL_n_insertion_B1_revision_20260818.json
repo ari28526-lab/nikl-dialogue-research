@@ -1,0 +1,32 @@
+{
+  "schema_version": "researcher_scope_approval.v1",
+  "status": "explicitly_approved",
+  "recorded_date": "2026-08-18",
+  "approver": "ari30",
+  "approval_text": "ㄴ 삽입 B1 개정안의 어절 내부/어절 간 분리, J*/E* 및 숫자·기호 인접 제외, 연구자 수동 실현 판정 원칙을 승인한다. 승인자 ari30.",
+  "approved_scope": {
+    "separate_within_word_and_across_word_queries": true,
+    "exclude_adjacent_j_or_e_pos_classes": true,
+    "exclude_adjacent_numbers_and_symbols": true,
+    "final_realization_judgement_is_manual_researcher_decision": true
+  },
+  "not_authorized": {
+    "six_year_production_query_execution": true,
+    "automatic_realization_judgement": true,
+    "mfa_reexecution": true,
+    "raw_or_rc0_rc1_overwrite": true
+  },
+  "bound_documents": [
+    {
+      "path": "phenomena/34_n_insertion/definition.md",
+      "bytes": 4203,
+      "sha256": "aa23b940d1e556df98cee5f332e8757f886ab098f468620fe084b93e90983513"
+    },
+    {
+      "path": "docs/decisions/PLAN_n_insertion_B1_to_production_query_20260818.md",
+      "bytes": 3078,
+      "sha256": "32fd99ebe35fd4c93610da5cb003fee396707c8237fdb5d432a4e2e96b995ebc"
+    }
+  ],
+  "note": "This approval closes the conceptual B1 revision only. Sense-number join and the six-year production query remain separate future gates."
+}

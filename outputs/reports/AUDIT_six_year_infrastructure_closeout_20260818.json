@@ -1,0 +1,52 @@
+{
+  "schema_version": "six_year_infrastructure_closeout_audit.v1",
+  "status": "passed",
+  "recorded_date": "2026-08-18",
+  "checks": {
+    "closeout_json_parsed": true,
+    "year_source_sum_matches": true,
+    "year_aligned_sum_matches": true,
+    "year_pre_mfa_technical_sum_matches": true,
+    "year_post_mfa_technical_sum_matches": true,
+    "year_pronunciation_followup_sum_matches": true,
+    "accounting_equation_matches": true,
+    "rc0_qa_source_and_aligned_match": true,
+    "rc1_recovery_inventory_matches": true,
+    "search_layer_covers_all_source_utterances": true,
+    "required_referenced_paths_exist": true,
+    "python_bytecode_cleanup_targets_remaining": 0
+  },
+  "verified_counts": {
+    "source": 5103356,
+    "searchable": 5103356,
+    "aligned_6tier": 4286046,
+    "pre_mfa_technical_followup": 95860,
+    "post_mfa_technical_followup": 3086,
+    "pronunciation_followup": 718364,
+    "recovery_inventory": 817310
+  },
+  "cleanup": {
+    "deleted_python_bytecode_files": 419,
+    "deleted_python_bytecode_bytes": 5950425,
+    "partial_review_directory_deleted": false,
+    "partial_review_directory_reason": "Preserved because it contains 55 WAV/TextGrid/CSV/LAB research review files; deletion requires a separate exact-path evidence review and approval."
+  },
+  "artifacts": [
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/README.md", "bytes": 6526, "sha256": "ffbec2341d48061858536432bc039b6b5b4b289eb61f94c50867da7bc3e11e16"},
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/METHODS_RESULTS_LIMITATIONS.md", "bytes": 11521, "sha256": "9a02842ebaa53ff410c9b5036a13cf9fa596e3ffbf458d35f68d8fe4acfcb97f"},
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/CHRONOLOGY_AND_DECISIONS.md", "bytes": 9974, "sha256": "6114179e367b948c245b22d8cf8f8980ea97e3f26c7b59891e786707b8ff09a2"},
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/LESSONS_AND_REUSE_GUIDE.md", "bytes": 10412, "sha256": "7757d5852455453af18da14f31ff449353dd806fa0959805ddbb5f69d281cc49"},
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/SOURCE_MAP_FOR_HTML.md", "bytes": 6440, "sha256": "aa19c1aae37e6c16ddf9de48bf131e25198f00b73c965fcfb0ec5e6ad3f7abb8"},
+    {"path": "docs/releases/20260818_six_year_infrastructure_closeout/CLEANUP_LEDGER.md", "bytes": 3812, "sha256": "9ddb54f498b4c73d5dfcd836b474c1ae1c1540f4397fde57a69c0b9241b1e72b"},
+    {"path": "docs/reviews/PROMPT_external_HTML_six_year_infrastructure_release_20260818.md", "bytes": 11611, "sha256": "c8eec4bd89a861431ed5627014f7d44a5249f9118b617971171e9216d3fc2bf8"},
+    {"path": "outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json", "bytes": 3123, "sha256": "53a9af1d0a9902f23eed3754e136c3d48e5b9026c9220ca403ee6df054f0beb3"},
+    {"path": "outputs/approvals/APPROVAL_n_insertion_B1_revision_20260818.json", "bytes": 1331, "sha256": "a59defae653535ae43a54541b74b21614bb4791d53fa4f519ee8a255239dee09"}
+  ],
+  "scope_exclusions": {
+    "html_rendered_now": false,
+    "reason": "A separate AI tool will author and render the Quarto/HTML using the frozen source map and prompt.",
+    "mfa_reexecuted": false,
+    "large_research_assets_modified": false,
+    "historical_documents_deleted": false
+  }
+}

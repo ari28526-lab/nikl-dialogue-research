@@ -3946,3 +3946,34 @@ shard 2–23을 재개하는 것이다.
   `sense_id/source/status/candidates/confidence`의 후속 결합 변수로 규정했다.
 - 인프라 파일럿은 충분하므로 다음 Gate는 B1 범위 연구자 확정과 의미번호 join
   완비다. 확정 전 6개년 전수 후보 추출·파일 복사·KOINA·MFA는 실행하지 않는다.
+
+## 2026-08-18 — ㄴ 삽입 B1 원칙 승인과 실행 범위 분리
+
+- 연구자 `ari30`이 “어절 내부/어절 간 분리, J*/E* 및 숫자·기호 인접 제외,
+  연구자 수동 실현 판정”을 명시 승인했다.
+- 승인 원문을 현행 정의와 production query 계획의 SHA-256에 결속한
+  `outputs/approvals/APPROVAL_n_insertion_B1_revision_20260818.json`을 만들었다.
+- 이 승인은 개념·query 범위 원칙만 닫는다. 의미번호 join, 6개년 production
+  query, MFA/KOINA, 자동 실현 판정, 원자료·RC0·RC1 수정은 승인하지 않는다.
+
+## 2026-08-18 — 2020–2025 인프라 closeout과 외부 HTML handoff
+
+- 실제 음운 현상 논문 결과가 아니라 6개년 자료 구축 인프라를 독립적인 methods·
+  data note로 정리했다. closeout 진입점은
+  `docs/releases/20260818_six_year_infrastructure_closeout/README.md`다.
+- RC0/RC1 정본을 다시 대조해 원천·검색 5,103,356, 정렬 6-tier 4,286,046,
+  MFA 전 기술 후속 95,860, MFA 후 기술 후속 3,086, 발음 후속 718,364의 연도별
+  합계와 회계식을 확인했다.
+- 817,310건을 “MFA 실패”로 쓰지 않도록 구분했다. 발음 후속 718,364건은 한
+  발화에 hold 어절이 하나라도 있으면 발화 전체를 보류한 보수적 staged adoption
+  결과이며, 이들을 포함한 전체 510만 발화는 표기·형태소 검색층에 남아 있다.
+- 방법·결과·한계, 설계 변경 연대기, 시행착오·재사용 안내, HTML source map,
+  cleanup 장부와 외부 AI용 상세 프롬프트를 만들었다. Claude Code·Codex의 보조와
+  연구자 검토·승인 책임도 별도 절로 명시했다.
+- closeout JSON의 연도 합계·RC0 QA·RC1 recovery·검색 coverage와 필수 파일 경로를
+  재검사해 모두 통과했고 독립 audit JSON에 산출물 SHA를 기록했다.
+- Git 비추적 Python bytecode cache 네 경로 419파일·5,950,425 bytes만 exact-path로
+  삭제했다. 55개 WAV·TextGrid·CSV/LAB가 든 `.partial` 검토 폴더는 안전 검사가
+  차단해 보존했다. 대형 pilot·가상환경·archive·RC0/RC1·D: 정본은 삭제하지 않았다.
+- 2020–2025 r3 MFA와 전수 6-tier를 다시 실행하지 않는다. 다음 단계는 외부
+  도구의 Quarto/HTML 생성 또는 별도 연구 Gate의 실제 target query다.

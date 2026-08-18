@@ -1,0 +1,69 @@
+{
+  "schema_version": "six_year_infrastructure_closeout.v1",
+  "status": "documentation_closeout_compiled_from_audited_manifests",
+  "recorded_date": "2026-08-18",
+  "source_git_commit_before_closeout": "323d19f0add97a7d2a9abb79ed576ed6b7f3d8b5",
+  "scope": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "source_utterances": 5103356,
+    "searchable_utterances": 5103356,
+    "aligned_6tier_utterances": 4286046,
+    "pre_mfa_technical_followup": 95860,
+    "post_mfa_technical_followup": 3086,
+    "pronunciation_followup": 718364,
+    "methodological_exclusion": 0,
+    "recovery_inventory_rows_rc0": 817310,
+    "remaining_recovery_inventory_rows_rc1": 817255
+  },
+  "year_counts": {
+    "2020": {"source": 870437, "aligned": 782432, "pre_mfa_technical": 1675, "post_mfa_technical": 283, "pronunciation_followup": 86047},
+    "2021": {"source": 1373920, "aligned": 1206862, "pre_mfa_technical": 937, "post_mfa_technical": 437, "pronunciation_followup": 165684},
+    "2022": {"source": 866359, "aligned": 751383, "pre_mfa_technical": 870, "post_mfa_technical": 338, "pronunciation_followup": 113768},
+    "2023": {"source": 677262, "aligned": 494228, "pre_mfa_technical": 87809, "post_mfa_technical": 352, "pronunciation_followup": 94873},
+    "2024": {"source": 728257, "aligned": 593530, "pre_mfa_technical": 1339, "post_mfa_technical": 874, "pronunciation_followup": 132514},
+    "2025": {"source": 587121, "aligned": 457611, "pre_mfa_technical": 3230, "post_mfa_technical": 802, "pronunciation_followup": 125478}
+  },
+  "search_layer": {
+    "utterances": 5103356,
+    "morph_tokens": 50955891,
+    "morph_boundaries": 45852535,
+    "symbol_reading_occurrences": 2386481
+  },
+  "pronunciation_followup_routing": {
+    "hold": 717354,
+    "policy": 136,
+    "empty_reference": 848,
+    "hold_plus_policy": 26,
+    "note": "An utterance was deferred when any token required unresolved pronunciation evidence; deferred utterances remain searchable."
+  },
+  "textgrid_schema": [
+    "words",
+    "phones_mfa",
+    "phoneme_r_auto",
+    "utterance",
+    "utterance_orth_r",
+    "morph_analysis_utt"
+  ],
+  "method_contract": {
+    "pronunciation_release": "common_pron_mfa_r3_20260809",
+    "fresh_r3_full_realign": true,
+    "python": "3.13.14",
+    "mfa_runtime": "3.4.0",
+    "pynini": "2.1.7",
+    "textgrid_schema_id": "research_textgrid.v2"
+  },
+  "claims": {
+    "full_six_year_text_morph_search": true,
+    "full_six_year_mfa_alignment": false,
+    "automatic_phonological_realization_judgement": false,
+    "raw_corpus_publicly_redistributed": false,
+    "infrastructure_release_candidate_complete": true
+  },
+  "authoritative_sources": [
+    "outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/QA_REPORT.json",
+    "outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/BASE_RELEASE_MANIFEST_2020_2025.json",
+    "outputs/releases/nikl_dialogue_research_db_v1_0_0_rc0_20260815/CROSS_YEAR_CONTRACT_AUDIT.json",
+    "outputs/releases/nikl_dialogue_research_db_v1_0_0_rc1_20260818/ACCOUNTING.json",
+    "outputs/reports/AUDIT_common_pron_r3_pre_adoption_routing_20260808.json"
+  ]
+}
