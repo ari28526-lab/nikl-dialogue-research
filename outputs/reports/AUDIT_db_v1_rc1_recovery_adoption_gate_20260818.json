@@ -1,0 +1,33 @@
+{
+  "schema_version": "research_db_v1_rc1_recovery_adoption_gate_independent_audit.v1",
+  "status": "passed_gate_closed_pending_researcher_approval",
+  "recorded_at": "2026-08-18T15:27:03+09:00",
+  "counts": {
+    "status_rows": 55,
+    "manual_snapshots": 16,
+    "by_year": {
+      "2020": 5,
+      "2021": 29,
+      "2022": 5,
+      "2023": 6,
+      "2024": 5,
+      "2025": 5
+    }
+  },
+  "family_counts": {
+    "curated_recovery": 16,
+    "partial_preserved": 6,
+    "recovered_alignment": 1,
+    "technical_exclusion": 30,
+    "transcript_recovery": 2
+  },
+  "manifest_sha256": "01e4a0eb2762cc80821d0afeeba56f56961ed32a1b0f91c9f130a96f6a0ae3db",
+  "safety": {
+    "base_ledger_modified": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "textgrid_modified": false,
+    "mfa_run": false,
+    "automatic_adoption_performed": false
+  }
+}

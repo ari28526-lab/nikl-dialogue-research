@@ -152,3 +152,4 @@
 |---|---|
 | `DECISION_dialogue_audio_quality_gate_2020_2025_20260807.md` | 겹침·경계 잘림·소음·WAV 불량을 2020–2025 공통 근거 수준과 exclusion scope로 관리하며, 정렬 가능한 발화는 데이터 구축 목적으로 보존하는 품질 Gate |
 - [PLAN_db_v1_rc1_recovery_adoption_gate_20260818.md](PLAN_db_v1_rc1_recovery_adoption_gate_20260818.md) — D7–D10 exact-ID 55건을 RC0 불변 append-only 상태 overlay와 D10 수동 snapshot 후보로 묶고 단일 연구자 승인 전 정지하는 계획
+- [RESULT_db_v1_rc1_recovery_adoption_gate_20260818.md](RESULT_db_v1_rc1_recovery_adoption_gate_20260818.md) — D7–D10 exact-ID 55건과 수동 word·전사 16건을 RC0 불변 overlay 후보로 통합하고 독립 감사 통과, 실제 채택 전 단일 승인 Gate에서 정지

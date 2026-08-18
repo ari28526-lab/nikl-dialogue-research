@@ -1,0 +1,2087 @@
+{
+  "schema_version": "research_db_v1_manual_annotation_snapshot_candidate.v1",
+  "status": "passed_candidate_pending_researcher_adoption",
+  "recorded_at": "2026-08-18T15:24:34+09:00",
+  "rows": [
+    {
+      "edit_id": "D10-01-SDRW2000000115.1.1.149",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2020,
+      "utt_id": "SDRW2000000115.1.1.149",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\01_2020_SDRW2000000115.1.1.149.TextGrid",
+      "base_textgrid_sha256": "ae2edb2563be3fa036738d7a9fdc0683c22cbb349f2d1293ab9bc3a07ec9ac3b",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.18,
+          "label": ""
+        },
+        {
+          "xmin": 0.18,
+          "xmax": 0.41,
+          "label": "영화"
+        },
+        {
+          "xmin": 0.41,
+          "xmax": 0.48,
+          "label": "잘"
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.62,
+          "label": "영화"
+        },
+        {
+          "xmin": 0.62,
+          "xmax": 1.12,
+          "label": "잘알이"
+        },
+        {
+          "xmin": 1.12,
+          "xmax": 1.328,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.18,
+          "label": ""
+        },
+        {
+          "xmin": 0.18,
+          "xmax": 0.62,
+          "label": "영화"
+        },
+        {
+          "xmin": 0.62,
+          "xmax": 1.12,
+          "label": "잘"
+        },
+        {
+          "xmin": 1.12,
+          "xmax": 1.328,
+          "label": ""
+        }
+      ],
+      "final_transcript": "영화 잘",
+      "orth_roman_v2": "YEO ng _ H WA | J A l",
+      "edit_reason": "d10_researcher_return:tier_remap_from_proposed",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\01_2020_SDRW2000000115.1.1.149.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "deb1b2c7df98e76b7857e684eed31982ab8ec77b808212a3de6d486664811dd4",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-02-SDRW2000000180.1.1.67",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2020,
+      "utt_id": "SDRW2000000180.1.1.67",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\02_2020_SDRW2000000180.1.1.67.TextGrid",
+      "base_textgrid_sha256": "e1667d041c626964067c3800ba669a4b56eaaf1652a00ed08820bd1b4fdae47d",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.65,
+          "label": ""
+        },
+        {
+          "xmin": 0.65,
+          "xmax": 0.84,
+          "label": "학"
+        },
+        {
+          "xmin": 0.84,
+          "xmax": 1.08,
+          "label": "상자를"
+        },
+        {
+          "xmin": 1.08,
+          "xmax": 1.26,
+          "label": "날아야"
+        },
+        {
+          "xmin": 1.26,
+          "xmax": 1.47,
+          "label": "되니까는"
+        },
+        {
+          "xmin": 1.47,
+          "xmax": 1.74,
+          "label": "상자를"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 1.78,
+          "label": ""
+        },
+        {
+          "xmin": 1.78,
+          "xmax": 2.16,
+          "label": "날아야"
+        },
+        {
+          "xmin": 2.16,
+          "xmax": 2.73,
+          "label": "되니깐은"
+        },
+        {
+          "xmin": 2.73,
+          "xmax": 3.056,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.637236483971383,
+          "label": ""
+        },
+        {
+          "xmin": 0.637236483971383,
+          "xmax": 0.84,
+          "label": "학"
+        },
+        {
+          "xmin": 0.84,
+          "xmax": 1.26,
+          "label": ""
+        },
+        {
+          "xmin": 1.26,
+          "xmax": 1.74,
+          "label": "상자를"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 2.139982222694902,
+          "label": "날라야"
+        },
+        {
+          "xmin": 2.139982222694902,
+          "xmax": 2.73,
+          "label": "되니까는"
+        },
+        {
+          "xmin": 2.73,
+          "xmax": 3.056,
+          "label": ""
+        }
+      ],
+      "final_transcript": "학 상자를 날라야 되니까는",
+      "orth_roman_v2": "H A k | S A ng _ J A _ R EU l | N A l _ R A _ YA | D OE _ N I _ KK A _ N EU n",
+      "edit_reason": "d10_researcher_return:tier_remap_from_proposed",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\02_2020_SDRW2000000180.1.1.67.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "a544c56343cb5c42ce0583fe91ee5c0fe785bfe34aa43158c2fa9167d4428945",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-03-SDRW2100000001.1.1.131",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2021,
+      "utt_id": "SDRW2100000001.1.1.131",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\03_2021_SDRW2100000001.1.1.131.TextGrid",
+      "base_textgrid_sha256": "d77eeaa0c299705374a2712c287f4894431d088a96585842b58ce9152d182d32",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.04,
+          "label": ""
+        },
+        {
+          "xmin": 0.04,
+          "xmax": 0.11,
+          "label": "그"
+        },
+        {
+          "xmin": 0.11,
+          "xmax": 0.23,
+          "label": "개화"
+        },
+        {
+          "xmin": 0.23,
+          "xmax": 0.33,
+          "label": "그게"
+        },
+        {
+          "xmin": 0.33,
+          "xmax": 0.38,
+          "label": "딱"
+        },
+        {
+          "xmin": 0.38,
+          "xmax": 0.46,
+          "label": "있는"
+        },
+        {
+          "xmin": 0.46,
+          "xmax": 0.58,
+          "label": "거야"
+        },
+        {
+          "xmin": 0.58,
+          "xmax": 0.7,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.04,
+          "label": ""
+        },
+        {
+          "xmin": 0.04,
+          "xmax": 0.6152688582192424,
+          "label": "그"
+        },
+        {
+          "xmin": 0.6152688582192424,
+          "xmax": 0.7,
+          "label": ""
+        }
+      ],
+      "final_transcript": "그",
+      "orth_roman_v2": "G EU",
+      "edit_reason": "d10_researcher_return:tier_remap_from_proposed",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\03_2021_SDRW2100000001.1.1.131.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "fba556dcd7eeed522721f20f642f9af32a7d3dc1c0fa1af7c4df02f11bf3c6fe",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-04-SDRW2100000023.1.1.432",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2021,
+      "utt_id": "SDRW2100000023.1.1.432",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\04_2021_SDRW2100000023.1.1.432.TextGrid",
+      "base_textgrid_sha256": "b8df324ce3096f4035637afed582dd8cebc218045a8b83e8090931bda1e2acb2",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.28,
+          "label": ""
+        },
+        {
+          "xmin": 0.28,
+          "xmax": 0.68,
+          "label": "아빠가"
+        },
+        {
+          "xmin": 0.68,
+          "xmax": 0.9,
+          "label": "계속"
+        },
+        {
+          "xmin": 0.9,
+          "xmax": 1.21,
+          "label": "나와서"
+        },
+        {
+          "xmin": 1.21,
+          "xmax": 1.51,
+          "label": "연기를"
+        },
+        {
+          "xmin": 1.51,
+          "xmax": 1.63,
+          "label": "막"
+        },
+        {
+          "xmin": 1.63,
+          "xmax": 1.77,
+          "label": "한단"
+        },
+        {
+          "xmin": 1.77,
+          "xmax": 1.87,
+          "label": "말이야"
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.28,
+          "label": ""
+        },
+        {
+          "xmin": 0.28,
+          "xmax": 0.68,
+          "label": "아빠가"
+        },
+        {
+          "xmin": 0.68,
+          "xmax": 0.8514579609275614,
+          "label": "계속"
+        },
+        {
+          "xmin": 0.8514579609275614,
+          "xmax": 1.1762787562022181,
+          "label": "나와서"
+        },
+        {
+          "xmin": 1.1762787562022181,
+          "xmax": 1.6751941503830752,
+          "label": "연기를"
+        },
+        {
+          "xmin": 1.6751941503830752,
+          "xmax": 1.87,
+          "label": ""
+        }
+      ],
+      "final_transcript": "아빠가 계속 나와서 연기를",
+      "orth_roman_v2": "A _ PP A _ G A | G YE _ S O k | N A _ WA _ S EO | YEO n _ G I _ R EU l",
+      "edit_reason": "d10_researcher_return:tier_remap_from_proposed",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\04_2021_SDRW2100000023.1.1.432.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "6f1a566466ce4c38c84b2ad79f48484194766c1eab1001fb4e3e99fba789f350",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-06-SDRW2100000040.1.1.21",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2021,
+      "utt_id": "SDRW2100000040.1.1.21",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\06_2021_SDRW2100000040.1.1.21.TextGrid",
+      "base_textgrid_sha256": "d9cf294f35e0c634bba32a7704b64064934b71d7560a85d3a92f6354a03f1f59",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.09,
+          "label": ""
+        },
+        {
+          "xmin": 0.09,
+          "xmax": 0.75,
+          "label": "공무원으로"
+        },
+        {
+          "xmin": 0.75,
+          "xmax": 0.8,
+          "label": "다"
+        },
+        {
+          "xmin": 0.8,
+          "xmax": 1.11,
+          "label": "몰려"
+        },
+        {
+          "xmin": 1.11,
+          "xmax": 1.47,
+          "label": "가는데"
+        },
+        {
+          "xmin": 1.47,
+          "xmax": 2.09,
+          "label": "공무원이"
+        },
+        {
+          "xmin": 2.09,
+          "xmax": 2.57,
+          "label": "양성에"
+        },
+        {
+          "xmin": 2.57,
+          "xmax": 2.84,
+          "label": "대해서는"
+        },
+        {
+          "xmin": 2.84,
+          "xmax": 3.06,
+          "label": "어떻게"
+        },
+        {
+          "xmin": 3.06,
+          "xmax": 3.13,
+          "label": ""
+        },
+        {
+          "xmin": 3.13,
+          "xmax": 3.4,
+          "label": "생각하세요"
+        },
+        {
+          "xmin": 3.4,
+          "xmax": 3.499875,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.09,
+          "label": ""
+        },
+        {
+          "xmin": 0.09,
+          "xmax": 0.75,
+          "label": "공무원으로"
+        },
+        {
+          "xmin": 0.75,
+          "xmax": 0.8,
+          "label": "다"
+        },
+        {
+          "xmin": 0.8,
+          "xmax": 1.11,
+          "label": "몰려"
+        },
+        {
+          "xmin": 1.11,
+          "xmax": 1.47,
+          "label": "가는데"
+        },
+        {
+          "xmin": 1.47,
+          "xmax": 2.09,
+          "label": "공무원"
+        },
+        {
+          "xmin": 2.09,
+          "xmax": 2.57,
+          "label": "양성에"
+        },
+        {
+          "xmin": 2.57,
+          "xmax": 2.7504005530225712,
+          "label": "대해서는"
+        },
+        {
+          "xmin": 2.7504005530225712,
+          "xmax": 3.4,
+          "label": "어떻게"
+        },
+        {
+          "xmin": 3.4,
+          "xmax": 3.499875,
+          "label": ""
+        }
+      ],
+      "final_transcript": "공무원으로 다 몰려 가는데 공무원 양성에 대해서는 어떻게",
+      "orth_roman_v2": "G O ng _ M U _ WO n _ EU _ R O | D A | M O l _ R YEO | G A _ N EU n _ D E | G O ng _ M U _ WO n | YA ng _ S EO ng _ E | D AE _ H AE _ S EO _ N EU n | EO _ TT EO h _ G E",
+      "edit_reason": "d10_researcher_return:researcher_manual_transcription_override",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\06_2021_SDRW2100000040.1.1.21.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "6d49f9a06e0bf29528cc27ebaeebbbce252d20627e58bf46f1660f7786f24b3c",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-07-SDRW2100000044.1.1.248",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2021,
+      "utt_id": "SDRW2100000044.1.1.248",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\07_2021_SDRW2100000044.1.1.248.TextGrid",
+      "base_textgrid_sha256": "88f8fc1abfb15b51358369298e9d159c25001f1a4e4dae921f858e2d316d558c",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.16,
+          "label": ""
+        },
+        {
+          "xmin": 0.16,
+          "xmax": 0.47,
+          "label": "어"
+        },
+        {
+          "xmin": 0.47,
+          "xmax": 0.54,
+          "label": ""
+        },
+        {
+          "xmin": 0.54,
+          "xmax": 0.83,
+          "label": "그거"
+        },
+        {
+          "xmin": 0.83,
+          "xmax": 1.21,
+          "label": "예전에"
+        },
+        {
+          "xmin": 1.21,
+          "xmax": 1.82,
+          "label": "우리"
+        },
+        {
+          "xmin": 1.82,
+          "xmax": 1.85,
+          "label": ""
+        },
+        {
+          "xmin": 1.85,
+          "xmax": 2.2,
+          "label": "먹을"
+        },
+        {
+          "xmin": 2.2,
+          "xmax": 2.27,
+          "label": "때"
+        },
+        {
+          "xmin": 2.27,
+          "xmax": 2.56,
+          "label": "처음에는"
+        },
+        {
+          "xmin": 2.56,
+          "xmax": 2.65,
+          "label": "뭐"
+        },
+        {
+          "xmin": 2.65,
+          "xmax": 2.69,
+          "label": "다"
+        },
+        {
+          "xmin": 2.69,
+          "xmax": 2.76,
+          "label": "못"
+        },
+        {
+          "xmin": 2.76,
+          "xmax": 3.25,
+          "label": "먹을"
+        },
+        {
+          "xmin": 3.25,
+          "xmax": 3.509875,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.16,
+          "label": ""
+        },
+        {
+          "xmin": 0.16,
+          "xmax": 0.47,
+          "label": "어"
+        },
+        {
+          "xmin": 0.47,
+          "xmax": 0.54,
+          "label": ""
+        },
+        {
+          "xmin": 0.54,
+          "xmax": 0.83,
+          "label": "그거"
+        },
+        {
+          "xmin": 0.83,
+          "xmax": 1.21,
+          "label": "예전에"
+        },
+        {
+          "xmin": 1.21,
+          "xmax": 1.82,
+          "label": "우리"
+        },
+        {
+          "xmin": 1.82,
+          "xmax": 2.172714043817928,
+          "label": "먹을"
+        },
+        {
+          "xmin": 2.172714043817928,
+          "xmax": 2.27,
+          "label": "때"
+        },
+        {
+          "xmin": 2.27,
+          "xmax": 3.25,
+          "label": "처음에는"
+        },
+        {
+          "xmin": 3.25,
+          "xmax": 3.509875,
+          "label": ""
+        }
+      ],
+      "final_transcript": "어 그거 예전에 우리 먹을 때 처음에는",
+      "orth_roman_v2": "EO | G EU _ G EO | YE _ J EO n _ E | U _ R I | M EO k _ EU l | TT AE | CH EO _ EU m _ E _ N EU n",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\07_2021_SDRW2100000044.1.1.248.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "2db22c8bdac82bcfa82fb49a761b71c049889293743b7725e9bce37201ee78bb",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-08-SDRW2200000019.1.1.279",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2022,
+      "utt_id": "SDRW2200000019.1.1.279",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\08_2022_SDRW2200000019.1.1.279.TextGrid",
+      "base_textgrid_sha256": "f4379f5004049c08e2c40ef3454e8b2726ceefad5cb8b0fc63bd95c9248b089f",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.08,
+          "label": ""
+        },
+        {
+          "xmin": 0.08,
+          "xmax": 0.28,
+          "label": "근데"
+        },
+        {
+          "xmin": 0.28,
+          "xmax": 0.68,
+          "label": "잠은"
+        },
+        {
+          "xmin": 0.68,
+          "xmax": 1.02,
+          "label": "쪼끔"
+        },
+        {
+          "xmin": 1.02,
+          "xmax": 1.12,
+          "label": "재워"
+        },
+        {
+          "xmin": 1.12,
+          "xmax": 1.25,
+          "label": "줬으면"
+        },
+        {
+          "xmin": 1.25,
+          "xmax": 1.44,
+          "label": "좋겠어"
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.08,
+          "label": ""
+        },
+        {
+          "xmin": 0.08,
+          "xmax": 0.28,
+          "label": "근데"
+        },
+        {
+          "xmin": 0.28,
+          "xmax": 0.68,
+          "label": "잠은"
+        },
+        {
+          "xmin": 0.68,
+          "xmax": 1.02,
+          "label": "쪼끔"
+        },
+        {
+          "xmin": 1.02,
+          "xmax": 1.12,
+          "label": "재워"
+        },
+        {
+          "xmin": 1.12,
+          "xmax": 1.44,
+          "label": "줬으면"
+        }
+      ],
+      "final_transcript": "근데 잠은 쪼끔 재워 줬으면",
+      "orth_roman_v2": "G EU n _ D E | J A m _ EU n | JJ O _ KK EU m | J AE _ WO | J WO ss _ EU _ M YEO n",
+      "edit_reason": "d10_researcher_return:researcher_manual_transcription_override",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\08_2022_SDRW2200000019.1.1.279.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "109f962def7da85d222ab58d1072dc36ecb538abadc57b8d653acf9676e6b55a",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-09-SDRW2200000033.1.1.137",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2022,
+      "utt_id": "SDRW2200000033.1.1.137",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\09_2022_SDRW2200000033.1.1.137.TextGrid",
+      "base_textgrid_sha256": "2a93f63088e24ec2c208c7c55c647200659bedb6735771bfc8d86a494a448b04",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.07,
+          "label": ""
+        },
+        {
+          "xmin": 0.07,
+          "xmax": 0.27,
+          "label": "나는"
+        },
+        {
+          "xmin": 0.27,
+          "xmax": 0.47,
+          "label": "지리산에"
+        },
+        {
+          "xmin": 0.47,
+          "xmax": 0.74,
+          "label": "한번"
+        },
+        {
+          "xmin": 0.74,
+          "xmax": 0.9,
+          "label": "간"
+        },
+        {
+          "xmin": 0.9,
+          "xmax": 1.82,
+          "label": ""
+        },
+        {
+          "xmin": 1.82,
+          "xmax": 1.99,
+          "label": "적"
+        },
+        {
+          "xmin": 1.99,
+          "xmax": 2.08,
+          "label": "있어"
+        },
+        {
+          "xmin": 2.08,
+          "xmax": 2.21,
+          "label": "그다음에"
+        },
+        {
+          "xmin": 2.21,
+          "xmax": 2.44,
+          "label": "한라산도"
+        },
+        {
+          "xmin": 2.44,
+          "xmax": 2.61,
+          "label": "등산을"
+        },
+        {
+          "xmin": 2.61,
+          "xmax": 2.77,
+          "label": "간"
+        },
+        {
+          "xmin": 2.77,
+          "xmax": 2.96,
+          "label": "적이"
+        },
+        {
+          "xmin": 2.96,
+          "xmax": 3.15,
+          "label": "있고"
+        },
+        {
+          "xmin": 3.15,
+          "xmax": 3.25,
+          "label": "그때"
+        },
+        {
+          "xmin": 3.25,
+          "xmax": 3.48,
+          "label": "지리산은"
+        },
+        {
+          "xmin": 3.48,
+          "xmax": 3.55,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.07,
+          "label": ""
+        },
+        {
+          "xmin": 0.07,
+          "xmax": 0.9,
+          "label": "나는"
+        },
+        {
+          "xmin": 0.9,
+          "xmax": 1.82,
+          "label": ""
+        },
+        {
+          "xmin": 1.82,
+          "xmax": 2.41,
+          "label": "지리산에"
+        },
+        {
+          "xmin": 2.41,
+          "xmax": 2.585724238042451,
+          "label": "한번"
+        },
+        {
+          "xmin": 2.585724238042451,
+          "xmax": 2.7809191298283213,
+          "label": "간"
+        },
+        {
+          "xmin": 2.7809191298283213,
+          "xmax": 2.9184428035865486,
+          "label": "적"
+        },
+        {
+          "xmin": 2.9184428035865486,
+          "xmax": 3.169090789629769,
+          "label": "있어"
+        },
+        {
+          "xmin": 3.169090789629769,
+          "xmax": 3.55,
+          "label": ""
+        }
+      ],
+      "final_transcript": "나는 지리산에 한번 간 적 있어",
+      "orth_roman_v2": "N A _ N EU n | J I _ R I _ S A n _ E | H A n _ B EO n | G A n | J EO k | I ss _ EO",
+      "edit_reason": "d10_researcher_return:researcher_manual_transcription_override",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\09_2022_SDRW2200000033.1.1.137.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "f1baa0d3373256d5c9e0a7c819ba76ad8452b39d3d717146b1d33bb82a41e3b4",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-10-SDRW2200000051.1.1.61",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2022,
+      "utt_id": "SDRW2200000051.1.1.61",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\10_2022_SDRW2200000051.1.1.61.TextGrid",
+      "base_textgrid_sha256": "58c204309374cfedd7659253dcbeca65fb572e132e1992e248bd40aec5f13c82",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.03,
+          "label": ""
+        },
+        {
+          "xmin": 0.03,
+          "xmax": 0.52,
+          "label": "나는"
+        },
+        {
+          "xmin": 0.52,
+          "xmax": 0.67,
+          "label": "함덕"
+        },
+        {
+          "xmin": 0.67,
+          "xmax": 0.81,
+          "label": "함덕"
+        },
+        {
+          "xmin": 0.81,
+          "xmax": 1.06,
+          "label": "해수욕장"
+        },
+        {
+          "xmin": 1.06,
+          "xmax": 1.12,
+          "label": "가"
+        },
+        {
+          "xmin": 1.12,
+          "xmax": 1.2,
+          "label": "봤어"
+        },
+        {
+          "xmin": 1.2,
+          "xmax": 1.23,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.03,
+          "label": ""
+        },
+        {
+          "xmin": 0.03,
+          "xmax": 0.642282922374616,
+          "label": "나는"
+        },
+        {
+          "xmin": 0.642282922374616,
+          "xmax": 1.2,
+          "label": "함덕"
+        },
+        {
+          "xmin": 1.2,
+          "xmax": 1.23,
+          "label": ""
+        }
+      ],
+      "final_transcript": "나는 함덕",
+      "orth_roman_v2": "N A _ N EU n | H A m _ D EO k",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\10_2022_SDRW2200000051.1.1.61.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "03fc323fbe061969f18a773c9c0d289a632e8bc378eaa07c48e0f2130323f4d4",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-11-SDRW2300000013.1.1.213",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2023,
+      "utt_id": "SDRW2300000013.1.1.213",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\11_2023_SDRW2300000013.1.1.213.TextGrid",
+      "base_textgrid_sha256": "6a9643190ea941d54a7a0aa2c8248c88ebd75dc0e357981930aae30c53f7e647",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.09,
+          "label": ""
+        },
+        {
+          "xmin": 0.09,
+          "xmax": 0.48,
+          "label": "노래방에서"
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.67,
+          "label": "부를"
+        },
+        {
+          "xmin": 0.67,
+          "xmax": 0.74,
+          "label": ""
+        },
+        {
+          "xmin": 0.74,
+          "xmax": 0.9,
+          "label": "때"
+        },
+        {
+          "xmin": 0.9,
+          "xmax": 0.94,
+          "label": ""
+        },
+        {
+          "xmin": 0.94,
+          "xmax": 1.06,
+          "label": "아"
+        },
+        {
+          "xmin": 1.06,
+          "xmax": 1.33,
+          "label": "이런"
+        },
+        {
+          "xmin": 1.33,
+          "xmax": 1.96,
+          "label": "노래였구나를"
+        },
+        {
+          "xmin": 1.96,
+          "xmax": 2.13,
+          "label": "나중에"
+        },
+        {
+          "xmin": 2.13,
+          "xmax": 2.25,
+          "label": "알게"
+        },
+        {
+          "xmin": 2.25,
+          "xmax": 2.71,
+          "label": ""
+        },
+        {
+          "xmin": 2.71,
+          "xmax": 2.83,
+          "label": "되는"
+        },
+        {
+          "xmin": 2.83,
+          "xmax": 2.9,
+          "label": "를"
+        },
+        {
+          "xmin": 2.9,
+          "xmax": 3.25,
+          "label": "나중에"
+        },
+        {
+          "xmin": 3.25,
+          "xmax": 3.56,
+          "label": "알게"
+        },
+        {
+          "xmin": 3.56,
+          "xmax": 4.0,
+          "label": "되는"
+        },
+        {
+          "xmin": 4.0,
+          "xmax": 4.122,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.09,
+          "label": ""
+        },
+        {
+          "xmin": 0.09,
+          "xmax": 0.48,
+          "label": "노래방에서"
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.67,
+          "label": "부를"
+        },
+        {
+          "xmin": 0.67,
+          "xmax": 0.74,
+          "label": ""
+        },
+        {
+          "xmin": 0.74,
+          "xmax": 0.9,
+          "label": "때"
+        },
+        {
+          "xmin": 0.9,
+          "xmax": 0.94,
+          "label": ""
+        },
+        {
+          "xmin": 0.94,
+          "xmax": 1.06,
+          "label": "아"
+        },
+        {
+          "xmin": 1.06,
+          "xmax": 1.33,
+          "label": "이런"
+        },
+        {
+          "xmin": 1.33,
+          "xmax": 2.25,
+          "label": "노래였구나"
+        },
+        {
+          "xmin": 2.25,
+          "xmax": 2.71,
+          "label": ""
+        },
+        {
+          "xmin": 2.71,
+          "xmax": 2.8040383473978294,
+          "label": "를"
+        },
+        {
+          "xmin": 2.8040383473978294,
+          "xmax": 3.25,
+          "label": "나중에"
+        },
+        {
+          "xmin": 3.25,
+          "xmax": 3.520033704682393,
+          "label": "알게"
+        },
+        {
+          "xmin": 3.520033704682393,
+          "xmax": 4.0,
+          "label": "되는"
+        },
+        {
+          "xmin": 4.0,
+          "xmax": 4.122,
+          "label": ""
+        }
+      ],
+      "final_transcript": "노래방에서 부를 때 아 이런 노래였구나 를 나중에 알게 되는",
+      "orth_roman_v2": "N O _ R AE _ B A ng _ E _ S EO | B U _ R EU l | TT AE | A | I _ R EO n | N O _ R AE _ YEO ss _ G U _ N A | R EU l | N A _ J U ng _ E | A l _ G E | D OE _ N EU n",
+      "edit_reason": "d10_researcher_return:same_characters_different_word_segmentation",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\11_2023_SDRW2300000013.1.1.213.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "7a457e50a716a48b30dc63a8b082b197956eb1306175b608b16b2f7a1e181074",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-12-SDRW2300000085.1.1.299",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2023,
+      "utt_id": "SDRW2300000085.1.1.299",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\12_2023_SDRW2300000085.1.1.299.TextGrid",
+      "base_textgrid_sha256": "ca63048ede38dcc839b8aaea51a62ac04b655e422c165be5710824e906d87234",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.04,
+          "label": ""
+        },
+        {
+          "xmin": 0.04,
+          "xmax": 0.18,
+          "label": "이렇게"
+        },
+        {
+          "xmin": 0.18,
+          "xmax": 0.45,
+          "label": "돈을"
+        },
+        {
+          "xmin": 0.45,
+          "xmax": 0.58,
+          "label": "딱"
+        },
+        {
+          "xmin": 0.58,
+          "xmax": 0.828,
+          "label": "주시더라고요"
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.04,
+          "label": ""
+        },
+        {
+          "xmin": 0.04,
+          "xmax": 0.18,
+          "label": "이렇게"
+        },
+        {
+          "xmin": 0.18,
+          "xmax": 0.45,
+          "label": "돈을"
+        },
+        {
+          "xmin": 0.45,
+          "xmax": 0.58,
+          "label": "딱"
+        },
+        {
+          "xmin": 0.58,
+          "xmax": 0.828,
+          "label": "주시더"
+        }
+      ],
+      "final_transcript": "이렇게 돈을 딱 주시더",
+      "orth_roman_v2": "I _ R EO h _ G E | D O n _ EU l | TT A k | J U _ S I _ D EO",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\12_2023_SDRW2300000085.1.1.299.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "2c603a396de6cc98a9032e1bb016b6bff85b7dc9dd5a552fcb5060d255b4b87e",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-14-SDRW2300000169.1.1.115",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2023,
+      "utt_id": "SDRW2300000169.1.1.115",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\14_2023_SDRW2300000169.1.1.115.TextGrid",
+      "base_textgrid_sha256": "2fe05fa1903fb89259932a463ddaa355854b5e1845615b6a7d3c7fbd6b19e19e",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.53,
+          "label": ""
+        },
+        {
+          "xmin": 0.53,
+          "xmax": 1.08,
+          "label": "여름이다"
+        },
+        {
+          "xmin": 1.08,
+          "xmax": 1.58,
+          "label": "보니까"
+        },
+        {
+          "xmin": 1.58,
+          "xmax": 1.74,
+          "label": "이제"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 2.21,
+          "label": "보양식"
+        },
+        {
+          "xmin": 2.21,
+          "xmax": 2.48,
+          "label": "같은"
+        },
+        {
+          "xmin": 2.48,
+          "xmax": 2.77,
+          "label": "경우"
+        },
+        {
+          "xmin": 2.77,
+          "xmax": 3.14,
+          "label": "문어"
+        },
+        {
+          "xmin": 3.14,
+          "xmax": 3.49,
+          "label": "낙지"
+        },
+        {
+          "xmin": 3.49,
+          "xmax": 3.6,
+          "label": "그런"
+        },
+        {
+          "xmin": 3.6,
+          "xmax": 3.66,
+          "label": "거"
+        },
+        {
+          "xmin": 3.66,
+          "xmax": 3.686,
+          "label": "이제"
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.013187225169653415,
+          "label": ""
+        },
+        {
+          "xmin": 0.013187225169653415,
+          "xmax": 0.4530792830583837,
+          "label": "그"
+        },
+        {
+          "xmin": 0.4530792830583837,
+          "xmax": 0.53,
+          "label": ""
+        },
+        {
+          "xmin": 0.53,
+          "xmax": 1.08,
+          "label": "여름이다"
+        },
+        {
+          "xmin": 1.08,
+          "xmax": 1.58,
+          "label": "보니까"
+        },
+        {
+          "xmin": 1.58,
+          "xmax": 1.74,
+          "label": "인제"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 2.21,
+          "label": "보양식"
+        },
+        {
+          "xmin": 2.21,
+          "xmax": 2.48,
+          "label": "같은"
+        },
+        {
+          "xmin": 2.48,
+          "xmax": 2.77,
+          "label": "경우"
+        },
+        {
+          "xmin": 2.77,
+          "xmax": 3.14,
+          "label": "문어"
+        },
+        {
+          "xmin": 3.14,
+          "xmax": 3.500080291366185,
+          "label": "낙지"
+        },
+        {
+          "xmin": 3.500080291366185,
+          "xmax": 3.686,
+          "label": "그런"
+        }
+      ],
+      "final_transcript": "그 여름이다 보니까 인제 보양식 같은 경우 문어 낙지 그런",
+      "orth_roman_v2": "G EU | YEO _ R EU m _ I _ D A | B O _ N I _ KK A | I n _ J E | B O _ YA ng _ S I k | G A th _ EU n | G YEO ng _ U | M U n _ EO | N A k _ J I | G EU _ R EO n",
+      "edit_reason": "d10_researcher_return:researcher_manual_transcription_override",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\14_2023_SDRW2300000169.1.1.115.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "e09c13f786ec00f15c9d3fc5c2eb7391cbbec2071498bf9acf2116248f06aaa8",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-15-SDRW2300000219.1.1.194",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2023,
+      "utt_id": "SDRW2300000219.1.1.194",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\15_2023_SDRW2300000219.1.1.194.TextGrid",
+      "base_textgrid_sha256": "35bc52535cf11d608d744cd860bbc3aba3fb5e91cefef3e67a821020d4a5fa52",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.05,
+          "label": ""
+        },
+        {
+          "xmin": 0.05,
+          "xmax": 0.3,
+          "label": "뭐"
+        },
+        {
+          "xmin": 0.3,
+          "xmax": 0.48,
+          "label": ""
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.7,
+          "label": "다"
+        },
+        {
+          "xmin": 0.7,
+          "xmax": 0.96,
+          "label": "뭐"
+        },
+        {
+          "xmin": 0.96,
+          "xmax": 1.26,
+          "label": "재산"
+        },
+        {
+          "xmin": 1.26,
+          "xmax": 1.5,
+          "label": "같은"
+        },
+        {
+          "xmin": 1.5,
+          "xmax": 1.56,
+          "label": "거"
+        },
+        {
+          "xmin": 1.56,
+          "xmax": 1.76,
+          "label": "있으면"
+        },
+        {
+          "xmin": 1.76,
+          "xmax": 2.43,
+          "label": "자식들한테"
+        },
+        {
+          "xmin": 2.43,
+          "xmax": 2.72,
+          "label": "나도"
+        },
+        {
+          "xmin": 2.72,
+          "xmax": 2.78,
+          "label": ""
+        },
+        {
+          "xmin": 2.78,
+          "xmax": 2.87,
+          "label": "뭐"
+        },
+        {
+          "xmin": 2.87,
+          "xmax": 3.07,
+          "label": "그게그게"
+        },
+        {
+          "xmin": 3.07,
+          "xmax": 3.1,
+          "label": "참"
+        },
+        {
+          "xmin": 3.1,
+          "xmax": 3.14,
+          "label": "저도"
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.05,
+          "label": ""
+        },
+        {
+          "xmin": 0.05,
+          "xmax": 0.3624221782720917,
+          "label": "뭐"
+        },
+        {
+          "xmin": 0.3624221782720917,
+          "xmax": 0.48,
+          "label": ""
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.7,
+          "label": "다"
+        },
+        {
+          "xmin": 0.7,
+          "xmax": 0.96,
+          "label": "뭐"
+        },
+        {
+          "xmin": 0.96,
+          "xmax": 1.26,
+          "label": "재산"
+        },
+        {
+          "xmin": 1.26,
+          "xmax": 1.5,
+          "label": "같은"
+        },
+        {
+          "xmin": 1.5,
+          "xmax": 1.76,
+          "label": "것은"
+        },
+        {
+          "xmin": 1.76,
+          "xmax": 2.43,
+          "label": "자식들한테"
+        },
+        {
+          "xmin": 2.43,
+          "xmax": 2.8894087491665608,
+          "label": "놔두고"
+        },
+        {
+          "xmin": 2.8894087491665608,
+          "xmax": 3.014973299273118,
+          "label": ""
+        },
+        {
+          "xmin": 3.014973299273118,
+          "xmax": 3.14,
+          "label": "그게"
+        }
+      ],
+      "final_transcript": "뭐 다 뭐 재산 같은 것은 자식들한테 놔두고 그게",
+      "orth_roman_v2": "M WO | D A | M WO | J AE _ S A n | G A th _ EU n | G EO s _ EU n | J A _ S I k _ D EU l _ H A n _ T E | N WA _ D U _ G O | G EU _ G E",
+      "edit_reason": "d10_researcher_return:researcher_manual_transcription_override",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\15_2023_SDRW2300000219.1.1.194.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "648119bcc7daf308b47f4e2a0cd9ff1ac146e4cbea45a069046b44439e90e4e7",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-16-SARW2400000020.1.1.11",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2024,
+      "utt_id": "SARW2400000020.1.1.11",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\16_2024_SARW2400000020.1.1.11.TextGrid",
+      "base_textgrid_sha256": "6f2c7aa1cb31f5c06a38f3f19645740272a4e20b7260a8871894e3dfa4565936",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.26,
+          "label": ""
+        },
+        {
+          "xmin": 0.26,
+          "xmax": 0.46,
+          "label": "구십"
+        },
+        {
+          "xmin": 0.46,
+          "xmax": 0.79,
+          "label": "년대"
+        },
+        {
+          "xmin": 0.79,
+          "xmax": 1.25,
+          "label": "시카고"
+        },
+        {
+          "xmin": 1.25,
+          "xmax": 1.65,
+          "label": "불쓰가"
+        },
+        {
+          "xmin": 1.65,
+          "xmax": 1.91,
+          "label": "황금기를"
+        },
+        {
+          "xmin": 1.91,
+          "xmax": 2.04,
+          "label": "보내는"
+        },
+        {
+          "xmin": 2.04,
+          "xmax": 2.08,
+          "label": "데"
+        },
+        {
+          "xmin": 2.08,
+          "xmax": 2.15,
+          "label": "큰"
+        },
+        {
+          "xmin": 2.15,
+          "xmax": 2.26,
+          "label": "역할을"
+        },
+        {
+          "xmin": 2.26,
+          "xmax": 2.33,
+          "label": "한"
+        },
+        {
+          "xmin": 2.33,
+          "xmax": 2.57,
+          "label": "인물들을"
+        },
+        {
+          "xmin": 2.57,
+          "xmax": 2.66,
+          "label": "위한"
+        },
+        {
+          "xmin": 2.66,
+          "xmax": 2.89,
+          "label": "행사였던"
+        },
+        {
+          "xmin": 2.89,
+          "xmax": 2.97,
+          "label": "만큼"
+        },
+        {
+          "xmin": 2.97,
+          "xmax": 3.199937,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.26,
+          "label": ""
+        },
+        {
+          "xmin": 0.26,
+          "xmax": 0.46,
+          "label": "구십"
+        },
+        {
+          "xmin": 0.46,
+          "xmax": 0.79,
+          "label": "년대"
+        },
+        {
+          "xmin": 0.79,
+          "xmax": 1.25,
+          "label": "시카고"
+        },
+        {
+          "xmin": 1.25,
+          "xmax": 1.65,
+          "label": "불쓰가"
+        },
+        {
+          "xmin": 1.65,
+          "xmax": 2.3787332993983896,
+          "label": "황금기를"
+        },
+        {
+          "xmin": 2.3787332993983896,
+          "xmax": 2.97,
+          "label": "보내는데"
+        },
+        {
+          "xmin": 2.97,
+          "xmax": 3.199937,
+          "label": ""
+        }
+      ],
+      "final_transcript": "구십 년대 시카고 불쓰가 황금기를 보내는데",
+      "orth_roman_v2": "G U _ S I p | N YEO n _ D AE | S I _ K A _ G O | B U l _ SS EU _ G A | H WA ng _ G EU m _ G I _ R EU l | B O _ N AE _ N EU n _ D E",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\16_2024_SARW2400000020.1.1.11.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "dd478a1fc1ac86c3ffc40fa807489f25b9284a397e3ad0329076a84871ea7831",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-17-SARW2400000033.1.1.16",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2024,
+      "utt_id": "SARW2400000033.1.1.16",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\17_2024_SARW2400000033.1.1.16.TextGrid",
+      "base_textgrid_sha256": "3e51834cbc8a0c6c563c107ecee6a6c96c9cf79a4aa3548337ef57faa325b239",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.33,
+          "label": ""
+        },
+        {
+          "xmin": 0.33,
+          "xmax": 0.48,
+          "label": "특히"
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.98,
+          "label": "분당은"
+        },
+        {
+          "xmin": 0.98,
+          "xmax": 1.33,
+          "label": "그야말로"
+        },
+        {
+          "xmin": 1.33,
+          "xmax": 1.6,
+          "label": "살기"
+        },
+        {
+          "xmin": 1.6,
+          "xmax": 1.74,
+          "label": "좋은"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 2.26,
+          "label": "신도시의"
+        },
+        {
+          "xmin": 2.26,
+          "xmax": 2.62,
+          "label": "대표격이었는데"
+        },
+        {
+          "xmin": 2.62,
+          "xmax": 2.71,
+          "label": "네이버"
+        },
+        {
+          "xmin": 2.71,
+          "xmax": 2.88,
+          "label": "본사와"
+        },
+        {
+          "xmin": 2.88,
+          "xmax": 3.06,
+          "label": "리니지의"
+        },
+        {
+          "xmin": 3.06,
+          "xmax": 3.28,
+          "label": "엔씨소프트"
+        },
+        {
+          "xmin": 3.28,
+          "xmax": 3.50325,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.33,
+          "label": ""
+        },
+        {
+          "xmin": 0.33,
+          "xmax": 0.48,
+          "label": "특히"
+        },
+        {
+          "xmin": 0.48,
+          "xmax": 0.98,
+          "label": "분당은"
+        },
+        {
+          "xmin": 0.98,
+          "xmax": 1.33,
+          "label": "그야말로"
+        },
+        {
+          "xmin": 1.33,
+          "xmax": 1.6,
+          "label": "살기"
+        },
+        {
+          "xmin": 1.6,
+          "xmax": 1.74,
+          "label": "좋은"
+        },
+        {
+          "xmin": 1.74,
+          "xmax": 2.26,
+          "label": "신도시의"
+        },
+        {
+          "xmin": 2.26,
+          "xmax": 3.28,
+          "label": "대표격이었는데"
+        },
+        {
+          "xmin": 3.28,
+          "xmax": 3.50325,
+          "label": ""
+        }
+      ],
+      "final_transcript": "특히 분당은 그야말로 살기 좋은 신도시의 대표격이었는데",
+      "orth_roman_v2": "T EU k _ H I | B U n _ D A ng _ EU n | G EU _ YA _ M A l _ R O | S A l _ G I | J O h _ EU n | S I n _ D O _ S I _ UI | D AE _ P YO _ G YEO k _ I _ EO ss _ N EU n _ D E",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\17_2024_SARW2400000033.1.1.16.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "e8f5ca7ee4dea29e6aad5b89bbcf84c8d88ea8fa09454e614429b04a2fcb5f27",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    },
+    {
+      "edit_id": "D10-18-SARW2400000095.1.1.98",
+      "study_id": "nikl_dialogue_research_db_v1",
+      "year": 2024,
+      "utt_id": "SARW2400000095.1.1.98",
+      "base_release_id": "nikl_dialogue_research_db_v1_0_0_rc0_20260815",
+      "base_textgrid_path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reviews\\db_v1_recovery_d9_review_19_20260817\\18_2024_SARW2400000095.1.1.98.TextGrid",
+      "base_textgrid_sha256": "21244be2ba921462d3ee8cdd296ac08a2e5b9a11568c3edcc800cc331330e6a8",
+      "parent_revision": "db_v1_0_0_rc0",
+      "tier_name": "words_manual_working",
+      "operation": "replace_tier_snapshot_candidate",
+      "base_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.27,
+          "label": ""
+        },
+        {
+          "xmin": 0.27,
+          "xmax": 0.41,
+          "label": "아"
+        },
+        {
+          "xmin": 0.41,
+          "xmax": 0.64,
+          "label": "아무튼"
+        },
+        {
+          "xmin": 0.64,
+          "xmax": 1.03,
+          "label": "저는"
+        },
+        {
+          "xmin": 1.03,
+          "xmax": 1.8,
+          "label": "중반까지만"
+        },
+        {
+          "xmin": 1.8,
+          "xmax": 2.17,
+          "label": "해도"
+        },
+        {
+          "xmin": 2.17,
+          "xmax": 2.27,
+          "label": "이"
+        },
+        {
+          "xmin": 2.27,
+          "xmax": 3.33,
+          "label": "왕위보의"
+        },
+        {
+          "xmin": 3.33,
+          "xmax": 3.37,
+          "label": "이"
+        },
+        {
+          "xmin": 3.37,
+          "xmax": 3.81,
+          "label": "실력에"
+        },
+        {
+          "xmin": 3.81,
+          "xmax": 4.21,
+          "label": "깜짝"
+        },
+        {
+          "xmin": 4.21,
+          "xmax": 4.62,
+          "label": "놀랐는데"
+        },
+        {
+          "xmin": 4.62,
+          "xmax": 4.76,
+          "label": "깜짝"
+        },
+        {
+          "xmin": 4.76,
+          "xmax": 5.09,
+          "label": "놀랐는데"
+        },
+        {
+          "xmin": 5.09,
+          "xmax": 5.40475,
+          "label": ""
+        }
+      ],
+      "curated_word_intervals": [
+        {
+          "xmin": 0.0,
+          "xmax": 0.27,
+          "label": ""
+        },
+        {
+          "xmin": 0.27,
+          "xmax": 0.41,
+          "label": "아"
+        },
+        {
+          "xmin": 0.41,
+          "xmax": 0.64,
+          "label": "아무튼"
+        },
+        {
+          "xmin": 0.64,
+          "xmax": 1.03,
+          "label": "저는"
+        },
+        {
+          "xmin": 1.03,
+          "xmax": 1.8,
+          "label": "중반까지만"
+        },
+        {
+          "xmin": 1.8,
+          "xmax": 2.17,
+          "label": "해도"
+        },
+        {
+          "xmin": 2.17,
+          "xmax": 2.27,
+          "label": "이"
+        },
+        {
+          "xmin": 2.27,
+          "xmax": 3.33,
+          "label": "왕위보의"
+        },
+        {
+          "xmin": 3.33,
+          "xmax": 3.37,
+          "label": "이"
+        },
+        {
+          "xmin": 3.37,
+          "xmax": 3.81,
+          "label": "실력에"
+        },
+        {
+          "xmin": 3.81,
+          "xmax": 4.21,
+          "label": "깜짝"
+        },
+        {
+          "xmin": 4.21,
+          "xmax": 5.09,
+          "label": "놀랐는데"
+        },
+        {
+          "xmin": 5.09,
+          "xmax": 5.40475,
+          "label": ""
+        }
+      ],
+      "final_transcript": "아 아무튼 저는 중반까지만 해도 이 왕위보의 이 실력에 깜짝 놀랐는데",
+      "orth_roman_v2": "A | A _ M U _ T EU n | J EO _ N EU n | J U ng _ B A n _ KK A _ J I _ M A n | H AE _ D O | I | WA ng _ WI _ B O _ UI | I | S I l _ R YEO k _ E | KK A m _ JJ A k | N O l _ R A ss _ N EU n _ D E",
+      "edit_reason": "d10_researcher_return:exact_word_sequence",
+      "editor": "ari30",
+      "edited_at": "2026-08-18T14:50:11+09:00",
+      "review_status": "reviewed_frozen_pending_adoption",
+      "active_annotation_source_candidate": "curated",
+      "active_annotation_revision_candidate": "D10_researcher_return_0001",
+      "active_textgrid_path_candidate": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_RESEARCHER_RETURN_0001\\normalized\\18_2024_SARW2400000095.1.1.98.manual_overlay.TextGrid",
+      "active_textgrid_sha256_candidate": "c343dedb08a2b2af996fca43318c23ba5edca15106d1efa2bd12ba335301a04d",
+      "manual_edit_count": 1,
+      "phone_layer_status": "d9_reference_only_not_adopted",
+      "phoneme_layer_status": "pending_curated_alignment",
+      "morph_enrichment_status": "pending_rebuild_from_curated_transcript"
+    }
+  ],
+  "constraints": {
+    "base_textgrids_modified": false,
+    "curated_phone_boundaries_claimed": false,
+    "morphology_rebuilt": false
+  }
+}

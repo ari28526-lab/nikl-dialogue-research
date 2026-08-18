@@ -1,0 +1,16 @@
+{
+  "schema_version": "research_db_v1_rc1_recovery_adoption_approval.v1",
+  "status": "pending_researcher_approval",
+  "scope": {
+    "status_overlay_rows": 55,
+    "manual_annotation_snapshots": 16
+  },
+  "candidate_hashes": {
+    "status_overlay_sha256": "37fcc2769becd015eb1ec5d9fdb44878335240a644160578be29022089f22ceb",
+    "manual_snapshots_sha256": "4b075599f4da6dd74bfd6dd627e458df3ee66a7df0e055d0c5fcf5263035bffa"
+  },
+  "approval_statement": "DB v1 RC1 recovery Gate의 exact-ID 55건 상태 overlay와 D10 수동 전사·word 경계 16건을 append-only curated snapshot으로 채택한다. 기존 RC0·r3·6-tier는 덮어쓰지 않고, D9 phone은 참고 전용으로 유지하며 형태소·phone 재구축은 별도 후속 Gate로 남긴다. 승인자 ari30.",
+  "approved_by": null,
+  "approved_at": null,
+  "automatic_approval_performed": false
+}

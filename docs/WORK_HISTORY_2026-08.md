@@ -3822,3 +3822,19 @@ shard 2–23을 재개하는 것이다.
 - Dropbox 반환, D10 초기 작업본, 원 WAV·LAB, r3 본체, 최종 6-tier, DB v1은
   바꾸지 않았고 MFA도 실행하지 않았다. 다음은 이 exact ID들의 수동 word
   overlay와 provenance를 연결하는 별도 adoption Gate다.
+
+## 2026-08-18 — DB v1 RC1 recovery 채택 Gate
+
+- D7 11건, D8 0.1초 미만 25건, D9 19건을 중복 없는 exact-ID 55건으로
+  확정하고 RC0·D1 recovery 장부에서 전부 `post_mfa_technical_exclusion`으로
+  대조했다.
+- D10 연구자 반환 16건의 수동 word 경계·최종 전사·철자 Roman만 curated
+  snapshot 후보로 만들었다. D9 phone은 참고 전용이고 수정 전사의 형태소 및
+  phone/phoneme은 후속 재구축 대기로 남겼다.
+- `nikl_dialogue_research_db_v1_rc1_recovery_adoption_gate_20260818` 후보 패키지를
+  생성하고 독립 감사를 통과했다. RC0, r3, 최종 6-tier, TextGrid, MFA는
+  변경하지 않았고 자동 채택도 수행하지 않았다.
+- 구현 코드와 계획은 커밋 `645d04e`로 먼저 고정한 뒤 manifest에 해당 전체
+  커밋 SHA와 builder SHA를 기록했다.
+- 다음 단계는 후보 SHA 범위에 대한 단일 연구자 승인 뒤 append-only RC1
+  sidecar를 materialize하는 것이다. 새 청취·전수 재정렬은 필요하지 않다.

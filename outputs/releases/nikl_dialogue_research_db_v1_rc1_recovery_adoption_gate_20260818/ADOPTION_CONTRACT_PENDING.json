@@ -1,0 +1,23 @@
+{
+  "schema_version": "research_db_v1_rc1_recovery_adoption_gate.v1",
+  "status": "gate_closed_pending_researcher_approval",
+  "recorded_at": "2026-08-18T15:24:34+09:00",
+  "counts": {
+    "exact_status_rows": 55,
+    "manual_snapshots": 16,
+    "technical_or_noise_exclusions": 30,
+    "transcript_recovery_candidates": 2,
+    "partial_preserved": 6,
+    "curated_recovery": 16,
+    "recovered_alignment_pending_enrichment": 1
+  },
+  "safety": {
+    "base_ledger_modified": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "textgrid_modified": false,
+    "mfa_run": false,
+    "automatic_adoption_performed": false
+  },
+  "next_gate": "researcher approval, then append-only RC1 sidecar materialization"
+}
