@@ -1,0 +1,48 @@
+{
+  "schema_version": "researcher_scope_approval.v1",
+  "status": "explicitly_approved",
+  "recorded_date": "2026-08-18",
+  "approver": "ari30",
+  "approval_text": "2단계 G1: ㄴ 삽입 생산 query v1(QN1 어절 내부, QN2 어절 간)의 조건을 검토하고 동결을 승인한다. 왼쪽 품사 무제한(넓은 추출), ㅢ 제외, 오른쪽 J*/E* 정규식 제외를 포함한 현재 조건 그대로다. 경계 사례(조사 말음 어절 등)는 추출 후 세분류에서 처리한다. 승인자 ari30.",
+  "approved_scope": {
+    "freeze_query_set_n_insertion_production_v1": true,
+    "two_populations_intra_and_inter_eojeol": true,
+    "right_pos_J_E_excluded_via_regex": true,
+    "left_pos_unrestricted_broad_extraction": true,
+    "nucleus_set_7_i_j_class_no_ui": true,
+    "hangul_units_only_numbers_symbols_excluded": true,
+    "boundary_and_etym_classification_deferred_downstream": true
+  },
+  "not_authorized": {
+    "six_year_production_query_execution": true,
+    "note_g3_2020_audit_requires_separate_go": "G3(2020 단일 연도 생산 감사) 실행과 G4(6개년 전수 생성)는 각 Gate의 preflight 후 별도 GO를 받는다.",
+    "automatic_realization_judgement": true,
+    "mfa_reexecution": true,
+    "raw_or_rc0_rc1_overwrite": true
+  },
+  "bound_documents": [
+    {
+      "path": "config/target_queries/n_insertion_production_v1_20260818.json",
+      "bytes": 3211,
+      "sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6"
+    },
+    {
+      "path": "docs/decisions/PLAN_n_insertion_B1_to_production_query_20260818.md",
+      "bytes": 3078,
+      "sha256": "32fd99ebe35fd4c93610da5cb003fee396707c8237fdb5d432a4e2e96b995ebc"
+    },
+    {
+      "path": "phenomena/34_n_insertion/definition.md",
+      "bytes": 4203,
+      "sha256": "aa23b940d1e556df98cee5f332e8757f886ab098f468620fe084b93e90983513"
+    }
+  ],
+  "validation_evidence": {
+    "method": "builder condition engine imported directly from scripts/python/build_db_v1_target_manifest.py (no reimplementation); validate_query_set passed; 23 synthetic boundary-row cases from phenomena definition",
+    "cases_total": 23,
+    "cases_passed": 23,
+    "includes_confirmed": ["솜+이불", "색+연필", "꽃+잎", "한+여름(XPN)", "담+요(ㅛ)", "설+익다(VV)", "한자어 내부(ㅑ)", "십+육(NR,ㅠ)", "ㅖ 계열", "옷#입다(inter)", "어절간 NNG", "는#여행(inter, 좌측 JX 포함 확인)"],
+    "excludes_confirmed": ["조사 JKS", "어미 EC", "어미 EP", "초성 비ㅇ", "종성 없음", "숫자 unit", "기호 unit", "중성 ㅢ", "scope 교차 비매칭 2건"]
+  },
+  "note": "이 승인은 query 조건의 동결만 승인한다. 실행은 G3부터 Gate별 별도 GO를 따른다. source column 실재는 2020 morph_boundaries.csv.gz 헤더 실측(2026-08-18)으로 확인했다."
+}
