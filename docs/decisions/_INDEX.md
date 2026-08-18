@@ -80,6 +80,7 @@
 | `RESULT_common_pron_r3_pre_adoption_routing_20260808.md` | 실제 pre-MFA tokenizer로 5,103,356발화를 safe body 4,384,992와 follow-up 718,364로 전수 라우팅한 Stage 19 |
 | `RESULT_common_pron_r3_safe_body_candidate_20260808.md` | 795,804형·796,061변이의 `NOT_ADOPTED` 후보 사전과 frozen acoustic inventory 전수 감사 |
 | `RESULT_common_pron_r3_targeted_regression_20260808.md` | 기존 2022 문제 표본 네 발화의 r3 표적 정렬·자동 구조 검사와 최소 연구자 검토 절차 |
+| `RESULT_db_v1_recovery_D10_materialization_20260818.md` | D9 부분 보존 16건을 D: 격리 수동 작업본으로 생성하고 4-tier·파일 SHA·비채택 상태를 감사한 결과 |
 | `DECISION_common_pron_r3_adoption_choice_pending_20260808.md` | 단계적 safe-body 채택 전 선택 Gate의 역사 기록; 2026-08-09 승인으로 해소됨 |
 | `DECISION_common_pron_r3_full_realign_2020_2025_20260809.md` | safe-body 4,384,992발화의 6개년 신규 r3 정렬, r2 interval 비재사용, follow-up 718,364 별도 보존을 확정한 현행 결정 |
 | `DECISION_common_pron_r3_v3_1_staged_adoption_amendment_20260809.md` | 승인된 단계적 safe-body 범위를 v3.1 계약으로 고정하고 최초 승인과 provenance sidecar를 분리한 결정 |

@@ -1,5 +1,14 @@
 # 프로젝트 현재 상태 정본
 
+> **2026-08-18 D10 격리 수동 작업본 생성 완료·채택 전:** D9 부분 보존 16건을
+> D:의 `D10_MANUAL_OVERLAY_0001`에 16세트×5파일로 materialize했고 전수 SHA·
+> 길이·tier 감사를 통과했다. 수동 TextGrid는 D9 word/phone 참고, 제안 전사,
+> `words_manual_working` 네 tier다. 국소 수정 9건은 D9 word 경계를 초안으로
+> 가져왔고 전체 재정렬 6건·단일어 1건은 빈 작업 tier로 시작한다. 원본·r3·
+> 최종 6-tier·DB v1 변경과 MFA 실행은 0건이다. 현재 상태는
+> `materialized_pending_researcher_manual_overlay`이며 수동 경계 수정과 별도
+> adoption Gate 전에는 alignment/analysis 범위로 복귀하지 않는다.
+
 > **2026-08-18 D10 manual overlay Gate 준비 완료:** D9 연구자 판정에서 수동
 > 복구할 16건을 국소 수정 9·전체 재정렬 6·단일어 1로 고정하고, 실제 들린 문장과
 > 수정 지시를 exact-ID queue로 만들었다. 기술 제외 2·직접 승인 1은 섞지 않았다.

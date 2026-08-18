@@ -231,6 +231,8 @@ manifest와 독립 감사 보고서가 재현 가능한 정본이다. H:의 대�
 | `outputs\reports\AUDIT_db_v1_recovery_D9_researcher_review_20260818.json` | 원 검토표–19개 연구자 판정 exact-ID·수량·상태 독립 검사 | `passed_researcher_review_complete_no_adoption`; 누락·중복·pending 0 |
 | `outputs\releases\nikl_dialogue_research_db_v1_recovery_d10_manual_overlay_gate_20260818` | 16건 수정 전사·수동 overlay queue, 기술 제외 2·승인 1 별도 routing, 해시 manifest | `passed_gate_closed_before_overlay_materialization`; WAV 복사·TextGrid/DB 변경·MFA 0 |
 | `outputs\reports\AUDIT_db_v1_recovery_D10_manual_overlay_gate_20260818.json` | D10 queue와 D9 판정 exact-ID·분류·제안 전사 독립 검사 | 통과: 국소 9·전체 6·단일어 1, 제외 2, 승인 1, pending 0 |
+| `D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D10_MANUAL_OVERLAY_0001` | D9 부분 보존 16건의 번호순 WAV·원/제안 LAB·D9 참고/수동 작업 TextGrid와 상태·감사 | `materialized_pending_researcher_manual_overlay`; 16세트×5종, 전체 85파일·1,730,225 bytes, 자동 채택 0 |
+| `outputs\reports\RESULT_db_v1_recovery_D10_materialization_20260818.json` | D10 실물 수량·tier 초기화 정책·D: 증거 SHA·안전 정지점 정본 | 생성·독립 감사 통과; 원본·r3·6-tier·DB v1 변경과 MFA 0 |
 
 WAV·LAB·TextGrid는 Git 전역 제외 규칙에 따라 로컬 검토 root에만 있고, JSON·MD
 manifest와 생성·감사 코드는 Git으로 추적한다. Dropbox 사본은 개인 검토 목적이며

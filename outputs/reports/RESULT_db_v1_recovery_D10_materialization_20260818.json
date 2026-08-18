@@ -1,0 +1,47 @@
+{
+  "schema_version": "research_db_v1_recovery_d10_materialization_result.v1",
+  "status": "materialized_pending_researcher_manual_overlay",
+  "recorded_at": "2026-08-18T13:28:50+09:00",
+  "target_root": "D:\\mfa_eojeol\\recovery\\common_pron_mfa_r3_20260809\\D10_MANUAL_OVERLAY_0001",
+  "source_researcher_decisions_sha256": "dfae38846dea711ff25f3330b34d4f7372cb349bc485ae4d3755302a4273f1d8",
+  "source_review_manifest_sha256": "c6e5873daef5f305eeaf27791c0d7435657aeac8af72b41d3d22731e6d10fd99",
+  "counts": {
+    "candidate_sets": 16,
+    "localized_manual_edit": 9,
+    "full_manual_realignment": 6,
+    "single_word_manual_recovery": 1,
+    "wav": 16,
+    "source_lab": 16,
+    "proposed_lab": 16,
+    "d9_reference_textgrid": 16,
+    "manual_working_textgrid": 16,
+    "all_materialized_files": 85,
+    "all_materialized_bytes": 1730225
+  },
+  "manual_working_tiers": [
+    "words_d9_reference",
+    "phones_d9_reference",
+    "transcript_proposed",
+    "words_manual_working"
+  ],
+  "initialization_policy": {
+    "localized_manual_edit": "words_manual_working copies D9 words as an editable draft",
+    "full_manual_realignment": "words_manual_working starts as one blank full-duration interval",
+    "single_word_manual_recovery": "words_manual_working starts as one blank full-duration interval"
+  },
+  "evidence": {
+    "readme_sha256": "5de9877a6143662c137b81fb1682d7f6fd39dab601ecd75277b6536ba74e2b6e",
+    "work_queue_sha256": "d389c873154174ef3a306a04952ab0abb7328764cfef3f59519f864b11a96815",
+    "materialization_audit_sha256": "8abba34e73c3e2d289c4ec3432e015a3662e6f0eb74da017cc3cda3f3075411e",
+    "materialized_done_sha256": "fad0ab9d5e6c94e20109721d4e2a883d20a53f0a1f7769b33c2355232b44291b"
+  },
+  "safety": {
+    "source_files_modified": false,
+    "r3_main_body_modified": false,
+    "research_6tier_modified": false,
+    "db_v1_modified": false,
+    "mfa_run": false,
+    "automatic_adoption_performed": false
+  },
+  "next_gate": "Researcher edits words_manual_working only; validate boundaries and transcription, then build a separate adoption overlay."
+}

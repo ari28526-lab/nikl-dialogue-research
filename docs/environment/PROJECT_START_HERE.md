@@ -2,6 +2,16 @@
 
 최종 갱신: 2026-08-18 KST
 
+> **현재 진입점 — 2026-08-18 D10 격리 수동 작업본 생성 완료:** D9에서
+> 수정 전사·수동 overlay 대상으로 판정한 16 exact ID만 D:의 별도
+> `D10_MANUAL_OVERLAY_0001`에 번호순으로 materialize했다. 국소 수정 9건은
+> D9 word 경계를 초안으로, 전체 재정렬 6건과 단일어 1건은 빈 작업 tier로
+> 시작한다. 각 수동 TextGrid는 D9 word/phone 참고, 제안 전사, 실제 수정할
+> `words_manual_working`의 4-tier다. 원본·r3·최종 6-tier·DB v1은 바뀌지 않았고
+> MFA도 실행하지 않았다. 다음은
+> `docs/decisions/RESULT_db_v1_recovery_D10_materialization_20260818.md`를 따라
+> `words_manual_working`만 수동 보정한 뒤 별도 adoption Gate를 만드는 것이다.
+
 > **현재 진입점 — 2026-08-18 D10 수동 overlay Gate 준비 완료:** D9 부분
 > 보존 16건을 국소 수정 9, 전체 수동 재정렬 6, 단일어 복구 1로 분리하고 연구자
 > 청취 결과에 따른 제안 전사와 비언어음·배경음 표지를 exact ID에 결속했다.

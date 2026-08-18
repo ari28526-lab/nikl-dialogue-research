@@ -3765,3 +3765,22 @@ shard 2–23을 재개하는 것이다.
 - 현재 Gate는 `passed_gate_closed_before_overlay_materialization`이다. WAV 복사,
   LAB/TextGrid 수정, MFA, r3·6-tier·DB v1 변경은 모두 0건이다. 다음은 16건만
   격리 작업 사본으로 만드는 단계다.
+
+### 2026-08-18 — D10 격리 수동 작업본 생성과 감사
+
+- D10 Gate manifest, D9 연구자 결정 SHA `dfae3884...f1d8`, D9 검토 bundle
+  manifest, 16 exact ID와 source WAV·LAB·TextGrid SHA를 재검증했다. WAV와
+  D9 TextGrid 길이, `words`·`phones` tier도 생성 전에 확인했다.
+- 먼저 workspace smoke root에서 16세트×5종 생성과 독립 감사를 실행해 통과한
+  뒤 임시 산출물을 제거했다. 그 다음 동일 코드를 D:의
+  `D10_MANUAL_OVERLAY_0001`에 실행해 최종 85파일·1,730,225 bytes를 만들었다.
+- 수동 TextGrid는 `words_d9_reference`, `phones_d9_reference`,
+  `transcript_proposed`, `words_manual_working` 네 tier다. 국소 수정 9건은 기존
+  word 경계를 편집 초안으로 복사했고, 전체 수동 재정렬 6건과 단일어 1건은 잘못된
+  D9 경계를 정답처럼 재사용하지 않도록 빈 작업 tier로 시작했다.
+- 생성 후 다섯 파일 유형 16개씩, source 복사 SHA, 제안 전사, WAV–TextGrid 길이,
+  tier 순서·참고 interval 불변성·작업 tier 초기화 정책을 전수 재감사했다. 최종
+  상태는 `passed_materialization_pending_researcher_manual_overlay`다.
+- 원 WAV·LAB·D9 결과, r3 본체, 최종 6-tier, DB v1은 바꾸지 않았고 MFA도
+  실행하지 않았다. 다음은 연구자가 `words_manual_working`만 수정하고 독립
+  경계·단어열 감사를 받은 뒤 별도 adoption Gate를 여는 단계다.

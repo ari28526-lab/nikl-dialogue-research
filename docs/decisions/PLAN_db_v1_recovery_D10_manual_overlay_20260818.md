@@ -31,9 +31,20 @@ D9 연구자 검토에서 음성 보존 가치가 확인됐지만 현재 자동 
 16건과 섞어 자동 채택하지 않고, 같은 검사가 끝난 뒤 별도 6-tier enrichment·DB
 overlay Gate로 연결한다.
 
-## 현재 정지점
+## 2026-08-18 실행 결과와 현재 정지점
 
-`outputs/releases/nikl_dialogue_research_db_v1_recovery_d10_manual_overlay_gate_20260818`
-에 16건의 제안 전사와 난이도 분류를 만들었다. 아직 WAV 복사, LAB/TextGrid 수정,
-MFA, 6-tier/DB 변경은 모두 0건이다. 다음은 제안 전사와 D9 연구자 기록·source
-identity를 자동 감사한 뒤, 격리 작업 사본을 만드는 단계다.
+제안 전사·D9 연구자 기록·source identity의 자동 감사를 통과한 뒤 16건의 격리
+작업 사본을 다음 위치에 만들었다.
+
+```text
+D:\mfa_eojeol\recovery\common_pron_mfa_r3_20260809\D10_MANUAL_OVERLAY_0001
+```
+
+각 세트는 WAV, 원 LAB, 제안 LAB, D9 참고 TextGrid, 수동 작업 TextGrid로
+구성된다. 국소 수정 9건만 D9 word 경계를 작업 초안으로 사용하고 전체 재정렬
+6건과 단일어 1건의 작업 tier는 빈 상태로 시작한다. 생성·독립 감사 결과는
+`RESULT_db_v1_recovery_D10_materialization_20260818.md`에 기록했다.
+
+현재 정지점은 `materialized_pending_researcher_manual_overlay`다. 원본·r3·6-tier·
+DB v1 변경과 MFA 실행은 여전히 0건이며, 다음은 연구자의 `words_manual_working`
+수정과 별도 adoption Gate다.
