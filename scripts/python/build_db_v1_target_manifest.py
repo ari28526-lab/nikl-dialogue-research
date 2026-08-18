@@ -310,9 +310,15 @@ def build_rows(
                 flags.append("d9_phone_reference_only")
             if exception.get("morph_enrichment_status", "").startswith("pending_"):
                 flags.append("curated_morphology_pending")
+        wav_exists = wav_path.is_file()
+        active_tg_exists = bool(active_tg) and Path(active_tg).is_file()
+        if not wav_exists:
+            flags.append("wav_unavailable_in_r3_corpus")
         if not base_tg and not curated_tg:
             flags.append("active_textgrid_unavailable")
-        asset_ready = wav_path.is_file() and bool(active_tg) and Path(active_tg).is_file()
+        elif not active_tg_exists:
+            flags.append("active_textgrid_path_missing")
+        asset_ready = wav_exists and active_tg_exists
         result.append(
             {
                 "study_id": query_set["study_id"],

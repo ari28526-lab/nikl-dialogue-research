@@ -42,6 +42,11 @@ class TargetManifestQueryTests(unittest.TestCase):
                 [{"field": "missing", "op": "eq", "value": "x"}],
             )
 
+    def test_truthy_is_not_any_nonempty_string(self):
+        conditions = [{"field": "flag", "op": "truthy"}]
+        self.assertTrue(row_matches({"flag": "true"}, conditions))
+        self.assertFalse(row_matches({"flag": "false"}, conditions))
+
 
 if __name__ == "__main__":
     unittest.main()

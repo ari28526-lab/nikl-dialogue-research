@@ -89,10 +89,30 @@ def audit(root: Path, active_view_path: Path) -> dict[str, Any]:
                 raise RuntimeError(f"curated transcript mismatch: {row['utt_id']}")
             if row["active_textgrid_path"] != exception["active_textgrid_path"]:
                 raise RuntimeError(f"curated TextGrid mismatch: {row['utt_id']}")
-        if not Path(row["wav_path"]).is_file():
-            raise RuntimeError(f"WAV reference missing: {row['wav_path']}")
-        if row["active_textgrid_path"] and not Path(row["active_textgrid_path"]).is_file():
-            raise RuntimeError(f"TextGrid reference missing: {row['active_textgrid_path']}")
+        flags = set(json.loads(row["quality_flags_json"]))
+        wav_exists = Path(row["wav_path"]).is_file()
+        textgrid_exists = bool(row["active_textgrid_path"]) and Path(
+            row["active_textgrid_path"]
+        ).is_file()
+        if row["inclusion_status"] == "candidate_ready_for_manual_realization_review":
+            if not wav_exists or not textgrid_exists:
+                raise RuntimeError(
+                    f"ready candidate has missing asset: {row['target_occurrence_id']}"
+                )
+        elif row["inclusion_status"] == "candidate_metadata_only_pending_alignment_or_recovery":
+            if wav_exists and textgrid_exists:
+                raise RuntimeError(
+                    f"metadata-only candidate actually has both assets: {row['target_occurrence_id']}"
+                )
+            if not wav_exists and "wav_unavailable_in_r3_corpus" not in flags:
+                raise RuntimeError(f"missing WAV flag absent: {row['utt_id']}")
+            if not textgrid_exists and not {
+                "active_textgrid_unavailable",
+                "active_textgrid_path_missing",
+            } & flags:
+                raise RuntimeError(f"missing TextGrid flag absent: {row['utt_id']}")
+        else:
+            raise RuntimeError(f"unknown inclusion status: {row['inclusion_status']}")
 
     if len(candidates) != manifest["counts"]["candidate_rows"]:
         raise RuntimeError("candidate count mismatch")
@@ -117,8 +137,8 @@ def audit(root: Path, active_view_path: Path) -> dict[str, Any]:
         "invariants": {
             "all_evidence_re_matches_query": True,
             "active_precedence_verified": True,
-            "wav_references_exist": True,
-            "nonempty_textgrid_references_exist": True,
+            "ready_candidate_assets_exist": True,
+            "missing_assets_explicitly_flagged": True,
             "target_timing_not_claimed": True,
             "realization_not_judged": True,
             "source_assets_not_modified": True,
