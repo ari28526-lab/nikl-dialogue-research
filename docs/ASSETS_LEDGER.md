@@ -14,6 +14,8 @@
 | `D:\00_RAW\dialogue_json` | 전사 JSON 원본 | 보존, 수정 금지 |
 | `D:\00_RAW\reference\*` | 우리말샘·MP·LS·다층위 reference | 4종 D: 확보 기록 있음; 사용 직전 실물·SHA 재확인 |
 | `D:\10_LAYERS\01_bareun_raw` | 연도별 형태소 분석 CSV | 보존 |
+| `D:\10_LAYERS\02_sense_annotated` | A2 의미번호 파생층 (연도판별 세션 CSV: utt_id, word_idx, morph_idx, morph, tag, sense_id, confidence, method, candidates) | 보존; G2 join 계약의 sense 정본. index 대응은 morph_boundaries와 26/26 실측 일치 (2026-08-18) |
+| `D:\10_LAYERS\03_freq_dictionaries` | A3 빈도사전 5종 (형태소 165,920항·어절 857,443항·의미별·층화·분산도) + `etym_type/origin`·IPA 변환표 | 보존; 신뢰도 지도는 `docs/decisions/METHODS_bareun_dialogue_reanalysis.md`. G2 join 계약의 어원·빈도 정본 |
 | `D:\10_LAYERS\05_search_master` | 동결 5,103,356발화 연구 검색 master | 보존, `_build_meta` SHA 계약; r3 MFA 입력 root로 사용 금지 |
 | `D:\10_LAYERS\05_search_master_pre_mfa_staging\pre_mfa_v1_20260725` | 동결 pre-MFA 발음 입력 master | `pron_reference_form`과 실제 LAB tokenizer의 r3 발화 라우팅 정본 |
 | `D:\10_LAYERS\09_morph_search_v3_staging` | pre-MFA 연도별 7개 조합검색표 | 2020–2025 생산 연도 manifest success. 2025는 30/30 shard·발화 master 587,121행·frozen source contract·독립 검사 12/12·연간표 SHA 7/7 통과; 재생성 금지 |
@@ -51,6 +53,9 @@
 | `D:\mfa_tmp\2021\2021.db` | 2021 공통 Jamo r2 보존 정렬 DB | 1,371,883 정렬 산출; 읽기 전용 비교 증거 |
 | `D:\mfa_tmp\2022\2022.db` | 2022 공통 Jamo r2 보존 정렬 DB | 864,690 정렬 산출; 발음 입력 문제 발견 근거로 읽기 전용 보존 |
 | `D:\mfa_eojeol_out` | 용량 폴백 작업경로 | 현재 연도 실행 중에만 사용 |
+| `D:\30_RELEASES\stage1_infrastructure_closeout_20260818` | 1단계(자료구축) closeout 공유 패키지 — 해설 6종·RC0/RC1/active view·HTML 보고서·repo snapshot | 읽기 전용 사본; 48파일 SHA 전수 대조 mismatch 0 (`PACKAGE_MANIFEST.json`) |
+| `D:\30_RELEASES\stage2_n_insertion_candidates_20260818` | 2단계 6개년 ㄴ삽입 후보 release 미러 — 동결 query·계약, 후보/joined CSV 5.29GB, 감사 6종 | 읽기 전용 사본; C: `outputs\candidates`가 정본, 50파일 SHA 대조 mismatch 0 |
+| `D:\30_RELEASES\00_공유안내_20260818.md` | D: 공유 두 시나리오(드라이브 인수인계 vs 각자 corpus 확보+재현) 안내와 라이선스 주의 | 공유 시 최초 진입점 |
 
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
 WAV–TextGrid–metadata 연결표, 승인·제외·미해결 기호표는 모두 연구 인프라의
