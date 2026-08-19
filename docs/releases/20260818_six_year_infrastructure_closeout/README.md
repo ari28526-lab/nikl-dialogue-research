@@ -6,6 +6,22 @@
 
 성격: 논문 결과가 아니라 **재현 가능한 자료 구축 인프라의 1단계 완결 기록**
 
+## 2026-08-19 배포 범위
+
+이 closeout에서 배포하는 것은 자료구축 1단계의 기계적 분석·MFA 인프라뿐이다.
+범용 `morph_search.v3`는 완성된 기계 인프라로 포함하지만, 특정 음운 현상의
+query·후보·검토·실현 판정인 2단계 G1–G8은 배포 대상에서 제외한다.
+
+배포는 다음 두 경로를 구분한다.
+
+1. [프로그램을 모르는 독자를 위한 HTML 안내](../../../outputs/reports/stage1_distribution_guide_for_nontechnical_readers_20260819.html)
+2. [D: 동결 드라이브 인계](DISTRIBUTION_D_DRIVE.md)
+3. [원자료 직접 확보형 코드 재현판](DISTRIBUTION_CODE_ONLY.md)
+
+코드 재현판은 향후 GitHub에 선별 공개할 수 있도록 설계하되 현재 공개가 확정된
+것은 아니다. 전체 저장소 snapshot이 아니라
+[별도 allowlist Gate](PUBLIC_CODE_RELEASE_CANDIDATE.md)를 사용한다.
+
 ## 이 closeout이 뜻하는 것
 
 이 묶음은 형태소·표기 환경으로 연구 후보를 찾고, 해당 WAV·TextGrid·CSV를
@@ -27,6 +43,9 @@
 6. 수동 수정은 기본 release를 덮어쓰지 않는 RC1 sidecar와 active-view 계약으로
    연결했다.
 7. 후보→WAV/TextGrid→어절 문맥 시간 연결이 가능한지 소표본으로 검증했다.
+
+7번은 인프라 능력에 대한 내부 검증 근거다. 그 파일럿과 이후 특정 현상 후보는
+2026-08-19 A단계 배포 산출물에 포함하지 않는다.
 
 전체 5,103,356발화는 표기·형태소 검색층에 남아 있다. 정렬 본체 밖
 817,310건도 검색에서 사라지지 않으며, 검색 결과에 상태와 후속 이유를 붙여
@@ -112,6 +131,11 @@ TextGrid·phone 사용 가능 범위를 구분한다. 즉 “6개년 전체 검�
 - `LESSONS_AND_REUSE_GUIDE.md`: 시행착오, 재발 방지, 비개발자 재사용 절차
 - `SOURCE_MAP_FOR_HTML.md`: HTML 작성자가 읽을 정본과 금지된 추론
 - `CLEANUP_LEDGER.md`: 삭제·보존·후속 정리 장부
+- `DISTRIBUTION_D_DRIVE.md`: 허가 보유자에게 D: 동결본을 인계하는 절차
+- `DISTRIBUTION_CODE_ONLY.md`: 원자료 직접 확보형 코드 재현 절차
+- `PUBLIC_CODE_RELEASE_CANDIDATE.md`: 향후 GitHub 선별 공개 전 Gate
+- `outputs/reports/stage1_distribution_guide_for_nontechnical_readers_20260819.html`:
+  비전공자용 단일 HTML 안내서
 - `docs/reviews/PROMPT_external_HTML_six_year_infrastructure_release_20260818.md`:
   외부 AI 도구에 그대로 전달할 작업 프롬프트
 

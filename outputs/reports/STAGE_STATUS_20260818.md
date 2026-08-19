@@ -39,6 +39,14 @@ MFA phone은 실제 발음 판정이 아니다.
   `repo_snapshot_f48f5e1_*.zip`)의 코드·계약·manifest로 같은 수량을 재현.
   RUNBOOK과 재사용 가이드 준수, SHA·수량 회계로 동일성 검증.
 
+2026-08-19 배포 범위는 위 두 방식 모두 **자료구축 1단계(A단계)**로 제한한다.
+범용 `morph_search.v3` 인프라는 포함하지만 G1–G8 특정 현상 query·후보·검토·
+실현 판정은 제외한다. 방식 B의 GitHub 공개는 가능성을 고려한 선별 공개 후보이며
+아직 확정되지 않았다. 현행 진입점은 저장소 루트 `RELEASE.md`다. A단계 전용
+D: package는 `D:\30_RELEASES\stage1_infrastructure_distribution_20260819`이며,
+비전공자용 단일 HTML을 포함한 56개 payload의 SHA·누락·금지 범주 독립 감사가
+`passed`다.
+
 ## 2. 그 다음 단계(2단계 연구)의 현재 위치
 
 2단계 설계(G0–G8)는 `PLAN_stage2_target_query_and_realization_design_20260818.md`가

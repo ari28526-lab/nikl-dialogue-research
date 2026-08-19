@@ -56,6 +56,9 @@
 | `D:\30_RELEASES\stage1_infrastructure_closeout_20260818` | 1단계(자료구축) closeout 공유 패키지 — 해설 6종·RC0/RC1/active view·HTML 보고서·repo snapshot | 읽기 전용 사본; 48파일 SHA 전수 대조 mismatch 0 (`PACKAGE_MANIFEST.json`) |
 | `D:\30_RELEASES\stage2_n_insertion_candidates_20260818` | 2단계 6개년 ㄴ삽입 후보 release 미러 — 동결 query·계약, 후보/joined CSV 5.29GB, 감사 6종 | 읽기 전용 사본; C: `outputs\candidates`가 정본, 50파일 SHA 대조 mismatch 0 |
 | `D:\30_RELEASES\00_공유안내_20260818.md` | D: 공유 두 시나리오(드라이브 인수인계 vs 각자 corpus 확보+재현) 안내와 라이선스 주의 | 공유 시 최초 진입점 |
+| `D:\30_RELEASES\stage1_infrastructure_distribution_20260819` | A단계 전용 배포 패키지 — 비전공자용 HTML, 두 배포 안내, closeout, RC0/RC1/active view, 수량·감사 근거 | 56개 payload·SHA 불일치 0·금지된 2단계/repo snapshot 0; 독립 감사 `passed` |
+| `D:\30_RELEASES\00_공유안내_20260819.md` | 허가 보유자 D: 인계판의 최신 최초 진입점 | 2026-08-18 안내를 삭제하지 않고 대체; G1–G8은 범위 밖 |
+| `D:\30_RELEASES\AUDIT_stage1_distribution_package_20260819.json` | A단계 전용 D: package의 독립 감사 사본 | package 53/53, missing/unexpected/SHA mismatch/forbidden 모두 0 |
 
 CSV는 정리 대상이 아니다. 형태소 CSV, 조합검색 7표, post-MFA 동반표 4개,
 WAV–TextGrid–metadata 연결표, 승인·제외·미해결 기호표는 모두 연구 인프라의

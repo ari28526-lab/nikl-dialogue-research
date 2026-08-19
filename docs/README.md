@@ -6,11 +6,13 @@
 |---:|---|---|
 | 1 | [environment/PROJECT_START_HERE.md](environment/PROJECT_START_HERE.md) | 연구 흐름·문서 사용 규칙 |
 | 2 | [environment/PROJECT_CURRENT_STATE.md](environment/PROJECT_CURRENT_STATE.md) | 현재 완료·미완료·안전 정지점 |
-| 3 | [releases/20260818_six_year_infrastructure_closeout/README.md](releases/20260818_six_year_infrastructure_closeout/README.md) | 6개년 인프라 closeout·수량·한계·외부 설명 진입점 |
-| 4 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
-| 5 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/E:/저장소 실물 위치 정본 |
-| 6 | [environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md) | 리밋·새 대화 뒤 로컬 checkpoint 재개 |
-| 7 | 이 문서 | 정본과 역사 기록의 경계 |
+| 3 | [../RELEASE.md](../RELEASE.md) | A단계 배포 범위·D: 인계·코드 재현판 진입점 |
+| 4 | [../outputs/reports/stage1_distribution_guide_for_nontechnical_readers_20260819.html](../outputs/reports/stage1_distribution_guide_for_nontechnical_readers_20260819.html) | 프로그램을 모르는 독자를 위한 단일 HTML 안내서 |
+| 5 | [releases/20260818_six_year_infrastructure_closeout/README.md](releases/20260818_six_year_infrastructure_closeout/README.md) | 6개년 인프라 closeout·수량·한계·외부 설명 진입점 |
+| 6 | [RUNBOOK_production_2020_2025.md](RUNBOOK_production_2020_2025.md) | 전수 생산의 유일한 실행 순서 |
+| 7 | [ASSETS_LEDGER.md](ASSETS_LEDGER.md) | D:/E:/저장소 실물 위치 정본 |
+| 8 | [environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md) | 리밋·새 대화 뒤 로컬 checkpoint 재개 |
+| 9 | 이 문서 | 정본과 역사 기록의 경계 |
 
 ## 고정 연구 계약
 

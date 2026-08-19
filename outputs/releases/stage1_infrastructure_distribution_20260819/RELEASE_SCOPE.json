@@ -1,0 +1,49 @@
+{
+  "schema_version": "stage1_infrastructure_distribution_scope.v1",
+  "recorded_date": "2026-08-19",
+  "status": "d_package_materialized_and_audited_github_publication_not_approved",
+  "base_closeout": "outputs/reports/SIX_YEAR_INFRASTRUCTURE_CLOSEOUT_20260818.json",
+  "scope": {
+    "source_utterances": 5103356,
+    "generic_morph_search_utterances": 5103356,
+    "aligned_6tier_utterances": 4286046,
+    "recovery_inventory_rows_rc0": 817310,
+    "automatic_phonological_realization_judgement": false
+  },
+  "included": [
+    "stage1_mechanical_analysis_layers",
+    "generic_morph_search_v3_infrastructure",
+    "common_pron_mfa_r3_contract",
+    "mfa_r3_databases_and_research_6tier_when_using_d_drive_handoff",
+    "rc0_rc1_zero_drop_accounting",
+    "stage1_code_contracts_manifests_audits_and_documentation"
+  ],
+  "excluded": [
+    "stage2_g1_g8",
+    "phenomenon_specific_queries_and_candidates",
+    "n_insertion_941903_candidate_rows",
+    "review_bundles",
+    "researcher_realization_judgements",
+    "statistical_analysis_and_paper_conclusions"
+  ],
+  "distribution_modes": {
+    "d_drive_handoff": {
+      "contains_licensed_corpus_and_derivatives": true,
+      "recipient_must_hold_applicable_nikl_permission": true,
+      "public_web_distribution": false,
+      "package_root": "D:/30_RELEASES/stage1_infrastructure_distribution_20260819",
+      "package_audit": "outputs/reports/AUDIT_stage1_distribution_package_20260819.json",
+      "package_audit_status": "passed",
+      "package_payload_files": 56,
+      "nontechnical_html": "outputs/reports/stage1_distribution_guide_for_nontechnical_readers_20260819.html"
+    },
+    "code_only_reproduction": {
+      "contains_corpus_or_textgrids": false,
+      "recipient_obtains_inputs_under_own_permission": true,
+      "future_selective_github_publication_possible": true,
+      "github_publication_approved": false,
+      "code_license_selected": false,
+      "whole_repository_snapshot_is_public_candidate": false
+    }
+  }
+}

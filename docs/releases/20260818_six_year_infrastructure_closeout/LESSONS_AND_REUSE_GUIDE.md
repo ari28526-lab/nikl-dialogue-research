@@ -135,6 +135,11 @@ ID가 불안정하면 MFA 전에 멈춘다. 파일명 유사도로 대량 pairin
 
 ## 5. 다른 사람이 이 저장소를 사용할 때
 
+배포판은 두 경로를 먼저 구분한다. 허가 대상 데이터와 완성 파생층이 들어 있는
+D: 동결본을 인계하는 경우는 `DISTRIBUTION_D_DRIVE.md`, 원자료를 각자 확보하고
+코드로 재현하는 경우는 `DISTRIBUTION_CODE_ONLY.md`를 따른다. 두 경로 모두
+특정 현상 검색과 실현 판정은 A단계 배포에 포함하지 않는다.
+
 ### 5.1 같은 원 말뭉치를 재현하는 경우
 
 1. `docs/environment/PROJECT_START_HERE.md`와 `config/paths.json`을 읽는다.
@@ -146,6 +151,9 @@ ID가 불안정하면 MFA 전에 멈춘다. 파일명 유사도로 대량 pairin
 6. `tests/test_powershell_safety.ps1`과
    `tests/test_powershell_runtime_compat.ps1`를 Windows PowerShell 5.1에서 통과한다.
 7. release manifest의 수량·hash가 다르면 자동으로 계속하지 않는다.
+
+동일 폴더명이더라도 제공기관의 갱신으로 byte가 달라질 수 있다. 입력 SHA가
+다르면 기존 수량을 강제로 맞추지 않고 새 input release로 기록한다.
 
 ### 5.2 다른 한국어 말뭉치에 적용하는 경우
 
@@ -167,6 +175,10 @@ contract를 먼저 만든다.
 하나라도 답할 수 없으면 다음 대량 단계로 넘어가지 않는다.
 
 ## 6. 공개 저장소의 권장 구조
+
+현재 GitHub 공개는 확정되지 않았다. 공개한다면 전체 작업 저장소를 그대로
+복제하지 않고 `PUBLIC_CODE_RELEASE_CANDIDATE.md`의 allowlist Gate를 통과한
+A단계 코드 재현 package만 사용한다. 코드 라이선스 결정도 공개 전 필수다.
 
 ```text
 README.md                    # 목적, 범위, 라이선스, 빠른 길잡이

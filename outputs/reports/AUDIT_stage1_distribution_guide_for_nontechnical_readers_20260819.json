@@ -1,0 +1,36 @@
+{
+  "schema_version": "stage1_nontechnical_html_audit.v1",
+  "status": "passed",
+  "html": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\reports\\stage1_distribution_guide_for_nontechnical_readers_20260819.html",
+  "bytes": 1925383,
+  "sha256": "2929f518ad087b5495a239619b381294cbe16104e3d84f0a2065ddcce59a237b",
+  "checks": {
+    "title_exact": true,
+    "lang_is_korean": true,
+    "required_text_complete": true,
+    "three_stat_cards_present": true,
+    "two_distribution_routes_present": true,
+    "faq_details_at_least_five": true,
+    "tables_at_least_one": true,
+    "section_headings_at_least_eight": true,
+    "status_bar_has_accessible_label": true,
+    "external_resources_zero": true,
+    "broken_local_links_zero": true,
+    "standalone_size_over_100kb": true
+  },
+  "counts": {
+    "h1": 1,
+    "h2": 9,
+    "tables": 1,
+    "details": 5,
+    "cards": 3,
+    "routes": 2,
+    "links": 12,
+    "resource_references": 4
+  },
+  "details": {
+    "missing_required_text": [],
+    "external_resources": [],
+    "broken_local_links": []
+  }
+}
