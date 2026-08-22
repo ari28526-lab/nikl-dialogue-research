@@ -1,6 +1,18 @@
 # 프로젝트 시작 안내 — 현재 정본
 
-최종 갱신: 2026-08-18 KST
+최종 갱신: 2026-08-22 KST
+
+> **현재 진입점 — 일곱 현상 PV-A·reviewer v2.1 Gate 통과, 문헌·환경 정리
+> 선행:** 2020–2025 각 30개, 합계 180개 PV-A 패키지는 독립 감사
+> `passed=true`로 생성됐고, 2020·2025 균형 14개를 쓰는 reviewer v2.1의 표적
+> 강조·미저장 경고·revision 보존을 사용자 화면에서 확인했다. 이는 탐색용
+> 미리듣기 도구이며 정식 실현 판정 ledger가 아니다. 연도별 30개 후속 batch를
+> 구현하기 전에 일곱 현상별 직접 선행연구와 일반적·주변적·탐색적 형태론 환경을
+> 정리한다. 현재 Cowork 문헌 작업은 Git 밖 `work/`에 있으며, 결과가 승인되기
+> 전에는 query·우선순위·200,000행 상한을 바꾸지 않는다. 먼저
+> `docs/decisions/RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md`와
+> `docs/decisions/PLAN_stage2_seven_phenomena_PV_pilot_20260819.md`의 상태 표지를
+> 읽는다.
 
 > **현재 진입점 — ㄴ 삽입 B1 개정안 검토 Gate:** 기술 인프라 파일럿은
 > 종료됐다. 구 7월 초안의 MFA-phone 자동 실현 판정 관점을 폐기하고, 수동
@@ -166,6 +178,16 @@ Codex 리밋, 앱 종료, 계정 재로그인 또는 새 대화 뒤에는
 [CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md)를
 추가로 읽고, 실행 중인 로컬 작업을 재시작하기 전에 상태판을 확인한다. 새 계정을
 만드는 절차가 아니다.
+
+## Dropbox 원격 검토 전달 선호
+
+- 연구자가 Dropbox 전달을 요청하면 먼저 현재 검토 환경이 데스크톱인지,
+  원격 iPad인지 확인한다.
+- iPad 원격 검토라면 Dropbox의 HTML 직접 미리보기를 전제하지 않는다. 원본
+  동결 산출물과 SHA manifest를 변경하지 않고, 작은 균형 배치의 음성을 포함한
+  단일 HTML과 JSONL 화면 복사 fallback을 별도 전달하는 방식을 우선 검토한다.
+- 연구자가 항상 iPad를 쓰는 것은 아니므로, 매 Dropbox 요청마다 환경을 다시
+  확인하고 데스크톱 전달물을 불필요하게 중복 생성하지 않는다.
 
 프로젝트 root는 다음이다.
 

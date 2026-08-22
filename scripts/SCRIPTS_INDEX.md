@@ -1,4 +1,4 @@
-# 스크립트 색인 — 최종 갱신 2026-08-13
+# 스크립트 색인 — 최종 갱신 2026-08-20
 
 > **현재 r3 생산 진입점:** 아래 2020–2022 생산 entrypoint는 r2 역사·복구 근거다.
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
@@ -51,6 +51,24 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 파이프라인 순서대로. 모든 경로 상수는 새 D: 구조 기준 (config/paths.json 참조).
 각 코드가 **무슨 자료로·왜·무슨 역할**인지 서술형 해설은
 [docs/자료구축_코드해설.md](../docs/자료구축_코드해설.md).
+
+## 2026-08-19~22 일곱 현상 PV-A·reviewer 도구
+
+| 스크립트 | 역할 | 상태 |
+|---|---|---|
+| `python/pv_preview_common.py` | PV 전용 헤더 실측·경로·SHA·원자 출력·200,000행 상한 공통 유틸. 기존 ㄴ삽입 builder와 동결 산출물은 수정하지 않는다. | PV-A 공통 모듈, py_compile 통과 |
+| `python/scan_pv_morph_internal_lite.py` | 실제 `morph_units` 헤더를 읽고 같은 형태소 내부 인접 unit의 현상별 자모 환경을 상한 내에서 조기 중단 스캔한다. | 6개년 PV-A 입력 생성에 사용 |
+| `python/build_pv_preview_samples.py` | 경계형·형태소 내부·동결 ㄴ삽입 후보를 zero-drop 회계하고 연도별 30개로 결정적 배분한다. | 180 physical package·214 logical event 생성 |
+| `python/build_pv_context_manifest.py` | 같은 session·dialogue의 실제 존재 행 순위 ±2를 보존하고 연속 동일 화자를 조작적 묶음으로만 표시한다. | 180×5=900 문맥 행 생성 |
+| `python/build_pv_review_bundle.py` | 대상 WAV·6-tier 사본, 원좌표 보존 문맥 WAV, HTML/CSV와 SHA manifest를 만든다. | 180 package 생성; 자동 실현 판정 0 |
+| `python/audit_pv_preview.py` | 환경·배분·zero-drop·문맥·stitch 역산·SHA·금지 도구 미실행을 생성기와 독립 재검산한다. | `passed=true`, failed checks 0 |
+| `../run_pv_preview_pilot.ps1` | Windows PowerShell 5.1용 단일 wrapper. `-PreflightOnly`, detached 실행·로그 판정·기존 출력 중단·`.partial` 원자 승격을 제공한다. | UTF-8 BOM·PS5.1 safety/runtime 통과; final 존재로 재실행 금지 |
+| `python/build_pv_ipad_balanced14.py` | 통과한 7현상 PV 산출물에서 현상별 2020·2025 primary event 각 1개를 선택하고 대상·문맥 WAV를 재인코딩 없이 포함한 단일 HTML을 원자 생성한다. revision·JSONL download·화면 복사 fallback을 제공하되 자동 실현 판정이나 정식 ledger 기록은 하지 않는다. | 14표본·28 WAV self-contained HTML 생성 및 Dropbox 전달 완료 |
+| `python/audit_pv_ipad_balanced14.py` | receipt에 결속된 14개 균형 cell, HTML 구조, 28개 embedded RIFF/WAV의 원본 SHA, 외부 source 0, 저장·복사 기능과 안전 선언을 독립 감사한다. | `passed=true`, embedded WAV SHA 28/28 일치 |
+| `python/build_pv_reviewer_v2.py` | 균형 14개에 전체 대화 검색, 형태소·화자·대화 상황, 규칙/사전 참조와 append-only revision UI를 결합한다. | v2 생성·감사 통과; v2.1의 입력으로 보존 |
+| `python/audit_pv_reviewer_v2.py` | v2의 14 cell, 4,060 대화 행, 28 WAV SHA, 형태소 zero-drop, 문헌 제외 규칙과 외부 source 0을 독립 감사한다. | `passed=true`, errors 0 |
+| `python/build_pv_reviewer_v2_1.py` | v2를 다시 스캔하지 않는 UI-only 파생으로 복수 표적 강조, 미저장 경고, 최신 revision 선택, 한국어 상태 설명과 확신도 라벨을 보완한다. | 사용자 최소 화면 Gate 통과 |
+| `python/audit_pv_reviewer_v2_1.py` | v2.1의 14 표본·15 강조 token·28 WAV 불변·승인 권고 5개와 범위 밖 변경 0을 독립 확인한다. | `passed=true`, errors 0 |
 
 ## A단계: 텍스트 레이어 구축
 | 스크립트 | 역할 | 상태 |

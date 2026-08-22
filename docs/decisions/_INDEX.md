@@ -1,5 +1,12 @@
 # 현행 결정 문서 색인
 
+- [RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md](RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md) — 균형 14개 reviewer v2.1의 복수 표적 강조·미저장 경고·revision 안전 보완, 독립 감사와 사용자 최소 화면 Gate 통과; 다음은 문헌·형태론 환경 정리
+- [RESULT_stage2_pv_reviewer_v2_implementation_20260822.md](RESULT_stage2_pv_reviewer_v2_implementation_20260822.md) — 전체 대화 검색·형태소·화자·문헌 패널을 갖춘 reviewer v2 구현과 독립 감사; v2.1의 역사적 입력으로 종료
+- [RESULT_pv_ipad_balanced14_delivery_20260820.md](RESULT_pv_ipad_balanced14_delivery_20260820.md) — 2020·2025×7현상 균형 14개와 28 WAV를 포함한 단일 HTML·Dropbox 전달, 원본 SHA 28/28 감사
+- [RESULT_pv_preview_build_20260819.md](RESULT_pv_preview_build_20260819.md) — 2020–2025 각 30개·합계 180개 PV-A 패키지, 214 논리 event, 900 문맥 행 생성과 독립 감사 통과
+- [PLAN_stage2_seven_phenomena_PV_pilot_20260819.md](PLAN_stage2_seven_phenomena_PV_pilot_20260819.md) — 일곱 현상 PV-A/PV-B 설계 정본; PV-A와 v2.1 Gate 완료 뒤 문헌·환경 정리를 후속 선행 Gate로 표시
+- [NOTE_pv_b_environment_preflight_20260819.md](NOTE_pv_b_environment_preflight_20260819.md) — PV-B KOINA·wav2vec2·음향 측정의 실물·문서 위치만 점검하고 실행하지 않은 환경 preflight
+
 - [RESULT_db_v1_recovery_D10_researcher_return_20260818.md](RESULT_db_v1_recovery_D10_researcher_return_20260818.md) — 연구자 반환 16/16 raw 보존·정규화 완료: 1–4번 tier 위치만 교정, 수정 전사 5·분절 차이 1 보존, 독립 감사 통과·DB 채택 전 정지
 - [PLAN_db_v1_recovery_D10_researcher_return_normalization_20260818.md](PLAN_db_v1_recovery_D10_researcher_return_normalization_20260818.md) — Dropbox 연구자 반환 16개의 raw 보존, 1–4번 작업 tier 위치만 기계 정규화, 수정 전사 5건·분절 차이 1건 보존과 비채택 Gate
 - [PLAN_db_v1_recovery_D10_manual_overlay_20260818.md](PLAN_db_v1_recovery_D10_manual_overlay_20260818.md) — D9 부분 보존 16건을 국소 수정 9·전체 재정렬 6·단일어 1로 나눈 수정 전사·수동 TextGrid overlay 계획; 원본·본체 무수정 Gate

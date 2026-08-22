@@ -3977,3 +3977,68 @@ shard 2–23을 재개하는 것이다.
   차단해 보존했다. 대형 pilot·가상환경·archive·RC0/RC1·D: 정본은 삭제하지 않았다.
 - 2020–2025 r3 MFA와 전수 6-tier를 다시 실행하지 않는다. 다음 단계는 외부
   도구의 Quarto/HTML 생성 또는 별도 연구 Gate의 실제 target query다.
+
+## 2026-08-19 — 일곱 현상 PV-A 6개년 미리듣기 스윕
+
+- 사용자 승인 범위인 `PLAN_stage2_seven_phenomena_PV_pilot_20260819.md` §5의
+  작업만 구현했다. 원천 표별·연도별 200,000행 상한을 유지하고 2020–2025
+  각 30개, 합계 180개 물리 패키지와 214개 논리 검토 event를 만들었다.
+- 후보 회계 18,339행과 표본당 다섯 슬롯의 문맥 900행을 zero-drop으로
+  보존했다. 문맥은 같은 session·dialogue의 실제 존재 행 순위 ±2이며 원
+  타임스탬프 차이나 연속 동일 화자를 자동 turn 경계로 해석하지 않았다.
+- 2022 NAL은 상한 내 WAV·6-tier·시간 연결 가능 후보가 2개뿐임을 확인했다.
+  연구자 승인에 따라 부족한 2개를 같은 연도의 PT 1·NAN 1로 재배정하고 근거를
+  config와 감사에 기록했다.
+- 독립 감사는 환경·배분·문맥·stitch 역산·SHA와 금지 도구 미실행을 재계산해
+  `passed=true`, 실패 검사 0, `listening_gate=open`으로 통과했다.
+  `PV_AUDIT.json` SHA-256은
+  `628cb01692c28e14b9cfe00271fc3aa6e9c33267aafe34895c95c6f7d6896db2`다.
+- 다섯 차례 실패 출력은 zero-drop·자산·문맥·해석 한계를 강화한 증거로 로컬에
+  보존했다. 원자료·검색 7표·RC0/RC1·r3 DB·6-tier·ㄴ삽입 G1–G4는 수정하지
+  않았고 MFA·KOINA·wav2vec2·자동 실현 판정은 실행하지 않았다.
+
+## 2026-08-20 — 원격 검토용 균형 14개 전달
+
+- 통과한 180개 중 2020·2025×7현상 primary event 각 1개, 합계 14개를
+  결정적으로 골랐다. 대상·문맥 WAV 28개를 재인코딩하지 않고 단일 HTML에
+  포함하고 revision JSONL 다운로드와 화면 복사 fallback을 제공했다.
+- 독립 감사가 14 cell, embedded WAV 원본 SHA 28/28, 외부 source 0, 자동
+  실현 판정·정식 ledger 쓰기 0을 확인했다. 원본 동결 산출물을 바꾸지 않고
+  Dropbox 사본의 파일 수·bytes·SHA를 다시 검증했다.
+- 이 전달본은 모바일·원격 사용성 점검용 파생본이며 180개 전체 청취 완료나
+  정식 연구 표본을 뜻하지 않는다.
+
+## 2026-08-22 — PV reviewer v2와 v2.1 사용성 Gate
+
+- 균형 14개에 한 후보 한 화면, 전체 대화 텍스트 검색 4,060행, 형태소·화자·
+  대화 상황, 대상/문맥 음성, append-only revision을 결합한 reviewer v2를
+  만들었다. 기존 사용자 JSONL 15행·14 event와 의미상 중복 1행을 삭제하지
+  않았다.
+- v2 독립 감사는 14 cell, exact target 14/14, WAV SHA 28/28, 직접 형태소
+  표시 12, HIA linked 1·zero-drop unavailable 1, 외부 source 0을 확인해
+  `passed=true`로 종료했다.
+- Claude 연구도구 검토 중 승인된 R01·R06·R07·R08·R09만 v2.1에 반영했다.
+  복수 표적 강조 15 token, 미저장 이동·가져오기 경고, `reviewed_at` 기준 최신
+  revision, 한국어 상태 설명, 확신도 라벨을 보완했다. 30개 batch builder와
+  200,000행 스캔 계약은 변경하지 않았다.
+- 사용자가 Dropbox 사본에서 `떡 벌어질` 두 어절의 동시 강조, 실제 후보 이동
+  때의 미저장 경고, 취소 뒤 시험 글자 보존을 확인했다. 처음 경고가 없었던 것은
+  검색 필터가 한 후보만 남겨 `다음`이 no-op이었기 때문이며 필터 해제 뒤 정상
+  작동했다. 시험 글자는 revision으로 저장하지 않았다.
+- 따라서 v2.1 최소 화면 Gate는 통과했다. 다음은 연도별 30개 batch 구현이
+  아니라 일곱 현상별 직접 문헌과 일반적·주변적·탐색적 형태론 환경 정리다.
+  같은 형태소 조합·표면 단어 묶음, 불확실 항목 재검토, 1–5 확신도는 이 근거
+  정리 뒤 별도 설계 Gate에서 확정한다.
+
+## 2026-08-22 — PV 작업 파일 Git 경계 정리
+
+- 19MB reviewer HTML, 7.8MB 전체 대화 JSONL, embedded audio, 180개 bundle과
+  다섯 실패 출력은 생성 가능한 로컬 연구 payload이므로 Git에서 제외했다.
+  파일을 삭제·이동하지 않았고 결과 문서에 bytes·SHA·감사 경로를 보존했다.
+- Git에는 query config, wrapper, builders, independent auditors, runtime tests,
+  작은 validation logs, 설계·결과·외부 검토 문서와 사람이 읽는 작은 HTML만
+  둔다.
+- Claude Cowork가 작성 중인 `00_참고문헌`과
+  `work/literature_evidence_seven_phenomena_20260822`는 기존 ignore 경계를
+  유지했으며 읽기·수정·stage 대상에서 모두 제외했다. 문헌 정리 결과가 승인되기
+  전에는 현재 query·우선순위·상한 계약을 바꾸지 않는다.

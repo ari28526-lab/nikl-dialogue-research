@@ -14,6 +14,16 @@
 | 8 | [environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md](environment/CONTINUITY_AFTER_LIMIT_OR_NEW_THREAD.md) | 리밋·새 대화 뒤 로컬 checkpoint 재개 |
 | 9 | 이 문서 | 정본과 역사 기록의 경계 |
 
+## 2단계 현재 진입점
+
+- [decisions/PLAN_stage2_seven_phenomena_PV_pilot_20260819.md](decisions/PLAN_stage2_seven_phenomena_PV_pilot_20260819.md): 일곱 현상 PV-A 설계와 구현 범위, 완료 뒤 후속 결정 표지
+- [decisions/RESULT_pv_preview_build_20260819.md](decisions/RESULT_pv_preview_build_20260819.md): 6개년 각 30개·합계 180개 PV-A 생성과 독립 감사
+- [decisions/RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md](decisions/RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md): 균형 14개 reviewer v2.1의 독립 감사·사용자 최소 화면 Gate
+
+현재는 연도별 30개 후속 batch를 구현하지 않는다. 일곱 현상별 직접 문헌과
+형태론 환경 분류를 먼저 정리하며, 진행 중인 Cowork 산출물은 승인 전까지
+Git 밖 `work/`에 둔다.
+
 ## 고정 연구 계약
 
 - [decisions/_INDEX.md](decisions/_INDEX.md): 현행·역사·대체된 결정 색인
