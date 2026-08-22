@@ -20,7 +20,12 @@
 > 방식과 1–5 확신도는 이 문헌·환경 정리 뒤 별도 설계 Gate에서 확정한다.
 > Cowork가 작성 중인 `work/literature_evidence_seven_phenomena_20260822`는 아직
 > 승인된 정본이 아니며 Git 범위 밖이다. 그 결과가 끝나기 전 query·상한·batch
-> builder를 변경하지 않는다.
+> builder를 변경하지 않는다. 문헌 정리 승인 뒤에는 후보별 `TextGrid 검토
+> 필요/불확실` 표시가 같은 HTML의 read-only TextGrid 패널과 수동 작업 queue를
+> 여는 annotation Gate, 사례별 가변 정보 sidecar, 원본 불변 overlay와 현상별
+> 공개 파생본 계약을 batch 확대 전에 설계한다. 이는
+> `REQUIREMENT_stage2_manual_textgrid_and_phenomenon_release_20260822.md`에 기록한
+> 후속 요구사항이며 아직 구현 승인이 아니다.
 
 > **2026-08-18 현재 진입점 — 2단계 G1–G4 완료·6개년 후보 완결:** 동결
 > query·join 계약(SHA `744bd8cb…`/`12d81163…`)으로 2020–2025 후보

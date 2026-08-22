@@ -12,6 +12,14 @@ query 변경 전에 일곱 현상 전체의 직접 선행연구와 형태론 환
 산출물은 승인 전까지 Git 밖 `work/`에 두며 본 계획의 동결 조건을 자동으로
 바꾸지 않는다.
 
+같은 날 추가한 후속 필수 요구사항: 청취 뒤 후보별 수동 TextGrid 조정과
+사례별 가변 정보 보강 단계를 별도 Gate로 두고, `TextGrid 검토 필요/불확실`을
+표시하면 같은 HTML 화면에서 read-only TextGrid 패널이 자동으로 펼쳐지는 것을
+목표 사용성으로 한다. 원본 6-tier는 수정하지 않고 exact-ID overlay와 감사 뒤
+정식 ledger에 반영하며, 현상별 공개 파생본을 재생성할 provenance를 보존한다.
+구현 범위·정지선은
+`REQUIREMENT_stage2_manual_textgrid_and_phenomenon_release_20260822.md`가 정본이다.
+
 전제 문서:
 - `PLAN_stage2_target_query_and_realization_design_20260818.md` (2단계 G0–G8 정본)
 - ㄴ삽입 G1–G4 완료: 6개년 후보 941,903행, 연도별 독립 감사 6/6 passed

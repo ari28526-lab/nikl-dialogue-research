@@ -4042,3 +4042,16 @@ shard 2–23을 재개하는 것이다.
   `work/literature_evidence_seven_phenomena_20260822`는 기존 ignore 경계를
   유지했으며 읽기·수정·stage 대상에서 모두 제외했다. 문헌 정리 결과가 승인되기
   전에는 현재 query·우선순위·상한 계약을 바꾸지 않는다.
+
+## 2026-08-22 — 수동 TextGrid·가변 정보 보강·현상별 공개 요구 기록
+
+- PV 청취와 G7 정식 실현 ledger 사이에 후보별 수동 TextGrid 조정·사례별 추가
+  정보 보강 작업층이 명시적으로 연결되지 않은 공백을 확인했다.
+- 후속 reviewer에서 `TextGrid 검토 필요/불확실`을 고르면 같은 후보 화면의
+  read-only TextGrid 패널이 자동으로 열리고, 필요한 사례만 exact-ID 수동 작업
+  queue로 보내는 목표 사용성을 기록했다.
+- 기존 6-tier·원자료를 수정하지 않고 overlay·append-only 정보 sidecar·독립
+  감사 뒤 정식 ledger에 반영하며, 현상별 공개 파생본을 재생성할 provenance와
+  zero-drop 회계를 필수로 했다.
+- 현재 Cowork 문헌 작업을 먼저 마치며, in-browser 경계 직접 편집과 공개 범위는
+  후속 설계 Gate에서 결정한다. 이 기록은 구현·query 변경 승인이 아니다.
