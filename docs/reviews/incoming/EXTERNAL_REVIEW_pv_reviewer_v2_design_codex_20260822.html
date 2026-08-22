@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PV 검토 화면 v2 설계 검토</title>
+<style>
+:root{--ink:#17212b;--muted:#5a6875;--paper:#fff;--bg:#edf2f5;--line:#d8e1e8;--navy:#173b57;--blue:#eaf4fa;--green:#e8f6ee;--amber:#fff4d8;--violet:#f2effb;--red:#fff0ed;--core:#176b45;--explore:#7252a0;font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;color:var(--ink)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);line-height:1.68}main{max-width:1160px;margin:24px auto;background:var(--paper);padding:44px 54px 70px;box-shadow:0 12px 36px #10283a18}h1,h2,h3{color:var(--navy);line-height:1.35}h1{font-size:2rem;letter-spacing:-.04em;margin:0 0 8px}h2{font-size:1.38rem;margin:2.2rem 0 .8rem;border-bottom:2px solid var(--navy);padding-bottom:.35rem}h3{font-size:1.05rem;margin:1.4rem 0 .35rem}p{margin:.55rem 0}.meta,.small{color:var(--muted)}.meta{font-size:.92rem}.small{font-size:.84rem}.lead,.decision,.warning,.defer{padding:1rem 1.15rem;margin:1rem 0;border-left:5px solid}.lead{background:var(--blue);border-color:#28739d}.decision{background:var(--green);border-color:#31845a}.warning{background:var(--amber);border-color:#c78a18}.defer{background:var(--violet);border-color:#785ba7}.toc{border:1px solid var(--line);background:#fafcfd;padding:1rem 1.2rem;margin:1.4rem 0}.toc ol{columns:2;padding-left:1.3rem;margin:.35rem 0}a{color:#075f94;text-underline-offset:2px}code{font-family:Consolas,"D2Coding",monospace;background:#f3f5f7;padding:.08em .34em;border-radius:4px;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;margin:.8rem 0 1.2rem;font-size:.9rem}th,td{border:1px solid var(--line);padding:.62rem .68rem;text-align:left;vertical-align:top}th{background:#edf3f6;color:#203d51}tr:nth-child(even) td{background:#fbfcfd}ul,ol{padding-left:1.3rem}li{margin:.3rem 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}.card h3{margin:0 0 5px}.tag{display:inline-block;border-radius:999px;padding:.1rem .5rem;font-size:.77rem;font-weight:700}.core{background:#dff2e7;color:var(--core)}.explore{background:#eee7fa;color:var(--explore)}.later{background:#edf0f2;color:#52616d}.wire{background:#172432;color:#ecf4fa;padding:18px;border-radius:12px;overflow:auto;font-family:Consolas,"D2Coding",monospace;line-height:1.45;white-space:pre}.decision-list{counter-reset:dec}.decision-item{counter-increment:dec;border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;background:#fff}.decision-item:before{content:counter(dec);display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;margin-right:8px}.sha{word-break:break-all;font-size:.78rem}footer{border-top:1px solid var(--line);margin-top:2.2rem;padding-top:1rem;color:var(--muted);font-size:.84rem}
+@media(max-width:780px){body{background:#fff}main{margin:0;padding:26px 18px 48px;box-shadow:none}.toc ol{columns:1}.grid{grid-template-columns:1fr}table{display:block;overflow-x:auto}h1{font-size:1.65rem}.wire{font-size:.78rem}}
+@media print{body{background:#fff}main{max-width:none;margin:0;box-shadow:none;padding:15mm}a{color:inherit;text-decoration:none}.card,.decision-item,tr{break-inside:avoid}}
+</style>
+</head>
+<body><main>
+<header>
+<h1>PV 검토 화면 v2 설계 검토</h1>
+<p class="meta">일곱 현상 PV-A · 사용자 revision 반영 · 2026-08-22 · Codex</p>
+<p class="meta"><strong>상태:</strong> 설계 승인 · 구현 GO 대기. 코드 수정·새 청취·KOINA 실행 전.</p>
+</header>
+
+<div class="lead"><strong>한 줄 결론.</strong> 새 후보를 만들지 말고, 같은 14개 중 3개만 새 화면으로 다시 열어 사용성을 확인하는 것이 다음 단계다. 기존 음성·사용자 revision은 그대로 보존하고, 표적·형태소·긴 문맥·메타데이터를 점진적으로 펼쳐 보이게 한다.</div>
+
+<div class="decision"><strong>사용자 승인 · 2026-08-22.</strong> 아래 네 항목을 모두 승인했다: ① 전체 대화 텍스트 검색/전체 대화 오디오 제외 ② 규칙 예상형·사전 참조형 분리 ③ 원유권(2022)의 공통 방법론 패널 연결 ④ 새 파생출력 root <code>outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/</code> 허용. 구현은 아직 시작하지 않았으며 별도 <code>GO</code>를 기다린다.</div>
+
+<nav class="toc"><strong>빠른 목차</strong><ol>
+<li><a href="#decide">사용자가 정할 것</a></li><li><a href="#measured">실측 결과</a></li>
+<li><a href="#issues">현재 화면의 문제</a></li><li><a href="#available">이미 있는 정보</a></li>
+<li><a href="#screen">권고 화면</a></li><li><a href="#records">기록·문헌 규칙</a></li>
+<li><a href="#simple">더 단순한 구현</a></li><li><a href="#gate">3개 마이크로 Gate</a></li>
+</ol></nav>
+
+<section id="decide"><h2>1. 사용자가 정할 네 가지</h2>
+<div class="decision-list">
+<div class="decision-item"><strong>전체 대화는 텍스트로 검색</strong><p>전체 세션 오디오는 넣지 않고, 전사 행을 검색·선택한다. 대상과 ±2 문맥 오디오는 지금처럼 유지한다. <span class="tag core">권고</span></p></div>
+<div class="decision-item"><strong>발음은 “예상형”과 “참조형”으로 분리</strong><p>둘 다 실제 들린 발음이나 자동 정답이 아니다. 출처·상태를 붙이고 연구자가 들린 형식을 따로 기록한다. <span class="tag core">권고</span></p></div>
+<div class="decision-item"><strong>원유권(2022)은 공통 방법론 패널에만 연결</strong><p>이 논문은 일곱 개별 분절 현상을 직접 다루지 않으므로 후보별 긍정적 현상 근거로 표시하지 않는다. <span class="tag core">권고</span></p></div>
+<div class="decision-item"><strong>새 파생 출력 root 허용 여부</strong><p>기존 통과 산출물의 SHA 의미를 보존하려면 <code>outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/</code>를 새로 만든다. 허용하지 않으면 <code>work/</code>의 비정본 사용성 파일럿만 만든다.</p></div>
+</div>
+</section>
+
+<section id="measured"><h2>2. 실측 결과</h2>
+<div class="grid">
+<div class="card"><h3>사용자 JSONL</h3><p><strong>15행</strong> · 파싱 오류 0 · 고유 표본 14</p><p class="small">PV0177 revision 2개는 약 1초 간격의 같은 내용이다. 삭제하지 않고 중복 가능 상태로 보존한다.</p></div>
+<div class="card"><h3>문맥 판단</h3><p>충분 8 · 뒤 필요 3 · 앞 필요 1 · 빈값 2</p><p class="small">최소 4/14가 ±2보다 긴 문맥을 명시적으로 요청했다.</p></div>
+<div class="card"><h3>환경 판단</h3><p>적절 8 · 부적절 2 · 불확실 3 · 빈값 1</p><p class="small">부적절·불확실은 삭제할 실패가 아니라 query 개선 근거다.</p></div>
+<div class="card"><h3>화자 연속 묶음</h3><p>14개 세션·14개 대화 · 묶음 크기 14–254단위</p><p class="small">긴 묶음을 처음부터 펼치면 화면이 더 길어지므로 검색·접기가 필요하다.</p></div>
+</div>
+<table><thead><tr><th>근거</th><th>경로·행·SHA</th></tr></thead><tbody>
+<tr><td>사용자 revision</td><td><code>C:\Users\ari30\Dropbox\pv_seven_phenomena_20260819\PV_REVIEW_IPAD_BALANCED14_2026-08-22T00-45-38-842Z.jsonl</code><br>12,028바이트 · SHA <span class="sha">8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133</span></td></tr>
+<tr><td>iPad HTML</td><td>11,599,474바이트 · SHA <span class="sha">c59bf73a012709524d03060e5155819d122690453463d635acd26a18a883e6e0</span></td></tr>
+<tr><td>원유권 evidence v2</td><td>40행 · SHA <span class="sha">2bfabd44858e1193df37811fd9dd433c303217d81c319c633bf0a2c3a56a3b55</span></td></tr>
+</tbody></table>
+</section>
+
+<section id="issues"><h2>3. 현재 화면에서 실제로 막힌 것</h2>
+<table><thead><tr><th>관찰</th><th>원인</th><th>v2 대응</th></tr></thead><tbody>
+<tr><td>표적이 안 보임</td><td>builder가 <code>active_form</code> 전체만 표시하고 <code>match_evidence_json</code>을 숨김</td><td>좌·우 형태소/품사/경계를 색으로 표시</td></tr>
+<tr><td>세로가 너무 김</td><td>14개 section이 한 문서에 모두 펼쳐짐</td><td>한 후보만 보이고 목록·검색·이전/다음 제공</td></tr>
+<tr><td>±2가 부족함</td><td>bundle에 문맥 5행만 물질화</td><td>같은 화자 묶음과 전체 대화 전사를 접이식 검색 패널로 추가</td></tr>
+<tr><td>형태소가 불명확함</td><td>12개 정보는 이미 있으나 숨겨짐; HIA 2개는 orth token만 있음</td><td>12개 직접 표시, HIA 2개만 bounded join</td></tr>
+<tr><td>무엇을 메모할지 모호함</td><td>자유 입력만 있고 예시·확신도·겹침·변이 태그가 없음</td><td>짧은 예시와 구조화 필드 + 자유 메모 병행</td></tr>
+</tbody></table>
+</section>
+
+<section id="available"><h2>4. 새 분석 없이 쓸 수 있는 정보</h2>
+<p>실측 헤더에는 화자·대화·형태·발음 참고 열이 이미 있다. v2는 선택된 exact ID만 읽어 화면에 드러내면 된다.</p>
+<div class="grid">
+<div class="card"><h3>항상 보일 것</h3><ul><li>현상·우선순위·연도</li><li>표적 어절과 형태소 경계</li><li>대상/±2 문맥 오디오</li><li>들린 형식·확신도·겹침·문맥</li></ul></div>
+<div class="card"><h3>접어 둘 것</h3><ul><li>같은 화자 연속 묶음·전체 대화 검색</li><li>성별·연령·지역·관계·주제</li><li>규칙 예상형·사전 참조형</li><li>문헌·exact ID·SHA·query 정보</li></ul></div>
+</div>
+<div class="warning"><strong>말차례 주의.</strong> 화면의 <code>DTRN</code>은 동일 화자 행을 연속으로 묶은 조작적 ID다. 실제 담화론적 말차례나 운율구 정답으로 표시하지 않는다.</div>
+</section>
+
+<section id="screen"><h2>5. 권고 화면</h2>
+<div class="wire">┌ 전체 후보 14 / 검색 / 핵심·탐색 필터 ───────────────┐
+│ ← 이전      6/14 · NI · 2025 · 핵심       다음 → │
+├─────────────────────────────────────────────────────┤
+│ 표적 발화                                              │
+│ … [편/NNB] │ [이/VCP] …      경계: 편│이           │
+├─────────────────────────────────────────────────────┤
+│ 대상 음성 [재생]      ±2 문맥 음성 [재생]            │
+├─────────────────────────────────────────────────────┤
+│ 들린 형식 / 변이 태그 / 확신도 / 겹침 / 문맥 / 메모   │
+├ 접기/펼치기 ─────────────────────────────────────────┤
+│ ▸ 같은 화자 묶음  ▸ 전체 대화 검색  ▸ 화자·상황      │
+│ ▸ 예상·참조 발음   ▸ 문헌 근거       ▸ 감사 정보      │
+├─────────────────────────────────────────────────────┤
+│ [revision 저장] [JSONL 가져오기] [JSONL 내보내기]    │
+└─────────────────────────────────────────────────────┘</div>
+<p><span class="tag core">핵심</span> PT·NAN·NAL·NI·LLN &nbsp; <span class="tag explore">탐색</span> VH·HIA. 우선순위는 표시와 탐색 순서에만 쓰며 행을 삭제하지 않는다.</p>
+</section>
+
+<section id="records"><h2>6. 기록과 문헌 연결 규칙</h2>
+<ul>
+<li>기존 v1 JSONL 15행을 가져와 그대로 보존하고, 새 revision만 append한다.</li>
+<li>raw ledger 15행, latest view 14행, possible duplicate 1행을 별도로 회계한다.</li>
+<li><code>relation=not_found</code>는 긍정적 문헌 badge로 쓰지 않는다.</li>
+<li><code>evidence_owner=cited_source</code>는 `재인용·원문 미확인` 상태를 붙인다.</li>
+<li>원유권 본인의 말뭉치·말차례·운율 설명만 공통 방법론 패널에 둔다.</li>
+<li>KOINA·우리말샘 의미번호는 각각 <code>not_run</code>·<code>not_joined</code>로 남기고 이번 구현에서 만들지 않는다.</li>
+</ul>
+</section>
+
+<section id="simple"><h2>7. 더 단순한 구현안</h2>
+<div class="decision"><strong>기존 파일은 수정하지 않는다.</strong> 기존 builder, 11.6MB HTML, receipt, 사용자 JSONL, 통과한 PV root를 모두 읽기 전용으로 두고 새 builder·감사기만 추가한다.</div>
+<ol>
+<li>14 exact ID만 입력으로 고정한다.</li>
+<li>기존 연도·표별 200,000행 상한을 유지하고 자동 확대하지 않는다.</li>
+<li>전체 대화는 텍스트만 포함하고 기존 28개 WAV payload의 SHA를 재검증한다.</li>
+<li>찾지 못한 정보도 표본을 삭제하지 않고 상태로 남긴다.</li>
+<li>새 출력 root는 기존 통과 root와 분리한다.</li>
+</ol>
+<div class="defer"><strong>이번에는 하지 않음:</strong> KOINA, MFA, wav2vec2, Praat 측정, 자동 실현 판정, 우리말샘 의미번호 결합, 새 후보 추출, 전체 대화 오디오 포함.</div>
+</section>
+
+<section id="gate"><h2>8. 전체 14개 대신 3개만 다시 확인</h2>
+<table><thead><tr><th>표본</th><th>이유</th><th>확인 기능</th></tr></thead><tbody>
+<tr><td><code>PV0001</code><br>PT·2020</td><td>뒤 문맥 필요, 28단위 묶음</td><td>표적 강조·뒤 확장·한 후보 화면</td></tr>
+<tr><td><code>PV0163</code><br>NI·2025</td><td>형태소/비교 발음 요구, 254단위 묶음</td><td>형태소 카드·긴 묶음 검색·접기</td></tr>
+<tr><td><code>PV0177</code><br>HIA·2025</td><td>형태소 불명확, 중복 revision</td><td>HIA join·입력 예시·중복 보존</td></tr>
+</tbody></table>
+<p>합격은 실현 판정이 아니라 ① 표적을 즉시 찾음 ② 긴 문맥을 찾음 ③ 메모가 사고를 도움 ④ 기존+새 revision을 모두 내보냄의 네 조건이다.</p>
+<div class="decision"><strong>그 다음.</strong> 이 3개가 통과한 뒤 연도별 30개 작업을 시작한다. 실제 태깅 묶음은 예상 청취시간 합계 약 1시간을 상한으로 나누고, 연도·현상 쿼터와 zero-drop 상태를 batch manifest에 함께 보존한다.</div>
+</section>
+
+<footer><p>상세 필드·감사 조건은 같은 이름의 Markdown 보고서에 기록했다. 이 HTML은 사용자가 빠르게 판단하기 위한 요약본이다.</p><p><code>docs/reviews/incoming/EXTERNAL_REVIEW_pv_reviewer_v2_design_codex_20260822.html</code></p></footer>
+</main></body></html>

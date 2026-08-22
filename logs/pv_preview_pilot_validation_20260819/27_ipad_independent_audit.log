@@ -1,0 +1,17 @@
+{
+  "schema_version": "pv_ipad_balanced14_audit.v1",
+  "passed": true,
+  "errors": [],
+  "counts": {
+    "sample_sections": 14,
+    "review_forms": 14,
+    "audio_elements": 28,
+    "embedded_wav_sha_matches": 28,
+    "external_sources": 0
+  },
+  "html": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\work\\pv_ipad_balanced14_20260820\\PV_IPAD_BALANCED14_20260820.html",
+    "bytes": 11599474,
+    "sha256": "c59bf73a012709524d03060e5155819d122690453463d635acd26a18a883e6e0"
+  }
+}

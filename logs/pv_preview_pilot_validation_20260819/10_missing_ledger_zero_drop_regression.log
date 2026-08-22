@@ -1,0 +1,2 @@
+[('SDRW2000000001.1.1.1', 'candidate_ready_for_manual_realization_review'), ('SDRW2000000001.1.1.6', 'candidate_metadata_only_missing_capped_release_lookup')]
+[{'year': 2020, 'table': 'rc0_utterance_status_selected_id_lookup', 'path': 'C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\releases\\nikl_dialogue_research_db_v1_0_0_rc0_20260815\\ledgers\\2020_utterance_status.csv.gz', 'rows_scanned': 200000, 'requested_ids': 2, 'found_ids': 1, 'missing_ids_retained_with_status': 1, 'scan_stopped_at_hard_row_cap': True}]

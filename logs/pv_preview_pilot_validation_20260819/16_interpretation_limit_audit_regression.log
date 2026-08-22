@@ -1,0 +1,100 @@
+AUDIT_PY_COMPILE_OK
+{
+  "schema_version": "pv_preview_independent_audit.v1",
+  "status": "failed_do_not_begin_listening",
+  "passed": false,
+  "recorded_at": "2026-08-19T18:06:48+09:00",
+  "auditor_independence": {
+    "candidate_generator_imported": false,
+    "generator_query_matcher_imported": false,
+    "conditions_reimplemented_and_reapplied": true
+  },
+  "config": {
+    "path": "C:\\Users\\ari30\\research\\2026_summer_research\\config\\target_queries\\pv_preview_boundary_20260819.json",
+    "sha256": "68d0b8cc0bc97019817d779341fa734324eea5467d80d92fa3f90726fa64f736"
+  },
+  "run_root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial",
+  "input_files": {
+    "candidates": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\samples\\PV_CANDIDATE_ACCOUNTING.csv",
+      "bytes": 29854295,
+      "sha256": "fcb801d880c59d2b6f11dab54f58cfa7e821a3e234b41e53bdc2abd53a2ce213"
+    },
+    "samples": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\samples\\PV_SAMPLES.csv",
+      "bytes": 373770,
+      "sha256": "dae82e712acac9a743922ce04f1b4def124cab6aa93321719f7a71f613d868e1"
+    },
+    "events": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\samples\\PV_REVIEW_EVENTS.csv",
+      "bytes": 42850,
+      "sha256": "52939891944171ed99e4c06dea667fd84c42e0d3b7c256b96163b6dd427d4fdf"
+    },
+    "sample_build": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\samples\\PV_SAMPLE_BUILD.json",
+      "bytes": 56712,
+      "sha256": "1b602f000286801dbe0dbc748d92ab410a946a71b7109279d76d2621a81ed593"
+    },
+    "internal_scan": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\samples\\internal\\PV_INTERNAL_SCAN.json",
+      "bytes": 14107,
+      "sha256": "730eeb5f5c07663ce443f8333ec463789d1e6a95beafbf64a2f323e85313338e"
+    },
+    "context": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\context\\PV_CONTEXT.csv",
+      "bytes": 777719,
+      "sha256": "0de16821f2daa8732ece57a14856cb7cf06759e23421bef71b657bc08d7f0173"
+    },
+    "context_build": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\context\\PV_CONTEXT_BUILD.json",
+      "bytes": 24361,
+      "sha256": "2d5bf80ca9f71ccaf319a1025962bd3f7e03209d618ff1a8f26e83575064ed24"
+    },
+    "bundle_build": {
+      "path": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819.partial\\bundle\\PV_BUNDLE_BUILD.json",
+      "bytes": 11581,
+      "sha256": "df8a3021c91d00ebe8f6ad729727bf798fcac036c72cc5e920fef345cefc510c"
+    }
+  },
+  "counts": {
+    "candidate_rows": 18339,
+    "physical_packages": 180,
+    "logical_review_events": 214,
+    "context_rows": 900,
+    "checks": 6,
+    "failed_checks": 1
+  },
+  "checks": [
+    {
+      "check_id": "candidate_zero_drop_and_environment_recheck",
+      "passed": "True",
+      "details": "{\"candidate_rows\": 18339, \"error_count\": 0, \"errors\": []}"
+    },
+    {
+      "check_id": "sample_allocation_membership_and_events",
+      "passed": "False",
+      "details": "{\"by_year\": {\"2020\": 30, \"2021\": 30, \"2022\": 30, \"2023\": 30, \"2024\": 30, \"2025\": 30}, \"error_count\": 28, \"errors\": [\"PV0023: no explicit realization interpretation limit\", \"PV0024: no explicit realization interpretation limit\", \"PV0025: no explicit realization interpretation limit\", \"PV0027: no explicit realization interpretation limit\", \"PV0028: no explicit realization interpretation limit\", \"PV0054: no explicit realization interpretation limit\", \"PV0055: no explicit realization interpretation limit\", \"PV0056: no explicit realization interpretation limit\", \"PV0058: no explicit realization interpretation limit\", \"PV0059: no explicit realization interpretation limit\", \"PV0082: no explicit realization interpretation limit\", \"PV0083: no explicit realization interpretation limit\", \"PV0084: no explicit realization interpretation limit\", \"PV0085: no explicit realization interpretation limit\", \"PV0088: no explicit realization interpretation limit\", \"PV0089: no explicit realization interpretation limit\", \"PV0112: no explicit realization interpretation limit\", \"PV0114: no explicit realization interpretation limit\", \"PV0115: no explicit realization interpretation limit\", \"PV0116: no explicit realization interpretation limit\", \"PV0120: no explicit realization interpretation limit\", \"PV0143: no explicit realization interpretation limit\", \"PV0144: no explicit realization interpretation limit\", \"PV0146: no explicit realization interpretation limit\", \"PV0149: no explicit realization interpretation limit\", \"PV0150: no explicit realization interpretation limit\", \"PV0177: no explicit realization interpretation limit\", \"PV0178: no explicit realization interpretation limit\"], \"logical_events\": 214, \"physical_packages\": 180}"
+    },
+    {
+      "check_id": "approved_quota_exception_traceability",
+      "passed": "True",
+      "details": "{\"expected\": {\"2022\": {\"approved_on\": \"2026-08-19\", \"deltas\": {\"NAL\": -2, \"NAN\": 1, \"PT\": 1}, \"reason\": \"Within the approved 200000-row cap, 2022 NAL has only two candidates with WAV, six-tier TextGrid, and linked timing; the researcher approved reallocating the two missing slots within 2022.\"}}, \"recorded\": {\"2022\": {\"approved_on\": \"2026-08-19\", \"deltas\": {\"NAL\": -2, \"NAN\": 1, \"PT\": 1}, \"reason\": \"Within the approved 200000-row cap, 2022 NAL has only two candidates with WAV, six-tier TextGrid, and linked timing; the researcher approved reallocating the two missing slots within 2022.\"}}}"
+    },
+    {
+      "check_id": "context_existing_rank_zero_drop_and_turn_limits",
+      "passed": "True",
+      "details": "{\"context_rows\": 900, \"error_count\": 0, \"errors\": [], \"expected\": 900}"
+    },
+    {
+      "check_id": "bundle_files_sha_and_stitch_reverse_arithmetic",
+      "passed": "True",
+      "details": "{\"error_count\": 0, \"errors\": [], \"package_dirs\": 180, \"sha_manifest_rows\": 1443}"
+    },
+    {
+      "check_id": "source_write_and_forbidden_tool_assertions",
+      "passed": "True",
+      "details": "{\"check_method\": \"output_containment_plus_build_manifest_assertions\", \"errors\": []}"
+    }
+  ],
+  "listening_gate": "closed"
+}

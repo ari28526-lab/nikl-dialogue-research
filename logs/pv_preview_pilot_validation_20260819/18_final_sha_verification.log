@@ -1,0 +1,29 @@
+FINAL_INDEPENDENT_SHA_AND_AUDIT_OK
+{
+  "root_sha": {
+    "manifest": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819\\PV_SHA256_MANIFEST.csv",
+    "rows": 1456,
+    "hash_mismatches": [],
+    "missing_from_manifest": [],
+    "manifest_paths_missing": []
+  },
+  "bundle_sha": {
+    "manifest": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819\\bundle\\SHA256_MANIFEST.csv",
+    "rows": 1443,
+    "hash_mismatches": [],
+    "missing_from_manifest": [],
+    "manifest_paths_missing": []
+  },
+  "audit_counts": {
+    "candidate_rows": 18339,
+    "physical_packages": 180,
+    "logical_review_events": 214,
+    "context_rows": 900,
+    "checks": 6,
+    "failed_checks": 0
+  },
+  "audit_sha256": "628cb01692c28e14b9cfe00271fc3aa6e9c33267aafe34895c95c6f7d6896db2",
+  "config_sha256": "68d0b8cc0bc97019817d779341fa734324eea5467d80d92fa3f90726fa64f736",
+  "file_count": 1463,
+  "total_bytes": 133426435
+}

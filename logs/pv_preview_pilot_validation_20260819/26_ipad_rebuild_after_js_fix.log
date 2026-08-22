@@ -1,0 +1,230 @@
+IPAD_BUILD_AUDIT_PY_COMPILE_OK
+{
+  "schema_version": "pv_ipad_balanced14_build.v1",
+  "status": "built_self_contained_ipad_review_no_realization_judgement",
+  "recorded_at": "2026-08-20T15:24:29.100507+09:00",
+  "source_run_root": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819",
+  "source_run_manifest_sha256": "acb8772e1f4ab8860ebc0631517f616eeb2b2e0f5eeb8e1d890abf462248ad51",
+  "source_audit_sha256": "628cb01692c28e14b9cfe00271fc3aa6e9c33267aafe34895c95c6f7d6896db2",
+  "source_audit_passed": true,
+  "selection": {
+    "phenomenon_order": [
+      "PT",
+      "NAN",
+      "NAL",
+      "NI",
+      "LLN",
+      "VH",
+      "HIA"
+    ],
+    "years_per_phenomenon": [
+      2020,
+      2025
+    ],
+    "physical_packages": 14,
+    "primary_review_events": 14,
+    "records": [
+      {
+        "ordinal": 1,
+        "pv_id": "PV0001",
+        "review_event_id": "PV0001__PT",
+        "phenomenon_code": "PT",
+        "year": 2020,
+        "utt_id": "SDRW2000000003.1.1.60",
+        "package_directory": "001__PT__2020__SDRW2000000003_1_1_60",
+        "target_wav_bytes": 63052,
+        "target_wav_sha256": "8c232b11baaf48790d072a62115222739aecd82e3431dedd7a3ab1d02eff3695",
+        "context_wav_bytes": 249996,
+        "context_wav_sha256": "ede999eddeaa2b39ef36d36802f5525631dc8c279ecef70e98afdd908ed4ac17"
+      },
+      {
+        "ordinal": 2,
+        "pv_id": "PV0151",
+        "review_event_id": "PV0151__PT",
+        "phenomenon_code": "PT",
+        "year": 2025,
+        "utt_id": "SARW2500000002.1.1.60",
+        "package_directory": "151__PT__2025__SARW2500000002_1_1_60",
+        "target_wav_bytes": 264538,
+        "target_wav_sha256": "f2aa79ee90ed7c1911c9d8fbe7f0d652d66067afa7f0d5b1e705ec59982e9a95",
+        "context_wav_bytes": 796980,
+        "context_wav_sha256": "171b1e60006774285124e9c457e50e64b18d0b5e2efe9c266e68e2dedbf5ffa6"
+      },
+      {
+        "ordinal": 3,
+        "pv_id": "PV0006",
+        "review_event_id": "PV0006__NAN",
+        "phenomenon_code": "NAN",
+        "year": 2020,
+        "utt_id": "SDRW2000000005.1.1.220",
+        "package_directory": "006__NAN__2020__SDRW2000000005_1_1_220",
+        "target_wav_bytes": 92076,
+        "target_wav_sha256": "eaa65678f82cbdc7af6ca74d763eb48d96836c735ae67ae8a9d4ebdf2d0e4d43",
+        "context_wav_bytes": 245004,
+        "context_wav_sha256": "3372e3cfbd30b4648994a19ee6d77269c39c4f89a58faa9b2304bde6a6018e8a"
+      },
+      {
+        "ordinal": 4,
+        "pv_id": "PV0155",
+        "review_event_id": "PV0155__NAN",
+        "phenomenon_code": "NAN",
+        "year": 2025,
+        "utt_id": "SARW2500000003.1.1.51",
+        "package_directory": "155__NAN__2025__SARW2500000003_1_1_51",
+        "target_wav_bytes": 151414,
+        "target_wav_sha256": "9fa9d97976875d1cd141ed9c991f262d9002219a176b9735337d6cb9d72bb5c9",
+        "context_wav_bytes": 884170,
+        "context_wav_sha256": "18f880a7286ddc1b7db0d9de4fd1f718e68e1fa2a26e759ac2ea2cb45dcba5e3"
+      },
+      {
+        "ordinal": 5,
+        "pv_id": "PV0011",
+        "review_event_id": "PV0011__NAL",
+        "phenomenon_code": "NAL",
+        "year": 2020,
+        "utt_id": "SDRW2000000042.1.1.100",
+        "package_directory": "011__NAL__2020__SDRW2000000042_1_1_100",
+        "target_wav_bytes": 18668,
+        "target_wav_sha256": "fc5a0a761c2cd0b279ba1e5a2e7f2f2fca1f33b35a75132150b87fd7b74a6bb9",
+        "context_wav_bytes": 293484,
+        "context_wav_sha256": "3e769075f523d7dc7740d582ca7632776b6fce59908ba93f8fbb2601f9f6aa67"
+      },
+      {
+        "ordinal": 6,
+        "pv_id": "PV0159",
+        "review_event_id": "PV0159__NAL",
+        "phenomenon_code": "NAL",
+        "year": 2025,
+        "utt_id": "SARW2500000031.1.1.127",
+        "package_directory": "159__NAL__2025__SARW2500000031_1_1_127",
+        "target_wav_bytes": 265472,
+        "target_wav_sha256": "82f0e32f24426a7779e4e45c03db99bea78ea044c50089cae0c2f17d4278cfd3",
+        "context_wav_bytes": 686164,
+        "context_wav_sha256": "c1853a643d04be6bf71d6932e468112c916d662ef4909ac0c2722a77dd0b1bc7"
+      },
+      {
+        "ordinal": 7,
+        "pv_id": "PV0015",
+        "review_event_id": "PV0015__NI",
+        "phenomenon_code": "NI",
+        "year": 2020,
+        "utt_id": "SDRW2000000145.1.1.20",
+        "package_directory": "015__NI__2020__SDRW2000000145_1_1_20",
+        "target_wav_bytes": 68332,
+        "target_wav_sha256": "dd728f889a95579c389b49e71b5a9d8372b5f732a74c15bc57c0b2e0556d04c2",
+        "context_wav_bytes": 319596,
+        "context_wav_sha256": "b7652e61c48259035dd14e84699ece262c9c2ce57c717f72301a33f7cb2bb292"
+      },
+      {
+        "ordinal": 8,
+        "pv_id": "PV0163",
+        "review_event_id": "PV0163__NI",
+        "phenomenon_code": "NI",
+        "year": 2025,
+        "utt_id": "SARW2500000113.1.1.6",
+        "package_directory": "163__NI__2025__SARW2500000113_1_1_6",
+        "target_wav_bytes": 146884,
+        "target_wav_sha256": "41a56dcee898fd8d685084bd5c3a0a19cf0d42d4fdc412b6c90e279c27900f95",
+        "context_wav_bytes": 421160,
+        "context_wav_sha256": "369da73e89c9c7a659512a83208266afe7d47ffca938b3a9711e10eaa74dedbe"
+      },
+      {
+        "ordinal": 9,
+        "pv_id": "PV0019",
+        "review_event_id": "PV0019__LLN",
+        "phenomenon_code": "LLN",
+        "year": 2020,
+        "utt_id": "SDRW2000000023.1.1.388",
+        "package_directory": "019__LLN__2020__SDRW2000000023_1_1_388",
+        "target_wav_bytes": 46316,
+        "target_wav_sha256": "91dad871d03181f68acdd2d434939ea0a819743a479b09f700dffe536c850ed1",
+        "context_wav_bytes": 322860,
+        "context_wav_sha256": "51c55a7532680c39908fcee5ca128e8fb258e3af1959bdb618351faa2d773030"
+      },
+      {
+        "ordinal": 10,
+        "pv_id": "PV0168",
+        "review_event_id": "PV0168__LLN",
+        "phenomenon_code": "LLN",
+        "year": 2025,
+        "utt_id": "SARW2500000048.1.1.22",
+        "package_directory": "168__LLN__2025__SARW2500000048_1_1_22",
+        "target_wav_bytes": 153930,
+        "target_wav_sha256": "08256739a9b541bc293c96ae7793081291b6afb4f785b7962963d59e0f297a18",
+        "context_wav_bytes": 317766,
+        "context_wav_sha256": "63b448f8cbf4f41a7dfc0685f2bcb961c4df49349c4d1e2de009aa162faadf68"
+      },
+      {
+        "ordinal": 11,
+        "pv_id": "PV0023",
+        "review_event_id": "PV0023__VH",
+        "phenomenon_code": "VH",
+        "year": 2020,
+        "utt_id": "SDRW2000000001.1.1.385",
+        "package_directory": "023__VH__2020__SDRW2000000001_1_1_385",
+        "target_wav_bytes": 74220,
+        "target_wav_sha256": "35b0cf41727aacd4dc2eff8b693c978870f256d3e93b13d838123e8ae9d57833",
+        "context_wav_bytes": 174860,
+        "context_wav_sha256": "0a251e54ebd8b46b69d5843f28b0630c165de7c47157bed9e69781a0fdceb3e9"
+      },
+      {
+        "ordinal": 12,
+        "pv_id": "PV0173",
+        "review_event_id": "PV0173__VH",
+        "phenomenon_code": "VH",
+        "year": 2025,
+        "utt_id": "SARW2500000005.1.1.10",
+        "package_directory": "173__VH__2025__SARW2500000005_1_1_10",
+        "target_wav_bytes": 276112,
+        "target_wav_sha256": "1c91dbf823395ccaf077754b5f22d3ac0e778986db3ac4ec57a393ea6669f974",
+        "context_wav_bytes": 826892,
+        "context_wav_sha256": "198cba293fe1a89428027cd021ea2a0eac5b613805ed348c9240c2b1571f2e14"
+      },
+      {
+        "ordinal": 13,
+        "pv_id": "PV0027",
+        "review_event_id": "PV0027__HIA",
+        "phenomenon_code": "HIA",
+        "year": 2020,
+        "utt_id": "SDRW2000000027.1.1.298",
+        "package_directory": "027__HIA__2020__SDRW2000000027_1_1_298",
+        "target_wav_bytes": 108972,
+        "target_wav_sha256": "8690a9c9279090622dd8c59c985a36dec6b3554808e12dd1a9124d5d33436774",
+        "context_wav_bytes": 326252,
+        "context_wav_sha256": "1d054799b94dd5e45a245fd417d7174972d703d998058c1b274baadca50f71de"
+      },
+      {
+        "ordinal": 14,
+        "pv_id": "PV0177",
+        "review_event_id": "PV0177__HIA",
+        "phenomenon_code": "HIA",
+        "year": 2025,
+        "utt_id": "SARW2500000011.1.1.79",
+        "package_directory": "177__HIA__2025__SARW2500000011_1_1_79",
+        "target_wav_bytes": 180744,
+        "target_wav_sha256": "320534b2ef608c00de9ef4fa8a9edfd67955d68bb8f7c3bdf7ff1b3eafc29452",
+        "context_wav_bytes": 881382,
+        "context_wav_sha256": "53624fca1df4aefca20bb1519abec531fd10e00cd7595459c2cddafe90e94622"
+      }
+    ]
+  },
+  "output": {
+    "path": "PV_IPAD_BALANCED14_20260820.html",
+    "bytes": 11599474,
+    "sha256": "c59bf73a012709524d03060e5155819d122690453463d635acd26a18a883e6e0",
+    "embedded_source_wav_bytes": 8657296
+  },
+  "capabilities": {
+    "embedded_target_and_context_audio": true,
+    "browser_local_revision_history": true,
+    "jsonl_download": true,
+    "jsonl_visible_copy_fallback": true
+  },
+  "safety": {
+    "source_files_modified": false,
+    "audio_transcoded": false,
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "existing_output_overwritten": false
+  }
+}

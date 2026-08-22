@@ -1,0 +1,83 @@
+PV reviewer v2 validation log
+date: 2026-08-22 Asia/Seoul
+project: C:\Users\ari30\research\2026_summer_research
+pipeline_python: C:\Users\ari30\miniforge3\envs\mfa\python.exe
+node: C:\Users\ari30\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe
+
+[inputs measured]
+source PV manifest SHA256: acb8772e1f4ab8860ebc0631517f616eeb2b2e0f5eeb8e1d890abf462248ad51
+source PV audit SHA256: 628cb01692c28e14b9cfe00271fc3aa6e9c33267aafe34895c95c6f7d6896db2
+user JSONL rows/unique/bytes/SHA256: 15/14/12028/8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133
+Won 2022 evidence rows/SHA256: 40/2bfabd44858e1193df37811fd9dd433c303217d81c319c633bf0a2c3a56a3b55
+scan cap: 200000 rows per table/year; automatic increase=false
+
+[py_compile]
+command: mfa-python -m py_compile scripts/python/build_pv_reviewer_v2.py scripts/python/audit_pv_reviewer_v2.py
+result: PASS (exit 0)
+
+[builder failure scenario]
+command: build_pv_reviewer_v2.py --user-jsonl work/pv_reviewer_v2_validation_20260822/invalid_empty.jsonl
+result: EXPECTED FAIL (exit 1)
+message: RuntimeError: user revision JSONL is empty
+side effect: final output directory was not created
+
+[builder success scenario]
+command: build_pv_reviewer_v2.py
+result: PASS (exit 0)
+final build recorded_at: 2026-08-22T11:27:36.427345+09:00
+selection: 14 samples, 14 sessions, 14 phenomenon/year cells
+dialogue: 4060 rows, 14 pv_id, 14 exact target rows
+history: input 15 = retained 15; latest view 14; semantic duplicate rows retained 1
+morph: direct 12; HIA status records 2; PV0177 linked 1; PV0027 form_tagged_count_mismatch zero-drop 1
+literature: source 40; positive paper-author common-method rows 29; not_found excluded 1; cited-source unverified excluded 10
+audio: embedded WAV payloads 28; source SHA matches 28
+safety: MFA/KOINA/wav2vec2/audio transcode/automatic realization/formal ledger all false
+
+[builder existing-output scenario]
+command: build_pv_reviewer_v2.py (repeated after successful build)
+result: EXPECTED FAIL (exit 1)
+message: FileExistsError: existing output is never overwritten
+
+[independent auditor success]
+command: audit_pv_reviewer_v2.py
+result: PASS (exit 0; errors=[])
+command: audit_pv_reviewer_v2.py --write-audit
+result: PASS (exit 0); audit JSON and SHA manifest written through .partial promotion
+
+[independent auditor failure scenario]
+command: audit_pv_reviewer_v2.py --input-dir work/pv_reviewer_v2_validation_20260822/does_not_exist
+result: EXPECTED FAIL (exit 1; FileNotFoundError)
+
+[independent auditor existing-output scenario]
+command: audit_pv_reviewer_v2.py --write-audit (repeated)
+result: EXPECTED FAIL (exit 1)
+message: FileExistsError: audit/PV_REVIEWER_V2_AUDIT.json
+
+[SHA manifest verification]
+result: PASS
+entries: 5/5 files exist; byte counts match 5/5; SHA-256 values match 5/5
+
+[browser logic runtime]
+command: node tests/test_pv_reviewer_v2_runtime.js outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V2.html
+result: PASS (exit 0; PV_REVIEWER_V2_RUNTIME_OK)
+covered: 14/15/14/1 accounting; core 10/exploratory 4; ID/year search; valid import; empty/malformed/unknown-event/wrong-batch failures; revision 2; 16-row export; literature exclusions
+
+[visual browser inspection]
+result: NOT RUN — local in-app browser control bootstrap rejected its own browser-service dependency as outside the configured trusted path.
+message: Trusted RPC dependency must resolve within a configured trusted code path
+interpretation: build/runtime/audit passes are unaffected; iPad and laptop visual usability remains the user micro-gate, not an automated pass.
+
+[final files]
+scripts/python/build_pv_reviewer_v2.py | 61127 bytes | bc5849e20e425c3a9e12d36726430e319293b4fd22ffc98799d589bfc75364e3
+scripts/python/audit_pv_reviewer_v2.py | 17175 bytes | c8d77d58e4a3e4809ad39b075dbba093af41821279d46d2bba31ac55b1ced76c
+tests/test_pv_reviewer_v2_runtime.js | 4167 bytes | d5cfe1ea8eb99a091247ef0e1b7eb96f74cc273e3c27f4b6a55d6bc398cb3a4b
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V2.html | 19456165 bytes | 37c152d73069bfc7dc3e31684fdc99303916bb4acb72f986aab335541a1228f6
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V2_BUILD.json | 21279 bytes | c22bd1734543792b1ff2c2aa7b54c5e22a33cbc335daf29481a4e1af8c35ec93
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V1_IMPORTED.jsonl | 12028 bytes | 8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V2_DIALOGUES.jsonl | 7792634 bytes | 990c1098448d58107e375d868eb4e8593e14ea150fdc2e73938e22c0919b39ae
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/audit/PV_REVIEWER_V2_AUDIT.json | 1937 bytes | 13d42f8728be20ae0d97cacc9dab3a76b84fea1aef109b8dbdbbf44547c4b7bb
+outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/PV_REVIEWER_V2_SHA256_MANIFEST.csv | 531 bytes | cff853ff0355c9078601a11ea453c759f743ce0911c0047fce91d057cfe39b5f
+
+[repository]
+commit: not created
+push: not run

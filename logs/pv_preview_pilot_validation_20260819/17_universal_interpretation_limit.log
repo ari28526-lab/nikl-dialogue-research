@@ -1,0 +1,3 @@
+SAMPLE_AUDIT_EXPLICIT_LIMIT_PY_COMPILE_OK
+IN_MEMORY_180_SAMPLE_EXPLICIT_LIMIT_AUDIT_OK
+[{"check_id": "candidate_zero_drop_and_environment_recheck", "passed": "True", "details": "{\"candidate_rows\": 18339, \"error_count\": 0, \"errors\": []}"}, {"check_id": "sample_allocation_membership_and_events", "passed": "True", "details": "{\"by_year\": {\"2020\": 30, \"2021\": 30, \"2022\": 30, \"2023\": 30, \"2024\": 30, \"2025\": 30}, \"error_count\": 0, \"errors\": [], \"logical_events\": 214, \"physical_packages\": 180}"}]

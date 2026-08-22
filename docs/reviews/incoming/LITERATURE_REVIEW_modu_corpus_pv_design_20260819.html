@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모두의 말뭉치·음운변이 문헌 검토 — PV 파일럿 구현 판단</title>
+  <style>
+    :root {
+      --ink:#17212b; --muted:#586674; --line:#d9e1e8; --paper:#fff;
+      --navy:#183b56; --blue:#eaf3f8; --green:#e9f6ef; --amber:#fff5dc;
+      --red:#fff0ef; --violet:#f2effb; --code:#f4f6f8;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:#edf1f4; font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif; line-height:1.72; }
+    main { max-width:1180px; margin:28px auto; padding:48px 56px 72px; background:var(--paper); box-shadow:0 10px 32px rgba(23,33,43,.08); }
+    h1,h2,h3 { color:var(--navy); line-height:1.35; }
+    h1 { margin:0 0 10px; font-size:2rem; letter-spacing:-.04em; }
+    h2 { margin:2.3rem 0 .8rem; border-bottom:2px solid var(--navy); padding-bottom:.35rem; font-size:1.42rem; }
+    h3 { margin:1.6rem 0 .45rem; font-size:1.08rem; }
+    p { margin:.55rem 0; }
+    a { color:#0b5c8e; text-underline-offset:2px; }
+    code { font-family:Consolas,"D2Coding",monospace; background:var(--code); border-radius:4px; padding:.1em .35em; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:.93rem; }
+    .lead { margin:1.25rem 0; padding:1.1rem 1.25rem; background:var(--blue); border-left:5px solid #2d7198; }
+    .decision { margin:1rem 0; padding:1rem 1.2rem; background:var(--green); border-left:5px solid #2e8252; }
+    .warning { margin:1rem 0; padding:1rem 1.2rem; background:var(--amber); border-left:5px solid #c78b17; }
+    .defer { margin:1rem 0; padding:1rem 1.2rem; background:var(--violet); border-left:5px solid #7459a6; }
+    .toc { margin:1.5rem 0; padding:1rem 1.3rem; border:1px solid var(--line); background:#fafcfd; }
+    .toc ol { columns:2; margin:.4rem 0; padding-left:1.35rem; }
+    table { width:100%; border-collapse:collapse; margin:.8rem 0 1.25rem; font-size:.91rem; }
+    th,td { border:1px solid var(--line); padding:.62rem .7rem; vertical-align:top; text-align:left; }
+    th { background:#eef3f6; color:#20384a; }
+    tr:nth-child(even) td { background:#fbfcfd; }
+    ul,ol { padding-left:1.35rem; }
+    li { margin:.3rem 0; }
+    .tag { display:inline-block; padding:.08rem .48rem; border-radius:999px; font-size:.78rem; font-weight:700; white-space:nowrap; }
+    .now { background:#dff2e6; color:#236b43; }
+    .later { background:#eee7fa; color:#63448e; }
+    .background { background:#e7eef3; color:#455765; }
+    .risk { background:#ffe6e3; color:#943b31; }
+    .small { color:var(--muted); font-size:.84rem; }
+    .sha { font-size:.76rem; word-break:break-all; }
+    .sources td:first-child { width:3.4rem; text-align:center; }
+    .sources td:nth-child(3) { width:5rem; text-align:right; }
+    .sources td:nth-child(4) { width:7rem; text-align:right; }
+    .sources td:nth-child(5) { width:30%; }
+    .check { margin:.8rem 0; padding:.85rem 1rem; border:1px dashed #91a4b2; background:#fafcfd; }
+    footer { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem; }
+    @media (max-width:800px) {
+      body { background:#fff; } main { margin:0; padding:28px 20px 52px; box-shadow:none; }
+      .toc ol { columns:1; } table { display:block; overflow-x:auto; } h1 { font-size:1.65rem; }
+    }
+    @media print {
+      body { background:#fff; } main { margin:0; max-width:none; box-shadow:none; padding:20mm 16mm; }
+      a { color:inherit; text-decoration:none; } .toc { break-after:page; }
+      tr, .decision, .warning, .defer { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>모두의 말뭉치·음운변이 문헌 검토</h1>
+    <p class="meta">2단계 “PV 파일럿” 구현 판단 보완 자료 · 2026-08-19 · Codex</p>
+    <p class="meta">검토 범위: <code>00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/</code>의 PDF 17개 전부 + 상위 폴더의 원유권(2025) 학위논문 1개</p>
+  </header>
+
+  <div class="lead">
+    <strong>한 줄 결론.</strong> 현재 확정한 연도별 30개(총 180개), 현상별 기본 4개와 순환 추가 2개, VH·HIA의 한 물리 자산/복수 논리 사건, 원천표별·연도별 200,000행 스캔 상한은 그대로 유지해도 된다. 문헌이 요구하는 수정은 표본 수가 아니라 <strong>맥락의 이름과 상태 기록</strong>이다. 연속된 동일 화자 전사 단위는 실제 말차례의 정답이 아니라 “조작적 화자 연속 묶음”으로 기록하고, 전사 단위 사이 시간 간격을 실제 휴지로 해석하지 않는다.
+  </div>
+
+  <nav class="toc" aria-label="목차">
+    <strong>빠른 목차</strong>
+    <ol>
+      <li><a href="#decisions">지금 확정할 구현 판단</a></li>
+      <li><a href="#won">원유권 연구가 답해 주는 것</a></li>
+      <li><a href="#situations">PV에서 확인할 상황</a></li>
+      <li><a href="#variation">음운변이 연구의 공통 전략</a></li>
+      <li><a href="#fields">기록 필드와 감사 항목</a></li>
+      <li><a href="#deferred">다음 단계로 유보할 것</a></li>
+      <li><a href="#inventory">문헌 18개 전수 분류·SHA</a></li>
+      <li><a href="#method">검토 방법과 한계</a></li>
+    </ol>
+  </nav>
+
+  <section id="decisions">
+    <h2>1. 지금 확정할 구현 판단</h2>
+    <table>
+      <thead><tr><th>항목</th><th>구현 판단</th><th>문헌 근거와 이유</th></tr></thead>
+      <tbody>
+        <tr><td>연도별 표본</td><td><strong>30개 × 2020–2025 = 180개 유지</strong></td><td>자연발화 연구는 불균형을 피할 수 없으며, 파일럿은 제한된 표본에서 상황과 판정 가능성을 확인하는 단계다. 김지유(2024 학위논문)는 목표어별 최대 30개와 화자별 최대 3개를 적용했고, 부족한 셀은 기준을 투명하게 완화했다(PDF 28쪽).</td></tr>
+        <tr><td>스캔 상한</td><td><strong>원천표·연도별 200,000행에서 조기 중단</strong></td><td>권소영은 2,232개 중 1,380개 파일 검토만으로 일부 고빈도 항목 수집을 중단했고(PDF 63–64쪽), 여러 연구가 표본 상한을 사용했다. PV는 빈도 추정이 아니라 탐색 가능성 점검이므로 상한과 미충족 상태를 남기는 편이 적절하다.</td></tr>
+        <tr><td>맥락 창</td><td><strong>실제 존재하는 전사 단위 순위 기준 ±2</strong></td><td>말뭉치 오디오는 전사 단위별로 제공되며, 해당 단위는 구축 규칙상 억양구로 취급되지만 대규모 자료에서 실제 억양곡선으로 재검증된 것은 아니다(원유권 2022, PDF 2–3쪽).</td></tr>
+        <tr><td>“turn” 표지</td><td><strong><code>operational_speaker_run</code>으로 명명</strong><br>연속된 동일 <code>speaker_id</code>만 묶음</td><td>원유권은 발화권 이양까지를 한 말차례로 보되, 실제 구현은 화자 교체 여부만으로 묶었고 자발적·비자발적 중단을 구분하지 않았다(PDF 3쪽 각주 5). 따라서 “정식 말차례”나 “담화 행위”로 부르면 과해석이다.</td></tr>
+        <tr><td>끊겨 보이는 이유</td><td><strong>원본 휴지로 추정 금지</strong></td><td>2020 자료에서 동일 화자의 전사 단위 사이는 기계적으로 약 0.01초이며 억양구 사이 휴지가 소실되었다고 보고되었다(원유권 2022, PDF 3쪽). 다른 연도에도 자동 일반화하지 않고, 시간차는 값만 보존하되 의미는 <code>unknown/corpus-encoded</code>로 둔다.</td></tr>
+        <tr><td>겹침·교대</td><td><code>note</code>의 겹침 표지와 화자 변화 여부를 별도로 표시</td><td>타임스탬프 겹침만으로 끼어들기·중첩 유형을 자동 판정하지 않는다. 원유권의 조작적 말차례도 중단 유형을 구분하지 못했다.</td></tr>
+        <tr><td>VH·HIA 중첩</td><td><strong>한 물리 패키지 + 복수 논리 사건 유지</strong></td><td>문헌은 형태·음운 요인이 중첩될 수 있음을 반복해서 보여 준다. 물리 음성을 중복시키기보다 사건 멤버십과 1차 할당을 분리하는 현재 설계가 추적 가능성이 높다.</td></tr>
+        <tr><td>실현 판정</td><td>PV에서는 인상·불명확·판정불가만 기록하고 정답화하지 않음</td><td>/ㄴㄹ/ 연구는 청취만으로 부족하여 시각·청각 결합, 명확한 기준 토큰과의 비교, 시간 간격을 둔 재판정을 사용했다(김지유 2026, PDF 5–6쪽). PV 미리듣기는 그 전 단계다.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="decision">
+      <strong>구현에 바로 반영할 최소 변경.</strong> 맥락 manifest에 전사 단위 순위, 연속 동일 화자 묶음 ID·길이·목표 위치, 앞뒤 화자 교체, 겹침 주석, 시간차 원시값과 “휴지 해석 금지” 상태를 넣는다. 미리듣기용으로 이어 붙이는 짧은 무음은 원음의 휴지가 아니라 <strong>합성 구분자</strong>임을 HTML과 audio manifest에 표시한다.
+    </div>
+  </section>
+
+  <section id="won">
+    <h2>2. 원유권 연구가 답해 주는 것</h2>
+
+    <h3>2.1 원유권(2022): 왜 한 화자의 말이 여러 조각으로 보이는가</h3>
+    <p>2020 일상 대화 음성 말뭉치는 긴 휴지, 경계 억양, 경계 말 장음화 등을 특징으로 하는 억양구 단위로 전사되었다고 기술된다. 그러나 원유권은 대규모 자료에서 각 단위가 실제 억양 곡선에 근거한 억양구인지 재검증하지 못했으므로, <em>말뭉치 구축 단위를 억양구라고 가정</em>했다고 명시했다(PDF 2–3쪽).</p>
+    <p>한 사람이 계속 말해도 여러 전사 단위와 여러 개별 음성 파일로 나뉠 수 있다. 연구자는 한 전사 단위를 한 발화로 놓지 않고, 동일 화자가 계속되는 동안의 전사 단위를 묶어 한 “말차례”로 분석했다. 다만 구분 기준은 화자 교체뿐이었다. 이것이 이번 PV의 <code>operational_speaker_run</code>에 직접적인 근거다.</p>
+    <div class="warning">
+      <strong>중요한 시간 정보 제한.</strong> 2020 자료의 동일 화자 전사 단위 사이는 기계적으로 약 0.01초가 되도록 구성되어 억양구 사이의 실제 휴지가 소실되었다. 그러므로 <code>다음 start − 이전 end</code>는 원래 대화의 침묵 길이도, 자연스러운 끊김 길이도 아니다. 이 값으로 말차례 경계·운율 경계·유창성을 자동 판정하지 않는다.
+    </div>
+    <p>또한 짧은 응답, 간투사, 머뭇거림, 활발한 상호작용은 발화 속도와 운율 단위 수에 영향을 줄 수 있으며, 낭독·인터뷰 결과를 일상 대화에 곧바로 일반화하기 어렵다(PDF 7–8쪽). 따라서 목표 구간 앞뒤의 화자 교대·필러·불완전 발화가 보이도록 하는 것이 필요하다.</p>
+
+    <h3>2.2 원유권(2025): KOINA는 어디에서 쓰고, 어디에서는 쓰지 않는가</h3>
+    <p>학위논문은 일상 대화 JSON의 <code>id</code>, <code>form</code>, <code>original_form</code>, <code>speaker_id</code>, <code>start</code>, <code>end</code>, <code>note</code> 구조와 음성 파일 대응을 설명한다(인쇄 47쪽, PDF 60쪽). KOINA는 F0 기반 억양 윤곽 자동 추적·시각화·주석 신뢰도 평가를 위한 별도 체계다(인쇄 52쪽 이후, PDF 65쪽 이후).</p>
+    <div class="defer">
+      <strong>현재 PV에는 실행하지 않는다.</strong> KOINA는 PV-B 또는 정식 운율 분석 설계의 참고 자료다. 이번 미리듣기 스윕에서는 KOINA, F0 자동 추적, 운율 경계 자동 판정이 모두 금지 범위다. 다만 나중에 연결할 수 있도록 음성 자산 ID, 원천 단위 ID, 정확한 시간 범위와 SHA를 보존한다.
+    </div>
+  </section>
+
+  <section id="situations">
+    <h2>3. PV에서 확인할 “상황” 목록</h2>
+    <p>아래는 새 표본 할당 쿼터가 아니다. 이미 정한 연도·현상 쿼터를 바꾸지 않고, 선택된 180개가 어떤 상황을 포함했는지 <strong>사후 coverage audit</strong>로 집계한다. 부족하면 자동 증량하지 않고 부족 상태를 보고한다.</p>
+    <table>
+      <thead><tr><th>상황</th><th>미리듣기 화면에서 확인할 것</th><th>자동 판정 금지선</th></tr></thead>
+      <tbody>
+        <tr><td>같은 화자의 연속 전사 단위</td><td>묶음 길이, 목표의 묶음 내 위치, 앞뒤 2단위</td><td>이를 실제 담화론적 말차례나 억양구 정답으로 부르지 않음</td></tr>
+        <tr><td>화자 교대 직전·직후</td><td>앞/뒤 화자 ID 변화, 목표가 묶음 시작·끝인지</td><td>질문·대답, 발언권 이양 유형 자동 분류 금지</td></tr>
+        <tr><td>겹침·끼어들기 가능 구간</td><td><code>note</code>의 겹침 표지, 타임스탬프 중첩값</td><td>타임스탬프만으로 자발적/비자발적 중단 판정 금지</td></tr>
+        <tr><td>기계적 약 0.01초 간격</td><td>원시 간격값과 <code>corpus_encoded_gap</code> 경고</td><td>휴지 길이·유창성·운율 경계로 해석 금지</td></tr>
+        <tr><td>합성 preview 경계</td><td>구간 사이에 넣은 합성 무음 길이를 명시</td><td>합성 무음을 원 대화의 침묵으로 오인 금지</td></tr>
+        <tr><td>필러·머뭇거림·반복·불완전 발화</td><td><code>form</code>, <code>original_form</code>, <code>note</code>와 앞뒤 문맥</td><td>“잡음”으로 조용히 삭제 금지</td></tr>
+        <tr><td>목표가 파일/전사 가장자리에 있음</td><td>좌우 맥락 부족, 잘린 스펙트럼 가능성, <code>context_sufficient</code></td><td>맥락 부족 행 삭제 금지; 상태로 보존</td></tr>
+        <tr><td>낮은 음량·음질 저하</td><td>재생 가능 여부와 청취 메모</td><td>PV에서 음향적 실현 판정 금지</td></tr>
+        <tr><td>동음이의·형태 기능 중의성</td><td>어휘, 형태소 경계, 어미 기능을 확인할 앞뒤 문맥</td><td>문자열 일치만으로 분석 대상 확정 금지</td></tr>
+        <tr><td>불규칙·축약·활음화 가능형</td><td>VH/HIA 중첩 및 규칙 유형을 복수 멤버십으로 표시</td><td>하나의 현상으로 강제 귀속 금지</td></tr>
+        <tr><td>희귀 셀·연도/현상 부족</td><td>요청 쿼터, 획득 수, 스캔 중단 이유</td><td>200,000행 상한 자동 확대 금지</td></tr>
+        <tr><td>동일 화자·동일/유사 어휘 반복</td><td>화자 ID, 표면형, 어휘 ID를 보존</td><td>토큰을 독립 화자처럼 해석 금지</td></tr>
+        <tr><td>관계·주제·대화 유형 차이</td><td>원천에 있는 관계·주제·대화 유형 식별자 보존 여부</td><td>PV 표본만으로 사회언어학적 결론 도출 금지</td></tr>
+        <tr><td>ASR/자동전사와 표면 발음 불일치</td><td>PV-B 설계 항목으로만 기록</td><td>Whisper·wav2vec2 출력의 실현 정답화 금지</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="variation">
+    <h2>4. 음운변이 연구에서 가져올 공통 전략</h2>
+    <table>
+      <thead><tr><th>연구 전략</th><th>문헌 사례</th><th>이번 PV 적용</th></tr></thead>
+      <tbody>
+        <tr><td>문자열로 넓게 찾고 토큰 단위로 다시 확인</td><td>/ㄴㄹ/ 연구는 JSON <code>form</code> 검색 후 토큰을 하나씩 검토했다(김지유 2026, PDF 3–4쪽). 관형사형 -ㄹ 경음화 연구도 말뭉치에서 구성을 수집한 뒤 음성을 연결했다.</td><td><span class="tag now">지금</span> 후보 전부를 상태와 함께 남기고, 선택/미선택/부족을 감사 JSON으로 보존</td></tr>
+        <tr><td>형태론·동음이의·기저형을 별도 통제</td><td>강·김(2024)은 동일한 <code>-i</code> 형태의 주격/서술격을 구별하고 동음이의어를 문맥으로 제외했다(PDF 10쪽). 강(2023)은 불규칙 용언과 활음화 어간이 전체 비율을 왜곡함을 보였다(PDF 2쪽).</td><td><span class="tag now">지금</span> 경계·어미·중의·불규칙/축약 상태를 후보 근거에 보존. 자동 실현 판정은 하지 않음</td></tr>
+        <tr><td>희귀성과 자연발화 불균형을 그대로 보고</td><td>/ㄴㄹ/ 연구는 목표어별 토큰·화자 수가 불균형함을 명시했다(PDF 5쪽). 모음조화 비조화형은 불규칙 제외 후 0.093%에 불과했다(강 2023, PDF 2쪽).</td><td><span class="tag now">지금</span> 쿼터 부족을 실패 상태로 남기고 자동 전수 스캔·대체 현상 편입을 하지 않음</td></tr>
+        <tr><td>표본 상한과 화자 편중 억제</td><td>김지유(2024 학위논문)는 목표어당 최대 30개, 화자당 3개 제한을 사용하고 희귀 표본에는 제한을 완화했다(PDF 28쪽).</td><td><span class="tag now">지금</span> 연도 30개와 안정적 순위를 유지. 화자 중복 분포는 audit에 집계하되 새 강제 쿼터는 추가하지 않음</td></tr>
+        <tr><td>청취만 또는 그림만으로 판정하지 않음</td><td>/ㄴㄹ/ 연구는 시·청각 결합, 명확한 예시와 비교, 시간 간격을 둔 재판정을 사용했다(PDF 5–6쪽). 강·김(2024)은 두 연구자가 듣고 불일치 8건에 스펙트로그램을 사용했다(PDF 11쪽).</td><td><span class="tag later">다음</span> 정식 실현 ledger에서 판정자·반복판정·음향 근거 설계. PV에서는 “불명확/판정불가” 허용</td></tr>
+        <tr><td>문맥에 따라 지각이 바뀔 수 있음</td><td>모음조화 연구의 청취실험은 목표 두 음절만 들을 때와 전체 문장을 들을 때 판단이 크게 달라졌다(강 2023, PDF 4쪽).</td><td><span class="tag now">지금</span> 목표 단위와 ±2 문맥을 모두 제공하되 서로 구분하여 청취 가능하게 함</td></tr>
+        <tr><td>화자·어휘·접사/환경의 계층 유지</td><td>강·김(2024)은 기저형·접사·토큰 빈도를 함께 다루고 혼합모형을 사용했다. /ㄴㄹ/ 연구는 동일 화자 안에서도 표면형이 달라질 수 있음을 보고했다(PDF 9–10쪽).</td><td><span class="tag now">지금</span> <code>speaker_id</code>, 자산 ID, 어휘/환경 근거를 잃지 않음. <span class="tag later">다음</span> 혼합효과 모형</td></tr>
+        <tr><td>자연발화와 통제발화의 차이를 명시</td><td>김지유(2024 학위논문)는 단독·틀문장·사진 유도·자유발화를 비교했고, 말뭉치 표본의 녹음/환경 불균형을 별도로 다뤘다.</td><td><span class="tag later">다음</span> PV 결과를 실험 산출과 동등하게 해석하지 않음</td></tr>
+        <tr><td>ASR 오류도 음운론적으로 체계적일 수 있음</td><td>윤·권·한(2026)은 Whisper 오류 중 음운론적 동기를 가진 오류가 23–41%였고, 방언과 모델 버전에 따라 양상이 달랐음을 보였다(PDF 1–5쪽).</td><td><span class="tag later">PV-B</span> 모델명·버전·지역·오류 유형을 반드시 보존. 자동 출력은 gold가 아님</td></tr>
+      </tbody>
+    </table>
+
+    <div class="check">
+      <strong>우리 프로젝트의 더 엄격한 원칙.</strong> 일부 선행연구는 음질 불량, 발화 실수, 동음이의어 등을 최종 분석에서 제외했다. 이번 저장소에서는 이를 그대로 흉내 내지 않고 <strong>zero-drop</strong>으로 바꾼다. 즉 입력 행은 삭제하지 않고 <code>selected</code>, <code>excluded_with_reason</code>, <code>insufficient_context</code>, <code>audio_unavailable</code> 같은 상태로 모두 보존한다.
+    </div>
+  </section>
+
+  <section id="fields">
+    <h2>5. 구현에 남길 필드와 감사 항목</h2>
+    <p>정확한 열 이름은 계획 정본 및 실제 manifest와 맞춰 구현 시 확정한다. 아래는 문헌 검토가 요구하는 의미 단위다.</p>
+    <table>
+      <thead><tr><th>묶음</th><th>필수 의미</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>전사 단위</td><td>원천 단위 ID, 세션/대화 ID, 실제 행 순위, <code>speaker_id</code>, <code>form</code>, <code>original_form</code>, <code>note</code>, start/end</td><td>문맥 재현과 원천 추적</td></tr>
+        <tr><td>조작적 화자 묶음</td><td>연속 동일 화자 묶음 ID, 규칙 이름, 묶음 내 단위 수, 목표 위치, 시작/끝까지 거리</td><td>한 전사 단위와 한 화자 연속 발화를 구별</td></tr>
+        <tr><td>교대·겹침</td><td>앞/뒤 화자 변경, 원천 겹침 주석, 타임스탬프 중첩 원시값</td><td>상호작용 상황을 보이되 자동 담화 판정 방지</td></tr>
+        <tr><td>시간 간격</td><td>원시 gap 값, gap 의미 상태(<code>unknown</code>/<code>corpus_encoded</code>), 휴지 추론 금지 표지</td><td>0.01초를 실제 휴지로 오독하는 오류 방지</td></tr>
+        <tr><td>preview 오디오</td><td>원본 자산 SHA, 잘라낸 구간, 합성 구분 무음 길이, 출력 SHA</td><td>원음과 합성 미리듣기 구분</td></tr>
+        <tr><td>현상 멤버십</td><td>1차 현상, 공유 현상 목록, 물리 자산 ID, 논리 event ID</td><td>VH/HIA 중첩을 중복 파일 없이 보존</td></tr>
+        <tr><td>상태·부족</td><td>입력/후보/선택/미선택/실패 수, 실패 이유, 스캔 행 수, 상한 도달 여부</td><td>zero-drop와 200,000행 상한 감사</td></tr>
+        <tr><td>청취 기록</td><td>재생 가능, 맥락 충분, 음질 메모, 환경 메모, 실현 인상, 불확실/판정불가, 수정 이력</td><td>PV 기록을 탐색용으로 유지하고 정식 판정 ledger와 분리</td></tr>
+        <tr><td>coverage audit</td><td>연도·현상·화자 중복·묶음 위치·교대·겹침·필러/불완전 주석·맥락 부족 분포</td><td>새 쿼터를 추가하지 않고 파일럿이 본 상황의 폭을 평가</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="deferred">
+    <h2>6. 이 단계에서는 하지 않고 다음으로 넘길 것</h2>
+    <ul>
+      <li><strong>정식 실현 판정:</strong> Praat 경계 설정, 스펙트로그램 비교, 포먼트/F0/VOT/강도 측정, 판정자 간 합의, 시간 간격을 둔 재판정.</li>
+      <li><strong>운율 자동화:</strong> KOINA 실행, 억양구/AP/IP 자동 확정, F0 곡선 기반 경계 판정.</li>
+      <li><strong>음성 모델:</strong> Whisper, wav2vec2 또는 다른 ASR/음향모델 실행과 그 결과의 gold 사용.</li>
+      <li><strong>통계 일반화:</strong> 화자·어휘·접사/환경 랜덤효과, 연령·성별·지역·관계 효과, 토큰/유형 빈도, 분모 선택에 따른 비율 검정.</li>
+      <li><strong>추가 표본:</strong> 180개 초과, 200,000행 상한 확대, 부족 현상의 자동 대체. 모두 새 승인 없이는 하지 않는다.</li>
+    </ul>
+  </section>
+
+  <section id="inventory">
+    <h2>7. 문헌 18개 전수 분류·파일 실측</h2>
+    <p class="small">페이지 수는 PDF 객체를 직접 읽어 측정했다. 바이트와 SHA-256은 2026-08-19 로컬 파일을 직접 해시한 값이다. 링크는 이 HTML 위치에서의 상대 경로다.</p>
+    <table class="sources">
+      <thead><tr><th>#</th><th>파일·주요 용도</th><th>쪽</th><th>바이트</th><th>SHA-256</th></tr></thead>
+      <tbody>
+        <tr><td>00</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/00_한국어 데이터베이스 구축 현황과 전망.pdf">한국어 데이터베이스 구축 현황과 전망</a> <span class="tag background">배경</span><br><span class="small">품질 관리·형식 표준화·연구자 접근성의 필요</span></td><td>39</td><td>2,468,626</td><td class="sha">f0dd0e727279fc5c5dc5ba08cc9e4b73850deecda8af132ec6cbaee7c09dd48b</td></tr>
+        <tr><td>01</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/01_말뭉치언어학의 관점에서 본 모두의 말뭉치 구축 현황과 쟁점.pdf">말뭉치언어학의 관점에서 본 모두의 말뭉치 구축 현황과 쟁점</a> <span class="tag background">배경</span><br><span class="small">장르·매체 편향과 균형성, 일상 대화 말뭉치 연도별 규모</span></td><td>37</td><td>441,788</td><td class="sha">5ecadfb099b289e15c34ae16135584d108b3a35a9ba168678b974413ca70d584</td></tr>
+        <tr><td>02</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf">서울·경기 20대 /ㄴㄹ/ 연쇄 연구</a> <span class="tag now">직접</span><br><span class="small">후보 추출, 시·청각 결합 판정, 개인 내 변이, 맥락 청취</span></td><td>31</td><td>1,565,717</td><td class="sha">dfa7519229b39ce90805354ee2a707046a4d6d16320f02c6bfc943beebf4918d</td></tr>
+        <tr><td>03</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/03_The Roles of Phonology, Morphology, and Frequency.pdf">The Roles of Phonology, Morphology, and Frequency</a> <span class="tag now">직접</span><br><span class="small">형태 기능·동음이의 통제, 복수 청취자, 화자·어휘 계층</span></td><td>27</td><td>688,399</td><td class="sha">30e0aa622fbc10bc14c076f005c15ff0dbdbd6b4f4860dbf53332d52825b82a1</td></tr>
+        <tr><td>04</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf">용언 활용 모음조화 변이 연구</a> <span class="tag now">직접</span><br><span class="small">어간×어미 검색, 불규칙·활음화·동음이의, 희귀형, 문맥 지각 효과</span></td><td>9</td><td>673,764</td><td class="sha">f272540e58aa112ab9d7b6ceb732a7bac7e0964cfaa5a35731baa3622242d539</td></tr>
+        <tr><td>05</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/05_관형어 ㄹ 뒤 경음화.pdf">관형사형 어미 -(으)ㄹ 뒤 경음화 연구</a> <span class="tag now">직접</span><br><span class="small">실제 현상 조건, 부분 스캔, 고빈도 항목 중단, 음성 경계 측정의 후단 과제</span></td><td>95</td><td>1,237,089</td><td class="sha">d36b5a41b884f10d2b6cb11bf77636bbadd8b401d8457ba6b4693ffd9a6a3a7a</td></tr>
+        <tr><td>06</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/06_윤태진_권수현.pdf">Whisper ASR errors in Korean complex coda recognition</a> <span class="tag later">PV-B</span><br><span class="small">모델·방언별 체계적 오류; 자동전사를 gold로 쓰지 않을 근거</span></td><td>9</td><td>329,419</td><td class="sha">f0448cada6d50b9022cfad53a1aeb75b8831f13d466527a1f24c90e6de94631f</td></tr>
+        <tr><td>07</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/07_원유권.pdf">발화 속도와 말차례 교체 빈도에 따른 운율 단위 변화</a> <span class="tag now">핵심</span><br><span class="small">전사 단위, 조작적 말차례, 0.01초 기계 간격, 휴지 소실</span></td><td>10</td><td>609,431</td><td class="sha">5db666b3db8b6607ba0416352c5a2b0124f76d04e4d4eed06e606ceff503b44f</td></tr>
+        <tr><td>PH01</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/PH_01_한국어치경경구개.pdf">치경·경구개 장애음 강도 시간 변이</a> <span class="tag later">판정 단계</span><br><span class="small">무작위 표본, 수동 경계, 고정 창, 화자 정규화, 탐색/확증 구분</span></td><td>25</td><td>448,299</td><td class="sha">fcb22a2484f99452e52a519608cbcef47ed13e2d88ef99fea26056caf30637b1</td></tr>
+        <tr><td>PH02</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/PH_02_경음과격음.pdf">어두 파열음 평음·격음 음향음성학 연구</a> <span class="tag later">판정 단계</span><br><span class="small">통제/자유발화 비교, 목표어 30개·화자 3개 상한, 명시적 제외 기준</span></td><td>145</td><td>5,430,287</td><td class="sha">ab92abecb194ea15db06f8822849823eca86466a6f66a2c282ee752d0692825a</td></tr>
+        <tr><td>PH03</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/PH_03_종결어미.pdf">한국어 종결어미와 억양 연구</a> <span class="tag later">판정 단계</span><br><span class="small">자유발화/실험의 상보성, 고빈도 추출과 저빈도 맥락 보존</span></td><td>276</td><td>2,867,690</td><td class="sha">5f5a640297082f9191fa11e24663db45115061ffd497507fb5816f8dc19823de</td></tr>
+        <tr><td>S01</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/S_01_한국어_담화의_비유창성_연구.pdf">한국어 담화의 비유창성 연구</a> <span class="tag now">맥락</span><br><span class="small">필러·불완전 발화, 관계·주제·화자 속성, 층별 표본</span></td><td>26</td><td>1,036,737</td><td class="sha">2e0da2546bc0e7d25f3bc681dc9f5df8ea9482f6d83b7210dc049469082d008e</td></tr>
+        <tr><td>S02</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/S_02_남녀대화_종결어미.pdf">-니/-냐의 성별 사용 양상</a> <span class="tag later">사회변이</span><br><span class="small">5개년 추출, 화·청자 관계, 적절한 분모 선택</span></td><td>24</td><td>1,007,246</td><td class="sha">8b6d5386852d3598e715f3a1a9e0d7b58a886ad24c223034e0d7e8cc5202aa1b</td></tr>
+        <tr><td>Z01a</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/Z_01_01_NN결합생산성.pdf">N+N 구성의 결합 생산성</a> <span class="tag background">배경</span><br><span class="small">장르별 결과 차이, 목적에 맞는 소규모 말뭉치 설계</span></td><td>28</td><td>906,335</td><td class="sha">a9e11e9971f1b095d39f4eedeff4fd1a1e61126741bbdfbfc0eec9d6be0031c4</td></tr>
+        <tr><td>Z01b</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/Z_01_사전기반명사구.pdf">사전 기반 N+N 명사구 후보 선정</a> <span class="tag background">후보 설계</span><br><span class="small">사전 기반 목록과 말뭉치 기반 후보의 결합·단계적 정제</span></td><td>22</td><td>957,090</td><td class="sha">5bc1cea1693965cf94cbd3e041304803c37d2e8f1f5ed4178a1d1b2943446612</td></tr>
+        <tr><td>Z02</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/Z_02_영어외래어 사용양상.pdf">영어 외래어 사용 양상</a> <span class="tag background">어휘 맥락</span><br><span class="small">주제별 어휘 분포, 사전 등재 단계, 외래어 범주 판단</span></td><td>31</td><td>1,535,760</td><td class="sha">527f86fa264a0fe4c396cbed5921db4498373511961fe8cad8244575a3162c39</td></tr>
+        <tr><td>Z03</td><td><a href="../../../00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/Z_03_어휘사용빈도.pdf">성별에 따른 어휘 사용 양상</a> <span class="tag later">사회변이</span><br><span class="small">감정어휘·부사·색채어 빈도와 화자 집단 비교</span></td><td>206</td><td>1,745,481</td><td class="sha">f243a999d54681605b08d9c9be05e0b7edc02fa968d0c4b6b2d0c62729d3d113</td></tr>
+        <tr><td>W25</td><td><a href="../../../00_참고문헌/원유권.pdf">한국어 억양 자동 주석기 개발 연구</a> <span class="tag later">PV-B</span><br><span class="small">일상 대화 JSON 구조, KOINA 설계·검증</span></td><td>218</td><td>3,735,427</td><td class="sha">4f19a4ebb1c7d7447c71eeb765a13e9fbcc62f422456e7ed8028d2ef9b70581f</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="method">
+    <h2>8. 검토 방법과 한계</h2>
+    <ul>
+      <li>PDF 18개의 페이지 수·바이트·SHA-256을 로컬 파일에서 직접 측정했다.</li>
+      <li>전체 PDF의 제목·초록·목차를 확인하고, 현재 설계에 직접 관련된 방법·한계·결론 페이지를 텍스트로 추출해 읽었다.</li>
+      <li>레이아웃에 의존하는 핵심 근거는 원유권(2022) PDF 2–8쪽, 원유권(2025) PDF 59–67쪽 등을 이미지로 렌더링해 원문 표와 문단을 재확인했다.</li>
+      <li>문헌의 표본 제외 관행은 프로젝트의 zero-drop 규칙과 충돌하므로 그대로 채택하지 않고 “상태+사유 보존”으로 번역했다.</li>
+      <li>원유권(2022)의 약 0.01초 기계 간격 관찰은 2020 말뭉치에 대한 것이다. 2021–2025에도 동일하다고 가정하지 않으며, 실제 manifest와 선택 행의 원시 시간을 연도별로 감사해야 한다.</li>
+      <li>문헌 검토는 PV 설계 근거를 보완하지만, 후보 쿼리의 정확도나 실제 음성의 판정 가능성을 대신하지 않는다. 그것은 사용자가 실행할 <code>-PreflightOnly</code>와 이후 미리듣기 결과로 확인해야 한다.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>이 문서는 탐색 설계를 위한 내부 검토 자료다. 자동 실현 판정이나 정식 판정 ledger를 구성하지 않는다.</p>
+    <p>생성 위치: <code>docs/reviews/incoming/LITERATURE_REVIEW_modu_corpus_pv_design_20260819.html</code></p>
+  </footer>
+</main>
+</body>
+</html>

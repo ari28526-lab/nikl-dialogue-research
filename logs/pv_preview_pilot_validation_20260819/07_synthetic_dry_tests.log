@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "test": "scanner_success",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "scanner_existing_output_stop",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "scanner_failure",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "sample_allocation_success",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "sample_allocation_exact_quotas",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "sample_allocation_failure_status",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "sample_existing_output_stop",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "context_success",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "context_existing_output_stop",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "context_failure",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "bundle_success",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "bundle_existing_output_stop",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "bundle_failure",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "audit_success",
+      "passed": true,
+      "detail": "[{\"check_id\": \"candidate_zero_drop_and_environment_recheck\", \"passed\": \"True\", \"details\": \"{\\\"candidate_rows\\\": 180, \\\"error_count\\\": 0, \\\"errors\\\": []}\"}, {\"check_id\": \"sample_allocation_membership_and_events\", \"passed\": \"True\", \"details\": \"{\\\"by_year\\\": {\\\"2020\\\": 30, \\\"2021\\\": 30, \\\"2022\\\": 30, \\\"2023\\\": 30, \\\"2024\\\": 30, \\\"2025\\\": 30}, \\\"error_count\\\": 0, \\\"errors\\\": [], \\\"logical_events\\\": 205, \\\"physical_packages\\\": 180}\"}, {\"check_id\": \"context_existing_rank_zero_drop_and_turn_limits\", \"passed\": \"True\", \"details\": \"{\\\"context_rows\\\": 900, \\\"error_count\\\": 0, \\\"errors\\\": [], \\\"expected\\\": 900}\"}, {\"check_id\": \"bundle_files_sha_and_stitch_reverse_arithmetic\", \"passed\": \"True\", \"details\": \"{\\\"error_count\\\": 0, \\\"errors\\\": [], \\\"package_dirs\\\": 180, \\\"sha_manifest_rows\\\": 1443}\"}, {\"check_id\": \"source_write_and_forbidden_tool_assertions\", \"passed\": \"True\", \"details\": \"{\\\"check_method\\\": \\\"output_containment_plus_build_manifest_assertions\\\", \\\"errors\\\": []}\"}]"
+    },
+    {
+      "test": "audit_existing_output_stop",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "audit_failure_gate",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

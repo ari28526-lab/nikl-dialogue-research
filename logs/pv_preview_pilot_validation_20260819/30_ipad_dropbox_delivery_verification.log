@@ -1,0 +1,32 @@
+{
+  "schema_version": "pv_ipad_dropbox_delivery_check.v1",
+  "checked_at": "2026-08-20T15:29:31.4603763+09:00",
+  "passed": true,
+  "files": [
+    {
+      "file": "PV_IPAD_BALANCED14_20260820.html",
+      "source_bytes": 11599474,
+      "dropbox_bytes": 11599474,
+      "source_sha256": "c59bf73a012709524d03060e5155819d122690453463d635acd26a18a883e6e0",
+      "dropbox_sha256": "c59bf73a012709524d03060e5155819d122690453463d635acd26a18a883e6e0",
+      "matched": true
+    },
+    {
+      "file": "PV_IPAD_BALANCED14_20260820_RECEIPT.json",
+      "source_bytes": 9251,
+      "dropbox_bytes": 9251,
+      "source_sha256": "18f5bd24f6ffc30e81624f60bcfe7eecadfa22022a70b939a94ae633310ff435",
+      "dropbox_sha256": "18f5bd24f6ffc30e81624f60bcfe7eecadfa22022a70b939a94ae633310ff435",
+      "matched": true
+    },
+    {
+      "file": "PV_IPAD_README_20260820.txt",
+      "source_bytes": 1482,
+      "dropbox_bytes": 1482,
+      "source_sha256": "50fb77a10c342e8af743318e6d5f2bb946148aed15bd8f5978dc44c3d2f71074",
+      "dropbox_sha256": "50fb77a10c342e8af743318e6d5f2bb946148aed15bd8f5978dc44c3d2f71074",
+      "matched": true
+    }
+  ],
+  "partial_files": []
+}

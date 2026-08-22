@@ -1,0 +1,11 @@
+DROPBOX_DELIVERY_INDEPENDENT_VERIFY_OK
+{
+  "delivery_root": "C:\\Users\\ari30\\Dropbox\\pv_seven_phenomena_20260819",
+  "partial_exists": false,
+  "zip_bytes": 74375125,
+  "zip_sha256": "2a801541dcf6d01ff3819d4a12a74f70e23781fb485613d19fe65965a146f416",
+  "zip_entries": 1463,
+  "zip_crc_error": null,
+  "companion_files": 4,
+  "receipt_status": "delivered_zip_non_overwrite_atomic_directory_promotion"
+}

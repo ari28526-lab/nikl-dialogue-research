@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EXTERNAL REVIEW: PV reviewer v2 — 연구 수행 도구 적합성 검토</title>
+<style>
+:root{--ink:#1c2430;--muted:#5b6a78;--line:#d7dfe6;--paper:#ffffff;--bg:#f2f5f7;--accent:#17456b;--chip-blocker:#8d2f24;--chip-small:#8a5a00;--chip-after:#2c6146;--chip-later:#3f4d9e;--chip-reject:#5c5f66;--mark:#fff0c2}
+@media(prefers-color-scheme:dark){:root{--ink:#e9eef3;--muted:#a9b6c1;--line:#3d4a56;--paper:#1b242d;--bg:#121a21;--accent:#8fbfe8;--mark:#4b3d16}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.62}
+.page{max-width:52em;margin:0 auto;padding:24px 18px 60px}
+header.doc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:18px}
+h1{font-size:1.45rem;margin:.1em 0 .4em;color:var(--accent)}
+h2{font-size:1.18rem;margin:1.6em 0 .5em;padding-top:.6em;border-top:2px solid var(--line);color:var(--accent)}
+h3{font-size:1.02rem;margin:1.2em 0 .35em}
+p,li{overflow-wrap:anywhere}
+ul,ol{padding-left:1.4em}
+code{font-family:Consolas,Menlo,monospace;font-size:.88em;background:rgba(127,127,127,.14);padding:.08em .3em;border-radius:4px;overflow-wrap:anywhere;word-break:break-all}
+.table-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;margin:.7em 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:rgba(127,127,127,.08)}
+.meta{color:var(--muted);font-size:.92rem}
+.verdict{background:var(--paper);border:2px solid var(--accent);border-radius:12px;padding:14px 16px;margin:14px 0;font-weight:600}
+.chip{display:inline-block;color:#fff;border-radius:999px;font-size:.75rem;font-weight:700;padding:.14rem .55rem;margin-right:.4rem;vertical-align:middle}
+.blocker{background:var(--chip-blocker)}.small{background:var(--chip-small)}.after{background:var(--chip-after)}.later{background:var(--chip-later)}.reject{background:var(--chip-reject)}
+.rec{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:12px 15px;margin:.8em 0}
+.rec.b{border-left-color:var(--chip-blocker)}.rec.s{border-left-color:var(--chip-small)}.rec.a{border-left-color:var(--chip-after)}.rec.l{border-left-color:var(--chip-later)}.rec.r{border-left-color:var(--chip-reject)}
+.rec h3{margin:.1em 0 .4em}
+.keep{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:.8em 0}
+mark{background:var(--mark);color:inherit;padding:0 .15em;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="doc">
+<h1>EXTERNAL REVIEW: PV reviewer v2 — 연구 수행 도구 적합성 검토</h1>
+<p class="meta">작성일 2026-08-22 KST · 작성자 Claude (외부 설계 검토자)<br>
+대상: <code>outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/</code> reviewer v2와 builder·감사기·runtime 시험·근거 JSONL<br>
+범위: 검토만 수행. 코드·산출물·원자료 무수정, 빌드·감사 재실행 없음, 자동 실현 판정 없음, commit·push 없음.<br>
+제안 ID: <code>R01</code>–<code>R16</code> (동반 <code>..._RECOMMENDATIONS.jsonl</code>과 1:1 일치)</p>
+</header>
+
+<h2>1. 한 문단 결론</h2>
+<p>PV reviewer v2는 v1 사용 기록에서 나온 요구(한 후보 한 화면, 후보 검색·이동, 형태소 카드, 화자 묶음, 전체 대화 텍스트 검색, 사회정보·발음 참조·문헌의 접이식 분리, append-only revision)를 승인 설계대로 충실히 구현했고, 빌드 영수증·독립 감사·SHA manifest·대화 JSONL을 이번 검토에서 전부 실측 재확인한 결과 불일치가 없었다. 연구자가 음성을 들으며 맥락·형태소·화자 정보·문헌·판단 근거를 함께 사고하고 기록하는 도구로서의 골격은 충분하다. 다만 연도별 30개·약 1시간 단위 작업으로 확대하기 전에 반드시 처리할 항목이 네 가지 있다: (1) 저장하지 않은 입력이 후보 이동 시 경고 없이 사라지는 자료 손실 경로(R01), (2) localStorage 단일 사본에 의존하지 않는 내보내기·기기 운영 규칙(R02), (3) 14개 고정 계약인 현 builder를 대체할 파라미터화된 batch builder와 약 1시간 단위 batch manifest(R03), (4) 이번 14개에서는 우연히 충분했지만 연도 전체 표본에서는 대화 텍스트를 놓치게 되는 연 200,000행 스캔 상한 계약의 명시적 개정(R04). 이 넷을 처리하면 화면·기록 설계 자체는 재설계 없이 30개 작업에 그대로 쓸 수 있다.</p>
+
+<h2>2. 판정</h2>
+<div class="verdict">연도별 30개 작업으로 진행 가능한가 — <mark>CONDITIONAL GO</mark></div>
+<ul>
+<li>화면 구조, 기록 schema, 보존·회계 방식은 승인 설계대로 작동함을 실측으로 확인했고 재설계가 필요 없다(GO 측면).</li>
+<li>단, 다음 조건을 먼저 처리해야 한다(CONDITIONAL 측면).
+<ul>
+<li>R01·R02(P0, 자료 손실 방지)는 어떤 확대 작업 전에도 필수.</li>
+<li>R03·R04는 30개 생산 빌드의 전제 조건이다. 현 v2 HTML은 균형 14개 전용으로 빌드되어 있고 builder도 14개·15행·2020/2025 계약을 하드코딩하므로, 30개 작업은 어차피 새 파생 빌드를 요구한다. 그 빌드 설계에 R03·R04가 반드시 들어가야 한다.</li>
+</ul></li>
+<li>NO-GO 사유(설계 자체의 결함, 판정 혼동 구조, 보존 실패)는 발견하지 못했다.</li>
+</ul>
+
+<h2>3. 실측 근거</h2>
+<h3>3.1 확인한 파일</h3>
+<p>읽고 검증한 주요 경로(모두 읽기 전용):</p>
+<ul>
+<li><code>CLAUDE.md</code>, <code>docs/environment/PROJECT_START_HERE.md</code>, <code>docs/environment/linguistics-research-environment-master-notes.md</code></li>
+<li><code>docs/reviews/incoming/EXTERNAL_REVIEW_pv_reviewer_v2_design_codex_20260822.md</code></li>
+<li><code>docs/decisions/RESULT_stage2_pv_reviewer_v2_implementation_20260822.md</code></li>
+<li><code>outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/</code> 전체 5파일 + audit</li>
+<li><code>scripts/python/build_pv_reviewer_v2.py</code>(1,033행), <code>scripts/python/audit_pv_reviewer_v2.py</code>(425행), <code>tests/test_pv_reviewer_v2_runtime.js</code>(104행)</li>
+<li><code>scripts/python/build_pv_context_manifest.py</code>의 <code>add_derived_turns</code></li>
+<li><code>work/reference_evidence_pilot_20260822/REFERENCE_EVIDENCE_WON_2022_DRAFT_v2.jsonl</code></li>
+<li><code>outputs/pilots/pv_seven_phenomena_20260819/samples/PV_SAMPLES.csv</code> header</li>
+<li><code>logs/pv_reviewer_v2_validation_20260822/VALIDATION_pv_reviewer_v2_20260822.log</code></li>
+</ul>
+
+<h3>3.2 실측 수치·SHA (이번 검토에서 직접 계산)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>파일</th><th>bytes</th><th>행</th><th>SHA-256 실측</th><th>manifest/영수증 대비</th></tr></thead>
+<tbody>
+<tr><td><code>PV_REVIEWER_V2.html</code></td><td>19,456,165</td><td>—</td><td><code>37c152d73069bfc7dc3e31684fdc99303916bb4acb72f986aab335541a1228f6</code></td><td>일치</td></tr>
+<tr><td><code>PV_REVIEWER_V2_BUILD.json</code></td><td>21,279</td><td>—</td><td><code>c22bd1734543792b1ff2c2aa7b54c5e22a33cbc335daf29481a4e1af8c35ec93</code></td><td>일치</td></tr>
+<tr><td><code>PV_REVIEWER_V1_IMPORTED.jsonl</code></td><td>12,028</td><td>15</td><td><code>8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133</code></td><td>일치(사용자 원본 SHA와 동일)</td></tr>
+<tr><td><code>PV_REVIEWER_V2_DIALOGUES.jsonl</code></td><td>7,792,634</td><td>4,060</td><td><code>990c1098448d58107e375d868eb4e8593e14ea150fdc2e73938e22c0919b39ae</code></td><td>일치</td></tr>
+<tr><td><code>audit/PV_REVIEWER_V2_AUDIT.json</code></td><td>1,937</td><td>—</td><td><code>13d42f8728be20ae0d97cacc9dab3a76b84fea1aef109b8dbdbbf44547c4b7bb</code></td><td>일치, <code>passed=true</code>, <code>errors=[]</code></td></tr>
+<tr><td><code>PV_REVIEWER_V2_SHA256_MANIFEST.csv</code></td><td>531</td><td>5항목</td><td><code>cff853ff0355c9078601a11ea453c759f743ce0911c0047fce91d057cfe39b5f</code></td><td>5/5 항목 실측 일치</td></tr>
+<tr><td><code>REFERENCE_EVIDENCE_WON_2022_DRAFT_v2.jsonl</code></td><td>68,726</td><td>40</td><td><code>2bfabd44858e1193df37811fd9dd433c303217d81c319c633bf0a2c3a56a3b55</code></td><td>BUILD 선언값과 일치</td></tr>
+</tbody></table></div>
+<p>HTML 내장 payload를 직접 추출·파싱한 실측:</p>
+<ul>
+<li><code>SAMPLES</code> 14개, <code>BASE_HISTORY</code> 15행, <code>LITERATURE</code> 29행, audio 요소 2개(현재 후보 전용), 내장 WAV payload 28개(감사에서 source SHA 28/28 일치 확인).</li>
+<li>문헌 회계: 원행 40 = 긍정 29 + <code>not_found</code> 1 제외 + <code>cited_source</code> 10 제외. 긍정 29행의 <code>relation</code>은 contextual 11·methodological 10·direct 5·caution 3, <code>link_scope</code>는 context 8·method 6·statistics 6·prosody 6·caution 2·social_variable 1.</li>
+<li>대화 14개 모두 <code>utt_seq</code>가 1..N으로 조밀(dense)해 세션 내 절단 없음을 간접 확인. 대상 행은 각 대화에 정확히 1개.</li>
+<li><code>PV_REVIEWER_V2_DIALOGUES.jsonl</code> 4,060행 전부 JSON 파싱 성공, HTML 내장 <code>DIALOGUES</code> payload와 내용 동일(순서 정규화 비교 True).</li>
+<li>겹침 표지 실측: <code>timestamp_overlap_raw='True'</code> 행이 PV0163 5·PV0173 2·PV0177 2. <code>add_derived_turns</code>가 Python <code>str(bool)</code>로 <code>'True'/'False'</code>를 쓰고 HTML JS도 <code>==='True'</code>로 비교하므로 겹침 강조 로직은 형식 일치.</li>
+<li>사용자 v1 기록 분포(15행): env_ok 8·unsure 4·env_wrong 2·빈값 1, context_sufficient yes 9·need_more_after 3·need_more_before 1·빈값 2. PV0177 의미상 중복 1행 보존 확인.</li>
+<li><code>PV_SAMPLES.csv</code>에 <code>target_word_indices_json</code>·<code>target_word_labels_json</code> 열이 존재(예: PV0001 <code>[1]</code>, <code>["한식집보다는"]</code>) — R06의 근거.</li>
+<li>2020/2025 대상 발화의 <code>pron_pred_hangul</code>과 <code>pron_reference_hangul</code>은 14/14 모두 동일 문자열, <code>pron_reference_status=resolved_form</code>.</li>
+<li>builder의 대화 스캔 영수증: 2020 target 최심 위치 60,194행, 2025는 12,504행으로 200,000행 상한 안에서 발견됨(<code>target_ids_missing_within_cap</code> 빈 목록) — R04의 근거.</li>
+</ul>
+
+<h2>4. 현재 설계에서 유지할 부분</h2>
+<p>다음은 실측으로 확인했고 그대로 유지할 것을 권고한다(변경 불필요).</p>
+<div class="keep"><strong>1. 한 후보 한 화면 + 좌측 후보 목록·검색·핵심/탐색 필터·이전/다음.</strong> v1의 최다 불만(세로 나열, 위치 파악 불가)에 대한 해법이 의도대로 구현됨.</div>
+<div class="keep"><strong>2. append-only 보존 회계.</strong> v1 15행 byte-for-byte 보존(SHA 동일), 의미상 중복 1행 비삭제, <code>possible_duplicate_of</code>는 표시일 뿐 삭제 기능 없음, revision은 <code>event_uuid</code>·<code>supersedes_event_uuid</code> 사슬로 연결.</div>
+<div class="keep"><strong>3. 자동 판정 아님의 3중 명시.</strong> 헤더 문구, 형태소 카드의 "검색 환경 근거" 문구, 발음 패널의 "실제 들린 발음이나 자동 실현 정답이 아님" 경고, 그리고 모든 revision 행의 <code>record_role='exploratory_pv_only_not_formal_realization_ledger'</code>. 정식 ledger 혼동 위험은 현 설계에서 낮다.</div>
+<div class="keep"><strong>4. 문헌 연결 규칙.</strong> <code>not_found</code> 1행과 원문 미확인 재인용 10행을 긍정 목록에서 제외하는 규칙이 코드·감사·실측 회계(40→29)에서 모두 일치. 원유권(2022)을 후보별 현상 근거가 아니라 공통 방법론 패널에만 연결한 결정도 유지.</div>
+<div class="keep"><strong>5. 사회정보·발음 참조의 접힘 기본값.</strong> 청취 전에 성별·연령·지역·예상 발음이 보이면 실현 인상에 선입견을 줄 수 있다. 접힘 + 패널 노출 자동 기록(<code>reference_panels_viewed_json</code>, <code>context_viewed</code>)은 편향 통제와 사용 기록을 동시에 얻는 좋은 설계다. 이 로그가 있어서 AFTER_30 결정(R10·R11)을 실사용 데이터로 내릴 수 있다.</div>
+<div class="keep"><strong>6. 전체 대화는 텍스트만, 오디오는 대상·±2만.</strong> 크기·출처 회계 유지. 기본 ±10행 표시 후 검색·전체 보기로 확장하는 점진 공개도 적절.</div>
+<div class="keep"><strong>7. zero-drop 회계.</strong> PV0027의 <code>form_tagged_count_mismatch</code>를 자동 보정 없이 상태로 보존·표시하는 원칙 자체는 옳다(표시 문구만 R08).</div>
+<div class="keep"><strong>8. ±2 문맥 전사 패널과 전체 대화 패널의 분리.</strong> 중복처럼 보이지만 ±2 표는 음성 bundle과 1:1인 회계 정보(slot/wav 상태)를 보이므로 통합하지 않는 편이 단순하다.</div>
+
+<h2>5. NOW_BLOCKER — 30개 작업 전 반드시 처리</h2>
+
+<div class="rec b">
+<h3><span class="chip blocker">NOW_BLOCKER · P0</span>R01 저장하지 않은 입력이 이동 시 경고 없이 사라짐 <span class="meta">(확인된 결함)</span></h3>
+<ul>
+<li>근거: HTML 스크립트의 <code>setActive()</code>가 후보 전환 시 무조건 <code>restoreForm()</code>→<code>form.reset()</code>을 실행하며, 이전/다음 버튼·후보 버튼·가져오기 어디에도 dirty 상태 확인이 없다(builder 내장 템플릿에서 확인).</li>
+<li>실패 시나리오: 약 1시간 세션에서 메모를 길게 쓴 뒤 "새 revision 저장" 대신 "다음 →"을 누르면 입력 전체가 조용히 사라진다. 30개×연 6개 규모에서는 거의 확실히 발생한다.</li>
+<li>권고: 입력 변경 플래그를 두고, 미저장 상태에서 후보 이동·가져오기 시 확인창(저장 후 이동/버리고 이동)을 띄운다. 몇 줄 수준의 변경.</li>
+<li>더 단순한 대안: "이동 전 반드시 저장" 운영 습관만으로도 줄일 수 있으나, 1시간 단위 반복 작업에서 습관에만 의존하는 것은 P0 위험을 남긴다.</li>
+</ul>
+</div>
+
+<div class="rec b">
+<h3><span class="chip blocker">NOW_BLOCKER · P0</span>R02 localStorage 단일 사본에 의존하지 않는 내보내기 규칙 <span class="meta">(운영 규칙)</span></h3>
+<ul>
+<li>근거: 저장된 revision은 브라우저 localStorage(<code>pv_reviewer_v2_local_history_20260822</code>)에만 존재하고, 내보내기 전에는 파일이 없다. localStorage는 기기·브라우저별로 분리되고, iPad Safari 계열은 저장 공간 축출 가능성이 문헌상 알려져 있다(이 환경에서 재현 실험은 하지 않았다). HTML을 Dropbox로 옮겨도 기록은 따라가지 않는다.</li>
+<li>권고(코드 변경 없이 즉시 채택 가능한 운영 규칙): ① 검토 세션을 끝낼 때마다 "전체 JSONL 저장"(iPad에서 실패 시 복사용 패널)으로 내보내고 Dropbox 배치 폴더에 둔다. ② 한 시점에는 한 기기에서만 작업한다. ③ 배치당 내보내기 JSONL은 1개 흐름으로 유지하고, 기기를 바꿀 때는 직전 내보내기를 가져온 뒤 시작한다. ④ 배치 간 병합은 HTML 안에서 하지 않고 오프라인 분석 단계로 미룬다.</li>
+<li>이 규칙은 v1에서 사용자가 이미 수행한 흐름(내보내기→Dropbox)의 명문화이며, 기존 Dropbox 상위 폴더 정리 규칙과도 맞는다.</li>
+</ul>
+</div>
+
+<div class="rec b">
+<h3><span class="chip blocker">NOW_BLOCKER · P1</span>R03 파라미터화된 batch builder + 약 1시간 batch manifest <span class="meta">(확대 전제)</span></h3>
+<ul>
+<li>근거: 현 builder는 <code>pick_balanced_samples</code> 14개, 사용자 JSONL "15행·고유 14" 계약, 2020/2025 endpoint를 하드코딩한 단일 목적 스크립트다(의도된 좁힘이며 결함이 아님). 연도별 30개는 이 스크립트로 생성할 수 없다.</li>
+<li>권고: 기존 v2 파일을 수정하지 말고, 같은 HTML 템플릿·기록 schema를 재사용하는 새 batch builder를 추가한다. batch manifest에는 최소한 다음을 넣는다: <code>batch_id</code>, 후보 pv_id 목록, 연도·현상 쿼터, 표본별 대상·±2 길이 합산으로 추정한 예상 청취 시간(약 1시간 상한), zero-drop 상태, 산출 HTML의 bytes·SHA-256, 이전 배치 JSONL의 SHA(이어서 검토할 때).</li>
+<li>HTML 크기 상한도 여기서 정한다: 이번 14개가 오디오 소스 8.66MB→HTML 19.5MB였으므로, 배치를 시간 기준으로 나누면 자연히 파일도 iPad에서 다루기 쉬운 크기로 유지된다.</li>
+<li>사용자 결정 필요: 연 30개를 몇 배치로 나눌지(예: 예상 청취 시간 합산 기준 2–3배치), 연도 진행 순서.</li>
+</ul>
+</div>
+
+<div class="rec b">
+<h3><span class="chip blocker">NOW_BLOCKER · P1</span>R04 대화 텍스트 스캔의 연 200,000행 상한 계약 개정 <span class="meta">(사용자 결정)</span></h3>
+<ul>
+<li>근거(실측): 이번 14개는 target이 2020년 표의 60,194행, 2025년 표의 12,504행 안에서 발견되어 상한이 문제되지 않았고, 14개 대화 모두 utt_seq 조밀성으로 완전함을 확인했다. 그러나 연도별 30개는 연도 표 전체(수십만~백만 행대)에서 뽑히므로, 상한 200,000행 밖의 표본은 <code>target_not_found_within_cap</code>으로 zero-drop 보존은 되지만 대화 패널·화자 묶음·사회정보가 비게 된다. 확대 후 도구 가치의 큰 부분이 사라진다.</li>
+<li>권고: "자동 상한 확대 금지" 원칙은 유지하되, 30개 빌드에 한해 명시적 승인으로 스캔 계약을 바꾼다. 더 단순하고 안전한 방식은 상한을 키우는 것이 아니라 2-pass 대상 한정 스캔이다: 1차로 target utt_id 행만 찾아 세션 키를 얻고, 2차로 파일 전체를 스트리밍하되 그 세션 키에 속한 행만 보유한다. 메모리 사용은 지금과 같은 수준이고, 상한은 "보유 행 수"가 아니라 "대상 세션 수"로 걸린다.</li>
+<li>사용자 결정 필요: 이 계약 변경(연 전체 스트리밍 스캔 허용) 승인 여부.</li>
+</ul>
+</div>
+
+<h2>6. NOW_SMALL — 확대 전에 하면 좋은 작은 변경</h2>
+
+<div class="rec s">
+<h3><span class="chip small">NOW_SMALL · P1</span>R05 batch_id·기기 표지 격리와 미내보내기 카운터</h3>
+<ul>
+<li>근거: v1 행에는 <code>reviewer</code> 필드가 있었으나 v2 <code>makeRevision()</code>이 만드는 행에는 검토자·기기 표지가 없다(실측). localStorage 키와 <code>ipad_batch</code> 값은 상수라서 여러 배치 HTML을 같은 브라우저에서 열면 기록이 한 목록에 섞인다.</li>
+<li>권고: 배치별 빌드에서 localStorage 키·<code>ipad_batch</code>·내보내기 파일명에 <code>batch_id</code>를 넣고, revision 행에 <code>reviewer</code>(및 선택적으로 기기 표지) 필드를 복원한다. 화면에는 "내보내지 않은 revision N개"를 상시 표시한다.</li>
+<li>Dropbox로 기기를 오가는 운영(R02)에서 어느 기기 기록인지 식별하는 데 필요.</li>
+</ul>
+</div>
+
+<div class="rec s">
+<h3><span class="chip small">NOW_SMALL · P1</span>R06 표적 어절 시각 강조 <span class="meta">(설계 대비 미구현)</span></h3>
+<ul>
+<li>근거: 승인 설계 §4.2는 "색으로 강조한 표적 어절"을 항상 보이는 최소 정보로 명시했으나, 구현은 발화 전문을 평문으로만 표시한다(<code>active-form</code>에 textContent 대입, 강조 마크 없음). v1 최다 요구가 "무엇을 들어야 하는지 찾기 어렵다"였다. 이번 사용자 3표본에서 불편이 없었던 것은 PV0001이 단일 어절(6자)인 등 짧은 표본이었기 때문이며, 2025 표본은 71자(PV0151)까지 있다.</li>
+<li>권고: 동결 <code>PV_SAMPLES.csv</code>에 이미 있는 <code>target_word_indices_json</code>·<code>target_word_labels_json</code>을 payload에 넣어 발화 내 해당 어절을 <code>&lt;mark&gt;</code>로 강조한다. 새 분석이 필요 없는 읽기 전용 표시 변경이다. 규칙 예상형·사전 참조형 문자열에도 같은 위치 강조를 적용하면 장문 비교가 쉬워진다(부수 효과, 선택).</li>
+</ul>
+</div>
+
+<div class="rec s">
+<h3><span class="chip small">NOW_SMALL · P1</span>R07 최신 revision 계산이 배열 순서 기준 <span class="meta">(확인된 결함)</span></h3>
+<ul>
+<li>근거: <code>latestByEvent()</code>가 시각이 아니라 배열 순서(마지막 행 우선)로 최신을 고른다. 가져오기는 행을 목록 끝에 추가하므로, 새 revision을 만든 뒤 더 오래된 내보내기를 가져오면 오래된 행이 "최신"으로 표시되어 폼 복원·완료 체크·진행률이 과거 값으로 돌아간다(원행 손실은 없음).</li>
+<li>권고: 최신 선택을 <code>reviewed_at</code> 우선(동률이면 배열 순서)으로 바꾼다.</li>
+<li>더 단순한 대안: "가져오기는 항상 시간순으로만 한다"는 운영 규칙(R02의 확장). 단일 기기 운영이면 발생하지 않는다.</li>
+</ul>
+</div>
+
+<div class="rec s">
+<h3><span class="chip small">NOW_SMALL · P2</span>R08 상태 코드에 한국어 설명 병기</h3>
+<ul>
+<li>근거: 화면에 <code>unavailable_form_tagged_count_mismatch_zero_drop</code> 같은 내부 코드가 원문 그대로 노출된다(PV0027). 정확하지만 연구자가 매번 해석해야 한다. HIA 축약형(PV0177 '돼')에는 "경계 돼"라는 라벨이 붙는데 이는 경계가 아니라 축약 음절이다.</li>
+<li>권고: 코드값은 그대로 두고 옆에 한국어 한 줄을 병기한다. 예: PV0027 → "표기 어절 수와 형태소 분석 어절 수가 달라 형태소를 연결하지 않았습니다. 후보는 삭제 없이 유지됩니다." HIA kind에는 "경계" 대신 "축약 음절" 라벨.</li>
+</ul>
+</div>
+
+<div class="rec s">
+<h3><span class="chip small">NOW_SMALL · P2</span>R09 '판단 확신도' 라벨 명확화</h3>
+<ul>
+<li>근거: 폼에 환경 인상·실현 인상·들린 형식이 함께 있어 "판단 확신도"가 어느 판단의 확신도인지 모호하다(필드명 <code>judgement_confidence</code>).</li>
+<li>권고: 라벨을 "들린 형식·실현 인상에 대한 확신도"로 바꾼다(필드명은 유지해 schema 변경 없음). 실현·불확실성·겹침·문맥·음질의 다른 필드 분리는 현행이 적절하다.</li>
+</ul>
+</div>
+
+<h2>7. AFTER_30 — 첫 30개 결과를 본 뒤 결정</h2>
+
+<div class="rec a">
+<h3><span class="chip after">AFTER_30 · P2</span>R10 문헌 패널의 묶음·배지 표시</h3>
+<ul>
+<li>근거: 긍정 29행이 평면 목록 하나로 나열된다. link_scope(맥락 8·방법 6·통계 6·운율 6·주의 2·사회변수 1)와 relation(caution 3 포함)이 화면에 표시되지 않아, 주의 행이 다른 근거와 같은 무게로 읽힌다.</li>
+<li>권고: link_scope별 소제목 묶음과 relation 배지를 붙인다. 다만 이 패널을 실제 얼마나 여는지 <code>reference_panels_viewed_json</code> 로그로 먼저 확인하고 결정해도 늦지 않다.</li>
+</ul>
+</div>
+
+<div class="rec a">
+<h3><span class="chip after">AFTER_30 · P2</span>R11 도구 피드백 필드 2개의 정리</h3>
+<ul>
+<li>근거: "스키마 열 제안"·"도구·화면 메모"는 파일럿 피드백용 성격이 크다. 화면 단순화 후보이지만, 첫 30개에서 실제로 비어 있는지 확인한 뒤 접거나 합치는 것이 기록 일관성에 낫다.</li>
+<li>권고: 첫 30개 후 사용 빈도를 보고 통합·접힘·유지 중 결정.</li>
+</ul>
+</div>
+
+<h2>8. ANALYSIS_LATER — 정식 분석·측정 단계에서 처리</h2>
+
+<div class="rec l">
+<h3><span class="chip later">ANALYSIS_LATER · P3</span>R12 운율·동음이의어·우리말샘 의미번호·추가 문헌 연결</h3>
+<ul>
+<li>현행 제외(승인 설계의 <code>not_run</code>/<code>not_joined</code> 원칙)를 유지한다. 운율은 지금 넣으면 자동 판정과의 경계가 흐려지고, 우리말샘 의미번호·동음이의어 구분은 승인된 결합 절차가 아직 없다. 실현 판정이 쌓인 뒤 정식 분석 단계에서 별도 Gate로 다룬다.</li>
+</ul>
+</div>
+
+<div class="rec l">
+<h3><span class="chip later">ANALYSIS_LATER · P2</span>R13 분석용 최신값 재구성 스크립트</h3>
+<ul>
+<li>근거: <code>revision_seq</code>는 기기별 localStorage 상태에 따라 어긋날 수 있고, v1 행의 대체 식별자(<code>legacy:...:index</code>)는 목록 위치에 의존한다. 원행 보존은 안전하지만, 이 필드들을 분석에서 그대로 신뢰하면 안 된다.</li>
+<li>권고: 분석 단계에서 <code>event_uuid</code>·<code>reviewed_at</code>·<code>supersedes</code> 사슬로 최신 view를 오프라인 재구성하는 작은 스크립트를 만들고, revision_seq는 참고값으로 강등한다. 배치별 JSONL 병합도 이 단계에서 수행한다.</li>
+</ul>
+</div>
+
+<h2>9. REJECT — 지금 넣지 말아야 할 것</h2>
+
+<div class="rec r">
+<h3><span class="chip reject">REJECT · P3</span>R14 전체 대화 오디오 임베드</h3>
+<ul>
+<li>재차 불채택을 권고한다. 14개 기준으로도 HTML이 19.5MB이며, 세션 전체 오디오는 크기·출처 회계·청취 흐름을 모두 해친다. 텍스트 검색 + 대상·±2 오디오 조합이 설계 의도대로 작동함을 확인했다.</li>
+</ul>
+</div>
+
+<div class="rec r">
+<h3><span class="chip reject">REJECT · P2</span>R15 사회정보·발음 참조 패널의 기본 화면 승격 <span class="meta">(현행 유지)</span></h3>
+<ul>
+<li>사용자 요구("연령·성별·지역도 보고 싶다")는 접이식 패널로 이미 충족된다. 기본 노출로 바꾸면 청취 전 선입견(특히 예상 발음형) 위험이 있고, 현재의 접힘+노출 기록 설계가 연구적으로 더 좋다.</li>
+</ul>
+</div>
+
+<div class="rec r">
+<h3><span class="chip reject">REJECT · P2</span>R16 화면 구조 전면 재배치 <span class="meta">(현행 유지)</span></h3>
+<ul>
+<li>"항상 보임: 표적·형태소 카드·음성·기록 폼 / 접힘: 묶음·전체 대화·사회·발음·문헌·감사"의 현 배치는 승인 설계의 정보 우선순위와 일치하고, 3표본 사용 확인에서도 문제가 없었다. 개별 개선(R06·R08)으로 충분하며 재배치는 복잡성만 늘린다.</li>
+</ul>
+</div>
+
+<h2>10. 더 단순한 운영안</h2>
+<p>localStorage·Dropbox 질문(핵심 질문 10·11)에 대한 권고 운영 모델:</p>
+<ol>
+<li><strong>배치 = 파일.</strong> 한 배치는 HTML 1개 + 내보내기 JSONL 1개 흐름으로 관리한다. localStorage는 세션 중 임시 버퍼로만 취급한다(R02).</li>
+<li><strong>Dropbox 규칙.</strong> 기존 상위 폴더 하나 아래 배치별 하위 폴더를 두고, HTML·내보내기 JSONL·batch manifest를 함께 둔다.</li>
+<li><strong>세션 리듬.</strong> 열기 → (기기를 바꿨으면 직전 JSONL 가져오기) → 청취·저장 반복 → 종료 전 내보내기 → Dropbox 저장. 약 1시간 상한은 batch manifest가 보장하므로 도구 쪽 타이머는 불필요.</li>
+<li><strong>재개.</strong> 같은 기기면 localStorage로 즉시 재개, 기기가 바뀌면 가져오기로 재개. 진행률·완료 체크는 현행 표시로 충분하다.</li>
+<li><strong>병합·정본화.</strong> 배치 JSONL들의 병합, 최신 view 재구성, 정식 실현 판정 ledger로의 승격은 전부 HTML 밖 오프라인 단계에서 한다(R13). reviewer HTML은 끝까지 탐색 기록 도구로만 남긴다.</li>
+</ol>
+
+<h2>11. 사용자에게 결정을 요청할 항목</h2>
+<ol>
+<li><strong>R04</strong>: 30개 빌드에 한해 대화 텍스트 스캔을 "대상 세션 한정 전량 스캔"으로 바꾸는 계약 개정 승인 여부.</li>
+<li><strong>R03</strong>: 연 30개의 배치 구성(예상 청취 시간 합산 약 1시간 기준 몇 배치로 나눌지)과 연도 진행 순서.</li>
+<li><strong>v2.1 재빌드 승인</strong>: R01·R05·R06·R08·R09를 반영한 파생 재빌드(기존 v2 산출물 무수정, 새 root)를 진행할지. 방법·출력 계약의 변경이 아니라 승인 설계 §4.2의 미구현 보완과 안전장치 추가이므로, 새 외부 설계 리뷰 없이 기존 승인 범위에서 처리 가능하다고 판단한다(CLAUDE.md 규칙 9 관련 검토자 의견).</li>
+<li><strong>R02 운영 규칙 채택</strong>: 세션마다 내보내기·한 시점 한 기기·배치당 JSONL 1개 규칙의 채택.</li>
+</ol>
+
+<h2>12. 권고하는 다음 작업 순서</h2>
+<ol>
+<li>위 11절의 사용자 결정.</li>
+<li>v2.1 파생 재빌드: R01(dirty guard)·R05(batch_id·reviewer·카운터)·R06(표적 강조)·R08(한국어 병기)·R09(라벨) + R07(최신값 정렬). 기존 v2 root는 무수정 보존, 새 root + 독립 감사 + SHA manifest.</li>
+<li>30개 batch builder·batch manifest 구현(R03) + 스캔 계약 개정(R04) + 독립 감사. 첫 배치는 소규모(예: 표본 5개)로 파일럿 후 본 배치.</li>
+<li>첫 연도 첫 배치 실행 → 패널 노출 로그·필드 사용 빈도로 AFTER_30(R10·R11) 결정.</li>
+<li>배치 축적 후 분석 단계에서 R13(오프라인 병합·최신 view 재구성)과 R12(운율·의미번호 등 확장 결합)를 별도 Gate로.</li>
+</ol>
+
+<h2>13. 미해결 위험과 검토 한계</h2>
+<ul>
+<li><strong>실기기 검사 없음.</strong> iPad Safari·노트북 브라우저에서의 실제 렌더링·저장 지속성은 이번에도 검사하지 못했다(구현 세션의 인앱 브라우저도 trusted-path 오류로 실패). 사용자 3표본 Gate의 사용성 확인에 의존한다.</li>
+<li><strong>localStorage 지속성은 문헌상 위험.</strong> iOS 저장 축출을 이 환경에서 재현하지 않았다. R02가 방어책이며, 축출이 실제로 관찰되면 R05의 카운터가 손실 범위를 알려 준다.</li>
+<li><strong>대화 완전성은 간접 검증.</strong> utt_seq 1..N 조밀성으로 확인했고 원천 CSV 전량 재대조는 D: 대량 I/O를 피하기 위해 하지 않았다(감사기도 영수증 수치 대조까지 수행). 조밀성 검증은 향후 감사기에 추가할 가치가 있다.</li>
+<li><strong>문헌 40행의 내용 정확성은 기존 승인 AUDIT에 의존.</strong> 이번 검토는 회계(40→29 제외 규칙)만 재확인했고 원문 대조는 범위 밖이다.</li>
+<li><strong>음성 청취 평가는 하지 않았다.</strong> 세 표본의 소리·판정 자체는 검토 범위 밖이며 자동 실현 판정도 하지 않았다.</li>
+<li><strong>JS 검토는 정적 읽기 기준.</strong> runtime 시험(통과 기록)과 코드 정독으로 판단했고, 브라우저 실행 검증은 하지 않았다. R01·R07은 코드 경로가 명확해 확인된 결함으로 분류했다.</li>
+</ul>
+
+<h2>부록: 핵심 질문 16개 대응표</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>질문</th><th>답</th><th>관련</th></tr></thead>
+<tbody>
+<tr><td>1. 바로 30개 사용 가능?</td><td>화면·기록 설계는 그대로 사용, 빌드는 새 batch builder 필요 — CONDITIONAL GO</td><td>R03·R04</td></tr>
+<tr><td>2. blocker?</td><td>4건</td><td>R01–R04</td></tr>
+<tr><td>3. 화면만 복잡하게 하는 요소?</td><td>큰 문제 없음; 피드백 필드 2개·문헌 평면 목록은 관찰 후 결정</td><td>R10·R11</td></tr>
+<tr><td>4. 정보 배치 적절?</td><td>적절, 재배치 불필요; 표적 강조만 미구현</td><td>R06·R16</td></tr>
+<tr><td>5. 기본 vs 접힘</td><td>현행 유지(접힘=편향 통제+노출 기록)</td><td>R15·R16</td></tr>
+<tr><td>6. 메모·revision 충분?</td><td>탐색 기록으로 충분; 정식 판정은 별도 ledger 유지가 옳음</td><td>R13</td></tr>
+<tr><td>7. 구조화 vs 자유</td><td>현행 분리 적절(형식·태그·확신도·겹침·문맥은 구조화, 인상·부족정보는 자유)</td><td>§4</td></tr>
+<tr><td>8. 판정 범위 혼동 방지?</td><td>필드 분리 적절; 확신도 라벨만 명확화</td><td>R09</td></tr>
+<tr><td>9. 15행+revision 보존 안전?</td><td>보존 회계는 안전; 단일 사본 운영·병합 순서가 위험</td><td>R02·R07</td></tr>
+<tr><td>10. localStorage·Dropbox 운영</td><td>배치=파일, 세션마다 내보내기, 한 기기, batch_id 격리</td><td>R02·R05</td></tr>
+<tr><td>11. 진행률·중단·재개·manifest</td><td>batch manifest 설계로 해결; 미내보내기 카운터 보조</td><td>R03·R05</td></tr>
+<tr><td>12. 운율·동음이의어·의미번호·문헌 확장</td><td>지금 넣지 않고 분석 단계로</td><td>R12</td></tr>
+<tr><td>13. 원유권 패널</td><td>공통 방법론 연결은 적절; 묶음·배지는 노출 로그 보고 결정</td><td>R10</td></tr>
+<tr><td>14. PV0027 표시 명확성</td><td>코드는 정확하나 한국어 병기 필요</td><td>R08</td></tr>
+<tr><td>15. 자동 판정·ledger 혼동 위험</td><td>3중 명시+record_role로 낮음, 유지</td><td>§4-3</td></tr>
+<tr><td>16. 삭제·단순화 대상</td><td>전체 오디오 불채택 유지; 필드 정리는 AFTER_30; 그 외 삭제 권고 없음</td><td>R11·R14</td></tr>
+</tbody></table></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,378 @@
+{
+  "schema_version": "nikl_dialogue_target_query_set.v1",
+  "study_id": "pv_seven_phenomena_environment_preview_20260819",
+  "query_set_id": "pv_preview_boundary_20260819",
+  "query_set_version": 1,
+  "freeze_status": "draft_preview_only_researcher_scope_approved_20260819",
+  "purpose": "PV-A exploration-only sweep of seven Korean morphophonological environments. These queries find written/morphological environments only and never decide acoustic realization.",
+  "safety": {
+    "max_rows_scanned_per_table_year": 200000,
+    "max_materialized_candidates_per_query_year": 200,
+    "automatic_scan_cap_increase": false,
+    "realization_judgement": false,
+    "mfa_koina_wav2vec2_execution": false
+  },
+  "pilot_allocation": {
+    "years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "unique_physical_packages_per_year": 30,
+    "base_primary_quota_per_phenomenon_year": 4,
+    "rotating_extra_primary_phenomena": {
+      "2020": ["PT", "NAN"],
+      "2021": ["NAL", "NI"],
+      "2022": ["LLN", "VH"],
+      "2023": ["HIA", "PT"],
+      "2024": ["NAN", "NAL"],
+      "2025": ["NI", "LLN"]
+    },
+    "approved_primary_quota_exceptions": {
+      "2022": {
+        "approved_on": "2026-08-19",
+        "reason": "Within the approved 200000-row cap, 2022 NAL has only two candidates with WAV, six-tier TextGrid, and linked timing; the researcher approved reallocating the two missing slots within 2022.",
+        "deltas": {"NAL": -2, "PT": 1, "NAN": 1}
+      }
+    },
+    "phenomenon_order": ["PT", "NAN", "NAL", "NI", "LLN", "VH", "HIA"],
+    "scope_weights": {
+      "PT": {"morph_internal": 6, "intra_eojeol": 7, "inter_eojeol": 7},
+      "NAN": {"morph_internal": 4, "intra_eojeol": 8, "inter_eojeol": 8},
+      "NAL": {"morph_internal": 8, "intra_eojeol": 8, "inter_eojeol": 4},
+      "NI": {"intra_eojeol": 10, "inter_eojeol": 10},
+      "LLN": {"morph_internal": 8, "intra_eojeol": 8, "inter_eojeol": 4},
+      "VH": {"intra_eojeol": 16, "orth_contraction_probe": 4},
+      "HIA": {"intra_eojeol": 12, "orth_contraction_probe": 8}
+    },
+    "selection_seed": "pv_seven_phenomena_20260819_v1",
+    "prefer_one_primary_package_per_session": true,
+    "shortfall_policy": "apply_approved_year_exception_then_reallocate_within_phenomenon_then_stop_and_report_without_automatic_scan_increase",
+    "vh_hia_overlap_policy": "one_physical_asset_separate_logical_review_events_primary_only_counts_toward_quota"
+  },
+  "context_contract": {
+    "window_existing_row_rank": 2,
+    "same_session_and_dialogue_only": true,
+    "derive_speaker_run_id": true,
+    "speaker_run_rule": "consecutive_existing_rows_with_identical_speaker_id",
+    "derived_turn_is_exploratory_not_gold": true,
+    "corpus_transcription_unit_interpretation": "construction_unit_reported_as_intonation_phrase_but_not_reverified_from_pitch_curve",
+    "source_timestamp_gap_is_original_pause": false,
+    "source_timestamp_gap_semantics": "raw_corpus_timestamp_delta_only_never_pause_or_turn_evidence",
+    "preserve_five_slots_with_status": true,
+    "stitched_audio_serializes_source_clips": true,
+    "stitched_gap_seconds": 0.05,
+    "stitched_gap_is_synthetic_not_source_silence": true
+  },
+  "n_insertion_source": {
+    "query_set_path": "config/target_queries/n_insertion_production_v1_20260818.json",
+    "query_set_sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "query_map": {
+      "QN1_N_INSERTION_INTRA_EOJEOL_V1": {
+        "pv_query_id": "PV_NI_INTRA_FROM_FROZEN_QN1_V1",
+        "phenomenon_code": "NI",
+        "environment_scope": "intra_eojeol"
+      },
+      "QN2_N_INSERTION_INTER_EOJEOL_V1": {
+        "pv_query_id": "PV_NI_INTER_FROM_FROZEN_QN2_V1",
+        "phenomenon_code": "NI",
+        "environment_scope": "inter_eojeol"
+      }
+    }
+  },
+  "internal_rules": [
+    {
+      "query_id": "PV_PT_MORPH_INTERNAL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "PT",
+      "environment_scope": "morph_internal",
+      "rule": "pt"
+    },
+    {
+      "query_id": "PV_NAN_MORPH_INTERNAL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAN",
+      "environment_scope": "morph_internal",
+      "rule": "nan"
+    },
+    {
+      "query_id": "PV_NAL_MORPH_INTERNAL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAL",
+      "environment_scope": "morph_internal",
+      "rule": "nal"
+    },
+    {
+      "query_id": "PV_LLN_MORPH_INTERNAL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "LLN",
+      "environment_scope": "morph_internal",
+      "rule": "lln"
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "PV_PT_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "PT",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "in", "values": ["ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"]}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft fortition environment preview only; no realization judgement."
+    },
+    {
+      "query_id": "PV_PT_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "PT",
+      "environment_scope": "inter_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "in", "values": ["ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"]}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft cross-eojeol fortition environment preview only; no realization judgement."
+    },
+    {
+      "query_id": "PV_NAN_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAN",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄴ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft obstruent-before-n environment preview only; inclusion is not a realization judgement."
+    },
+    {
+      "query_id": "PV_NAN_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAN",
+      "environment_scope": "inter_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄴ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft cross-eojeol obstruent-before-n environment preview only."
+    },
+    {
+      "query_id": "PV_NAL_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAL",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄹ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft obstruent-before-r environment preview only."
+    },
+    {
+      "query_id": "PV_NAL_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "NAL",
+      "environment_scope": "inter_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "in", "values": ["ㄱ", "ㄲ", "ㅋ", "ㄳ", "ㄺ", "ㄷ", "ㅅ", "ㅆ", "ㅈ", "ㅊ", "ㅌ", "ㅂ", "ㅍ", "ㅄ", "ㄼ", "ㄿ"]},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄹ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft cross-eojeol obstruent-before-r environment preview only."
+    },
+    {
+      "query_id": "PV_LLN_NL_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "LLN",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "eq", "value": "ㄴ"},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄹ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft n-r sequence preview only."
+    },
+    {
+      "query_id": "PV_LLN_LN_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "LLN",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "eq", "value": "ㄹ"},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄴ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft r-n sequence preview only."
+    },
+    {
+      "query_id": "PV_LLN_NL_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "LLN",
+      "environment_scope": "inter_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "eq", "value": "ㄴ"},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄹ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft cross-eojeol n-r sequence preview only."
+    },
+    {
+      "query_id": "PV_LLN_LN_INTER_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "LLN",
+      "environment_scope": "inter_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_coda_jamo", "op": "eq", "value": "ㄹ"},
+        {"field": "right_onset_jamo", "op": "eq", "value": "ㄴ"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft cross-eojeol r-n sequence preview only."
+    },
+    {
+      "query_id": "PV_VH_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "VH",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_pos", "op": "regex", "pattern": "^V"},
+        {"field": "right_pos", "op": "regex", "pattern": "^E"},
+        {"field": "right_onset_zero", "op": "truthy"},
+        {"field": "right_nucleus_jamo", "op": "in", "values": ["ㅏ", "ㅓ"]}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft vowel-harmony environment preview; surface/lemma and contraction categories remain observations."
+    },
+    {
+      "query_id": "PV_HIA_INTRA_EOJEOL_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "HIA",
+      "environment_scope": "intra_eojeol",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "morph_boundaries",
+      "occurrence_index_field": "boundary_idx_in_utterance",
+      "conditions": [
+        {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+        {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+        {"field": "left_pos", "op": "regex", "pattern": "^V"},
+        {"field": "right_pos", "op": "regex", "pattern": "^E"},
+        {"field": "left_coda_jamo", "op": "eq", "value": ""},
+        {"field": "right_onset_zero", "op": "truthy"},
+        {"field": "right_nucleus_jamo", "op": "in", "values": ["ㅏ", "ㅓ"]}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Draft vowel-hiatus environment preview; membership is also VH by design, never a realization judgement."
+    },
+    {
+      "query_id": "PV_VH_ORTH_CONTRACTION_PROBE_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "VH",
+      "environment_scope": "orth_contraction_probe",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "orth_eojeol_tokens",
+      "occurrence_index_field": "orth_eojeol_idx",
+      "conditions": [
+        {"field": "orth_eojeol_form", "op": "regex", "pattern": "(봐|봤|와|왔|줘|줬|해|했|돼|됐)$"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Orthographic contraction probe for Bareun segmentation inspection only."
+    },
+    {
+      "query_id": "PV_HIA_ORTH_CONTRACTION_PROBE_V1",
+      "query_version": 1,
+      "query_role": "preview_environment_sweep",
+      "phenomenon_code": "HIA",
+      "environment_scope": "orth_contraction_probe",
+      "years": [2020, 2021, 2022, 2023, 2024, 2025],
+      "source_table": "orth_eojeol_tokens",
+      "occurrence_index_field": "orth_eojeol_idx",
+      "conditions": [
+        {"field": "orth_eojeol_form", "op": "regex", "pattern": "(봐|봤|와|왔|줘|줬|해|했|돼|됐)$"}
+      ],
+      "max_occurrences_per_year": 200,
+      "interpretation": "Shared VH/HIA orthographic contraction probe; one physical asset, separate logical review events."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[FAIL] PermissionError: [WinError 5] 액세스가 거부되었습니다: 'C:\\Users\\ari30\\Dropbox\\pv_seven_phenomena_20260819.partial' -> 'C:\\Users\\ari30\\Dropbox\\pv_seven_phenomena_20260819'
+Traceback (most recent call last):
+  File "C:\Users\ari30\research\2026_summer_research\work\package_pv_dropbox_20260819.py", line 139, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\ari30\research\2026_summer_research\work\package_pv_dropbox_20260819.py", line 132, in main
+    os.replace(partial, final)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] 액세스가 거부되었습니다: 'C:\\Users\\ari30\\Dropbox\\pv_seven_phenomena_20260819.partial' -> 'C:\\Users\\ari30\\Dropbox\\pv_seven_phenomena_20260819'

@@ -104,3 +104,15 @@ data/03_analysis_ready/
 /outputs/reviews/dialogue_audio_quality_2020_2025_20260807/20*/**
 !outputs/reviews/dialogue_audio_quality_2020_2025_20260807/SUMMARY_2020_2025.csv
 outputs/candidates/**/*.csv
+
+# Stage-2 PV listening/reviewer payloads contain generated corpus excerpts and
+# embedded audio. Keep them local; version the builders, tests, validation logs,
+# result documents, and recorded SHA values instead.
+/outputs/pilots/pv_seven_phenomena_20260819*/
+/outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/
+/outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/
+
+# Raw PowerShell failure receipts retain byte-exact whitespace referenced by
+# RESULT SHA values; keep them local instead of normalizing them for Git.
+/logs/pv_preview_pilot_validation_20260819/08_wrapper_existing_output.log
+/logs/pv_preview_pilot_validation_20260819/09_wrapper_failure.log

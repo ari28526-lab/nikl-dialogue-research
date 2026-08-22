@@ -1,0 +1,86 @@
+PV reviewer v2.1 validation log
+date: 2026-08-22 Asia/Seoul
+project: C:\Users\ari30\research\2026_summer_research
+pipeline_python: C:\Users\ari30\miniforge3\envs\mfa\python.exe
+node: C:\Users\ari30\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe
+
+[approved scope]
+implemented: R01, R06, R07, R08, R09
+excluded: R03 batch builder, R04 scan-contract change, R05 batch/device fields, R10-R16
+source v2 root: outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822
+source v2 HTML SHA256: 37c152d73069bfc7dc3e31684fdc99303916bb4acb72f986aab335541a1228f6
+approval review SHA256: 6f2d32a00b511311c74fb775dd72860e2efc7c593a63fdacbb8413bad2fa10ba
+
+[py_compile]
+command: mfa-python -m py_compile scripts/python/build_pv_reviewer_v2_1.py scripts/python/audit_pv_reviewer_v2_1.py
+result: PASS (exit 0)
+
+[builder failure scenario]
+command: build_pv_reviewer_v2_1.py --approval-review work/pv_reviewer_v2_1_validation_20260822/invalid_approval.md
+result: EXPECTED FAIL (exit 1)
+message: RuntimeError: approval review marker missing: R01
+side effect: final output directory was not created
+
+[builder success]
+command: build_pv_reviewer_v2_1.py
+result: PASS (exit 0)
+recorded_at: 2026-08-22T12:47:40.269777+09:00
+source corpus scan: 0
+samples/highlight samples/highlight tokens: 14/14/15
+source v2 imported history: byte-identical, 15 rows/14 events
+source v2 dialogue: byte-identical, 4060 rows
+source v2 embedded WAV: unchanged
+
+[builder existing-output scenario]
+command: build_pv_reviewer_v2_1.py (repeated)
+result: EXPECTED FAIL (exit 1)
+message: FileExistsError: existing output is never overwritten
+
+[independent auditor success]
+command: audit_pv_reviewer_v2_1.py
+result: PASS (exit 0; errors=[])
+counts: highlights 14 samples/15 tokens; imported 15/14; dialogue 4060; WAV SHA 28/28; external sources 0; R03 0; R04 0
+command: audit_pv_reviewer_v2_1.py --write-audit
+result: PASS (exit 0); audit JSON and SHA manifest written through .partial promotion
+
+[independent auditor failure scenario]
+command: audit_pv_reviewer_v2_1.py --input-dir work/pv_reviewer_v2_1_validation_20260822/does_not_exist
+result: EXPECTED FAIL (exit 1; FileNotFoundError)
+
+[independent auditor existing-output scenario]
+command: audit_pv_reviewer_v2_1.py --write-audit (repeated)
+result: EXPECTED FAIL (exit 1)
+message: FileExistsError: audit/PV_REVIEWER_V2_1_AUDIT.json
+
+[runtime]
+command: bundled-node tests/test_pv_reviewer_v2_1_runtime.js outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1.html
+result: PASS (exit 0; PV_REVIEWER_V2_1_RUNTIME_OK)
+covered: highlight 14/15; multiword PV0151; HTML escaping; Korean zero-drop/HIA labels; clean/dirty cancel/discard; reviewed_at ordering and equal/invalid fallback; filters; 15-row export/import; invalid imports
+
+[SHA manifest verification]
+result: PASS
+entries: 5/5 files exist; byte counts match 5/5; SHA-256 values match 5/5
+
+[user minimal usability gate]
+result: PASS
+environment: another laptop, Dropbox-synchronized self-contained HTML
+PV0151 target highlight: 떡 and 벌어질 both visible as highlighted targets
+dirty guard: warning displayed after clearing the single-candidate search filter and attempting an actual next-candidate move
+cancel behavior: current candidate and unsaved test text were preserved
+test revision written: no
+note: with search restricted to PV0151, next resolved to the same candidate and correctly performed no navigation/no warning
+
+[final files]
+scripts/python/build_pv_reviewer_v2_1.py | 23078 bytes | 545e15b36433b980aea9889982d507e1494974c48c87d0bd63ff76292872e129
+scripts/python/audit_pv_reviewer_v2_1.py | 14271 bytes | 2ef40da87a691b39c7ddec1fce9b3173fae4110468b3c104108350a1d58edc21
+tests/test_pv_reviewer_v2_1_runtime.js | 4703 bytes | 86b5effaf7a70d4fb0f50497ed4d146d20337512a6c6c1c6de48ac793732886f
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1.html | 19460381 bytes | 4ac9edd77fd8889aaeb73b8c15afc6c2ee1a3c0eb5cca1e4d2b24e862da98a7e
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1_BUILD.json | 3234 bytes | 3db5b74367a43a2f79babfdc67f6700e0e5a06105da112321823dcb631955a7c
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1_IMPORTED_BASE.jsonl | 12028 bytes | 8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1_DIALOGUES.jsonl | 7792634 bytes | 990c1098448d58107e375d868eb4e8593e14ea150fdc2e73938e22c0919b39ae
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/audit/PV_REVIEWER_V2_1_AUDIT.json | 1979 bytes | 3a47c2e3509dae16852ff90dcf295ddc602c89f6773e0198a9e9e700b242fc78
+outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/PV_REVIEWER_V2_1_SHA256_MANIFEST.csv | 545 bytes | bc50a95b260f6b7d16f1b5c88ad205f04a4330742f615d58ee49d50480d2de9a
+
+[repository]
+commit: not created
+push: not run

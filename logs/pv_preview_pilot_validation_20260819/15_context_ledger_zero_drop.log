@@ -1,0 +1,3 @@
+CONTEXT_AUDIT_PY_COMPILE_OK
+BOUNDED_LEDGER_ZERO_DROP_OK
+{"found": 0, "ledger_lookup_status": "missing_within_approved_scan_cap_zero_drop", "missing": 5, "rows_scanned": 200000, "textgrid_status": "missing", "wav_status": "missing"}
