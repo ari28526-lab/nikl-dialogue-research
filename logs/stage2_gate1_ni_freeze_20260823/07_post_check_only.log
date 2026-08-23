@@ -1,0 +1,13 @@
+Stage 2 Gate 1 NI freeze post-output check-only
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py' --check-only
+exit_code=0
+passed=true
+status=passed_frozen_v1_researcher_adopted_stopped_before_research
+baseline_status_lines=61
+baseline_status_sha256=12978d379be277024c661c11e0a95d5ec6f7bdc0aedb1f6b3cbdf44f77b854c1
+tracked_changes=docs/decisions/_INDEX.md,scripts/SCRIPTS_INDEX.md
+unexpected_worktree_changes=0
+candidate_rows=941903
+joined_rows=941903
+clm_0015=deferred_by_decision_d_g1_a
+partial_check=passed

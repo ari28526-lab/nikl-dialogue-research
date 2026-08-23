@@ -1,0 +1,10 @@
+검증: 기존 Gate 1 감사 출력 존재 시 비덮어쓰기 중단
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate1_n_insertion_contracts.py
+실행일: 2026-08-23
+예상 종료 코드: 1
+실제 종료 코드: 1
+
+FileExistsError: refusing to overwrite existing output:
+outputs/pilots/stage2_gate1_n_insertion_contracts_20260823/AUDIT_stage2_gate1_n_insertion_contracts_20260823.json
+
+판정: PASS (의도한 실패)

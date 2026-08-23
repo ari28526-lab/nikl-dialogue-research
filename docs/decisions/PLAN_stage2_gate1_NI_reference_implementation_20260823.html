@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stage 2 Gate 1 — NI 기준 구현 설계</title>
+  <style>
+    :root { --ink:#17212b; --muted:#5b6773; --line:#d8e0e8; --blue:#245f9e;
+      --blue-bg:#eef6ff; --green:#176b45; --green-bg:#edf9f3; --amber:#855900;
+      --amber-bg:#fff8e6; --red:#9d2b2b; --red-bg:#fff0f0; --paper:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f3f6f8; color:var(--ink); font-family:-apple-system,
+      BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif; line-height:1.65; }
+    main { max-width:1080px; margin:0 auto; background:var(--paper); min-height:100vh;
+      padding:42px 48px 72px; box-shadow:0 0 24px rgba(29,47,65,.08); }
+    h1 { font-size:2rem; line-height:1.25; margin:0 0 10px; }
+    h2 { margin-top:42px; padding-bottom:8px; border-bottom:2px solid var(--line); }
+    h3 { margin-top:28px; }
+    code { background:#f0f3f6; padding:.08rem .3rem; border-radius:4px; }
+    .meta { color:var(--muted); margin-bottom:24px; }
+    .verdict, .card { border:1px solid var(--line); border-radius:10px; padding:18px 20px;
+      margin:18px 0; }
+    .verdict { background:var(--green-bg); border-left:6px solid var(--green); }
+    .info { background:var(--blue-bg); border-left:6px solid var(--blue); }
+    .warn { background:var(--amber-bg); border-left:6px solid var(--amber); }
+    .stop { background:var(--red-bg); border-left:6px solid var(--red); }
+    .flow { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:22px 0; }
+    .flow div { background:#f3f7fb; border:1px solid var(--line); border-radius:8px;
+      padding:12px 8px; text-align:center; font-weight:600; }
+    table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:.94rem; }
+    th, td { border:1px solid var(--line); padding:9px 10px; vertical-align:top; }
+    th { background:#edf2f6; text-align:left; }
+    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+    .tag { display:inline-block; border-radius:999px; padding:2px 9px; font-size:.82rem;
+      font-weight:700; margin-right:4px; }
+    .done { color:var(--green); background:var(--green-bg); }
+    .pending { color:var(--amber); background:var(--amber-bg); }
+    .forbid { color:var(--red); background:var(--red-bg); }
+    ul, ol { padding-left:1.35rem; }
+    .small { color:var(--muted); font-size:.9rem; }
+    @media (max-width:760px) { main { padding:24px 18px 48px; } .flow { grid-template-columns:1fr; }
+      table { display:block; overflow-x:auto; } h1 { font-size:1.55rem; } }
+  </style>
+</head>
+<body><main>
+  <h1>Stage 2 Gate 1 — NI 기준 구현 설계</h1>
+  <p class="meta">2026-08-23 · 연구자 검토용 HTML · 아직 구현 승인이 아님</p>
+
+  <div class="verdict">
+    <strong>권고:</strong> 기존 941,903개 후보를 다시 만들지 않고, 감사된
+    G1~G4 산출물을 작은 source registry로 연결한다. Gate 1은 계약·환경 유형·
+    ‘요’ 후보 문서와 독립 검사기만 만든다.
+  </div>
+
+  <div class="flow">
+    <div>Gate 0<br><span class="tag done">채택 완료</span></div>
+    <div>Gate 1 설계<br><span class="tag done">현재 문서</span></div>
+    <div>사용자 검토<br><span class="tag pending">다음</span></div>
+    <div>Gate 1 구현<br><span class="tag pending">별도 GO</span></div>
+    <div>G5/G6·TextGrid<br><span class="tag forbid">범위 밖</span></div>
+  </div>
+
+  <h2>1. 무엇을 하는 단계인가</h2>
+  <p>NI의 동결 query와 문헌 근거 사이에 연구 계약을 만들고, 일반·주변·탐색·
+    불명 환경을 <strong>환경 유형 단위</strong>로 정리한다. 개별 발화의 실현을
+    판정하거나 94만 행에 환경 클래스를 자동 부여하는 단계가 아니다.</p>
+  <div class="card stop"><strong>하지 않음:</strong> query 재동결, ‘요’ query JSON,
+    후보 재생성, G5/G6, MFA·KOINA·wav2vec2, TextGrid 수정, 자동 실현 판정,
+    정식 ledger.</div>
+
+  <h2>2. 실제로 확인한 입력</h2>
+  <table>
+    <thead><tr><th>연도</th><th class="num">후보</th><th class="num">어절 내부</th>
+      <th class="num">어절 간</th><th class="num">고유 발화</th><th class="num">joined</th></tr></thead>
+    <tbody>
+      <tr><td>2020</td><td class="num">101,638</td><td class="num">42,604</td><td class="num">59,034</td><td class="num">93,360</td><td class="num">101,638</td></tr>
+      <tr><td>2021</td><td class="num">206,037</td><td class="num">81,865</td><td class="num">124,172</td><td class="num">184,328</td><td class="num">206,037</td></tr>
+      <tr><td>2022</td><td class="num">141,966</td><td class="num">53,759</td><td class="num">88,207</td><td class="num">127,107</td><td class="num">141,966</td></tr>
+      <tr><td>2023</td><td class="num">123,381</td><td class="num">45,570</td><td class="num">77,811</td><td class="num">108,785</td><td class="num">123,381</td></tr>
+      <tr><td>2024</td><td class="num">185,401</td><td class="num">65,109</td><td class="num">120,292</td><td class="num">157,565</td><td class="num">185,401</td></tr>
+      <tr><td>2025</td><td class="num">183,480</td><td class="num">64,719</td><td class="num">118,761</td><td class="num">150,459</td><td class="num">183,480</td></tr>
+      <tr><th>합계</th><th class="num">941,903</th><th class="num">353,626</th><th class="num">588,277</th><th class="num">821,604</th><th class="num">941,903</th></tr>
+    </tbody>
+  </table>
+  <p>연도별 build·join manifest와 감사 JSON을 직접 재집계했다. 6개년 모두
+    <code>rows_in=rows_out</code>, 감사 <code>passed</code>, 실패 0건이다.</p>
+  <table>
+    <thead><tr><th>실측 헤더</th><th class="num">열</th><th>정규화 헤더 SHA-256</th></tr></thead>
+    <tbody>
+      <tr><td>원천 morph_boundaries.csv.gz</td><td class="num">35</td><td><code>9a9899f5…39a1</code></td></tr>
+      <tr><td>TARGET_CANDIDATES.csv</td><td class="num">34</td><td><code>7c2e32dd…cad9</code></td></tr>
+      <tr><td>CANDIDATES_WITH_VARIABLES.csv</td><td class="num">73</td><td><code>e3e5cff0…38f8</code></td></tr>
+    </tbody>
+  </table>
+  <div class="card info"><strong>중요:</strong> left/right POS·unit·자모·형태소 위치는
+    후보 CSV의 독립 열이 아니라 <code>match_evidence_json</code> 안에 있다.
+    구현 시 JSON을 파싱해야 하며 열을 추정해서는 안 된다.</div>
+
+  <h2>3. 환경 유형 seed</h2>
+  <table>
+    <thead><tr><th>환경</th><th>분류 제안</th><th>근거·상태</th><th>우선 처리</th></tr></thead>
+    <tbody>
+      <tr><td>자음 말음 + /j/</td><td><code>general_direct</code></td><td>CLM-0001·0004·0014·0023</td><td>본모집단 핵심</td></tr>
+      <tr><td>자음 말음 + /i/</td><td><code>peripheral_reported</code></td><td>CLM-0003·0014</td><td>/j/와 분리</td></tr>
+      <tr><td>한자어 공명음 + /j/</td><td><code>peripheral_reported</code></td><td>CLM-0004·0015</td><td>CLM-0015 확인</td></tr>
+      <tr><td>한자어 장애음 + /j/ 비교군</td><td><code>peripheral_reported</code></td><td>CLM-0004·0015</td><td>삭제하지 않음</td></tr>
+      <tr><td>보조사 ‘요’</td><td><code>theoretical_underreported</code></td><td>CLM-0002 · 결정 완료</td><td>본모집단 밖 문서</td></tr>
+      <tr><td>어절 간</td><td><code>pending</code></td><td>QN2·운율 근거 보완</td><td>AP/IP는 추후</td></tr>
+      <tr><td>경계 해석 불명</td><td><code>unclear_boundary</code></td><td>근거 또는 pending</td><td>행 보존</td></tr>
+    </tbody>
+  </table>
+  <p class="small">위 분류는 candidate seed이며 최종 확정이 아니다. 환경 유형의
+    문헌 연결을 검토하기 위한 시작표다.</p>
+
+  <h2>4. ‘요’는 무엇이 남았나</h2>
+  <div class="card info">
+    <p><strong>결정은 끝났다.</strong> 본모집단과 분리하고, 기존 query를 바꾸지
+      않으며, 탐색 후보로 기록한다.</p>
+    <p>Gate 1에서 남은 일은 이 결정을 후보 문서로 옮기는 것뿐이다. 실제 query
+      JSON 생성·동결은 하지 않는다. 이후 사용자 결정 목록에 ‘요’를 다시 넣지 않는다.</p>
+  </div>
+
+  <h2>5. 사람 확인 문헌</h2>
+  <ul>
+    <li><strong>CLM-0015</strong>: 한자어 공명음/장애음 비대칭 — 계약 동결 전 우선 확인.</li>
+    <li><strong>CLM-0008</strong>: ㄴ탈락과의 이론 관계 — inclusion 조건이 아니면 유보 가능.</li>
+    <li><strong>CLM-0026</strong>: 연령·지역 변이 — 세부 수치를 쓰지 않으면 qualitative confound로 유보 가능.</li>
+    <li>CLM-0145·0151은 HIA 착수 때 확인.</li>
+  </ul>
+
+  <h2>6. 구현 GO 뒤 만들 파일</h2>
+  <ol>
+    <li>6개년 candidate source registry</li>
+    <li>NI inclusion/exclusion/confound candidate 계약</li>
+    <li>NI 환경 유형 candidate JSONL</li>
+    <li>CLM 연결을 갖춘 새 NI definition</li>
+    <li>‘요’ 탐색 query 후보 문서</li>
+    <li>독립 검사기와 테스트</li>
+    <li>감사 JSON·SHA manifest·검증 로그</li>
+  </ol>
+  <p>계약은 먼저 candidate로 만들고, 연구자 확인 뒤 새 frozen 버전을 만든다.
+    기존 파일은 덮어쓰지 않는다.</p>
+
+  <h2>7. 합격 조건</h2>
+  <ul>
+    <li>query·join SHA와 6개년 manifest·감사 결속</li>
+    <li>34/73열 헤더 동일성과 match_evidence_json 필수 key 확인</li>
+    <li>query 조건과 연구 계약의 모순 0</li>
+    <li>모든 환경 유형에 evidence ref 또는 pending</li>
+    <li>잘못된 SRC/CLM·SHA·필드 누락을 테스트가 차단</li>
+    <li>941,903행 zero-drop 기준선 유지</li>
+    <li>기존 출력 비덮어쓰기와 .partial 원자 승격</li>
+  </ul>
+
+  <h2>8. 사용자가 다음에 확인할 것</h2>
+  <div class="warn card">
+    <ol>
+      <li>환경 유형 seed를 candidate 상태로 만드는 데 동의하는가?</li>
+      <li>source registry·계약·환경 유형·새 definition·‘요’ 문서·검사기·감사만
+        구현하는 데 동의하는가?</li>
+    </ol>
+    <p><strong>이 두 항목에 GO가 있기 전에는 구현하지 않는다.</strong></p>
+  </div>
+</main></body></html>

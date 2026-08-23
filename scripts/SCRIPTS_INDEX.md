@@ -1,4 +1,4 @@
-# 스크립트 색인 — 최종 갱신 2026-08-20
+# 스크립트 색인 — 최종 갱신 2026-08-23
 
 > **현재 r3 생산 진입점:** 아래 2020–2022 생산 entrypoint는 r2 역사·복구 근거다.
 > 최종 r3에서는 직접 실행하지 않는다. 연구자는 2020–2025 safe-body 전체 신규
@@ -52,7 +52,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 각 코드가 **무슨 자료로·왜·무슨 역할**인지 서술형 해설은
 [docs/자료구축_코드해설.md](../docs/자료구축_코드해설.md).
 
-## 2026-08-19~22 일곱 현상 PV-A·reviewer 도구
+## 2026-08-19~23 일곱 현상 PV-A·reviewer·Gate 0 도구
 
 | 스크립트 | 역할 | 상태 |
 |---|---|---|
@@ -69,6 +69,9 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `python/audit_pv_reviewer_v2.py` | v2의 14 cell, 4,060 대화 행, 28 WAV SHA, 형태소 zero-drop, 문헌 제외 규칙과 외부 source 0을 독립 감사한다. | `passed=true`, errors 0 |
 | `python/build_pv_reviewer_v2_1.py` | v2를 다시 스캔하지 않는 UI-only 파생으로 복수 표적 강조, 미저장 경고, 최신 revision 선택, 한국어 상태 설명과 확신도 라벨을 보완한다. | 사용자 최소 화면 Gate 통과 |
 | `python/audit_pv_reviewer_v2_1.py` | v2.1의 14 표본·15 강조 token·28 WAV 불변·승인 권고 5개와 범위 밖 변경 0을 독립 확인한다. | `passed=true`, errors 0 |
+| `python/audit_stage2_gate0_common_contracts.py` | Gate 0의 7현상 registry·A1~A6 선언, 문헌 inventory 362행·claim 156행 결속, 보호 입력 SHA, 빈 환경 배정·계약·sidecar, git allowlist와 신규 산출물 SHA를 독립 검사한다. | 2026-08-23 감사 `passed=true`; 채택 뒤 역사적 스냅샷 검사기로 보존 |
+| `python/audit_stage2_gate1_n_insertion_contracts.py` | NI Gate 1 candidate의 6개년 source registry·동결 query 거울 계약·환경 유형 7행·문헌 결속·zero-drop을 독립 검사한다. | 2026-08-23 candidate 감사 `passed=true`; 채택 뒤 역사적 스냅샷 검사기로 보존 |
+| `python/audit_stage2_gate1_ni_freeze_contracts.py` | 채택 결정과 candidate SHA를 다시 고정하고 frozen 계약·환경 7행·definition·CLM-0015 유보·색인·Git 기준선·941,903 zero-drop을 대용량 CSV 재스캔 없이 독립 검사한다. | frozen v1 채택 감사 전용; G5/G6·실현 판정·‘요’ query 생성 없음 |
 
 ## A단계: 텍스트 레이어 구축
 | 스크립트 | 역할 | 상태 |

@@ -1,0 +1,12 @@
+검증: 모든 검증 로그 작성 뒤 Gate 0 독립 검사기 최종 읽기 전용 재실행
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate0_common_contracts.py --check-only
+실행일: 2026-08-23
+종료 코드: 0
+
+passed=true
+phenomena=7
+inventory_rows=362
+claim_rows=156
+tracked_changes=0
+unexpected_untracked=0
+판정: PASS

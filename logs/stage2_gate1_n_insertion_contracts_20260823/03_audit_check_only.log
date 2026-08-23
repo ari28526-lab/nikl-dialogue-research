@@ -1,0 +1,19 @@
+검증: 실제 저장소 대상 Gate 1 NI 독립 검사기 읽기 전용 실행
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate1_n_insertion_contracts.py --check-only
+실행일: 2026-08-23
+종료 코드: 0
+
+passed=true
+candidate_rows=941903
+joined_rows=941903
+intra_eojeol=353626
+inter_eojeol=588277
+source/target/joined columns=35/34/73
+environment_type_rows=7
+occurrence_assignment_rows=0
+contract_status=draft
+query_condition_mismatches=0
+unknown evidence refs=0
+unexpected worktree paths=0
+full CSV rehash or scan=false
+판정: PASS

@@ -1,0 +1,13 @@
+검증: 모든 Gate 1 로그·감사 출력 작성 뒤 최종 읽기 전용 재실행
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate1_n_insertion_contracts.py --check-only
+실행일: 2026-08-23
+종료 코드: 0
+
+passed=true
+candidate_rows=941903
+joined_rows=941903
+environment_type_rows=7
+occurrence_assignment_rows=0
+researcher_confirmed=0
+unexpected_worktree_paths=0
+판정: PASS

@@ -1,0 +1,55 @@
+{
+  "schema_version": "stage2_zero_drop_status_dictionary.v1",
+  "status": "candidate_pending_researcher_adoption",
+  "independent_axes": {
+    "candidate_availability_status": {
+      "required": true,
+      "values": [
+        "candidate_ready_for_manual_realization_review",
+        "candidate_metadata_only_missing_capped_release_lookup"
+      ]
+    },
+    "selection_status": {
+      "required": true,
+      "values": [
+        "not_selected_quota_or_duplicate",
+        "selected_primary",
+        "selected_shared_membership"
+      ]
+    },
+    "timing_status": {
+      "required": true,
+      "values": [
+        "not_linked_release_lookup_missing",
+        "linked_single_eojeol_context_span",
+        "linked_inter_eojeol_context_span",
+        "pending_textgrid_asset_unavailable",
+        "pending_textgrid_word_mapping_review"
+      ]
+    },
+    "textgrid_review_need": {
+      "required": true,
+      "values": ["not_needed", "required", "unsure"]
+    },
+    "textgrid_asset_status": {
+      "required": true,
+      "values": ["available", "unavailable", "blocked"]
+    },
+    "manual_task_status": {
+      "required": true,
+      "values": ["not_created", "queued", "exported", "returned", "audited"]
+    }
+  },
+  "invariants": [
+    "모든 입력 행은 적용되는 각 독립 축에서 정확히 하나의 상태값을 가진다.",
+    "후보나 표본 행을 상태 없이 삭제하지 않는다.",
+    "required와 unavailable처럼 서로 다른 축의 값은 동시에 성립할 수 있다.",
+    "서로 다른 축의 상태 수를 한 합계식으로 더해 zero-drop을 주장하지 않는다.",
+    "축별 입력 행 수는 해당 축의 상태별 행 수 합계와 같아야 한다."
+  ],
+  "forbidden_combinations": [],
+  "notes": [
+    "textgrid_review_need, textgrid_asset_status, manual_task_status는 상호 독립 축이다.",
+    "실현 판정 상태는 이 사전의 범위가 아니며 자동 생성하지 않는다."
+  ]
+}

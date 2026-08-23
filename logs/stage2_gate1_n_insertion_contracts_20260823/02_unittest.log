@@ -1,0 +1,16 @@
+검증: Gate 1 성공·실패·비덮어쓰기 대표 시나리오
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe tests/test_audit_stage2_gate1_n_insertion_contracts.py -v
+실행일: 2026-08-23
+종료 코드: 0
+
+test_existing_output_refuses_before_write ... ok
+test_failure_missing_source_registry_field ... ok
+test_failure_silent_human_check_confirmation ... ok
+test_failure_unknown_clm_ref ... ok
+test_failure_wrong_manifest_sha ... ok
+test_manifest_excludes_itself ... ok
+test_success_actual_contracts ... ok
+
+Ran 7 tests in 0.230s
+OK
+판정: PASS

@@ -1,0 +1,33 @@
+{
+  "schema_version": "stage2_inclusion_exclusion_confound_contract_template.v1",
+  "status": "candidate_pending_researcher_adoption",
+  "contract_status_values": ["draft", "researcher_confirmed", "frozen"],
+  "template": {
+    "contract_id": null,
+    "phenomenon_code": null,
+    "contract_version": null,
+    "contract_status": "draft",
+    "query_reference": null,
+    "include_conditions": [],
+    "exclude_conditions": [],
+    "confound_phenomena": [],
+    "membership_rules": [],
+    "evidence_refs": [],
+    "unresolved_items": [],
+    "researcher": null,
+    "confirmed_at": null,
+    "supersedes": null
+  },
+  "item_contracts": {
+    "include_condition": ["condition_id", "description", "evidence_refs", "status"],
+    "exclude_condition": ["condition_id", "description", "exclusion_reason", "evidence_refs", "status"],
+    "confound_phenomenon": ["code", "relation", "discriminator", "evidence_refs", "status"],
+    "membership_rule": ["rule_id", "description", "evidence_refs", "status"]
+  },
+  "rules": [
+    "Gate 0 산출물은 빈 템플릿이며 현상별 조건값을 넣지 않는다.",
+    "draft PV 조건을 frozen 값으로 승격하지 않는다.",
+    "모든 확정값은 연구자 승인과 근거 ID를 요구한다.",
+    "NI 보조사 요 환경은 Gate 1의 별도 탐색 query 후보이며 이 템플릿에 조건으로 넣지 않는다."
+  ]
+}

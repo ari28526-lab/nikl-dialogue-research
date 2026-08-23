@@ -1,0 +1,4 @@
+Stage 2 Gate 1 NI freeze py_compile
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' -m py_compile 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py' 'tests/test_audit_stage2_gate1_ni_freeze_contracts.py'
+exit_code=0
+result=passed

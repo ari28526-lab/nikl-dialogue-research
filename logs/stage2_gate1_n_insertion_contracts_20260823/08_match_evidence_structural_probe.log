@@ -1,0 +1,15 @@
+검증: QN1·QN2 실제 match_evidence_json 내부 구조의 독립 상한 probe
+입력: 2020 TARGET_CANDIDATES.csv + 원천 morph_boundaries.csv.gz 헤더
+실행일: 2026-08-23
+종료 코드: 0
+
+MATCH_EVIDENCE PROBE PASS
+rows_read=42605
+max_occurrences=200000
+queries=QN1_N_INSERTION_INTRA_EOJEOL_V1,QN2_N_INSERTION_INTER_EOJEOL_V1
+evidence_keys_each=35,35
+key_set_sha256=2f29f866ace44a39e4fb362b639c8e0a9b69219f5bd7c3757445796b742338b8
+values_are_strings=true
+
+두 query를 모두 확인한 42,605행에서 조기 중단했다. 원문 값은 로그에 쓰지 않았다.
+판정: PASS

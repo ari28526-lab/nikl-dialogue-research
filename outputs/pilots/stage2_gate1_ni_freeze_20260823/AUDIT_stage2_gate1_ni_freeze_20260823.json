@@ -1,0 +1,169 @@
+{
+  "artifact_sha256": {
+    "config/environment_types/n_insertion_environment_types_frozen_v1_20260823.jsonl": "02068d0d5d7539f10328dbce6ea5a459c45bdceea7093d5360527fb2c6cf1ddb",
+    "config/phenomenon_contracts/n_insertion_contract_frozen_v1_20260823.json": "305a025f40fc3e062cf620ea96cfee1510d5460488582f3590e19840d8453780",
+    "phenomena/34_n_insertion/definition_stage2_frozen_v1_20260823.md": "f6f07feafc62887f7d15fa001d1da4265def1bf02f3471ab533c415e90932414",
+    "scripts/python/audit_stage2_gate1_ni_freeze_contracts.py": "cfaaa5cf68a08c28308e9897a381dff3e54a53bba2079b1e35f3cb4cb2549ac2",
+    "tests/test_audit_stage2_gate1_ni_freeze_contracts.py": "91d5857bec80dea332f090e56f7dfbb2e0d8502bba19439124118e6e2e1721bf"
+  },
+  "checks": [
+    "all_candidate_and_protected_sha_pins",
+    "query_contract_exact_seven_conditions",
+    "candidate_semantics_preserved",
+    "adoption_and_supersedes_sha_bindings",
+    "clm_0015_true_and_explicitly_deferred",
+    "environment_seven_rows_and_no_silent_promotion",
+    "zero_drop_941903_via_manifests_without_csv_scan",
+    "yo_query_and_candidate_absent",
+    "only_two_tracked_index_changes",
+    "baseline_plus_exact_freeze_allowlist",
+    "no_partial_and_manifest_self_exclusion"
+  ],
+  "contract": {
+    "clm_0015": "deferred_by_decision_d_g1_a",
+    "confirmed_at": "2026-08-23T15:18:36+09:00",
+    "evidence_refs": 14,
+    "new_occurrence_filters": 0,
+    "query_conditions": 7,
+    "researcher": "ari30",
+    "safety_false_items": 5,
+    "status": "frozen_researcher_adopted_20260823",
+    "unresolved_items": 5
+  },
+  "definition": {
+    "definition_status": "researcher_confirmed",
+    "lifecycle_status": "frozen_v1_adopted_20260823"
+  },
+  "environment_types": {
+    "evidence_refs": 9,
+    "ids_preserved": true,
+    "inter_eojeol": "null_pending_deferred",
+    "occurrence_assignment_rows": 0,
+    "researcher_confirmed": [
+      "NI_ENV_CORE_C_I",
+      "NI_ENV_CORE_C_J",
+      "NI_ENV_YO_JX"
+    ],
+    "rows": 7,
+    "sino_pending": [
+      "NI_ENV_SINO_OBSTRUENT_J",
+      "NI_ENV_SINO_RESONANT_J"
+    ],
+    "unclear_boundary": "pending",
+    "yo_treatment": "decided_query_not_created"
+  },
+  "generated_at": "2026-08-23T06:26:58.680501+00:00",
+  "indexes": {
+    "decisions_index": true,
+    "scripts_index": true
+  },
+  "literature": {
+    "binding_errors": 0,
+    "claim_rows": 156,
+    "clm_0015_flag_preserved": true,
+    "inventory_rows": 362,
+    "needs_human_check": [
+      "CLM-0008",
+      "CLM-0015",
+      "CLM-0026",
+      "CLM-0145",
+      "CLM-0151"
+    ]
+  },
+  "passed": true,
+  "pinned_inputs": {
+    "config/candidate_sources/n_insertion_g1_g4_source_registry_v1_20260823.json": "06d44af2e930429f63019a31777dd472d293411723b92d0d56e409ebe6af6b12",
+    "config/environment_types/n_insertion_environment_types_candidate_v1_20260823.jsonl": "60c3f44d847e0e183d763b5e02dab584a42c8d15ce08cebab4aa3020cec84427",
+    "config/join_contracts/n_insertion_variable_join_contract_v1_20260818.json": "12d811632a9c440e33fd76f814620c65e47113bdfda4ea058581b5e476c44050",
+    "config/phenomenon_contracts/n_insertion_contract_candidate_v1_20260823.json": "2c5a1f4cf4eb89ac4be57878d41f77906cee9cfa21f6f87c1d751a600de7c9ff",
+    "config/target_queries/n_insertion_production_v1_20260818.json": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "docs/decisions/DECISION_stage2_gate1_ni_contracts_adoption_20260823.md": "637f7b0fa0198241fbca84fbfbfbf2e590adb1dbf4168ee0e59a05cf9031796e",
+    "docs/decisions/NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md": "34ba06931c1947cd925d1ce1ec06eacca93c5c8cb3629da437eb4ecbc5d2ce91",
+    "docs/reviews/incoming/EXTERNAL_REVIEW_stage2_gate1_n_insertion_contracts_claude_code_20260823.md": "8ed621ccf75f8ba9044799c96506bb00fbe39f881e6b1f8455b3752a4e495bc0",
+    "outputs/pilots/stage2_gate1_n_insertion_contracts_20260823/AUDIT_stage2_gate1_n_insertion_contracts_20260823.json": "f08dfe99ad94bc47a66ac3302c3c483a810946e20551441c81291425228ad15e",
+    "outputs/pilots/stage2_gate1_n_insertion_contracts_20260823/SHA256SUMS_stage2_gate1_n_insertion_contracts_20260823.txt": "ea7e160f9cea3be1db6487e87bab33d65dc5c2778906cfacaf59c6101deb25d5",
+    "phenomena/34_n_insertion/definition.md": "aa23b940d1e556df98cee5f332e8757f886ab098f468620fe084b93e90983513",
+    "phenomena/34_n_insertion/definition_stage2_candidate_v1_20260823.md": "10a5e81f299ba5b2eae65e1f2a14ee323ba4b6f7072ab37767f3a926fba111f3",
+    "work/literature_evidence_seven_phenomena_20260822/01_inventory/SOURCE_INVENTORY.jsonl": "e8de6907f632a5b64853a6386c7d510ba69852451322630dc43ea201fefa0680",
+    "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl": "1e88f5513f4c57387954d6149d922ccfc20ad024cfb8df63d492d96e0924610a"
+  },
+  "schema_version": "stage2_gate1_ni_freeze_audit.v1",
+  "scope": {
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "frozen_v1_created": true,
+    "g5_g6_started": false,
+    "mfa_koina_wav2vec2_run": false,
+    "occurrence_derivative_created": false,
+    "phenomenon_code": "NI",
+    "probe_regression_d_g1_c_started": false,
+    "textgrid_modified": false,
+    "yo_query_json_created": false
+  },
+  "status": "passed_frozen_v1_researcher_adopted_stopped_before_research",
+  "worktree": {
+    "allowed_freeze_status_lines_present": [
+      "?? config/environment_types/n_insertion_environment_types_frozen_v1_20260823.jsonl",
+      "?? config/phenomenon_contracts/n_insertion_contract_frozen_v1_20260823.json",
+      "?? logs/stage2_gate1_ni_freeze_20260823/00_preflight_gate.log",
+      "?? logs/stage2_gate1_ni_freeze_20260823/01_py_compile.log",
+      "?? logs/stage2_gate1_ni_freeze_20260823/02_unittest.log",
+      "?? logs/stage2_gate1_ni_freeze_20260823/03_check_only.log",
+      "?? phenomena/34_n_insertion/definition_stage2_frozen_v1_20260823.md",
+      "?? scripts/python/audit_stage2_gate1_ni_freeze_contracts.py",
+      "?? tests/test_audit_stage2_gate1_ni_freeze_contracts.py"
+    ],
+    "baseline_status_lines": 61,
+    "baseline_status_sha256": "12978d379be277024c661c11e0a95d5ec6f7bdc0aedb1f6b3cbdf44f77b854c1",
+    "tracked_changes": [
+      " M docs/decisions/_INDEX.md",
+      " M scripts/SCRIPTS_INDEX.md"
+    ],
+    "unexpected": []
+  },
+  "yo_absence": {
+    "target_query_files": 3,
+    "yo_candidate_csv": false,
+    "yo_query_json": false
+  },
+  "zero_drop": {
+    "candidate_rows": 941903,
+    "inter_eojeol": 588277,
+    "intra_eojeol": 353626,
+    "joined_rows": 941903,
+    "large_csv_rehash_or_scan": false,
+    "new_occurrence_derivative_rows": 0,
+    "per_year": [
+      {
+        "candidate": 101638,
+        "joined": 101638,
+        "year": 2020
+      },
+      {
+        "candidate": 206037,
+        "joined": 206037,
+        "year": 2021
+      },
+      {
+        "candidate": 141966,
+        "joined": 141966,
+        "year": 2022
+      },
+      {
+        "candidate": 123381,
+        "joined": 123381,
+        "year": 2023
+      },
+      {
+        "candidate": 185401,
+        "joined": 185401,
+        "year": 2024
+      },
+      {
+        "candidate": 183480,
+        "joined": 183480,
+        "year": 2025
+      }
+    ]
+  }
+}

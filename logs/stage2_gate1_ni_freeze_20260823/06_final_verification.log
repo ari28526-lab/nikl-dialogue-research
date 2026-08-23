@@ -1,0 +1,30 @@
+Stage 2 Gate 1 NI freeze independent final verification
+command=PowerShell independent manifest rehash + audit parse + partial check + git diff --check
+exit_code=0
+
+audit_sha256=4c076fa80301cf5ec2df2a5ab1e8ef07e3c77fe3766c2b0ed8aeb3dbd3f5b1fc
+manifest_sha256=5928aa29344054f55779726e805c316f02e42bd02d7706b7c8d4b5f671209efc
+manifest_entries=6
+manifest_mismatches=0
+manifest_self_entries=0
+partial_count=0
+git_diff_check_exit_code=0
+tracked_diff_count=2
+tracked_diff=docs/decisions/_INDEX.md,scripts/SCRIPTS_INDEX.md
+
+audit.passed=true
+audit.status=passed_frozen_v1_researcher_adopted_stopped_before_research
+audit.zero_drop.candidate_rows=941903
+audit.zero_drop.joined_rows=941903
+audit.zero_drop.intra_eojeol=353626
+audit.zero_drop.inter_eojeol=588277
+audit.contract.clm_0015=deferred_by_decision_d_g1_a
+audit.environment.occurrence_assignment_rows=0
+audit.environment.sino_pending=NI_ENV_SINO_RESONANT_J,NI_ENV_SINO_OBSTRUENT_J
+
+305a025f40fc3e062cf620ea96cfee1510d5460488582f3590e19840d8453780  config/phenomenon_contracts/n_insertion_contract_frozen_v1_20260823.json
+02068d0d5d7539f10328dbce6ea5a459c45bdceea7093d5360527fb2c6cf1ddb  config/environment_types/n_insertion_environment_types_frozen_v1_20260823.jsonl
+f6f07feafc62887f7d15fa001d1da4265def1bf02f3471ab533c415e90932414  phenomena/34_n_insertion/definition_stage2_frozen_v1_20260823.md
+cfaaa5cf68a08c28308e9897a381dff3e54a53bba2079b1e35f3cb4cb2549ac2  scripts/python/audit_stage2_gate1_ni_freeze_contracts.py
+91d5857bec80dea332f090e56f7dfbb2e0d8502bba19439124118e6e2e1721bf  tests/test_audit_stage2_gate1_ni_freeze_contracts.py
+result=passed

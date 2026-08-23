@@ -1,5 +1,11 @@
 # 현행 결정 문서 색인
 
+- [DECISION_stage2_gate1_ni_contracts_adoption_20260823.md](DECISION_stage2_gate1_ni_contracts_adoption_20260823.md) — NI Gate 1 계약·환경 유형·definition 후보를 연구자 채택하고, CLM-0015는 한자어 두 환경을 포함한 채 명시적으로 유보하며 frozen v1 생성만 승인
+- [NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md](NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md) — 보조사 ‘요’ 앞 ㄴ삽입을 본모집단 밖 별도 탐색 query 후보로 등록하되 기존 query 재동결·query JSON·후보 CSV 생성은 별도 Gate까지 금지
+- [DECISION_stage2_gate0_common_contracts_adoption_20260823.md](DECISION_stage2_gate0_common_contracts_adoption_20260823.md) — Claude Code 독립 검토 GO와 감사·manifest SHA에 결속해 Gate 0 A1~A6을 채택하고, ‘요’를 결정 완료·구현 대기로 닫으며 NI Gate 1은 설계 문서까지만 허용
+- [PLAN_stage2_gate1_NI_reference_implementation_20260823.md](PLAN_stage2_gate1_NI_reference_implementation_20260823.md) — 6개년 941,903 후보를 재생성하지 않고 source registry로 재사용하는 NI 계약·환경 유형·‘요’ 후보 문서·zero-drop 감사 설계; [HTML 검토본](PLAN_stage2_gate1_NI_reference_implementation_20260823.html), 구현은 별도 GO
+- [SCHEMA_stage2_gate0_common_contracts_20260823.md](SCHEMA_stage2_gate0_common_contracts_20260823.md) — 일곱 현상 registry, 4단 환경 enum, 빈 inclusion/exclusion/confound 계약, 독립 zero-drop 축과 append-only sidecar의 Gate 0 공통 계약
+- [DECISION_stage2_seven_phenomena_workflow_user_decisions_20260823.md](DECISION_stage2_seven_phenomena_workflow_user_decisions_20260823.md) — NI 본모집단·‘요’ 별도 탐색, NI→LLN 순서, read-only TextGrid+Praat 왕복, 비식별 공개 파생본과 7현상 문헌 시드에 관한 D1~D5 사용자 결정
 - [REQUIREMENT_stage2_manual_textgrid_and_phenomenon_release_20260822.md](REQUIREMENT_stage2_manual_textgrid_and_phenomenon_release_20260822.md) — 문헌·환경 정리 뒤 후보별 수동 TextGrid·가변 정보 보강 Gate, HTML 조건부 TextGrid 패널, 원본 불변 overlay와 현상별 공개 파생본의 필수 요구사항; 구현 미승인
 - [RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md](RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md) — 균형 14개 reviewer v2.1의 복수 표적 강조·미저장 경고·revision 안전 보완, 독립 감사와 사용자 최소 화면 Gate 통과; 다음은 문헌·형태론 환경 정리
 - [RESULT_stage2_pv_reviewer_v2_implementation_20260822.md](RESULT_stage2_pv_reviewer_v2_implementation_20260822.md) — 전체 대화 검색·형태소·화자·문헌 패널을 갖춘 reviewer v2 구현과 독립 감사; v2.1의 역사적 입력으로 종료
@@ -25,7 +31,7 @@
 - [RESULT_db_v1_release_prep_A_C_20260815.md](RESULT_db_v1_release_prep_A_C_20260815.md) — 6개년 같은 방법론 교차 감사, 읽기 전용 저장계획, 5,103,356발화 exact-ID 통합 장부와 독립 QA 완료; D recovery 직전 정지
 - [RESULT_mfa_r3_alignment_database_2025_20260815.md](RESULT_mfa_r3_alignment_database_2025_20260815.md) — 2025 r3 신규 정렬·802건 명시 승인·457,611개 6-tier·동반표·독립 QC 완료와 2020–2025 본체 동결
 
-최종 갱신: 2026-08-22 KST
+최종 갱신: 2026-08-23 KST
 
 이 폴더에는 현재 생산·방법론에 실제로 적용되는 결정만 둔다. 종료된 감사,
 파일럿, 구 RUNBOOK, MONITOR, 과거 계획 33개는 원문을 삭제하지 않고

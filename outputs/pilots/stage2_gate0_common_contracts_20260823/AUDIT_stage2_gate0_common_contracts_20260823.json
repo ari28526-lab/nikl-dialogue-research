@@ -1,0 +1,119 @@
+{
+  "artifact_sha256": {
+    "config/phenomena_registry.v1.json": "4f652d6422d2e61c3263263224eeb29e9a90c14f4fd8ba2ba66a46e27a98705e",
+    "config/stage2_additional_information_sidecar_schema.v1.json": "b1992e21f9431e5d066e396264eb61b89dff652d950f4e6fa7a6bb9d1b14c3f3",
+    "config/stage2_environment_class_enum.v1.json": "871193eda6b1b69f7c2b5c16edbe63904759f4bda769a4629ed2f3f3ce358062",
+    "config/stage2_inclusion_exclusion_confound_contract_template.v1.json": "61f78353e521e8a3dbd2181841e98f03580fc3b62d35fd41d1174c156591d7ac",
+    "config/stage2_zero_drop_status_dictionary.v1.json": "f87a5684d4c7f21752ad9c4c023c28264471436eae9885a93cbd7a34e601c173",
+    "docs/decisions/SCHEMA_stage2_gate0_common_contracts_20260823.md": "ed6975f7e586d4210f101cb30c24a6ec53eb843341f6cb3c3bdbb2b780daf21e",
+    "phenomena/_draft/HIA/definition.md": "cbe4151250fdb0baca7071367a597e39c3ae7e3fa5b882514dfaab1032e32038",
+    "phenomena/_draft/LLN/definition.md": "ae41251d07d4a40a6b2fd1f42cfc26098e1303d43d5a371232166f1996911071",
+    "phenomena/_draft/NAL/definition.md": "8f290dc79ae7849578a7edc92f362e76ba7d1331caaadb68e19940b3115f1b82",
+    "phenomena/_draft/NAN/definition.md": "7ca1402cf71fb5c8d3a312f928eaa3e492f30450fdda3ff4331c08ff4693b4d5",
+    "phenomena/_draft/PT/definition.md": "9c47c14ae3a0a9c704f74a0ef181f8d40c8bf1d6a79647d4db526a5e10138851",
+    "phenomena/_draft/VH/definition.md": "f496eb32b2cab30ebd886d1056f4495ed054c39f111d4b234203d438ceadd972",
+    "phenomena/_templates/definition.v1.md": "422e14a544e7627a03e82185a2df2b83668d5ce043b4463d56fcbc6b581a86c7",
+    "scripts/python/audit_stage2_gate0_common_contracts.py": "4de53aea6db01ded6ad1ce3e7f800ebcc108e9e51c14ac76ce4ac77b32d3bf45",
+    "tests/test_audit_stage2_gate0_common_contracts.py": "eb43f78f76a0d860aa4e8f839db954cece1edc8325c6e540eb076b3fa8180f18"
+  },
+  "checks": [
+    "protected_input_sha_match",
+    "literature_jsonl_ids_and_bindings",
+    "handoff_src_clm_refs",
+    "registry_roundtrip_and_required_fields",
+    "a1_to_a6_structure_only",
+    "artifact_presence_and_no_partial",
+    "git_allowlist_and_no_tracked_changes"
+  ],
+  "declarations": {
+    "contract_value_rows": 0,
+    "definition_template": true,
+    "draft_definitions": 6,
+    "environment_assignment_rows": 0,
+    "sidecar_data_rows": 0
+  },
+  "generated_at": "2026-08-23T04:17:16.282379+00:00",
+  "handoff_refs": {
+    "unique_clm_refs": 156,
+    "unique_src_refs": 28
+  },
+  "literature": {
+    "claim_rows": 156,
+    "inventory_rows": 362,
+    "needs_human_check": [
+      "CLM-0008",
+      "CLM-0015",
+      "CLM-0026",
+      "CLM-0145",
+      "CLM-0151"
+    ],
+    "source_binding_errors": 0
+  },
+  "passed": true,
+  "protected_inputs": {
+    "config/target_queries/n_insertion_production_v1_20260818.json": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.json": "938353d719e1ddc57c8ba96ca4694310f6570a4b4ca944f684a5a66961bdebae",
+    "phenomena/34_n_insertion/definition.md": "aa23b940d1e556df98cee5f332e8757f886ab098f468620fe084b93e90983513",
+    "work/literature_evidence_seven_phenomena_20260822/00_admin/CURRENT_STATE.md": "a2de36342a29cc143a56e887b525c37acbd27eca028d37c92bac37cb6a76506c",
+    "work/literature_evidence_seven_phenomena_20260822/00_admin/DECISION_LOG.jsonl": "be2235e5f9cbc20bdff4265be634d23f5ac4a71ca364c792c86451d9f6b90253",
+    "work/literature_evidence_seven_phenomena_20260822/01_inventory/SOURCE_INVENTORY.jsonl": "e8de6907f632a5b64853a6386c7d510ba69852451322630dc43ea201fefa0680",
+    "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl": "1e88f5513f4c57387954d6149d922ccfc20ad024cfb8df63d492d96e0924610a"
+  },
+  "registry": {
+    "codes": [
+      "PT",
+      "NAN",
+      "NAL",
+      "NI",
+      "LLN",
+      "VH",
+      "HIA"
+    ],
+    "phenomena": 7,
+    "required_fields_complete": true
+  },
+  "schema_version": "stage2_gate0_common_contracts_audit.v1",
+  "scope_assertions": {
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "gate": 0,
+    "gate1_started": false,
+    "implemented": [
+      "A1",
+      "A2",
+      "A3_enum_only",
+      "A4_template_only",
+      "A5",
+      "A6_schema_only"
+    ],
+    "mfa_koina_wav2vec2_run": false,
+    "query_modified_or_created": false
+  },
+  "status": "passed_candidate_pending_researcher_adoption",
+  "worktree": {
+    "status_lines": [
+      "?? config/phenomena_registry.v1.json",
+      "?? config/stage2_additional_information_sidecar_schema.v1.json",
+      "?? config/stage2_environment_class_enum.v1.json",
+      "?? config/stage2_inclusion_exclusion_confound_contract_template.v1.json",
+      "?? config/stage2_zero_drop_status_dictionary.v1.json",
+      "?? docs/decisions/DECISION_stage2_seven_phenomena_workflow_user_decisions_20260823.md",
+      "?? docs/decisions/HANDOFF_stage2_gate0_implementation_prompt_20260823.md",
+      "?? docs/decisions/HANDOFF_stage2_gate0_implementation_prompt_v2_20260823.md",
+      "?? docs/decisions/SCHEMA_stage2_gate0_common_contracts_20260823.md",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_seven_phenomena_workflow_claude_20260823.html",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_seven_phenomena_workflow_claude_20260823.md",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.html",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.json",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.md",
+      "?? docs/reviews/incoming/_to_delete/",
+      "?? logs/stage2_gate0_common_contracts_20260823/",
+      "?? phenomena/_draft/",
+      "?? phenomena/_templates/",
+      "?? scripts/python/audit_stage2_gate0_common_contracts.py",
+      "?? tests/test_audit_stage2_gate0_common_contracts.py"
+    ],
+    "tracked_changes": 0,
+    "unexpected_untracked": 0
+  }
+}

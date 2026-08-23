@@ -1,0 +1,14 @@
+검증: manifest 항목 독립 재해시, 감사 상태, 보호 입력 표본, Gate 0 partial 잔존 확인
+실행일: 2026-08-23
+종료 코드: 0
+
+FINAL VERIFY PASS
+audit_sha256=62d7221b65c862baeea5e1b85809b385e173ecdbd98e53f70b2587f1f5d85671
+manifest_sha256=3b5716ac024dcdfbe3a685ca36dccc5be0907e5915e0508afd960fe967e0112a
+manifest_entries=16
+gate0_partial_files=0
+protected_spotcheck=2/2
+
+참고: 저장소 전체에는 이번 Gate 0과 무관한 기존 .partial 파일 6개가 work/ 아래에
+남아 있다. 이번 산출물·감사·manifest·검증 로그의 대응 .partial은 0개이다.
+판정: PASS

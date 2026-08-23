@@ -1,0 +1,15 @@
+Stage 2 Gate 1 NI freeze unit tests
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'tests/test_audit_stage2_gate1_ni_freeze_contracts.py' -v
+exit_code=0
+
+test_existing_output_refuses_before_write ... ok
+test_failure_candidate_sha_mismatch ... ok
+test_failure_silent_sino_promotion ... ok
+test_failure_supersedes_or_adoption_sha_mismatch ... ok
+test_failure_unknown_clm_reference ... ok
+test_failure_unresolved_item_removed ... ok
+test_manifest_excludes_itself ... ok
+test_success_actual_freeze ... ok
+
+Ran 8 tests in 11.813s
+OK

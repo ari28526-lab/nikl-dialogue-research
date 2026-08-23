@@ -1,0 +1,11 @@
+검증: Gate 1 manifest 항목 독립 재해시, 감사 상태, query SHA, partial 잔존 확인
+실행일: 2026-08-23
+종료 코드: 0
+
+FINAL VERIFY PASS
+audit_sha256=f08dfe99ad94bc47a66ac3302c3c483a810946e20551441c81291425228ad15e
+manifest_sha256=ea7e160f9cea3be1db6487e87bab33d65dc5c2778906cfacaf59c6101deb25d5
+manifest_entries=8
+gate1_partial_files=0
+query_sha_unchanged=true
+판정: PASS

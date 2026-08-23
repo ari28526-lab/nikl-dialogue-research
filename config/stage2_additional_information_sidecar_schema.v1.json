@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "stage2_additional_information_sidecar_schema.v1",
+  "title": "Stage 2 append-only additional information sidecar record",
+  "description": "현상별·사례별 추가 정보 요청과 값을 원 후보에서 분리해 보존하는 단일 JSONL 행 스키마",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "phenomenon_id",
+    "occurrence_id",
+    "key_namespace",
+    "information_key",
+    "requested_reason",
+    "value_status",
+    "value_text_or_ref",
+    "evidence_source",
+    "evidence_sha256",
+    "reviewer",
+    "recorded_at",
+    "supersedes"
+  ],
+  "properties": {
+    "schema_version": {"const": "stage2_additional_information_sidecar.v1"},
+    "request_id": {"type": "string", "pattern": "^INFO-[0-9]{6}$"},
+    "phenomenon_id": {"type": "string", "enum": ["PT", "NAN", "NAL", "NI", "LLN", "VH", "HIA"]},
+    "occurrence_id": {"type": "string", "minLength": 1},
+    "key_namespace": {"type": "string", "minLength": 1, "default": "unregistered"},
+    "information_key": {"type": "string", "minLength": 1},
+    "requested_reason": {"type": "string", "minLength": 1},
+    "value_status": {"type": "string", "enum": ["pending", "unavailable", "not_applicable", "filled"]},
+    "value_text_or_ref": {"type": ["string", "null"]},
+    "evidence_source": {"type": ["string", "null"]},
+    "evidence_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "reviewer": {"type": ["string", "null"]},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "supersedes": {"type": ["string", "null"], "pattern": "^INFO-[0-9]{6}$"}
+  },
+  "x_contract": {
+    "append_only": true,
+    "deletion_forbidden": true,
+    "revision_link": "supersedes",
+    "unresolved_values_must_remain_explicit": true,
+    "actual_data_jsonl_created_at_gate0": false,
+    "automatic_realization_judgement": false
+  }
+}

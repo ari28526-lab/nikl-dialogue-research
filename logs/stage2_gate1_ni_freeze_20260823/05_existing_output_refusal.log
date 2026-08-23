@@ -1,0 +1,8 @@
+Stage 2 Gate 1 NI freeze existing-output refusal
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py'
+observed_process_exit_code=1
+expected_exit_code=1
+wrapper_validation_exit_code=0
+exception=FileExistsError
+message=refusing to overwrite existing output: outputs/pilots/stage2_gate1_ni_freeze_20260823/AUDIT_stage2_gate1_ni_freeze_20260823.json
+result=passed_expected_refusal_before_write

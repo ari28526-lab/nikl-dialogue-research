@@ -1,0 +1,9 @@
+검증: Gate 0 감사 JSON과 SHA manifest 신규 생성
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate0_common_contracts.py
+실행일: 2026-08-23
+종료 코드: 0
+
+passed=true
+audit=outputs/pilots/stage2_gate0_common_contracts_20260823/AUDIT_stage2_gate0_common_contracts_20260823.json
+manifest=outputs/pilots/stage2_gate0_common_contracts_20260823/SHA256SUMS_stage2_gate0_common_contracts_20260823.txt
+판정: PASS

@@ -1,0 +1,144 @@
+{
+  "artifact_sha256": {
+    "config/candidate_sources/n_insertion_g1_g4_source_registry_v1_20260823.json": "06d44af2e930429f63019a31777dd472d293411723b92d0d56e409ebe6af6b12",
+    "config/environment_types/n_insertion_environment_types_candidate_v1_20260823.jsonl": "60c3f44d847e0e183d763b5e02dab584a42c8d15ce08cebab4aa3020cec84427",
+    "config/phenomenon_contracts/n_insertion_contract_candidate_v1_20260823.json": "2c5a1f4cf4eb89ac4be57878d41f77906cee9cfa21f6f87c1d751a600de7c9ff",
+    "docs/decisions/NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md": "34ba06931c1947cd925d1ce1ec06eacca93c5c8cb3629da437eb4ecbc5d2ce91",
+    "phenomena/34_n_insertion/definition_stage2_candidate_v1_20260823.md": "10a5e81f299ba5b2eae65e1f2a14ee323ba4b6f7072ab37767f3a926fba111f3",
+    "scripts/python/audit_stage2_gate1_n_insertion_contracts.py": "c4a5f0dabdc78b81a4c70d664d67677fcb65e692244f1c796140138e75f23d8e",
+    "tests/test_audit_stage2_gate1_n_insertion_contracts.py": "6bd6c2fc971d450bbd145d2697ae2a061921f9f5e42bd5a7e6c4eb079c8803f9"
+  },
+  "checks": [
+    "protected_input_sha_match",
+    "literature_ids_bindings_and_human_checks",
+    "six_year_manifest_audit_count_bindings",
+    "actual_35_34_73_column_headers",
+    "query_contract_exact_condition_match",
+    "environment_refs_or_pending",
+    "yo_decision_complete_query_not_created",
+    "zero_drop_941903",
+    "no_gate1_partial",
+    "git_baseline_plus_allowlist"
+  ],
+  "contract": {
+    "confounds": 5,
+    "contract_status": "draft",
+    "evidence_refs": 14,
+    "exclude_conditions": 3,
+    "include_conditions": 4,
+    "membership_rules": 3,
+    "query_condition_mismatches": 0,
+    "unresolved_items": 5
+  },
+  "documents": {
+    "definition_candidate": true,
+    "query_json_created": false,
+    "yo_candidate_document": true
+  },
+  "environment_types": {
+    "inter_eojeol_review": "deferred",
+    "occurrence_assignment_rows": 0,
+    "pending": 4,
+    "researcher_confirmed": 0,
+    "rows": 7,
+    "seeded": 3,
+    "yo_treatment": "decided_query_not_created"
+  },
+  "generated_at": "2026-08-23T05:30:12.573822+00:00",
+  "literature": {
+    "claim_rows": 156,
+    "inventory_rows": 362,
+    "needs_human_check": [
+      "CLM-0008",
+      "CLM-0015",
+      "CLM-0026",
+      "CLM-0145",
+      "CLM-0151"
+    ],
+    "source_binding_errors": 0
+  },
+  "passed": true,
+  "protected_inputs": {
+    "config/join_contracts/n_insertion_variable_join_contract_v1_20260818.json": "12d811632a9c440e33fd76f814620c65e47113bdfda4ea058581b5e476c44050",
+    "config/phenomena_registry.v1.json": "4f652d6422d2e61c3263263224eeb29e9a90c14f4fd8ba2ba66a46e27a98705e",
+    "config/stage2_environment_class_enum.v1.json": "871193eda6b1b69f7c2b5c16edbe63904759f4bda769a4629ed2f3f3ce358062",
+    "config/stage2_inclusion_exclusion_confound_contract_template.v1.json": "61f78353e521e8a3dbd2181841e98f03580fc3b62d35fd41d1174c156591d7ac",
+    "config/target_queries/n_insertion_production_v1_20260818.json": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "docs/decisions/DECISION_stage2_gate0_common_contracts_adoption_20260823.md": "2f5d2c570d5782f750562e55193132c102180462e30cd3758b41ac6c059e9b17",
+    "docs/decisions/PLAN_stage2_gate1_NI_reference_implementation_20260823.md": "8e55bab353d65c063c579c0538dbe26aae820a6ebcf25d23e407236ebe5dce66",
+    "phenomena/34_n_insertion/definition.md": "aa23b940d1e556df98cee5f332e8757f886ab098f468620fe084b93e90983513",
+    "work/literature_evidence_seven_phenomena_20260822/01_inventory/SOURCE_INVENTORY.jsonl": "e8de6907f632a5b64853a6386c7d510ba69852451322630dc43ea201fefa0680",
+    "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl": "1e88f5513f4c57387954d6149d922ccfc20ad024cfb8df63d492d96e0924610a"
+  },
+  "schema_version": "stage2_gate1_n_insertion_contracts_audit.v1",
+  "scope": {
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "g5_g6_started": false,
+    "gate": 1,
+    "mfa_koina_wav2vec2_run": false,
+    "phenomenon_code": "NI",
+    "query_modified_or_refrozen": false,
+    "source_registry_only_no_occurrence_derivative": true,
+    "textgrid_modified": false,
+    "yo_query_json_created": false
+  },
+  "source_registry": {
+    "candidate_rows": 941903,
+    "full_csv_rehash_or_scan": false,
+    "inter_eojeol": 588277,
+    "intra_eojeol": 353626,
+    "joined_columns": 73,
+    "joined_rows": 941903,
+    "source_columns": 35,
+    "target_columns": 34,
+    "years": 6
+  },
+  "status": "passed_candidate_pending_researcher_confirmation",
+  "worktree": {
+    "missing_baseline": [],
+    "status_lines": [
+      " M docs/decisions/_INDEX.md",
+      " M scripts/SCRIPTS_INDEX.md",
+      "?? config/candidate_sources/",
+      "?? config/environment_types/",
+      "?? config/phenomena_registry.v1.json",
+      "?? config/phenomenon_contracts/",
+      "?? config/stage2_additional_information_sidecar_schema.v1.json",
+      "?? config/stage2_environment_class_enum.v1.json",
+      "?? config/stage2_inclusion_exclusion_confound_contract_template.v1.json",
+      "?? config/stage2_zero_drop_status_dictionary.v1.json",
+      "?? docs/decisions/DECISION_stage2_gate0_common_contracts_adoption_20260823.md",
+      "?? docs/decisions/DECISION_stage2_seven_phenomena_workflow_user_decisions_20260823.md",
+      "?? docs/decisions/HANDOFF_stage2_gate0_implementation_prompt_20260823.md",
+      "?? docs/decisions/HANDOFF_stage2_gate0_implementation_prompt_v2_20260823.md",
+      "?? docs/decisions/NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md",
+      "?? docs/decisions/PLAN_stage2_gate1_NI_reference_implementation_20260823.html",
+      "?? docs/decisions/PLAN_stage2_gate1_NI_reference_implementation_20260823.md",
+      "?? docs/decisions/SCHEMA_stage2_gate0_common_contracts_20260823.md",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_gate0_common_contracts_claude_code_20260823.html",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_gate0_common_contracts_claude_code_20260823.md",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_seven_phenomena_workflow_claude_20260823.html",
+      "?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_seven_phenomena_workflow_claude_20260823.md",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.html",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.json",
+      "?? docs/reviews/incoming/LITERATURE_HANDOFF_stage2_gate0_seeds_claude_20260823.md",
+      "?? docs/reviews/incoming/_to_delete/",
+      "?? logs/stage2_gate0_common_contracts_20260823/",
+      "?? logs/stage2_gate1_n_insertion_contracts_20260823/",
+      "?? outputs/pilots/stage2_gate0_common_contracts_20260823/",
+      "?? phenomena/34_n_insertion/definition_stage2_candidate_v1_20260823.md",
+      "?? phenomena/_draft/",
+      "?? phenomena/_templates/",
+      "?? scripts/python/audit_stage2_gate0_common_contracts.py",
+      "?? scripts/python/audit_stage2_gate1_n_insertion_contracts.py",
+      "?? tests/test_audit_stage2_gate0_common_contracts.py",
+      "?? tests/test_audit_stage2_gate1_n_insertion_contracts.py"
+    ],
+    "tracked_changes": [
+      " M docs/decisions/_INDEX.md",
+      " M scripts/SCRIPTS_INDEX.md"
+    ],
+    "unexpected": []
+  }
+}

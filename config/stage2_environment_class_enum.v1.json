@@ -1,0 +1,45 @@
+{
+  "schema_version": "stage2_environment_class_enum.v1",
+  "status": "candidate_pending_researcher_adoption",
+  "assignment_scope": "environment_type_not_occurrence",
+  "environment_class": [
+    {
+      "value": "general_direct",
+      "label_ko": "일반적 직접 보고",
+      "description": "해당 현상의 일반적 형태론·음운 환경으로 직접 보고된 후보 분류"
+    },
+    {
+      "value": "peripheral_reported",
+      "label_ko": "주변적 보고",
+      "description": "직접 보고되었으나 일반적 중심 환경과 구분해야 하는 후보 분류"
+    },
+    {
+      "value": "theoretical_underreported",
+      "label_ko": "이론적으로 가능하나 저보고된 탐색",
+      "description": "가능성은 있으나 직접 보고가 제한적인 탐색 후보 분류"
+    },
+    {
+      "value": "unclear_boundary",
+      "label_ko": "형태·경계 불명",
+      "description": "형태론적 환경 또는 경계 해석을 아직 확정할 수 없는 후보 분류"
+    }
+  ],
+  "class_status": ["seeded", "pending", "researcher_confirmed"],
+  "required_assignment_fields": [
+    "environment_type_id",
+    "phenomenon_code",
+    "environment_class",
+    "class_evidence_refs",
+    "class_status",
+    "classified_by",
+    "classified_at",
+    "supersedes"
+  ],
+  "assignment_rows": [],
+  "rules": [
+    "Gate 0에서는 enum만 선언하고 실제 환경 분류행을 만들지 않는다.",
+    "class_evidence_refs는 SRC-###, CLM-#### 또는 WANT-### ID 배열이다.",
+    "미확정 환경에 특정 분류값을 기본으로 자동 기입하지 않는다.",
+    "분류 이력은 append-only이며 수정은 supersedes로 연결한다."
+  ]
+}

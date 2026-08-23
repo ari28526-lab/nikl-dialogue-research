@@ -1,0 +1,171 @@
+{
+  "schema_version": "stage2_phenomenon_contract.v1",
+  "contract_id": "n_insertion_contract_candidate_v1_20260823",
+  "phenomenon_code": "NI",
+  "contract_version": 1,
+  "contract_status": "draft",
+  "status": "candidate_pending_researcher_confirmation",
+  "query_reference": {
+    "path": "config/target_queries/n_insertion_production_v1_20260818.json",
+    "sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "query_ids": ["QN1_N_INSERTION_INTRA_EOJEOL_V1", "QN2_N_INSERTION_INTER_EOJEOL_V1"]
+  },
+  "join_reference": {
+    "path": "config/join_contracts/n_insertion_variable_join_contract_v1_20260818.json",
+    "sha256": "12d811632a9c440e33fd76f814620c65e47113bdfda4ea058581b5e476c44050"
+  },
+  "source_registry_reference": "config/candidate_sources/n_insertion_g1_g4_source_registry_v1_20260823.json",
+  "query_contract": {
+    "scope_conditions": {
+      "QN1_N_INSERTION_INTRA_EOJEOL_V1": {"field": "boundary_scope", "op": "eq", "value": "intra_eojeol"},
+      "QN2_N_INSERTION_INTER_EOJEOL_V1": {"field": "boundary_scope", "op": "eq", "value": "inter_eojeol"}
+    },
+    "required_common_conditions": [
+      {"field": "left_unit_type", "op": "eq", "value": "hangul"},
+      {"field": "right_unit_type", "op": "eq", "value": "hangul"},
+      {"field": "left_coda_jamo", "op": "nonempty"},
+      {"field": "right_onset_zero", "op": "truthy"},
+      {"field": "right_nucleus_jamo", "op": "in", "values": ["ㅣ", "ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅖ", "ㅒ"]},
+      {"field": "right_pos", "op": "regex", "pattern": "^(?!J|E)"}
+    ],
+    "left_pos_filter": null,
+    "new_occurrence_filter_added": false
+  },
+  "include_conditions": [
+    {
+      "condition_id": "NI_INC_01_TWO_BOUNDARY_POPULATIONS",
+      "description": "Preserve intra-eojeol and inter-eojeol candidates as two separately accounted populations.",
+      "evidence_refs": ["CLM-0001", "CLM-0023"],
+      "status": "candidate_exact_query_mirror"
+    },
+    {
+      "condition_id": "NI_INC_02_LEFT_CONSONANT_CODA",
+      "description": "The left Hangul unit has a non-empty coda.",
+      "evidence_refs": ["CLM-0001", "CLM-0011", "CLM-0023"],
+      "status": "candidate_exact_query_mirror"
+    },
+    {
+      "condition_id": "NI_INC_03_RIGHT_I_OR_J_CLASS",
+      "description": "The right Hangul unit has zero onset and a nucleus in {ㅣ,ㅑ,ㅕ,ㅛ,ㅠ,ㅖ,ㅒ}; /i/ and /j/ environment types remain separately coded.",
+      "evidence_refs": ["CLM-0001", "CLM-0003", "CLM-0004", "CLM-0014"],
+      "status": "candidate_exact_query_mirror"
+    },
+    {
+      "condition_id": "NI_INC_04_LEFT_POS_BROAD",
+      "description": "Do not add a left-POS filter; retain broad left contexts for later environment review.",
+      "evidence_refs": ["CLM-0001", "CLM-0005"],
+      "status": "candidate_user_decision_applied"
+    }
+  ],
+  "exclude_conditions": [
+    {
+      "condition_id": "NI_EXC_01_RIGHT_J_OR_E_MAIN_POPULATION",
+      "description": "Exclude right J* and E* from the frozen main-population query.",
+      "exclusion_reason": "Frozen query regex ^(?!J|E); the decided 요/JX environment is recorded separately as an exploratory query candidate.",
+      "evidence_refs": ["CLM-0002", "CLM-0003"],
+      "status": "candidate_exact_query_mirror"
+    },
+    {
+      "condition_id": "NI_EXC_02_NON_HANGUL_ADJACENCY",
+      "description": "Exclude numeric, symbol, and other non-Hangul adjacent units from the main population.",
+      "exclusion_reason": "Both unit types must equal hangul in the frozen query.",
+      "evidence_refs": [],
+      "status": "candidate_exact_query_mirror"
+    },
+    {
+      "condition_id": "NI_EXC_03_UI_NUCLEUS",
+      "description": "Exclude ㅢ because it is not in the frozen right-nucleus set.",
+      "exclusion_reason": "The frozen query contains seven measured nuclei and does not contain ㅢ.",
+      "evidence_refs": ["CLM-0003"],
+      "status": "candidate_exact_query_mirror"
+    }
+  ],
+  "retention_rules": [
+    {
+      "rule_id": "NI_RET_01_SENSE_UNCERTAINTY",
+      "description": "Uncertain or missing sense IDs remain as status and candidate fields; they are not exclusion conditions.",
+      "evidence_refs": [],
+      "status": "candidate_user_decision_applied"
+    },
+    {
+      "rule_id": "NI_RET_02_ETYMOLOGY_UNCERTAINTY",
+      "description": "etym_unknown and conditional etym_origin values remain available and are never imputed or dropped.",
+      "evidence_refs": ["CLM-0004", "CLM-0015"],
+      "status": "candidate_preserve_uncertainty"
+    }
+  ],
+  "confound_phenomena": [
+    {
+      "code": "NI_NASALIZATION_CHAIN",
+      "relation": "Inserted [n] may be followed by nasalization of the preceding coda, so surface nasal sequences cannot by themselves establish insertion.",
+      "discriminator": "Researcher auditory/acoustic/TextGrid evidence in a later manual ledger; no automatic judgement in Gate 1.",
+      "evidence_refs": ["CLM-0023"],
+      "status": "candidate_literature_seeded"
+    },
+    {
+      "code": "N_DELETION_THEORY",
+      "relation": "The proposed rule-inversion relation between n-insertion and n-deletion is disputed.",
+      "discriminator": "Keep as a theoretical confound, not an occurrence filter.",
+      "evidence_refs": ["CLM-0008"],
+      "status": "pending_human_check_non_blocking"
+    },
+    {
+      "code": "NAL_LLN_PT_OVERLAP",
+      "relation": "A candidate may also bear evidence relevant to nasalization, liquid-related alternation, or compound-boundary tensification.",
+      "discriminator": "Allow shared phenomenon membership; do not force a single exclusive label in Gate 1.",
+      "evidence_refs": ["CLM-0022", "CLM-0023"],
+      "status": "candidate_literature_seeded"
+    },
+    {
+      "code": "SINO_COMPOUND_BOUNDARY",
+      "relation": "Sino-Korean internal structure, compound boundary, and sai-siot analyses may provide competing structural accounts.",
+      "discriminator": "Preserve boundary_etym_class as routing evidence and require researcher confirmation before analysis membership.",
+      "evidence_refs": ["CLM-0004", "CLM-0015", "CLM-0023"],
+      "status": "pending_human_check_for_clm_0015"
+    },
+    {
+      "code": "PROSODY_INTER_EOJEOL",
+      "relation": "AP/IP boundaries may condition inter-eojeol realization.",
+      "discriminator": "Defer to a later sidecar and read-only TextGrid/prosody review; do not classify or exclude occurrences in Gate 1.",
+      "evidence_refs": ["SRC-360", "SRC-362"],
+      "status": "pending_source_level_only"
+    }
+  ],
+  "membership_rules": [
+    {
+      "rule_id": "NI_MEM_01_MULTI_PHENOMENON",
+      "description": "Shared membership across NI and another phenomenon is allowed and must not silently remove a candidate from either inventory.",
+      "evidence_refs": ["CLM-0022", "CLM-0023"],
+      "status": "candidate"
+    },
+    {
+      "rule_id": "NI_MEM_02_ENVIRONMENT_TYPE_NOT_OCCURRENCE",
+      "description": "The four-class environment table classifies environment types, not the 941903 individual occurrences.",
+      "evidence_refs": [],
+      "status": "candidate_gate0_contract_applied"
+    },
+    {
+      "rule_id": "NI_MEM_03_YO_SEPARATE",
+      "description": "요/JX is a decided exploratory query candidate outside the main population and has separate accounting.",
+      "evidence_refs": ["CLM-0002"],
+      "status": "candidate_user_decision_applied"
+    }
+  ],
+  "unresolved_items": [
+    {"item_id": "NI_UNR_001", "description": "Check CLM-0015 before freezing Sino-Korean resonant/obstruent environment claims.", "evidence_refs": ["CLM-0015"], "status": "needs_human_check_before_freeze"},
+    {"item_id": "NI_UNR_002", "description": "Keep CLM-0008 as a non-blocking theoretical confound unless used as a decisive contract claim.", "evidence_refs": ["CLM-0008"], "status": "non_blocking_pending"},
+    {"item_id": "NI_UNR_003", "description": "Use CLM-0026 qualitatively unless the original variation studies are checked for numeric claims.", "evidence_refs": ["CLM-0026"], "status": "non_blocking_pending"},
+    {"item_id": "NI_UNR_004", "description": "Inter-eojeol environment class and AP/IP information remain pending until a later context/prosody Gate.", "evidence_refs": ["SRC-360", "SRC-362"], "status": "deferred"},
+    {"item_id": "NI_UNR_005", "description": "Researcher confirmation is required before creating a frozen contract version.", "evidence_refs": [], "status": "pending_researcher_confirmation"}
+  ],
+  "researcher": null,
+  "confirmed_at": null,
+  "supersedes": null,
+  "safety": {
+    "query_modified_or_refrozen": false,
+    "occurrence_rows_rewritten": false,
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "g5_g6_started": false
+  }
+}

@@ -1,0 +1,42 @@
+Stage 2 Gate 1 NI freeze pre-write validation
+
+[first check-only]
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py' --check-only
+exit_code=1
+failure=worktree baseline digest mismatch
+cause=PowerShell Sort-Object culture ordering was used for the recorded set digest, while the auditor uses Python ordinal ordering; baseline set itself remained 61 lines and tracked changes remained the same two indexes.
+remediation=Recomputed the unchanged 61-line baseline with the auditor's status_digest algorithm and changed only BASELINE_STATUS_SHA256 from 3573a33c...8870 to 12978d37...54c1.
+
+[final py_compile after baseline hash correction]
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' -m py_compile 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py' 'tests/test_audit_stage2_gate1_ni_freeze_contracts.py'
+exit_code=0
+
+[final unit tests after baseline hash correction]
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'tests/test_audit_stage2_gate1_ni_freeze_contracts.py' -v
+exit_code=0
+tests=8
+result=OK
+
+[final check-only]
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py' --check-only
+exit_code=0
+passed=true
+status=passed_frozen_v1_researcher_adopted_stopped_before_research
+pinned_inputs=14
+candidate_rows=941903
+joined_rows=941903
+intra_eojeol=353626
+inter_eojeol=588277
+environment_rows=7
+researcher_confirmed=NI_ENV_CORE_C_J,NI_ENV_CORE_C_I,NI_ENV_YO_JX
+sino_pending=NI_ENV_SINO_RESONANT_J,NI_ENV_SINO_OBSTRUENT_J
+CLM-0015.needs_human_check=true
+new_occurrence_filters=0
+new_occurrence_derivative_rows=0
+target_query_files=3
+yo_query_json=false
+yo_candidate_csv=false
+baseline_status_lines=61
+baseline_status_sha256=12978d379be277024c661c11e0a95d5ec6f7bdc0aedb1f6b3cbdf44f77b854c1
+tracked_changes=docs/decisions/_INDEX.md,scripts/SCRIPTS_INDEX.md
+unexpected_worktree_changes=0

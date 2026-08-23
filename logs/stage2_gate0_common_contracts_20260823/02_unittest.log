@@ -1,0 +1,14 @@
+검증: 성공·실패·기존 출력 거부 대표 시나리오
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe tests/test_audit_stage2_gate0_common_contracts.py -v
+실행일: 2026-08-23
+종료 코드: 0
+
+test_existing_output_refuses_before_write ... ok
+test_failure_missing_registry_field ... ok
+test_failure_sha_mismatch ... ok
+test_manifest_excludes_itself ... ok
+test_success_actual_contracts ... ok
+
+Ran 5 tests in 0.193s
+OK
+판정: PASS

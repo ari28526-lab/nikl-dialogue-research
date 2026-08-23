@@ -1,0 +1,2684 @@
+{
+ "audit_id": "LIT_HANDOFF_GATE0_SEEDS_20260823",
+ "generated_at": "2026-08-23",
+ "generator": "Cowork(claude) — 문헌 근거 handoff 감사. 새 문헌 검색·추출·정본 수정 없음.",
+ "snapshot_verified": {
+  "source_inventory": {
+   "rows": 362,
+   "sha256": "e8de6907f632a5b64853a6386c7d510ba69852451322630dc43ea201fefa0680",
+   "match": true
+  },
+  "claim_evidence": {
+   "rows": 156,
+   "sha256": "1e88f5513f4c57387954d6149d922ccfc20ad024cfb8df63d492d96e0924610a",
+   "match": true
+  },
+  "decision_log_rows": 28,
+  "parse_errors": 0,
+  "source_binding_errors": 0,
+  "needs_human_check_ids": [
+   "CLM-0008",
+   "CLM-0015",
+   "CLM-0026",
+   "CLM-0145",
+   "CLM-0151"
+  ]
+ },
+ "classification_rules": {
+  "definition_refs": "claim_kind=main_claim (현상 성격·핵심 일반화)",
+  "inclusion_candidate_refs": "claim_kind∈{environment_condition, data_claim} (적용 환경·실현율 근거)",
+  "exclusion_candidate_refs": "claim_kind=counterexample (비적용·반례 근거)",
+  "confound_candidate_refs": "claim_kind∈{methodology, corpus_description} 또는 claim_ko에 속도·과제·위치·빈도·성별·세대·개인·스타일 표지",
+  "prosody_candidate_refs": "claim_ko에 운율·억양·음운구·경계 성조·휴지 표지인 CLM + 운율 경계 SRC 4종(source_level_only)",
+  "unresolved_or_human_check_refs": "needs_human_check=true",
+  "context_prior_work_refs": "(부가 목록) claim_kind=prior_work_summary — 6분류 밖 문맥 근거의 누락 방지용",
+  "overlap": "한 CLM이 복수 목록에 들어갈 수 있음(규칙 중복 적용). 최종 4단 분류(general/peripheral/theoretical/unclear)는 Gate 0에서 하지 않음(지시 5)."
+ },
+ "evidence_status_rules": {
+  "claim_verified": "CLM-0001~0026 (NI 파일럿 — 본 세션 직접 정독·추출, 검토 아티팩트 발행)",
+  "pending_researcher_adoption": "CLM-0027~0156 (LD-027 확장 — 병렬 에이전트 초안 + 본 세션 배치별 표본 검증·병합. 연구자 [내 요약·메모] 채택 전)",
+  "needs_human_check": "플래그 5건",
+  "source_level_only": "CLM 없는 SRC 수준 근거(운율 경계 문헌 등)"
+ },
+ "phenomena": {
+  "PT": {
+   "label_ko": "합성어 경음화(사잇소리 관련 포함)",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 5,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-338",
+     "path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0027",
+      "CLM-0028",
+      "CLM-0029",
+      "CLM-0030",
+      "CLM-0032",
+      "CLM-0033",
+      "CLM-0034"
+     ]
+    },
+    {
+     "source_id": "SRC-305",
+     "path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0035",
+      "CLM-0036",
+      "CLM-0037",
+      "CLM-0038",
+      "CLM-0039",
+      "CLM-0040",
+      "CLM-0041",
+      "CLM-0042"
+     ]
+    },
+    {
+     "source_id": "SRC-311",
+     "path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0043",
+      "CLM-0044",
+      "CLM-0045",
+      "CLM-0046",
+      "CLM-0047",
+      "CLM-0048"
+     ]
+    },
+    {
+     "source_id": "SRC-337",
+     "path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0049",
+      "CLM-0050",
+      "CLM-0051",
+      "CLM-0052",
+      "CLM-0053",
+      "CLM-0054",
+      "CLM-0055"
+     ]
+    },
+    {
+     "source_id": "SRC-321",
+     "path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0056",
+      "CLM-0057",
+      "CLM-0058",
+      "CLM-0059",
+      "CLM-0060"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 33,
+   "total_phenomenon_claim_mentions": 37,
+   "a_direct_count": 23,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/PT_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/PT_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0022",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0024",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0025",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0028",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0035",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0043",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0049",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0056",
+      "source_id": "SRC-321",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0060",
+      "source_id": "SRC-321",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0023",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0029",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0030",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0032",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0033",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0034",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0036",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0037",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0038",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0039",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0040",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0044",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0045",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0046",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0047",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0050",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0051",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0053",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0054",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0027",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0028",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0029",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0035",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0037",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0040",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0041",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0042",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0044",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0048",
+      "source_id": "SRC-311",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Kim_2017_Phonological Trends in Seoul Korean Compound Tensification.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0055",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0058",
+      "source_id": "SRC-321",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "exclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0041",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0052",
+      "source_id": "SRC-337",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Yee_2024_Productivity of compound tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0059",
+      "source_id": "SRC-321",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0042",
+      "source_id": "SRC-305",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Jeon_2023_Exploring Variability in Compound Tensification in Seoul Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0057",
+      "source_id": "SRC-321",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Moon_et_al_2024_Two tense consonants do not block tensification in Korean.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ]
+   }
+  },
+  "NAN": {
+   "label_ko": "ㄴ 앞 비음화",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 1,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-057",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0061",
+      "CLM-0064",
+      "CLM-0067"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 3,
+   "total_phenomenon_claim_mentions": 9,
+   "a_direct_count": 13,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NAN_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NAN_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0061",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0075",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0064",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0069",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0071",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0072",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0074",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0077",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0067",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0071",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0074",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ]
+   }
+  },
+  "NAL": {
+   "label_ko": "ㄹ 앞 비음화",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 2,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-069",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0093",
+      "CLM-0094",
+      "CLM-0095",
+      "CLM-0096",
+      "CLM-0097",
+      "CLM-0098"
+     ]
+    },
+    {
+     "source_id": "SRC-062",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0075",
+      "CLM-0076",
+      "CLM-0077",
+      "CLM-0080"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 10,
+   "total_phenomenon_claim_mentions": 15,
+   "a_direct_count": 14,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NAL_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NAL_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0061",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0075",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0093",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0098",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0062",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0065",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0076",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0077",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0095",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0096",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0065",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0067",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0094",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "exclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0066",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0097",
+      "source_id": "SRC-069",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_전종호_2000.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0080",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ]
+   }
+  },
+  "NI": {
+   "label_ko": "ㄴ삽입",
+   "literature_evidence_level": "pilot_full",
+   "core_extracted_source_count": 4,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-297",
+     "path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0001",
+      "CLM-0002",
+      "CLM-0003",
+      "CLM-0004",
+      "CLM-0005",
+      "CLM-0006",
+      "CLM-0007",
+      "CLM-0008",
+      "CLM-0009",
+      "CLM-0010"
+     ]
+    },
+    {
+     "source_id": "SRC-287",
+     "path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0011",
+      "CLM-0012",
+      "CLM-0013",
+      "CLM-0014",
+      "CLM-0015",
+      "CLM-0016"
+     ]
+    },
+    {
+     "source_id": "SRC-293",
+     "path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0017",
+      "CLM-0018",
+      "CLM-0019",
+      "CLM-0020",
+      "CLM-0021"
+     ]
+    },
+    {
+     "source_id": "SRC-294",
+     "path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0022",
+      "CLM-0023",
+      "CLM-0024",
+      "CLM-0025",
+      "CLM-0026"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 26,
+   "total_phenomenon_claim_mentions": 32,
+   "a_direct_count": 32,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NI_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/NI_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0001",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0003",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0007",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0008",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0009",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0010",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0011",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0012",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0014",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0017",
+      "source_id": "SRC-293",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0021",
+      "source_id": "SRC-293",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0022",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0024",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0025",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0028",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0002",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0004",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0005",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0006",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0013",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0015",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0023",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0029",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0031",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0032",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0034",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "unresolved_or_human_check_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0008",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0015",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0026",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "needs_human_check"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0009",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0010",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0016",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0010",
+      "source_id": "SRC-297",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/저자미상_연도미상_ㄴ삽입 환경의 재검토.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0015",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0026",
+      "source_id": "SRC-294",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2024_A Unified Approach to n-insertion and sai-siot Phenomena in Korean.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0027",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0028",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0029",
+      "source_id": "SRC-338",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/사잇소리/Zuraw_2011_Predicting Korean sai-siot.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0016",
+      "source_id": "SRC-287",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/안미진_2008_The Korean n-insertion before j as nasal insertion.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0018",
+      "source_id": "SRC-293",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0019",
+      "source_id": "SRC-293",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+      "evidence_status": "claim_verified"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0020",
+      "source_id": "SRC-293",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/ㄴ삽입/이세창_2016_국어의 n-삽입 현상에 관한 재고.pdf",
+      "evidence_status": "claim_verified"
+     }
+    ]
+   }
+  },
+  "LLN": {
+   "label_ko": "ㄴㄹ·ㄹㄴ 연쇄(유음화·비음화 복합형)",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 4,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-212",
+     "path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0099",
+      "CLM-0100",
+      "CLM-0101",
+      "CLM-0102",
+      "CLM-0103",
+      "CLM-0104",
+      "CLM-0105"
+     ]
+    },
+    {
+     "source_id": "SRC-065",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0081",
+      "CLM-0082",
+      "CLM-0083",
+      "CLM-0084",
+      "CLM-0085",
+      "CLM-0086"
+     ]
+    },
+    {
+     "source_id": "SRC-063",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0087",
+      "CLM-0088",
+      "CLM-0089",
+      "CLM-0090",
+      "CLM-0091",
+      "CLM-0092"
+     ]
+    },
+    {
+     "source_id": "SRC-058",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0068",
+      "CLM-0069",
+      "CLM-0070",
+      "CLM-0071",
+      "CLM-0072",
+      "CLM-0073",
+      "CLM-0074"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 26,
+   "total_phenomenon_claim_mentions": 34,
+   "a_direct_count": 16,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/LLN_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/LLN_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0061",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0068",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0075",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0087",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0099",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0063",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0064",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0065",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0069",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0070",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0071",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0072",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0074",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0079",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0082",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0083",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0084",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0089",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0090",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0091",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0092",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0102",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0103",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0065",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0067",
+      "source_id": "SRC-057",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_01_서윤정_2022.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0071",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0081",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0082",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0086",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0087",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0088",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0090",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0091",
+      "source_id": "SRC-063",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Sim_et_al_2023_variation.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0099",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0100",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0101",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0104",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0105",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0068",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0074",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0073",
+      "source_id": "SRC-058",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/W11_02_Sohn_2008.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0086",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "exclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0078",
+      "source_id": "SRC-062",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_Davis and Shin_1999.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0085",
+      "source_id": "SRC-065",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W11_유음의_비음화_유음화_비음화복합형/업로드용/W11_참고_김수영_한국어 ‘ㄴㄹ’ 연쇄의 실현 양상에 대하여.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0104",
+      "source_id": "SRC-212",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/02_서울 경기 지역 20대 남녀의 ㄴㄹ 연쇄 발음 양상 연구 - 일상 대화 음성 말뭉치와 발음 인식 설문조사를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ]
+   }
+  },
+  "VH": {
+   "label_ko": "모음조화",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 5,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-214",
+     "path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0106",
+      "CLM-0107",
+      "CLM-0108",
+      "CLM-0109",
+      "CLM-0110",
+      "CLM-0111",
+      "CLM-0112"
+     ]
+    },
+    {
+     "source_id": "SRC-139",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0113",
+      "CLM-0114",
+      "CLM-0115",
+      "CLM-0116",
+      "CLM-0117",
+      "CLM-0118",
+      "CLM-0119"
+     ]
+    },
+    {
+     "source_id": "SRC-126",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0120",
+      "CLM-0121",
+      "CLM-0122",
+      "CLM-0123",
+      "CLM-0124",
+      "CLM-0125",
+      "CLM-0126"
+     ]
+    },
+    {
+     "source_id": "SRC-122",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0127",
+      "CLM-0128",
+      "CLM-0129",
+      "CLM-0130",
+      "CLM-0131",
+      "CLM-0132"
+     ]
+    },
+    {
+     "source_id": "SRC-134",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0133",
+      "CLM-0134",
+      "CLM-0135",
+      "CLM-0136",
+      "CLM-0137",
+      "CLM-0138"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 33,
+   "total_phenomenon_claim_mentions": 34,
+   "a_direct_count": 15,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/VH_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/VH_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0106",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0113",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0120",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0127",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0133",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0107",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0108",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0109",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0114",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0116",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0127",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0129",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0131",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0138",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0109",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0110",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0112",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0115",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0116",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0117",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0118",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0119",
+      "source_id": "SRC-139",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/참고_모음상승/하영우_모음조화_활용형의 모음조화 양상과 변이 - 메신저 말뭉치를 중심으로 -.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0121",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0122",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0123",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0124",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0125",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0128",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0129",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0130",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0131",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0134",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0135",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0136",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0143",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "exclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0111",
+      "source_id": "SRC-214",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/00_모두의말뭉치_일상대화말뭉치관련/04_구어 말뭉치를 통한 한국어 용언활용에서의 모음조화 변이 및 변화 추이 연구.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0126",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0132",
+      "source_id": "SRC-122",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_01_01_Kang_2016.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0137",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ]
+   }
+  },
+  "HIA": {
+   "label_ko": "모음충돌 회피",
+   "literature_evidence_level": "core_papers_extracted",
+   "core_extracted_source_count": 3,
+   "core_extracted_sources": [
+    {
+     "source_id": "SRC-071",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0139",
+      "CLM-0140",
+      "CLM-0141",
+      "CLM-0142",
+      "CLM-0143",
+      "CLM-0144"
+     ]
+    },
+    {
+     "source_id": "SRC-072",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0145",
+      "CLM-0146",
+      "CLM-0147",
+      "CLM-0148",
+      "CLM-0149",
+      "CLM-0150"
+     ]
+    },
+    {
+     "source_id": "SRC-075",
+     "path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+     "claim_ids_this_phenomenon": [
+      "CLM-0151",
+      "CLM-0152",
+      "CLM-0153",
+      "CLM-0154",
+      "CLM-0155",
+      "CLM-0156"
+     ]
+    }
+   ],
+   "core_extracted_claim_count": 18,
+   "total_phenomenon_claim_mentions": 24,
+   "a_direct_count": 6,
+   "synthesis_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/HIA_현상종합_초안_20260823.md",
+   "scaffold_doc": "work/literature_evidence_seven_phenomena_20260822/03_phenomenon_synthesis/HIA_착수스캐폴드_20260823.md",
+   "seed_map": {
+    "inclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0123",
+      "source_id": "SRC-126",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/W2_04_Jo_2023.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0134",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0135",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0136",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0140",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0141",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0143",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0147",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0148",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0150",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0153",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0154",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0155",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "definition_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0133",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0139",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0146",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0152",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "confound_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0138",
+      "source_id": "SRC-134",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W2_모음조화/모음조화분석_추가/Vowel harmony in hiatus contexts in Korean verbal .pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0144",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0145",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0147",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0151",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0155",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "exclusion_candidate_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0142",
+      "source_id": "SRC-071",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_01_박나영_2012.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0149",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "unresolved_or_human_check_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0145",
+      "source_id": "SRC-072",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_02_홍석우_2023_활음화.pdf",
+      "evidence_status": "needs_human_check"
+     },
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0151",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "needs_human_check"
+     }
+    ],
+    "context_prior_work_refs": [
+     {
+      "ref_type": "CLM",
+      "ref_id": "CLM-0156",
+      "source_id": "SRC-075",
+      "path": "work/literature_evidence_seven_phenomena_20260822/02_claims/CLAIM_EVIDENCE.jsonl",
+      "source_path": "00_참고문헌/0000_형태론세미나_리딩/W12_기타현상/모음충돌회피/W12_참고_신우봉_2013_수의적활음화_삽입.pdf",
+      "evidence_status": "pending_researcher_adoption"
+     }
+    ],
+    "prosody_candidate_refs": [
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-360",
+      "source_id": "SRC-360",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-361",
+      "source_id": "SRC-361",
+      "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-362",
+      "source_id": "SRC-362",
+      "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+      "evidence_status": "source_level_only"
+     },
+     {
+      "ref_type": "SRC",
+      "ref_id": "SRC-356",
+      "source_id": "SRC-356",
+      "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+      "evidence_status": "source_level_only"
+     }
+    ]
+   }
+  }
+ },
+ "ni_pilot_split": {
+  "pilot_sources": [
+   "SRC-297",
+   "SRC-287",
+   "SRC-293",
+   "SRC-294"
+  ],
+  "pilot_claim_count": 26,
+  "pilot_claim_range": "CLM-0001~CLM-0026",
+  "ni_tagged_total": 32,
+  "cross_tagged_additional": {
+   "source_id": "SRC-338",
+   "claim_ids": [
+    "CLM-0027",
+    "CLM-0028",
+    "CLM-0029",
+    "CLM-0031",
+    "CLM-0032",
+    "CLM-0034"
+   ],
+   "note": "Zuraw 2011 사이시옷 슬라이드의 NI 교차 태깅 6건 — core paper 수(4편)와 혼동 금지"
+  }
+ },
+ "needs_human_check_gate0_impact": [
+  {
+   "claim_id": "CLM-0008",
+   "source_id": "SRC-297",
+   "phenomenon": "NI",
+   "gate0_impact": "non_blocking_pending",
+   "reason": "전도규칙 반박(이론사)의 인용 서지 연도 확인(고광모 1991 vs Ko 1992) 문제. Gate 0 산출물(registry·템플릿)은 CLM ID 인용만 하고 서지 값을 동결하지 않으므로 차단 아님. 채택(adoption) 시 원전 대조 필요."
+  },
+  {
+   "claim_id": "CLM-0015",
+   "source_id": "SRC-287",
+   "phenomenon": "NI",
+   "gate0_impact": "non_blocking_pending",
+   "reason": "2음절어 공명음/장애음 말음 비대칭은 Gate 1 inclusion 계약의 후보 근거이나, Gate 0에서는 후보 ID 등재만 한다. Hwang 2007/2008 동일성은 근거 강도 문제이지 스키마 구조 문제가 아님."
+  },
+  {
+   "claim_id": "CLM-0026",
+   "source_id": "SRC-294",
+   "phenomenon": "NI",
+   "gate0_impact": "non_blocking_pending",
+   "reason": "prior_work_summary(문맥 근거). Cho 2020 수배 추가 여부는 문헌 확장 결정이며 Gate 0의 어떤 선언 값에도 들어가지 않는다. Go & Kwon 2021은 SRC-272 보유 확인 완료."
+  },
+  {
+   "claim_id": "CLM-0145",
+   "source_id": "SRC-072",
+   "phenomenon": "HIA",
+   "gate0_impact": "non_blocking_pending",
+   "reason": "w 활음화 총 용례 수(약 31만)의 출전 쪽수 재확인 필요. Gate 0 산출물은 수치를 인용하지 않는다. HIA 착수(문헌 채택) 시 쪽수 확인 후 인용."
+  },
+  {
+   "claim_id": "CLM-0151",
+   "source_id": "SRC-075",
+   "phenomenon": "HIA",
+   "gate0_impact": "non_blocking_pending",
+   "reason": "화자 수 5(p.60) vs 10(p.61, 영문초록) 불일치는 원문 자체 문제로 기록됨. Gate 0 영향 없음. 인용 시 두 수치 병기 또는 저자 확인 필요."
+  }
+ ],
+ "prosody_sources_without_claims": [
+  {
+   "source_id": "SRC-360",
+   "path": "00_참고문헌/03_운율_초점_음성변이/Jun_1998_The Accentual Phrase in the Korean prosodic hierarchy.pdf",
+   "evidence_status": "source_level_only",
+   "claim_status": "pending_claim_extraction",
+   "confirmed_no_claims": true
+  },
+  {
+   "source_id": "SRC-361",
+   "path": "00_참고문헌/03_운율_초점_음성변이/Jun_2000_K-ToBI Labelling Conventions v3.pdf",
+   "evidence_status": "source_level_only",
+   "claim_status": "pending_claim_extraction",
+   "confirmed_no_claims": true
+  },
+  {
+   "source_id": "SRC-362",
+   "path": "00_참고문헌/03_운율_초점_음성변이/신지영_2011_한국어의운율.pdf",
+   "evidence_status": "source_level_only",
+   "claim_status": "pending_claim_extraction",
+   "confirmed_no_claims": true
+  },
+  {
+   "source_id": "SRC-356",
+   "path": "00_참고문헌/03_운율_초점_음성변이/이향원_2021_운율 단위 경계에 위치한 음운의 음성적 변이.pdf",
+   "evidence_status": "source_level_only",
+   "claim_status": "pending_claim_extraction",
+   "confirmed_no_claims": true
+  }
+ ],
+ "cross_phenomenon_conflict_candidates": [
+  {
+   "axis": "PT/NI 경계",
+   "issue_ids": [
+    "CLM-0022",
+    "CLM-0023",
+    "CLM-0024",
+    "CLM-0025",
+    "CLM-0026",
+    "CLM-0027",
+    "CLM-0028",
+    "CLM-0029",
+    "CLM-0031",
+    "CLM-0032",
+    "CLM-0034"
+   ],
+   "note": "이세창 2024(SRC-294)는 ㄴ삽입과 사잇소리를 동일 합성 경계 실현(상보 분포)으로 주장; Zuraw 2011(SRC-338)의 사이시옷 예측 요인 6건이 NI에 교차 태깅됨. registry가 PT·NI를 별개 현상으로 유지하는 것과의 관계는 해석 미확정 — ID만 기록."
+  },
+  {
+   "axis": "NAN/NAL/LLN 경계·모집단",
+   "issue_ids": [
+    "CLM-0064",
+    "CLM-0099",
+    "CLM-0068",
+    "CLM-0069",
+    "CLM-0070",
+    "CLM-0071",
+    "CLM-0072",
+    "CLM-0073",
+    "CLM-0074",
+    "CLM-0087",
+    "CLM-0088",
+    "CLM-0089",
+    "CLM-0090",
+    "CLM-0091",
+    "CLM-0092",
+    "CLM-0081",
+    "CLM-0082",
+    "CLM-0083",
+    "CLM-0084",
+    "CLM-0085",
+    "CLM-0086"
+   ],
+   "note": "/ㄴㄹ/ 연쇄의 우세 표면형 보고가 자료 종류에 따라 갈림: 김지유 2026(자유 발화 한자어, [ㄹㄹ] 95.89%) vs Sohn 2008(외래어, 젊은 세대 [nn] 지배형) vs Sim et al 2023(낭독, [ll]~[nn] 변이) vs 서윤정 2022(실험 산출, 유음화 87.2%·비음화 10.8%). 모순이 아니라 어종·과제 조건 차이일 수 있으나 해석 미확정 — 계약 설계 시 모집단 분리 필요성만 기록."
+  },
+  {
+   "axis": "VH/HIA 환경 중복",
+   "issue_ids": [
+    "CLM-0133",
+    "CLM-0134",
+    "CLM-0135",
+    "CLM-0136",
+    "CLM-0138",
+    "CLM-0123",
+    "CLM-0143",
+    "CLM-0139",
+    "CLM-0140",
+    "CLM-0141",
+    "CLM-0142",
+    "CLM-0144"
+   ],
+   "note": "어간말 모음 + /어/계 어미의 모음충돌 문맥이 VH(조화형 선택)와 HIA(활음화·축약·탈락) 양쪽에 걸침(Han 2009 이중 태깅 5건, Jo 2023 1건, 박나영 1건). 동일 토큰의 이중 계상 위험 — 현상 간 토큰 배타/중복 규칙은 미확정, ID만 기록."
+  }
+ ],
+ "prohibitions": "정본(work/literature_evidence...) 수정 0 · CLAIM/INVENTORY 행 추가 0 · 00_참고문헌 수정 0 · 외부 검색 0 · 코드/config/query 수정 0 · git 커밋 0",
+ "id_audit": {
+  "src_ids_checked": 28,
+  "clm_ids_checked": 156,
+  "missing_src_ids": [],
+  "missing_clm_ids": [],
+  "all_ids_exist": true
+ }
+}

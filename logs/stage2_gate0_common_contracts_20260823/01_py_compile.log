@@ -1,0 +1,6 @@
+검증: Gate 0 독립 검사기와 테스트의 Python 바이트코드 컴파일
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe -m py_compile scripts/python/audit_stage2_gate0_common_contracts.py tests/test_audit_stage2_gate0_common_contracts.py
+실행일: 2026-08-23
+종료 코드: 0
+표준 출력/오류: 없음
+판정: PASS

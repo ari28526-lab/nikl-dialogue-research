@@ -1,0 +1,262 @@
+{
+  "schema_version": "stage2_n_insertion_candidate_source_registry.v1",
+  "registry_id": "n_insertion_g1_g4_source_registry_v1_20260823",
+  "status": "candidate_read_only_registry",
+  "phenomenon_code": "NI",
+  "purpose": "Bind the already-audited six-year G1-G4 n-insertion candidate assets without copying, rebuilding, or judging realization.",
+  "bound_query": {
+    "path": "config/target_queries/n_insertion_production_v1_20260818.json",
+    "sha256": "744bd8cb45769074b7299a8b553784b7cc9a436ac70f2479f1f674a98edb3ab6",
+    "freeze_status": "frozen_researcher_approved_20260818"
+  },
+  "bound_join_contract": {
+    "path": "config/join_contracts/n_insertion_variable_join_contract_v1_20260818.json",
+    "sha256": "12d811632a9c440e33fd76f814620c65e47113bdfda4ea058581b5e476c44050",
+    "freeze_status": "frozen_stage2_g2_20260818"
+  },
+  "header_contracts": {
+    "source_morph_boundaries_2020": {
+      "columns": 35,
+      "normalized_header_sha256": "9a9899f55c81656dd902ade14fdbc588cb9855ad24d06464f155e0050fa039a1"
+    },
+    "target_candidates_all_years": {
+      "columns": 34,
+      "normalized_header_sha256": "7c2e32dd00f270011f02ddcaa3fe44356b5a21511ad8c78f8556e26bf190cad9"
+    },
+    "joined_candidates_all_years": {
+      "columns": 73,
+      "normalized_header_sha256": "e3e5cff018516e22331c3bf2b9fbc611f55ec60d6604ac87e48c7f7a5d8738f8"
+    },
+    "boundary_evidence_storage": "match_evidence_json",
+    "required_occurrence_fields": [
+      "year",
+      "utt_id",
+      "target_occurrence_id",
+      "occurrence_index",
+      "query_id",
+      "match_evidence_json"
+    ]
+  },
+  "years": [
+    {
+      "year": 2020,
+      "stage": "g3",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2020\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 92216281,
+        "declared_sha256": "540c0fc86d2db02730585fcdd938c371bdf28b482c6362250f3e96f59869d6eb"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2020_g3_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "73e9031b79d176d88b6fc2382a765869528a0e56faa9e45fba6775693f2cceaf"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2020_g3_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 262300565,
+        "declared_sha256": "411c88516297214ccb1467cd2910ee44e3c726c57e959017a5c0280a564bea12"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2020_g3_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "7c4f3ccfe8bd436ce0fc7fb23c0713ce0e8230a846f5eefde75199439fa4254f"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2020_g3_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 284627076,
+        "declared_sha256": "c6f7e38870dede95e2fbf2156f0b0a1d4f858b09fcf5e36a455a844639ecb428"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g3_n_insertion_2020_20260818.json",
+        "sha256": "431ea4c3c46ef8caef8070e03eeff2cde78138f4c55a577bcede461103722239",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 101638, "candidate_utterances": 93360, "intra_eojeol": 42604, "inter_eojeol": 59034, "joined_rows": 101638, "curated_rows": 1, "sino_internal_candidate": 111, "etym_unknown": 79790}
+    },
+    {
+      "year": 2021,
+      "stage": "g4",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2021\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 205782923,
+        "declared_sha256": "1a1d18509b48bc224bc423a56e54e51a727ee08bdfcf13fc0c1f6642e368955c"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2021_g4_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "ecbfa205a6b860407631ed450aa6685477d5a35f2c39fedc17b998127bcc4d1b"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2021_g4_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 545113780,
+        "declared_sha256": "f0dd3681cfc57ca8a1cbfc90daed3575797f64e2110fbce716f910b9b4d42f5e"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2021_g4_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "3fc3d94ef4a23beb81323f8b7e9accfd37b34cf9e3912788e3a868256df1944f"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2021_g4_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 590387776,
+        "declared_sha256": "c4b2852555ffd972832a843003c4d559244c277aa928e2f9d3b04e9f6543c83e"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g4_n_insertion_2021_20260818.json",
+        "sha256": "96bae5a85b16bb3e3b882fb7821bc3ffd485be653a769e414aa2a2de210d53ff",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 206037, "candidate_utterances": 184328, "intra_eojeol": 81865, "inter_eojeol": 124172, "joined_rows": 206037, "curated_rows": 2, "sino_internal_candidate": 300, "etym_unknown": 155892}
+    },
+    {
+      "year": 2022,
+      "stage": "g4",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2022\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 142069166,
+        "declared_sha256": "0f7217036ee9053d34af19d90ce62f52c73c9b5b1c57c11d7b78e4f0a883a883"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2022_g4_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "4008a682ec80314e3e44229c12b8e7fbe0d173f3d465babbf6f3d613c5cdc2d7"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2022_g4_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 374802825,
+        "declared_sha256": "968efc922f920fb70eee2f299c710dc6bf93bb3c05de578467773160644b2bc7"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2022_g4_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "e53cb96c192deda76b4b61ee087eab2ec96b5dec38a6da1e259a8dcfd03c5747"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2022_g4_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 405872228,
+        "declared_sha256": "f998a7576f5dde4075e9ff46d8f07ec89ee86354ac33b7d437b2d34e6eba0aef"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g4_n_insertion_2022_20260818.json",
+        "sha256": "7bf224dc6e173b652b85d41273ee79dd8570869f5d56bbc04c76b36eef04e5f2",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 141966, "candidate_utterances": 127107, "intra_eojeol": 53759, "inter_eojeol": 88207, "joined_rows": 141966, "curated_rows": 1, "sino_internal_candidate": 160, "etym_unknown": 106098}
+    },
+    {
+      "year": 2023,
+      "stage": "g4",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2023\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 116086778,
+        "declared_sha256": "3e48ae04802567ba6019300399ec7b2409a93878d37e3403bc0931b7290c8299"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2023_g4_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "a5152775aa0d17f5007ccfb44d4265c94e5203f347631a39aac5d4b4d6b45218"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2023_g4_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 327817216,
+        "declared_sha256": "4b7364112e8058988b68602118f6717080bfbd999a7f877a0e82c5744e82c5f2"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2023_g4_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "768950670a9758f84951c496daf11226cd228cd775e0d6aa72ab9cff2e2a0402"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2023_g4_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 354945047,
+        "declared_sha256": "bb6f6f11a692a731c0825754243ecce2db580ebb6b7512f482e0edc8d3e862fe"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g4_n_insertion_2023_20260818.json",
+        "sha256": "da23904ba00c03f401e0719a050c4df9ff8ec9431a14fe77c44efe8dc6af46a7",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 123381, "candidate_utterances": 108785, "intra_eojeol": 45570, "inter_eojeol": 77811, "joined_rows": 123381, "curated_rows": 1, "sino_internal_candidate": 185, "etym_unknown": 90709}
+    },
+    {
+      "year": 2024,
+      "stage": "g4",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2024\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 170894588,
+        "declared_sha256": "47034f2e2a8d9ae458c78daf42ab5756e1cbc24631551458bf533426de6092c6"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2024_g4_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "d8ed24749b8e1adfc0e2a5978263242784c16515a28a4b35acb3754cb391da95"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2024_g4_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 509168824,
+        "declared_sha256": "2aa52b7fb7138849088928fc54c3dac0742385567493f55621b78b1e0efdc793"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2024_g4_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "9ac32c7f501a72aedf88cce41defe5972813176d156e3857c4128c34f7fe2136"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2024_g4_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 549889934,
+        "declared_sha256": "65be77ced62ea988db839ea3c61267dd200e3a828bc823e50d06e3e17152c2c5"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g4_n_insertion_2024_20260818.json",
+        "sha256": "60d5c7b1532b497e419e1952b04a4f77be67352bf264afa8e043c5782138246e",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 185401, "candidate_utterances": 157565, "intra_eojeol": 65109, "inter_eojeol": 120292, "joined_rows": 185401, "curated_rows": 1, "sino_internal_candidate": 226, "etym_unknown": 134767}
+    },
+    {
+      "year": 2025,
+      "stage": "g4",
+      "source_morph_boundaries": {
+        "path": "D:\\10_LAYERS\\09_morph_search_v3_staging\\morph_search_v3_20260801\\2025\\annual_tables\\morph_boundaries.csv.gz",
+        "bytes": 167718352,
+        "declared_sha256": "93799fab0c307ab7e45e7bf6a02ea279b29500493c0a3a3ae1d785b5fe8e268a"
+      },
+      "build_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2025_g4_20260818/TARGET_MANIFEST_BUILD.json",
+        "sha256": "58275147cd9dd27d664a052724c29f2ae8c67df6a498fa959fc6bf6976eed7f4"
+      },
+      "target_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2025_g4_20260818/TARGET_CANDIDATES.csv",
+        "bytes": 522278530,
+        "declared_sha256": "1ebdcda0c7a80fb42c2512ca55e19bc4728f381b57fce1b37075bd9d2c1638ee"
+      },
+      "join_manifest": {
+        "path": "outputs/candidates/n_insertion_v1_2025_g4_joined_20260818/JOIN_MANIFEST.json",
+        "sha256": "ec0c8aeefe6ddec22f1b2a98c53ce7ae0ecb3329ce8cca8265c741b167a4840f"
+      },
+      "joined_candidates": {
+        "path": "outputs/candidates/n_insertion_v1_2025_g4_joined_20260818/CANDIDATES_WITH_VARIABLES.csv",
+        "bytes": 562520247,
+        "declared_sha256": "3810bae23fda87f3c0baf1c3cd4ee5baee9b9ae8e15c58dcb40ac6a6a61e652b"
+      },
+      "audit": {
+        "path": "outputs/reports/AUDIT_stage2_g4_n_insertion_2025_20260818.json",
+        "sha256": "c1ff2ba9da07a0354c49db3f4f77d9615f41f255d823987d582133baaf07fb2e",
+        "status": "passed"
+      },
+      "counts": {"candidate_rows": 183480, "candidate_utterances": 150459, "intra_eojeol": 64719, "inter_eojeol": 118761, "joined_rows": 183480, "curated_rows": 0, "sino_internal_candidate": 228, "etym_unknown": 133652}
+    }
+  ],
+  "totals": {
+    "candidate_rows": 941903,
+    "candidate_utterances": 821604,
+    "intra_eojeol": 353626,
+    "inter_eojeol": 588277,
+    "joined_rows": 941903,
+    "curated_rows": 6,
+    "sino_internal_candidate": 1210,
+    "etym_unknown": 700908
+  },
+  "verification_policy": {
+    "small_json_assets": "independently rehash at Gate 1 audit",
+    "large_csv_assets": "verify path, byte size, declared SHA binding, header, and passed prior audit; do not rehash or rescan the 5+ GB corpus in Gate 1",
+    "max_occurrences_for_structural_probe": 200000,
+    "realization_judgement": false
+  },
+  "invariants": [
+    "For every year: build candidate_rows == join rows_in == join rows_out == audit joined_rows.",
+    "The registry points to read-only assets and creates no occurrence-level derivative.",
+    "Environment-type classification is not an occurrence partition and is not summed against 941903.",
+    "No source, candidate, joined CSV, audit, query, or join contract is modified."
+  ]
+}

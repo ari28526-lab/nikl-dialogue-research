@@ -1,0 +1,19 @@
+검증: 실제 저장소 대상 Gate 0 독립 검사기 읽기 전용 실행
+명령: C:\Users\ari30\miniforge3\envs\mfa\python.exe scripts/python/audit_stage2_gate0_common_contracts.py --check-only
+실행일: 2026-08-23
+종료 코드: 0
+
+passed: true
+registry phenomena: 7 (PT, NAN, NAL, NI, LLN, VH, HIA)
+inventory rows: 362
+claim rows: 156
+source binding errors: 0
+handoff unique CLM refs: 156
+handoff unique SRC refs: 28
+environment assignment rows: 0
+contract value rows: 0
+sidecar data rows: 0
+tracked changes: 0
+unexpected untracked: 0
+partial files: 0
+판정: PASS

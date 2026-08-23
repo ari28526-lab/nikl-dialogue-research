@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EXTERNAL REVIEW: Stage 2 Gate 1 — NI(ㄴ삽입) 계약 후보 구현 독립 검토 (2026-08-23)</title>
+<style>
+  body { font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; max-width: 980px;
+         margin: 2rem auto; padding: 0 1.2rem 4rem; line-height: 1.65; color: #1c1c1c; background: #fdfdfc; }
+  h1 { font-size: 1.5rem; border-bottom: 3px solid #2c5d8f; padding-bottom: .5rem; }
+  h2 { font-size: 1.2rem; margin-top: 2.2rem; border-left: 5px solid #2c5d8f; padding-left: .6rem; }
+  h3 { font-size: 1.02rem; margin-top: 1.6rem; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0; font-size: .88rem; }
+  th, td { border: 1px solid #bbb; padding: .35rem .55rem; text-align: left; vertical-align: top; }
+  th { background: #eef3f8; }
+  code { background: #f1f1ee; padding: .08rem .3rem; border-radius: 3px; font-size: .86em;
+         font-family: Consolas, "D2Coding", monospace; word-break: break-all; }
+  pre { background: #f4f4f1; border: 1px solid #ddd; padding: .7rem .9rem; overflow-x: auto;
+        font-size: .84rem; font-family: Consolas, "D2Coding", monospace; }
+  .verdict { background: #eaf6ea; border: 2px solid #2f7d32; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .verdict .word { font-size: 1.45rem; font-weight: 700; color: #205723; }
+  .note { background: #fff8e6; border: 1px solid #d9b44a; border-radius: 6px; padding: .6rem .9rem; margin: .8rem 0; }
+  .ok { color: #205723; font-weight: 600; }
+  .meta li { margin-bottom: .25rem; }
+  .small { font-size: .84rem; color: #444; }
+  td.num, th.num { text-align: right; }
+</style>
+</head>
+<body>
+
+<h1>EXTERNAL REVIEW: Stage 2 Gate 1 — NI(ㄴ삽입) 계약 후보 구현 독립 검토</h1>
+
+<ul class="meta">
+  <li><b>작성:</b> Claude Code (fable5, 독립 검토), 2026-08-23 KST</li>
+  <li><b>성격:</b> <b>검토 보고서 — 구현 아님.</b> 구현 파일·config·definition·query·문헌 워크스페이스·원자료·TextGrid·D: 자산을 수정하지 않았고, MFA·KOINA·wav2vec2를 실행하지 않았으며, git add/commit/push를 하지 않았다. 계약을 frozen으로 승격하지 않았다. 이 검토가 만든 파일은 본 HTML과 동일 내용 MD 두 개뿐이다.</li>
+  <li><b>검토 대상:</b> Codex가 구현한 Gate 1 candidate 9종 — source registry, 계약 후보, 환경 유형 7행, definition candidate, ‘요’ NOTE, 독립 감사기·테스트, AUDIT JSON·SHA manifest, 검증 로그 8종.</li>
+  <li><b>검증 방식:</b> Codex 감사 스크립트와 별도로 작성한 독립 파서·재해시·probe 스크립트(스크래치패드, 저장소 밖)로 정본을 직접 실측했고, 허용된 두 명령(<code>--check-only</code> 감사, 단위 테스트)을 <code>C:\Users\ari30\miniforge3\envs\mfa\python.exe</code>로 재실행했다. <b>모든 감사 명령은 본 보고서 파일 생성 전에 완료했다</b>(생성 후에는 감사기의 git allowlist 검사가 의도적으로 실패 — §2 P2-2). <code>--check-only</code> 없는 감사 실행과 <code>--skip-git-check</code>는 사용하지 않았다. 대용량 CSV 전체 재해시·전수 스캔은 하지 않았다(경로·byte·선언 SHA 결속·헤더·기존 passed 감사만 대조).</li>
+</ul>
+
+<h2>1. 최종 판정</h2>
+<div class="verdict">
+  <div class="word">GO_FREEZE_REVIEW</div>
+  <p>P0(차단 오류) 0건 · P1(frozen 검토 전 반드시 수정할 오류) 0건. <b>중대 발견사항 없음.</b>
+  독립 실측(보호 SHA 10종, 6개년 재집계, 35/34/73열 실측, match_evidence probe 재현,
+  문헌 362/156행·결속 0오류, manifest 8항목 재해시)이 Codex 감사와 전 항목 일치했고,
+  범위 일탈·기존 파일 변경·조용한 확정·신규 occurrence 파생을 발견하지 못했다.</p>
+  <p>단, GO_FREEZE_REVIEW는 “후보가 계약대로 만들어졌으니 연구자 동결 검토로 넘어가도 된다”는
+  뜻이다. 산출물은 여전히 candidate/draft이며, frozen 버전 생성 전에 <b>CLM-0015 확인 또는
+  명시적 유보</b>(§7)와 연구자의 환경 유형·계약 검토(§8)가 필요하다. 이 검토 자체는 어떤 것도
+  채택·동결하지 않았다.</p>
+</div>
+
+<h2>2. P0 · P1 · P2 발견사항</h2>
+<p><b>P0 (원자료·범위·zero-drop·query 무결성 차단 오류) — 없음</b><br>
+<b>P1 (frozen 검토 전 반드시 수정할 오류) — 없음</b></p>
+<h3>P2 (선택적 개선·후속 회귀 보강 — 지금 고칠 필요 없음)</h3>
+<table>
+<tr><th>ID</th><th>내용</th><th>위치</th><th>구분</th></tr>
+<tr><td>P2-1</td>
+<td><b>match_evidence 35-key probe가 감사기 밖 일회성 로그로만 존재한다.</b> 주 감사기는 34열 헤더에
+<code>match_evidence_json</code> 열이 있는지까지 검사하고(감사기 :305-311), JSON 내부 35-key 검사는
+별도 로그 08로 수행됐는데 그 probe 스크립트는 저장소에 보존되지 않았다(로그만 존재).
+<b>이 분리는 이번 Gate 1 합격에는 충분하다고 판정한다</b> — 근거: ① 대상 CSV는 선언 SHA로 바이트
+고정돼 있고 G3/G4 passed 감사에 이미 결속됨 — probe가 검사하는 성질은 입력이 바뀌지 않는 한 변할 수
+없고, 입력 변경은 SHA 검사가 먼저 잡는다. ② 본 검토가 로그 08의 명세만으로 probe를 독립
+재작성·재실행해 42,605행·35/35 key·key_set SHA까지 동일 재현했다(§3.5). 다만 LLN 등 다음 현상에 이
+구조를 재사용하거나 재기준선 후 회귀 검사를 돌릴 때를 위해, 감사기에 선택 <code>--probe</code>
+옵션을 넣거나 probe를 단일 목적 스크립트로 커밋할 것을 제안한다.</td>
+<td>logs/stage2_gate1_n_insertion_contracts_20260823/08_match_evidence_structural_probe.log</td>
+<td>후속 회귀 보강(P2)</td></tr>
+<tr><td>P2-2</td>
+<td><b>감사기 git allowlist·EXPECTED_INPUTS는 2026-08-23 스냅샷 고정이다</b>(감사기 :73-114, :24-35).
+본 보고서 2개 파일이 <code>docs/reviews/incoming/</code>에 생긴 뒤의 <code>--check-only</code>는 git
+검사에서 의도적으로 exit 1이 된다(정직한 fail-closed, 산출물 손상 아님). 구조만 재확인하려면
+<code>--skip-git-check</code>, 정식 재검증은 채택 커밋 후 재기준선. Gate 0 채택 문서 §4가
+P2-1/P2-2를 “불변 스냅샷 검사기로 보존”으로 이미 정했으므로 같은 정책의 일관 적용이며 수정 불요.</td>
+<td>docs/decisions/DECISION_stage2_gate0_common_contracts_adoption_20260823.md §4</td>
+<td>운영 주의</td></tr>
+<tr><td>P2-3</td>
+<td>Gate 1 신규 산출물(감사기·NOTE·definition candidate·config 3종)이 <code>scripts/SCRIPTS_INDEX.md</code>·
+<code>docs/decisions/_INDEX.md</code>에 미등재 — 두 색인의 현재 M 상태 diff를 실측한 결과 Gate 0 채택
+시점 갱신만 있고 Gate 1 항목은 없다. allowlist가 기존 추적 파일 수정을 금지했으므로 <b>준수의
+귀결</b>이다(Gate 0 P2-4와 동일 패턴). 채택 커밋 때 색인 2종 갱신을 같이 승인.</td>
+<td>scripts/SCRIPTS_INDEX.md, docs/decisions/_INDEX.md</td>
+<td>수정 제안(채택 시)</td></tr>
+<tr><td>P2-4</td>
+<td><code>NI_ENV_INTER_EOJEOL</code>의 <code>environment_class=null</code> 관례가 Gate 0 enum에 명문화돼
+있지 않다. enum은 4값만 선언하고 null 허용 여부를 말하지 않으며(enum :5-27), Gate 1 감사기가 “null이면
+반드시 <code>pending</code>” 결합을 강제해(감사기 :417-418) 실질 안전장치는 있다. 사용자 지시(어절 간 =
+null + pending + deferred)에 부합하는 의도된 설계이므로 지금 고칠 것은 없고, Gate 0 P2-6 어휘 통일 때
+다음 enum 버전에 null 관례를 같이 명문화할 것을 제안.</td>
+<td>config/environment_types/…jsonl:6</td>
+<td>수정 제안(선택)</td></tr>
+</table>
+
+<h2>3. 독립 실측</h2>
+
+<h3>3.1 허용 명령 재실행 (보고서 작성 전 완료)</h3>
+<table>
+<tr><th>명령 (mfa python)</th><th>결과</th></tr>
+<tr><td><code>audit_stage2_gate1_n_insertion_contracts.py --check-only</code></td>
+<td class="ok">exit 0, passed=true, status=passed_candidate_pending_researcher_confirmation. 941,903/353,626/588,277, 35/34/73열, 환경 7행·occurrence 배정 0·researcher_confirmed 0, query 조건 mismatch 0, 문헌 362/156·결속 0, worktree unexpected 0 — Codex 저장 AUDIT와 동일 값 재현</td></tr>
+<tr><td><code>tests/test_audit_stage2_gate1_n_insertion_contracts.py -v</code></td>
+<td class="ok">exit 0, 7/7 OK (성공·registry 필드 누락 실패·manifest SHA 불일치 실패·존재하지 않는 CLM 실패·human check 조용한 확정 실패·기존 출력 FileExistsError·manifest 자기 제외)</td></tr>
+<tr><td><code>-m py_compile</code> (감사기+테스트)</td>
+<td class="ok">exit 0 (<code>__pycache__/</code>는 .gitignore:10으로 무시되어 worktree 오염 없음)</td></tr>
+</table>
+<p class="small">존재하지 않는 CLM 실패 테스트가 실제로 있으므로 Gate 0 검토의 P2-3(테스트 추가 요청)은
+<b>이행 확인</b>됐다(테스트 :49-54).</p>
+
+<h3>3.2 보호 입력 SHA-256 — 10/10 일치</h3>
+<table>
+<tr><th>파일</th><th>독립 재계산 결과</th></tr>
+<tr><td>config/target_queries/n_insertion_production_v1_20260818.json</td><td><code>744bd8cb…3ab6</code> — 요청 기준값·registry·계약 참조와 일치</td></tr>
+<tr><td>config/join_contracts/n_insertion_variable_join_contract_v1_20260818.json</td><td><code>12d81163…4050</code> — 요청 기준값과 일치</td></tr>
+<tr><td>phenomena/34_n_insertion/definition.md</td><td><code>aa23b940…3513</code> — 요청 기준값과 일치(기존 definition 무변경)</td></tr>
+<tr><td>config/phenomena_registry.v1.json · stage2_environment_class_enum.v1.json · stage2_inclusion_exclusion_confound_contract_template.v1.json</td><td>감사기 pin과 일치(Gate 0 채택본 무변경)</td></tr>
+<tr><td>docs/decisions/DECISION_…adoption_20260823.md · PLAN_…gate1_NI…20260823.md</td><td>감사기 pin과 일치</td></tr>
+<tr><td>work/…/SOURCE_INVENTORY.jsonl · CLAIM_EVIDENCE.jsonl</td><td><code>e8de6907…0680</code>, <code>1e88f551…610a</code> — Gate 0 기준값과 일치(문헌 정본 무변경)</td></tr>
+</table>
+<p class="small">기존 G1~G4 산출물(6개년 후보·joined 디렉터리, AUDIT_stage2_g*)도 파일 구성 실측에서
+신규·삭제·개명 0건이었고, manifest 선언 SHA 결속이 전부 일치했다.</p>
+
+<h3>3.3 6개년 행 수 — manifest·감사 JSON에서 독립 재집계</h3>
+<p>registry 값이 아니라 연도별 <code>TARGET_MANIFEST_BUILD.json</code>·<code>JOIN_MANIFEST.json</code>·
+<code>AUDIT_stage2_g*.json</code>(각각 독립 재해시 후 파싱)에서 다시 세었다.</p>
+<table>
+<tr><th>연도</th><th class="num">후보</th><th class="num">어절 내부</th><th class="num">어절 간</th><th class="num">고유 발화</th><th class="num">joined</th><th>등식¹</th></tr>
+<tr><td>2020</td><td class="num">101,638</td><td class="num">42,604</td><td class="num">59,034</td><td class="num">93,360</td><td class="num">101,638</td><td class="ok">성립</td></tr>
+<tr><td>2021</td><td class="num">206,037</td><td class="num">81,865</td><td class="num">124,172</td><td class="num">184,328</td><td class="num">206,037</td><td class="ok">성립</td></tr>
+<tr><td>2022</td><td class="num">141,966</td><td class="num">53,759</td><td class="num">88,207</td><td class="num">127,107</td><td class="num">141,966</td><td class="ok">성립</td></tr>
+<tr><td>2023</td><td class="num">123,381</td><td class="num">45,570</td><td class="num">77,811</td><td class="num">108,785</td><td class="num">123,381</td><td class="ok">성립</td></tr>
+<tr><td>2024</td><td class="num">185,401</td><td class="num">65,109</td><td class="num">120,292</td><td class="num">157,565</td><td class="num">185,401</td><td class="ok">성립</td></tr>
+<tr><td>2025</td><td class="num">183,480</td><td class="num">64,719</td><td class="num">118,761</td><td class="num">150,459</td><td class="num">183,480</td><td class="ok">성립</td></tr>
+<tr><th>합계</th><th class="num">941,903</th><th class="num">353,626</th><th class="num">588,277</th><th class="num">821,604</th><th class="num">941,903</th><th class="ok">6/6</th></tr>
+</table>
+<p class="small">¹ <code>build candidate_rows = join rows_in = join rows_out = audit joined_rows</code>
+(+ 감사 JSON <code>counts.candidate_rows</code>·<code>per_query</code>까지 동일). 어절 내부+간 = 후보 합도
+6개년 모두 성립. 연도별 join <code>safety.rows_dropped=0</code>, <code>realization_judged=false</code>,
+build <code>realization_judgement_performed=false</code>, 감사 <code>failures=[]</code>·passed 전부 실측 확인.
+추가 실측(감사기가 검사하지 않는 축): registry의 연도별 curated_rows(합 6)·sino_internal_candidate(합 1,210)·
+etym_unknown(합 700,908)도 각 연도 build counts·join status_counts·감사 distributions와 전부 일치.</p>
+
+<h3>3.4 실제 헤더 — 35/34/73</h3>
+<table>
+<tr><th>파일</th><th class="num">실측 열 수</th><th>정규화 헤더 SHA</th><th>6개년 동일성</th></tr>
+<tr><td>2020 원천 morph_boundaries.csv.gz (D:)</td><td class="num">35</td><td><code>9a9899f5…39a1</code> — registry 계약과 일치</td><td>(2020 원천만 계약 대상)</td></tr>
+<tr><td>TARGET_CANDIDATES.csv</td><td class="num">34</td><td><code>7c2e32dd…cad9</code></td><td class="ok">6개년 모두 동일(고유 SHA 1개)</td></tr>
+<tr><td>CANDIDATES_WITH_VARIABLES.csv</td><td class="num">73</td><td><code>e3e5cff0…38f8</code></td><td class="ok">6개년 모두 동일(고유 SHA 1개)</td></tr>
+</table>
+<p class="small"><code>required_occurrence_fields</code> 6종(year, utt_id, target_occurrence_id,
+occurrence_index, query_id, match_evidence_json)은 34열 후보 헤더에 전부 존재했고(감사기 검사 범위),
+추가 실측으로 <b>73열 joined 헤더에도 6개년 모두 존재</b>함을 확인했다. 형태·경계 35열이 상위 열이
+아니라 match_evidence_json 안에 있다는 설계는 실제 파일과 일치한다(§3.5).</p>
+
+<h3>3.5 match_evidence_json 독립 probe — Codex 로그 08 완전 재현</h3>
+<p>로그 08을 참조하지 않은 독립 구현으로 2020 TARGET_CANDIDATES.csv를 상한 200,000행으로 읽고
+QN1·QN2를 모두 만나는 즉시 중단했다.</p>
+<table>
+<tr><th>항목</th><th>실측</th></tr>
+<tr><td>중단 행</td><td class="ok"><b>42,605행</b> — Codex 로그 08의 42,605와 동일</td></tr>
+<tr><td>QN1/QN2 match_evidence_json 파싱</td><td class="ok">둘 다 유효 JSON</td></tr>
+<tr><td>key 수·집합</td><td class="ok">각 35개, <b>원천 morph_boundaries 35 header key 집합과 정확히 동일</b></td></tr>
+<tr><td>값 형</td><td class="ok">전부 문자열</td></tr>
+<tr><td>상위 열 year·utt_id·target_occurrence_id·occurrence_index</td><td class="ok">존재</td></tr>
+<tr><td>key_set_sha256</td><td class="ok">정렬 정규화 기준 <code>2f29f866…38b8</code> — Codex 로그 08 값과 일치(로그 08의 해시는 sorted-key 정규화임을 역확인)</td></tr>
+<tr><td>원문 값·발화 내용</td><td>보고서·로그에 복사하지 않음</td></tr>
+</table>
+
+<h3>3.6 문헌 362/156행과 결속</h3>
+<ul>
+<li>SOURCE_INVENTORY: <b>362행</b>, 공백행 0, SRC-001~SRC-362 연속.</li>
+<li>CLAIM_EVIDENCE: <b>156행</b>, 공백행 0, CLM-0001~CLM-0156 연속.</li>
+<li>CLM→SRC 결속(source_id·source_file·source_sha256 3중 대조): <b>오류 0건</b>.</li>
+<li>needs_human_check=true: 정확히 <b>CLM-0008·0015·0026·0145·0151</b> 5건. CLM-0015 플래그는 정본에 그대로(조용한 해제·확정 없음).</li>
+<li>Gate 1 산출물 전체(계약 JSON·환경 JSONL의 구조적 evidence_refs + definition·NOTE MD 본문의 CLM/SRC 언급 정규식 수집)에서 참조된 모든 ID가 정본에 실재하며, <b>HIA 유보 대상 CLM-0145·0151의 사용은 0건</b>.</li>
+<li>참조 정합성 표본: NOTE의 근거 CLM-0002는 SRC-297(오미라 2006), 한자어 환경의 CLM-0015는 SRC-287(안미진 2008)에 결속 — 현상종합 초안의 서지와 일치.</li>
+</ul>
+
+<h3>3.7 감사 산출물·manifest 재해시 — Codex 보고값과 일치</h3>
+<table>
+<tr><th>항목</th><th>독립 재계산</th></tr>
+<tr><td>AUDIT JSON SHA-256</td><td><code>f08dfe99ad94bc47a66ac3302c3c483a810946e20551441c81291425228ad15e</code> <span class="ok">— Codex 보고값과 일치</span></td></tr>
+<tr><td>SHA manifest SHA-256</td><td><code>ea7e160f9cea3be1db6487e87bab33d65dc5c2778906cfacaf59c6101deb25d5</code> <span class="ok">— Codex 보고값과 일치</span></td></tr>
+<tr><td>manifest 항목</td><td class="ok"><b>8항목</b>(신규 산출물 7종 + AUDIT JSON) 전부 독립 재해시 일치, manifest 자기 자신 미포함</td></tr>
+<tr><td>AUDIT 내부 artifact_sha256 7종</td><td class="ok">실측 재해시와 전부 일치</td></tr>
+<tr><td>Gate 1 대응 .partial 잔존</td><td class="ok">0건. 출력 폴더에 AUDIT·manifest 외 파일 없음</td></tr>
+<tr><td>Codex 검증 로그 8종(01~08)</td><td class="ok">전부 통독 — py_compile·7/7 테스트·check-only·최초 생성·기존 출력 거부(의도된 exit 1)·최종 재해시·사후 check-only·probe가 모두 주장과 일치, 본 검토 실측과도 일치</td></tr>
+</table>
+
+<h2>4. query–계약 대조표</h2>
+<p>동결 query(config/target_queries/n_insertion_production_v1_20260818.json)의 QN1(:21-33)·QN2(:44-56)
+조건을 직접 읽고, 계약(config/phenomenon_contracts/n_insertion_contract_candidate_v1_20260823.json:18-33)의
+scope + 공통 6조건으로 재구성해 대조했다. 감사기는 조건 리스트의 <b>완전 동일성</b>
+(<code>[scope, *공통6] == query conditions</code>, 감사기 :368-373)을 검사하며, 독립 재구성에서도
+<b>mismatch 0</b>이었다.</p>
+<table>
+<tr><th>#</th><th>동결 query 실측 조건</th><th>계약 후보</th><th>판정</th></tr>
+<tr><td>1</td><td>boundary_scope: QN1=intra_eojeol, QN2=inter_eojeol</td><td>scope_conditions 동일</td><td class="ok">일치</td></tr>
+<tr><td>2</td><td>left_unit_type = hangul</td><td>공통 조건 1</td><td class="ok">일치</td></tr>
+<tr><td>3</td><td>right_unit_type = hangul</td><td>공통 조건 2</td><td class="ok">일치(숫자·기호 인접 제외는 이 두 조건의 귀결 — NI_EXC_02 서술과 부합)</td></tr>
+<tr><td>4</td><td>left_coda_jamo nonempty</td><td>공통 조건 3</td><td class="ok">일치</td></tr>
+<tr><td>5</td><td>right_onset_zero truthy</td><td>공통 조건 4</td><td class="ok">일치</td></tr>
+<tr><td>6</td><td>right_nucleus_jamo ∈ {ㅣ,ㅑ,ㅕ,ㅛ,ㅠ,ㅖ,ㅒ}</td><td>공통 조건 5 — 동일 7원소, <b>ㅢ 없음</b>(NI_EXC_03과 부합)</td><td class="ok">일치</td></tr>
+<tr><td>7</td><td>right_pos regex <code>^(?!J|E)</code></td><td>공통 조건 6 — 패턴 문자열 동일(NI_EXC_01과 부합; ‘요’/JX는 별도 탐색 후보로만 기록)</td><td class="ok">일치</td></tr>
+</table>
+<ul>
+<li><b>왼쪽 POS 필터</b>: query에 없음 — 계약도 <code>left_pos_filter: null</code>, <code>new_occurrence_filter_added: false</code>(:30-32). <b>몰래 추가된 occurrence 필터 없음.</b></li>
+<li><b>의미번호 불확실성·etym_unknown·join 상태</b>: 계약 retention_rules NI_RET_01/02(:83-96)가 “제외 조건이 아니라 상태 보존”으로 명시 — 제외 조건 3종(:60-82)은 위 query 조건의 거울일 뿐 새 제외가 없다.</li>
+<li>include 4·exclude 3·confound 5·membership 3·unresolved 5 — 전부 candidate/pending 상태이며 <code>contract_status=draft</code>, <code>researcher=null</code>, <code>confirmed_at=null</code>, safety 5항목 전부 false(:164-170).</li>
+</ul>
+
+<h2>5. 환경 유형 7행 검토표</h2>
+<p>config/environment_types/n_insertion_environment_types_candidate_v1_20260823.jsonl (행 번호 = 파일 줄
+번호). 전 행 <code>occurrence_assignment_status=not_started</code>(<b>occurrence 배정 0행</b>),
+<code>researcher_confirmed</code> <b>0행</b>, 근거 없는 행은 pending — 전부 실측 확인. 분류값은 Gate 0
+enum 4값 안에 있다(어절 간 null은 P2-4 참조).</p>
+<table>
+<tr><th>행</th><th>ID</th><th>분류</th><th>class_status</th><th>priority</th><th>근거</th><th>검토 소견</th></tr>
+<tr><td>1</td><td>NI_ENV_CORE_C_J</td><td>general_direct</td><td>seeded</td><td><b>core</b></td><td>CLM-0001·0004·0014·0023</td><td>/j/ 핵심 환경 — PLAN §4 seed와 동일, 근거 4건 전부 실재</td></tr>
+<tr><td>2</td><td>NI_ENV_CORE_C_I</td><td>peripheral_reported</td><td>seeded</td><td><b>secondary</b></td><td>CLM-0003·0014</td><td>/i/ 분리 집계 — /j/&gt;/i/ 비대칭 문헌과 부합</td></tr>
+<tr><td>3</td><td>NI_ENV_SINO_RESONANT_J</td><td>peripheral_reported</td><td><b>pending</b></td><td>secondary</td><td>CLM-0004·0015</td><td>pending_reason: “CLM-0015 needs_human_check before contract freeze” — 조용한 승격 없음</td></tr>
+<tr><td>4</td><td>NI_ENV_SINO_OBSTRUENT_J</td><td>peripheral_reported</td><td><b>pending</b></td><td>secondary_comparator</td><td>CLM-0004·0015</td><td>비실현 비교군을 후보에서 삭제하지 않음(설명문 명시), 동일 pending 사유</td></tr>
+<tr><td>5</td><td>NI_ENV_YO_JX</td><td>theoretical_underreported</td><td>seeded</td><td>exploratory_separate</td><td>CLM-0002</td><td><b>[별도] ‘요’</b>: decision_status=treatment_decided_query_not_created — 처리 방침 결정 완료·query 미생성. 재결정 요청 아님</td></tr>
+<tr><td>6</td><td>NI_ENV_INTER_EOJEOL</td><td><b>null</b></td><td><b>pending</b></td><td>deferred_review</td><td>SRC-360·362</td><td><b>[별도] 어절 간</b>: 모집단 보존 + 실제 문맥·운율·청취 검토는 후속 Gate로 미룸(결정대로). pending_reason 명시</td></tr>
+<tr><td>7</td><td>NI_ENV_UNCLEAR_BOUNDARY</td><td>unclear_boundary</td><td><b>pending</b></td><td>deferred_review</td><td>(없음)</td><td>근거 없는 행 → pending 규칙 준수, “삭제하지 않고 보존” 명시</td></tr>
+</table>
+<ul>
+<li>감사기 강제 사항 실측: 7 ID 정확·순서 일치, enum 필수 8필드 전 행 존재, 존재하지 않는 SRC/CLM 참조 0, researcher_confirmed 등장 시 실패(감사기 :435, 테스트 5번이 실제로 검증).</li>
+<li>분류·priority는 PLAN §4의 seed 제안과 1:1로 일치하며, 어느 행도 연구자 확정으로 표시되지 않았다. <b>행 5·6의 최종 분류명 확정은 연구자 검토 몫으로 남아 있다(§8).</b></li>
+</ul>
+
+<h2>6. Codex 감사와 독립 검사 결과의 차이</h2>
+<p><b>수치·판정 차이 0건.</b> 행 수·헤더·SHA·probe 중단 행(42,605)·환경 7행 통계·문헌 5건 human check까지
+전부 동일하게 재현됐다.</p>
+<p>독립 검사가 Codex 감사보다 <b>더 깊이 본 부분</b>(모두 통과):</p>
+<ol>
+<li>registry의 curated_rows·sino_internal_candidate·etym_unknown 연도별 값을 build counts·join status_counts·감사 distributions와 3중 대조(감사기는 이 세 축을 검사하지 않음).</li>
+<li>required_occurrence_fields의 <b>73열 joined 헤더</b> 포함 여부(감사기는 34열 후보 헤더만 검사).</li>
+<li>AUDIT JSON 내부 artifact_sha256 7종의 재해시 대조와 manifest 8항목 완전 재해시.</li>
+<li>definition·NOTE 산문의 CLM/SRC 언급 전수 수집으로 HIA CLM-0145·0151 오용 0건 확인(감사기 validate_refs는 구조적 evidence_refs만 수집).</li>
+<li>색인 2종 M 상태의 diff 실측 — Gate 0 채택 시점 갱신만 있고 Gate 1의 추적 파일 수정 0건(§2 P2-3).</li>
+<li>probe의 완전 독립 재구현(§3.5) — key_set 해시의 정규화 방식까지 역확인.</li>
+</ol>
+<p class="small">관찰 1건(조치 불요): 저장된 AUDIT JSON의 worktree.status_lines에
+<code>?? outputs/pilots/stage2_gate1_…</code> 줄이 없다 — 감사가 출력을 쓰기 <b>전</b> 실측한 스냅샷이라
+정상이며(Gate 0 P2-7과 동일 패턴), 로그 07과 본 검토의 사후 --check-only가 outputs 포함 상태로 통과함을
+확인했다.</p>
+
+<h2>7. frozen 전 실제 차단 항목</h2>
+<div class="note">
+<p><b>CLM-0015 하나뿐이다.</b> 그 외 차단 항목은 발견되지 않았고, 억지로 만들지 않는다.</p>
+<ul>
+<li>내용: 한자어 2음절 공명음/장애음 말음 비대칭(안미진 2008, SRC-287) — NI_ENV_SINO_RESONANT_J·NI_ENV_SINO_OBSTRUENT_J 두 환경 유형과 계약 confound SINO_COMPOUND_BOUNDARY의 근거.</li>
+<li>현재 상태: 정본 needs_human_check=true 보존, 환경 2행 pending, 계약 NI_UNR_001이 <b>needs_human_check_before_freeze로 스스로 동결을 막고 있다</b>(계약 :155). 즉 이것은 구현 오류가 아니라 계약이 설계대로 요구하는 연구자 절차다.</li>
+<li>처리: frozen 버전 생성 전에 CLM-0015 원문 확인 결과를 기록하거나, 한자어 두 환경을 명시적 유보 상태로 두는 결정을 채택 문서에 남긴다. CLM-0008·0026은 non_blocking_pending으로 보존돼 있어 차단이 아니다(계약 NI_UNR_002/003 실측 확인).</li>
+</ul>
+</div>
+
+<h2>8. 지금 연구자가 결정할 것</h2>
+<p>‘요’ 처리 방침(결정 완료)과 어절 간 실제 검토 시점(후속 Gate로 확정)은 재질문하지 않는다. 정말
+필요한 새 결정은 다음뿐이다.</p>
+<ol>
+<li><b>Gate 1 후보 채택·동결 여부</b> — 계약 후보, 환경 유형 7행(특히 행 1~4의 분류·priority가 연구
+의도와 맞는지), definition candidate를 검토하고 frozen 버전 생성을 승인할지. 승인 시 §7의 CLM-0015
+확인/유보 기록이 선행돼야 하며, 같은 채택 커밋에서 색인 2종 갱신(P2-3)과 감사 재기준선 정책(P2-2)을
+함께 처리하는 것을 권고한다.</li>
+<li><b>(선택) probe 회귀 보강 방식(P2-1)</b> — LLN 등 다음 현상에 Gate 1 구조를 재사용하기 전에, 감사기
+<code>--probe</code> 옵션 추가와 단일 목적 스크립트 커밋 중 택일. 지금 결정하지 않아도 이번 채택을 막지
+않는다.</li>
+</ol>
+
+<h2>9. 수정 제안과 지금 반드시 고칠 오류의 구분</h2>
+<ul>
+<li><b>지금 반드시 고칠 오류: 없음.</b> P0·P1 0건이며, 구현 파일을 하나도 고치지 않고 그대로 연구자
+동결 검토에 올릴 수 있다.</li>
+<li><b>수정 제안(전부 P2, 채택 시점 이후 처리 가능)</b>: P2-1 probe 코드 보존(후속 회귀 보강), P2-2
+재기준선 정책 확인(운영 주의, Gate 0 정책의 일관 적용), P2-3 색인 2종 갱신(채택 커밋), P2-4 enum null
+관례 명문화(다음 enum 버전).</li>
+</ul>
+
+<h2>재현 명령 (읽기 전용)</h2>
+<pre>&amp; 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' `
+  'scripts/python/audit_stage2_gate1_n_insertion_contracts.py' --check-only</pre>
+<pre>&amp; 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' `
+  'tests/test_audit_stage2_gate1_n_insertion_contracts.py' -v</pre>
+<p class="small">주의: 본 보고서 2개 파일 생성 이후에는 첫 명령이 git allowlist 검사에서 의도적으로
+exit 1이 된다(§2 P2-2, 산출물 손상 아님). 이때는 <code>--skip-git-check</code>로 구조·SHA 검사만
+재확인하거나 채택 커밋 후 실행한다. 본 검토의 모든 감사 명령은 보고서 생성 전에 완료했고
+<code>--skip-git-check</code>는 사용하지 않았다.</p>
+
+<h2>결론</h2>
+<p>Gate 1 NI 구현은 PLAN §7의 신규 파일 범위에 정확히 머물렀고, 941,903행 zero-drop 회계·동결 query
+거울 계약·환경 유형 7행·‘요’ 분리·문헌 결속이 독립 실측과 전 항목 일치했다. 기존 query·join 계약·
+definition·G1~G4 후보·문헌 정본은 SHA로 무변경이 입증됐다. <b>지금 고칠 오류는 없다.</b> 다음 행동은
+구현이 아니라 §7~§8의 연구자 동결 검토다. 본 검토는 이 보고서 HTML·MD 두 파일 외에 어떤 파일도
+만들거나 수정하지 않았다.</p>
+
+</body>
+</html>

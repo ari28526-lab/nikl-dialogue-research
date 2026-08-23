@@ -1,0 +1,8 @@
+Stage 2 Gate 1 NI freeze audit write
+command=& 'C:\Users\ari30\miniforge3\envs\mfa\python.exe' 'scripts/python/audit_stage2_gate1_ni_freeze_contracts.py'
+exit_code=0
+passed=true
+audit=outputs/pilots/stage2_gate1_ni_freeze_20260823/AUDIT_stage2_gate1_ni_freeze_20260823.json
+manifest=outputs/pilots/stage2_gate1_ni_freeze_20260823/SHA256SUMS_stage2_gate1_ni_freeze_20260823.txt
+write_count=1
+atomic_partial_promotion=true
