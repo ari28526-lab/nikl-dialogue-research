@@ -1,0 +1,19 @@
+stage2 actual research guides final validation
+date_kst=2026-08-24
+python_py_compile=passed
+python_unittest=4/4 passed
+guide_files=25
+guide_bytes=137838
+phenomenon_guides_html=7
+phenomenon_guides_markdown=7
+reviewer_samples_total=84
+reviewer_samples_each=12
+manifest_records_verified=24
+local_links_checked=81
+independent_audit=passed
+candidate_status_preserved=true
+automatic_realization_judgement=false
+raw_corpus_read=false
+guide_manifest_sha256=03dc14bf756d0d880a881d3cd28c766ae8dba09da9457db77b51ef5b1fb6cb32
+start_html_sha256=ba848151077830257bffec635a07c134963267e0a46555e38f4ee0525dee68e7
+audit_sha256=4ec00488499cabec7b8c1135e21778a33eb260cd80e728e55463bee17b5c570e

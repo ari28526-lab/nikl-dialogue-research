@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [RESULT_stage2_actual_research_guides_all_7_20260824.md](RESULT_stage2_actual_research_guides_all_7_20260824.md) — 7개 candidate 범위 카드와 검증 reviewer 84건을 근거로 공통 실제 연구 안내서·현상별 HTML/Markdown 14개·체크시트·UI 관찰 양식을 생성; 독립 감사 manifest 24·로컬 링크 81·브라우저 NI 1/12 통과, 자동 판정·원자료 읽기 0
 - [RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md](RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md) — 외부 검토 승인 A–H를 C:-only v1 재패키징으로 구현해 v2·독립 감사·Node DOM·실브라우저 점프 3건을 통과; 7현상×12건 작업 환경 세팅 완료, 연구 판단은 candidate로 유지하고 첫 실제 사용 때 페이지·오디오만 환경 확인
 - [DECISION_stage2_two_hour_pilot_external_review_responses_20260823.md](DECISION_stage2_two_hour_pilot_external_review_responses_20260823.md) — 외부 워크플로 검토 22건 교차확인(전건 confirmed·신규 history 가림 결함 발견) 뒤 사용자 8답으로 v1 보존·v2 재빌드 범위(A–H)와 선별 재확인·Praat 기준·확신도 앵커·절차 규칙 6건을 확정; 부록 A에 Codex 실행 프롬프트, 구현·커밋은 미실행
 - [RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md](RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md) — 7현상×120분·현상별 12사례(연도별 2)의 문헌·한 사례 한 화면·전체 대화·exact WAV·read-only/작업본 TextGrid 연구 묶음과 독립 감사; [HTML 요약](RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.html), 청취·Praat 수정은 미실행
