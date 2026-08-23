@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "stage2_two_hour_phenomenon_pilot_schema.v1",
+  "title": "Stage 2 two-hour phenomenon research pilot card",
+  "description": "일곱 형태음운 현상 각각에 대해 문헌 검토를 포함한 120분 연구 파일럿을 준비하기 위한 후보 카드. occurrence 실현 판정이나 query 동결 계약이 아니다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "card_id",
+    "phenomenon_code",
+    "label_ko",
+    "card_status",
+    "definition_path",
+    "literature_synthesis_path",
+    "literature_evidence_level",
+    "query_status_at_start",
+    "definition_summary",
+    "minimum_contrast",
+    "boundary_scopes",
+    "surface_morph_pos_contract",
+    "population_contract",
+    "confounds",
+    "realization_categories_candidate",
+    "not_judgeable_reasons",
+    "human_review_items",
+    "sidecar_candidates",
+    "evidence_refs",
+    "evidence_limits",
+    "pilot_schedule",
+    "sampling_contract",
+    "open_questions",
+    "readiness"
+  ],
+  "properties": {
+    "schema_version": {"const": "stage2_two_hour_phenomenon_pilot_card.v1"},
+    "card_id": {"type": "string", "pattern": "^P2H-(PT|NAN|NAL|NI|LLN|VH|HIA)-V1$"},
+    "phenomenon_code": {"type": "string", "enum": ["PT", "NAN", "NAL", "NI", "LLN", "VH", "HIA"]},
+    "label_ko": {"type": "string", "minLength": 1},
+    "card_status": {"const": "candidate_pending_researcher_adoption"},
+    "definition_path": {"type": "string", "minLength": 1},
+    "literature_synthesis_path": {"type": "string", "minLength": 1},
+    "literature_evidence_level": {"type": "string", "enum": ["pilot_full", "core_papers_extracted"]},
+    "query_status_at_start": {"type": "string", "enum": ["frozen_v1_requires_scope_correction", "draft_pv_only"]},
+    "definition_summary": {"type": "string", "minLength": 1},
+    "minimum_contrast": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}},
+    "boundary_scopes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/status_item"}},
+    "surface_morph_pos_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface_rule", "morph_rule", "pos_rule", "mismatch_status", "high_risk_examples"],
+      "properties": {
+        "surface_rule": {"type": "string", "minLength": 1},
+        "morph_rule": {"type": "string", "minLength": 1},
+        "pos_rule": {"type": "string", "minLength": 1},
+        "mismatch_status": {"const": "surface_analysis_mismatch"},
+        "high_risk_examples": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "population_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "peripheral", "exploratory", "out_of_scope", "unclear"],
+      "properties": {
+        "primary": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}},
+        "peripheral": {"type": "array", "items": {"$ref": "#/$defs/condition"}},
+        "exploratory": {"type": "array", "items": {"$ref": "#/$defs/condition"}},
+        "out_of_scope": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}},
+        "unclear": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}}
+      }
+    },
+    "confounds": {"type": "array", "items": {"$ref": "#/$defs/status_item"}},
+    "realization_categories_candidate": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}},
+    "not_judgeable_reasons": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "human_review_items": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "sidecar_candidates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(CLM-[0-9]{4}|SRC-[0-9]{3})$"}},
+    "evidence_limits": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "pilot_schedule": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order", "minutes", "activity", "output"],
+        "properties": {
+          "order": {"type": "integer", "minimum": 1},
+          "minutes": {"type": "integer", "minimum": 1},
+          "activity": {"type": "string", "minLength": 1},
+          "output": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "sampling_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_total", "primary_target", "peripheral_or_exploratory_cap", "year_target", "grouped_order", "shuffled_order", "shortfall_status", "no_silent_drop"],
+      "properties": {
+        "target_total": {"const": 12},
+        "primary_target": {"const": 10},
+        "peripheral_or_exploratory_cap": {"const": 2},
+        "year_target": {"const": "2020-2025_each_up_to_2"},
+        "grouped_order": {"const": "same_morpheme_combination_then_word"},
+        "shuffled_order": {"const": "deterministic_second_pass_order"},
+        "shortfall_status": {"const": "quota_shortfall_preserved"},
+        "no_silent_drop": {"const": true}
+      }
+    },
+    "open_questions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_card", "query_candidate", "probe", "review_package", "blocking_reason"],
+      "properties": {
+        "scope_card": {"type": "string", "enum": ["candidate_ready", "pending"]},
+        "query_candidate": {"type": "string", "enum": ["pending", "historical_v1_only"]},
+        "probe": {"const": "pending"},
+        "review_package": {"const": "pending"},
+        "blocking_reason": {"type": ["string", "null"]}
+      }
+    }
+  },
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["condition_id", "description", "priority", "evidence_refs", "status"],
+      "properties": {
+        "condition_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+        "description": {"type": "string", "minLength": 1},
+        "priority": {"type": "integer", "minimum": 1, "maximum": 4},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "pattern": "^(CLM-[0-9]{4}|SRC-[0-9]{3})$"}},
+        "status": {"type": "string", "enum": ["literature_seeded_candidate", "researcher_confirmed", "pending_probe"]}
+      }
+    },
+    "status_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status", "evidence_refs"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["primary", "separate_population", "excluded", "pending", "confound"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "pattern": "^(CLM-[0-9]{4}|SRC-[0-9]{3})$"}}
+      }
+    }
+  },
+  "x_contract": {
+    "pilot_minutes_per_phenomenon": 120,
+    "phenomenon_count": 7,
+    "total_researcher_minutes": 840,
+    "literature_review_included": true,
+    "automatic_realization_judgement": false,
+    "query_freeze": false,
+    "max_rows_scanned_per_source_year": 200000,
+    "existing_outputs_must_not_be_overwritten": true,
+    "partial_then_atomic_promotion": true
+  }
+}
