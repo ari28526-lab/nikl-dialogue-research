@@ -1,0 +1,22 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — post-decision regression
+date: 2026-08-23 KST
+
+Context:
+- PV0015 and PV0163 were identified as overt-surface copula cases:
+  편/NNB + 이/VCP.
+- Their UI behavior remains valid technical evidence, but they are not valid NI
+  research-content samples.
+- Surface 요 with analyzer-restored 이+요 is a preserve exception routed to the
+  separate exploratory 요 population; it must not be removed by a VCP-only rule.
+
+Regression after documentation and scope correction:
+- Python py_compile: PASS
+- Python unit tests: 7/7 PASS
+- JavaScript runtime: STAGE2_GATE2_NI_REVIEWER_V3_RUNTIME_OK
+- independent audit: passed=true, errors=[]
+- Windows PowerShell safety: PASS (73 files)
+- Windows PowerShell 5.1 runtime compatibility: PASS (73 scripts)
+- wrapper -PreflightOnly: PASS
+
+No query, candidate row, source TextGrid/WAV, formal task, realization ledger,
+or Gate 2 output was modified by the correction.

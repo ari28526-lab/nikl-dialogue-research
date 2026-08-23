@@ -1,0 +1,11 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — py_compile
+date: 2026-08-23 KST
+python: C:\Users\ari30\miniforge3\envs\mfa\python.exe
+
+Compiled:
+- scripts/python/build_stage2_gate2_ni_followup_reviewer_v3.py
+- scripts/python/audit_stage2_gate2_ni_followup_reviewer_v3.py
+- tests/test_stage2_gate2_ni_followup_reviewer_v3.py
+
+exit: 0
+result: PASS

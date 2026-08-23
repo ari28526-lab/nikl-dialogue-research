@@ -1,0 +1,21 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — final file verification
+date: 2026-08-23 KST
+
+Independent audit re-check: passed=true, errors=[]
+SHA manifest entries: 5
+SHA/byte mismatches: 0
+.partial files remaining: 0
+SHA manifest self-entry: false
+git diff --check: PASS
+protected source files modified by this implementation: 0
+
+Primary output:
+- bytes: 19637021
+- SHA-256: f361c1c8559315399af2f368ebfcff9b99d83b8c14fa726e6e7a40fea435f057
+- path: outputs/pilots/stage2_gate2_ni_followup_reviewer_v3_20260823/STAGE2_GATE2_NI_REVIEWER_V3.html
+
+Other output SHA-256:
+- BUILD.json: aa605d2dc7c0da37107854251bef0bdefddf1d8344babe8d88cc5b94857281d7
+- IMPORTED_BASE.jsonl: 8a7d913af97ef903be941f726dbe73d78271384c6add246cdc52fe8df7de6133
+- DIALOGUES.jsonl: 990c1098448d58107e375d868eb4e8593e14ea150fdc2e73938e22c0919b39ae
+- AUDIT.json: 0a565bb109734f08a9250f568518662f4d32ba910390f406e5f541c7ed0f499e

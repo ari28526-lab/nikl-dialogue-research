@@ -72,6 +72,9 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 | `python/audit_stage2_gate0_common_contracts.py` | Gate 0의 7현상 registry·A1~A6 선언, 문헌 inventory 362행·claim 156행 결속, 보호 입력 SHA, 빈 환경 배정·계약·sidecar, git allowlist와 신규 산출물 SHA를 독립 검사한다. | 2026-08-23 감사 `passed=true`; 채택 뒤 역사적 스냅샷 검사기로 보존 |
 | `python/audit_stage2_gate1_n_insertion_contracts.py` | NI Gate 1 candidate의 6개년 source registry·동결 query 거울 계약·환경 유형 7행·문헌 결속·zero-drop을 독립 검사한다. | 2026-08-23 candidate 감사 `passed=true`; 채택 뒤 역사적 스냅샷 검사기로 보존 |
 | `python/audit_stage2_gate1_ni_freeze_contracts.py` | 채택 결정과 candidate SHA를 다시 고정하고 frozen 계약·환경 7행·definition·CLM-0015 유보·색인·Git 기준선·941,903 zero-drop을 대용량 CSV 재스캔 없이 독립 검사한다. | frozen v1 채택 감사 전용; G5/G6·실현 판정·‘요’ query 생성 없음 |
+| `python/build_stage2_gate2_ni_followup_reviewer_v3.py` | v2.1의 14개를 다시 추출하지 않고 read-only 6-tier·파형, TextGrid 후속 필요성·복수 이유·추가 정보 요청·1–5 확신도와 Gate 3 후보 queue UI를 원자 생성한다. | 기술 UI 시험 통과; NI 2건은 사후 `편+이/VCP` 범위 밖으로 확인되어 연구 내용 표본으로 사용 금지 |
+| `python/audit_stage2_gate2_ni_followup_reviewer_v3.py` | 14개 zero-drop, 원 TextGrid·WAV SHA, 6-tier, 기존 15행·대화 4,060행 불변과 자동 판정·ledger·정식 task 0을 생성기와 독립 재검산한다. | `passed=true`; 기술 무결성만 뜻하며 NI 내용 타당성은 VCP 사후 정정 적용 |
+| `../run_stage2_gate2_ni_followup_reviewer_v3.ps1` | Gate 2 builder·독립 감사 단일 wrapper. `-PreflightOnly`, PS5.1·UTF-8 BOM, 기존 출력 중단을 제공한다. | 로컬 출력 생성 완료; 내장 음성·말뭉치 HTML은 Git 제외·Dropbox 검토 전용 |
 
 ## A단계: 텍스트 레이어 구축
 | 스크립트 | 역할 | 상태 |

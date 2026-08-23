@@ -1,0 +1,15 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — in-app browser status
+date: 2026-08-23 KST
+
+The built HTML was queued to open in the Codex in-app browser. Automated DOM
+control could not attach because the installed browser plugin service was
+rejected by the app's configured trusted-code-path check:
+Trusted RPC dependency must resolve within a configured trusted code path.
+
+This is an app/plugin connection limitation, not a reviewer test failure. The
+same embedded JavaScript passed the standalone runtime test recorded in
+04_runtime_js.log. No actual review record was saved during automated testing.
+
+Status: USER SCREEN GATE PENDING
+The researcher should verify the five minimal UI actions listed in the RESULT
+document before Gate 3.

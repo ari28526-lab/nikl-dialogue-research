@@ -1,0 +1,26 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — JavaScript runtime test
+date: 2026-08-23 KST
+test file: tests/test_stage2_gate2_ni_followup_reviewer_v3_runtime.js
+
+The plain `node` command was not present on PATH. The test was rerun with the
+Codex workspace dependency Node executable and passed:
+STAGE2_GATE2_NI_REVIEWER_V3_RUNTIME_OK
+
+A later combined verification command initially omitted the required HTML path
+argument and exited before loading the reviewer. The corrected command supplied
+the built HTML path and again returned STAGE2_GATE2_NI_REVIEWER_V3_RUNTIME_OK.
+
+Verified:
+- 14 assets and their method/regression roles
+- six tiers and 320 waveform peaks per asset
+- phenomenon filter and NI selection
+- required/unsure auto-open rule
+- 1–5 follow-up confidence round-trip
+- multiple reasons and additional-information requests round-trip
+- independent zero-drop axes
+- Gate 3 queue-candidate filtering
+- unavailable synthetic fixture preservation
+- legacy plus v3 revision import
+- dirty-change guard
+
+result: PASS

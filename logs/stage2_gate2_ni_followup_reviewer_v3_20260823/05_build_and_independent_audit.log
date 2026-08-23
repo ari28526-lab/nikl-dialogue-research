@@ -1,0 +1,26 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — build and independent audit
+date: 2026-08-23 KST
+wrapper: scripts/run_stage2_gate2_ni_followup_reviewer_v3.ps1
+exit: 0
+result: PASS
+
+Audit counts:
+- input samples = output samples: 14 = 14
+- NI method reference: 2
+- cross-phenomenon UI regression only: 12
+- TextGrid available/unavailable/blocked: 14/0/0
+- independently verified assets: 14
+- tier count per available asset: 6
+- legacy imported rows / unique events: 15 / 14
+- dialogue rows: 4060
+- embedded WAV payloads / source-SHA matches: 28 / 28
+- new candidate extraction: 0
+- G5/G6 runs: 0
+- formal manual tasks: 0
+- automatic realization judgements: 0
+- formal ledger writes: 0
+
+Independent audit:
+outputs/pilots/stage2_gate2_ni_followup_reviewer_v3_20260823/audit/STAGE2_GATE2_NI_REVIEWER_V3_AUDIT.json
+passed: true
+errors: []

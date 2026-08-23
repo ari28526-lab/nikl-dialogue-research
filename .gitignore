@@ -111,6 +111,7 @@ outputs/candidates/**/*.csv
 /outputs/pilots/pv_seven_phenomena_20260819*/
 /outputs/pilots/pv_seven_phenomena_reviewer_v2_20260822/
 /outputs/pilots/pv_seven_phenomena_reviewer_v2_1_20260822/
+/outputs/pilots/stage2_gate2_ni_followup_reviewer_v3_20260823/
 
 # Raw PowerShell failure receipts retain byte-exact whitespace referenced by
 # RESULT SHA values; keep them local instead of normalizing them for Git.

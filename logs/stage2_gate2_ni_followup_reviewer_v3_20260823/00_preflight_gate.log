@@ -1,0 +1,19 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — preflight
+date: 2026-08-23 KST
+python: C:\Users\ari30\miniforge3\envs\mfa\python.exe
+command: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\run_stage2_gate2_ni_followup_reviewer_v3.ps1 -PreflightOnly
+exit: 0
+result: PASS
+
+Measured inputs:
+- reviewer v2.1 samples: 14
+- NI method-reference samples: 2 (PV0015, PV0163)
+- cross-phenomenon UI-regression-only samples: 12
+- selected TextGrid assets: available 14, unavailable 0, blocked 0
+- six-tier order: words / phones_mfa / phoneme_r_auto / utterance / utterance_orth_r / morph_analysis_utt
+- legacy rows preserved for import: 15
+- reviewer v2.1 HTML SHA-256: 4ac9edd77fd8889aaeb73b8c15afc6c2ee1a3c0eb5cca1e4d2b24e862da98a7e
+- PV_SAMPLES.csv SHA-256: 31bea32b1cd44f5e9e77baa84259a6fa3566a192f866a5b006371700fa1fe93f
+- PV_MANIFEST.json SHA-256: acb8772e1f4ab8860ebc0631517f616eeb2b2e0f5eeb8e1d890abf462248ad51
+
+No output or review record was written by preflight.

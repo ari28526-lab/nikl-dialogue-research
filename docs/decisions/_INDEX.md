@@ -1,5 +1,9 @@
 # 현행 결정 문서 색인
 
+- [PLAN_stage2_seven_phenomena_prequery_scope_audit_20260823.md](PLAN_stage2_seven_phenomena_prequery_scope_audit_20260823.md) — NI 우선 연구 실행을 잠정 중지하고 일곱 현상 모두의 표면형·형태소·POS 대응과 포함/제외/별도 탐색 범위 카드를 먼저 검토한 뒤 첫 연구 현상을 재선정하는 계획
+- [DECISION_stage2_NI_VCP_copula_exclusion_20260823.md](DECISION_stage2_NI_VCP_copula_exclusion_20260823.md) — 표면에 실제 나타난 VCP 서술격 `이`는 NI 본모집단에서 제외하되 표면 `요`/분석 `이+요` 사례는 제외하지 않고 별도 `요` 탐색 모집단에 보존
+- [RESULT_stage2_gate2_ni_followup_reviewer_v3_20260823.md](RESULT_stage2_gate2_ni_followup_reviewer_v3_20260823.md) — 14개 read-only TextGrid 후속 reviewer의 기술 감사와 사용자 UI 시험 결과; NI 두 표본은 사후 VCP 범위 밖으로 확인되어 연구 내용 표본으로는 무효
+- [PLAN_stage2_gate2_NI_followup_textgrid_reviewer_20260823.md](PLAN_stage2_gate2_NI_followup_textgrid_reviewer_20260823.md) — v2.1 14개를 재사용해 TextGrid 후속 필요성·read-only 6-tier·Gate 3 후보 queue를 시험하는 설계; 실제 Praat 수정은 후속 Gate
 - [DECISION_stage2_gate1_ni_contracts_adoption_20260823.md](DECISION_stage2_gate1_ni_contracts_adoption_20260823.md) — NI Gate 1 계약·환경 유형·definition 후보를 연구자 채택하고, CLM-0015는 한자어 두 환경을 포함한 채 명시적으로 유보하며 frozen v1 생성만 승인
 - [NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md](NOTE_n_insertion_yo_exploratory_query_candidate_20260823.md) — 보조사 ‘요’ 앞 ㄴ삽입을 본모집단 밖 별도 탐색 query 후보로 등록하되 기존 query 재동결·query JSON·후보 CSV 생성은 별도 Gate까지 금지
 - [DECISION_stage2_gate0_common_contracts_adoption_20260823.md](DECISION_stage2_gate0_common_contracts_adoption_20260823.md) — Claude Code 독립 검토 GO와 감사·manifest SHA에 결속해 Gate 0 A1~A6을 채택하고, ‘요’를 결정 완료·구현 대기로 닫으며 NI Gate 1은 설계 문서까지만 허용

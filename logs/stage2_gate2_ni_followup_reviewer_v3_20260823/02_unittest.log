@@ -1,0 +1,15 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — Python unit tests
+date: 2026-08-23 KST
+python: C:\Users\ari30\miniforge3\envs\mfa\python.exe
+test file: tests/test_stage2_gate2_ni_followup_reviewer_v3.py
+
+Ran 7 tests: PASS
+- real preflight success
+- pinned source SHA mismatch fails
+- PV manifest SHA mismatch fails
+- invalid TextGrid remains blocked without dropping the sample
+- existing output raises FileExistsError
+- SHA manifest excludes itself and .partial files
+- six-tier TextGrid parser round-trip
+
+exit: 0

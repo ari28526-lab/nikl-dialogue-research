@@ -1,0 +1,10 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — existing-output refusal
+date: 2026-08-23 KST
+
+After a successful build, the default builder was invoked again with the same
+output path.
+exit: 1 (expected)
+result: PASS
+message: FileExistsError: existing output is never overwritten
+
+The existing reviewer package was not modified.

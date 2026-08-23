@@ -1,0 +1,9 @@
+Stage 2 Gate 2 NI follow-up reviewer v3 — Windows PowerShell 5.1 validation
+date: 2026-08-23 KST
+
+tests/test_powershell_safety.ps1: PASS (73 files)
+tests/test_powershell_runtime_compat.ps1: PASS (73 scripts)
+scripts/run_stage2_gate2_ni_followup_reviewer_v3.ps1 -PreflightOnly: PASS
+wrapper first three bytes: EF BB BF
+wrapper line endings: CRLF
+result: PASS
