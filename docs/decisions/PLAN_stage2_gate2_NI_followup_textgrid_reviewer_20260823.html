@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stage 2 Gate 2 — NI 후속 TextGrid 검토 화면 계획</title>
+  <style>
+    :root{--ink:#17232d;--muted:#5a6872;--line:#d4dde3;--paper:#fff;--bg:#eef3f5;--navy:#173c56;--blue:#e8f3fa;--green:#e7f5eb;--amber:#fff3cd;--violet:#f0ebf8;--red:#fde9e7;--accent:#226b91;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);line-height:1.65}header{background:var(--navy);color:#fff;padding:28px 18px}header>div,main{max-width:980px;margin:auto}h1{font-size:1.65rem;margin:0 0 8px}h2{font-size:1.3rem;margin-top:0}h3{font-size:1.08rem}p{margin:.55rem 0 1rem}main{padding:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 2px 9px #173c5610}.lead{font-size:1.09rem}.tag{display:inline-block;border-radius:999px;padding:.2rem .65rem;font-weight:750;font-size:.86rem;background:var(--amber);color:#624a00}.ok{background:var(--green);border-left:5px solid #3a8b5b;padding:14px;border-radius:8px}.stop{background:var(--red);border-left:5px solid #ad4c43;padding:14px;border-radius:8px}.choice{background:var(--violet);border:2px solid #795ea3;padding:17px;border-radius:11px}.plain{background:var(--blue);padding:14px;border-radius:9px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}nav a{background:#fff;color:#164f70;text-decoration:none;border:1px solid #adc4d1;border-radius:999px;padding:7px 11px;font-weight:700}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;align-items:stretch;margin:14px 0}.step{border:1px solid var(--line);border-radius:10px;background:#f8fafb;padding:10px;text-align:center;font-size:.88rem}.step.current{background:var(--amber);border:2px solid #b48200;font-weight:800}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.93rem}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:8px}th{background:#f4f7f8}code{background:#edf1f3;padding:.1rem .3rem;border-radius:4px;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#17232d;color:#eef5f8;padding:14px;border-radius:9px;overflow:auto}ol,ul{padding-left:1.35rem}li{margin:.4rem 0}details{border-top:1px solid var(--line);padding:10px 0}summary{font-weight:800;cursor:pointer;min-height:36px}.mini{font-size:.88rem;color:var(--muted)}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.num{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;margin-right:6px}footer{max-width:980px;margin:auto;padding:10px 18px 28px;color:var(--muted);font-size:.88rem}@media(max-width:760px){.flow,.two{grid-template-columns:1fr}header{padding:22px 14px}main{padding:10px}.card{padding:16px}}
+    @media(prefers-color-scheme:dark){:root{--ink:#edf3f6;--muted:#b8c4ca;--line:#465864;--paper:#1c2932;--bg:#111a21;--navy:#173c56;--blue:#173547;--green:#193b29;--amber:#4a3b14;--violet:#302943;--red:#482a29}.step,th{background:#18242c}nav a{background:#1d2c35;color:#d6ecf7}code{background:#26343d}a{color:#8dd0f1}}
+  </style>
+</head>
+<body>
+<header><div>
+  <span class="tag">설계안 · 아직 구현하지 않음</span>
+  <h1>다음 단계: NI 후보의 “TextGrid 후속 검토가 필요한가?”를 기록하는 화면</h1>
+  <p>Stage 2 Gate 2 · 2026-08-23</p>
+</div></header>
+<main>
+  <nav aria-label="문서 바로가기">
+    <a href="#answer">한눈에 보기</a><a href="#measure">실측 근거</a><a href="#screen">화면 구성</a><a href="#priority">우선순위 문제</a><a href="#verify">검증</a><a href="#decision">내가 정할 것</a>
+  </nav>
+
+  <section id="answer" class="card">
+    <h2>한눈에 보기</h2>
+    <p class="lead"><strong>이번 단계는 실제 발음을 판정하는 연구 단계가 아닙니다.</strong> 후보를 들은 뒤 “TextGrid를 더 확인하거나 나중에 Praat에서 손볼 필요가 있는가?”만 기록하는 준비 단계입니다.</p>
+    <div class="ok"><strong>권고:</strong> 이미 확인한 v2.1의 14개 화면을 그대로 재사용합니다. 그중 NI 2개만 방법론 기준 표본이고, 다른 현상 12개는 화면이 망가지지 않는지 확인하는 기술 회귀 표본입니다.</div>
+    <p>새 후보 추출, 94만 행 재스캔, G5/G6, MFA·KOINA·wav2vec2, TextGrid 수정은 하지 않습니다.</p>
+  </section>
+
+  <section class="card">
+    <h2>지금 전체 흐름에서 어디인가</h2>
+    <div class="flow" role="img" aria-label="Gate 0과 Gate 1 완료, Gate 2 현재 설계, Gate 3과 Gate 4 이후">
+      <div class="step">Gate 0<br>공통 구조<br><strong>완료</strong></div>
+      <div class="step">Gate 1<br>NI 계약 동결<br><strong>완료</strong></div>
+      <div class="step current">Gate 2<br>후속 필요성 화면<br>지금 여기</div>
+      <div class="step">Gate 3<br>Praat 작업본·sidecar<br>나중</div>
+      <div class="step">Gate 4–5<br>ledger·공개본·LLN<br>그다음</div>
+    </div>
+    <p>따라서 LLN이나 NI 어절 간 대규모 표본으로 바로 가지 않습니다. 먼저 연구 도중 필요한 수동 작업을 잊지 않고 기록할 수 있는지 확인합니다.</p>
+  </section>
+
+  <section class="card">
+    <h2>낯선 말 풀이</h2>
+    <table>
+      <tr><th>Gate</th><td>다음 단계로 가기 전 통과하는 작은 검문소</td></tr>
+      <tr><th>exact-ID</th><td>어느 발화의 어느 위치인지 다시 찾을 수 있는 정확한 식별자</td></tr>
+      <tr><th>TextGrid</th><td>단어·음소·형태소의 label과 시간 경계를 여러 줄(tier)로 표시한 파일</td></tr>
+      <tr><th>read-only</th><td>화면에서 볼 수 있지만 원본 경계와 글자는 수정할 수 없음</td></tr>
+      <tr><th>queue</th><td>다음 단계에서 실제 수동 작업본을 만들 후보 목록. 작업본 자체는 아님</td></tr>
+      <tr><th>sidecar</th><td>원자료는 그대로 두고 추가 정보를 별도 파일에 붙여 기록하는 방식</td></tr>
+      <tr><th>zero-drop</th><td>후보를 없애지 않고 미검토·필요·불필요·자산 부재 등의 상태로 모두 셈</td></tr>
+      <tr><th>SHA-256</th><td>파일 내용이 같은지 확인하는 64자리 지문</td></tr>
+    </table>
+  </section>
+
+  <section id="measure" class="card">
+    <h2>실제로 확인된 자료</h2>
+    <div class="two">
+      <div class="plain"><strong>PV-A 전체</strong><br>표본 180행<br>bundle TextGrid 180개</div>
+      <div class="plain"><strong>v2.1 화면</strong><br>14개 표본<br>7현상 × 2020·2025 각 1개</div>
+      <div class="plain"><strong>NI</strong><br><code>PV0015</code> · 2020 · 1.26–1.59초<br><code>PV0163</code> · 2025 · 3.93–4.36초</div>
+      <div class="plain"><strong>자산 무결성</strong><br>TextGrid 존재 14/14<br>source·bundle SHA 일치 14/14<br>6-tier 일치 14/14</div>
+    </div>
+    <p class="mini">6-tier: words / phones_mfa / phoneme_r_auto / utterance / utterance_orth_r / morph_analysis_utt</p>
+    <div class="stop"><strong>한계:</strong> NI 두 건은 모두 어절 내부입니다. 이번에는 화면 기능만 검증합니다. NI 어절 간 모집단은 삭제된 것이 아니며 후속 G5/G6 층화 표본 단계에 남습니다.</div>
+    <details><summary>핵심 파일 SHA 보기</summary>
+      <table>
+        <tr><th>파일</th><th>SHA-256</th></tr>
+        <tr><td>PV_SAMPLES.csv</td><td><code>31bea32b1cd44f5e9e77baa84259a6fa3566a192f866a5b006371700fa1fe93f</code></td></tr>
+        <tr><td>PV_MANIFEST.json</td><td><code>acb8772e1f4ab8860ebc0631517f616eeb2b2e0f5eeb8e1d890abf462248ad51</code></td></tr>
+        <tr><td>PV_REVIEWER_V2_1.html</td><td><code>4ac9edd77fd8889aaeb73b8c15afc6c2ee1a3c0eb5cca1e4d2b24e862da98a7e</code></td></tr>
+        <tr><td>v2.1 audit</td><td><code>3a47c2e3509dae16852ff90dcf295ddc602c89f6773e0198a9e9e700b242fc78</code></td></tr>
+      </table>
+    </details>
+  </section>
+
+  <section id="screen" class="card">
+    <h2>새 화면에서 하는 일</h2>
+    <ol>
+      <li><span class="num">1</span>TextGrid 후속 검토가 <strong>불필요 / 필요 / 불확실</strong>인지 고릅니다.</li>
+      <li><span class="num">2</span>필요한 이유를 <strong>경계·label·전사·표적 span·기타</strong>에서 여러 개 고릅니다.</li>
+      <li><span class="num">3</span>운율·의미번호·화자 정보처럼 더 확인할 정보와 이유를 여러 줄로 적습니다.</li>
+      <li><span class="num">4</span>후속 필요성 판단의 확신도를 <strong>1–5</strong>로 기록합니다.</li>
+      <li><span class="num">5</span><strong>필요/불확실</strong>이면 같은 화면의 TextGrid 패널이 자동으로 열립니다.</li>
+    </ol>
+    <p>패널에는 파형·재생 위치, 표적 시간 강조, 6개 tier의 label·경계, source SHA와 자산 상태를 보여줍니다. 클릭은 재생 위치만 옮기며 경계는 바꾸지 않습니다.</p>
+    <div class="ok">기존 “들린 형식의 확신도(높음/중간/낮음)”와 새 “후속 검토 필요성 확신도(1–5)”는 뜻이 다르므로 별도 필드로 보존합니다.</div>
+  </section>
+
+  <section class="card">
+    <h2>저장과 다음 단계 queue</h2>
+    <ul>
+      <li>기존 JSONL 15행은 그대로 보존합니다.</li>
+      <li>새 저장분만 <code>pv_reviewer_event.v3</code> revision이 됩니다.</li>
+      <li>내보내고 다시 가져오면 같은 exact-ID에 복원됩니다.</li>
+      <li>최신값이 <code>required</code> 또는 <code>unsure</code>인 사례만 별도 queue 후보 JSONL로 내보냅니다.</li>
+      <li>이 queue는 Gate 3의 입력 후보일 뿐, 정식 작업본·sidecar·ledger가 아닙니다.</li>
+    </ul>
+    <pre>textgrid_review_need: not_needed | required | unsure
+textgrid_asset_status: available | unavailable | blocked
+manual_task_status: not_created | queued | exported | returned | audited</pre>
+    <p>세 축은 독립입니다. 예를 들어 “검토는 필요하지만 파일은 없음”은 <code>required + unavailable</code>로 그대로 기록할 수 있습니다.</p>
+  </section>
+
+  <section id="priority" class="card">
+    <h2>지금 보이는 “핵심/탐색” 우선순위 문제</h2>
+    <p>현재 v2.1의 <code>core/exploratory</code>는 2026-08-19 기술 파일럿용 태그입니다. 일반적인 형태론 환경을 먼저 본다는 연구 우선순위가 아닙니다.</p>
+    <ul>
+      <li>Gate 2에서는 큰 배지와 정렬 필터로 쓰지 않습니다.</li>
+      <li>감사 정보에 “이전 PV-A 표본 태그 — 연구 우선순위 아님”으로만 남깁니다.</li>
+      <li>같은 형태소 조합·단어별 묶기와 불확실 사례 재검토 정렬은 실제 occurrence에 환경 유형을 배정한 뒤 구현합니다.</li>
+    </ul>
+    <p>지금 NI 두 건에 임의로 새 우선순위를 붙이면 Gate 1의 <code>occurrence_assignment_status=not_started</code>를 우회하게 되므로 하지 않습니다.</p>
+  </section>
+
+  <section id="verify" class="card">
+    <h2>구현 후 무엇을 검사하나</h2>
+    <ul>
+      <li>입력 14 = 출력 14, NI 2와 비NI 회귀 표본 12의 역할 분리</li>
+      <li>TextGrid 14/14 존재·SHA·6-tier·시간 범위</li>
+      <li>자동 펼침, 1–5와 복수 요청 저장·복원, queue 필터</li>
+      <li>기존 15행 보존, 최신 revision 선택, 미저장 경고</li>
+      <li>합성 fixture에서 unavailable/blocked 행이 삭제되지 않음</li>
+      <li>원본 수정 0, 자동 실현 판정 0, ledger 쓰기 0</li>
+      <li>Python compile·단위 시험·브라우저 runtime 시험·PowerShell 5.1 preflight</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>이번에는 하지 않는 것</h2>
+    <p>G5/G6, 94만 행 스캔, 새 NI/어절 간 표본, `요` query 생성, 다른 현상 계약 채택, TextGrid 직접 편집, Praat 작업본 생성, MFA·KOINA·wav2vec2, 정식 ledger·공개본은 모두 다음 승인 범위 밖입니다.</p>
+  </section>
+
+  <section id="decision" class="card choice">
+    <h2>지금 연구자가 정할 것은 한 가지</h2>
+    <p class="lead"><strong>기존 14개를 공통 UI 회귀 표본으로 유지하고, NI 2개만 Gate 2 방법론 기준으로 쓰는 설계에 동의하는가?</strong></p>
+    <p>권고 답: <code>Gate 2 구현 GO</code></p>
+    <p class="mini">그 답을 받은 뒤에만 builder·독립 감사기·tests·PowerShell 5.1 wrapper와 새 HTML을 구현합니다. 구현 뒤 실제 연구 청취와 Gate 3는 다시 멈춰서 별도 승인을 기다립니다.</p>
+  </section>
+</main>
+<footer>상세 정본: PLAN_stage2_gate2_NI_followup_textgrid_reviewer_20260823.md · 이 HTML은 읽기 쉬운 동일 설계 안내본입니다.</footer>
+</body>
+</html>
