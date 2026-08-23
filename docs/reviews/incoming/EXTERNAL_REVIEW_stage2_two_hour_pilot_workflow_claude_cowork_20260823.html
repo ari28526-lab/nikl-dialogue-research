@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stage 2 · 2시간 파일럿 워크플로 외부 검토 (Claude Cowork)</title><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#17212b;background:#eef2f5}
+body{max-width:1000px;margin:0 auto;padding:1.2rem;line-height:1.65}
+main{background:#fff;border:1px solid #d2dde4;border-radius:14px;padding:1.4rem;box-shadow:0 3px 12px #173b5712}
+h1{color:#173b57}h2{border-bottom:2px solid #dbe7ee;padding-top:.7rem}
+h2.must{color:#8b2f24}h2.should{color:#765500}h2.defer{color:#3d6b8e}h2.keep{color:#176742}
+.status{background:#eaf4fa;padding:.85rem 1rem;border-radius:10px}
+.warn{background:#fff2cb;padding:.85rem 1rem;border-radius:10px}
+.ok{background:#e4f4ea;padding:.85rem 1rem;border-radius:10px}
+table{width:100%;border-collapse:collapse;margin:.6rem 0}
+th,td{padding:.5rem;border-bottom:1px solid #d5dfe5;text-align:left;vertical-align:top}
+.kv th{width:110px;color:#596b78;font-weight:700;white-space:nowrap}
+code{background:#edf2f5;padding:.12rem .28rem;border-radius:4px;overflow-wrap:anywhere}
+.item{border:1px solid #d2dde4;border-radius:11px;padding:.8rem 1rem;margin:.8rem 0;background:#fbfdfe}
+.item-head{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.2rem}
+.stage{color:#596b78;font-size:.9rem}
+.dec-yes{background:#ffe8e4;color:#8b2f24;border-radius:999px;padding:.1rem .6rem;font-size:.82rem;font-weight:700}
+.dec-no{background:#e4f4ea;color:#176742;border-radius:999px;padding:.1rem .6rem;font-size:.82rem;font-weight:700}
+.meta{color:#596b78;font-size:.88rem}
+ol li,ul li{margin:.3rem 0}
+</style></head><body><main>
+<h1>Stage 2 · 현상당 2시간 연구 파일럿 — 워크플로 외부 검토</h1>
+<p class="status"><strong>2026-08-23 · Claude (Cowork 외부 검토 세션)</strong> · 연구 수행 흐름·인지 부담·문헌 활용·메모 체계 검토. 코드·파일 수정과 파일럿 실행은 하지 않았습니다. 정본은 같은 이름의 <a href="EXTERNAL_REVIEW_stage2_two_hour_pilot_workflow_claude_cowork_20260823.md">Markdown</a>이며, 기계 판독용은 같은 이름의 <code>.jsonl</code>(한 제안 한 행, 22행)입니다.</p>
+
+<h2>총평</h2>
+<p>패키지는 연구자가 바로 시작할 수 있는 수준입니다. 한 사례 한 화면, 탐색 기록과 정식 ledger의 분리, append-only revision 체인, 읽기 전용 TextGrid와 praat_work 분리, PT probe·derived turn 경고는 모두 올바른 선택이며 유지 대상입니다.</p>
+<div class="warn"><strong>시작 전 정리할 3건</strong> — (1) <code>START_HERE.html</code>의 현상 라벨 4건이 범위 카드·본 화면과 다릅니다(특히 HIA가 "ㅎ 관련 축약·탈락"으로 표기). (2) 현상 문헌 메모(20분)와 잠정 패턴 정리(10분)가 사례 저장에 업혀서만 기록되고, 이동 확인창 승인 시 작성 중 메모가 사라지는 경로가 있습니다. (3) 셔플 재확인에서 1차 판정이 폼에 미리 채워져 보여 "지각 편향 점검" 목적이 무력화됩니다. 셋 다 절차 규칙으로도 우회 가능하므로 사용자 결정이 필요합니다.</div>
+<p><strong>120분/현상은 조건부 가능</strong>: 사례당 5분(청취 2–3회+폼+짧은 메모)은 성립하지만 전체 대화 검색·TextGrid 정밀 확인을 매 사례에 하면 초과합니다. LLN(claim 18개)·NI(표면·분석 왕복)는 첫 현상 실측 후 재배분 전제로 시작하는 것이 좋습니다. 셔플 재확인 20분은 전체 12건 재청취(사례당 100초)로는 비현실적이므로 범위 축소가 필요합니다.</p>
+
+<h2>11단계 요약 판정</h2>
+<table><tr><th>단계</th><th>판정</th><th>관련 제안</th></tr>
+<tr><td>1 세션 시작·재개</td><td>사례 수준 재개는 분명. 진입 라벨 불일치와 단계 수준 표지 부재.</td><td>WF-M1, WF-S3, WF-S10, WF-K5</td></tr>
+<tr><td>2 문헌 20분</td><td>claim 카드 구조 우수·기본 접힘 적절. 메모 저장 경로 취약.</td><td>WF-M2, WF-K3</td></tr>
+<tr><td>3 범위 10분</td><td>scope-contract 표시 충분. 열린 질문의 답 기록처가 메모뿐.</td><td>WF-M2</td></tr>
+<tr><td>4 60분 12사례</td><td>정보 구성 적절. 표적 오디오 접근·화면 운용 규칙·메모 태그 보완.</td><td>WF-S1, WF-S2, WF-S4, WF-S5</td></tr>
+<tr><td>5 같은 조합·단어순</td><td>1차 순서로 적절. 유지.</td><td>WF-K2</td></tr>
+<tr><td>6 고정 셔플 재확인</td><td>1차 판정 사전 노출로 독립성 훼손. 범위도 미정.</td><td>WF-M3, WF-S7</td></tr>
+<tr><td>7 불확실 사례 선별</td><td>필드는 충분. 선별 문턱 미합의.</td><td>WF-S4, WF-S7, WF-D3</td></tr>
+<tr><td>8 Praat 이관 기준</td><td>도구·분리 원칙 좋음. 기준 문장 부재.</td><td>WF-S6, WF-K4</td></tr>
+<tr><td>9 JSONL 저장·불러오기·종료</td><td>행 구조 우수. import 무표시 실패·파일 보관·build 식별 보완.</td><td>WF-S3, WF-S8, WF-S9, WF-K4</td></tr>
+<tr><td>10 잠정 패턴·질문 정리</td><td>전용 기록처 없음 — 구조적 유실 위험.</td><td>WF-M2</td></tr>
+<tr><td>11 다음 현상 이동 조건</td><td>명시 규칙 없음 — 종료 체크리스트 4항 제안.</td><td>WF-S10</td></tr></table>
+<h2 class="must">MUST_FIX_BEFORE_PILOT — 파일럿 전 반드시 수정·결정 (3건)</h2>
+<div class="item"><div class="item-head"><strong>WF-M1</strong> <span class="stage">단계 1 · 세션 시작</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>START_HERE.html 시작 링크가 NAN을 &#x27;비음 동화&#x27;, NAL을 &#x27;유음화&#x27;, LLN을 &#x27;유음의 비음화&#x27;, HIA를 &#x27;ㅎ 관련 축약·탈락&#x27;으로 표기한다. 범위 카드와 본 화면 label_ko는 각각 &#x27;ㄴ 앞 비음화&#x27;, &#x27;ㄹ 앞 비음화&#x27;, &#x27;ㄴㄹ·ㄹㄴ 연쇄(유음화·비음화 복합형)&#x27;, &#x27;모음충돌 회피&#x27;다.</td></tr>
+<tr><th>연구상 위험</th><td>진입 시점부터 잘못된 현상 프레이밍으로 20분 문헌 단계의 기대를 오염시키고, 기록물 간 현상 정체성이 어긋난다. 특히 HIA 라벨은 완전히 다른 현상명이다.</td></tr>
+<tr><th>권고안</th><td>다음 빌드에서 START_HERE 라벨을 scope card의 label_ko 단일 소스에서 생성해 재생성한다. 이번 검토에서는 기존 파일 수정 금지라 직접 고치지 않았다.</td></tr>
+<tr><th>유지 대안</th><td>본 화면 라벨은 정확하므로 &#x27;START_HERE 라벨은 무시&#x27;라는 메모로 운영 가능하나 외부 공유·재현 시 혼동이 남는다.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/START_HERE.html · researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html · config/phenomenon_scope_cards_candidate_v1_20260823.jsonl<br><span class="meta">sample_id 무관 — START_HERE 링크 텍스트 대 literature-data label_ko 7종</span></td></tr>
+<tr><th>검증 방법</th><td>재생성 후 START_HERE 라벨 7건과 카드 label_ko의 diff가 0인지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-M2</strong> <span class="stage">단계 2, 10, 9 · 문헌 20분·정리 10분·JSONL</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>현상 전체 문헌 메모는 사례 폼 &#x27;수정본 저장&#x27; 시에만 localStorage·JSONL 행에 기록된다. 사례 이동·현상 전환 시 renderLiterature()가 textarea를 localStorage 값으로 되돌려, 확인창 승인 시 작성 중 메모가 사라진다. 마지막 10분의 잠정 패턴 정리는 전용 기록 행이 없고 마지막 사례 저장 이후 수정분은 JSONL에 들어가지 않는다.</td></tr>
+<tr><th>연구상 위험</th><td>120분 중 30분(문헌 20+정리 10)의 산출물이 유실되거나 미기록될 수 있어 현상 간 비교와 정식 단계 설계 근거가 사라진다.</td></tr>
+<tr><th>권고안</th><td>코드 보완 시: 문헌 메모 입력 즉시 localStorage 반영 + record_role=phenomenon_summary 행을 저장하는 전용 버튼 추가. 절차 대안: 문헌 메모 작성 직후와 10분 정리 마지막에 반드시 현재 사례에서 &#x27;수정본 저장&#x27; 1회 후 JSONL export를 규칙으로 명문화.</td></tr>
+<tr><th>유지 대안</th><td>절차 규칙만으로 운영 가능하나 이동 확인창 승인에 의한 유실 위험은 남는다.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — renderLiterature()·submit 핸들러·export 로직 (화면 공통 동작)</span></td></tr>
+<tr><th>검증 방법</th><td>메모 입력 후 사례 이동(확인창 승인)·복귀 시 보존 확인; export JSONL에 최종 요약이 담긴 행 존재 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-M3</strong> <span class="stage">단계 6 · 고정 셔플 재확인</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>restoreForm()이 순서 모드와 무관하게 최신 저장 행을 폼에 복원하므로, 고정 셔플 2차 확인 때 1차의 들린 실현·청취 확신도가 미리 채워져 보인다.</td></tr>
+<tr><th>연구상 위험</th><td>셔플 재확인의 목적인 지각 편향 점검이 무력화된다. 1·2차 불일치를 발견할 기회가 사라지고 2차가 사실상 1차의 복사본이 된다.</td></tr>
+<tr><th>권고안</th><td>코드 보완 시: 셔플 모드에서 판정 필드를 가린 빈 폼으로 시작해 별도 revision으로 저장하는 재확인 모드 추가. 절차 대안: 폼을 보기 전 먼저 청취하고 다르게 들리면 불확실성 메모에 기록(차폐 불완전).</td></tr>
+<tr><th>유지 대안</th><td>절차 규칙만으로 운영하되 셔플 패스를 &#x27;재확인&#x27;이 아닌 &#x27;복습&#x27;으로 격하 해석.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — restoreForm()·latest()·order-mode (화면 공통 동작)</span></td></tr>
+<tr><th>검증 방법</th><td>셔플 모드에서 저장 이력 있는 사례의 폼 초기 상태 확인; 재확인 행의 review_order_mode·revision_seq 구분 확인</td></tr></table></div>
+<h2 class="should">SHOULD_IMPROVE — 개선 권고 (10건)</h2>
+<div class="item"><div class="item-head"><strong>WF-S1</strong> <span class="stage">단계 4, 2 · 60분 사례 검토</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>문헌 패널이 항상 상단에 있고 claims 접힘·scope-contract 열림이 기본이다. details 접힘 상태는 사례 이동 간 유지된다. 폼 작성 순서 규칙은 없다.</td></tr>
+<tr><th>연구상 위험</th><td>사례당 5분 페이스에서 스크롤 부담이 누적되고, 판정 직전 문헌 문구 노출이 청취를 유도할 수 있다.</td></tr>
+<tr><th>권고안</th><td>절차 규칙 두 줄 채택: (1) 60분 단계 시작 때 문헌·범위 패널을 접는다. (2) 먼저 듣고 실현 판정·확신도를 적은 뒤 문헌 연결 메모를 쓴다. 코드 변경 불필요.</td></tr>
+<tr><th>유지 대안</th><td>현 상태 유지, 연구자 재량.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — literature-panel details 기본 상태</span></td></tr>
+<tr><th>검증 방법</th><td>규칙 채택을 파일럿 노트에 기록; 첫 현상 후 스크롤 부담 재평가</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S2</strong> <span class="stage">단계 4 · 60분 사례 검토</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>오디오는 발화 전체 WAV(설계상 올바름)이고 TextGrid에 표적 구간이 표시되지만 오디오는 수동 탐색해야 한다.</td></tr>
+<tr><th>연구상 위험</th><td>84사례의 표적 탐색 시간이 60분 단계를 잠식하고 긴 발화에서 표적을 놓쳐 재청취가 늘어난다.</td></tr>
+<tr><th>권고안</th><td>다음 빌드에서 &#x27;표적 구간으로 이동&#x27; 버튼(audio.currentTime=target_xmin) 추가. WAV 무수정 원칙과 충돌하지 않는 저위험 개선.</td></tr>
+<tr><th>유지 대안</th><td>TextGrid의 표적 시각을 보고 수동 탐색(현행).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">P2H-PT-2022-02 (PT·2022·&#x27;분야를 하나 정해서 뭐 전문적으로 공부를 하고 있는데&#x27;·표적 &#x27;공부를&#x27; 2.070-2.450초)</span></td></tr>
+<tr><th>검증 방법</th><td>버튼 클릭 시 currentTime이 target_xmin으로 이동하는지 3사례에서 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S3</strong> <span class="stage">단계 9, 1 · JSONL 불러오기·재개</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>import 핸들러에 try/catch가 없어 형식 오류·알 수 없는 sample_id에서 예외가 조용히 삼켜지고 import-status가 갱신되지 않는다. 실패 시 revision_seq가 1부터 다시 시작해 supersedes 체인이 끊긴다.</td></tr>
+<tr><th>연구상 위험</th><td>연구자가 불러왔다고 믿고 진행하면 수정 이력이 두 갈래가 된다.</td></tr>
+<tr><th>권고안</th><td>절차(즉시): 불러오기 후 반드시 &#x27;n행 불러옴&#x27; 메시지를 확인하고 없으면 진행하지 않는다는 시작 체크리스트. 코드(후속): try/catch로 행 번호와 함께 오류 표시.</td></tr>
+<tr><th>유지 대안</th><td>절차 확인만으로 운영(단일 기기·localStorage 유지 상황에서는 위험 낮음).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — import onchange 핸들러</span></td></tr>
+<tr><th>검증 방법</th><td>깨진 행이 든 JSONL로 무표시 실패를 재현하고 절차 채택 후 같은 시나리오에서 진행이 중단되는지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S4</strong> <span class="stage">단계 4, 7 · 확신도 기록·불확실 선별</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>환경 판정 확신도와 청취 확신도가 각각 1-5 선택지로 있으나 눈금의 의미 기준이 없다.</td></tr>
+<tr><th>연구상 위험</th><td>7현상×2패스×여러 날에 걸쳐 눈금이 표류하면 불확실 사례 선별과 현상 간 비교가 흔들린다.</td></tr>
+<tr><th>권고안</th><td>파일럿 전 한 줄 앵커 확정. 예: 5=단서 명확·재청취 불필요 / 4=단서 우세 / 3=단서 있으나 상충 / 2=인상 수준 / 1=추측. README 또는 결정 문서에 기록.</td></tr>
+<tr><th>유지 대안</th><td>무정의로 시작하고 첫 현상 후 소급 정의(소급 재해석 위험).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — review-form environment_confidence·realization_confidence</span></td></tr>
+<tr><th>검증 방법</th><td>앵커 문서화 확인; 첫 현상에서 확신도 분포가 1-5를 실제로 사용하는지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S5</strong> <span class="stage">단계 4 · 메모 체계</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>메모 4칸(형태론·환경/음운·음향/문헌 연결/불확실성)은 연구 관찰용이며, 데이터 문제(전사 오류·음질)와 도구 문제(화면 버그)의 전용 기록처가 없다.</td></tr>
+<tr><th>연구상 위험</th><td>데이터·도구 문제가 연구 메모에 섞여 후속 집계(표본 교체 판단 등)가 어렵다.</td></tr>
+<tr><th>권고안</th><td>파일럿 전 태그 규약: 불확실성 메모 칸에 [DATA], [TOOL] 접두어. 후속 빌드에서 별도 필드 승격 여부 판단.</td></tr>
+<tr><th>유지 대안</th><td>자유 기술 유지(집계는 수작업).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — review-form 메모 필드 구성</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상 JSONL에서 태그 검색으로 데이터·도구 문제가 분리 집계되는지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S6</strong> <span class="stage">단계 8 · Praat 이관 기준</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>boundary_edit_need 선택지와 사례별 open_praat_sample.ps1 명령·복사 버튼은 있으나 &#x27;필요&#x27; 판단 기준 문장이 없다.</td></tr>
+<tr><th>연구상 위험</th><td>과다 표시면 후속 Praat 작업이 부풀고 과소 표시면 경계 의존 판정이 부정확한 채 남는다. 20분 재확인 단계 계획도 불가능하다.</td></tr>
+<tr><th>권고안</th><td>기준 1-2줄을 파일럿 전에 확정. 제안 문안: 실현 판정이 경계 위치에 의존하고 현재 TextGrid 경계가 표적 자음·모음 구간을 청취상 명백히 벗어날 때만 &#x27;필요&#x27;. 판정과 무관한 미세 어긋남은 &#x27;불필요&#x27;+메모.</td></tr>
+<tr><th>유지 대안</th><td>연구자 재량으로 시작하고 첫 현상 후 기준을 소급 정의.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/README.md · researcher_review_package_v1/START_HERE.html · researcher_review_package_v1/PRAAT_TASKS.csv<br><span class="meta">sample_id 무관 — boundary_edit_need 필드·Praat 명령 표시</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상에서 &#x27;필요&#x27; 표시 건수가 사전 예상 범위(12건 중 0-4건)에 드는지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S7</strong> <span class="stage">단계 6, 7, 11 · 셔플 범위·불확실 선별·이동 조건</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>시간표 4단계(20분)는 &#x27;불확실 사례 재확인&#x27;인데 셔플 순서는 12사례 전체에 제공되고, 재확인 대상 선정 기준(확신도 문턱)이 미정이다.</td></tr>
+<tr><th>연구상 위험</th><td>전체 12개 재청취는 20분(사례당 100초)에 비현실적이라 시간표가 무너지거나 재확인이 형식화된다.</td></tr>
+<tr><th>권고안</th><td>파일럿 전 결정: 재확인 대상 = 청취 확신도 3 이하 또는 scope unclear 또는 boundary_edit_need 불확실 + 확실 사례 2-3개 대조 포함. 20분 초과분은 다음 현상 전에 이월 기록.</td></tr>
+<tr><th>유지 대안</th><td>전체 12개를 셔플로 훑되 재청취는 선별적으로(현행 해석의 명문화).</td></tr>
+<tr><th>근거</th><td>docs/decisions/RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md · researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — RESULT 2절 시간표 대 order-mode UI</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상에서 4단계 실측 시간과 재확인 건수를 기록해 20분 내 완료 여부 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S8</strong> <span class="stage">단계 9, 10 · 기록 재사용성</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>저장 행에 sample_id·utt_id·physical_occurrence_ref·query_id·population_role·review_order_mode·reviewed_at는 있으나 패키지 build SHA는 STORAGE_KEY에만 쓰이고 행에는 없다. 청취 조건(헤드폰·환경) 기록처도 없다.</td></tr>
+<tr><th>연구상 위험</th><td>표본 세트가 재생성·정정되면(NI 정정 v2 선례) 어느 버전에 대한 판정인지 행 단위 증빙이 약하고, 논문 방법 절의 청취 조건 기술이 어렵다.</td></tr>
+<tr><th>권고안</th><td>절차(지금): export 파일명에 날짜·현상을 붙이고, 문헌 메모 끝에 &#x27;빌드 8043eb25…, 헤드폰, 조용한 방&#x27; 한 줄 세션 노트. 코드(후속): 행에 build_sha 필드 추가.</td></tr>
+<tr><th>유지 대안</th><td>STORAGE_KEY 접두어로 간접 증빙(localStorage에만 존재하므로 약함).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — submit 핸들러 row 구성·build-data 블록</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상 JSONL에서 세션 노트 줄 존재 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S9</strong> <span class="stage">단계 9 · export 파일 보관</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>export 파일명이 항상 P2H_EXPLORATORY_REVIEWS.jsonl이라 브라우저가 (1),(2)를 붙인다. import는 event_uuid 중복 제거를 하지 않아 이전 export를 불러온 상태에서 다시 export하면 같은 행이 이중으로 쌓일 수 있다.</td></tr>
+<tr><th>연구상 위험</th><td>세션이 거듭될수록 파일이 비대해지고 정본이 흐려진다. latest()가 최신 행을 고르므로 화면 표시는 안전하나 정식 분석 전 정리가 필요해진다.</td></tr>
+<tr><th>권고안</th><td>절차: export 직후 파일명에 날짜를 붙여 정본 폴더에 1개만 보관하고 다음 세션에는 그 1개만 불러온다. 정식 분석 전 event_uuid 기준 dedupe 1회(후속 스크립트). 코드(후속): 파일명 timestamp·import 시 dedupe.</td></tr>
+<tr><th>유지 대안</th><td>현행 유지 후 정식 단계에서 일괄 정리.</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — export·import 핸들러·history() 구성</span></td></tr>
+<tr><th>검증 방법</th><td>2세션 왕복 시나리오에서 정본 파일 1개 유지·행 수 증가가 기대와 일치하는지 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-S10</strong> <span class="stage">단계 1, 9, 11 · 재개·종료·다음 현상 이동</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>사례 수준 재개는 체크 표시·카운터로 분명하나 5단계 시간표 중 어디까지 했는지의 표지가 없고, 다음 현상으로 넘어가는 조건이 명문화돼 있지 않다.</td></tr>
+<tr><th>연구상 위험</th><td>중단 후 문헌·범위 단계를 건너뛰거나 중복하고, 요약 없이 다음 현상으로 넘어가 WF-M2 위험을 키운다.</td></tr>
+<tr><th>권고안</th><td>절차 규칙: 중단 시 문헌 메모 끝에 &#x27;어디까지 완료&#x27; 한 줄. 현상 종료 조건 = 12사례 listened + 불확실 목록 확정 + 현상 요약 기록 + JSONL export·보관 확인의 4항 체크 후 이동.</td></tr>
+<tr><th>유지 대안</th><td>연구자 기억에 의존(현행).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html · docs/decisions/RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md<br><span class="meta">sample_id 무관 — progress 표시 로직·RESULT 9절</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상 종료 시 체크리스트 4항이 기록으로 남는지 확인</td></tr></table></div>
+<h2 class="defer">SAFE_TO_DEFER — 후속으로 미뤄도 안전 (4건)</h2>
+<div class="item"><div class="item-head"><strong>WF-D1</strong> <span class="stage">단계 4 · sidecar 정보 표시</span> <span class="dec-yes">사용자 결정 필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>운율 경계·동음이의어·우리말샘 의미번호·어원·빈도는 화면에 표시되지 않고 scope card의 sidecar_candidates로만 예약돼 있다.</td></tr>
+<tr><th>연구상 위험</th><td>미룰 때 위험 낮음. 오히려 지금 표시하면 어원·빈도가 PT 합성어성·NI 한자어층 판단을 유도할 수 있다.</td></tr>
+<tr><th>권고안</th><td>후속 sidecar로 미룬다(현 상태 유지가 곧 권고). 운율 경계 인상만 음운 메모에 자유 기술로 수집하고 파일럿 후 sidecar 설계에 반영.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(현 상태가 권고안).</td></tr>
+<tr><th>근거</th><td>config/phenomenon_scope_cards_candidate_v1_20260823.jsonl · researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — sidecar_candidates 대 화면 표시 항목</span></td></tr>
+<tr><th>검증 방법</th><td>파일럿 후 메모에서 운율·어원 언급 빈도를 세어 sidecar 우선순위 결정</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-D2</strong> <span class="stage">단계 2, 3, 4, 7, 10 · 단계 타이머</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>120분 5단계를 UI가 추적하지 않는다(시간표는 배너 텍스트).</td></tr>
+<tr><th>연구상 위험</th><td>미룰 때 위험 낮음. 외부 타이머로 충분.</td></tr>
+<tr><th>권고안</th><td>파일럿에서는 외부 타이머 사용, 도구화는 첫 현상 실측 후 필요 시.</td></tr>
+<tr><th>유지 대안</th><td>현 상태 유지(권고안과 동일).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — schedule 배너</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상에서 단계별 실측 시간을 세션 노트로 남겨 도구화 필요성 판단</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-D3</strong> <span class="stage">단계 7 · not_judgeable 사유 구조화</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>카드에는 현상별 not_judgeable_reasons가 정의돼 있으나 폼에는 사유 선택지가 없고 자유 메모뿐이다.</td></tr>
+<tr><th>연구상 위험</th><td>미룰 때 위험 낮음. 파일럿의 목적이 바로 이 사유 분포를 자유 기술로 수집하는 것이다.</td></tr>
+<tr><th>권고안</th><td>파일럿 후 실제 등장한 사유를 보고 정식 스키마에서 선택지화.</td></tr>
+<tr><th>유지 대안</th><td>현 상태 유지(권고안과 동일).</td></tr>
+<tr><th>근거</th><td>config/phenomenon_scope_cards_candidate_v1_20260823.jsonl<br><span class="meta">sample_id 무관 — not_judgeable_reasons 대 review-form 필드</span></td></tr>
+<tr><th>검증 방법</th><td>파일럿 JSONL에서 not_judgeable 사례 메모를 사유 유형으로 분류해 카드 정의와 대조</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-D4</strong> <span class="stage">단계 4 · 청취 로그</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>청취 횟수·구간 재생 이력은 기록되지 않는다.</td></tr>
+<tr><th>연구상 위험</th><td>미룰 때 위험 낮음. 정식 방법론에서는 유용하나 파일럿엔 과함.</td></tr>
+<tr><th>권고안</th><td>정식 분석 단계 설계 시 재검토.</td></tr>
+<tr><th>유지 대안</th><td>현 상태 유지(권고안과 동일).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — target-audio 요소</span></td></tr>
+<tr><th>검증 방법</th><td>정식 단계 설계 문서에 재검토 항목으로 남겼는지 확인</td></tr></table></div>
+<h2 class="keep">KEEP_CURRENT — 현행 유지 (5건)</h2>
+<div class="item"><div class="item-head"><strong>WF-K1</strong> <span class="stage">단계 4, 7 · 확신도 이원화</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>environment_confidence와 realization_confidence가 분리돼 있다.</td></tr>
+<tr><th>연구상 위험</th><td>바꿀 때 위험: 합치면 환경 오분류와 청취 불확실이 섞여 후속 표본 정제가 불가능해진다.</td></tr>
+<tr><th>권고안</th><td>유지. WF-S4의 앵커만 보강.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(유지가 권고).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — review-form 구성</span></td></tr>
+<tr><th>검증 방법</th><td>파일럿 후 두 확신도 분포가 실제로 다른 정보를 담는지 교차표로 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-K2</strong> <span class="stage">단계 5, 6 · 검토 순서 설계</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>같은 형태소 조합·단어순이 기본, 고정 셔플이 두 번째 확인. 결정적 셔플이라 재현 가능.</td></tr>
+<tr><th>연구상 위험</th><td>바꿀 때 위험: 셔플 1차는 첫 청취 독립성은 높이나 환경 파악·최소 대조 확인이 늦어져 120분 안에 비효율.</td></tr>
+<tr><th>권고안</th><td>유지. 단 WF-M3(차폐)·WF-S7(범위) 보완을 전제로 한다.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(유지가 권고).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html · config/stage2_two_hour_phenomenon_pilot_schema.v1.json<br><span class="meta">sample_id 무관 — order-mode UI·sampling_contract</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상에서 1·2차 판정 불일치 건수를 세어 순서 설계 효과 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-K3</strong> <span class="stage">단계 2, 4 · 문헌 배치</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>현상 수준 문헌을 20분 선행으로 두고 사례 화면에서 claims는 기본 접힘. 사례별 관련 claim 자동 매칭은 하지 않는다.</td></tr>
+<tr><th>연구상 위험</th><td>바꿀 때 위험: 사례별 claim 노출은 해당 사례의 기대 실현형을 직전에 상기시켜 청취를 유도한다.</td></tr>
+<tr><th>권고안</th><td>유지. 이 파일럿의 목적이 문헌 주장의 자연대화 확인 가능성 탐색이므로 현상 수준 선행이 맞다.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(유지가 권고).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — literature-panel·claims details</span></td></tr>
+<tr><th>검증 방법</th><td>파일럿 후 문헌 연결 메모 활용도를 보고 배치 재평가</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-K4</strong> <span class="stage">단계 4, 8, 9 · 기록·안전 설계 묶음</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>append-only revision 체인(event_uuid·revision_seq·supersedes_event_uuid), record_role 탐색 전용 명시, 읽기 전용 TextGrid와 praat_work 분리, WAV 무수정, PT compoundness probe 경고, derived turn 탐색 표지 경고, PT 전용 합성어성 필드.</td></tr>
+<tr><th>연구상 위험</th><td>바꿀 때 위험: 어느 것을 빼도 탐색 기록이 정식 판정으로 오염되거나 원자료 보호가 약해진다.</td></tr>
+<tr><th>권고안</th><td>전부 유지.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(유지가 권고).</td></tr>
+<tr><th>근거</th><td>researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html · reviewer_package_audit_v1/AUDIT_STAGE2_TWO_HOUR_REVIEWER.json<br><span class="meta">sample_id 무관 — submit row 구성·경고 문구·AUDIT checks</span></td></tr>
+<tr><th>검증 방법</th><td>첫 현상 JSONL 행의 record_role·revision 체인 무결성 확인</td></tr></table></div>
+<div class="item"><div class="item-head"><strong>WF-K5</strong> <span class="stage">단계 1, 4 · 한 사례 한 화면·재개 표시</span> <span class="dec-no">사용자 결정 불필요</span></div>
+<table class="kv"><tr><th>현재 관찰</th><td>한 번에 한 사례만 표시하고 목록 체크 표시·&#x27;저장된 청취 n/12&#x27;·localStorage 복원을 제공한다.</td></tr>
+<tr><th>연구상 위험</th><td>바꿀 때 위험: 다사례 표 화면은 비교 청취를 유도해 사례 독립 판정을 해친다.</td></tr>
+<tr><th>권고안</th><td>유지.</td></tr>
+<tr><th>유지 대안</th><td>해당 없음(유지가 권고).</td></tr>
+<tr><th>근거</th><td>reviewer_package_audit_v1/AUDIT_STAGE2_TWO_HOUR_REVIEWER.json · researcher_review_package_v1/STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html<br><span class="meta">sample_id 무관 — one_case_per_screen_contract=true·renderList()</span></td></tr>
+<tr><th>검증 방법</th><td>브라우저 재시작 재개 시나리오에서 체크·카운터 복원 확인</td></tr></table></div>
+
+<h2>결정 시점별 세 목록</h2>
+<h3>파일럿 전 반드시 정할 것</h3>
+<ol><li>START_HERE 라벨 불일치 처리 — 재빌드 vs 무시 메모 (WF-M1)</li>
+<li>문헌 메모·현상 요약의 기록 방식 — 코드 보완 vs 절차 규칙 (WF-M2)</li>
+<li>셔플 재확인의 차폐 방식과 대상 범위·확신도 문턱 (WF-M3, WF-S7)</li>
+<li>Praat 이관 기준 문안 (WF-S6)</li>
+<li>확신도 1–5 앵커 문안 (WF-S4)</li>
+<li>세션 시작·종료 체크리스트: 불러오기 확인, 정본 파일 1개 원칙, 종료 4항 (WF-S3, WF-S9, WF-S10)</li>
+<li>메모 태그 규약 [DATA]/[TOOL] (WF-S5)</li></ol>
+<h3>현상 1개를 해본 뒤 정할 것</h3>
+<ol><li>120분 배분 실측 조정 — 특히 LLN·NI 초과 여부</li>
+<li>표적 구간 점프 버튼 등 UI 후속 개선 우선순위 (WF-S2)</li>
+<li>셔플 재확인 표본 수·대조 사례 수 조정 (WF-S7)</li>
+<li>대화 문맥 검색 실사용 빈도에 따른 기본 표시 범위(±10행) 조정</li>
+<li>[DATA]/[TOOL] 태그 실효성과 별도 필드 승격 여부 (WF-S5)</li>
+<li>확신도 앵커의 눈금 사용 분포 점검 (WF-S4)</li></ol>
+<h3>정식 분석 단계까지 미룰 것</h3>
+<ol><li>운율·동음이의어·우리말샘 의미번호·어원·빈도 sidecar (WF-D1)</li>
+<li>행 스키마 v2: build_sha 필드·import dedupe·export timestamp (WF-S8·S9 코드 부분)</li>
+<li>not_judgeable 사유 선택지화 (WF-D3)</li>
+<li>재생 횟수·청취 로그 (WF-D4)</li>
+<li>단계 타이머 UI (WF-D2)</li>
+<li>청취 조건의 구조화 필드 (WF-S8 후속)</li></ol>
+
+<h2>사용자에게 묻는 질문 (5개)</h2>
+<ol>
+<li><strong>START_HERE 재생성</strong>: 라벨 4건 불일치(WF-M1)를 고치기 위한 재빌드를 승인하시겠습니까? 재빌드 시 WF-S2 점프 버튼·WF-M2 코드 보완을 같은 빌드에 묶을지도 함께 알려주세요.</li>
+<li><strong>셔플 재확인 방식</strong>: (a) 빈 폼 차폐 모드(코드) vs (b) "먼저 듣고 폼 확인" 절차 규칙만 — 어느 쪽인가요? 재확인 대상을 "확신도 ≤3 + unclear + 대조 2–3건"으로 좁히는 데 동의하십니까? (WF-M3, WF-S7)</li>
+<li><strong>문헌 메모·현상 요약 기록</strong>: (a) phenomenon_summary 행 저장 코드 보완 vs (b) "정리 후 사례 저장 1회 + export" 절차 규칙 — 어느 쪽인가요? (WF-M2)</li>
+<li><strong>Praat 이관 기준</strong>: 제안 문안("판정이 경계 위치에 의존하고 경계가 표적 구간을 청취상 명백히 벗어날 때만 필요")을 확정할까요, 수정하시겠습니까? (WF-S6)</li>
+<li><strong>sidecar 미루기</strong>: 운율·동음이의어·의미번호·어원·빈도는 파일럿 화면에 표시하지 않고 후속 sidecar로 미루는 데 동의하십니까? (WF-D1)</li>
+</ol>
+
+<h2>검증·안전 확인</h2>
+<p class="ok">이 검토가 수정한 기존 파일: 없음. 생성: 보고서 3건(<code>docs/reviews/incoming/</code>, 기존에 없던 이름). query·config·outputs·문헌 workspace 불변. 자동 실현 판정·MFA·KOINA·wav2vec2·대량 음성 처리·git commit/push 없음. 검토 화면 HTML(14MB)은 UI·JS 전문과 데이터 구조 표본(라벨 7종·claim 수·표본 행 P2H-PT-2022-02·build 블록)을 확인했으며 84사례 데이터 행 전수는 읽지 않았습니다.</p>
+</main></body></html>

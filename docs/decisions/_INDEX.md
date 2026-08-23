@@ -1,5 +1,8 @@
 # 현행 결정 문서 색인
 
+- [RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md](RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md) — 외부 검토 승인 A–H를 C:-only v1 재패키징으로 구현해 v2·독립 감사·Node DOM·실브라우저 점프 3건을 통과; 7현상×12건 작업 환경 세팅 완료, 연구 판단은 candidate로 유지하고 첫 실제 사용 때 페이지·오디오만 환경 확인
+- [DECISION_stage2_two_hour_pilot_external_review_responses_20260823.md](DECISION_stage2_two_hour_pilot_external_review_responses_20260823.md) — 외부 워크플로 검토 22건 교차확인(전건 confirmed·신규 history 가림 결함 발견) 뒤 사용자 8답으로 v1 보존·v2 재빌드 범위(A–H)와 선별 재확인·Praat 기준·확신도 앵커·절차 규칙 6건을 확정; 부록 A에 Codex 실행 프롬프트, 구현·커밋은 미실행
+- [RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md](RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md) — 7현상×120분·현상별 12사례(연도별 2)의 문헌·한 사례 한 화면·전체 대화·exact WAV·read-only/작업본 TextGrid 연구 묶음과 독립 감사; [HTML 요약](RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.html), 청취·Praat 수정은 미실행
 - [PLAN_stage2_seven_phenomena_prequery_scope_audit_20260823.md](PLAN_stage2_seven_phenomena_prequery_scope_audit_20260823.md) — NI 우선 연구 실행을 잠정 중지하고 일곱 현상 모두의 표면형·형태소·POS 대응과 포함/제외/별도 탐색 범위 카드를 먼저 검토한 뒤 첫 연구 현상을 재선정하는 계획
 - [DECISION_stage2_NI_VCP_copula_exclusion_20260823.md](DECISION_stage2_NI_VCP_copula_exclusion_20260823.md) — 표면에 실제 나타난 VCP 서술격 `이`는 NI 본모집단에서 제외하되 표면 `요`/분석 `이+요` 사례는 제외하지 않고 별도 `요` 탐색 모집단에 보존
 - [RESULT_stage2_gate2_ni_followup_reviewer_v3_20260823.md](RESULT_stage2_gate2_ni_followup_reviewer_v3_20260823.md) — 14개 read-only TextGrid 후속 reviewer의 기술 감사와 사용자 UI 시험 결과; NI 두 표본은 사후 VCP 범위 밖으로 확인되어 연구 내용 표본으로는 무효

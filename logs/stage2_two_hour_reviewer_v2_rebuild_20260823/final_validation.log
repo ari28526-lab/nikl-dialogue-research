@@ -1,0 +1,115 @@
+Stage 2 reviewer v2 final validation — 2026-08-23 KST
+PY_COMPILE
+PY_COMPILE=PASS
+PYTHON_TEST
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.022s
+
+OK
+NODE_RUNTIME
+{"passed":true,"samples":84,"dialogueKeys":82,"literatureCodes":7,"textgridProjections":84,"domSmoke":true}
+AUDIT_CHECK_ONLY
+{
+  "schema_version": "stage2_two_hour_reviewer_independent_audit.v2",
+  "passed": true,
+  "status": "researcher_package_independently_verified",
+  "package_dir": "C:\\Users\\ari30\\research\\2026_summer_research\\outputs\\pilots\\pv_seven_phenomena_20260819\\two_hour_research_pilots_20260823\\researcher_review_package_v2",
+  "counts": {
+    "manifest_records_verified": 260,
+    "asset_rows": 84,
+    "praat_tasks": 84,
+    "embedded_samples": 84,
+    "embedded_dialogue_keys": 82,
+    "embedded_metadata_keys": 82,
+    "embedded_literature_codes": 7,
+    "embedded_textgrid_projections": 84
+  },
+  "hashes": {
+    "package_sha_manifest": "9a9c0ae7880971c32b16f33f1e3511bdf8d4da64d7560a86b5a3deee313356a1",
+    "build_receipt": "fc9149cefc6e5da73b51091c08155d92690d59182d68431c027c69071c670d1d",
+    "review_html": "95d812b1a1ddf6a7f9d9964aaba23209fe5da68ca6b04d073324f121f5c8b40d",
+    "samples_input": "8043eb2564e041881051cad4c8f92370b061b363572ad8a4afb21c2e33eaca9f"
+  },
+  "checks": {
+    "all_manifest_hashes_match": true,
+    "all_asset_copy_hashes_match": true,
+    "powershell_utf8_bom": true,
+    "powershell_5_1_operator_check": true,
+    "one_case_per_screen_contract": true,
+    "grouped_and_shuffled_modes": true,
+    "whole_dialogue_search": true,
+    "literature_panel": true,
+    "read_only_textgrid_panel": true,
+    "separate_praat_work_copy": true,
+    "automatic_realization_judgement": false,
+    "formal_ledger_written": false,
+    "start_here_labels_match_scope_cards": true,
+    "history_global_shadow_absent": true,
+    "window_history_replace_state": true,
+    "target_jump_button": true,
+    "phenomenon_summary_schema": true,
+    "phenomenon_summary_role": true,
+    "phenomenon_summary_button": true,
+    "summary_excluded_from_case_latest": true,
+    "summary_import_supported": true,
+    "literature_note_immediate_storage": true,
+    "shuffled_blind_recheck": true,
+    "confidence_anchors": true,
+    "import_error_line_number": true,
+    "samples-data_unchanged": true,
+    "dialogues-data_unchanged": true,
+    "metadata-data_unchanged": true,
+    "literature-data_unchanged": true,
+    "textgrids-data_unchanged": true,
+    "ASSET_MANIFEST.csv_byte_equal": true,
+    "PRAAT_TASKS.csv_byte_equal": true,
+    "DIALOGUE_SOURCE_RECEIPTS.json_byte_equal": true,
+    "open_praat_sample.ps1_byte_equal": true
+  }
+}
+SAMPLES_SHA256=8043eb2564e041881051cad4c8f92370b061b363572ad8a4afb21c2e33eaca9f
+V1_MANIFEST_SHA256=08af27c2b48a822fe96a7745d2b4e40ab983a5c1410d21ab6f271c7c530bffad
+V1_BUILD_RECEIPT_SHA256=c403b94f447e64b9d6e6b1b57db2f9d549551193b0fe47c8d8bf190561c05771
+V2_MANIFEST_SHA256=9a9c0ae7880971c32b16f33f1e3511bdf8d4da64d7560a86b5a3deee313356a1
+AUDIT_V2_SHA256=3c0026fbd19d4e11a6627c47eedd9c549eba07fa8546b984016f9f1c597feacf
+V1_FILES=261
+V1_BYTES=24719256
+V2_FILES=261
+V2_BYTES=24728993
+FINAL_PARTIALS=0
+TEST_SERVERS_RUNNING=0
+GIT_DIFF_CHECK
+warning: in the working copy of 'docs/WORK_HISTORY_2026-08.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/decisions/_INDEX.md', LF will be replaced by CRLF the next time Git touches it
+GIT_STATUS_SHORT
+ M docs/WORK_HISTORY_2026-08.md
+ M docs/decisions/_INDEX.md
+?? config/phenomenon_scope_cards_candidate_v1_20260823.jsonl
+?? config/stage2_two_hour_phenomenon_pilot_schema.v1.json
+?? config/target_queries/stage2_two_hour_pilot_candidate_v1_20260823.json
+?? docs/decisions/DECISION_stage2_two_hour_pilot_external_review_responses_20260823.md
+?? docs/decisions/RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.html
+?? docs/decisions/RESULT_stage2_seven_phenomena_two_hour_research_pilot_preparation_20260823.md
+?? docs/decisions/RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md
+?? docs/reviews/incoming/CROSSCHECK_stage2_two_hour_pilot_workflow_external_review_20260823.md
+?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_two_hour_pilot_workflow_claude_cowork_20260823.html
+?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_two_hour_pilot_workflow_claude_cowork_20260823.jsonl
+?? docs/reviews/incoming/EXTERNAL_REVIEW_stage2_two_hour_pilot_workflow_claude_cowork_20260823.md
+?? docs/reviews/incoming/REVIEW_stage2_seven_phenomena_two_hour_scope_cards_20260823.html
+?? docs/reviews/incoming/REVIEW_stage2_seven_phenomena_two_hour_scope_cards_20260823.md
+?? docs/reviews/incoming/_to_delete/
+?? logs/stage2_two_hour_reviewer_v2_rebuild_20260823/
+?? scripts/python/audit_stage2_two_hour_scope_cards.py
+?? scripts/python/audit_stage2_two_hour_seven_phenomena_reviewer.py
+?? scripts/python/augment_stage2_two_hour_pt_nal_shortfalls.py
+?? scripts/python/build_stage2_two_hour_scope_cards_review.py
+?? scripts/python/build_stage2_two_hour_seven_phenomena_reviewer.py
+?? scripts/python/derive_stage2_two_hour_ni_scope_correction.py
+?? scripts/python/probe_stage2_two_hour_query_candidates.py
+?? tests/test_stage2_two_hour_query_probe.py
+?? tests/test_stage2_two_hour_scope_cards.py
+?? tests/test_stage2_two_hour_seven_phenomena_reviewer.py
+?? tests/test_stage2_two_hour_seven_phenomena_reviewer_runtime.js
+?? tests/test_stage2_two_hour_shortfall_and_scope_correction.py
+FINAL_VALIDATION=PASS
