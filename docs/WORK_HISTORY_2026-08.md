@@ -4162,3 +4162,21 @@ shard 2–23을 재개하는 것이다.
   `NI 1/12` 연결을 확인했고 콘솔 오류는 0건이었다.
 - 원자료·r3·6-tier·기존 reviewer v1/v2를 수정하지 않았고, 자동 실현 판정·
   연구자 청취·Praat 수정·localStorage 기록은 0건이다.
+
+## 2026-08-24 — Stage2 체계적 연구 reviewer v3와 4시간 문헌 종합 경로
+
+- 세미나 자료에서 추출한 요인을 7현상 공통 구조로 확장하고, PT의 저해음 뒤
+  기준층/합성어 변이/사이시옷 중첩과 NAN의 어절 내부 /ㄴ·ㅁ/ 기준층/어절 간
+  운율 탐색층을 분리했다. 필수 환경의 형태소 경계·좌우 POS 층화를 명시했다.
+- claim ledger를 CLM-0157~0173까지 append(156→173행)하고 신지영(2011)의
+  NAN 직접 적용영역 근거와 Jun(1998)의 방법론적 경계 판정 근거를 분리했다.
+  PT·NI·NAL 핵심 실험 결과·방법·한계도 보강했다.
+- v1/v2와 사용자 JSONL을 보존한 새 reviewer v3에 연구자 우선 메모·요인 필드·
+  복수 membership·최신 생각 집계·Markdown 내보내기·localhost Praat 실행
+  helper를 구현했다. 실제 Praat는 설치하지 않았다.
+- 4시간 선행연구 종합을 자유 회상→근거 지도→요인 지도→공백/우선순위→코드
+  인계의 5단계 HTML로 만들고 Claude Cowork 인계문·산출물 계약을 기록했다.
+- 독립 감사는 manifest 274, exact 재사용 256, sample 84, phenomenon 7,
+  claim 173, 기존 JSONL 2행 호환과 launcher whitelist를 통과했다. 신규 v3
+  7/7·관련 Stage2 합계 26/26, 브라우저 PT→NAN 전환·4시간 5단계·콘솔 오류
+  0건을 확인했다.

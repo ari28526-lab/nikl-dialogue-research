@@ -19,6 +19,8 @@
 - [decisions/PLAN_stage2_seven_phenomena_PV_pilot_20260819.md](decisions/PLAN_stage2_seven_phenomena_PV_pilot_20260819.md): 일곱 현상 PV-A 설계와 구현 범위, 완료 뒤 후속 결정 표지
 - [decisions/RESULT_pv_preview_build_20260819.md](decisions/RESULT_pv_preview_build_20260819.md): 6개년 각 30개·합계 180개 PV-A 생성과 독립 감사
 - [decisions/RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md](decisions/RESULT_stage2_pv_reviewer_v2_1_usability_fix_20260822.md): 균형 14개 reviewer v2.1의 독립 감사·사용자 최소 화면 Gate
+- [decisions/HANDOFF_claude_cowork_four_hour_literature_synthesis_20260824.md](decisions/HANDOFF_claude_cowork_four_hour_literature_synthesis_20260824.md): 4시간 연구자 중심 문헌 종합의 Claude Cowork 인계 계약
+- [decisions/RESULT_stage2_systematic_research_reviewer_v3_20260824.md](decisions/RESULT_stage2_systematic_research_reviewer_v3_20260824.md): 7현상 요인 지도·연구자 메모·Praat 연동·표본 감사 구현 결과
 
 현재는 연도별 30개 후속 batch를 구현하지 않는다. 일곱 현상별 직접 문헌과
 형태론 환경 분류를 먼저 정리하며, 진행 중인 Cowork 산출물은 승인 전까지

@@ -123,7 +123,12 @@ def validate_literature(root: Path) -> tuple[dict[str, dict[str, Any]], dict[str
     sources = read_jsonl(repo_path(root, SOURCE_INVENTORY))
     claims = read_jsonl(repo_path(root, CLAIM_EVIDENCE))
     require(len(sources) == 362, f"source rows: {len(sources)}")
-    require(len(claims) == 156, f"claim rows: {len(claims)}")
+    require(len(claims) >= 156, f"claim rows below frozen prefix: {len(claims)}")
+    expected_claim_ids = [f"CLM-{number:04d}" for number in range(1, len(claims) + 1)]
+    require(
+        [str(row.get("claim_id", "")) for row in claims] == expected_claim_ids,
+        "claim ledger must preserve CLM-0001..CLM-0156 and use contiguous append-only IDs",
+    )
     source_map = {str(row.get("source_id")): row for row in sources}
     claim_map = {str(row.get("claim_id")): row for row in claims}
     require(len(source_map) == len(sources), "duplicate source IDs")
@@ -135,6 +140,8 @@ def validate_literature(root: Path) -> tuple[dict[str, dict[str, Any]], dict[str
     return source_map, claim_map, {
         "source_rows": len(sources),
         "claim_rows": len(claims),
+        "frozen_claim_prefix_rows": 156,
+        "appended_claim_rows": len(claims) - 156,
         "source_sha256": sha256_file(repo_path(root, SOURCE_INVENTORY)),
         "claim_sha256": sha256_file(repo_path(root, CLAIM_EVIDENCE)),
     }

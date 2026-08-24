@@ -219,7 +219,11 @@ def preflight(
     claims = read_jsonl(claims_path)
     require([row.get("phenomenon_code") for row in cards] == EXPECTED_CODES, "scope card order/codes")
     claim_ids = [str(row.get("claim_id", "")) for row in claims]
-    require(len(claim_ids) == 156 and len(set(claim_ids)) == 156, "claim ledger must be 156 unique rows")
+    require(len(claim_ids) >= 156, "claim ledger must preserve the frozen 156-row prefix")
+    require(
+        claim_ids == [f"CLM-{number:04d}" for number in range(1, len(claim_ids) + 1)],
+        "claim ledger IDs must be unique, contiguous, and append-only after CLM-0156",
+    )
     return {
         "schema_version": "stage2_two_hour_reviewer_preflight.v1",
         "passed": True,

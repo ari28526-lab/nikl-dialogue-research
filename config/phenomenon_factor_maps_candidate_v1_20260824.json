@@ -1,0 +1,240 @@
+{
+  "schema_version": "stage2_systematic_factor_maps.v1",
+  "status": "candidate_pending_researcher_adoption",
+  "created_at": "2026-08-24T00:00:00+09:00",
+  "principles": [
+    "세미나 자료의 요인을 출발점으로 삼되 세미나에서 다루지 않은 필수적 기준 환경을 별도 층으로 보충한다.",
+    "음운 입력, 형태론, 어휘, 운율, 화자·사회, 발화·담화, 자료·측정 요인을 한 열에 합치지 않는다.",
+    "한 토큰이 둘 이상의 분석에 해당하면 배타적으로 지우지 않고 복수 membership을 보존한다.",
+    "필수적이라고 기술되는 현상도 자연대화의 모든 운율·어절 경계에서 자동으로 100%라고 가정하지 않는다.",
+    "형태소 분석과 MFA·TextGrid는 후보 위치 정보이며 실제 발음과 형태론 경계의 정답이 아니다."
+  ],
+  "phenomena": [
+    {
+      "phenomenon_code": "PT",
+      "label_ko": "경음화: 저해음 뒤 기준층과 합성어·사이시옷 변이층",
+      "seminar_seed_sources": ["SRC-199", "SRC-200", "SRC-203", "SRC-204"],
+      "additional_direct_sources": ["SRC-313", "SRC-360", "SRC-362"],
+      "scope_families": [
+        {"id": "PT-BASE-POSTOBS", "label": "저해음 뒤 경음화 기준층", "description": "기저 평장애음이 선행 저해음 종성 뒤에 놓이는 환경. 단일어 내부, 어간+어미, 체언+조사, 파생, 합성어, 어절 간을 분리한다."},
+        {"id": "PT-VAR-COMPOUND", "label": "합성어 경음화 변이층", "description": "선행 성분이 모음·공명음으로 끝나 자동 저해음 뒤 경음화로 설명되지 않는 합성어 경계의 평음~경음 변이."},
+        {"id": "PT-OVERLAP-COMPOUND-POSTOBS", "label": "합성어이면서 저해음 뒤인 중첩층", "description": "자동 저해음 뒤 경음화와 합성어 경음화·사이시옷 분석이 모두 가능한 토큰. 두 membership과 분석 불확실성을 함께 보존한다."},
+        {"id": "PT-EXP-INTER", "label": "어절 간 탐색층", "description": "저해음#평장애음 또는 합성어와 유사한 어절 간 연쇄. AP/IP 경계와 휴지를 독립 기록한다."}
+      ],
+      "research_questions": [
+        {"id": "PT-RQ1", "question": "현재 토큰은 저해음 뒤 기준층, 합성어 변이층, 둘의 중첩층 중 어디에 속하는가?"},
+        {"id": "PT-RQ2", "question": "후행 평장애음은 평음·경음·중간형 중 어떻게 실현되는가?"},
+        {"id": "PT-RQ3", "question": "단일어 내부, 어간+어미, 체언+조사, 파생, 합성, 어절 간에서 실현이 달라지는가?"},
+        {"id": "PT-RQ4", "question": "합성어에서는 사이시옷 분석이 필요한가, 가능한가, 배제되는가?"},
+        {"id": "PT-RQ5", "question": "폐쇄·VOT·후행 모음 F0와 선행 음절·전체 표현 길이가 같은 방향으로 경음성을 지시하는가?"},
+        {"id": "PT-RQ6", "question": "어휘·구성요소 빈도, 어종, 합성어 길이·친숙도, 화자·지역·연령이 변이를 설명하는가?"},
+        {"id": "PT-RQ7", "question": "어절 간에서는 운율 경계가 적용 영역을 끊거나 경계 강화로 음향 단서를 바꾸는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["left_coda_underlying", "left_coda_surface", "right_lenis_place", "complex_coda", "underlying_tense_exclusion"],
+        "morphosyntax": ["left_pos", "right_pos", "morph_boundary_type", "stem_ending_function", "particle_or_suffix", "compound_type"],
+        "multiple_membership": ["post_obstruent_tensing", "compound_tensification_candidate", "sai_siot_analysis", "n_insertion_related"],
+        "lexical": ["word_origin", "whole_word_frequency", "component_frequency", "length", "familiarity", "lexicalization"],
+        "prosody": ["ap_boundary", "ip_boundary", "pause", "pitch_reset", "preboundary_lengthening", "focus"],
+        "speaker_context": ["age", "sex", "region", "speech_rate", "task_genre", "dialogue_position"],
+        "measurement": ["closure_duration", "vot", "following_vowel_f0", "preceding_segment_duration", "audio_quality", "boundary_confidence"]
+      },
+      "sampling_requirements": [
+        "필수 기준층은 동사·형용사 어간+어미, 체언+조사, 파생·합성, 단일어 내부를 가능한 한 분리해 표집한다.",
+        "후행 ㄱ·ㄷ·ㅂ·ㅅ·ㅈ과 선행 저해음 조음 위치가 한 유형에 몰리지 않도록 한다.",
+        "합성어층은 모음말·공명음말과 저해음말을 분리하고, 저해음말 합성어는 중첩층으로 복수 태깅한다.",
+        "기존 v2의 PT 12건은 단일 NNG 내부 음절쌍 탐색이 대부분이므로 균형 표본으로 간주하지 않는다."
+      ]
+    },
+    {
+      "phenomenon_code": "NAN",
+      "label_ko": "저해음 뒤 비음화: 필수 기준층과 운율경계 탐색층",
+      "seminar_seed_sources": ["SRC-208", "SRC-209"],
+      "additional_direct_sources": ["SRC-057", "SRC-360", "SRC-362"],
+      "scope_families": [
+        {"id": "NAN-BASE-INTRA-N", "label": "어절 내부 저해음+/ㄴ/ 기준층", "description": "단일어·형태소 내부와 형태소 경계의 C+/n/ 연쇄. 어간+는/니 유형을 포함한다."},
+        {"id": "NAN-BASE-INTRA-M", "label": "어절 내부 저해음+/ㅁ/ 기준층", "description": "기존 ㄴ 중심 pilot에서 빠진 필수 비교층. 후행 비음 종류를 독립 요인으로 둔다."},
+        {"id": "NAN-PROSODY-INTER", "label": "어절 간 운율경계 탐색층", "description": "저해음#/ㄴ·ㅁ/ 연쇄에서 같은 IP 내부와 IP 경계 후보를 비교한다."},
+        {"id": "NAN-DERIVED-N", "label": "ㄴ삽입 후 파생 연쇄", "description": "기저 비음과 삽입된 /n/을 구분하고 NI와 NAN membership을 모두 남긴다."}
+      ],
+      "research_questions": [
+        {"id": "NAN-RQ1", "question": "선행 저해음과 후행 /ㄴ·ㅁ/의 기저 형태와 형태소 경계는 무엇인가?"},
+        {"id": "NAN-RQ2", "question": "선행 저해음은 구강 장애음·완전 비음·부분 비음 중 어떻게 실현되는가?"},
+        {"id": "NAN-RQ3", "question": "단일어 내부, 어간+어미, 체언+조사·접사, 합성어, 어절 간에서 적용이 달라지는가?"},
+        {"id": "NAN-RQ4", "question": "후행 /ㄴ/과 /ㅁ/, 선행 /p t k/ 계열, 복합 종성이 실현에 영향을 주는가?"},
+        {"id": "NAN-RQ5", "question": "어절 간에서 같은 IP 내부는 비음화를 허용하고 IP 경계는 차단한다는 가설이 실제 자연대화와 맞는가?"},
+        {"id": "NAN-RQ6", "question": "휴지·경계음조·경계 전 장음화·지각적 끊김이 일치하지 않을 때 어떤 판정을 보존해야 하는가?"},
+        {"id": "NAN-RQ7", "question": "예외가 속도·강조·말차례·자료 품질·형태소 분석 오류로 설명되는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["c1_place", "c1_underlying_coda", "c2_nasal_n_or_m", "complex_coda", "inserted_vs_underlying_n"],
+        "morphosyntax": ["left_pos", "right_pos", "morph_boundary_type", "stem_ending_function", "particle_or_suffix", "compound_status"],
+        "prosody": ["same_ip_vs_ip_boundary", "boundary_tone_or_pitch_reset", "preboundary_lengthening", "pause", "perceived_disjuncture", "turn_context"],
+        "speaker_context": ["age", "sex", "region", "speech_rate", "task_genre", "focus"],
+        "measurement": ["oral_release_or_burst", "nasal_murmur", "voicing", "partial_nasalization", "audio_quality", "textgrid_alignment"]
+      },
+      "sampling_requirements": [
+        "필수 기준층은 품사보다 먼저 형태소 경계 유형을 층화하되 각 층의 좌우 POS를 함께 기록한다.",
+        "동사·형용사 어간+어미(예: -는), 명사 내부·합성, 접사·조사, 어절 간을 한 모집단으로 합산하지 않는다.",
+        "후행 /ㅁ/은 기존 ㄴ 앞 비음화 표본과 별도 하위층으로 반드시 추가 검토한다.",
+        "어절 간 표본은 운율 경계 단서가 없으면 필수 기준층의 적용률 계산에 섞지 않는다."
+      ]
+    },
+    {
+      "phenomenon_code": "NAL",
+      "label_ko": "장애음+유음 연쇄의 유음 비음화와 선행 장애음 비음화",
+      "seminar_seed_sources": ["SRC-208", "SRC-209"],
+      "additional_direct_sources": ["SRC-055", "SRC-056", "SRC-057"],
+      "scope_families": [
+        {"id": "NAL-INTRA", "label": "어절 내부 장애음+/ㄹ/", "description": "후행 /l/의 [n]·[l] 변이와 선행 장애음의 비음화를 서로 다른 판정으로 기록한다."},
+        {"id": "NAL-LOAN", "label": "외래어·고유명사 층", "description": "초성 유음 허용과 어휘 층위가 다른 층."},
+        {"id": "NAL-INTER", "label": "어절 간 탐색층", "description": "운율 경계와 후어휘 적용 가능성을 별도 기록한다."}
+      ],
+      "research_questions": [
+        {"id": "NAL-RQ1", "question": "후행 /ㄹ/은 [n]·[l]·중간형 중 무엇으로 실현되는가?"},
+        {"id": "NAL-RQ2", "question": "후행 [l]이 유지되어도 선행 저해음은 비음화되는가?"},
+        {"id": "NAL-RQ3", "question": "고유어·한자어·외래어·고유명사와 단어 길이·빈도가 두 판정에 각각 영향을 주는가?"},
+        {"id": "NAL-RQ4", "question": "형태소 내부·합성 경계·접사 경계·어절 간을 분리하면 변이가 어떻게 달라지는가?"},
+        {"id": "NAL-RQ5", "question": "나이·지역·과제·속도와 운율 경계 효과가 있는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["c1_place", "c1_underlying_coda", "underlying_l", "c1_nasalization", "c2_l_to_n_or_l"],
+        "morphosyntax": ["left_pos", "right_pos", "morph_boundary_type", "compound_status"],
+        "lexical": ["word_origin", "loanword_age", "frequency", "length", "familiarity"],
+        "prosody_context": ["ap_ip_boundary", "pause", "focus", "speech_rate", "task_genre"],
+        "measurement": ["nasal_airflow_or_nasal_cue", "laterality", "c1_c2_boundary_confidence", "audio_quality"]
+      },
+      "sampling_requirements": [
+        "NAL과 NAN·LLN을 이름이 비슷하다는 이유로 합치지 않는다.",
+        "후행 유음 실현과 선행 저해음 비음화를 두 개의 종속 판정으로 둔다.",
+        "외래어층과 고유어·한자어층을 별도 표집한다."
+      ]
+    },
+    {
+      "phenomenon_code": "NI",
+      "label_ko": "ㄴ삽입",
+      "seminar_seed_sources": ["SRC-192", "SRC-194", "SRC-197", "SRC-198"],
+      "additional_direct_sources": ["SRC-257", "SRC-258"],
+      "scope_families": [
+        {"id": "NI-CORE", "label": "자음말 M1+/i,j/ 시작 M2", "description": "삽입 여부와 삽입 후 비음화·유음화를 구분한다."},
+        {"id": "NI-MORPH", "label": "형태론 층", "description": "M1·M2의 stem/root/prefix/suffix와 자립성, 어종을 독립 기록한다."},
+        {"id": "NI-SURFACE", "label": "표면·분석 불일치 층", "description": "VCP 이와 표면 요, 형태소 분석 복원 오류를 별도 처리한다."}
+      ],
+      "research_questions": [
+        {"id": "NI-RQ1", "question": "삽입 지점은 /i/ 앞인가 /jV/ 앞인가, /j/ 뒤 모음 높이는 무엇인가?"},
+        {"id": "NI-RQ2", "question": "M1 말음의 공명성·조음 위치(특히 저해음과 /ŋ/)가 삽입 확률에 영향을 주는가?"},
+        {"id": "NI-RQ3", "question": "M1·M2의 형태론적 지위와 어종이 상호작용하는가?"},
+        {"id": "NI-RQ4", "question": "M1·M2 길이와 전체 단어·구성 형태소 빈도 효과가 자연대화에서도 나타나는가?"},
+        {"id": "NI-RQ5", "question": "방언·연령·학력·화자 내부 변이와 과제 차이가 있는가?"},
+        {"id": "NI-RQ6", "question": "기존 단어에서 보인 경향이 새 단어·낮은 친숙도 어휘에도 일반화되는가?"},
+        {"id": "NI-RQ7", "question": "삽입된 /n/과 기저 /n/, 비음화된 /n/을 음성적으로 구분할 수 있는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["i_vs_j", "post_j_vowel_height", "m1_coda_sonorancy", "m1_coda_place", "velar_nasal"],
+        "morphosyntax": ["m1_status", "m2_status", "free_vs_bound", "left_pos", "right_pos", "boundary_type"],
+        "lexical": ["m1_origin", "m2_origin", "m1_length", "m2_length", "whole_word_frequency", "component_frequency", "familiarity"],
+        "speaker_context": ["dialect", "age", "sex", "education", "speech_rate", "task_genre"],
+        "measurement": ["inserted_n_presence", "n_duration", "formant_transition", "derived_nasalization", "audio_quality"]
+      },
+      "sampling_requirements": [
+        "/i/와 /j/를 섞어 전체 NI 비율 하나로 만들지 않는다.",
+        "M1·M2 형태론 지위와 어종 조합을 표본 단계에서 층화한다.",
+        "저해음 말음·/ŋ/·기타 공명음 비교를 반드시 남긴다."
+      ]
+    },
+    {
+      "phenomenon_code": "LLN",
+      "label_ko": "ㄴㄹ·ㄹㄴ 연쇄의 유음화·비음화 복합 변이",
+      "seminar_seed_sources": ["SRC-208", "SRC-209"],
+      "additional_direct_sources": ["SRC-055", "SRC-056"],
+      "scope_families": [
+        {"id": "LLN-NL", "label": "/n+l/ 방향", "description": "[ll]·[nn]·유지·중간형을 기록한다."},
+        {"id": "LLN-LN", "label": "/l+n/ 방향", "description": "방향 효과를 /n+l/과 합치지 않는다."},
+        {"id": "LLN-LOAN", "label": "외래어 층", "description": "연령·친숙도·음절수와 형태소 경계 재분석을 본다."},
+        {"id": "LLN-INTER", "label": "어절 간 탐색층", "description": "운율 경계와 어휘 접근을 함께 기록한다."}
+      ],
+      "research_questions": [
+        {"id": "LLN-RQ1", "question": "기저 방향은 /n+l/인가 /l+n/인가?"},
+        {"id": "LLN-RQ2", "question": "표면 실현은 [ll]·[nn]·연쇄 유지·중간형 중 무엇인가?"},
+        {"id": "LLN-RQ3", "question": "형태소 내부·어근 경계·합성·어절 간과 단어 경계 인식이 변이를 설명하는가?"},
+        {"id": "LLN-RQ4", "question": "고유어·한자어·외래어, 음절수, 빈도·친숙도, 연령이 상호작용하는가?"},
+        {"id": "LLN-RQ5", "question": "같은 화자가 같은 유형에서 [nn]과 [ll]을 모두 쓰는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["sequence_direction", "segmental_context", "surface_ll_nn_retained_mixed"],
+        "morphosyntax": ["left_pos", "right_pos", "morph_boundary_type", "word_boundary_awareness"],
+        "lexical": ["word_origin", "loanword_status", "m1_syllable_count", "frequency", "familiarity"],
+        "speaker_context": ["age", "sex", "region", "intraspeaker_variation", "task_genre", "speech_rate"],
+        "measurement": ["nasal_cue", "laterality", "duration", "c1_c2_boundary_confidence", "audio_quality"]
+      },
+      "sampling_requirements": [
+        "/n+l/과 /l+n/을 최소한 방향별로 균형 확인한다.",
+        "외래어와 비외래어, 단음절 M1과 다음절 M1을 별도 층으로 둔다.",
+        "NAL의 장애음+/l/을 LLN에 포함하지 않는다."
+      ]
+    },
+    {
+      "phenomenon_code": "VH",
+      "label_ko": "모음조화",
+      "seminar_seed_sources": ["SRC-190", "SRC-191"],
+      "additional_direct_sources": [],
+      "scope_families": [
+        {"id": "VH-REGULAR", "label": "일반 용언 활용", "description": "어간말 모음과 아/어 계열 어미 선택을 본다."},
+        {"id": "VH-IRREGULAR", "label": "불규칙·축약 층", "description": "ㅡ탈락·불규칙·표기 축약을 일반 활용과 분리한다."},
+        {"id": "VH-DIALECT-CHANGE", "label": "방언·세대·변화 층", "description": "화자·지역·연령과 어휘별 평준화를 기록한다."}
+      ],
+      "research_questions": [
+        {"id": "VH-RQ1", "question": "어간말 촉발 모음 /아/와 /오/ 및 다른 모음에서 조화형·비조화형 선택이 어떻게 다른가?"},
+        {"id": "VH-RQ2", "question": "개재 자음의 유무·수·질과 어간 길이가 영향을 주는가?"},
+        {"id": "VH-RQ3", "question": "어미가 종결어미인지 다른 기능인지, 접사 빈도·문법화 정도가 영향을 주는가?"},
+        {"id": "VH-RQ4", "question": "어간 빈도·어휘 개별성·패러다임이 변이를 설명하는가?"},
+        {"id": "VH-RQ5", "question": "연령·방언·화자 내부 평준화 방향과 발화 장르가 영향을 주는가?"},
+        {"id": "VH-RQ6", "question": "아/어 선택과 HIA의 활음화·탈락·축약을 독립적으로 판정할 수 있는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["stem_final_vowel", "trigger_a_vs_o", "intervening_consonant_presence", "intervening_consonant_count", "intervening_consonant_quality"],
+        "morphology": ["stem_lemma", "stem_surface", "irregular_class", "ending_form", "ending_function", "paradigm_cell"],
+        "lexical": ["stem_length", "stem_frequency", "ending_frequency", "lexical_item", "grammaticalization"],
+        "speaker_context": ["age", "dialect", "region", "speaker", "genre", "utterance_finality"],
+        "measurement": ["a_eo_category", "vowel_quality", "reduction", "hia_membership", "audio_quality"]
+      },
+      "sampling_requirements": [
+        "어간말 /아/와 /오/, 어미 기능, 개재 자음 조건을 한 조화형 비율로 합치지 않는다.",
+        "일반 활용·불규칙·축약을 별도 층으로 둔다.",
+        "어간·어미 POS뿐 아니라 표제어·표면형 왕복 확인을 필수로 한다."
+      ]
+    },
+    {
+      "phenomenon_code": "HIA",
+      "label_ko": "모음충돌 회피",
+      "seminar_seed_sources": ["SRC-184", "SRC-185"],
+      "additional_direct_sources": [],
+      "scope_families": [
+        {"id": "HIA-VERBAL", "label": "모음말 용언+모음 시작 어미", "description": "충돌 유지·활음화·활음 첨가·탈락·축약을 구분한다."},
+        {"id": "HIA-LEXICAL", "label": "어휘·형태론 제한층", "description": "어간 유형, 본용언·보조용언, 어미 위치를 분리한다."},
+        {"id": "HIA-INTER", "label": "어절 간 탐색층", "description": "운율 경계와 말속도에 따른 모음 연쇄 실현을 본다."}
+      ],
+      "research_questions": [
+        {"id": "HIA-RQ1", "question": "기저 V1+V2 조합과 실제 전략은 유지·활음화·첨가·탈락·축약 중 무엇인가?"},
+        {"id": "HIA-RQ2", "question": "어간말 /오·우·이/ 등 모음 종류, 개구도 차이, 장단과 어간말 음절의 초성이 영향을 주는가?"},
+        {"id": "HIA-RQ3", "question": "어간 음절수·빈도, 어미 기능·위치, 본용언·보조용언이 영향을 주는가?"},
+        {"id": "HIA-RQ4", "question": "빠른 발화에서 V1 안정 구간과 전체 길이가 줄고 전이 비율이 늘어나는가?"},
+        {"id": "HIA-RQ5", "question": "표기 축약과 실제 음성 전략이 일치하는가?"},
+        {"id": "HIA-RQ6", "question": "활음이라는 새 분절이 있는지, 연속적 포먼트 전이·V1 강화인지 판별할 수 있는가?"},
+        {"id": "HIA-RQ7", "question": "같은 토큰의 VH 아/어 선택과 HIA 회피 전략을 두 논리 사건으로 분리할 수 있는가?"}
+      ],
+      "factor_dimensions": {
+        "phonological_input": ["v1", "v2", "aperture_difference", "stem_vowel_length", "stem_final_syllable_onset"],
+        "morphology": ["stem_lemma", "stem_syllable_count", "ending_form", "ending_position", "main_vs_auxiliary", "orthographic_contraction"],
+        "lexical": ["stem_frequency", "word_frequency", "lexical_restriction", "paradigm_cell"],
+        "speaker_context": ["age", "sex", "region", "speech_rate", "prosodic_position", "task_genre", "attention_style"],
+        "measurement": ["v1_stable_duration", "transition_duration", "v2_duration", "f1_f2_trajectory", "intensity", "segment_count", "audio_quality"]
+      },
+      "sampling_requirements": [
+        "V1+V2 조합과 회피 전략을 층화하고 결과 범주를 표기에서 자동 추론하지 않는다.",
+        "어간 음절수·본용언/보조용언·어미 기능·말속도를 기록한다.",
+        "VH membership을 별도 열로 보존한다."
+      ]
+    }
+  ]
+}
