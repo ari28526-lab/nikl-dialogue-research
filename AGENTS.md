@@ -107,6 +107,43 @@ $env:LANG=''
 & "C:\Users\ari30\AppData\Local\Programs\Quarto\bin\quarto.cmd" render "qmd\report.qmd" --to html
 ```
 
+## Literature Discovery Rule
+
+- Start literature work with the relevant local phenomenon folder and the
+  seminar-reading folders under `00_참고문헌`.
+- Then search the entire local `00_참고문헌` tree for related authors, titles,
+  phenomena, factors, and cited works instead of treating the initially named
+  folder as complete.
+- After the local search, use the connected Dropbox search across the personal
+  seminar folder, shared seminar folders, and other relevant Dropbox locations
+  to check for missing, newer, or differently named sources.
+- Distinguish true additions from duplicate copies by comparing the available
+  path, filename, size, modified time, and content hash when available.
+- Treat Dropbox-only or newly found sources as review candidates until their
+  identity and relevance are verified. Do not copy, move, overwrite, or promote
+  them into canonical literature records unless the task authorizes that step.
+- For substantial literature synthesis, report both the sources reviewed and
+  the remaining coverage gaps.
+
+## Account-Independent Continuity Rule
+
+- Treat repository documents, manifests, and Git commits as canonical across
+  personal and school account changes; do not rely on chat history or
+  account-specific memory as the only handoff.
+- Before finishing a substantial workspace task or stopping at a safe pause,
+  append one checkpoint with `scripts/write_continuity_checkpoint.ps1`.
+- Give the checkpoint a concise `Summary`, exactly one actionable `NextStep`,
+  and every unresolved user decision in `DecisionNeeded`. Record failed or
+  incomplete work honestly as `paused` or `blocked`.
+- Never put secrets, raw corpus content, literature excerpts, personal absolute
+  paths, Dropbox IDs, or shared links in the checkpoint.
+- The checkpoint script must not commit or push. Git publication remains a
+  separate public-safe allowlist and user-approval step.
+- On a new account or thread, read
+  `docs/environment/ACCOUNT_TRANSITION_CONTINUITY.md` and the last row of
+  `docs/environment/CONTINUITY_CHECKPOINTS.jsonl`, then verify it against the
+  current Git and manifest state before acting.
+
 ## Expected Workflow
 
 1. Read the project notes.

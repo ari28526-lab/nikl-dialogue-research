@@ -6,6 +6,11 @@
 초기화되기를 기다리거나 새 대화를 열어도, 로컬 계산과 연구 계약을 잃지 않고
 이어가기 위한 절차다.
 
+개인 계정에서 학교 계정으로 전환하는 경우에는 이 문서와 함께
+`docs/environment/ACCOUNT_TRANSITION_CONTINUITY.md`를 읽고,
+`docs/environment/CONTINUITY_CHECKPOINTS.jsonl`의 마지막 행을 실제 Git 상태와
+대조한다.
+
 ## 가장 중요한 원칙
 
 1. Codex 대화가 멈춰도 별도 PowerShell에서 실행한 작업은 독립적으로 계속된다.
