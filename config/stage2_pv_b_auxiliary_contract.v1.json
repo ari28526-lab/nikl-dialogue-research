@@ -1,0 +1,57 @@
+{
+  "schema_version": "stage2_pv_b_auxiliary_contract.v1",
+  "status": "scaffold_ready_execution_requires_approved_small_manifest",
+  "scope": {
+    "phenomena": ["PT", "NAN", "NAL", "NI", "LLN", "VH", "HIA"],
+    "max_items_per_phenomenon": 10,
+    "max_items_total": 70,
+    "bulk_inference_allowed": false,
+    "automatic_realization_judgement": false,
+    "canonical_textgrid_write_allowed": false,
+    "canonical_mfa_write_allowed": false,
+    "source_wav_write_allowed": false
+  },
+  "input_record": {
+    "schema_version": "stage2_pv_b_input.v1",
+    "required": [
+      "schema_version",
+      "pv_id",
+      "phenomenon_code",
+      "occurrence_id",
+      "utt_id",
+      "wav_path",
+      "text",
+      "sex",
+      "source_wav_sha256"
+    ],
+    "sex_values": ["M", "F", "U"],
+    "source_wav_sha256_may_be_null": true
+  },
+  "koina": {
+    "repository": "https://github.com/YugwonWon/KOINA",
+    "declared_version": "v1.1.0",
+    "execution_platform": "linux",
+    "python": "3.10",
+    "mfa_version_declared_upstream": "3.2.1",
+    "full_git_commit_required_at_execution": true,
+    "output_role": "prosody_candidate_not_realization",
+    "silent_fallback_allowed": false
+  },
+  "wav2vec2": {
+    "model_id": "slplab/wav2vec2-xls-r-300m_phone-mfa_korean",
+    "model_revision": "e26ff9dfb62169acf445d0060ef56863c018b20e",
+    "license": "apache-2.0",
+    "trust_remote_code": false,
+    "pickle_weight_acknowledgement_required": true,
+    "download_requires_explicit_flag": true,
+    "output_role": "acoustic_phone_candidate_not_realization"
+  },
+  "output_contract": {
+    "existing_output_refused": true,
+    "partial_then_atomic_promotion": true,
+    "source_hash_required": true,
+    "model_or_code_revision_required": true,
+    "failure_preserved": true,
+    "append_to_formal_realization_ledger": false
+  }
+}
