@@ -45,6 +45,14 @@ try {
     if (@($record.decision_needed).Count -ne 2) {
         throw 'decision_needed 배열 보존 오류'
     }
+    $expectedBranch = [string]@(& git -C $root rev-parse --abbrev-ref HEAD)[0]
+    $expectedHead = [string]@(& git -C $root rev-parse HEAD)[0]
+    if ($record.git.branch -ne $expectedBranch) {
+        throw "git branch 보존 오류: $($record.git.branch) != $expectedBranch"
+    }
+    if ($record.git.head -ne $expectedHead) {
+        throw "git HEAD 보존 오류: $($record.git.head) != $expectedHead"
+    }
     if ($record.safety.automatic_commit -ne $false -or
         $record.safety.automatic_push -ne $false) {
         throw '자동 Git 변경 금지값 오류'

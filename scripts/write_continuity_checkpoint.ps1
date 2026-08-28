@@ -118,10 +118,12 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $resolvedRoot = [IO.Path]::GetFullPath($projectRoot)
 $resolvedLog = Resolve-ProjectRelativePath $resolvedRoot $LogPath
 
-$branch = (Invoke-GitText $resolvedRoot @(
+$branchRows = @(Invoke-GitText $resolvedRoot @(
     'rev-parse', '--abbrev-ref', 'HEAD'
-))[0]
-$head = (Invoke-GitText $resolvedRoot @('rev-parse', 'HEAD'))[0]
+))
+$headRows = @(Invoke-GitText $resolvedRoot @('rev-parse', 'HEAD'))
+$branch = [string]$branchRows[0]
+$head = [string]$headRows[0]
 $upstreamRows = @(Invoke-GitText $resolvedRoot @(
     'rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}'
 ) -AllowFailure)
