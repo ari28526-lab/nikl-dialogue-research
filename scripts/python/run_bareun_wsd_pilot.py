@@ -196,16 +196,24 @@ def enum_name(message: Any, field: str, value: int) -> str:
     return item.name if item is not None else str(value)
 
 
-def analyze_single(tagger: Any, text: str, max_retries: int = 3) -> tuple[Any, int]:
+def analyze_single(
+    tagger: Any,
+    text: str,
+    max_retries: int = 3,
+    *,
+    with_sense: bool = True,
+    auto_spacing: bool = True,
+    auto_jointing: bool = True,
+) -> tuple[Any, int]:
     last_error: Exception | None = None
     for attempt in range(max_retries):
         try:
             response = tagger.tag(
                 text,
                 auto_split=False,
-                auto_spacing=True,
-                auto_jointing=True,
-                with_sense=True,
+                auto_spacing=auto_spacing,
+                auto_jointing=auto_jointing,
+                with_sense=with_sense,
             ).msg()
             sentences = list(response.sentences)
             if len(sentences) != 1:
@@ -222,7 +230,13 @@ def analyze_single(tagger: Any, text: str, max_retries: int = 3) -> tuple[Any, i
 
 
 def analyze_batch(
-    tagger: Any, texts: list[str], max_retries: int = 3
+    tagger: Any,
+    texts: list[str],
+    max_retries: int = 3,
+    *,
+    with_sense: bool = True,
+    auto_spacing: bool = True,
+    auto_jointing: bool = True,
 ) -> tuple[list[Any], dict[str, int]]:
     """Use the proven legacy ``tags`` path, then fall back to ordered singles."""
     last_error: Exception | None = None
@@ -233,9 +247,9 @@ def analyze_batch(
             response = tagger.tags(
                 texts,
                 auto_split=False,
-                auto_spacing=True,
-                auto_jointing=True,
-                with_sense=True,
+                auto_spacing=auto_spacing,
+                auto_jointing=auto_jointing,
+                with_sense=with_sense,
             ).msg()
             sentences = list(response.sentences)
             if len(sentences) != len(texts):
@@ -256,7 +270,14 @@ def analyze_batch(
     sentences = []
     single_retries = 0
     for text in texts:
-        sentence, retries = analyze_single(tagger, text, max_retries=max_retries)
+        sentence, retries = analyze_single(
+            tagger,
+            text,
+            max_retries=max_retries,
+            with_sense=with_sense,
+            auto_spacing=auto_spacing,
+            auto_jointing=auto_jointing,
+        )
         sentences.append(sentence)
         single_retries += retries
         api_calls += retries + 1

@@ -56,6 +56,24 @@ PILOT_AUDIT = (
 )
 APPROVAL_TOKEN = "BAREUN_WSD_CSV_FULL_20260828"
 GIB = 1024**3
+SENSE_ONLY_MORPH_FIELDS = {"sense_no", "sense_probability", "urimal_target_id"}
+
+
+def analysis_mode(config: dict[str, Any]) -> str:
+    return "wsd" if bool(config["api"].get("with_sense", True)) else "morph"
+
+
+def schema_name(config: dict[str, Any], suffix: str) -> str:
+    return f"bareun_{analysis_mode(config)}_csv_full_{suffix}.v1"
+
+
+def bulk_roots(config: dict[str, Any]) -> tuple[Path, Path, Path]:
+    output_root = expand_config_path(str(config["output"]["root"]))
+    building_name = str(
+        config["output"].get("bulk_building_subdirectory", "bulk_csv_v1.building")
+    )
+    final_name = str(config["output"].get("bulk_final_subdirectory", "bulk_csv_v1"))
+    return output_root, output_root / building_name, output_root / final_name
 
 
 def utc_now() -> str:
@@ -248,6 +266,9 @@ def process_source(
     run_root: Path,
     batch_size: int,
     max_retries: int,
+    with_sense: bool = True,
+    auto_spacing: bool = True,
+    auto_jointing: bool = True,
 ) -> dict[str, Any]:
     final_dir = source_output_dir(run_root, source, input_root)
     if final_dir.exists():
@@ -275,6 +296,9 @@ def process_source(
                 tagger,
                 [sample["form"] for sample in part],
                 max_retries=max_retries,
+                with_sense=with_sense,
+                auto_spacing=auto_spacing,
+                auto_jointing=auto_jointing,
             )
             api_stats["batches"] += 1
             for key in ["batch_retries", "single_fallbacks", "single_retries", "api_calls"]:
@@ -294,14 +318,25 @@ def process_source(
         if source_sha_after != source_sha_before:
             raise RuntimeError("protected source CSV changed during analysis")
 
+        utterance_fields = (
+            UTTERANCE_FIELDS
+            if with_sense
+            else [field for field in UTTERANCE_FIELDS if field != "response_sense_count"]
+        )
+        morph_fields = (
+            MORPH_FIELDS
+            if with_sense
+            else [field for field in MORPH_FIELDS if field not in SENSE_ONLY_MORPH_FIELDS]
+        )
         output_rows = {
-            "utterances.csv.gz": (UTTERANCE_FIELDS, utterance_rows),
-            "morphemes.csv.gz": (MORPH_FIELDS, morph_rows),
-            "sense_dictionary.csv.gz": (
+            "utterances.csv.gz": (utterance_fields, utterance_rows),
+            "morphemes.csv.gz": (morph_fields, morph_rows),
+        }
+        if with_sense:
+            output_rows["sense_dictionary.csv.gz"] = (
                 SENSE_FIELDS,
                 sorted(sense_by_key.values(), key=lambda row: row["sense_key"]),
-            ),
-        }
+            )
         outputs: dict[str, Any] = {}
         for name, (fields, rows) in output_rows.items():
             path = building_dir / name
@@ -311,8 +346,13 @@ def process_source(
                 "sha256": sha256_file(path),
             }
         receipt = {
-            "schema": "bareun_wsd_csv_file_receipt.v1",
+            "schema": (
+                "bareun_wsd_csv_file_receipt.v1"
+                if with_sense
+                else "bareun_morph_csv_file_receipt.v1"
+            ),
             "status": "completed",
+            "with_sense": with_sense,
             "completed_at": utc_now(),
             "source_file": source.relative_to(input_root).as_posix(),
             "source_sha256": source_sha_before,
@@ -340,8 +380,13 @@ def process_source(
         atomic_json(
             building_dir / "FAILURE.json",
             {
-                "schema": "bareun_wsd_csv_file_failure.v1",
+                "schema": (
+                    "bareun_wsd_csv_file_failure.v1"
+                    if with_sense
+                    else "bareun_morph_csv_file_failure.v1"
+                ),
                 "failed_at": utc_now(),
+                "with_sense": with_sense,
                 "source_file": source.relative_to(input_root).as_posix(),
                 "error_type": type(exc).__name__,
                 "error": str(exc),
@@ -364,9 +409,8 @@ def sum_counts(total: dict[str, int], receipt: dict[str, Any]) -> None:
 
 def preflight(config: dict[str, Any], resume: bool) -> dict[str, Any]:
     input_root = expand_config_path(str(config["input"]["root"]))
-    output_root = expand_config_path(str(config["output"]["root"]))
-    run_root = output_root / "bulk_csv_v1.building"
-    final_root = output_root / "bulk_csv_v1"
+    output_root, run_root, final_root = bulk_roots(config)
+    with_sense = bool(config["api"].get("with_sense", True))
     ensure_output_contract(PROJECT_ROOT, output_root, config["protected_roots"])
     sources = list_sources(input_root)
     client = installed_client()
@@ -389,12 +433,12 @@ def preflight(config: dict[str, Any], resume: bool) -> dict[str, Any]:
     if run_root.exists() and not resume:
         errors.append("building_root_exists_resume_required")
     return {
-        "schema": "bareun_wsd_csv_full_preflight.v1",
+        "schema": schema_name(config, "preflight"),
         "ready": not errors,
         "api_call_performed": False,
         "server_contract": "api.bareun.ai Bareun server v3.1.0 or newer",
         "fresh_morphology_analysis": True,
-        "with_sense": True,
+        "with_sense": with_sense,
         "client": client,
         "source_csv_files": len(sources),
         "pilot_passed": pilot["passed"],
@@ -430,32 +474,33 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if report["ready"] else 1
     if not report["ready"]:
         return 1
-    if args.approval_token != APPROVAL_TOKEN:
+    expected_token = str(config.get("approval", {}).get("execution_token", APPROVAL_TOKEN))
+    if args.approval_token != expected_token:
         raise RuntimeError("exact bulk approval token required")
     if not args.approved_by.strip():
         raise RuntimeError("--approved-by is required")
-    if args.batch_size != 40:
-        raise RuntimeError("production batch size is frozen at 40")
+    frozen_batch_size = int(config["api"]["batch_size"])
+    if args.batch_size != frozen_batch_size:
+        raise RuntimeError(f"production batch size is frozen at {frozen_batch_size}")
 
     input_root = expand_config_path(str(config["input"]["root"]))
-    output_root = expand_config_path(str(config["output"]["root"]))
-    run_root = output_root / "bulk_csv_v1.building"
-    final_root = output_root / "bulk_csv_v1"
+    output_root, run_root, final_root = bulk_roots(config)
+    with_sense = bool(config["api"].get("with_sense", True))
     if not run_root.exists():
         run_root.mkdir(parents=True, exist_ok=False)
         atomic_json(
             run_root / "RUN_CONTRACT.json",
             {
-                "schema": "bareun_wsd_csv_full_run_contract.v1",
+                "schema": schema_name(config, "run_contract"),
                 "run_id": config["run_id"],
                 "created_at": utc_now(),
                 "approved_by": args.approved_by.strip(),
                 "server_contract": report["server_contract"],
                 "fresh_morphology_analysis": True,
-                "with_sense": True,
+                "with_sense": with_sense,
                 "client": report["client"],
                 "workers": 1,
-                "batch_size": 40,
+                "batch_size": frozen_batch_size,
                 "source_csv_files": report["source_csv_files"],
                 "expected_rows": config["input"]["expected_rows"],
                 "expected_input_eojeol": config["input"]["expected_input_eojeol"],
@@ -496,6 +541,9 @@ def main(argv: list[str] | None = None) -> int:
                 run_root,
                 args.batch_size,
                 args.max_retries,
+                with_sense=with_sense,
+                auto_spacing=bool(config["api"].get("auto_spacing", True)),
+                auto_jointing=bool(config["api"].get("auto_jointing", True)),
             )
             completed_files += 1
             sum_counts(totals, receipt)
@@ -523,7 +571,7 @@ def main(argv: list[str] | None = None) -> int:
             atomic_json(
                 run_root / "STATE.json",
                 {
-                    "schema": "bareun_wsd_csv_full_state.v1",
+                    "schema": schema_name(config, "state"),
                     "status": "running",
                     **event,
                     "free_gib": round(shutil.disk_usage(output_root.anchor).free / GIB, 3),
@@ -553,13 +601,13 @@ def main(argv: list[str] | None = None) -> int:
         inventory_path = run_root / "RECEIPT_INVENTORY.tsv"
         inventory_path.write_text("\n".join(receipt_rows) + "\n", encoding="utf-8")
         final_manifest = {
-            "schema": "bareun_wsd_csv_full_manifest.v1",
+            "schema": schema_name(config, "manifest"),
             "status": "completed",
             "completed_at": utc_now(),
             "run_id": config["run_id"],
             "server_contract": report["server_contract"],
             "fresh_morphology_analysis": True,
-            "with_sense": True,
+            "with_sense": with_sense,
             "source_csv_files": completed_files,
             "counts": totals,
             "receipt_inventory_sha256": sha256_file(inventory_path),
@@ -571,7 +619,7 @@ def main(argv: list[str] | None = None) -> int:
         atomic_json(run_root / "FINAL_MANIFEST.json", final_manifest)
         atomic_json(
             run_root / "STATE.json",
-            {"schema": "bareun_wsd_csv_full_state.v1", **final_manifest},
+            {"schema": schema_name(config, "state"), **final_manifest},
         )
         lock_path.unlink()
         os.replace(run_root, final_root)
@@ -581,8 +629,9 @@ def main(argv: list[str] | None = None) -> int:
         atomic_json(
             run_root / "STATE.json",
             {
-                "schema": "bareun_wsd_csv_full_state.v1",
+                "schema": schema_name(config, "state"),
                 "status": "failed_safe_to_resume",
+                "with_sense": with_sense,
                 "failed_at": utc_now(),
                 "error_type": type(exc).__name__,
                 "error": str(exc),

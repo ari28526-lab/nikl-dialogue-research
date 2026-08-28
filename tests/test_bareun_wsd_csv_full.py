@@ -86,9 +86,11 @@ class BareunWsdCsvFullTest(unittest.TestCase):
         class FakeTagger:
             def __init__(self):
                 self.calls = 0
+                self.kwargs = []
 
             def tags(self, texts, **kwargs):
                 self.calls += 1
+                self.kwargs.append(kwargs)
                 response = AnalyzeSyntaxResponse()
                 begin = 0
                 for text in texts:
@@ -140,6 +142,31 @@ class BareunWsdCsvFullTest(unittest.TestCase):
             )
             self.assertEqual(resumed["source_sha256"], receipt["source_sha256"])
             self.assertEqual(tagger.calls, first_calls)
+
+            morph_tagger = FakeTagger()
+            morph_run_root = root / "morph-run"
+            morph_receipt = MODULE.process_source(
+                morph_tagger,
+                source,
+                input_root,
+                morph_run_root,
+                batch_size=40,
+                max_retries=1,
+                with_sense=False,
+                auto_spacing=False,
+                auto_jointing=False,
+            )
+            morph_dir = MODULE.source_output_dir(morph_run_root, source, input_root)
+            self.assertFalse(morph_receipt["with_sense"])
+            self.assertEqual(morph_receipt["schema"], "bareun_morph_csv_file_receipt.v1")
+            self.assertFalse((morph_dir / "sense_dictionary.csv.gz").exists())
+            self.assertFalse(morph_tagger.kwargs[0]["with_sense"])
+            self.assertFalse(morph_tagger.kwargs[0]["auto_spacing"])
+            self.assertFalse(morph_tagger.kwargs[0]["auto_jointing"])
+            with gzip.open(
+                morph_dir / "morphemes.csv.gz", "rt", encoding="utf-8", newline=""
+            ) as handle:
+                self.assertNotIn("sense_no", next(csv.reader(handle)))
 
 
 if __name__ == "__main__":

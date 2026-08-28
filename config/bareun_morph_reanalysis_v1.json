@@ -1,0 +1,74 @@
+{
+  "schema": "bareun_morph_reanalysis.v1",
+  "run_id": "bareun_morph_full_20260828",
+  "status": "morphology_only_bulk_ready_user_powershell_required",
+  "endpoint": {
+    "host": "api.bareun.ai",
+    "port": 443
+  },
+  "client": {
+    "package": "bareunpy",
+    "version": "2.1.0",
+    "git_commit": "8107424892d76ac855918c20a0fb82faa877e530"
+  },
+  "input": {
+    "root": "D:/10_LAYERS/01_bareun_raw",
+    "expected_csv_files": 17156,
+    "expected_rows": 5103356,
+    "expected_input_eojeol": 27646899,
+    "required_columns": [
+      "utt_id",
+      "speaker_id",
+      "form"
+    ],
+    "ignored_analysis_columns": [
+      "tagged",
+      "n_morphs"
+    ]
+  },
+  "output": {
+    "root": "D:/10_LAYERS/12_bareun_morph_v3_1/bareun_morph_full_20260828",
+    "bulk_building_subdirectory": "bulk_csv_v1.building",
+    "bulk_final_subdirectory": "bulk_csv_v1",
+    "external_drive_required": true,
+    "project_payload_allowed": false,
+    "overwrite": false,
+    "preserve_prior_bareun": true,
+    "preserve_wsd_partial": true,
+    "preserve_mfa": true,
+    "preserve_textgrid": true
+  },
+  "api": {
+    "method": "AnalyzeSyntaxList",
+    "client_method": "tags",
+    "batch_size": 40,
+    "workers": 1,
+    "fallback_method": "tag",
+    "auto_split": false,
+    "auto_spacing": false,
+    "auto_jointing": false,
+    "with_sense": false
+  },
+  "secret": {
+    "environment_variable": "BAREUN_API_KEY",
+    "candidate_files": [
+      "%USERPROFILE%/Documents/Codex/_secrets/bareun/bareun.env",
+      "%USERPROFILE%/Documents/Codex/_secrets/bareun/bareun_api.txt"
+    ]
+  },
+  "storage": {
+    "minimum_bulk_csv_free_gib": 15
+  },
+  "approval": {
+    "execution_token": "BAREUN_MORPH_CSV_FULL_20260828",
+    "bulk_status": "morphology_only_approved_user_powershell_execution_required"
+  },
+  "protected_roots": [
+    "D:/10_LAYERS/01_bareun_raw",
+    "D:/10_LAYERS/02_sense_annotated",
+    "D:/10_LAYERS/03_freq_dictionaries",
+    "D:/10_LAYERS/11_bareun_wsd",
+    "D:/20_AUDIO",
+    "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809/research_6tier"
+  ]
+}
