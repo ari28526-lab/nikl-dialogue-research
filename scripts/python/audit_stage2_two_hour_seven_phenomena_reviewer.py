@@ -109,7 +109,9 @@ def extract_start_labels(document: str) -> dict[str, str]:
 
 def audit(
     package_dir: Path, *, cards_path: Path,
-    reference_package_dir: Path | None = None
+    reference_package_dir: Path | None = None,
+    claims_path: Path | None = None,
+    allow_literature_refresh: bool = False,
 ) -> dict[str, Any]:
     package_dir = package_dir.resolve()
     require(package_dir.is_dir(), f"package missing: {package_dir}")
@@ -201,6 +203,51 @@ def audit(
     start_labels = extract_start_labels((package_dir / "START_HERE.html").read_text(encoding="utf-8"))
     require(start_labels == expected_labels, f"START_HERE label mismatch: {start_labels}")
 
+    literature_refresh_checks: dict[str, Any] = {}
+    if claims_path is not None:
+        claims_path = claims_path.resolve()
+        claims = read_jsonl(claims_path)
+        claim_ids = [str(row.get("claim_id", "")) for row in claims]
+        require(
+            claim_ids == [f"CLM-{number:04d}" for number in range(1, len(claims) + 1)],
+            "claim ledger IDs must be unique, contiguous, and ordered",
+        )
+        claims_by_id = {str(row["claim_id"]): row for row in claims}
+        expected_claim_ids: dict[str, list[str]] = {}
+        for card in cards:
+            code = str(card["phenomenon_code"])
+            expected_claim_ids[code] = [
+                str(ref) for ref in card.get("evidence_refs", []) if str(ref).startswith("CLM-")
+            ]
+            embedded_ids = [str(row.get("claim_id", "")) for row in literature[code].get("claims", [])]
+            require(
+                embedded_ids == expected_claim_ids[code],
+                f"embedded literature claim IDs differ from scope card for {code}",
+            )
+            for embedded in literature[code].get("claims", []):
+                canonical = claims_by_id.get(str(embedded["claim_id"]))
+                require(canonical is not None, f"embedded claim missing from ledger: {embedded['claim_id']}")
+                for field in (
+                    "source_id", "citation", "claim_ko", "applies_when", "does_not_establish",
+                    "review_question", "printed_page", "pdf_page", "confidence", "source_file",
+                ):
+                    require(
+                        embedded.get(field, "") == canonical.get(field, ""),
+                        f"embedded claim field mismatch: {embedded['claim_id']} {field}",
+                    )
+        literature_refresh_checks = {
+            "claims_path": str(claims_path),
+            "claims_rows": len(claims),
+            "claims_sha256": sha256_file(claims_path),
+            "embedded_claim_rows": sum(len(value.get("claims", [])) for value in literature.values()),
+            "embedded_claim_ids_match_scope_cards": True,
+            "embedded_claim_fields_match_canonical": True,
+        }
+        require(
+            receipt.get("inputs", {}).get("claims", {}).get("sha256") == sha256_file(claims_path),
+            "build receipt claim SHA differs from audited claim ledger",
+        )
+
     new_ui_checks = {
         "history_global_shadow_absent": re.search(r"\bconst\s+history\s*=", document) is None,
         "window_history_replace_state": "window.history.replaceState" in document,
@@ -243,6 +290,11 @@ def audit(
             ("literature-data", literature),
             ("textgrids-data", textgrids),
         ]:
+            if element_id == "literature-data" and allow_literature_refresh:
+                reference_checks["literature-data_changed_by_declared_refresh"] = (
+                    extract_json_script(reference_document, element_id) != current
+                )
+                continue
             reference_checks[f"{element_id}_unchanged"] = (
                 extract_json_script(reference_document, element_id) == current
             )
@@ -270,6 +322,9 @@ def audit(
             "embedded_dialogue_keys": len(dialogues),
             "embedded_metadata_keys": len(metadata),
             "embedded_literature_codes": len(literature),
+            "embedded_literature_claim_rows": sum(
+                len(value.get("claims", [])) for value in literature.values()
+            ),
             "embedded_textgrid_projections": len(textgrids),
         },
         "hashes": {
@@ -295,6 +350,7 @@ def audit(
             **new_ui_checks,
             **reference_checks,
         },
+        "literature_refresh": literature_refresh_checks,
     }
 
 
@@ -322,6 +378,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / DEFAULT_OUTPUT)
     parser.add_argument("--scope-cards", type=Path, default=PROJECT_ROOT / DEFAULT_SCOPE_CARDS)
     parser.add_argument("--reference-package", type=Path)
+    parser.add_argument("--claims", type=Path)
+    parser.add_argument(
+        "--allow-literature-refresh",
+        action="store_true",
+        help="Allow only literature-data to differ from --reference-package",
+    )
     parser.add_argument("--check-only", action="store_true")
     return parser.parse_args()
 
@@ -333,6 +395,8 @@ def main() -> int:
             args.package_dir.resolve(),
             cards_path=args.scope_cards.resolve(),
             reference_package_dir=(args.reference_package.resolve() if args.reference_package else None),
+            claims_path=(args.claims.resolve() if args.claims else None),
+            allow_literature_refresh=args.allow_literature_refresh,
         )
         if not args.check_only:
             report = write_result(args.output_dir.resolve(), report)

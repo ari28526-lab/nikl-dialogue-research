@@ -108,6 +108,22 @@ class SevenPhenomenaReviewerTests(unittest.TestCase):
             {str(row["phenomenon_code"]): str(row["label_ko"]) for row in cards},
         )
 
+    def test_current_claim_ledger_can_refresh_appended_scope_refs(self) -> None:
+        refresh = load_module(
+            "refresh_stage2_scope_cards_from_appended_claims",
+            "refresh_stage2_scope_cards_from_appended_claims.py",
+        )
+        cards = BUILDER.read_jsonl(REPO_ROOT / BUILDER.DEFAULT_SCOPE_CARDS)
+        claims = BUILDER.read_jsonl(REPO_ROOT / BUILDER.DEFAULT_CLAIMS)
+        refreshed, additions = refresh.refresh_cards(cards, claims, 156)
+        self.assertEqual([row["phenomenon_code"] for row in refreshed], BUILDER.EXPECTED_CODES)
+        self.assertEqual(sum(len(value) for value in additions.values()), 18)
+        self.assertEqual(len({item for value in additions.values() for item in value}), 17)
+        self.assertIn("CLM-0160", additions["PT"])
+        self.assertIn("CLM-0160", additions["NAN"])
+        self.assertEqual(additions["VH"], [])
+        self.assertEqual(additions["HIA"], [])
+
     def test_phenomenon_summary_omits_sample_id_and_case_latest_filters_it(self) -> None:
         document = BUILDER.REVIEW_HTML
         summary_handler = document.split("byId('phenomenon-summary-save').onclick=", 1)[1].split(";\n", 1)[0]

@@ -695,7 +695,8 @@ def verify_package_manifest(package_dir: Path) -> dict[str, Any]:
 
 def repackage_from_verified_package(
     *, source_package_dir: Path, samples_path: Path, correction_receipt_path: Path,
-    cards_path: Path, output_dir: Path
+    cards_path: Path, claims_path: Path, output_dir: Path,
+    refresh_literature_from_claims: bool = False,
 ) -> dict[str, Any]:
     allowed = (PROJECT_ROOT / ALLOWED_OUTPUT_ROOT).resolve()
     source_package_dir = source_package_dir.resolve()
@@ -727,7 +728,8 @@ def repackage_from_verified_package(
     samples = extract_json_script(source_document, "samples-data")
     dialogues = extract_json_script(source_document, "dialogues-data")
     metadata = extract_json_script(source_document, "metadata-data")
-    literature = extract_json_script(source_document, "literature-data")
+    source_literature = extract_json_script(source_document, "literature-data")
+    literature = source_literature
     projections = extract_json_script(source_document, "textgrids-data")
     source_build_meta = extract_json_script(source_document, "build-data")
     require(source_build_meta.get("samples_sha256") == samples_sha, "source package sample SHA")
@@ -736,11 +738,36 @@ def repackage_from_verified_package(
         [row["sample_id"] for row in samples] == [row["sample_id"] for row in sample_rows],
         "source embedded sample order differs from frozen CSV",
     )
-    require(list(literature) == EXPECTED_CODES, "source literature order/codes")
+    require(list(source_literature) == EXPECTED_CODES, "source literature order/codes")
     require(
-        all(literature[code]["label_ko"] == cards_by_code[code]["label_ko"] for code in EXPECTED_CODES),
+        all(source_literature[code]["label_ko"] == cards_by_code[code]["label_ko"] for code in EXPECTED_CODES),
         "source literature labels differ from scope cards",
     )
+    literature_refresh: dict[str, Any] = {
+        "performed": False,
+        "source_embedded_claim_rows": sum(
+            len(value.get("claims", [])) for value in source_literature.values()
+        ),
+    }
+    if refresh_literature_from_claims:
+        claims = read_jsonl(claims_path)
+        claim_ids = [str(row.get("claim_id", "")) for row in claims]
+        require(len(claim_ids) >= 156, "claim ledger must preserve the frozen 156-row prefix")
+        require(
+            claim_ids == [f"CLM-{number:04d}" for number in range(1, len(claim_ids) + 1)],
+            "claim ledger IDs must be unique, contiguous, and append-only after CLM-0156",
+        )
+        literature = literature_payload(cards, claims)
+        literature_refresh = {
+            **literature_refresh,
+            "performed": True,
+            "claims_path": str(claims_path),
+            "claims_rows": len(claims),
+            "claims_sha256": sha256_file(claims_path),
+            "refreshed_embedded_claim_rows": sum(
+                len(value.get("claims", [])) for value in literature.values()
+            ),
+        }
 
     source_receipt = load_json(source_package_dir / "BUILD_RECEIPT.json")
     require(source_receipt.get("passed") is True, "source build receipt not passed")
@@ -764,10 +791,15 @@ def repackage_from_verified_package(
 
         build_meta = {
             **source_build_meta,
-            "schema_version": "stage2_two_hour_reviewer_build.v2",
-            "reviewer_version": "v2",
-            "build_mode": "c_only_repackage_from_verified_v1",
+            "schema_version": "stage2_two_hour_reviewer_build.v3",
+            "reviewer_version": "v3" if refresh_literature_from_claims else "v2",
+            "build_mode": (
+                "c_only_repackage_with_current_literature"
+                if refresh_literature_from_claims
+                else "c_only_repackage_from_verified_v1"
+            ),
             "source_package_manifest_sha256": source_manifest["sha256"],
+            "literature_refresh": literature_refresh,
         }
         atomic_write_text(
             partial / "STAGE2_TWO_HOUR_SEVEN_PHENOMENA_REVIEW.html",
@@ -783,13 +815,35 @@ def repackage_from_verified_package(
         atomic_write_text(partial / "START_HERE.html", build_start_html(literature))
         atomic_write_text(partial / "README.md", build_readme())
 
+        receipt_inputs = dict(source_receipt.get("inputs", {}))
+        receipt_inputs["scope_cards"] = {
+            "path": str(cards_path),
+            "rows": len(cards),
+            "sha256": sha256_file(cards_path),
+        }
+        if refresh_literature_from_claims:
+            receipt_inputs["claims"] = {
+                "path": str(claims_path),
+                "rows": literature_refresh["claims_rows"],
+                "sha256": literature_refresh["claims_sha256"],
+            }
+        receipt_counts = dict(source_receipt.get("counts", {}))
+        receipt_counts["literature_claim_rows_embedded"] = sum(
+            len(value.get("claims", [])) for value in literature.values()
+        )
         receipt = {
             **source_receipt,
-            "schema_version": "stage2_two_hour_reviewer_build_receipt.v2",
+            "schema_version": "stage2_two_hour_reviewer_build_receipt.v3",
             "status": "researcher_ready_no_listening_started",
+            "inputs": receipt_inputs,
+            "counts": receipt_counts,
             "rebuild": {
-                "reviewer_version": "v2",
-                "build_mode": "c_only_repackage_from_verified_v1",
+                "reviewer_version": "v3" if refresh_literature_from_claims else "v2",
+                "build_mode": (
+                    "c_only_repackage_with_current_literature"
+                    if refresh_literature_from_claims
+                    else "c_only_repackage_from_verified_v1"
+                ),
                 "source_package_dir": str(source_package_dir),
                 "source_package_manifest_sha256": source_manifest["sha256"],
                 "source_package_manifest_records_verified": source_manifest["records"],
@@ -797,8 +851,10 @@ def repackage_from_verified_package(
                 "samples_sha256": samples_sha,
                 "scope_cards_path": str(cards_path),
                 "scope_cards_sha256": sha256_file(cards_path),
+                "literature_refresh": literature_refresh,
                 "source_assets_reused_without_transformation": True,
-                "source_embedded_data_reused_semantically_unchanged": True,
+                "source_embedded_samples_dialogues_metadata_textgrids_reused_semantically_unchanged": True,
+                "source_embedded_literature_reused_semantically_unchanged": not refresh_literature_from_claims,
                 "user_ui_check_complete": False,
             },
             "safety": {
@@ -1005,6 +1061,11 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         help="Reuse a verified C:-drive reviewer package without reading raw/source corpus paths",
     )
+    parser.add_argument(
+        "--refresh-literature-from-claims",
+        action="store_true",
+        help="When repackaging, rebuild the literature panel from --scope-cards and --claims",
+    )
     parser.add_argument("--preflight-only", action="store_true")
     return parser.parse_args()
 
@@ -1025,7 +1086,9 @@ def main() -> int:
                 samples_path=args.samples.resolve(),
                 correction_receipt_path=args.correction_receipt.resolve(),
                 cards_path=args.scope_cards.resolve(),
+                claims_path=args.claims.resolve(),
                 output_dir=args.output_dir.resolve(),
+                refresh_literature_from_claims=args.refresh_literature_from_claims,
             )
         else:
             result = build(

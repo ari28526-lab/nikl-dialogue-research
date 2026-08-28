@@ -116,7 +116,7 @@ def audit_guides(guide_dir: Path, scope_cards: Path, reviewer_package: Path) -> 
             target = (html_path.parent / unquote(parts.path)).resolve()
             link_count += 1
             reviewer_target = reviewer_package / Path(unquote(parts.path)).name
-            is_reviewer_link = "researcher_review_package_v2" in Path(unquote(parts.path)).parts
+            is_reviewer_link = reviewer_package.name in Path(unquote(parts.path)).parts
             if not target.is_file() and not (is_reviewer_link and reviewer_target.is_file()):
                 failures.append(f"broken local link: {html_path.relative_to(guide_dir)} -> {href}")
 

@@ -517,19 +517,23 @@ def build_guides(scope_cards_path: Path, reviewer_package: Path, output_dir: Pat
     cards = load_scope_cards(scope_cards_path)
     counts = reviewer_counts(reviewer_package)
     output_dir.mkdir(parents=True)
+    reviewer_dir_name = reviewer_package.name
 
-    write_text(output_dir / "START_HERE.html", start_html(cards, counts))
-    write_text(output_dir / "ACTUAL_RESEARCH_GUIDE.md", common_guide_markdown(cards))
-    write_text(output_dir / "ACTUAL_RESEARCH_GUIDE.html", common_guide_html(cards))
-    write_text(output_dir / "SESSION_CHECKLIST.md", session_checklist_markdown())
-    write_text(output_dir / "SESSION_CHECKLIST.html", session_checklist_html())
-    write_text(output_dir / "UI_REDESIGN_OBSERVATIONS_TEMPLATE.md", ui_template_markdown())
-    write_text(output_dir / "UI_REDESIGN_OBSERVATIONS_TEMPLATE.html", ui_template_html())
-    write_text(output_dir / "PHENOMENON_GUIDES" / "index.html", phenomenon_index_html(cards))
+    def write_guide_text(path: Path, content: str) -> None:
+        write_text(path, content.replace("researcher_review_package_v2", reviewer_dir_name))
+
+    write_guide_text(output_dir / "START_HERE.html", start_html(cards, counts))
+    write_guide_text(output_dir / "ACTUAL_RESEARCH_GUIDE.md", common_guide_markdown(cards))
+    write_guide_text(output_dir / "ACTUAL_RESEARCH_GUIDE.html", common_guide_html(cards))
+    write_guide_text(output_dir / "SESSION_CHECKLIST.md", session_checklist_markdown())
+    write_guide_text(output_dir / "SESSION_CHECKLIST.html", session_checklist_html())
+    write_guide_text(output_dir / "UI_REDESIGN_OBSERVATIONS_TEMPLATE.md", ui_template_markdown())
+    write_guide_text(output_dir / "UI_REDESIGN_OBSERVATIONS_TEMPLATE.html", ui_template_html())
+    write_guide_text(output_dir / "PHENOMENON_GUIDES" / "index.html", phenomenon_index_html(cards))
     for card in cards:
         code = card["phenomenon_code"]
-        write_text(output_dir / "PHENOMENON_GUIDES" / f"{code}.md", phenomenon_markdown(card, counts[code]))
-        write_text(output_dir / "PHENOMENON_GUIDES" / f"{code}.html", phenomenon_html(card, counts[code]))
+        write_guide_text(output_dir / "PHENOMENON_GUIDES" / f"{code}.md", phenomenon_markdown(card, counts[code]))
+        write_guide_text(output_dir / "PHENOMENON_GUIDES" / f"{code}.html", phenomenon_html(card, counts[code]))
     write_text(
         output_dir / "RESEARCH_RECORDS" / "README.md",
         "# 연구 기록 보관\n\nreviewer에서 내보낸 JSONL을 `YYYY-MM-DD_현상코드_reviewer_v2.jsonl` 형식으로 보관한다. 현상별 최신 정본 하나를 유지하고, 이전 파일을 덮어쓰기 전에 별도 사본으로 보존한다.\n",
