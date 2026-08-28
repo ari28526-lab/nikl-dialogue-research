@@ -80,7 +80,11 @@ Write-Host "free_gib=$($result.free_gib)"
 if ($null -eq $state) {
     Write-Host 'state=none'
 } else {
-    Write-Host "status=$($state.status)"
+    $displayStatus = $state.status
+    if ($phase -eq 'building' -and $null -ne $lock) {
+        $displayStatus = 'running'
+    }
+    Write-Host "status=$displayStatus"
     if ($null -ne $state.completed_files) {
         Write-Host "files=$($state.completed_files)/$($state.total_files)"
     }
@@ -94,7 +98,8 @@ if ($null -eq $state) {
         $etaHours = [Math]::Round([double]$state.eta_seconds / 3600, 2)
         Write-Host "eta_hours=$etaHours"
     }
-    if ($null -ne $state.error) {
+    if ($state.PSObject.Properties.Name -contains 'error' -and
+        $null -ne $state.error) {
         Write-Host "error=$($state.error)"
     }
 }

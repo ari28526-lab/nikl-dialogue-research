@@ -572,8 +572,8 @@ def main(argv: list[str] | None = None) -> int:
                 run_root / "STATE.json",
                 {
                     "schema": schema_name(config, "state"),
-                    "status": "running",
                     **event,
+                    "status": "running",
                     "free_gib": round(shutil.disk_usage(output_root.anchor).free / GIB, 3),
                 },
             )
