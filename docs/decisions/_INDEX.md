@@ -1,5 +1,7 @@
 # 현행 결정 문서 색인
 
+- [PLAN_bareun_morph_csv_full_overnight_20260828.md](PLAN_bareun_morph_csv_full_overnight_20260828.md) — 바른 v3.1 형태소-only 전수 실행의 API 일시 장애 냉각·자동 재개·final 전수 SHA 감사 계약
+
 - [RESULT_stage2_two_hour_reviewer_v3_1_literature_refresh_20260825.md](RESULT_stage2_two_hour_reviewer_v3_1_literature_refresh_20260825.md) — 구 v2 문헌 패널을 그대로 쓰지 않고 최신 정본 claim 173행에서 화면 문헌 103행으로 갱신한 v3.1 reviewer·7현상 안내서 독립 감사 통과, 로컬 문헌 전수 대조와 Dropbox-only 후보 8건 기록, 84사례 파일럿 시작 가능 판정
 - [RESULT_stage2_actual_research_guides_all_7_20260824.md](RESULT_stage2_actual_research_guides_all_7_20260824.md) — 7개 candidate 범위 카드와 검증 reviewer 84건을 근거로 공통 실제 연구 안내서·현상별 HTML/Markdown 14개·체크시트·UI 관찰 양식을 생성; 독립 감사 manifest 24·로컬 링크 81·브라우저 NI 1/12 통과, 자동 판정·원자료 읽기 0
 - [RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md](RESULT_stage2_two_hour_reviewer_v2_rebuild_20260823.md) — 외부 검토 승인 A–H를 C:-only v1 재패키징으로 구현해 v2·독립 감사·Node DOM·실브라우저 점프 3건을 통과; 7현상×12건 작업 환경 세팅 완료, 연구 판단은 candidate로 유지하고 첫 실제 사용 때 페이지·오디오만 환경 확인

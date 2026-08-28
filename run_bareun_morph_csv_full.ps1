@@ -40,6 +40,8 @@ $arguments = New-Object 'System.Collections.Generic.List[string]'
 [void]$arguments.Add($config)
 [void]$arguments.Add('--batch-size')
 [void]$arguments.Add('40')
+[void]$arguments.Add('--max-retries')
+[void]$arguments.Add('6')
 
 if ($Resume) {
     [void]$arguments.Add('--resume')

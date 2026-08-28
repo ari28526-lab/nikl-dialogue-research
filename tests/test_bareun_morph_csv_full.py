@@ -11,6 +11,8 @@ RUNNER_PATH = PROJECT_ROOT / "scripts" / "python" / "run_bareun_wsd_csv_full.py"
 CONFIG_PATH = PROJECT_ROOT / "config" / "bareun_morph_reanalysis_v1.json"
 WRAPPER_PATH = PROJECT_ROOT / "run_bareun_morph_csv_full.ps1"
 STATUS_PATH = PROJECT_ROOT / "show_bareun_morph_csv_status.ps1"
+SUPERVISOR_PATH = PROJECT_ROOT / "run_bareun_morph_csv_unattended.ps1"
+AUDITOR_PATH = PROJECT_ROOT / "scripts" / "python" / "audit_bareun_wsd_csv_full.py"
 
 SPEC = importlib.util.spec_from_file_location("bareun_morph_csv_full", RUNNER_PATH)
 assert SPEC and SPEC.loader
@@ -45,7 +47,27 @@ class BareunMorphCsvFullTest(unittest.TestCase):
         self.assertNotIn("0x80000000", wrapper)
         self.assertNotIn("&&", wrapper)
         self.assertIn("SetThreadExecutionState", wrapper)
+        self.assertIn("--max-retries", wrapper)
+        self.assertIn("'6'", wrapper)
         self.assertTrue(STATUS_PATH.is_file())
+
+    def test_unattended_supervisor_is_fail_closed_and_api_retry_scoped(self) -> None:
+        supervisor = SUPERVISOR_PATH.read_text(encoding="utf-8-sig")
+        self.assertIn("failed_safe_to_resume", supervisor)
+        self.assertIn("Test-RetryableApiFailure", supervisor)
+        self.assertIn("InitialCooldownSeconds = 300", supervisor)
+        self.assertIn("MaxAutoResumes = 24", supervisor)
+        self.assertIn("stopped_nonretryable_failure", supervisor)
+        self.assertIn("Invoke-FinalAudit", supervisor)
+        self.assertIn("SetThreadExecutionState", supervisor)
+        self.assertNotIn("Remove-Item", supervisor)
+        self.assertNotIn("Stop-Process", supervisor)
+
+    def test_auditor_accepts_morphology_only_contract(self) -> None:
+        auditor = AUDITOR_PATH.read_text(encoding="utf-8")
+        self.assertIn('analysis_mode = "wsd" if with_sense else "morph"', auditor)
+        self.assertIn("analysis_mode_contract_mismatch", auditor)
+        self.assertIn("unexpected_sense_count_in_morphology_only_run", auditor)
 
 
 if __name__ == "__main__":

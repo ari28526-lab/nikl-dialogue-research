@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently audit completed full Bareun morphology+WSD CSV outputs."""
+"""Independently audit completed full Bareun morphology or WSD CSV outputs."""
 
 from __future__ import annotations
 
@@ -34,6 +34,8 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     args = parser.parse_args()
     config = load_config(args.config)
+    with_sense = bool(config["api"].get("with_sense", True))
+    analysis_mode = "wsd" if with_sense else "morph"
     input_root = expand_config_path(str(config["input"]["root"]))
     output_root = expand_config_path(str(config["output"]["root"]))
     final_root = output_root / "bulk_csv_v1"
@@ -98,14 +100,20 @@ def main() -> int:
         errors.append("manifest_count_mismatch")
     if output_bytes != manifest["total_compressed_csv_bytes"]:
         errors.append("manifest_output_bytes_mismatch")
-    if not manifest.get("fresh_morphology_analysis") or not manifest.get("with_sense"):
-        errors.append("fresh_morphology_or_wsd_contract_missing")
+    if not manifest.get("fresh_morphology_analysis"):
+        errors.append("fresh_morphology_contract_missing")
+    if bool(manifest.get("with_sense")) != with_sense:
+        errors.append("analysis_mode_contract_mismatch")
+    if not with_sense and totals["morphemes_with_sense"] != 0:
+        errors.append("unexpected_sense_count_in_morphology_only_run")
     if manifest.get("textgrid_or_wav_accessed"):
         errors.append("unexpected_textgrid_or_wav_access")
 
     report: dict[str, Any] = {
-        "schema": "bareun_wsd_csv_full_audit.v1",
+        "schema": f"bareun_{analysis_mode}_csv_full_audit.v1",
         "passed": not errors,
+        "analysis_mode": analysis_mode,
+        "with_sense": with_sense,
         "final_root": str(final_root),
         "server_contract": manifest["server_contract"],
         "source_csv_files": len(inventory_rows),
