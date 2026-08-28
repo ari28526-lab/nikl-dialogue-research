@@ -1,0 +1,44 @@
+{
+  "schema": "bareun_wsd_throughput_benchmark.v1",
+  "recorded_at": "2026-08-28",
+  "endpoint": "api.bareun.ai:443",
+  "server_contract": "Bareun server v3.1.0 or newer",
+  "client": {
+    "package": "bareunpy",
+    "version": "2.1.0",
+    "git_commit": "8107424892d76ac855918c20a0fb82faa877e530"
+  },
+  "request": {
+    "method": "AnalyzeSyntax",
+    "client_method": "tags",
+    "with_sense": true,
+    "auto_split": false,
+    "auto_spacing": true,
+    "auto_jointing": true
+  },
+  "single_worker": {
+    "workers": 1,
+    "batch_size": 40,
+    "sentences_sent": 40,
+    "response_sentences": 40,
+    "cardinality_ok": true,
+    "elapsed_seconds": 5.504,
+    "utterances_per_second": 7.267
+  },
+  "four_workers": {
+    "workers": 4,
+    "batch_size_per_worker": 40,
+    "sentences_attempted": 160,
+    "passed": false,
+    "error_type": "ServiceUnavailable",
+    "production_allowed": false
+  },
+  "production_decision": {
+    "workers": 1,
+    "batch_size": 40,
+    "simple_full_eta_days": 8.13,
+    "parallel_requests_forbidden": true
+  },
+  "secret_value_recorded": false,
+  "raw_utterance_recorded": false
+}

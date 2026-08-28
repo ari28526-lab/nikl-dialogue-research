@@ -2,7 +2,7 @@
 
 작성일: 2026-08-28
 
-현재 상태: **환경 준비 단계. 전수 API 호출은 시작하지 않음**
+현재 상태: **P1 통과, CSV 전수 사용자 PowerShell 실행 대기**
 
 ## 이 환경의 목적
 
@@ -83,17 +83,46 @@ API를 부르지 않는 환경·입력 전수 점검:
 
 ## 현재 안전 정지점
 
-- 전수 실행기와 체크포인트 writer는 아직 만들거나 실행하지 않았다.
-- API 전수 호출과 유료 대량 사용은 0이다.
+- P1은 240/240과 독립 감사를 통과했다.
+- 전수 실행기·상태판·완료 감사기는 준비됐으나 API 전수 호출은 시작하지 않았다.
 - 새 전수 결과의 최종 저장소도 외장하드이며 로컬 SSD는 결과 저장소가 아니다.
-- D: 여유가 80 GiB 미만이면 bulk gate는 닫힌다.
+- CSV-only 예상은 gzip 약 2.00 GiB이며 15 GiB gate를 통과했다.
+- TextGrid 등 추가 파생은 80 GiB gate가 계속 닫혀 있다.
 - 의미번호는 자동 정답이 아니라 검토할 WSD 후보로 저장한다.
 - TextGrid 연결은 별도 sidecar가 기본이며 원 TextGrid는 불변이다.
 
-다음 단계는 계획 문서의 P1 소규모 파일럿을 승인한 뒤, 출력 크기·응답 완전성·
-재개 가능성을 계측하는 것이다.
+전수 실행 전 최종 확인:
+
+```powershell
+& .\run_bareun_wsd_csv_full.ps1 -PreflightOnly
+```
+
+전수 시작은 사용자가 직접 다음 명령을 실행해야 한다.
+
+```powershell
+& .\run_bareun_wsd_csv_full.ps1 `
+  -Execute `
+  -ApprovedBy ari30 `
+  -ApprovalToken BAREUN_WSD_CSV_FULL_20260828
+```
+
+중단 뒤 재개:
+
+```powershell
+& .\run_bareun_wsd_csv_full.ps1 `
+  -Execute -Resume `
+  -ApprovedBy ari30 `
+  -ApprovalToken BAREUN_WSD_CSV_FULL_20260828
+```
+
+다른 PowerShell 창에서 상태 확인:
+
+```powershell
+& .\show_bareun_wsd_csv_status.ps1
+```
 
 관련 결정 기록:
 
 - `../decisions/PLAN_bareun_WSD_full_reanalysis_20260828.md`
 - `../decisions/RESULT_bareun_WSD_environment_gate_20260828.md`
+- `../decisions/RESULT_bareun_WSD_csv_pilot_P1_20260828.md`

@@ -2,7 +2,7 @@
 
 작성일: 2026-08-28
 
-상태: **환경 Gate E0 통과, 파일럿·전수 실행 미승인**
+상태: **P1 통과, CSV-only 전수 실행 사용자 PowerShell 대기**
 
 대상: 2020–2025 대화 말뭉치 전체
 
@@ -43,19 +43,23 @@ sidecar이고, 어절 좌표가 정확히 일치할 때만 word interval까지 �
 Business 구독 한도·추가 과금은 실행 직전 바른 계정의 현재 청구 화면과 다시
 대조한다. 위 수치는 재현 가능한 입력 회계이며 실제 청구액 보장은 아니다.
 
-## 4. 고정 API 계약
+## 4. 엔진·클라이언트·API 계약
 
-- 클라이언트: `bareunpy==2.1.0`
+- 분석 엔진: 클라우드 `api.bareun.ai`의 바른 서버 v3.1.0 이상
+- 클라이언트: `bareunpy==2.1.0` — 서버 엔진 버전과 구분
 - 공식 commit: `8107424892d76ac855918c20a0fb82faa877e530`
 - endpoint: `api.bareun.ai:443`
-- method: `AnalyzeSyntaxList` (`taglist`)
+- method: `AnalyzeSyntax` (`tags`), 실패 시 같은 순서의 `tag` 단건 폴백
 - `with_sense=true`
 - `auto_split=false`, `auto_spacing=true`, `auto_jointing=true`
-- 초기 batch: 40발화
+- production batch: 40발화, worker: 1
 
-`taglist`를 쓰는 이유는 입력 발화 단위를 유지하기 위해서다. 파일럿에서 응답
-개수와 입력 개수가 1:1인지 매 batch 확인하고, 불일치는 출력하지 않고 실패
-checkpoint로 남긴다.
+새 서버가 형태소 분절·품사·확률을 전부 다시 계산하고 같은 응답에 WSD를
+붙인다. 과거 CSV에서는 `utt_id`, `speaker_id`, `form`만 읽으며 `tagged`와
+`n_morphs`는 새 분석 입력으로 사용하지 않는다. 과거 전수에서 검증된 `tags`
+batch·`tag` 단건 폴백·파일 checkpoint 운영만 재사용한다. 배치 응답 수는
+매번 입력과 1:1인지 확인하고, 합친 요청의 전역 offset은 각 sentence 시작점을
+빼서 발화 내부 UTF-32 좌표로 정규화한다.
 
 ## 5. 새 산출물 구조
 
@@ -94,50 +98,55 @@ checkpoint로 남긴다.
 | Gate | 범위 | 통과 조건 | 현재 |
 |---|---|---|---|
 | E0 | 환경 | 고정 client, 키 비노출, 입력·저장공간 사전점검 | 통과 |
-| P1 | 소규모 파일럿 | 응답 1:1, schema, 재개, 출력 용량, 비용 회계 | 미승인 |
-| B1 | 전수 실행 | P1 통과, 80 GiB 이상, 보호경로 검사, 명시 승인 | 닫힘 |
+| P1 | 소규모 파일럿 | 응답 1:1, schema, 출력 용량, 원 CSV SHA | 통과 |
+| B1-CSV | 압축 CSV 전수 | P1 통과, 15 GiB 이상, PS5.1 runner, 사용자 직접 실행 | 준비 완료·미시작 |
+| B1-ALL | TextGrid 등 추가 파생 | 80 GiB 이상, 별도 설계·승인 | 닫힘 |
 | A1 | 전수 감사 | 입력 zero-drop, batch 회계, SHA, 실패 재처리 0 | 대기 |
 | W1 | WSD 검토 | 다의어 층화 표본과 무의미번호 사례 검토 | 대기 |
 
-E0를 마쳐도 B1은 자동으로 열리지 않는다. 사용자가 환경·문서와 P1 결과를
-확인한 뒤 전수 실행을 별도로 승인해야 한다.
+P1과 B1-CSV preflight는 통과했지만 API 전수 호출은 자동 시작하지 않는다.
+사용자가 검증된 PowerShell 명령을 직접 실행해야 한다.
 
 ## 8. 대량 실행 권한과 운영 방식
 
-P1을 통과한 뒤에도 전수 작업은 Codex가 자동·백그라운드로 시작하지 않는다.
-Windows PowerShell 5.1 호환 runner, `-PreflightOnly`, 상태판, 중단·재개 절차와
-정확한 명령을 먼저 준비하고 테스트한다. 그 뒤 사용자가 명령을 직접 실행해야만
-대량 API 호출이 시작된다. runner는 외장하드 출력 root와 보호경로, 단일 lock,
-공간, client commit, 입력 회계를 다시 검사해야 한다.
+Windows PowerShell 5.1 runner, `-PreflightOnly`, 상태판, 중단·재개 절차와
+정확한 명령을 준비하고 테스트했다. 사용자가 명령을 직접 실행해야만 대량 API
+호출이 시작된다. runner는 외장하드 출력 root와 보호경로, 단일 lock, 공간,
+client commit, 입력 회계를 다시 검사한다.
 
 ## 9. 저장공간 전략
 
-2026-08-28 실측 D: 여유는 약 57.7 GiB다. 환경 gate 최저 50 GiB는 넘지만
-전수 bulk gate 80 GiB에는 미달한다.
+2026-08-28 실측 D: 여유는 약 57.7 GiB다. P1의 단순 전수 환산은 일반 CSV
+약 9.38 GiB, gzip CSV 약 2.00 GiB다. 따라서 CSV-only gate는 안전 여유를
+포함해 15 GiB로 두고 통과시켰다. TextGrid 등 추가 대량 파생의 80 GiB gate는
+계속 닫혀 있다.
 
 - 기존 52.66 GiB `morph_search.v3`를 복제하지 않음
 - 원 TextGrid 428만 개를 복제하지 않음
 - 새 WSD CSV/sidecar 본체도 외장하드에만 저장
 - 로컬 SSD와 GitHub에는 대용량 결과를 저장하지 않음
 - 정규화한 compact WSD sidecar를 우선 생성
-- P1에서 발화당 출력 byte를 측정해 전수 예상치와 checkpoint 여유를 계산
-- 저장공간이 확보되기 전 B1은 fail-closed
+- 전수 출력은 `utterances.csv.gz`, `morphemes.csv.gz`,
+  `sense_dictionary.csv.gz`의 파일별 묶음
+- 파일별 receipt를 마지막에 원자 승격하고 완료 SHA가 맞는 파일만 재사용
+- 15 GiB 미만이면 B1-CSV도 fail-closed
 
 ## 10. 실행 전 확인 항목
 
 - 공식 문서의 WSD 옵션과 현재 계정 한도 재확인
-- `preflight_bareun_wsd_environment.py --full-input-scan --live-api` 통과
-- P1 결과 문서와 schema 승인
+- P1 240/240과 독립 감사 통과
+- batch 40 단일 worker 40/40·약 7.27발화/초 확인
+- 4-worker 동시 batch는 `Service Unavailable`이므로 production에서 금지
 - 외장하드 CSV·TextGrid·WAV 보호경로 snapshot 또는 manifest 확인
 - 출력 root 미존재, 덮어쓰기 false 확인
 - 전수 runner의 재개·backoff·rate-limit·원자 승격 테스트 통과
 
 ## 11. 현재 정지점과 다음 결정
 
-현재는 환경과 계획 문서를 GitHub에 올리는 지점에서 멈춘다. 전수 API 호출은
-수행하지 않는다. 다음 사용자 결정은 **P1 소규모 WSD 파일럿 실행 승인** 한
-가지다. P1은 전수 실행이 아니며 출력 크기와 실제 응답 계약을 동결하기 위한
-최소 단위다.
+현재 전수 API 호출은 시작하지 않았다. 다음 행동은 사용자가
+`run_bareun_wsd_csv_full.ps1 -Execute` 명령을 직접 실행하는 것이다. 단일 worker
+실측 단순 환산은 약 8.1일이며, 중단 시 같은 명령에 `-Resume`을 붙인다.
 
 환경 Gate의 실제 검증 결과는
 `RESULT_bareun_WSD_environment_gate_20260828.md`에 기록한다.
+P1과 전수 준비 결과는 `RESULT_bareun_WSD_csv_pilot_P1_20260828.md`에 기록한다.

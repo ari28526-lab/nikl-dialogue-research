@@ -1,7 +1,7 @@
 {
   "schema": "bareun_wsd_reanalysis.v1",
   "run_id": "bareun_wsd_full_20260828",
-  "status": "environment_preparation_bulk_not_approved",
+  "status": "pilot_passed_csv_bulk_ready_user_powershell_required",
   "endpoint": {
     "host": "api.bareun.ai",
     "port": 443
@@ -34,8 +34,11 @@
     "preserve_textgrid": true
   },
   "api": {
-    "method": "AnalyzeSyntaxList",
+    "method": "AnalyzeSyntax",
+    "client_method": "tags",
     "batch_size": 40,
+    "workers": 1,
+    "fallback_method": "tag",
     "auto_split": false,
     "auto_spacing": true,
     "auto_jointing": true,
@@ -51,11 +54,12 @@
   "storage": {
     "minimum_environment_free_gib": 50,
     "minimum_bulk_free_gib": 80,
+    "minimum_bulk_csv_free_gib": 15,
     "measure_pilot_output": true
   },
   "approval": {
     "plan_document": "docs/decisions/PLAN_bareun_WSD_full_reanalysis_20260828.md",
-    "bulk_status": "pending"
+    "bulk_status": "csv_approved_after_pilot_user_powershell_execution_required"
   },
   "protected_roots": [
     "D:/10_LAYERS/01_bareun_raw",

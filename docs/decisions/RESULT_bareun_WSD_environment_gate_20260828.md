@@ -59,3 +59,10 @@
 offset, sense 필드 완전성, 재개 동작을 계측한다. 이후 PowerShell 5.1 bulk
 runner와 상태판을 준비해 테스트하고, 대량 작업은 사용자가 그 명령을 직접
 실행할 때만 시작한다.
+
+## 후속 상태
+
+이 문서의 E0 정지점은 같은 날 P1 결과로 갱신됐다. CSV-only 전수는 P1 실측에
+따라 15 GiB 별도 gate를 적용하며, 최신 상태는
+`RESULT_bareun_WSD_csv_pilot_P1_20260828.md`를 따른다. TextGrid 등 추가 파생의
+80 GiB gate는 유지한다.

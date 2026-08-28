@@ -1,0 +1,23 @@
+{
+  "schema": "bareun_wsd_csv_pilot_audit.v1",
+  "passed": true,
+  "pilot_root": "D:\\10_LAYERS\\11_bareun_wsd\\bareun_wsd_full_20260828\\pilot_p1_20260828",
+  "counts": {
+    "utterances": 240,
+    "morphemes": 2530,
+    "unique_senses": 397,
+    "year_counts": {
+      "2020": 40,
+      "2021": 40,
+      "2022": 40,
+      "2023": 40,
+      "2024": 40,
+      "2025": 40
+    }
+  },
+  "estimated_full_uncompressed_gib": 9.376582038309426,
+  "estimated_full_compressed_gib": 2.003513211244717,
+  "protected_csv_unchanged": true,
+  "textgrid_or_wav_accessed": false,
+  "errors": []
+}
