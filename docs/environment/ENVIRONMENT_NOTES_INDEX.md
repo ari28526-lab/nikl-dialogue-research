@@ -14,6 +14,7 @@ linguistics-research-environment-master-notes.md
 ```text
 codex-dev-environment-notes.md
 bareun-morph-analyzer-setup-plan.md
+BAREUN_WSD_REANALYSIS_ENVIRONMENT.md
 speech-praat-setup-notes.md
 r-linguistics-setup-notes.md
 mfa-setup-notes.md

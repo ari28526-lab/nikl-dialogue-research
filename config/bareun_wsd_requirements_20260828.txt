@@ -1,0 +1,6 @@
+bareunpy @ git+https://github.com/bareun-nlp/bareunpy.git@8107424892d76ac855918c20a0fb82faa877e530
+connectrpc==0.10.1
+opentelemetry-api==1.44.0
+protobuf==7.36.0
+pyqwest==0.10.0
+typing-extensions==4.16.0

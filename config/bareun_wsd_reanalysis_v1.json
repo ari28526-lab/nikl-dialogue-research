@@ -1,0 +1,67 @@
+{
+  "schema": "bareun_wsd_reanalysis.v1",
+  "run_id": "bareun_wsd_full_20260828",
+  "status": "environment_preparation_bulk_not_approved",
+  "endpoint": {
+    "host": "api.bareun.ai",
+    "port": 443
+  },
+  "client": {
+    "package": "bareunpy",
+    "version": "2.1.0",
+    "git_commit": "8107424892d76ac855918c20a0fb82faa877e530"
+  },
+  "input": {
+    "root": "D:/10_LAYERS/01_bareun_raw",
+    "expected_csv_files": 17156,
+    "expected_rows": 5103356,
+    "expected_input_eojeol": 27646899,
+    "required_columns": [
+      "utt_id",
+      "speaker_id",
+      "form"
+    ]
+  },
+  "output": {
+    "root": "D:/10_LAYERS/11_bareun_wsd/bareun_wsd_full_20260828",
+    "staging_subdirectory": ".building",
+    "final_subdirectory": "final",
+    "external_drive_required": true,
+    "project_payload_allowed": false,
+    "overwrite": false,
+    "preserve_prior_bareun": true,
+    "preserve_mfa": true,
+    "preserve_textgrid": true
+  },
+  "api": {
+    "method": "AnalyzeSyntaxList",
+    "batch_size": 40,
+    "auto_split": false,
+    "auto_spacing": true,
+    "auto_jointing": true,
+    "with_sense": true
+  },
+  "secret": {
+    "environment_variable": "BAREUN_API_KEY",
+    "candidate_files": [
+      "%USERPROFILE%/Documents/Codex/_secrets/bareun/bareun.env",
+      "%USERPROFILE%/Documents/Codex/_secrets/bareun/bareun_api.txt"
+    ]
+  },
+  "storage": {
+    "minimum_environment_free_gib": 50,
+    "minimum_bulk_free_gib": 80,
+    "measure_pilot_output": true
+  },
+  "approval": {
+    "plan_document": "docs/decisions/PLAN_bareun_WSD_full_reanalysis_20260828.md",
+    "bulk_status": "pending"
+  },
+  "protected_roots": [
+    "D:/10_LAYERS/01_bareun_raw",
+    "D:/10_LAYERS/02_sense_annotated",
+    "D:/10_LAYERS/03_freq_dictionaries",
+    "D:/20_AUDIO",
+    "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809/research_6tier"
+  ]
+}

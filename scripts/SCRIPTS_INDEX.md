@@ -81,6 +81,7 @@ wrapper는 재현 근거로 보존하지만 정상 절차에서 다시 실행하
 |---|---|---|
 | bareun_dialogue_pilot.py | 바른 API 파일럿 (120발화 검증) | 완료·보존용 |
 | bareun_dialogue_full.py | **1차: 전체 형태소 재분석** (510만 발화, 체크포인트) | 실행 완료 |
+| `preflight_bareun_wsd_environment.py` | 바른 2.1.0 WSD 전면 재분석의 client commit·키 비노출·17,156 CSV 회계·외장하드 공간을 읽기 전용 검사한다. `--live-api`도 한 문장만 보내며 전수 호출은 하지 않는다. | 2026-08-28 환경 Gate용; bulk 실행 기능 없음 |
 | repair_empty_tagged.py | 장애 시 오염 파일 탐지·정리 | 유틸 |
 | assign_sense_layer.py | **2차: 의미번호 부여** (LS+우리말샘 lexicon) | 실행 완료 |
 | supplement_sense_layer.py | 2차 보완 (접사 어간형 색인·다의어 잠정 부여) | 실행 완료 |
