@@ -60,3 +60,6 @@ receipt와 SHA를 검증해 그대로 재사용하고 실패 중이던 파일만
 이 완료 조건은 몇 시간 뒤 자동 만료되는 작업이 아니다. 현재 실측 ETA에
 여유를 둔 첫 운영 창은 24시간으로 보되, goal은 위 다섯 조건을 만족할 때까지
 유지한다.
+
+형태소 final 감사 뒤의 MFA TextGrid 활용과 문맥 donor WSD 호출 축소는
+`PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md`를 따른다.
