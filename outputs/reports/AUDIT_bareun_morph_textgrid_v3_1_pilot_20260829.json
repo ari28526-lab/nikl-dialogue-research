@@ -1,0 +1,29 @@
+{
+  "schema": "bareun_morph_textgrid_pilot_audit.v1",
+  "audited_at": "2026-08-29T19:01:19+09:00",
+  "passed": true,
+  "sample_count": 12,
+  "year_counts": {
+    "2020": 2,
+    "2021": 2,
+    "2022": 2,
+    "2023": 2,
+    "2024": 2,
+    "2025": 2
+  },
+  "category_counts": {
+    "changed": 6,
+    "unchanged": 6
+  },
+  "source_textgrids_unchanged": true,
+  "first_five_tiers_semantically_unchanged": true,
+  "morph_tier_boundaries_unchanged": true,
+  "new_morph_labels_match_bareun_v3_1": true,
+  "source_wav_accessed": false,
+  "mfa_rerun": false,
+  "user_review_cases": 3,
+  "estimated_full_textgrid_gib": 42.928,
+  "free_d_gib_before": 56.199,
+  "estimated_free_d_gib_after": 13.271,
+  "errors": []
+}

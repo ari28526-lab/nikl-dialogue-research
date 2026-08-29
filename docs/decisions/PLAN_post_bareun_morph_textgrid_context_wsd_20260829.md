@@ -2,7 +2,7 @@
 
 작성일: 2026-08-29 KST
 
-상태: **계획 확정, 형태소-only 전수 완료·감사 대기**
+상태: **형태소-only 전수·감사 완료, TextGrid 12건 파일럿 통과, 전수는 용량 확보 대기**
 
 ## 결정
 
@@ -124,9 +124,10 @@ WSD CSV는 성공한 의미번호만 모으는 표가 아니다. 대상 occurren
 
 ## 실행 순서
 
-1. 현재 형태소-only 전수의 final 승격과 전수 receipt/SHA 감사를 완료한다.
-2. 새 형태소 결과에서 TextGrid 예상 용량과 출력 파일 수를 표본으로 추정한다.
-3. 6개년 균형 표본으로 새 `morph_analysis_utt` TextGrid와 sidecar 조인을 만들고
+1. [완료] 형태소-only 전수의 final 승격과 전수 receipt/SHA 감사를 완료한다.
+2. [완료] 새 형태소 결과에서 TextGrid 예상 용량과 출력 파일 수를 표본으로 추정한다.
+3. [기계 감사 완료·사용자 3건 확인 대기] 6개년 균형 표본으로 새
+   `morph_analysis_utt` TextGrid와 sidecar 조인을 만들고
    기존 five-tier 시간·label 불변, 새 형태소 label, mismatch 회계를 독립 감사한다.
 4. D:에 예상 완성 크기와 15 GiB 안전 여유가 모두 확보될 때만 별도 versioned
    root로 전수 TextGrid를 생성한다. WAV를 복사하거나 MFA를 재실행하지 않는다.

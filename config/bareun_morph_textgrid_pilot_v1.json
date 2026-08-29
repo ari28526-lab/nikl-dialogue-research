@@ -1,0 +1,35 @@
+{
+  "schema": "bareun_morph_textgrid_pilot_config.v1",
+  "run_id": "bareun_morph_textgrid_v3_1_pilot_20260829",
+  "input": {
+    "bareun_final_root": "D:/10_LAYERS/12_bareun_morph_v3_1/bareun_morph_full_20260828/bulk_csv_v1",
+    "source_textgrid_root": "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809/research_6tier",
+    "expected_years": ["2020", "2021", "2022", "2023", "2024", "2025"],
+    "expected_aligned_textgrids": 4286046
+  },
+  "selection": {
+    "changed_per_year": 1,
+    "unchanged_per_year": 1,
+    "max_receipts_per_year": 40,
+    "user_review_cases": 3
+  },
+  "output": {
+    "root": "outputs/pilots/bareun_morph_textgrid_v3_1_pilot_20260829",
+    "audit_report": "outputs/reports/AUDIT_bareun_morph_textgrid_v3_1_pilot_20260829.json"
+  },
+  "contract": {
+    "source_textgrid_read_only": true,
+    "source_wav_read_only": true,
+    "mfa_rerun": false,
+    "tier_order": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ],
+    "updated_tier": "morph_analysis_utt",
+    "morph_tier_is_utterance_level_not_acoustic_boundaries": true
+  }
+}
