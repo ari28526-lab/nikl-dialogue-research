@@ -186,8 +186,12 @@ function Invoke-FinalAudit {
         '--report',
         $auditReport
     )
-    & $python $auditArguments
-    return $LASTEXITCODE
+    $auditOutput = @(& $python $auditArguments 2>&1)
+    $auditExitCode = [int]$LASTEXITCODE
+    foreach ($line in $auditOutput) {
+        Write-Host ([string]$line)
+    }
+    return $auditExitCode
 }
 
 $phase = if (Test-Path -LiteralPath $finalRoot -PathType Container) {

@@ -1,0 +1,27 @@
+{
+  "schema": "bareun_morph_csv_full_audit.v1",
+  "passed": true,
+  "analysis_mode": "morph",
+  "with_sense": false,
+  "final_root": "D:\\10_LAYERS\\12_bareun_morph_v3_1\\bareun_morph_full_20260828\\bulk_csv_v1",
+  "server_contract": "api.bareun.ai Bareun server v3.1.0 or newer",
+  "source_csv_files": 17156,
+  "counts": {
+    "utterances": 5103356,
+    "input_eojeol": 27646899,
+    "tokens": 27646899,
+    "morphemes": 51280814,
+    "morphemes_with_sense": 0
+  },
+  "total_compressed_csv_bytes": 1349330222,
+  "api_input_normalization": {
+    "policy": "line_separator_characters_to_ascii_space_one_for_one",
+    "utterances_changed": 2,
+    "characters_replaced": 2,
+    "source_text_modified": false,
+    "offset_length_preserved": true
+  },
+  "protected_source_csv_unchanged": true,
+  "textgrid_or_wav_accessed": false,
+  "errors": []
+}
