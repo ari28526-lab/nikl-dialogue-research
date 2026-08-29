@@ -1,0 +1,72 @@
+{
+  "schema": "bareun_morph_textgrid_full_config.v1",
+  "run_id": "bareun_morph_textgrid_full_20260829",
+  "status": "prepared_user_powershell_required",
+  "input": {
+    "bareun_final_root": "D:/10_LAYERS/12_bareun_morph_v3_1/bareun_morph_full_20260828/bulk_csv_v1",
+    "source_textgrid_root": "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809/research_6tier",
+    "expected_years": ["2020", "2021", "2022", "2023", "2024", "2025"],
+    "expected_bareun_receipts": 17156,
+    "expected_utterances": 5103356,
+    "expected_aligned_textgrids": 4286046,
+    "expected_no_mfa_alignment": 817310
+  },
+  "storage": {
+    "primary_id": "external_d",
+    "primary_building_root": "D:/10_LAYERS/13_bareun_morph_textgrid_v3_1/bareun_morph_textgrid_full_20260829/bulk_textgrid_v1.building",
+    "primary_minimum_free_gib": 18.0,
+    "spill_id": "local_c",
+    "spill_building_root": "work/bareun_morph_textgrid_spill_20260829/bulk_textgrid_v1.spill.building",
+    "spill_minimum_free_gib": 20.0,
+    "route_unit": "bareun_receipt",
+    "estimated_full_bytes": 46093567366,
+    "estimated_full_gib": 42.928,
+    "preflight_extra_headroom_gib": 5.0,
+    "shard_estimate_multiplier": 1.10,
+    "shard_estimate_fixed_bytes_per_file": 512,
+    "checkpoint_commit_every_files": 25
+  },
+  "output": {
+    "final_root_after_external_consolidation": "D:/10_LAYERS/13_bareun_morph_textgrid_v3_1/bareun_morph_textgrid_full_20260829/bulk_textgrid_v1",
+    "audit_report": "outputs/reports/AUDIT_bareun_morph_textgrid_full_20260829.json",
+    "overwrite": false,
+    "promotion_during_build": false,
+    "completion_state": "built_pending_external_consolidation"
+  },
+  "gates": {
+    "pilot_audit": "outputs/reports/AUDIT_bareun_morph_textgrid_v3_1_pilot_20260829.json",
+    "user_review_result": "outputs/pilots/bareun_morph_textgrid_v3_1_pilot_20260829/REVIEW_RESULT.md",
+    "required_user_final_ok": 3
+  },
+  "contract": {
+    "tier_order": [
+      "words",
+      "phones_mfa",
+      "phoneme_r_auto",
+      "utterance",
+      "utterance_orth_r",
+      "morph_analysis_utt"
+    ],
+    "updated_tier": "morph_analysis_utt",
+    "first_five_tiers_semantically_unchanged": true,
+    "morph_boundaries_unchanged": true,
+    "source_textgrid_read_only": true,
+    "source_wav_accessed": false,
+    "mfa_rerun": false,
+    "morph_tier_is_utterance_level_not_acoustic_boundaries": true,
+    "token_word_mismatch_is_recorded_not_guessed": true,
+    "no_mfa_alignment_is_recorded_not_dropped": true,
+    "whole_receipt_single_storage": true,
+    "new_external_drive_consolidation_required": true
+  },
+  "approval": {
+    "execution_token": "BAREUN_MORPH_TEXTGRID_FULL_20260829",
+    "bulk_status": "user_powershell_execution_required"
+  },
+  "protected_roots": [
+    "D:/10_LAYERS/12_bareun_morph_v3_1/bareun_morph_full_20260828/bulk_csv_v1",
+    "D:/mfa_eojeol/r3/common_pron_mfa_r3_20260809/research_6tier",
+    "D:/20_AUDIO",
+    "D:/00_RAW"
+  ]
+}

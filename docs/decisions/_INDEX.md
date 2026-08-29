@@ -1,6 +1,8 @@
 # 현행 결정 문서 색인
 
 - [PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md](PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md) — 새 바른 형태소 final 뒤 기존 r3 MFA 시간축을 보존한 versioned TextGrid 갱신과 우리말샘·다층위 2025·LS 2020 exact donor로 잔여 Bareun WSD 호출만 남기는 후속 계약
+- [PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md](PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md) — D: 우선·C: spill, 안전 하한, receipt 재개, 독립 SHA 감사와 새 외장하드 통합을 포함한 TextGrid 전수 계약
+- [RESULT_bareun_morph_textgrid_full_preparation_20260829.md](RESULT_bareun_morph_textgrid_full_preparation_20260829.md) — 4,286,046건 전수 생성 전 PowerShell 5.1 실행환경·실제 경로 preflight 준비 결과
 - [PLAN_bareun_morph_csv_full_overnight_20260828.md](PLAN_bareun_morph_csv_full_overnight_20260828.md) — 바른 v3.1 형태소-only 전수 실행의 API 일시 장애 냉각·자동 재개·final 전수 SHA 감사 계약
 
 - [RESULT_stage2_two_hour_reviewer_v3_1_literature_refresh_20260825.md](RESULT_stage2_two_hour_reviewer_v3_1_literature_refresh_20260825.md) — 구 v2 문헌 패널을 그대로 쓰지 않고 최신 정본 claim 173행에서 화면 문헌 103행으로 갱신한 v3.1 reviewer·7현상 안내서 독립 감사 통과, 로컬 문헌 전수 대조와 Dropbox-only 후보 8건 기록, 84사례 파일럿 시작 가능 판정
