@@ -17,6 +17,43 @@ MFA는 WSD의 입력이나 선행조건이 아니다. 형태소·WSD는 전체 �
 5,103,356발화를 대상으로 유지하고, MFA TextGrid는 정렬이 존재하는 발화를
 실제 음성 시간축에 연결해 검색·청취·연구자 판정할 때 사용한다.
 
+## 최종 외장하드 동결 목표
+
+최종 동결본은 외장하드 안의 다음 다섯 자산군을 하나의 release manifest와
+`utt_id` 교차표로 결속한 연구 말뭉치다.
+
+1. 원본 WAV
+2. 원본 JSON
+3. 바른 v3.1 형태소 분석열 CSV
+4. WSD 분석 시도·근거·결과열 CSV
+5. 기존 표시 수준을 유지하면서 새 형태소를 반영한 TextGrid
+
+WAV·JSON은 이미 외장하드에 있는 정본을 이동하거나 복제하지 않고 읽기 전용으로
+동결한다. 파생 CSV와 TextGrid만 별도 versioned root에 생성한다. 최종 manifest는
+드라이브 문자에만 의존하지 않도록 volume 식별자와 상대경로, 파일 수·크기·SHA,
+생성 계약·코드 commit을 기록한다.
+
+WSD CSV는 성공한 의미번호만 모으는 표가 아니다. 대상 occurrence를 zero-drop으로
+보존하고 최소한 다음 상태를 구별한다.
+
+- `not_target`
+- `urimalsaem_monosemous`
+- `ml2025_direct_gold`
+- `exact_context_unanimous`
+- `bareun_wsd_resolved`
+- `unresolved_no_donor`
+- `donor_conflict`
+- `alignment_conflict`
+- `api_attempt_failed`
+
+각 행에는 `sense_id`, `candidates`, `method`, `source_corpus`, `donor_count`,
+`confidence`, `attempt_status`, `error_class`, `engine_version`, 입력·응답 receipt/SHA를
+남긴다. WSD 미시도·실패·미확정은 누락이나 빈 성공값으로 숨기지 않는다.
+
+동결 교차표는 각 `utt_id`에 대해 WAV·JSON·형태소 CSV·WSD CSV·TextGrid의 경로와
+존재/제외/미정렬 상태를 한 행에 기록한다. MFA가 없는 발화도 형태소·WSD 범위에서
+삭제하지 않고 `no_mfa_alignment`로 회계한다.
+
 ## MFA TextGrid를 사용하는 시점과 방법
 
 형태소 전수 final 감사 직후 기존 r3 MFA DB/TextGrid를 읽기 전용 시간축으로
@@ -98,6 +135,9 @@ MFA는 WSD의 입력이나 선행조건이 아니다. 형태소·WSD는 전체 �
 6. 다층위 2025 직접 gold와 exact-context donor 파일럿을 독립 검증한다.
 7. 사용자가 잔여 요청량을 확인한 뒤에만 checkpoint·receipt·자동 냉각을 갖춘
    잔여 Bareun WSD 전수를 실행한다.
+8. WAV·JSON 원본 inventory와 새 형태소/WSD CSV·TextGrid inventory를 `utt_id`로
+   전수 결속하고 release manifest 및 독립 SHA 감사를 통과시켜 외장하드 동결본으로
+   승격한다.
 
 ## 중지 조건
 
@@ -107,5 +147,7 @@ MFA는 WSD의 입력이나 선행조건이 아니다. 형태소·WSD는 전체 �
 - `utt_id`·어절 좌표 불일치를 추정으로 덮어야만 진행 가능한 경우
 - donor 의미번호 충돌을 자동 확정해야만 진행 가능한 경우
 - 별도 WSD 2025와 다층위 WSD의 중복 여부가 확인되지 않은 상태에서 합산하는 경우
+- WAV·JSON·형태소·WSD·TextGrid 교차표에서 누락을 상태 없이 삭제해야만 수량을
+  맞출 수 있는 경우
 
 이 계획은 대화 기억이 아니라 이 문서와 실행 manifest를 정본으로 삼는다.
