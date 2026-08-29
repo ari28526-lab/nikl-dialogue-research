@@ -47,6 +47,7 @@
     "auto_split": false,
     "auto_spacing": false,
     "auto_jointing": false,
+    "input_line_separator_policy": "line_separator_characters_to_ascii_space_one_for_one",
     "with_sense": false
   },
   "secret": {

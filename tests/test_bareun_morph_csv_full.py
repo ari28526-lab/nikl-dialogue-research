@@ -28,6 +28,10 @@ class BareunMorphCsvFullTest(unittest.TestCase):
         self.assertEqual(config["api"]["batch_size"], 40)
         self.assertFalse(config["api"]["auto_spacing"])
         self.assertFalse(config["api"]["auto_jointing"])
+        self.assertEqual(
+            config["api"]["input_line_separator_policy"],
+            RUNNER.LINE_SEPARATOR_NORMALIZATION_POLICY,
+        )
         self.assertEqual(config["input"]["expected_rows"], 5_103_356)
         self.assertEqual(
             set(config["input"]["ignored_analysis_columns"]), {"tagged", "n_morphs"}
@@ -68,6 +72,7 @@ class BareunMorphCsvFullTest(unittest.TestCase):
         self.assertIn('analysis_mode = "wsd" if with_sense else "morph"', auditor)
         self.assertIn("analysis_mode_contract_mismatch", auditor)
         self.assertIn("unexpected_sense_count_in_morphology_only_run", auditor)
+        self.assertIn("manifest_normalized_character_count_mismatch", auditor)
 
 
 if __name__ == "__main__":

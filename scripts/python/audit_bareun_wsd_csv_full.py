@@ -17,6 +17,9 @@ if str(PYTHON_SCRIPTS) not in sys.path:
 
 from preflight_bareun_wsd_environment import expand_config_path, load_config  # noqa: E402
 from run_bareun_wsd_pilot import sha256_file  # noqa: E402
+from run_bareun_wsd_csv_full import (  # noqa: E402
+    LINE_SEPARATOR_NORMALIZATION_POLICY,
+)
 
 
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "bareun_wsd_reanalysis_v1.json"
@@ -65,6 +68,8 @@ def main() -> int:
         "morphemes_with_sense": 0,
     }
     output_bytes = 0
+    normalized_utterances = 0
+    normalized_characters = 0
     for relative, expected_receipt_sha in inventory_rows:
         receipt_path = final_root / relative
         if not receipt_path.is_file():
@@ -81,6 +86,12 @@ def main() -> int:
             errors.append(f"protected_source_changed:{receipt['source_file']}")
         for key in totals:
             totals[key] += int(receipt["counts"][key])
+        normalization = receipt.get("api_input_normalization", {})
+        if normalization:
+            if normalization.get("policy") != LINE_SEPARATOR_NORMALIZATION_POLICY:
+                errors.append(f"normalization_policy_mismatch:{relative}")
+            normalized_utterances += int(normalization.get("utterances_changed", 0))
+            normalized_characters += int(normalization.get("characters_replaced", 0))
         for name, contract in receipt["outputs"].items():
             path = receipt_path.parent / name
             if not path.is_file():
@@ -108,6 +119,24 @@ def main() -> int:
         errors.append("unexpected_sense_count_in_morphology_only_run")
     if manifest.get("textgrid_or_wav_accessed"):
         errors.append("unexpected_textgrid_or_wav_access")
+    configured_policy = str(
+        config["api"].get(
+            "input_line_separator_policy", LINE_SEPARATOR_NORMALIZATION_POLICY
+        )
+    )
+    manifest_normalization = manifest.get("api_input_normalization", {})
+    if configured_policy != LINE_SEPARATOR_NORMALIZATION_POLICY:
+        errors.append("configured_normalization_policy_mismatch")
+    if manifest_normalization.get("policy") != configured_policy:
+        errors.append("manifest_normalization_policy_mismatch")
+    if int(manifest_normalization.get("utterances_changed", -1)) != normalized_utterances:
+        errors.append("manifest_normalized_utterance_count_mismatch")
+    if int(manifest_normalization.get("characters_replaced", -1)) != normalized_characters:
+        errors.append("manifest_normalized_character_count_mismatch")
+    if manifest_normalization.get("source_text_modified") is not False:
+        errors.append("normalization_source_preservation_missing")
+    if manifest_normalization.get("offset_length_preserved") is not True:
+        errors.append("normalization_offset_preservation_missing")
 
     report: dict[str, Any] = {
         "schema": f"bareun_{analysis_mode}_csv_full_audit.v1",
@@ -119,6 +148,13 @@ def main() -> int:
         "source_csv_files": len(inventory_rows),
         "counts": totals,
         "total_compressed_csv_bytes": output_bytes,
+        "api_input_normalization": {
+            "policy": configured_policy,
+            "utterances_changed": normalized_utterances,
+            "characters_replaced": normalized_characters,
+            "source_text_modified": False,
+            "offset_length_preserved": True,
+        },
         "protected_source_csv_unchanged": not any(
             error.startswith("protected_source_changed") for error in errors
         ),

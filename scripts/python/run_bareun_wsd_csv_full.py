@@ -57,6 +57,12 @@ PILOT_AUDIT = (
 APPROVAL_TOKEN = "BAREUN_WSD_CSV_FULL_20260828"
 GIB = 1024**3
 SENSE_ONLY_MORPH_FIELDS = {"sense_no", "sense_probability", "urimal_target_id"}
+LINE_SEPARATOR_CHARACTERS = frozenset(
+    {"\r", "\n", "\v", "\f", "\x85", "\u2028", "\u2029"}
+)
+LINE_SEPARATOR_NORMALIZATION_POLICY = (
+    "line_separator_characters_to_ascii_space_one_for_one"
+)
 
 
 def analysis_mode(config: dict[str, Any]) -> str:
@@ -65,6 +71,18 @@ def analysis_mode(config: dict[str, Any]) -> str:
 
 def schema_name(config: dict[str, Any], suffix: str) -> str:
     return f"bareun_{analysis_mode(config)}_csv_full_{suffix}.v1"
+
+
+def normalize_analysis_text(text: str) -> tuple[str, int]:
+    """Prevent Bareun sentence splitting without changing source text or offsets."""
+    replacements = sum(character in LINE_SEPARATOR_CHARACTERS for character in text)
+    if not replacements:
+        return text, 0
+    normalized = "".join(
+        " " if character in LINE_SEPARATOR_CHARACTERS else character
+        for character in text
+    )
+    return normalized, replacements
 
 
 def bulk_roots(config: dict[str, Any]) -> tuple[Path, Path, Path]:
@@ -288,13 +306,25 @@ def process_source(
         "single_retries": 0,
         "api_calls": 0,
     }
+    normalization_stats = {
+        "policy": LINE_SEPARATOR_NORMALIZATION_POLICY,
+        "utterances_changed": 0,
+        "characters_replaced": 0,
+    }
     started = time.time()
     try:
         for start in range(0, len(samples), batch_size):
             part = samples[start : start + batch_size]
+            request_texts: list[str] = []
+            for sample in part:
+                request_text, replacements = normalize_analysis_text(sample["form"])
+                request_texts.append(request_text)
+                if replacements:
+                    normalization_stats["utterances_changed"] += 1
+                    normalization_stats["characters_replaced"] += replacements
             sentences, stats = analyze_batch(
                 tagger,
-                [sample["form"] for sample in part],
+                request_texts,
                 max_retries=max_retries,
                 with_sense=with_sense,
                 auto_spacing=auto_spacing,
@@ -367,6 +397,7 @@ def process_source(
                 "unique_senses_in_file": len(sense_by_key),
             },
             "api": api_stats,
+            "api_input_normalization": normalization_stats,
             "elapsed_seconds": round(time.time() - started, 3),
             "outputs": outputs,
             "protected_source_unchanged": True,
@@ -424,6 +455,13 @@ def preflight(config: dict[str, Any], resume: bool) -> dict[str, Any]:
         errors.append("client_version_mismatch")
     if client["direct_url_commit"] != config["client"]["git_commit"]:
         errors.append("client_commit_mismatch")
+    configured_normalization = str(
+        config["api"].get(
+            "input_line_separator_policy", LINE_SEPARATOR_NORMALIZATION_POLICY
+        )
+    )
+    if configured_normalization != LINE_SEPARATOR_NORMALIZATION_POLICY:
+        errors.append("input_line_separator_policy_mismatch")
     if not key:
         errors.append("api_key_not_found")
     if free_gib < float(config["storage"]["minimum_bulk_csv_free_gib"]):
@@ -452,6 +490,7 @@ def preflight(config: dict[str, Any], resume: bool) -> dict[str, Any]:
         "resume": resume,
         "workers": 1,
         "batch_size": config["api"]["batch_size"],
+        "input_line_separator_policy": configured_normalization,
         "errors": errors,
     }
 
@@ -590,6 +629,8 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError(",".join(errors))
         receipt_rows: list[str] = []
         total_output_bytes = 0
+        normalized_utterances = 0
+        normalized_characters = 0
         for receipt_path in sorted((run_root / "files").rglob("RECEIPT.json")):
             receipt_rows.append(
                 f"{receipt_path.relative_to(run_root).as_posix()}\t{sha256_file(receipt_path)}"
@@ -598,6 +639,9 @@ def main(argv: list[str] | None = None) -> int:
             total_output_bytes += sum(
                 int(value["bytes"]) for value in receipt["outputs"].values()
             )
+            normalization = receipt.get("api_input_normalization", {})
+            normalized_utterances += int(normalization.get("utterances_changed", 0))
+            normalized_characters += int(normalization.get("characters_replaced", 0))
         inventory_path = run_root / "RECEIPT_INVENTORY.tsv"
         inventory_path.write_text("\n".join(receipt_rows) + "\n", encoding="utf-8")
         final_manifest = {
@@ -613,6 +657,13 @@ def main(argv: list[str] | None = None) -> int:
             "receipt_inventory_sha256": sha256_file(inventory_path),
             "total_compressed_csv_bytes": total_output_bytes,
             "total_compressed_csv_gib": total_output_bytes / GIB,
+            "api_input_normalization": {
+                "policy": LINE_SEPARATOR_NORMALIZATION_POLICY,
+                "utterances_changed": normalized_utterances,
+                "characters_replaced": normalized_characters,
+                "source_text_modified": False,
+                "offset_length_preserved": True,
+            },
             "protected_source_csv_modified": False,
             "textgrid_or_wav_accessed": False,
         }

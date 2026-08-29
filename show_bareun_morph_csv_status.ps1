@@ -33,6 +33,23 @@ function Read-SharedJson {
     return ($text | ConvertFrom-Json)
 }
 
+function Get-PropertyValue {
+    param(
+        [AllowNull()]$Object,
+        [Parameter(Mandatory = $true)][string]$Name,
+        $Default = $null
+    )
+
+    if ($null -eq $Object) {
+        return $Default
+    }
+    $property = $Object.PSObject.Properties[$Name]
+    if ($null -eq $property) {
+        return $Default
+    }
+    return $property.Value
+}
+
 $base = 'D:\10_LAYERS\12_bareun_morph_v3_1\bareun_morph_full_20260828'
 $buildingRoot = Join-Path $base 'bulk_csv_v1.building'
 $finalRoot = Join-Path $base 'bulk_csv_v1'
@@ -80,27 +97,35 @@ Write-Host "free_gib=$($result.free_gib)"
 if ($null -eq $state) {
     Write-Host 'state=none'
 } else {
-    $displayStatus = $state.status
+    $displayStatus = [string](Get-PropertyValue $state 'status' 'unknown')
     if ($phase -eq 'building' -and $null -ne $lock) {
         $displayStatus = 'running'
     }
     Write-Host "status=$displayStatus"
-    if ($null -ne $state.completed_files) {
-        Write-Host "files=$($state.completed_files)/$($state.total_files)"
+    $completedFiles = Get-PropertyValue $state 'completed_files'
+    if ($null -ne $completedFiles) {
+        $totalFiles = Get-PropertyValue $state 'total_files' 17156
+        Write-Host "files=$completedFiles/$totalFiles"
     }
-    if ($null -ne $state.counts) {
-        Write-Host "utterances=$($state.counts.utterances)"
+    $counts = Get-PropertyValue $state 'counts'
+    if ($null -ne $counts) {
+        $utterances = Get-PropertyValue $counts 'utterances'
+        if ($null -ne $utterances) {
+            Write-Host "utterances=$utterances"
+        }
     }
-    if ($null -ne $state.session_rate_utterances_per_second) {
-        Write-Host "session_rate=$($state.session_rate_utterances_per_second) utterances/s"
+    $sessionRate = Get-PropertyValue $state 'session_rate_utterances_per_second'
+    if ($null -ne $sessionRate) {
+        Write-Host "session_rate=$sessionRate utterances/s"
     }
-    if ($null -ne $state.eta_seconds) {
-        $etaHours = [Math]::Round([double]$state.eta_seconds / 3600, 2)
+    $etaSeconds = Get-PropertyValue $state 'eta_seconds'
+    if ($null -ne $etaSeconds) {
+        $etaHours = [Math]::Round([double]$etaSeconds / 3600, 2)
         Write-Host "eta_hours=$etaHours"
     }
-    if ($state.PSObject.Properties.Name -contains 'error' -and
-        $null -ne $state.error) {
-        Write-Host "error=$($state.error)"
+    $errorText = Get-PropertyValue $state 'error'
+    if ($null -ne $errorText) {
+        Write-Host "error=$errorText"
     }
 }
 if ($null -ne $lock) {

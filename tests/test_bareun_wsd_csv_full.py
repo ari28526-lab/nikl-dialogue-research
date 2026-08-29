@@ -17,6 +17,13 @@ SPEC.loader.exec_module(MODULE)
 
 
 class BareunWsdCsvFullTest(unittest.TestCase):
+    def test_line_separator_normalization_is_one_for_one(self) -> None:
+        source = "첫 줄\r\n둘째\u2028셋째\x85넷째"
+        normalized, replacements = MODULE.normalize_analysis_text(source)
+        self.assertEqual(normalized, "첫 줄  둘째 셋째 넷째")
+        self.assertEqual(replacements, 4)
+        self.assertEqual(len(normalized), len(source))
+
     def test_read_input_rows_uses_only_identity_speaker_and_form(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -87,10 +94,12 @@ class BareunWsdCsvFullTest(unittest.TestCase):
             def __init__(self):
                 self.calls = 0
                 self.kwargs = []
+                self.texts = []
 
             def tags(self, texts, **kwargs):
                 self.calls += 1
                 self.kwargs.append(kwargs)
+                self.texts.append(list(texts))
                 response = AnalyzeSyntaxResponse()
                 begin = 0
                 for text in texts:
@@ -126,13 +135,23 @@ class BareunWsdCsvFullTest(unittest.TestCase):
                 )
                 writer.writeheader()
                 writer.writerow({"utt_id": "u1", "speaker_id": "s1", "form": "하나"})
-                writer.writerow({"utt_id": "u2", "speaker_id": "s2", "form": "둘"})
+                writer.writerow(
+                    {"utt_id": "u2", "speaker_id": "s2", "form": "둘\n셋"}
+                )
             run_root = root / "run"
             tagger = FakeTagger()
             receipt = MODULE.process_source(
                 tagger, source, input_root, run_root, batch_size=40, max_retries=1
             )
             self.assertEqual(receipt["counts"]["utterances"], 2)
+            self.assertEqual(tagger.kwargs[0]["with_sense"], True)
+            self.assertEqual(
+                receipt["api_input_normalization"]["utterances_changed"], 1
+            )
+            self.assertEqual(
+                receipt["api_input_normalization"]["characters_replaced"], 1
+            )
+            self.assertEqual(tagger.texts[0], ["하나", "둘 셋"])
             final_dir = MODULE.source_output_dir(run_root, source, input_root)
             self.assertTrue((final_dir / "RECEIPT.json").is_file())
             self.assertFalse(final_dir.with_name(final_dir.name + ".building").exists())
@@ -167,6 +186,12 @@ class BareunWsdCsvFullTest(unittest.TestCase):
                 morph_dir / "morphemes.csv.gz", "rt", encoding="utf-8", newline=""
             ) as handle:
                 self.assertNotIn("sense_no", next(csv.reader(handle)))
+            with gzip.open(
+                morph_dir / "utterances.csv.gz", "rt", encoding="utf-8", newline=""
+            ) as handle:
+                rows = list(csv.DictReader(handle))
+            self.assertEqual(rows[1]["form"], "둘\n셋")
+            self.assertEqual(rows[1]["response_text"], "둘 셋")
 
 
 if __name__ == "__main__":
