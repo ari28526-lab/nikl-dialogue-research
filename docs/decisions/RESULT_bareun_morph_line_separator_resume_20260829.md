@@ -42,4 +42,10 @@ CR, LF, VT, FF, NEL, U+2028, U+2029를 각각 ASCII 공백 한 글자로 1:1 치
 - Windows PowerShell 5.1 runtime 호환성 검사 통과
 - morphology resume preflight: `ready=true`, 17,156개 입력, 여유 공간 안전선 통과
 
+첫 재개 시 기존 receipt를 검증하며 상태를 갱신하는 과정에서 Windows 외장하드의
+`STATE.json.partial` 원자 교체가 순간적인 `Access denied`를 내어 다시
+fail-closed로 멈췄다. 원자적 파일·디렉터리 승격은 Windows sharing violation
+5 또는 32에 한해서만 최대 40회, 최대 0.5초 간격으로 제한 재시도하도록
+보강했다. 다른 오류는 그대로 즉시 실패한다.
+
 원본 CSV, 기존 Bareun/WSD 결과, TextGrid, WAV는 수정하지 않는다.

@@ -6,6 +6,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +18,32 @@ SPEC.loader.exec_module(MODULE)
 
 
 class BareunWsdCsvFullTest(unittest.TestCase):
+    def test_replace_with_retry_survives_windows_sharing_violation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "source"
+            destination = root / "destination"
+            source.write_text("new", encoding="utf-8")
+            destination.write_text("old", encoding="utf-8")
+            real_replace = MODULE.os.replace
+            calls = 0
+
+            def flaky_replace(first, second):
+                nonlocal calls
+                calls += 1
+                if calls == 1:
+                    error = PermissionError("sharing violation")
+                    error.winerror = 5
+                    raise error
+                return real_replace(first, second)
+
+            with mock.patch.object(MODULE.os, "replace", side_effect=flaky_replace):
+                with mock.patch.object(MODULE.time, "sleep") as sleep:
+                    MODULE.replace_with_retry(source, destination)
+            self.assertEqual(calls, 2)
+            sleep.assert_called_once()
+            self.assertEqual(destination.read_text(encoding="utf-8"), "new")
+
     def test_line_separator_normalization_is_one_for_one(self) -> None:
         source = "첫 줄\r\n둘째\u2028셋째\x85넷째"
         normalized, replacements = MODULE.normalize_analysis_text(source)

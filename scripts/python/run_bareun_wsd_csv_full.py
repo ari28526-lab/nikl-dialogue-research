@@ -98,6 +98,26 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
 
 
+def replace_with_retry(
+    source: Path,
+    destination: Path,
+    *,
+    max_attempts: int = 40,
+) -> None:
+    """Retry bounded Windows sharing violations during atomic promotion."""
+    for attempt in range(max_attempts):
+        try:
+            os.replace(source, destination)
+            return
+        except OSError as exc:
+            retryable = isinstance(exc, PermissionError) or getattr(
+                exc, "winerror", None
+            ) in {5, 32}
+            if not retryable or attempt + 1 >= max_attempts:
+                raise
+            time.sleep(min(0.05 * (2 ** min(attempt, 4)), 0.5))
+
+
 def atomic_json(path: Path, value: dict[str, Any]) -> None:
     partial = path.with_suffix(path.suffix + ".partial")
     partial.parent.mkdir(parents=True, exist_ok=True)
@@ -106,7 +126,7 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
         handle.write("\n")
         handle.flush()
         os.fsync(handle.fileno())
-    os.replace(partial, path)
+    replace_with_retry(partial, path)
 
 
 def append_jsonl(path: Path, value: dict[str, Any]) -> None:
@@ -140,7 +160,7 @@ def gzip_csv(path: Path, fields: list[str], rows: Iterable[dict[str, Any]]) -> N
                 text_output.detach()
         raw_output.flush()
         os.fsync(raw_output.fileno())
-    os.replace(partial, path)
+    replace_with_retry(partial, path)
 
 
 def read_input_rows(path: Path, input_root: Path) -> list[dict[str, Any]]:
@@ -244,7 +264,7 @@ def archive_interrupted(building_dir: Path, run_root: Path, input_root: Path) ->
     archive.parent.mkdir(parents=True, exist_ok=True)
     if archive.exists():
         raise RuntimeError(f"interrupted archive collision: {archive}")
-    os.replace(building_dir, archive)
+    replace_with_retry(building_dir, archive)
 
 
 def acquire_lock(path: Path, resume: bool) -> None:
@@ -265,7 +285,7 @@ def acquire_lock(path: Path, resume: bool) -> None:
         stale = path.with_name(
             f"RUN.lock.stale.{datetime.now():%Y%m%dT%H%M%S}.{uuid.uuid4().hex[:8]}.json"
         )
-        os.replace(path, stale)
+        replace_with_retry(path, stale)
     descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
     try:
         payload = json.dumps(
@@ -405,7 +425,7 @@ def process_source(
         }
         atomic_json(building_dir / "RECEIPT.json", receipt)
         final_dir.parent.mkdir(parents=True, exist_ok=True)
-        os.replace(building_dir, final_dir)
+        replace_with_retry(building_dir, final_dir)
         return receipt
     except Exception as exc:
         atomic_json(
@@ -673,7 +693,7 @@ def main(argv: list[str] | None = None) -> int:
             {"schema": schema_name(config, "state"), **final_manifest},
         )
         lock_path.unlink()
-        os.replace(run_root, final_root)
+        replace_with_retry(run_root, final_root)
         print(json.dumps(final_manifest, ensure_ascii=True, indent=2), flush=True)
         return 0
     except Exception as exc:
