@@ -19,8 +19,10 @@ MFA는 WSD의 입력이나 선행조건이 아니다. 형태소·WSD는 전체 �
 
 ## 최종 외장하드 동결 목표
 
-최종 동결본은 외장하드 안의 다음 다섯 자산군을 하나의 release manifest와
-`utt_id` 교차표로 결속한 연구 말뭉치다.
+최종 동결본은 하나 이상의 외장 저장 볼륨에 놓일 수 있는 다음 다섯 자산군을
+하나의 release manifest와 `utt_id` 교차표로 결속한 연구 말뭉치다. 물리적
+단일 볼륨보다 volume ID·상대경로·SHA로 정본과 파생 작업층을 명확히 나누는 것을
+우선한다.
 
 1. 원본 WAV
 2. 원본 JSON
@@ -32,6 +34,12 @@ WAV·JSON은 이미 외장하드에 있는 정본을 이동하거나 복제하�
 동결한다. 파생 CSV와 TextGrid만 별도 versioned root에 생성한다. 최종 manifest는
 드라이브 문자에만 의존하지 않도록 volume 식별자와 상대경로, 파일 수·크기·SHA,
 생성 계약·코드 commit을 기록한다.
+
+2026-08-30 사용자 결정으로 다음 신규 SSD는 2TB를 채택했다. 현 D:의 WAV·JSON·
+MFA·기존 정본을 우선 유지하고 신규 SSD를 파생 TextGrid·WSD·현상별 작업층에
+배정하는 안을 기본으로 하되, 실물 연결 뒤 전수 inventory와 예상 여유 공간을
+확인하기 전에는 실제 배치·이동·삭제를 승인하지 않는다. 상세 Gate는
+`DECISION_external_ssd_2tb_staged_storage_distribution_20260830.md`를 따른다.
 
 WSD CSV는 성공한 의미번호만 모으는 표가 아니다. 대상 occurrence를 zero-drop으로
 보존하고 최소한 다음 상태를 구별한다.

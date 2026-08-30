@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [DECISION_external_ssd_2tb_staged_storage_distribution_20260830.md](DECISION_external_ssd_2tb_staged_storage_distribution_20260830.md) — 비용을 고려한 신규 2TB SSD 채택, 현 D: 말뭉치 정본 유지·신규 SSD 파생/현상별 작업 잠정 분리, 연결 후 copy-first·SHA 배치 Gate
 - [PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md](PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md) — 새 바른 형태소 final 뒤 기존 r3 MFA 시간축을 보존한 versioned TextGrid 갱신과 우리말샘·다층위 2025·LS 2020 exact donor로 잔여 Bareun WSD 호출만 남기는 후속 계약
 - [PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md](PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md) — D: 우선·C: spill, 안전 하한, receipt 재개, 독립 SHA 감사와 새 외장하드 통합을 포함한 TextGrid 전수 계약
 - [RESULT_bareun_morph_textgrid_full_preparation_20260829.md](RESULT_bareun_morph_textgrid_full_preparation_20260829.md) — 4,286,046건 전수 생성 전 PowerShell 5.1 실행환경·실제 경로 preflight 준비 결과
