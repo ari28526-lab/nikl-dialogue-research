@@ -23,6 +23,7 @@ from run_bareun_morph_textgrid_full import (  # noqa: E402
     derive_atomic,
     init_database,
     pending_receipts_from_checkpoint,
+    primary_control_reserve_bytes,
     process_receipt,
     same_intervals,
 )
@@ -71,6 +72,23 @@ class StorageRoutingTests(unittest.TestCase):
                 spill_free_bytes=70,
                 spill_floor_bytes=50,
             )
+
+    def test_spill_routing_is_sticky_after_it_starts(self) -> None:
+        self.assertEqual(
+            choose_storage(
+                required_bytes=10,
+                primary_free_bytes=100,
+                primary_floor_bytes=50,
+                spill_free_bytes=100,
+                spill_floor_bytes=50,
+                spill_started=True,
+            ),
+            "local_c",
+        )
+
+    def test_primary_control_reserve_is_conservative(self) -> None:
+        self.assertEqual(primary_control_reserve_bytes(1), 1024**2)
+        self.assertEqual(primary_control_reserve_bytes(2048), 2 * 1024**2)
 
 
 class TextGridContractTests(unittest.TestCase):

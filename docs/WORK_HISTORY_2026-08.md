@@ -4197,3 +4197,24 @@ shard 2–23을 재개하는 것이다.
   replace를 쓰고, 없는 tier의 append는 별도 연산·파일럿으로 분리한다.
 - 현재 runner·config·output·lock은 변경하지 않았고 재시작·경로 변경·파일 이동·
   삭제도 하지 않았다.
+
+## 2026-08-31 — Bareun TextGrid C: spill·재개 복구와 저장 안전 정지
+
+- 3,305,749 TextGrid·11,585 receipt 뒤 C: spill 첫 파일에서 중첩 temp 경로가
+  262자가 되어 발생한 `FileNotFoundError`를 짧은 UUID staging 이름으로
+  수정했다. 깊은 경로 회귀시험을 추가했다.
+- 첫 재개가 완료 receipt를 약 16초/건으로 전부 다시 SHA 검사해 기존 구간만
+  약 51시간이 걸리는 병목을 확인했다. frozen inventory와 SQLite receipt SHA·
+  상태를 fail-closed 대조하고 미완료 5,571 receipt만 처리하도록 바꿨다. 전수
+  파일 SHA는 생성 후 독립 감사에 그대로 남겼다.
+- 실제로 index 11,586부터 재개해 첫 실패 receipt를 `local_c`에서 완료하고
+  C: TextGrid 521개 이상, `.partial` 0개를 확인했다. 11,592 receipt와
+  3,307,029 TextGrid까지 증가했다.
+- 기존 라우터가 C: spill 뒤 D:/C:를 바운스하고 D: SQLite·shard inventory
+  용량을 예약하지 않아 D:가 17.997768 GiB로 18 GiB 하한을 2,396,160바이트
+  밑돌았다. PID 27344를 중지했고 파일 이동·삭제는 하지 않았다.
+- spill 시작 뒤 새 receipt를 C:에 고정하고 receipt마다 D: 제어 용량을 먼저
+  예약하는 fail-closed 보강을 추가했다. 현재 preflight는
+  `primary_above_floor=false`이므로 D: 1.5–2 GiB 이상 확보 전에는 재개하지 않는다.
+- source TextGrid·WAV·Bareun CSV final은 수정하지 않았고 MFA도 재실행하지
+  않았다. 경로·빠른 재개 커밋 `ce44af0`, `07dd08b`는 원격 브랜치에 보존했다.

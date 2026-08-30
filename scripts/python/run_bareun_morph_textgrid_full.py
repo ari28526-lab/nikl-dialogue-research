@@ -50,6 +50,7 @@ from research_textgrid_v2 import (  # noqa: E402
 
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "bareun_morph_textgrid_full_v1.json"
 GIB = 1024**3
+MIB = 1024**2
 YEAR_PATTERN = re.compile(r"NIKL_DIALOGUE_(20\d{2})")
 INVENTORY_FIELDS = [
     "utt_id",
@@ -108,7 +109,16 @@ def choose_storage(
     spill_floor_bytes: int,
     primary_id: str = "external_d",
     spill_id: str = "local_c",
+    spill_started: bool = False,
 ) -> str:
+    if spill_started:
+        if spill_free_bytes - required_bytes >= spill_floor_bytes:
+            return spill_id
+        raise StorageSafetyStop(
+            "spill routing is sticky and the next receipt cannot fit above its floor: "
+            f"required={required_bytes} spill_free={spill_free_bytes} "
+            f"spill_floor={spill_floor_bytes}"
+        )
     if primary_free_bytes - required_bytes >= primary_floor_bytes:
         return primary_id
     if spill_free_bytes - required_bytes >= spill_floor_bytes:
@@ -119,6 +129,11 @@ def choose_storage(
         f"primary_floor={primary_floor_bytes} spill_free={spill_free_bytes} "
         f"spill_floor={spill_floor_bytes}"
     )
+
+
+def primary_control_reserve_bytes(utterance_count: int) -> int:
+    """Reserve D: space for SQLite rows and per-receipt control artifacts."""
+    return max(MIB, max(utterance_count, 0) * 1024)
 
 
 def pid_is_alive(pid: int) -> bool:
@@ -734,6 +749,15 @@ def process_receipt(
     )
     primary_id = str(storage["primary_id"])
     spill_id = str(storage["spill_id"])
+    primary_free = free_bytes_for(roots[primary_id])
+    primary_floor = round(float(storage["primary_minimum_free_gib"]) * GIB)
+    control_reserve = primary_control_reserve_bytes(len(utterances))
+    if primary_free - control_reserve < primary_floor:
+        raise StorageSafetyStop(
+            "primary control root cannot record the next receipt above its floor: "
+            f"required_control={control_reserve} primary_free={primary_free} "
+            f"primary_floor={primary_floor}"
+        )
     if source_file_row:
         if source_file_row[0] != receipt_sha:
             raise RuntimeError(f"resume receipt SHA mismatch: {source_file}")
@@ -750,21 +774,28 @@ def process_receipt(
             "primary_minimum_free_gib" if storage_id == primary_id else "spill_minimum_free_gib"
         )
         floor = round(float(storage[floor_key]) * GIB)
-        if free_bytes_for(roots[storage_id]) - remaining_estimate < floor:
+        remaining_required = remaining_estimate
+        if storage_id == primary_id:
+            remaining_required += control_reserve
+        if free_bytes_for(roots[storage_id]) - remaining_required < floor:
             raise StorageSafetyStop(
                 f"resume storage {storage_id} cannot finish receipt above floor"
             )
     else:
+        spill_started = bool(
+            connection.execute(
+                "SELECT 1 FROM shards WHERE storage_id=? LIMIT 1", (spill_id,)
+            ).fetchone()
+        )
         storage_id = choose_storage(
             required_bytes=estimate,
-            primary_free_bytes=free_bytes_for(roots[primary_id]),
-            primary_floor_bytes=round(
-                float(storage["primary_minimum_free_gib"]) * GIB
-            ),
+            primary_free_bytes=primary_free - control_reserve,
+            primary_floor_bytes=primary_floor,
             spill_free_bytes=free_bytes_for(roots[spill_id]),
             spill_floor_bytes=round(float(storage["spill_minimum_free_gib"]) * GIB),
             primary_id=primary_id,
             spill_id=spill_id,
+            spill_started=spill_started,
         )
         connection.execute(
             """INSERT INTO shards
