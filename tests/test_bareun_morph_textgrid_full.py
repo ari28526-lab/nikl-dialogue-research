@@ -22,6 +22,7 @@ from run_bareun_morph_textgrid_full import (  # noqa: E402
     choose_storage,
     derive_atomic,
     init_database,
+    pending_receipts_from_checkpoint,
     process_receipt,
     same_intervals,
 )
@@ -130,6 +131,78 @@ class TextGridContractTests(unittest.TestCase):
 
 
 class TinyReceiptResumeTests(unittest.TestCase):
+    def test_resume_uses_checkpoint_without_rehashing_completed_receipts(self) -> None:
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "work") as temporary:
+            connection = init_database(Path(temporary) / "CHECKPOINT.sqlite")
+            try:
+                inventory = [
+                    ("files/a/RECEIPT.json", "a" * 64),
+                    ("files/b/RECEIPT.json", "b" * 64),
+                    ("files/c/RECEIPT.json", "c" * 64),
+                ]
+                connection.executemany(
+                    """INSERT INTO shards
+                    (source_file, receipt_relative, receipt_sha256, storage_id,
+                     status, estimated_bytes, aligned_expected,
+                     shard_receipt_relative)
+                    VALUES (?, ?, ?, 'external_d', ?, 1, 1, ?)""",
+                    [
+                        (
+                            "source-a",
+                            inventory[0][0],
+                            inventory[0][1],
+                            "completed",
+                            "shards/a/SHARD_RECEIPT.json",
+                        ),
+                        (
+                            "source-b",
+                            inventory[1][0],
+                            inventory[1][1],
+                            "processing",
+                            None,
+                        ),
+                    ],
+                )
+                connection.commit()
+
+                pending, completed = pending_receipts_from_checkpoint(
+                    connection, inventory
+                )
+
+                self.assertEqual(completed, 1)
+                self.assertEqual(
+                    pending,
+                    [
+                        (2, inventory[1][0], inventory[1][1]),
+                        (3, inventory[2][0], inventory[2][1]),
+                    ],
+                )
+            finally:
+                connection.close()
+
+    def test_resume_checkpoint_sha_mismatch_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "work") as temporary:
+            connection = init_database(Path(temporary) / "CHECKPOINT.sqlite")
+            try:
+                connection.execute(
+                    """INSERT INTO shards
+                    (source_file, receipt_relative, receipt_sha256, storage_id,
+                     status, estimated_bytes, aligned_expected,
+                     shard_receipt_relative)
+                    VALUES ('source-a', 'files/a/RECEIPT.json', ?,
+                            'external_d', 'completed', 1, 1,
+                            'shards/a/SHARD_RECEIPT.json')""",
+                    ("b" * 64,),
+                )
+                connection.commit()
+                with self.assertRaisesRegex(RuntimeError, "SHA mismatch"):
+                    pending_receipts_from_checkpoint(
+                        connection,
+                        [("files/a/RECEIPT.json", "a" * 64)],
+                    )
+            finally:
+                connection.close()
+
     def test_receipt_build_and_verified_resume(self) -> None:
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "work") as temporary:
             root = Path(temporary)

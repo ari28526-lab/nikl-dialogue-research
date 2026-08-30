@@ -319,6 +319,61 @@ def database_counts(connection: sqlite3.Connection) -> dict[str, int]:
     }
 
 
+def pending_receipts_from_checkpoint(
+    connection: sqlite3.Connection,
+    inventory: Sequence[tuple[str, str]],
+) -> tuple[list[tuple[int, str, str]], int]:
+    """Validate the resume contract and return only unfinished receipts.
+
+    A completed shard is committed only after its shard receipt and output
+    inventory have been written.  Re-hashing every completed shard during a
+    resume turns checkpoint recovery into a second full audit, so defer that
+    expensive verification to the independent post-build SHA audit.  Here we
+    still fail closed on any inventory/checkpoint identity mismatch.
+    """
+    inventory_rows: dict[str, tuple[int, str]] = {}
+    for index, (receipt_relative, receipt_sha) in enumerate(inventory, 1):
+        if receipt_relative in inventory_rows:
+            raise RuntimeError(
+                f"duplicate receipt in frozen inventory: {receipt_relative}"
+            )
+        inventory_rows[receipt_relative] = (index, receipt_sha)
+
+    completed: set[str] = set()
+    checkpoint_receipts: set[str] = set()
+    rows = connection.execute(
+        "SELECT receipt_relative, receipt_sha256, status, shard_receipt_relative "
+        "FROM shards"
+    ).fetchall()
+    for receipt_relative, receipt_sha, status, shard_receipt_relative in rows:
+        relative = str(receipt_relative)
+        if relative in checkpoint_receipts:
+            raise RuntimeError(f"duplicate receipt in checkpoint: {relative}")
+        checkpoint_receipts.add(relative)
+        expected = inventory_rows.get(relative)
+        if expected is None:
+            raise RuntimeError(
+                f"checkpoint receipt absent from frozen inventory: {relative}"
+            )
+        if str(receipt_sha) != expected[1]:
+            raise RuntimeError(f"checkpoint receipt SHA mismatch: {relative}")
+        if status == "completed":
+            if not shard_receipt_relative:
+                raise RuntimeError(
+                    f"completed checkpoint lacks shard receipt: {relative}"
+                )
+            completed.add(relative)
+        elif status != "processing":
+            raise RuntimeError(f"unexpected checkpoint status for {relative}: {status}")
+
+    pending = [
+        (index, receipt_relative, receipt_sha)
+        for receipt_relative, (index, receipt_sha) in inventory_rows.items()
+        if receipt_relative not in completed
+    ]
+    return pending, len(completed)
+
+
 def atomic_gzip_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.partial")
@@ -1005,14 +1060,35 @@ def execute(
     try:
         connection = init_database(primary_root / "CHECKPOINT.sqlite")
         inventory = read_inventory(final_root)
-        write_state(
+        state = write_state(
             primary_root,
             status="running",
             config=config,
             connection=connection,
             started_at=started_at,
         )
-        for index, (receipt_relative, receipt_sha) in enumerate(inventory, 1):
+        if resume:
+            pending_receipts, completed_at_resume = pending_receipts_from_checkpoint(
+                connection, inventory
+            )
+            append_progress(
+                primary_root / "PROGRESS.jsonl",
+                {
+                    "schema": "bareun_morph_textgrid_full_progress.v1",
+                    "at": now_iso(),
+                    "status": "resume_checkpoint_loaded",
+                    "receipt_total": len(inventory),
+                    "completed_receipts_at_resume": completed_at_resume,
+                    "pending_receipts_at_resume": len(pending_receipts),
+                    "global_counts": state["counts"],
+                },
+            )
+        else:
+            pending_receipts = [
+                (index, receipt_relative, receipt_sha)
+                for index, (receipt_relative, receipt_sha) in enumerate(inventory, 1)
+            ]
+        for index, receipt_relative, receipt_sha in pending_receipts:
             current_receipt = receipt_relative
             result = process_receipt(
                 config=config,
