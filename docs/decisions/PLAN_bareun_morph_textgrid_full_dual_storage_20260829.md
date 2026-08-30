@@ -2,7 +2,7 @@
 
 작성일: 2026-08-29 KST
 
-상태: **준비 완료 — 사용자 PowerShell 실행 Gate에서 정지**
+상태: **v1 전수 실행 중 — 현재 runner 고정, 다음 갱신 v2 Gate**
 
 ## 목표
 
@@ -90,3 +90,16 @@ Codex 세션에서 4,286,046건 전수를 직접 시작하지 않는다.
 실행 진입점은 생성이 성공하면 독립 전수 SHA 감사를 같은 PowerShell 창에서
 계속한다. 생성이나 감사가 중단되면 완료 receipt를 보존하며, 같은 명령에
 `-Resume`을 추가해 이어간다.
+
+## 현재 v1과 다음 갱신의 경계
+
+현재 `bareun_morph_textgrid_full_20260829` 실행에는 runner·config·감사기 변경을
+섞지 않고 기존 receipt와 checkpoint로 완료한다. 현재 작업을 중단해 새 방식으로
+처음부터 재시작하지 않는다.
+
+다음 Bareun 엔진 갱신처럼 `morph_analysis_utt` label만 다시 바꾸는 전수 작업은
+별도 run ID와 output root에서
+`DECISION_textgrid_byte_preserving_refresh_v2_20260830.md`의 streaming refresh
+파일럿을 먼저 통과해야 한다. source의 목표 label span 밖 byte를 그대로 복사하고
+SHA 계산과 구조 검사를 같은 pass에 결합하되, 독립 Praat-openable 파일과 전수
+감사 요구는 유지한다.

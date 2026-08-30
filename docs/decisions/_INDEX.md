@@ -1,5 +1,6 @@
 # 현행 결정 문서 색인
 
+- [DECISION_textgrid_byte_preserving_refresh_v2_20260830.md](DECISION_textgrid_byte_preserving_refresh_v2_20260830.md) — 현재 Bareun TextGrid v1은 불변 완주하고, 다음 Bareun 갱신·WSD 표시층은 목표 label span 밖 byte를 보존하는 streaming refresh와 결합 SHA/구조 감사 파일럿을 먼저 적용
 - [DECISION_external_ssd_2tb_staged_storage_distribution_20260830.md](DECISION_external_ssd_2tb_staged_storage_distribution_20260830.md) — 비용을 고려한 신규 2TB SSD 채택, 현 D: 말뭉치 정본 유지·신규 SSD 파생/현상별 작업 잠정 분리, 연결 후 copy-first·SHA 배치 Gate
 - [PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md](PLAN_post_bareun_morph_textgrid_context_wsd_20260829.md) — 새 바른 형태소 final 뒤 기존 r3 MFA 시간축을 보존한 versioned TextGrid 갱신과 우리말샘·다층위 2025·LS 2020 exact donor로 잔여 Bareun WSD 호출만 남기는 후속 계약
 - [PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md](PLAN_bareun_morph_textgrid_full_dual_storage_20260829.md) — D: 우선·C: spill, 안전 하한, receipt 재개, 독립 SHA 감사와 새 외장하드 통합을 포함한 TextGrid 전수 계약

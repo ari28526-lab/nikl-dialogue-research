@@ -2,7 +2,7 @@
 
 작성일: 2026-08-29 KST
 
-상태: **형태소·TextGrid 파일럿 감사 및 사용자 3건 확인 통과, 전수는 용량 확보 대기**
+상태: **형태소 TextGrid v1 전수 실행 중 — WSD는 후속 Gate**
 
 ## 결정
 
@@ -84,6 +84,20 @@ WSD CSV는 성공한 의미번호만 모으는 표가 아니다. 대상 occurren
 찾은 후보를 실제 WAV의 word/phone 구간으로 이동시켜 사람이 듣고 판정하는
 도구다.
 
+### 다음 전수 표시층의 byte-preserving 갱신
+
+WSD CSV/Parquet sidecar를 의미번호 정본으로 유지한다. WSD 결과를 TextGrid에
+전수 materialize하기로 별도 승인한 경우에는
+`DECISION_textgrid_byte_preserving_refresh_v2_20260830.md`를 따른다.
+
+- 기존 `sense_analysis_utt` tier의 label을 새 version으로 바꿀 때는 목표 span만
+  교체하는 streaming replace를 재사용한다.
+- 기존 6-tier에 `sense_analysis_utt`가 없으면 header·item 수·새 tier block을
+  추가하는 별도 append 연산으로 취급하고, replace와 분리한 파일럿을 거친다.
+- 어느 경우에도 WSD 값을 `morph_analysis_utt`에 섞거나 기존 five-tier를
+  재직렬화하지 않는다.
+- 현재 실행 중인 Bareun TextGrid v1에는 이 후속 구현을 섞지 않는다.
+
 ### 최소 표시 수용 기준
 
 새 TextGrid는 sidecar만 생성하고 끝내지 않는다. 기존 r3 생산 TextGrid에서
@@ -132,7 +146,7 @@ WSD CSV는 성공한 의미번호만 모으는 표가 아니다. 대상 occurren
 
 ## 실행 순서
 
-1. [완료] 형태소-only 전수의 final 승격과 전수 receipt/SHA 감사를 완료한다.
+1. [실행 중] 형태소-only 전수의 final 승격과 전수 receipt/SHA 감사를 완료한다.
 2. [완료] 새 형태소 결과에서 TextGrid 예상 용량과 출력 파일 수를 표본으로 추정한다.
 3. [완료: 기계 감사 및 사용자 대표 3건 확인 통과] 6개년 균형 표본으로 새
    `morph_analysis_utt` TextGrid와 sidecar 조인을 만들고

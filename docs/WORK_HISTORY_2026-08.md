@@ -4180,3 +4180,20 @@ shard 2–23을 재개하는 것이다.
   claim 173, 기존 JSONL 2행 호환과 launcher whitelist를 통과했다. 신규 v3
   7/7·관련 Stage2 합계 26/26, 브라우저 PT→NAN 전환·4시간 5단계·콘솔 오류
   0건을 확인했다.
+
+## 2026-08-30 — 다음 TextGrid 전수 갱신 byte-preserving v2 채택
+
+- 실행 중인 Bareun v3.1 TextGrid v1을 읽기 전용으로 점검했다. 14:35 KST 기준
+  2,309,104 / 4,286,046건(53.875%)이 생성됐고 최근 1·2·4시간 속도의 생성
+  잔여시간은 각각 31.19·28.23·26.57시간이었다. 상태판의 약 14.5시간은 초반
+  구간을 포함한 누적 평균이므로 최근 속도를 대표하지 않는다고 판정했다.
+- 같은 방식으로 처음부터 다시 시작하면 약 57.6–67.6시간이며, 새 구현은 생성만
+  비교해도 최소 2.168배 빨라야 손익분기를 넘는다. 구현·파일럿 전환까지 고려해
+  2.5–3배 실측 증거 없이 현재 v1을 중단하지 않기로 했다.
+- 다음 Bareun 엔진 갱신에서는 source를 한 번 streaming하면서 정확한
+  `morph_analysis_utt` label span만 교체하고, span 밖 byte를 보존하며 source와
+  destination SHA를 같은 pass에 계산하는 v2를 별도 run ID로 파일럿한다.
+- WSD sidecar는 정본으로 유지한다. 기존 `sense_analysis_utt` 갱신에는 같은
+  replace를 쓰고, 없는 tier의 append는 별도 연산·파일럿으로 분리한다.
+- 현재 runner·config·output·lock은 변경하지 않았고 재시작·경로 변경·파일 이동·
+  삭제도 하지 않았다.
