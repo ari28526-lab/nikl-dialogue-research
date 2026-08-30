@@ -102,6 +102,32 @@ class TextGridContractTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 derive_atomic(source, derived, "다른/NNG")
 
+    def test_deep_spill_path_uses_short_staging_name(self) -> None:
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "work") as temporary:
+            root = Path(temporary)
+            source = root / "source.TextGrid"
+            deep_parent = root / ("a" * 40) / ("b" * 40)
+            derived = deep_parent / "SDRW2400000227.1.1.1.TextGrid"
+            tier_data = [
+                ("words", [(0.0, 1.0, "가")]),
+                ("phones_mfa", [(0.0, 1.0, "k a")]),
+                ("phoneme_r_auto", [(0.0, 1.0, "k a")]),
+                ("utterance", [(0.0, 1.0, "가")]),
+                ("utterance_orth_r", [(0.0, 1.0, "가")]),
+                ("morph_analysis_utt", [(0.0, 1.0, "옛/NNG")]),
+            ]
+            write_textgrid_exact(source, duration=1.0, tier_data=tier_data)
+
+            derive_atomic(source, derived, "새/NNG")
+
+            self.assertTrue(derived.is_file())
+            self.assertEqual(list(deep_parent.glob("*.partial")), [])
+            _, tiers = parse_mfa_textgrid(derived)
+            self.assertEqual(
+                [label for _, _, label in tiers["morph_analysis_utt"] if label],
+                ["새/NNG"],
+            )
+
 
 class TinyReceiptResumeTests(unittest.TestCase):
     def test_receipt_build_and_verified_resume(self) -> None:

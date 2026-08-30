@@ -168,9 +168,11 @@ def derive_atomic(source: Path, destination: Path, new_label: str) -> dict[str, 
         ("morph_analysis_utt", morph_intervals)
     ]
     destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_name(
-        f".{destination.name}.{uuid.uuid4().hex}.partial"
-    )
+    # ``write_textgrid_exact`` stages once more before promoting to this path.
+    # Repeating the full destination name in both staging layers can cross the
+    # legacy Windows MAX_PATH limit in the deeper C: spill root.  Keep this
+    # outer diagnostic partial unique but deliberately short.
+    temporary = destination.with_name(f".{uuid.uuid4().hex}.partial")
     write_textgrid_exact(temporary, duration=float(duration), tier_data=tier_data)
     try:
         verified = verify_derived_against_parsed_source(
