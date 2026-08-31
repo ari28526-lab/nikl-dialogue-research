@@ -4218,3 +4218,11 @@ shard 2–23을 재개하는 것이다.
   `primary_above_floor=false`이므로 D: 1.5–2 GiB 이상 확보 전에는 재개하지 않는다.
 - source TextGrid·WAV·Bareun CSV final은 수정하지 않았고 MFA도 재실행하지
   않았다. 경로·빠른 재개 커밋 `ce44af0`, `07dd08b`는 원격 브랜치에 보존했다.
+- 사용자의 exact 승인 뒤 `D:\mfa_tmp\2021`을 현재 상태로 다시 inventory했다.
+  SQLite DB SHA와 71분 43초의 전수 `integrity_check=ok`를 확인하고, 재생성
+  가능한 `.ark`·`.scp`·interval CSV 63개·33,754,468,034바이트만 개별
+  삭제했다. DB·로그·모델·계약 39개는 변경·누락 0이며 폴더 재귀 삭제는 0건이다.
+- D: 여유는 17.997768 GiB에서 49.434 GiB로 회복됐다. Bareun resume
+  preflight는 `ready=true`, D: 18 GiB·C: 20 GiB 안전선과 동결 입력·receipt
+  inventory를 모두 통과했다. 실제 장시간 재개는 사용자 일반 PowerShell에서
+  같은 `-Resume` 명령을 한 번 실행한다.

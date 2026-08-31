@@ -48,9 +48,21 @@ SQLite·shard inventory가 차지할 D: 제어 용량을 예약하지 않았다.
 
 ## 재개 Gate
 
-현재 preflight는 `primary_above_floor=false`로 재개를 거부한다. 권고안은 D:에서
-명시적으로 승인된 비정본·재생성 가능 자료 1.5–2 GiB 이상을 확보한 뒤 같은
-`-Resume` 명령을 한 번 실행하는 것이다. 안전 하한을 18 GiB 아래로 낮추거나
-완료 산출물을 임의 삭제하지 않는다. 새 외장 SSD를 사용하는 경우에도 먼저
-read-only inventory, copy-first, 파일 수·바이트·SHA 검증, 별도 삭제 승인을
-따른다.
+2021 MFA temp를 새로 읽기 전용 inventory하고 보존 DB의 SHA-256과 SQLite
+`integrity_check=ok`를 확인했다. 사용자는 exact inventory의 재생성 가능 중간물
+63개·33,754,468,034바이트 삭제를 명시 승인했다. 각 파일의 경로·분류·크기·mtime을
+삭제 직전에 다시 확인해 63개만 개별 삭제했고, 폴더 재귀 삭제는 하지 않았다.
+
+사후 검증은 다음과 같다.
+
+- 승인 후보 잔존: 0 / 63
+- 보존 자산 변경·누락: 0 / 39
+- 보존 DB SHA-256: 삭제 전후 일치
+- D: 여유: 17.997768 GiB → 49.434 GiB
+- C: 여유: 37.804 GiB
+- Bareun resume preflight: `ready=true`, D:/C: 안전선 통과
+- source TextGrid 수정 없음, WAV 접근 없음, MFA 재실행 없음
+
+다음 단계는 사용자가 일반 PowerShell에서 같은 `-Resume` 명령을 한 번 실행하는
+것이다. 새 외장 SSD 통합은 생성·독립 감사 완료 뒤 read-only inventory와
+copy-first·파일 수·바이트·SHA 검증·별도 삭제 승인 Gate를 따른다.
