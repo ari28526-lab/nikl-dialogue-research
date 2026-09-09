@@ -38,6 +38,18 @@ from run_bareun_morph_textgrid_full import (  # noqa: E402
 
 
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "bareun_morph_textgrid_full_v1.json"
+AUDIT_COUNT_KEYS = (
+    "utterances",
+    "derived",
+    "no_mfa_alignment",
+    "alignment_conflicts",
+    "output_bytes",
+)
+
+
+def normalize_audit_counts(counts: Mapping[str, int]) -> dict[str, int]:
+    """Return the fixed audit-count schema, preserving absent categories as zero."""
+    return {key: int(counts.get(key, 0)) for key in AUDIT_COUNT_KEYS}
 
 
 def read_shard_inventory(path: Path) -> list[tuple[str, str, str, str, str]]:
@@ -207,17 +219,12 @@ def audit_one_shard(
     if seen != set(expected_by_utt):
         raise RuntimeError(f"utterance identity coverage mismatch: {receipt_relative}")
     expected_counts = shard["counts"]
-    for key in (
-        "utterances",
-        "derived",
-        "no_mfa_alignment",
-        "alignment_conflicts",
-        "output_bytes",
-    ):
-        if int(counts[key]) != int(expected_counts[key]):
+    normalized_counts = normalize_audit_counts(counts)
+    for key in AUDIT_COUNT_KEYS:
+        if normalized_counts[key] != int(expected_counts[key]):
             raise RuntimeError(f"shard count mismatch {key}: {receipt_relative}")
-    counts["output_inventory_sha256"] = output_inventory_sha  # type: ignore[assignment]
-    return dict(counts)
+    normalized_counts["output_inventory_sha256"] = output_inventory_sha  # type: ignore[assignment]
+    return normalized_counts
 
 
 def audit_state(

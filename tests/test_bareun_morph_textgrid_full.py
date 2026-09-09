@@ -27,7 +27,10 @@ from run_bareun_morph_textgrid_full import (  # noqa: E402
     process_receipt,
     same_intervals,
 )
-from audit_bareun_morph_textgrid_full import audit_one_shard  # noqa: E402
+from audit_bareun_morph_textgrid_full import (  # noqa: E402
+    audit_one_shard,
+    normalize_audit_counts,
+)
 
 
 def write_gzip_csv(path: Path, fields: list[str], rows: list[dict[str, object]]) -> None:
@@ -36,6 +39,35 @@ def write_gzip_csv(path: Path, fields: list[str], rows: list[dict[str, object]])
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+
+
+class AuditCountTests(unittest.TestCase):
+    def test_absent_count_categories_are_explicit_zeroes(self) -> None:
+        cases = (
+            (
+                {"utterances": 513, "no_mfa_alignment": 513},
+                {
+                    "utterances": 513,
+                    "derived": 0,
+                    "no_mfa_alignment": 513,
+                    "alignment_conflicts": 0,
+                    "output_bytes": 0,
+                },
+            ),
+            (
+                {"utterances": 7, "derived": 7, "output_bytes": 1234},
+                {
+                    "utterances": 7,
+                    "derived": 7,
+                    "no_mfa_alignment": 0,
+                    "alignment_conflicts": 0,
+                    "output_bytes": 1234,
+                },
+            ),
+        )
+        for sparse, expected in cases:
+            with self.subTest(sparse=sparse):
+                self.assertEqual(normalize_audit_counts(sparse), expected)
 
 
 class StorageRoutingTests(unittest.TestCase):
