@@ -1,0 +1,123 @@
+{
+  "passed": true,
+  "scope": "reviewed_public_release_allowlist",
+  "hash_scope": "sha256 records local bytes; sha256_lf records UTF-8 without BOM and LF line endings for portable checkout verification",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3538,
+      "sha256": "dd500a0057849677a7680ca51bb91c8e1321cee8e8bd9d1ceb817248cd092b58",
+      "sha256_lf": "dd500a0057849677a7680ca51bb91c8e1321cee8e8bd9d1ceb817248cd092b58"
+    },
+    {
+      "path": "docs/releases/20260912_research_review.md",
+      "bytes": 15609,
+      "sha256": "1ac03c930b3f22009b98ac6a4d4a8640b72c18a2a91da1c5956f4a4f6aa7399e",
+      "sha256_lf": "1ac03c930b3f22009b98ac6a4d4a8640b72c18a2a91da1c5956f4a4f6aa7399e"
+    },
+    {
+      "path": "docs/releases/20260912_research_review.html",
+      "bytes": 21857,
+      "sha256": "3aec3b4f67e4daacb8f43ef1cab579e98bc51cd4b681d16afca0d7a8545e2247",
+      "sha256_lf": "0c3f6d4dda0d2bf9ea0e9483923001af129ac40394179c23f96a36019a1539f3"
+    },
+    {
+      "path": "docs/decisions/PLAN_frequency_effect_measurement_20260912.md",
+      "bytes": 13868,
+      "sha256": "dfc84e2fa561d4c28130158cd427008b5f654db46dbc43ea53bd9e69b3014c3c",
+      "sha256_lf": "dfc84e2fa561d4c28130158cd427008b5f654db46dbc43ea53bd9e69b3014c3c"
+    },
+    {
+      "path": "scripts/python/frequency_units_v1.py",
+      "bytes": 4313,
+      "sha256": "a2a3be47f67d46f2db1ad6c036a0a1df846d4648f3de85174f20c853e13cc163",
+      "sha256_lf": "a2a3be47f67d46f2db1ad6c036a0a1df846d4648f3de85174f20c853e13cc163"
+    },
+    {
+      "path": "scripts/python/seoul_boundary_core.py",
+      "bytes": 3750,
+      "sha256": "511f344afc0d4197318c7f197b904a423349835c994d5bb757fdb973d5347ed7",
+      "sha256_lf": "511f344afc0d4197318c7f197b904a423349835c994d5bb757fdb973d5347ed7"
+    },
+    {
+      "path": "scripts/python/render_research_review.py",
+      "bytes": 5586,
+      "sha256": "2106d3d7950a1e43b576ec173fce1dd60dad25bf677dd5e2ce9cf3ee845e7f9d",
+      "sha256_lf": "2106d3d7950a1e43b576ec173fce1dd60dad25bf677dd5e2ce9cf3ee845e7f9d"
+    },
+    {
+      "path": "tests/test_frequency_units_v1.py",
+      "bytes": 2276,
+      "sha256": "5a4fb1368d2ef7b0495a4b956e04ba3ff971d636422167821b9cded24bb165d5",
+      "sha256_lf": "5a4fb1368d2ef7b0495a4b956e04ba3ff971d636422167821b9cded24bb165d5"
+    },
+    {
+      "path": "tests/test_seoul_boundary_core.py",
+      "bytes": 2430,
+      "sha256": "ecc689b20c804de2d50e5d2ec91f41fde07bee538ffe82a7dc9d72f87e91e8fd",
+      "sha256_lf": "ecc689b20c804de2d50e5d2ec91f41fde07bee538ffe82a7dc9d72f87e91e8fd"
+    }
+  ],
+  "unit_tests": {
+    "frequency_units": 6,
+    "boundary_core": 5,
+    "total": 11,
+    "passed": true
+  },
+  "html_qa": {
+    "passed": true,
+    "checks": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 1050
+        },
+        "title": "본격 연구 전 정리와 점검 · 2026-09-12",
+        "headings": 10,
+        "tables": 6,
+        "links": true,
+        "noPageOverflow": true
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "title": "본격 연구 전 정리와 점검 · 2026-09-12",
+        "headings": 10,
+        "tables": 6,
+        "links": true,
+        "noPageOverflow": true
+      }
+    ],
+    "pageErrors": [],
+    "print_navigation_hidden": true
+  },
+  "status_snapshot": {
+    "seoul_modu": {
+      "status": "counting",
+      "updated_at": "2026-09-12T19:41:24",
+      "pid_alive": true,
+      "completed": 5750,
+      "total": 17396
+    },
+    "native": {
+      "status": "counting",
+      "updated_at": "2026-09-12T19:41:36",
+      "pid_alive": true,
+      "completed": 1950,
+      "total": 18930
+    },
+    "checked_at": "2026-09-12T19:41:40.7689945+09:00"
+  },
+  "semantic_accuracy_evaluated": false,
+  "full_frequency_exports_completed": false,
+  "excluded": [
+    "raw_audio_transcripts_textgrids",
+    "speaker_metadata",
+    "large_frequency_exports_databases",
+    "private_paths_logs_and_device_bound_runners",
+    "unrelated_worktree_changes"
+  ],
+  "publication_authorized_by_user": true
+}
