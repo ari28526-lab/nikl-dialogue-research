@@ -1,0 +1,14 @@
+{
+  "schema": "wsd_post_supplement_pos_scope.v1",
+  "user_selected_pos": ["NNG", "VV", "VA"],
+  "meaning": "After frequency and context supplementation, consider Bareun only for remaining general nouns, general verbs and adjectives.",
+  "VA_attributive_conjugations_included": true,
+  "MM_included": false,
+  "dialect_candidates": "retain",
+  "dialect_comparison_priority": "later_than_ordinary_competition",
+  "old_words_person_names_other_names_and_place_names": "defer_and_preserve",
+  "candidate_deferral_is_wsd_completion": false,
+  "non_target_pos_context": "retain_when_needed_for_selected_targets",
+  "volume_comparison": "count_targets_requests_and_context_included_eojeol_separately",
+  "automatic_paid_execution_authorized": false
+}

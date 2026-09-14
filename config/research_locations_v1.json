@@ -1,0 +1,163 @@
+{
+  "schema": "research_locations.v1",
+  "root_override": "RESEARCH_DATA_ROOT",
+  "locations": {
+    "wsd_probe": {
+      "legacy": "20_WSD/bareun_core_single_probe_20260909",
+      "path": "80_RESEARCH_DEPENDENCIES/WSD/bareun_core_single_probe_20260909",
+      "role": "reused_api_evidence",
+      "read_only_frozen": true,
+      "sentinels": {
+        "CONTRACT.json": "4c6609b7efabf24086610bd67b5d6e3ee194f1e7fd908400d1bdeb5fbcdf2024",
+        "AUDIT.json": "bbf34fd2d292d813769a65b1e56c8eed49d39f660268586addc1eb77fabab08a"
+      }
+    },
+    "wsd_comparison": {
+      "legacy": "20_WSD/context_comparison_18pairs_20260905",
+      "path": "85_VALIDATION_RECORDS/WSD/context_comparison_18pairs_20260905",
+      "role": "validation",
+      "read_only_frozen": true,
+      "sentinels": {
+        "CONTRACT.json": "b4e17ebcd7a2242814ed4058738618d6d65a5cdc8c2c54071a9c8256ebc5eaf2",
+        "STATE.json": "dadf0b21a120ae06f743f2326651dfe1e750c663ad1c3081db2259f0d475a1c8"
+      }
+    },
+    "wsd_diagnostic": {
+      "legacy": "20_WSD/context_comparison_18pairs_20260905_diagnostic_one",
+      "path": "95_ARCHIVE_NOT_ACTIVE/20260914/PILOTS/WSD/context_comparison_18pairs_20260905_diagnostic_one",
+      "role": "historical_test",
+      "read_only_frozen": true,
+      "sentinels": {
+        "CONTRACT.json": "16b8088ceeb21dd6f00d76b9704280de380440e1dfccb86d90169a6e560d9b8c",
+        "STATE.json": "71a5a258b2a37f2439ada023f2cd07c547d4bb027808a74f090279fa58322496"
+      }
+    },
+    "wsd_short_comparison": {
+      "legacy": "20_WSD/context_comparison_18pairs_20260905_short_context_three",
+      "path": "85_VALIDATION_RECORDS/WSD/context_comparison_18pairs_20260905_short_context_three",
+      "role": "validation",
+      "read_only_frozen": true,
+      "sentinels": {
+        "CONTRACT.json": "45371d75e8b3dc0558e080114e34dcecb17667337f0a25d3bd94d5d04169c1cb",
+        "STATE.json": "682de3fd43b3d9825728fc8d17832d1f2328a4ac514be5acabff4875d37321bc"
+      }
+    },
+    "homonym_review_source": {
+      "legacy": "20_WSD/homonym_context_pilot_20260906",
+      "path": "85_VALIDATION_RECORDS/HOMONYM/homonym_context_pilot_20260906",
+      "role": "researcher_review_source",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL_RECEIPT.json": "219a9887e91bd48d26e9aae38223cef05b6b505652fd3d3e2a7d9dceca9618e3",
+        "CONTRACT.json": "e400a39c99f27bef607e9856223da6785c39e50670a64b1224b904a0661475e7",
+        "STATE.json": "6365848ebd38c4b3825aff8cd7288028d92d01645ecd36e7c4052c22152e3f14"
+      }
+    },
+    "wsd_whole_conversation": {
+      "legacy": "20_WSD/whole_conversation_pilot_20260905",
+      "path": "85_VALIDATION_RECORDS/WSD/whole_conversation_pilot_20260905",
+      "role": "validation",
+      "read_only_frozen": true,
+      "sentinels": {
+        "CONTRACT.json": "d27ef98e68d7a7165b5aaefa7409e07833dd9bc5223049605b08b71833475bbd",
+        "AUDIT.json": "fddd9eee0c7d9fb5719c753283008964e9b11b546f392fb349f5d7c834b8ce5f",
+        "STATE.json": "acf652445832a13f6c0b0dc72d8857d3c466e84a16d5df7c65734abd56f4ad3e"
+      }
+    },
+    "koina_v1": {
+      "legacy": "40_SEOUL_CORPUS/50_KOINA_PILOT_20260911",
+      "path": "85_VALIDATION_RECORDS/SEOUL/50_KOINA_PILOT_20260911",
+      "role": "historical_algorithm_comparison",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "32cbe7078550ef16769e49bce7e9bfe260b2a9f492ff0824bc94556698c831e3",
+        "CONTRACT.json": "d45d78caea1b9c48639a573136b21408ded7280bb806e9c65f09139ec8a91654",
+        "STATE.json": "db3acd41e317b32855a8b089daffdec6af3763730fa4ba32d1adea43441f99c5"
+      }
+    },
+    "koina_clock": {
+      "legacy": "40_SEOUL_CORPUS/51_KOINA_CLOCK_V2_20260911",
+      "path": "80_RESEARCH_DEPENDENCIES/SEOUL/51_KOINA_CLOCK_V2_20260911",
+      "role": "reused_full_results",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "749c8caed48cad62f7105b318bd1ef9f325ad621131a2ac0f00eed16ec5c323e",
+        "CONTRACT.json": "7d8c896055b2a75cd129ee40a6e9e4a264117da1f1188a62b04f78a8c4864665",
+        "STATE.json": "e4328c9db5c99f69bee2ec87491860e10f3d590959179c66ba3b0052f64669e9"
+      }
+    },
+    "koina_qc": {
+      "legacy": "40_SEOUL_CORPUS/53_KOINA_QC_PILOT_20260912",
+      "path": "80_RESEARCH_DEPENDENCIES/SEOUL/53_KOINA_QC_PILOT_20260912",
+      "role": "full_boundary_diagnostics",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "ad60d1e1124ca659a593bd23545c46bb3105cde8b4b141e7794a6a1f86522e54",
+        "CONTRACT.json": "38012edb1a6b52c60253590b4b680d14696d5151d05f0c30c4973328d8240aa9",
+        "STATE.json": "acda41b68b4e258692ce9612a86827d4e8d9082561e804cab989dfd906843490"
+      },
+      "diagnostic_files": {
+        "out": [],
+        "s01m16f1": [
+          "s01m16f1/20pct.json.gz",
+          "s01m16f1/50pct.json.gz",
+          "s01m16f1/80pct.json.gz",
+          "s01m16f1/peak.json.gz"
+        ],
+        "s01m16f2": [
+          "s01m16f2/20pct.json.gz",
+          "s01m16f2/50pct.json.gz",
+          "s01m16f2/80pct.json.gz",
+          "s01m16f2/peak.json.gz"
+        ],
+        "s06f18m1": [
+          "s06f18m1/20pct.json.gz",
+          "s06f18m1/50pct.json.gz",
+          "s06f18m1/80pct.json.gz",
+          "s06f18m1/peak.json.gz"
+        ],
+        "s40f43f6": [
+          "s40f43f6/20pct.json.gz",
+          "s40f43f6/50pct.json.gz",
+          "s40f43f6/80pct.json.gz",
+          "s40f43f6/peak.json.gz"
+        ]
+      }
+    },
+    "frequency_gate": {
+      "legacy": "60_FREQUENCY_DICTIONARIES_20260912/PILOT_V1",
+      "path": "85_VALIDATION_RECORDS/FREQUENCY/PILOT_V1",
+      "role": "production_gate",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "61064b106e24bb0709d0a8ca6b405d95dfa714ca549fae6ca098fd989545ce97",
+        "CONTRACT.json": "7c585df6fac8038cd78c839d7a65f859007ba2be7df2b08869c39bcb1ebca23e",
+        "STATE.json": "0fb54a2f38001c177baa0572918aa7244ae1023e627b2b02f1440207396230db"
+      }
+    },
+    "native_frequency_gate": {
+      "legacy": "60_FREQUENCY_DICTIONARIES_20260912/NATIVE_LS_ML_MP_V1/PILOT_NULL_FIX_20260913",
+      "path": "85_VALIDATION_RECORDS/FREQUENCY/NATIVE_PILOT_NULL_FIX_20260913",
+      "role": "production_gate",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "251975d899fbcab1df9b10ad32e7d78cc4045208d2fddc162603ae1ac6234d8b",
+        "CONTRACT.json": "59cd38844c5caddfdc9cb58611d4bd6b8dedc774a4c4fd25fb9dba0ee287ab30",
+        "STATE.json": "c8653183008f0a1e95a79a1a5df4d9d2eff79889efaded7185cafdac13e49ba5"
+      }
+    },
+    "seoul_frequency_gate": {
+      "legacy": "60_FREQUENCY_DICTIONARIES_20260912/SEOUL_SEMANTIC_V2_20260913/PILOT",
+      "path": "85_VALIDATION_RECORDS/FREQUENCY/SEOUL_SEMANTIC_V2_PILOT",
+      "role": "production_gate",
+      "read_only_frozen": true,
+      "sentinels": {
+        "FINAL.json": "eb82d193204ef93989f5a1754744bbbe6f742a7d346a352b2819556a5db0984c",
+        "CONTRACT.json": "033cefedee140ab0f79bdc161634e715eb04e02c3e2fc62bedb416ff9c769dc2",
+        "STATE.json": "1eff5d4e643538c1c81e3c00074bdaa984b6d9c7f0a5864fabffa5941be4e6ec"
+      }
+    }
+  },
+  "automatic_latest_selection": false,
+  "frozen_production_contracts_unchanged": true
+}
