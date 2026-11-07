@@ -30,11 +30,16 @@ def refs(value):
             yield from refs(child)
 
 
-def context(package, links, corpus, utterance_id, radius=2, verify_hashes=False, revision=None):
+def context(package, links, corpus, utterance_id, radius=2, verify_hashes=False, revision=None,
+            analysis_catalog=None, analysis_version=None, analysis_source=None):
     if radius < 0:
         raise ValueError('Negative context radius')
     package = package.resolve(); links = links.resolve()
     view = None
+    if any(x is not None for x in (analysis_catalog, analysis_version, analysis_source)) and not all(
+        x is not None for x in (analysis_catalog, analysis_version, analysis_source)
+    ):
+        raise ValueError('Analysis catalog, version and source must be selected together')
     if revision is not None:
         from delivery_revision_view import View
         view = View(package, revision)
@@ -79,6 +84,10 @@ def context(package, links, corpus, utterance_id, radius=2, verify_hashes=False,
                     h.update(b)
             if h.hexdigest() != ref['sha256']:
                 raise ValueError('Reference SHA mismatch: ' + ref['path'])
+    if analysis_catalog is not None:
+        from analysis_release import context as analysis_context
+        result['selected_analysis'] = analysis_context(
+            analysis_catalog, analysis_version, corpus, analysis_source, utterance_id, radius)
     return result
 
 
@@ -88,6 +97,10 @@ if __name__ == '__main__':
     p.add_argument('--utterance-id', required=True); p.add_argument('--radius', type=int, default=2)
     p.add_argument('--verify-hashes', action='store_true'); p.add_argument('--output', type=Path, required=True)
     p.add_argument('--revision', help='Explicit immutable revision; base remains the default')
-    a=p.parse_args(); value=context(a.package,a.links,a.corpus,a.utterance_id,a.radius,a.verify_hashes,a.revision)
+    p.add_argument('--analysis-catalog', type=Path)
+    p.add_argument('--analysis-version')
+    p.add_argument('--analysis-source')
+    a=p.parse_args(); value=context(a.package,a.links,a.corpus,a.utterance_id,a.radius,a.verify_hashes,a.revision,
+                                  a.analysis_catalog,a.analysis_version,a.analysis_source)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(value,ensure_ascii=False,indent=2),encoding='utf-8')
